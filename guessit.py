@@ -208,15 +208,41 @@ def guess_episode_filename_parts(filename):
     return result
 
 
+def merge_similar_guesses(guesses, prop):
+    """Take a list of guesses and merge those which have the same properties,
+    increasing or decreasing the confidence depending on whether their values
+    are similar."""
+
+    similar = [ guess for guess in guesses if prop in guess ]
+    if len(similar) < 2:
+        # nothing to merge
+        return guesses
+
+    if len(similar) > 2:
+        log.warning('merge too complex to be dealt with at the moment, bailing out...')
+        return guesses
+
+    s1, s2 = similar
+
+    if len(set(s1) & set(s2)) > 1:
+        log.warning('both guesses to be merged have more than one property in common, bailing out...')
+        return guesses
+
+    # merge all props of s2 into s1, updating the confidence for the considered property
+    if s1[prop] == s2[prop]:
+        pass
+    else:
+        pass
+
+
+
 def guess_episode_filename(filename):
     parts = guess_episode_filename_parts(filename)
-
-    return parts
 
     # 1- try to sanitize info a little bit more
 
     # heuristic 1: if there are any series name that look like "blahblah, the", invert it in its correct position
-    for part, confidence in parts:
+    for part in parts:
         if 'series' not in part:
             continue
 
