@@ -1,5 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#
+# GuessIt - A library for guessing information from filenames
+# Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
+#
+# GuessIt is free software; you can redistribute it and/or modify it under
+# the terms of the Lesser GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# GuessIt is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# Lesser GNU General Public License for more details.
+#
+# You should have received a copy of the Lesser GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 
 import sys
 import ntpath
@@ -8,7 +25,7 @@ import textutils
 import json
 import logging
 
-log = logging.getLogger("pygoo")
+log = logging.getLogger("guessit")
 
 class NullHandler(logging.Handler):
     def emit(self, record):
@@ -107,6 +124,12 @@ class Guess(dict):
     def set_confidence(self, prop, value):
         self._confidence[prop] = value
 
+    def update(self, other):
+        dict.update(self, other)
+        if isinstance(other, Guess):
+            for prop in other:
+                self._confidence[prop] = other.confidence(prop)
+
 
 def guess_episode_filename_parts(filename):
     name = split_path(filename)
@@ -117,17 +140,23 @@ def guess_episode_filename_parts(filename):
     # heuristic 1: try to guess the season & epnumber using S01E02 and 1x02 patterns
     sep = '[ \._-]'
     rexps = [ 'season (?P<season>[0-9]+)',
-              sep + '(?P<episodeNumber>[0-9]+)(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips
               '(?P<season>[0-9]+)[x\.](?P<episodeNumber>[0-9]+)',
               '[Ss](?P<season>[0-9]+) ?[Ee](?P<episodeNumber>[0-9]+)'
               ]
 
+    basename_rexps = [ sep + '(?P<episodeNumber>[0-9]+)(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips
+                       ]
+        
+
     for n in name:
         for match in textutils.matchAllRegexp(n, rexps):
             log.debug('Found with confidence 1.0: %s' % match)
-            #ep = query.Episode(confidence = 1.0, allow_incomplete = True, **match)
-            #media.append('matches', ep)
             result.append(format_episode_guess(Guess(match, confidence = 1.0)))
+
+    for match in textutils.matchAllRegexp(basename, basename_rexps):
+        log.debug('Found with confidence 0.4: %s' % match)
+        result.append(format_episode_guess(Guess(match, confidence = 0.6)))
+        
 
     # cleanup a bit by removing unlikely eps numbers which are probably numbers in the title
     # or even dates in the filename, etc...
@@ -208,7 +237,7 @@ def guess_episode_filename_parts(filename):
     return result
 
 
-def merge_similar_guesses(guesses, prop):
+def merge_similar_guesses(guesses, prop, choose):
     """Take a list of guesses and merge those which have the same properties,
     increasing or decreasing the confidence depending on whether their values
     are similar."""
@@ -216,25 +245,44 @@ def merge_similar_guesses(guesses, prop):
     similar = [ guess for guess in guesses if prop in guess ]
     if len(similar) < 2:
         # nothing to merge
-        return guesses
+        return
 
     if len(similar) > 2:
         log.warning('merge too complex to be dealt with at the moment, bailing out...')
-        return guesses
+        return
 
-    s1, s2 = similar
+    g1, g2 = similar
 
-    if len(set(s1) & set(s2)) > 1:
+    if len(set(g1) & set(g2)) > 1:
         log.warning('both guesses to be merged have more than one property in common, bailing out...')
-        return guesses
+        return
 
     # merge all props of s2 into s1, updating the confidence for the considered property
-    if s1[prop] == s2[prop]:
-        pass
+    v1, v2 = g1[prop], g2[prop]
+    c1, c2 = g1.confidence(prop), g2.confidence(prop)
+
+    new_value, new_confidence = choose((v1, c1), (v2, c2))
+    if new_confidence >= c1:
+        log.debug("Updating matching property '%s' with confidence %.2f" % (prop, new_confidence))
     else:
-        pass
+        log.debug("Updating non-matching property '%s' with confidence %.2f" % (prop, new_confidence))
 
-
+    g2[prop] = new_value
+    g2.set_confidence(prop, new_confidence)
+        
+    g1.update(g2)
+    guesses.remove(g2)
+    
+def merge_all(guesses):
+    """Merges all the guesses in a single result and returns it."""
+    result = guesses[0]
+    
+    for g in guesses[1:]:
+        if set(result) & set(g):
+            log.warning('overwriting properties %s in merged result...' % (set(result) & set(g)))
+        result.update(g)
+                        
+    return result
 
 def guess_episode_filename(filename):
     parts = guess_episode_filename_parts(filename)
@@ -257,8 +305,36 @@ def guess_episode_filename(filename):
 
 
     # 2- try to merge similar information together and give it a higher confidence
+    def choose_int(g1, g2):
+        v1, c1 = g1 # value, confidence
+        v2, c2 = g2
+        if (v1 == v2):
+            return (v1, 1 - (1-c1)*(1-c2))
+        else:
+            if c1 > c2:
+                return (v1, c1 - c2)
+            else:
+                return (v2, c2 - c1)
 
-    return parts
+    def choose_string(g1, g2):
+        v1, c1 = g1 # value, confidence
+        v2, c2 = g2
+        v1l, v2l = v1.lower(), v2.lower()
+        if v2l in v1l:
+            return (v1, 1 - (1-c1)*(1-c2))
+        elif v1l in v2l:
+            return (v2, 1 - (1-c1)*(1-c2))
+        else:
+            if c1 > c2:
+                return (v1, c1 - c2)
+            else:
+                return (v2, c2 - c1)
+
+    merge_similar_guesses(parts, 'season', choose_int)
+    merge_similar_guesses(parts, 'episodeNumber', choose_int)
+    merge_similar_guesses(parts, 'series', choose_string)
+
+    return merge_all(parts)
 
 
 if __name__ == '__main__':
@@ -280,7 +356,8 @@ if __name__ == '__main__':
     for f in testfiles:
         print '-'*80
         print 'For:', f
-        print 'Found:'
-        for guess in guess_episode_filename(f):
-            #print 'Confidence:', confidence, json.dumps(g, indent = 4)
-            print guess.to_json()
+        result = guess_episode_filename(f).to_json()
+        print 'Found:', result
+        #for guess in guess_episode_filename(f):
+        #    #print 'Confidence:', confidence, json.dumps(g, indent = 4)
+        #    print guess.to_json()
