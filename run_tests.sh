@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nosetests --with-doctest -vv guessit.py
+nosetests --with-doctest -vv guessit
