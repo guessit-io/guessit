@@ -51,14 +51,23 @@ class Guess(dict):
     def confidence(self, prop):
         return self._confidence[prop]
 
+    def set(self, prop, value, confidence = None):
+        self[prop] = value
+        if confidence is not None:
+            self._confidence[prop] = confidence
+
     def set_confidence(self, prop, value):
         self._confidence[prop] = value
 
-    def update(self, other):
+    def update(self, other, confidence = None):
         dict.update(self, other)
         if isinstance(other, Guess):
             for prop in other:
                 self._confidence[prop] = other.confidence(prop)
+
+        if confidence is not None:
+            for prop in other:
+                self._confidence[prop] = confidence
 
 
 
