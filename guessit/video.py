@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.guess import Guess, merge_all
+from guessit.guess import Guess, merge_append_guesses, merge_all
 from guessit import fileutils, textutils
 import os.path
 import re
@@ -220,5 +220,8 @@ def guess_video_filename(filename):
     """Return the guessed information about the video file, as well the idx in
     the filename string starting with which we found something."""
     parts, idx = guess_video_filename_parts(filename)
+
+    merge_append_guesses(parts, 'language')
+    merge_append_guesses(parts, 'subtitleLanguage')
 
     return merge_all(parts), idx

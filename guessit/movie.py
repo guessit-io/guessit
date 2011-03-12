@@ -66,11 +66,19 @@ def guess_XCT(filename):
         mdstr.replace(subs, '')
         result.set('subtitleLanguage', subs.split('-'), confidence = 1.0)
 
+        # FIXME: this is a hack here, it should be more generic (ie: done once, not everywhere)
+        from guessit.video import _language_map
+        result['subtitleLanguage'] = [ _language_map[lang.lower()] for lang in result['subtitleLanguage'] ]
+
+
         # find audio
         audio = textutils.matchRegexp(mdstr, 'aac[0-9\.-]*[{\(](?P<audio>.*?)[}\)]')['audio']
         log.debug('Found XCT audio with confidence 1.0: %s' % audio.split('-'))
         mdstr.replace(audio, '')
         result.set('language', audio.split('-'), confidence = 1.0)
+
+        # FIXME: this is a hack here, it should be more generic (ie: done once, not everywhere)
+        result['language'] = [ _language_map[lang.lower()] for lang in result['language'] ]
 
         # find year: if we found it, then the english title of the movie is either what's inside
         # the parentheses before the year, or everything before the year
