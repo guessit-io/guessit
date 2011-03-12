@@ -169,6 +169,9 @@ def merge_similar_guesses(guesses, prop, choose):
 
 def merge_all(guesses):
     """Merges all the guesses in a single result and returns it."""
+    if not guesses:
+        return Guess()
+
     result = guesses[0]
 
     for g in guesses[1:]:

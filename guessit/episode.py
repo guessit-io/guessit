@@ -19,6 +19,7 @@
 #
 
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
+from guessit.video import guess_video_filename
 from guessit import fileutils, textutils
 import re
 import logging
@@ -150,7 +151,12 @@ def guess_episode_filename_parts(filename):
 
 
 def guess_episode_filename(filename):
-    parts = guess_episode_filename_parts(filename)
+    # guess the video parts of it
+    video_info, minidx = guess_video_filename(filename)
+
+    parts = [ video_info ]
+
+    parts += guess_episode_filename_parts(filename)
 
     # 1- try to sanitize info a little bit more
 
