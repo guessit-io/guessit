@@ -44,7 +44,7 @@ class Guess(dict):
                 continue
 
             prop = p.split('"')[1]
-            parts[i] = ('    [%.2f] ' % self._confidence.get(prop, -1)) + p[5:]
+            parts[i] = ('    [%.2f] "' % self._confidence.get(prop, -1)) + p[5:]
 
         return '\n'.join(parts)
 
