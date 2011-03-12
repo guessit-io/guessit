@@ -27,6 +27,20 @@ import logging
 log = logging.getLogger('guessit.video')
 
 
+_reverse_language_map = { 'English': [ 'english', 'eng' ],
+                          'French': [ 'french', 'fr', 'francais', 'français' ],
+                          'Spanish': [ 'spanish', 'es', 'esp', 'espanol', 'español' ], # should we remove 'es'? (very common in spanish)
+                          'Italian': [ 'italian', 'italiano' ]  # no 'it', too common a word
+                          }
+
+_language_map = {}
+for lang, langs in _reverse_language_map.items():
+    for l in langs:
+        _language_map[l] = lang
+
+print _language_map
+
+
 def format_video_guess(guess):
     """Formats all the found values to their natural type.
     For instance, a year would be stored as an int value, ...
@@ -34,6 +48,12 @@ def format_video_guess(guess):
     for prop in [ 'year' ]:
         try:
             guess[prop] = int(guess[prop])
+        except KeyError:
+            pass
+
+    for prop in [ 'language', 'subtitleLanguage' ]:
+        try:
+            guess[prop] = _language_map[guess[prop].lower()]
         except KeyError:
             pass
 
@@ -110,12 +130,7 @@ def guess_video_filename_parts(filename):
                    'screenSize': [ '720p' ],
                    'videoCodec': [ 'XviD', 'DivX', 'x264', 'Rv10' ],
                    'audioCodec': [ 'AC3', 'DTS', 'He-AAC', 'AAC-He', 'AAC' ],
-                   'language': [ 'english', 'eng',
-                                 'spanish', 'esp',
-                                 'french', 'fr',
-                                 'italian', # no 'it', too common a word in english
-                                 'vo', 'vf'
-                                 ],
+                   'language': [ 'vo', 'vf' ] + [ lang for langs in _reverse_language_map.values() for lang in langs ],
                    'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA', 'CHD', 'ViTE', 'DiAMOND', 'TLF',
                                      'DEiTY', 'FLAiTE', 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe', 'UnSeeN' ],
                    'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed',
