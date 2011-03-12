@@ -71,6 +71,52 @@ class Guess(dict):
 
 
 
+def choose_int(g1, g2):
+    """Function used by merge_similar_guesses to choose between 2 possible properties
+    when they are integers."""
+    v1, c1 = g1 # value, confidence
+    v2, c2 = g2
+    if (v1 == v2):
+        return (v1, 1 - (1-c1)*(1-c2))
+    else:
+        if c1 > c2:
+            return (v1, c1 - c2)
+        else:
+            return (v2, c2 - c1)
+
+def choose_string(g1, g2):
+    """Function used by merge_similar_guesses to choose between 2 possible properties
+    when they are strings."""
+    v1, c1 = g1 # value, confidence
+    v2, c2 = g2
+    v1, v2 = v1.strip(), v2.strip()
+    v1l, v2l = v1.lower(), v2.lower()
+
+    combined_prob = 1 - (1-c1)*(1-c2)
+
+    if v1l == v2l:
+        return (v1, combined_prob)
+
+    # check for common patterns
+    elif v1l == 'the ' + v2l:
+        return (v1, combined_prob)
+    elif v2l == 'the ' + v1l:
+        return (v2, combined_prob)
+
+    # if one string is contained in the other, return the shortest one
+    elif v2l in v1l:
+        return (v2, combined_prob)
+    elif v1l in v2l:
+        return (v1, combined_prob)
+
+    # in case of conflict, return the one with highest priority
+    else:
+        if c1 > c2:
+            return (v1, c1 - c2)
+        else:
+            return (v2, c2 - c1)
+
+
 def merge_similar_guesses(guesses, prop, choose):
     """Take a list of guesses and merge those which have the same properties,
     increasing or decreasing the confidence depending on whether their values

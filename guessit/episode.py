@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.guess import Guess, merge_similar_guesses, merge_all
+from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
 from guessit import fileutils, textutils
 import re
 import logging
@@ -45,6 +45,9 @@ def guess_episode_filename_parts(filename):
 
     result = []
 
+    def guessed(match, confidence = None):
+        result.append(format_episode_guess(Guess(match, confidence = confidence)))
+
     # heuristic 1: try to guess the season & epnumber using S01E02 and 1x02 patterns
     sep = '[ \._-]'
     rexps = [ 'season (?P<season>[0-9]+)',
@@ -59,11 +62,11 @@ def guess_episode_filename_parts(filename):
     for n in name:
         for match in textutils.matchAllRegexp(n, rexps):
             log.debug('Found with confidence 1.0: %s' % match)
-            result.append(format_episode_guess(Guess(match, confidence = 1.0)))
+            guessed(match, confidence = 1.0)
 
     for match in textutils.matchAllRegexp(basename, basename_rexps):
         log.debug('Found with confidence 0.4: %s' % match)
-        result.append(format_episode_guess(Guess(match, confidence = 0.6)))
+        guessed(match, confidence = 0.6)
 
 
     # cleanup a bit by removing unlikely eps numbers which are probably numbers in the title
@@ -106,7 +109,7 @@ def guess_episode_filename_parts(filename):
             title = textutils.cleanString(basename[:found.span()[0]])
             log.debug('Found with confidence 0.6: series title = %s' % title)
 
-            result.append(Guess(series = title, confidence = 0.6))
+            guessed({ 'series': title }, confidence = 0.6)
 
 
     # heuristic 3: try to guess the serie title from the parent directory!
@@ -116,12 +119,12 @@ def guess_episode_filename_parts(filename):
                                            'saison (?P<season>[0-9]+)' ]):
         series = name[-3]
         log.debug('Found with confidence 0.8: series title = %s' % series)
-        result.append(Guess(series = series, confidence = 0.8))
+        guessed({ 'series': series }, confidence = 0.8)
 
     else:
         series = name[-2]
         log.debug('Found with confidence 0.4: series title = %s' % series)
-        result.append(Guess(series = series, confidence = 0.4))
+        guessed({ 'series': series }, confidence = 0.4)
 
 
     # heuristic 4: add those anyway with very little probability, so that if don't find anything we can still use this
@@ -167,31 +170,6 @@ def guess_episode_filename(filename):
 
 
     # 2- try to merge similar information together and give it a higher confidence
-    def choose_int(g1, g2):
-        v1, c1 = g1 # value, confidence
-        v2, c2 = g2
-        if (v1 == v2):
-            return (v1, 1 - (1-c1)*(1-c2))
-        else:
-            if c1 > c2:
-                return (v1, c1 - c2)
-            else:
-                return (v2, c2 - c1)
-
-    def choose_string(g1, g2):
-        v1, c1 = g1 # value, confidence
-        v2, c2 = g2
-        v1l, v2l = v1.lower(), v2.lower()
-        if v2l in v1l:
-            return (v1, 1 - (1-c1)*(1-c2))
-        elif v1l in v2l:
-            return (v2, 1 - (1-c1)*(1-c2))
-        else:
-            if c1 > c2:
-                return (v1, c1 - c2)
-            else:
-                return (v2, c2 - c1)
-
     merge_similar_guesses(parts, 'season', choose_int)
     merge_similar_guesses(parts, 'episodeNumber', choose_int)
     merge_similar_guesses(parts, 'series', choose_string)

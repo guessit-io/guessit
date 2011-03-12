@@ -18,12 +18,25 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.guess import Guess, merge_similar_guesses, merge_all
+from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_string
 from guessit import fileutils, textutils
 import re
 import logging
 
 log = logging.getLogger('guessit.movie')
+
+
+def format_movie_guess(guess):
+    """Formats all the found values to their natural type.
+    For instance, a year would be stored as an int value, ...
+    Note that this modifies the dictionary given as input."""
+    for prop in [ 'year' ]:
+        try:
+            guess[prop] = int(guess[prop])
+        except KeyError:
+            pass
+
+    return guess
 
 
 def valid_year(year):
@@ -37,7 +50,7 @@ def guess_XCT(filename):
     result = Guess()
 
     if not '[XCT]' in filename:
-        return filename, result
+        return filename, []
 
     filename = filename.replace('[XCT]', '')
 
@@ -60,20 +73,20 @@ def guess_XCT(filename):
 
         # find year: if we found it, then the english title of the movie is either what's inside
         # the parentheses before the year, or everything before the year
-        title = filename
+        title = filename.replace('.', ' ')
         log.debug('Found XCT title with confidence 0.6: %s' % title)
         result.set('title', title, confidence = 0.6)
 
         years = [ m['year'] for m in textutils.multipleMatchRegexp(filename, '(?P<year>[0-9]{4})') if valid_year(m['year']) ]
         if len(years) == 1:
-            title = filename[:filename.index(years[0])]
+            title = filename[:filename.index(years[0])].replace('.', ' ')
             log.debug('Found XCT title with confidence 0.8: %s' % title)
             result.set('title', title, confidence = 0.8)
         elif len(years) >= 2:
             log.warning('Ambiguous filename: possible years are ' + ', '.join(years))
 
         try:
-            title = textutils.matchRegexp(title, '\((?P<title>.*?)\)')['title']
+            title = textutils.matchRegexp(title, '\((?P<title>.*?)\)')['title'].replace('.', ' ')
             log.debug('Found XCT title with confidence 0.9: %s' % title)
             result.set('title', title, confidence = 0.9)
         except:
@@ -82,7 +95,7 @@ def guess_XCT(filename):
         result['title'] = title
 
     finally:
-        return filename, result
+        return filename, [ result ]
 
 
 '''
@@ -104,15 +117,17 @@ def VideoFilename(filename):
     name = ' '.join(parts[:min(found.values())])
 '''
 
-def guess_movie_filename(filename):
+def guess_movie_filename_parts(filename):
     import os.path
     filename = os.path.basename(filename)
-    result = Guess()
-
-    # TODO: fix those cases
+    result = []
 
     # first apply specific methods which are very strict but have a very high confidence
     filename, result = guess_XCT(filename)
+
+    def guessed(match, confidence = None):
+        result.append(format_movie_guess(Guess(match, confidence = confidence)))
+
 
     # DVDRip.Xvid-$(grpname)
     grpnames = [ '\.Xvid-(?P<releaseGroup>.*?)\.',
@@ -125,7 +140,7 @@ def guess_movie_filename(filename):
     specific = grpnames + editions + audio
     for match in textutils.matchAllRegexp(filename, specific):
         log.debug('Found with confidence 1.0: %s' % match)
-        result.update(match, confidence = 1.0)
+        guessed(match, confidence = 1.0)
         for key, value in match.items():
             filename = filename.replace(value, '')
 
@@ -179,7 +194,7 @@ def guess_movie_filename(filename):
         for part in name:
             if part.lower() in value:
                 log.debug('Found with confidence 1.0: %s' % ({ prop: part },))
-                result.set(prop, part, confidence = 1.0)
+                guessed({ prop: part }, confidence = 1.0)
                 minIdx = min(minIdx, name.index(part))
 
 
@@ -187,16 +202,17 @@ def guess_movie_filename(filename):
     for part in name:
         year = textutils.stripBrackets(part)
         if valid_year(year):
-            log.debug('Found with confidence 0.9: %s' % ({ 'year': int(year) },))
-            result.set('year', int(year), confidence = 0.9)
+            year = int(year)
+            log.debug('Found with confidence 0.9: %s' % ({ 'year': year },))
+            guessed({ 'year': year }, confidence = 0.9)
             minIdx = min(minIdx, name.index(part))
 
     # remove ripper name
     # FIXME: fails with movies such as "down by law", etc...
     for by, who in zip(name[:-1], name[1:]):
         if by.lower() == 'by':
-            log.debug('Found with confidence 0.4: %s' % ({ 'ripper': who },))
-            result.set('ripper', who, confidence = 0.4)
+            log.debug('Found with confidence 0.4: %s' % { 'ripper': who })
+            guessed({ 'ripper': who }, confidence = 0.4)
             minIdx = min(minIdx, name.index(by))
 
     # subtitles
@@ -204,7 +220,7 @@ def guess_movie_filename(filename):
     for sub, lang in zip(name[:-1], name[1:]):
         if sub.lower() == 'sub':
             log.debug('Found with confidence 0.7: %s' % ({ 'subtitleLanguage': lang },))
-            result.set('subtitleLanguage', lang, confidence = 0.7)
+            guessed({ 'subtitleLanguage': lang }, confidence = 0.7)
             minIdx = min(minIdx, name.index(sub))
 
     # get CD number (if any)
@@ -213,7 +229,7 @@ def guess_movie_filename(filename):
         try:
             cdnumber = int(cdrexp.search(part).groups()[0])
             log.debug('Found with confidence 1.0: %s' % ({ 'cdnumber': cdnumber },))
-            result.set('cdNumber', cdnumber, confidence = 1.0)
+            guessed({ 'cdnumber': cdnumber }, confidence = 1.0)
             minIdx = min(minIdx, name.index(part))
         except AttributeError:
             pass
@@ -224,6 +240,8 @@ def guess_movie_filename(filename):
     # last chance on the full name: try some popular regexps
     general = [ '(?P<dircut>director\'s cut)',
                 '(?P<edition>edition collector)' ]
+
+    # TODO: generic website url guesser
     websites = [ 'sharethefiles.com', 'tvu.org.ru' ]
     websites = [ '(?P<website>%s)' % w.replace('.', ' ') for w in websites ] # dots have been previously converted to spaces
     rexps = general + websites
@@ -231,21 +249,24 @@ def guess_movie_filename(filename):
     matched = textutils.matchAllRegexp(name, rexps)
     for match in matched:
         log.debug('Found with confidence 1.0: %s' % match)
-        result.update(match, confidence = 1.0)
+        guessed(match, confidence = 1.0)
         for key, value in match.items():
             minIdx = min(minIdx, name.find(value))
 
     # FIXME: this won't work with "2001 a space odyssey" for instance, where sth it incorrectly detected
     name = name[:minIdx].strip()
 
-    # try website names
-    # TODO: generic website url guesser
-    websites = [ 'sharethefiles.com' ]
-
 
     # return final name as a (weak) guess for the movie title
     log.debug('Found with confidence 0.3: %s' % {'title': name})
-    result.set('title', name, confidence = 0.3)
+    guessed({ 'title': name}, confidence = 0.3)
 
     return result
 
+
+def guess_movie_filename(filename):
+    parts = guess_movie_filename_parts(filename)
+
+    merge_similar_guesses(parts, 'title', choose_string)
+
+    return merge_all(parts)
