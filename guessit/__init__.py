@@ -18,6 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__VERSION__ = '0.1b2'
+
 import logging
 
 log = logging.getLogger("guessit")
@@ -29,3 +31,5 @@ class NullHandler(logging.Handler):
 # let's be a nicely behaving library
 h = NullHandler()
 log.addHandler(h)
+
+

@@ -1,0 +1,25 @@
+.. This is your project NEWS file which will contain the release notes.
+.. Example: http://www.python.org/download/releases/2.6/NEWS.txt
+.. The content of this file, along with README.rst, will appear in your
+.. project's PyPI page.
+
+News
+====
+
+0.1b2
+-----
+
+*Release date: 12-Mar-2011*
+
+* Added PyPI trove classifiers
+* fixed version number in setup.py
+
+
+0.1b1
+-----
+
+*Release date: 12-Mar-2011*
+
+* first pre-release version; imported from Smewt with a few enhancements already
+  in there.
+
