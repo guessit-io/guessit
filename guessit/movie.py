@@ -19,6 +19,7 @@
 #
 
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_string
+from guessit.video import guess_video_filename
 from guessit import fileutils, textutils
 import re
 import logging
@@ -128,140 +129,34 @@ def guess_movie_filename_parts(filename):
     def guessed(match, confidence = None):
         result.append(format_movie_guess(Guess(match, confidence = confidence)))
 
+    # then guess the video parts of it
+    video_info, minidx = guess_video_filename(filename)
 
-    # DVDRip.Xvid-$(grpname)
-    grpnames = [ '\.Xvid-(?P<releaseGroup>.*?)\.',
-                 '\.DivX-(?P<releaseGroup>.*?)\.'
-                 ]
-    editions = [ '(?P<edition>(special|unrated|criterion).edition)'
-                 ]
-    audio = [ '(?P<audioChannels>5\.1)' ]
+    result.append(video_info)
 
-    specific = grpnames + editions + audio
-    for match in textutils.matchAllRegexp(filename, specific):
-        log.debug('Found with confidence 1.0: %s' % match)
-        guessed(match, confidence = 1.0)
-        for key, value in match.items():
-            filename = filename.replace(value, '')
-
-
-    # remove punctuation for looser matching now
-    seps = [ ' ', '-', '.', '_' ]
-    for sep in seps:
-        filename = filename.replace(sep, ' ')
-
-    # TODO: replace this with a getMetadataGroups function that splits on parentheses/braces/brackets
-    remove = [ '[', ']', '(', ')', '{', '}' ]
-    for rem in remove:
-        filename = filename.replace(rem, ' ')
-
-    name = filename.split(' ')
-
-
-    properties = { 'format': [ 'DVDRip', 'HDDVD', 'HDDVDRip', 'BDRip', 'R5', 'HDRip', 'DVD', 'Rip' ],
-                   'container': [ 'avi', 'mkv', 'ogv', 'wmv', 'mp4', 'mov' ],
-                   'screenSize': [ '720p' ],
-                   'videoCodec': [ 'XviD', 'DivX', 'x264', 'Rv10' ],
-                   'audioCodec': [ 'AC3', 'DTS', 'He-AAC', 'AAC-He', 'AAC' ],
-                   'language': [ 'english', 'eng',
-                                 'spanish', 'esp',
-                                 'french', 'fr',
-                                 'italian', # no 'it', too common a word in english
-                                 'vo', 'vf'
-                                 ],
-                   'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA', 'CHD', 'ViTE', 'DiAMOND', 'TLF',
-                                     'DEiTY', 'FLAiTE', 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe', 'UnSeeN' ],
-                   'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed',
-                              'classic', # not so sure about this one, could appear in a title
-                              'ws', # widescreen
-                              'SE', # special edition
-                              # TODO: director's cut
-                              ],
-                   }
-
-    # ensure they're all lowercase
-    for prop, value in properties.items():
-        properties[prop] = [ s.lower() for s in value ]
-
-
-    # to try to guess what part of the filename is the movie title, we only keep as
-    # possible title the first characters of the filename up to the leftmost metadata
-    # element we found, no more
-    minIdx = len(name)
-
-    # get specific properties
-    for prop, value in properties.items():
-        for part in name:
-            if part.lower() in value:
-                log.debug('Found with confidence 1.0: %s' % ({ prop: part },))
-                guessed({ prop: part }, confidence = 1.0)
-                minIdx = min(minIdx, name.index(part))
-
-
-    # get year
-    for part in name:
-        year = textutils.stripBrackets(part)
-        if valid_year(year):
-            year = int(year)
-            log.debug('Found with confidence 0.9: %s' % ({ 'year': year },))
-            guessed({ 'year': year }, confidence = 0.9)
-            minIdx = min(minIdx, name.index(part))
-
-    # remove ripper name
-    # FIXME: fails with movies such as "down by law", etc...
-    for by, who in zip(name[:-1], name[1:]):
-        if by.lower() == 'by':
-            log.debug('Found with confidence 0.4: %s' % { 'ripper': who })
-            guessed({ 'ripper': who }, confidence = 0.4)
-            minIdx = min(minIdx, name.index(by))
-
-    # subtitles
-    # TODO: only finds the first one, need to check whether there are many of them
-    for sub, lang in zip(name[:-1], name[1:]):
-        if sub.lower() == 'sub':
-            log.debug('Found with confidence 0.7: %s' % ({ 'subtitleLanguage': lang },))
-            guessed({ 'subtitleLanguage': lang }, confidence = 0.7)
-            minIdx = min(minIdx, name.index(sub))
-
-    # get CD number (if any)
-    cdrexp = re.compile('[Cc][Dd]([0-9]+)')
-    for part in name:
-        try:
-            cdnumber = int(cdrexp.search(part).groups()[0])
-            log.debug('Found with confidence 1.0: %s' % ({ 'cdnumber': cdnumber },))
-            guessed({ 'cdnumber': cdnumber }, confidence = 1.0)
-            minIdx = min(minIdx, name.index(part))
-        except AttributeError:
-            pass
-
-    name = ' '.join(name[:minIdx])
-    minIdx = len(name)
-
-    # last chance on the full name: try some popular regexps
+    # last chance on the full name: try some popular movie regexps
+    name = filename.replace('.', ' ')
     general = [ '(?P<dircut>director\'s cut)',
                 '(?P<edition>edition collector)' ]
 
-    # TODO: generic website url guesser
-    websites = [ 'sharethefiles.com', 'tvu.org.ru' ]
-    websites = [ '(?P<website>%s)' % w.replace('.', ' ') for w in websites ] # dots have been previously converted to spaces
-    rexps = general + websites
+    rexps = general # + some other?
 
     matched = textutils.matchAllRegexp(name, rexps)
     for match in matched:
         log.debug('Found with confidence 1.0: %s' % match)
         guessed(match, confidence = 1.0)
         for key, value in match.items():
-            minIdx = min(minIdx, name.find(value))
+            minIdx = min(minidx, name.find(value))
 
-    # FIXME: this won't work with "2001 a space odyssey" for instance, where sth it incorrectly detected
-    name = name[:minIdx].strip()
-
+    # FIXME: this won't work with "2001 a space odyssey" for instance, where sth is incorrectly detected
+    title = textutils.cleanString(filename[:minidx])
 
     # return final name as a (weak) guess for the movie title
-    log.debug('Found with confidence 0.3: %s' % {'title': name})
-    guessed({ 'title': name}, confidence = 0.3)
+    log.debug('Found with confidence 0.3: %s' % { 'title': title })
+    guessed({ 'title': title }, confidence = 0.3)
 
     return result
+
 
 
 def guess_movie_filename(filename):

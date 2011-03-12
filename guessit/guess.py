@@ -69,6 +69,19 @@ class Guess(dict):
             for prop in other:
                 self._confidence[prop] = confidence
 
+    def update_highest_confidence(self, other):
+        """Update this guess with the values from the given one. In case there is
+        property present in both, only the one with the highest one is kept."""
+        if not isinstance(other, Guess):
+            raise ValueError, 'Can only call this function on Guess instances'
+
+        for prop in other:
+            if prop in self and self._confidence[prop] >= other._confidence[prop]:
+                continue
+            self[prop] = other[prop]
+            self._confidence[prop] = other._confidence[prop]
+
+
 
 
 def choose_int(g1, g2):
@@ -160,8 +173,8 @@ def merge_all(guesses):
 
     for g in guesses[1:]:
         if set(result) & set(g):
-            log.warning('overwriting properties %s in merged result...' % (set(result) & set(g)))
-        result.update(g)
+            log.warning('duplicate properties %s in merged result...' % (set(result) & set(g)))
+        result.update_highest_confidence(g)
 
     return result
 

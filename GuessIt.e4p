@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project GuessIt -->
-<!-- Saved: 2011-02-25, 20:23:56 -->
+<!-- Saved: 2011-03-12, 19:23:08 -->
 <!-- Copyright (C) 2011 Nicolas Wack, wackou@gmail.com -->
 <Project version="4.6">
   <Language>en</Language>
@@ -19,6 +19,8 @@
     <Source>guessit/__init__.py</Source>
     <Source>guessit/fileutils.py</Source>
     <Source>guessit.py</Source>
+    <Source>guessit/movie.py</Source>
+    <Source>guessit/video.py</Source>
   </Sources>
   <Forms>
   </Forms>
