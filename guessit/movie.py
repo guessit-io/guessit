@@ -159,6 +159,15 @@ def guess_movie_filename_parts(filename):
     # FIXME: this won't work with "2001 a space odyssey" for instance, where sth is incorrectly detected
     title = textutils.cleanString(filename[:minidx])
 
+    # small heuristic: if the title ends with something between parenthese, it might either be:
+    #  - the translation of the movie title in another language
+    #  - some actors
+    #  - some part of the title when it is long and has 2 names, one subset of the other
+    # in any case, we might be better off removing it
+    p1, p2 = title.find('('), title.find(')')
+    if 0 < p1 < p2:
+        title = (title[:p1] + title[p2+1:]).strip()
+
     # return final name as a (weak) guess for the movie title
     log.debug('Found with confidence 0.3: %s' % { 'title': title })
     guessed({ 'title': title }, confidence = 0.3)

@@ -28,8 +28,8 @@ log = logging.getLogger('guessit.video')
 
 
 _reverse_language_map = { 'English': [ 'english', 'eng' ],
-                          'French': [ 'french', 'fr', 'francais', 'français' ],
-                          'Spanish': [ 'spanish', 'es', 'esp', 'espanol', 'español' ], # should we remove 'es'? (very common in spanish)
+                          'French': [ 'french', 'fr', 'francais', u'français' ],
+                          'Spanish': [ 'spanish', 'es', 'esp', 'espanol', u'español' ], # should we remove 'es'? (very common in spanish)
                           'Italian': [ 'italian', 'italiano' ]  # no 'it', too common a word
                           }
 
