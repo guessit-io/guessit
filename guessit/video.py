@@ -30,7 +30,7 @@ log = logging.getLogger('guessit.video')
 _reverse_language_map = { 'English': [ 'english', 'eng' ],
                           'French': [ 'french', 'fr', 'francais', u'français' ],
                           'Spanish': [ 'spanish', 'es', 'esp', 'espanol', u'español' ], # should we remove 'es'? (very common in spanish)
-                          'Italian': [ 'italian', 'italiano' ]  # no 'it', too common a word
+                          'Italian': [ 'italian', 'italiano', 'ita' ]  # no 'it', too common a word
                           }
 
 _language_map = {}
@@ -62,7 +62,9 @@ def format_video_guess(guess):
 
 def valid_year(year):
     try:
-        return int(year) > 1920 and int(year) < 2015
+        import datetime
+        maxyear = datetime.datetime.now().year+5
+        return int(year) > 1920 and int(year) < maxyear
     except ValueError:
         return False
 
