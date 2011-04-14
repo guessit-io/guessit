@@ -115,14 +115,15 @@ def guess_episode_filename_parts(filename):
 
     # heuristic 3: try to guess the serie title from the parent directory!
     #result = query.Episode(allow_incomplete = True)
-    if textutils.matchAnyRegexp(name[-2], [ 'season (?P<season>[0-9]+)',
-                                           # TODO: need to find a better way to have language packs for regexps
-                                           'saison (?P<season>[0-9]+)' ]):
+    if len(name) >= 3 and textutils.matchAnyRegexp(name[-2], [ 'season (?P<season>[0-9]+)',
+                                                               # TODO: need to find a better way to have
+                                                               # language packs for regexps
+                                                               'saison (?P<season>[0-9]+)' ]):
         series = name[-3]
         log.debug('Found with confidence 0.8: series title = %s' % series)
         guessed({ 'series': series }, confidence = 0.8)
 
-    else:
+    elif len(name) >= 2:
         series = name[-2]
         log.debug('Found with confidence 0.4: series title = %s' % series)
         guessed({ 'series': series }, confidence = 0.4)
