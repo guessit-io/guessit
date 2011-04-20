@@ -52,8 +52,8 @@ def guess_episode_filename_parts(filename):
     # heuristic 1: try to guess the season & epnumber using S01E02 and 1x02 patterns
     sep = '[ \._-]'
     rexps = [ 'season (?P<season>[0-9]+)',
-              '(?P<season>[0-9]+)[x\.](?P<episodeNumber>[0-9]+)',
-              '[Ss](?P<season>[0-9]+) ?[Ee](?P<episodeNumber>[0-9]+)'
+              '[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]',
+              '[Ss](?P<season>[0-9]{1,2}) ?[Ee](?P<episodeNumber>[0-9]{1,2})[^0-9]'
               ]
 
     basename_rexps = [ sep + '(?P<episodeNumber>[0-9]+)(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips
@@ -66,7 +66,7 @@ def guess_episode_filename_parts(filename):
             guessed(match, confidence = 1.0)
 
     for match in textutils.matchAllRegexp(basename, basename_rexps):
-        log.debug('Found with confidence 0.4: %s' % match)
+        log.debug('Found with confidence 0.6: %s' % match)
         guessed(match, confidence = 0.6)
 
 
@@ -111,6 +111,14 @@ def guess_episode_filename_parts(filename):
             log.debug('Found with confidence 0.6: series title = %s' % title)
 
             guessed({ 'series': title }, confidence = 0.6)
+
+    for rexp in basename_rexps:
+        found = re.compile(rexp, re.IGNORECASE).search(basename)
+        if found:
+            title = textutils.cleanString(basename[:found.span()[0]])
+            log.debug('Found with confidence 0.5: series title = %s' % title)
+
+            guessed({ 'series': title }, confidence = 0.5)
 
 
     # heuristic 3: try to guess the serie title from the parent directory!
