@@ -27,7 +27,7 @@ if __name__ == '__main__':
     slogging.setupLogging()
     logging.getLogger('guessit').setLevel(logging.DEBUG)
 
-    if True:
+    if False:
         testeps = [ 'Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.[tvu.org.ru].avi',
                     'Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi',
                     'Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.[tvu.org.ru].avi',
@@ -46,7 +46,7 @@ if __name__ == '__main__':
             print 'Found:', result
 
 
-    if False:
+    if True:
         testmovies = [ 'Movies/Fear and Loathing in Las Vegas (1998)/Fear.and.Loathing.in.Las.Vegas.720p.HDDVD.DTS.x264-ESiR.mkv',
                        'Movies/El Dia de la Bestia (1995)/El.dia.de.la.bestia.DVDrip.Spanish.DivX.by.Artik[SEDG].avi',
                        'Movies/Blade Runner (1982)/Blade.Runner.(1982).(Director\'s.Cut).CD1.DVDRip.XviD.AC3-WAF.avi',
@@ -54,7 +54,18 @@ if __name__ == '__main__':
                        'Movies/Sin City (BluRay) (2005)/Sin.City.2005.BDRip.720p.x264.AC3-SEPTiC.mkv',
                        'Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi', # FIXME: PROPER and R5 get overwritten
                        '[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv', # FIXME: title gets overwritten
-                       'Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi'
+                       'Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi',
+                       'Movies/Brazil (1985)/Brazil_Criterion_Edition_(1985).CD2.English.srt',
+                       'Movies/Persepolis (2007)/[XCT] Persepolis [H264+Aac-128(Fr-Eng)+ST(Fr-Eng)+Ind].mkv',
+                       'Movies/Toy Story (1995)/Toy Story [HDTV 720p English-Spanish].mkv',
+                       'Movies/Pirates of the Caribbean: The Curse of the Black Pearl (2003)/Pirates.Of.The.Carribean.DC.2003.iNT.DVDRip.XviD.AC3-NDRT.CD1.avi',
+                       'Movies/Office Space (1999)/Office.Space.[Dual-DVDRip].[Spanish-English].[XviD-AC3-AC3].[by.Oswald].avi',
+                       'Movies/The NeverEnding Story (1984)/The.NeverEnding.Story.1.1984.DVDRip.AC3.Xvid-Monteque.avi',
+                       'Movies/Juno (2007)/Juno KLAXXON.avi',
+                       'Movies/Chat noir, chat blanc (1998)/Chat noir, Chat blanc - Emir Kusturica (VO - VF - sub FR - Chapters).mkv',
+                       'Movies/Wild Zero (2000)/Wild.Zero.DVDivX-EPiC.srt',
+                       'Movies/El Bosque Animado (1987)/El.Bosque.Animado.[Jose.Luis.Cuerda.1987].[Xvid-Dvdrip-720x432].avi'
+
                        ]
 
         for f in testmovies:

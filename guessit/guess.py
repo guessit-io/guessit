@@ -130,21 +130,16 @@ def choose_string(g1, g2):
             return (v2, c2 - c1)
 
 
-def merge_similar_guesses(guesses, prop, choose):
+def _merge_similar_guesses_nocheck(guesses, prop, choose):
     """Take a list of guesses and merge those which have the same properties,
     increasing or decreasing the confidence depending on whether their values
-    are similar."""
+    are similar.
+
+    This function assumes there are at least 2 valid guesses."""
 
     similar = [ guess for guess in guesses if prop in guess ]
-    if len(similar) < 2:
-        # nothing to merge
-        return
 
-    if len(similar) > 2:
-        log.warning('merge too complex to be dealt with at the moment, bailing out...')
-        return
-
-    g1, g2 = similar
+    g1, g2 = similar[0], similar[1]
 
     if len(set(g1) & set(g2)) > 1:
         log.warning('both guesses to be merged have more than one property in common, bailing out...')
@@ -165,6 +160,26 @@ def merge_similar_guesses(guesses, prop, choose):
 
     g1.update(g2)
     guesses.remove(g2)
+
+def merge_similar_guesses(guesses, prop, choose):
+    """Take a list of guesses and merge those which have the same properties,
+    increasing or decreasing the confidence depending on whether their values
+    are similar."""
+
+    similar = [ guess for guess in guesses if prop in guess ]
+    if len(similar) < 2:
+        # nothing to merge
+        return
+
+    if len(similar) == 2:
+        _merge_similar_guesses_nocheck(guesses, prop, choose)
+
+    if len(similar) > 2:
+        log.debug('complex merge, trying our best...')
+        _merge_similar_guesses_nocheck(guesses, prop, choose)
+        merge_similar_guesses(guesses, prop, choose)
+        return
+
 
 def merge_append_guesses(guesses, prop):
     """Take a list of guesses and merge those which have the same properties by
@@ -192,7 +207,7 @@ def merge_append_guesses(guesses, prop):
 
 
 def merge_all(guesses):
-    """Merges all the guesses in a single result and returns it."""
+    """Merges all the guesses in a single result, removes very unlikely values, and returns it."""
     if not guesses:
         return Guess()
 
@@ -202,6 +217,10 @@ def merge_all(guesses):
         if set(result) & set(g):
             log.warning('duplicate properties %s in merged result...' % (set(result) & set(g)))
         result.update_highest_confidence(g)
+
+    for p in result.keys():
+        if result.confidence(p) < 0.05:
+            del result[p]
 
     return result
 

@@ -56,7 +56,7 @@ def guess_episode_filename_parts(filename):
               '[Ss](?P<season>[0-9]{1,2}) ?[Ee](?P<episodeNumber>[0-9]{1,2})[^0-9]'
               ]
 
-    basename_rexps = [ sep + '(?P<episodeNumber>[0-9]+)(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips
+    basename_rexps = [ sep + '(?P<episodeNumber>[0-9]{1,3})(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips
                        ]
 
 
@@ -66,8 +66,8 @@ def guess_episode_filename_parts(filename):
             guessed(match, confidence = 1.0)
 
     for match in textutils.matchAllRegexp(basename, basename_rexps):
-        log.debug('Found with confidence 0.6: %s' % match)
-        guessed(match, confidence = 0.6)
+        log.debug('Found with confidence 0.3: %s' % match)
+        guessed(match, confidence = 0.3)
 
 
     # cleanup a bit by removing unlikely eps numbers which are probably numbers in the title
@@ -116,9 +116,23 @@ def guess_episode_filename_parts(filename):
         found = re.compile(rexp, re.IGNORECASE).search(basename)
         if found:
             title = textutils.cleanString(basename[:found.span()[0]])
-            log.debug('Found with confidence 0.5: series title = %s' % title)
+            log.debug('Found with confidence 0.4: series title = %s' % title)
 
-            guessed({ 'series': title }, confidence = 0.5)
+            guessed({ 'series': title }, confidence = 0.4)
+
+    sep = '-()[]'
+    pos = 10000
+    for s in sep:
+        try:
+            pos = min(pos, basename.index(s))
+        except: pass
+
+    if pos != 10000:
+        title = textutils.cleanString(basename[:pos])
+        if len(title.split(' ')) <= 4:
+            log.debug('Found with confidence 0.4: series title = %s' % title)
+            guessed({ 'series': title }, confidence = 0.4)
+
 
 
     # heuristic 3: try to guess the serie title from the parent directory!

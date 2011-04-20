@@ -82,7 +82,10 @@ def guess_XCT(filename):
 
         # find year: if we found it, then the english title of the movie is either what's inside
         # the parentheses before the year, or everything before the year
-        title = filename.replace('.', ' ')
+        s = filename
+        for c in '()[]':
+            s = s.replace(c, ' ')
+        title = textutils.cleanString(s[:-3]) # to remove the extension if still left
         log.debug('Found XCT title with confidence 0.6: %s' % title)
         result.set('title', title, confidence = 0.6)
 
@@ -107,24 +110,6 @@ def guess_XCT(filename):
         return filename, [ result ]
 
 
-'''
-def VideoFilename(filename):
-    parts = textutils.cleanString(filename).split()
-
-    found = {} # dictionary of identified named properties to their index in the parts list
-
-    # heuristic 1: find VO, sub FR, etc...
-    for i, part in enumerate(parts):
-        if matchRegexp(part, [ 'VO', 'VF' ]):
-            found = { ('audio', 'VO'): i }
-
-    # heuristic 2: match video size
-    #rexp('...x...') with x > 200  # eg: (720, 480) -> property format = 16/9, etc...
-
-    # we consider the name to be what's left at the beginning, before any other identified part
-    # (other possibility: look at the remaining zones in parts which are not covered by any identified props, look for the first one, or the biggest one)
-    name = ' '.join(parts[:min(found.values())])
-'''
 
 def guess_movie_filename_parts(filename):
     import os.path
@@ -139,6 +124,7 @@ def guess_movie_filename_parts(filename):
 
     # then guess the video parts of it
     video_info, minidx = guess_video_filename(filename)
+
 
     result.append(video_info)
 
@@ -157,6 +143,7 @@ def guess_movie_filename_parts(filename):
             minIdx = min(minidx, name.find(value))
 
     # FIXME: this won't work with "2001 a space odyssey" for instance, where sth is incorrectly detected
+    minidx = min(minidx, textutils.find_any(filename, '-()[]'))
     title = textutils.cleanString(filename[:minidx])
 
     # small heuristic: if the title ends with something between parenthese, it might either be:
@@ -164,11 +151,12 @@ def guess_movie_filename_parts(filename):
     #  - some actors
     #  - some part of the title when it is long and has 2 names, one subset of the other
     # in any case, we might be better off removing it
-    p1, p2 = title.find('('), title.find(')')
-    if 0 < p1 < p2:
-        title = (title[:p1] + title[p2+1:]).strip()
+    #p1, p2 = title.find('('), title.find(')')
+    #if 0 < p1 < p2:
+    #    title = (title[:p1] + title[p2+1:]).strip()
 
     # return final name as a (weak) guess for the movie title
+    #title = textutils.cleanString(title[:textutils.find_any(title, '()[]')])
     log.debug('Found with confidence 0.3: %s' % { 'title': title })
     guessed({ 'title': title }, confidence = 0.3)
 

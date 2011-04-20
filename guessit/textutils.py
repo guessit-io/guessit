@@ -28,9 +28,19 @@ def stripBrackets(s):
     if s[0] == '{' and s[-1] == '}': return s[1:-1]
     return s
 
+def find_any(s, chars):
+    """Return the index of the first appearence of any char from chars in s.
+    If no such character appear, return the length of the string (and not -1!!)."""
+    pos = len(s)
+    for c in chars:
+        try:
+            pos = min(pos, s.index(c))
+        except ValueError: pass
+
+    return pos
 
 def cleanString(s):
-    for c in ('.', '-', '_'):
+    for c in '.-_':
         s = s.replace(c, ' ')
     parts = s.split()
     return ' '.join(p for p in parts if p != '')
@@ -65,6 +75,26 @@ def matchAllRegexp(string, regexps):
             s = s[match.span()[1]:]
             match = rexp.search(s)
     return result
+
+def matchAllRegexpMinIndex(string, regexps):
+    """Matches the string against a list of regexps (using named match groups) and
+    returns a list of all found matches, as well as the index of the beginning of the
+    first match group."""
+    result = []
+    minidx = len(string)
+    for regexp in regexps:
+        s = string
+        removed = 0
+        rexp = re.compile(regexp, re.IGNORECASE)
+        match = rexp.search(s)
+        while match:
+            result.append(match.groupdict())
+            beg, end = match.span()
+            minidx = min(minidx, beg+removed)
+            s = s[end:]
+            removed += end
+            match = rexp.search(s)
+    return result, minidx
 
 def matchAnyRegexp(string, regexps):
     """Matches the string against a list of regexps (using named match groups) and

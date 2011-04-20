@@ -71,25 +71,6 @@ def valid_year(year):
 
 
 
-'''
-def VideoFilename(filename):
-    parts = textutils.cleanString(filename).split()
-
-    found = {} # dictionary of identified named properties to their index in the parts list
-
-    # heuristic 1: find VO, sub FR, etc...
-    for i, part in enumerate(parts):
-        if matchRegexp(part, [ 'VO', 'VF' ]):
-            found = { ('audio', 'VO'): i }
-
-    # heuristic 2: match video size
-    #rexp('...x...') with x > 200  # eg: (720, 480) -> property format = 16/9, etc...
-
-    # we consider the name to be what's left at the beginning, before any other identified part
-    # (other possibility: look at the remaining zones in parts which are not covered by any identified props, look for the first one, or the biggest one)
-    name = ' '.join(parts[:min(found.values())])
-'''
-
 def guess_video_filename_parts(filename):
     filename = os.path.basename(filename)
     result = []
@@ -100,13 +81,16 @@ def guess_video_filename_parts(filename):
 
     # DVDRip.Xvid-$(grpname)
     grpnames = [ '\.Xvid-(?P<releaseGroup>.*?)\.',
-                 '\.DivX-(?P<releaseGroup>.*?)\.'
+                 '\.DivX-(?P<releaseGroup>.*?)\.',
+                 '\.DVDivX-(?P<releaseGroup>.*?)\.',
                  ]
     editions = [ '(?P<edition>(special|unrated|criterion).edition)'
                  ]
     audio = [ '(?P<audioChannels>5\.1)' ]
 
     specific = grpnames + editions + audio
+
+    matches, smin = textutils.matchAllRegexpMinIndex(filename, specific)
     for match in textutils.matchAllRegexp(filename, specific):
         log.debug('Found with confidence 1.0: %s' % match)
         guessed(match, confidence = 1.0)
@@ -127,14 +111,15 @@ def guess_video_filename_parts(filename):
     name = filename.split(' ')
 
 
-    properties = { 'format': [ 'DVDRip', 'HDDVD', 'HDDVDRip', 'BDRip', 'R5', 'HDRip', 'DVD', 'Rip' ],
+    properties = { 'format': [ 'DVDRip', 'HDDVD', 'HDDVDRip', 'BDRip', 'R5', 'HDRip', 'DVD', 'Rip', 'HDTV' ],
                    'container': [ 'avi', 'mkv', 'ogv', 'wmv', 'mp4', 'mov' ],
                    'screenSize': [ '720p' ],
                    'videoCodec': [ 'XviD', 'DivX', 'x264', 'Rv10' ],
                    'audioCodec': [ 'AC3', 'DTS', 'He-AAC', 'AAC-He', 'AAC' ],
                    'language': [ 'vo', 'vf' ] + [ lang for langs in _reverse_language_map.values() for lang in langs ],
                    'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA', 'CHD', 'ViTE', 'DiAMOND', 'TLF',
-                                     'DEiTY', 'FLAiTE', 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe', 'UnSeeN' ],
+                                     'DEiTY', 'FLAiTE', 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe', 'UnSeeN',
+                                     'aXXo', 'KLAXXON' ],
                    'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed',
                               'classic', # not so sure about this one, could appear in a title
                               'ws', # widescreen
@@ -214,6 +199,8 @@ def guess_video_filename_parts(filename):
         for key, value in match.items():
             minIdx = min(minIdx, name.find(value))
 
+
+    minIdx = min(minIdx, smin)
 
     return result, minIdx
 
