@@ -40,7 +40,7 @@ def find_any(s, chars):
     return pos
 
 def cleanString(s):
-    for c in '.-_':
+    for c in '.-_\\':
         s = s.replace(c, ' ')
     parts = s.split()
     return ' '.join(p for p in parts if p != '')

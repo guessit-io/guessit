@@ -19,26 +19,13 @@
 #
 
 from guessit.guess import Guess, merge_append_guesses, merge_all
-from guessit import fileutils, textutils
+from guessit import language, fileutils, textutils
 import os.path
 import re
 import logging
 
 log = logging.getLogger('guessit.video')
 
-
-_reverse_language_map = { 'English': [ 'english', 'eng' ],
-                          'French': [ 'french', 'fr', 'francais', u'français' ],
-                          'Spanish': [ 'spanish', 'es', 'esp', 'espanol', u'español' ], # should we remove 'es'? (very common in spanish)
-                          'Italian': [ 'italian', 'italiano', 'ita' ]  # no 'it', too common a word
-                          }
-
-_language_map = {}
-for lang, langs in _reverse_language_map.items():
-    for l in langs:
-        _language_map[l] = lang
-
-print _language_map
 
 
 def format_video_guess(guess):
@@ -53,7 +40,7 @@ def format_video_guess(guess):
 
     for prop in [ 'language', 'subtitleLanguage' ]:
         try:
-            guess[prop] = _language_map[guess[prop].lower()]
+            guess[prop] = language._language_map[guess[prop].lower()]
         except KeyError:
             pass
 
@@ -84,7 +71,9 @@ def guess_video_filename_parts(filename):
                  '\.DivX-(?P<releaseGroup>.*?)\.',
                  '\.DVDivX-(?P<releaseGroup>.*?)\.',
                  ]
-    editions = [ '(?P<edition>(special|unrated|criterion).edition)'
+    editions = [ '(?P<edition>(special|unrated|criterion).edition)',
+                 '(?P<edition>director\\\\?\'s.cut)',
+                 '(?P<edition>edition.collector)'
                  ]
     audio = [ '(?P<audioChannels>5\.1)' ]
 
@@ -92,6 +81,9 @@ def guess_video_filename_parts(filename):
 
     matches, smin = textutils.matchAllRegexpMinIndex(filename, specific)
     for match in textutils.matchAllRegexp(filename, specific):
+        if 'edition' in match:
+            match['edition'] = textutils.cleanString(match['edition'])
+
         log.debug('Found with confidence 1.0: %s' % match)
         guessed(match, confidence = 1.0)
         for key, value in match.items():
@@ -116,7 +108,7 @@ def guess_video_filename_parts(filename):
                    'screenSize': [ '720p' ],
                    'videoCodec': [ 'XviD', 'DivX', 'x264', 'Rv10' ],
                    'audioCodec': [ 'AC3', 'DTS', 'He-AAC', 'AAC-He', 'AAC' ],
-                   'language': [ 'vo', 'vf' ] + [ lang for langs in _reverse_language_map.values() for lang in langs ],
+                   'language': [ 'vo', 'vf' ] + [ lang for langs in language._reverse_language_map.values() for lang in langs ],
                    'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA', 'CHD', 'ViTE', 'DiAMOND', 'TLF',
                                      'DEiTY', 'FLAiTE', 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe', 'UnSeeN',
                                      'aXXo', 'KLAXXON' ],
@@ -177,8 +169,8 @@ def guess_video_filename_parts(filename):
     for part in name:
         try:
             cdnumber = int(cdrexp.search(part).groups()[0])
-            log.debug('Found with confidence 1.0: %s' % { 'cdnumber': cdnumber })
-            guessed({ 'cdnumber': cdnumber }, confidence = 1.0)
+            log.debug('Found with confidence 1.0: %s' % { 'cdNumber': cdnumber })
+            guessed({ 'cdNumber': cdnumber }, confidence = 1.0)
             minIdx = min(minIdx, name.index(part))
         except AttributeError:
             pass

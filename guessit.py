@@ -27,7 +27,8 @@ if __name__ == '__main__':
     slogging.setupLogging()
     logging.getLogger('guessit').setLevel(logging.DEBUG)
 
-    if False:
+    # NOTE: tests should not be added here but rather in the test/ folder
+    if True:
         testeps = [ 'Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.[tvu.org.ru].avi',
                     'Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi',
                     'Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.[tvu.org.ru].avi',
@@ -64,8 +65,8 @@ if __name__ == '__main__':
                        'Movies/Juno (2007)/Juno KLAXXON.avi',
                        'Movies/Chat noir, chat blanc (1998)/Chat noir, Chat blanc - Emir Kusturica (VO - VF - sub FR - Chapters).mkv',
                        'Movies/Wild Zero (2000)/Wild.Zero.DVDivX-EPiC.srt',
-                       'Movies/El Bosque Animado (1987)/El.Bosque.Animado.[Jose.Luis.Cuerda.1987].[Xvid-Dvdrip-720x432].avi'
-
+                       'Movies/El Bosque Animado (1987)/El.Bosque.Animado.[Jose.Luis.Cuerda.1987].[Xvid-Dvdrip-720x432].avi',
+                       'testsmewt_bugs/movies/Baraka_Edition_Collector.avi'
                        ]
 
         for f in testmovies:

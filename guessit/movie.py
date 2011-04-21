@@ -129,23 +129,14 @@ def guess_movie_filename_parts(filename):
     result.append(video_info)
 
     # last chance on the full name: try some popular movie regexps
-    name = filename.replace('.', ' ')
-    general = [ '(?P<dircut>director\'s cut)',
-                '(?P<edition>edition collector)' ]
+    name = textutils.cleanString(filename)
 
-    rexps = general # + some other?
-
-    matched = textutils.matchAllRegexp(name, rexps)
-    for match in matched:
-        log.debug('Found with confidence 1.0: %s' % match)
-        guessed(match, confidence = 1.0)
-        for key, value in match.items():
-            minIdx = min(minidx, name.find(value))
 
     # FIXME: this won't work with "2001 a space odyssey" for instance, where sth is incorrectly detected
     minidx = min(minidx, textutils.find_any(filename, '-()[]'))
     title = textutils.cleanString(filename[:minidx])
 
+    # NOTE: unneeded now as the previous operation already took care of parentheses...
     # small heuristic: if the title ends with something between parenthese, it might either be:
     #  - the translation of the movie title in another language
     #  - some actors
@@ -156,7 +147,6 @@ def guess_movie_filename_parts(filename):
     #    title = (title[:p1] + title[p2+1:]).strip()
 
     # return final name as a (weak) guess for the movie title
-    #title = textutils.cleanString(title[:textutils.find_any(title, '()[]')])
     log.debug('Found with confidence 0.3: %s' % { 'title': title })
     guessed({ 'title': title }, confidence = 0.3)
 
@@ -165,8 +155,13 @@ def guess_movie_filename_parts(filename):
 
 
 def guess_movie_filename(filename):
+    log.debug('Trying to guess info for movie: ' + filename)
+
     parts = guess_movie_filename_parts(filename)
 
     merge_similar_guesses(parts, 'title', choose_string)
 
-    return merge_all(parts)
+    result = merge_all(parts)
+    log.debug('Final result: ' + result.to_json())
+
+    return result

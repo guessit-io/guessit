@@ -1,0 +1,124 @@
+
+? Movies/Fear and Loathing in Las Vegas (1998)/Fear.and.Loathing.in.Las.Vegas.720p.HDDVD.DTS.x264-ESiR.mkv
+: title: Fear and Loathing in Las Vegas
+  screenSize: 720p
+  format: HDDVD
+  audioCodec: DTS
+  videoCodec: x264
+  releaseGroup: ESiR
+  container: mkv
+
+? Movies/El Dia de la Bestia (1995)/El.dia.de.la.bestia.DVDrip.Spanish.DivX.by.Artik[SEDG].avi
+: title: El Dia de la Bestia
+  format: DVDRip
+  language: spanish
+  videoCodec: DivX
+  ripper: Artik
+  container: avi
+
+? Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
+: title: Dark City
+  year: 1998
+  format: BDRip
+  screenSize: 720p
+  audioCodec: DTS
+  videoCodec: x264
+  releaseGroup: CHD
+  container: mkv
+
+? Movies/Sin City (BluRay) (2005)/Sin.City.2005.BDRip.720p.x264.AC3-SEPTiC.mkv
+: title: Sin City
+  year: 2005
+  format: BDRip
+  screenSize: 720p
+  videoCodec: x264
+  audioCodec: AC3
+  releaseGroup: SEPTiC
+  container: mkv
+
+
+? Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi
+: title: Borat
+  year: 2006
+  other: PROPER
+  format: R5
+  videoCodec: XviD
+  releaseGroup: PUKKA
+  container: avi
+
+
+? "[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv"
+: title: Le Prestige
+  format: DVDRip
+  videoCodec: x264
+  audioCodec: AAC
+  language: [ fr, eng ]
+  subtitleLanguage: [ fr, eng ]
+  container: mkv
+
+? Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi
+: title: Battle Royale
+  year: 2000
+  edition: special edition
+  cdNumber: 1
+  format: DVDRip
+  videoCodec: XviD
+  releaseGroup: [ZeaL]
+  container: avi
+
+? Movies/Brazil (1985)/Brazil_Criterion_Edition_(1985).CD2.avi
+: title: Brazil
+  edition: Criterion Edition
+  year: 1985
+  cdNumber: 2
+  container: avi
+
+? Movies/Persepolis (2007)/[XCT] Persepolis [H264+Aac-128(Fr-Eng)+ST(Fr-Eng)+Ind].mkv
+: releaseGroup: XCT
+  title: Persepolis
+  videoCodec: x264
+  audioCodec: AAC
+  language: [ French, English ]
+  subtitleLanguage: [ French, English ]
+  container: mkv
+
+? Movies/Toy Story (1995)/Toy Story [HDTV 720p English-Spanish].mkv
+: title: Toy Story
+  format: HDTV
+  screenSize: 720p
+  language: [ english, spanish ]
+  container: mkv
+
+? Movies/Office Space (1999)/Office.Space.[Dual-DVDRip].[Spanish-English].[XviD-AC3-AC3].[by.Oswald].avi
+: title: Office Space
+  format: DVDRip
+  language: [ english, spanish ]
+  videoCodec: XviD
+  audioCodec: AC3
+  ripper: Oswald
+  container: avi
+
+? Movies/Wild Zero (2000)/Wild.Zero.DVDivX-EPiC.avi
+: title: Wild Zero
+  releaseGroup: EPiC
+  container: avi
+
+
+? movies/Baraka_Edition_Collector.avi
+: title: Baraka
+  edition: edition collector
+  container: avi
+
+
+? Movies/Blade Runner (1982)/Blade.Runner.(1982).(Director\'s.Cut).CD1.DVDRip.XviD.AC3-WAF.avi
+: title: Blade Runner
+  year: 1982
+  edition: Director's Cut
+  cdNumber: 1
+  format: DVDRip
+  videoCodec: XviD
+  audioCodec: AC3
+  releaseGroup: WAF
+  container: avi
+
+

@@ -147,8 +147,8 @@ def guess_episode_filename_parts(filename):
 
     elif len(name) >= 2:
         series = name[-2]
-        log.debug('Found with confidence 0.4: series title = %s' % series)
-        guessed({ 'series': series }, confidence = 0.4)
+        log.debug('Found with confidence 0.3: series title = %s' % series)
+        guessed({ 'series': series }, confidence = 0.3)
 
 
     # heuristic 4: add those anyway with very little probability, so that if don't find anything we can still use this
@@ -174,6 +174,8 @@ def guess_episode_filename_parts(filename):
 
 
 def guess_episode_filename(filename):
+    log.debug('Trying to guess info for episode: ' + filename)
+
     # guess the video parts of it
     video_info, minidx = guess_video_filename(filename)
 
@@ -203,5 +205,8 @@ def guess_episode_filename(filename):
     merge_similar_guesses(parts, 'episodeNumber', choose_int)
     merge_similar_guesses(parts, 'series', choose_string)
 
-    return merge_all(parts)
+    result = merge_all(parts)
+    log.debug('Final result: ' + result.to_json())
+
+    return result
 
