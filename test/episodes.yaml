@@ -45,3 +45,9 @@
   episodeNumber: 8
   language: french
   container: avi
+
+? Series/Futurama/Season 3 (mkv)/[™] Futurama - S03E22 - Le chef de fer à 30% ( 30 Percent Iron Chef ).mkv
+: series: Futurama
+  season: 3
+  episodeNumber: 22
+  container: mkv

@@ -127,8 +127,9 @@ def guess_episode_filename_parts(filename):
             pos = min(pos, basename.index(s))
         except: pass
 
-    if pos != 10000:
+    if pos > 4 and pos != 10000:
         title = textutils.cleanString(basename[:pos])
+        # likely title if less than 4 words
         if len(title.split(' ')) <= 4:
             log.debug('Found with confidence 0.4: series title = %s' % title)
             guessed({ 'series': title }, confidence = 0.4)
