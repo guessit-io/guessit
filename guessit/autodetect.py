@@ -32,10 +32,9 @@ def within(x, nrange):
 
 def guess_filename_info(filename):
     log.debug('Trying to guess info for file: ' + filename)
-    episode_info = episode.guess_episode_filename(filename)
-    movie_info = movie.guess_movie_filename(filename)
 
-    # let's see which one of those two look better
+    # try to guess info as if it were an episode
+    episode_info = episode.guess_episode_filename(filename)
 
     # 1- if we found either season/episodeNumber, then we're pretty sure it must
     #    be an episode
@@ -43,6 +42,9 @@ def guess_filename_info(filename):
         log.debug('Likely an episode as it contains season and/or episodeNumber: ' + filename)
         episode_info.update({ 'type': 'episode' }, confidence = 0.9)
         return episode_info
+
+    # try to guess info as if it were a movie
+    movie_info = movie.guess_movie_filename(filename)
 
     # 2- if the file exists, try to guess its type using its size
     if os.path.exists(filename):
