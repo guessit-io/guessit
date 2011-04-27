@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import slogging, episode, movie
+from guessit import slogging, episode, movie, autodetect
 import sys
 import logging
 
@@ -28,6 +28,7 @@ if __name__ == '__main__':
     logging.getLogger('guessit').setLevel(logging.DEBUG)
 
     # NOTE: tests should not be added here but rather in the test/ folder
+    #       this is just intended as a quick example
     if True:
         testeps = [ 'Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.[tvu.org.ru].avi',
                     'Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi',
@@ -43,7 +44,8 @@ if __name__ == '__main__':
         for f in testeps:
             print '-'*80
             print 'For:', f
-            result = episode.guess_episode_filename(f).to_json()
+            #result = episode.guess_episode_filename(f).to_json()
+            result = autodetect.guess_filename_info(f).to_json()
             print 'Found:', result
 
 
@@ -72,5 +74,6 @@ if __name__ == '__main__':
         for f in testmovies:
             print '-'*80
             print 'For:', f
-            result = movie.guess_movie_filename(f).to_json()
+            #result = movie.guess_movie_filename(f).to_json()
+            result = autodetect.guess_filename_info(f).to_json()
             print 'Found:', result
