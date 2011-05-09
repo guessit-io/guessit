@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__VERSION__ = '0.1b2'
+__version__ = '0.1'
 
 import logging
 

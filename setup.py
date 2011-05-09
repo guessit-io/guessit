@@ -20,6 +20,7 @@
 
 from setuptools import setup, find_packages
 import os, sys
+import guessit
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
@@ -27,7 +28,7 @@ NEWS = open(os.path.join(here, 'NEWS.txt')).read()
 
 
 args = dict(name = 'guessit',
-            version = '0.1b2',
+            version = guessit.__version__,
             description = 'Guessit - a library for guessing video information from their filename.',
             long_description = README + '\n\n' + NEWS,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
