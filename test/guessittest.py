@@ -23,7 +23,7 @@ from unittest import *
 import yaml, logging, sys, os
 from os.path import *
 
-MAIN_LOGGING_LEVEL = logging.INFO
+MAIN_LOGGING_LEVEL = logging.DEBUG
 
 
 def currentPath():
@@ -65,6 +65,8 @@ class TestGuessit(TestCase):
         groundTruth = yaml.load(open(join(currentPath(), filename)).read())
 
         for filename, required in groundTruth.items():
+            if isinstance(filename, str):
+                filename = filename.decode('utf-8')
             found = guesser(filename)
 
             # props which are list of just 1 elem should be opened for easier writing of the tests
@@ -79,7 +81,6 @@ class TestGuessit(TestCase):
                     continue
 
                 if type(value) != type(found[prop]) and not (isinstance(value, basestring) and isinstance(found[prop], basestring)):
-                    print type(value), type(found[prop])
                     log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, value, found[prop]))
 
                 elif isinstance(value, basestring):

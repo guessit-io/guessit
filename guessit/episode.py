@@ -108,7 +108,7 @@ def guess_episode_filename_parts(filename):
         found = re.compile(rexp, re.IGNORECASE).search(basename)
         if found:
             title = textutils.cleanString(basename[:found.span()[0]])
-            log.debug('Found with confidence 0.6: series title = %s' % title)
+            log.debug('Found with confidence 0.6: series title = %s' % textutils.toUtf8(title))
 
             guessed({ 'series': title }, confidence = 0.6)
 
@@ -116,7 +116,7 @@ def guess_episode_filename_parts(filename):
         found = re.compile(rexp, re.IGNORECASE).search(basename)
         if found:
             title = textutils.cleanString(basename[:found.span()[0]])
-            log.debug('Found with confidence 0.4: series title = %s' % title)
+            log.debug('Found with confidence 0.4: series title = %s' % textutils.toUtf8(title))
 
             guessed({ 'series': title }, confidence = 0.4)
 
@@ -131,7 +131,7 @@ def guess_episode_filename_parts(filename):
         title = textutils.cleanString(basename[:pos])
         # likely title if less than 4 words
         if len(title.split(' ')) <= 4:
-            log.debug('Found with confidence 0.4: series title = %s' % title)
+            log.debug('Found with confidence 0.4: series title = %s' % textutils.toUtf8(title))
             guessed({ 'series': title }, confidence = 0.4)
 
 
@@ -143,12 +143,12 @@ def guess_episode_filename_parts(filename):
                                                                # language packs for regexps
                                                                'saison (?P<season>[0-9]+)' ]):
         series = name[-3]
-        log.debug('Found with confidence 0.8: series title = %s' % series)
+        log.debug('Found with confidence 0.8: series title = %s' % textutils.toUtf8(series))
         guessed({ 'series': series }, confidence = 0.8)
 
     elif len(name) >= 2:
         series = name[-2]
-        log.debug('Found with confidence 0.3: series title = %s' % series)
+        log.debug('Found with confidence 0.3: series title = %s' % textutils.toUtf8(series))
         guessed({ 'series': series }, confidence = 0.3)
 
 
@@ -175,7 +175,7 @@ def guess_episode_filename_parts(filename):
 
 
 def guess_episode_filename(filename):
-    log.debug('Trying to guess info for episode: ' + filename)
+    log.debug('Trying to guess info for episode: ' + textutils.toUtf8(filename))
 
     # guess the video parts of it
     video_info, minidx = guess_video_filename(filename)
