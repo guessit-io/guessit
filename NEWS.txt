@@ -9,7 +9,7 @@ News
 0.1
 ---
 
-*Release date: 12-Mar-2011*
+*Release date: 10-May-2011*
 
 * fixed a few minor issues & heuristics
 
