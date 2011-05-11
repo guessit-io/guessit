@@ -53,7 +53,7 @@ def guess_episode_filename_parts(filename):
     sep = '[ \._-]'
     rexps = [ 'season (?P<season>[0-9]+)',
               '[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]',
-              '[Ss](?P<season>[0-9]{1,2}) ?[Ee](?P<episodeNumber>[0-9]{1,2})[^0-9]'
+              '[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]'
               ]
 
     basename_rexps = [ sep + '(?P<episodeNumber>[0-9]{1,3})(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips

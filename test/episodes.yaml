@@ -51,3 +51,9 @@
   season: 3
   episodeNumber: 22
   container: mkv
+
+? Series/The Office/Season 6/The Office - S06xE01.avi
+: series: The Office
+  season: 6
+  episodeNumber: 1
+  container: avi
