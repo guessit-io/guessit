@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nosetests --with-doctest -vv guessit
+nosetests --with-doctest -vv guessit test

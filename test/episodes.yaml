@@ -51,3 +51,21 @@
   season: 3
   episodeNumber: 22
   container: mkv
+
+? Series/The Office/Season 6/The Office - S06xE01.avi
+: series: The Office
+  season: 6
+  episodeNumber: 1
+  container: avi
+
+? series/The Office/Season 4/The Office [401] Fun Run.avi
+: series: The Office
+  season: 4
+  episodeNumber: 1
+  container: avi
+
+? Series/Mad Men Season 1 Complete/Mad.Men.S01E01.avi
+: series: Mad Men
+  season: 1
+  episodeNumber: 1
+  container: avi

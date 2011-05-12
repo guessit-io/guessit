@@ -50,24 +50,45 @@ def guess_episode_filename_parts(filename):
         result.append(format_episode_guess(Guess(match, confidence = confidence)))
 
     # heuristic 1: try to guess the season & epnumber using S01E02 and 1x02 patterns
-    sep = '[ \._-]'
-    rexps = [ 'season (?P<season>[0-9]+)',
-              '[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]',
-              '[Ss](?P<season>[0-9]{1,2}) ?[Ee](?P<episodeNumber>[0-9]{1,2})[^0-9]'
-              ]
+    sep = r'[][)( \._-]' # regexp art, hehe :D
+
+    season_rexps = [ r'season (?P<season>[0-9]+)' ]
+
+    episodes_rexps = [ r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]',
+                       r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]'
+                       ]
 
     basename_rexps = [ sep + '(?P<episodeNumber>[0-9]{1,3})(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips
                        ]
 
-
+    got_series_title_with_season = False
     for n in name:
-        for match in textutils.matchAllRegexp(n, rexps):
+        # try to match season and possibly deduce title
+        for match, span in textutils.matchAllRegexpWithSpan(n, season_rexps):
             log.debug('Found with confidence 1.0: %s' % match)
             guessed(match, confidence = 1.0)
+            if span[0] > 5:
+                got_series_title_with_season = True
+                title = { 'series': textutils.cleanString(n[:span[0]]) }
+                log.debug('Found with confidence 0.8: %s' % title)
+                guessed(title, confidence = 0.8)
 
-    for match in textutils.matchAllRegexp(basename, basename_rexps):
+        # try to match (season,epnumber) and possibly deduce title
+        for match, span in textutils.matchAllRegexpWithSpan(n, episodes_rexps):
+            log.debug('Found with confidence 1.0: %s' % match)
+            guessed(match, confidence = 1.0)
+            if span[0] > 5:
+                title = { 'series': textutils.cleanString(n[:span[0]]) }
+                log.debug('Found with confidence 0.4: %s' % title)
+                guessed(title, confidence = 0.4)
+
+    for match, span in textutils.matchAllRegexpWithSpan(basename, basename_rexps):
         log.debug('Found with confidence 0.3: %s' % match)
         guessed(match, confidence = 0.3)
+        if span[0] > 5:
+            title = { 'series': textutils.cleanString(n[:span[0]]) }
+            log.debug('Found with confidence 0.2: %s' % title)
+            guessed(title, confidence = 0.2)
 
 
     # cleanup a bit by removing unlikely eps numbers which are probably numbers in the title
@@ -103,23 +124,7 @@ def guess_episode_filename_parts(filename):
 
 
 
-    # heuristic 2: try to guess the serie title from the filename
-    for rexp in rexps:
-        found = re.compile(rexp, re.IGNORECASE).search(basename)
-        if found:
-            title = textutils.cleanString(basename[:found.span()[0]])
-            log.debug('Found with confidence 0.6: series title = %s' % title)
-
-            guessed({ 'series': title }, confidence = 0.6)
-
-    for rexp in basename_rexps:
-        found = re.compile(rexp, re.IGNORECASE).search(basename)
-        if found:
-            title = textutils.cleanString(basename[:found.span()[0]])
-            log.debug('Found with confidence 0.4: series title = %s' % title)
-
-            guessed({ 'series': title }, confidence = 0.4)
-
+    # heuristic 2: try to (weakly) guess the serie title from the filename
     sep = '-()[]'
     pos = 10000
     for s in sep:
@@ -131,25 +136,26 @@ def guess_episode_filename_parts(filename):
         title = textutils.cleanString(basename[:pos])
         # likely title if less than 4 words
         if len(title.split(' ')) <= 4:
-            log.debug('Found with confidence 0.4: series title = %s' % title)
+            log.debug('Found with confidence 0.4: series title = %s' % textutils.toUtf8(title))
             guessed({ 'series': title }, confidence = 0.4)
 
 
 
     # heuristic 3: try to guess the serie title from the parent directory!
     #result = query.Episode(allow_incomplete = True)
-    if len(name) >= 3 and textutils.matchAnyRegexp(name[-2], [ 'season (?P<season>[0-9]+)',
-                                                               # TODO: need to find a better way to have
-                                                               # language packs for regexps
-                                                               'saison (?P<season>[0-9]+)' ]):
-        series = name[-3]
-        log.debug('Found with confidence 0.8: series title = %s' % series)
-        guessed({ 'series': series }, confidence = 0.8)
+    if not got_series_title_with_season:
+        if len(name) >= 3 and textutils.matchAnyRegexp(name[-2], [ 'season (?P<season>[0-9]+)',
+                                                                   # TODO: need to find a better way to have
+                                                                   # language packs for regexps
+                                                                   'saison (?P<season>[0-9]+)' ]):
+            series = name[-3]
+            log.debug('Found with confidence 0.7: series title = %s' % textutils.toUtf8(series))
+            guessed({ 'series': series }, confidence = 0.7)
 
-    elif len(name) >= 2:
-        series = name[-2]
-        log.debug('Found with confidence 0.3: series title = %s' % series)
-        guessed({ 'series': series }, confidence = 0.3)
+        elif len(name) >= 2:
+            series = name[-2]
+            log.debug('Found with confidence 0.3: series title = %s' % textutils.toUtf8(series))
+            guessed({ 'series': series }, confidence = 0.3)
 
 
     # heuristic 4: add those anyway with very little probability, so that if don't find anything we can still use this
@@ -164,10 +170,14 @@ def guess_episode_filename_parts(filename):
     for guess in [ guess for guess in result if guess.get('episodeNumber', 0) > 100 and guess.get('episodeNumber', 0) < 3000 ]:
         num = guess['episodeNumber']
         # it's the only guess we have, make it look like it's an episode
-        # FIXME: maybe we should check if we already have an estimate for the season number?
-        guess['season'] = num // 100
-        guess['episodeNumber'] = num % 100
-        guess.set_confidence('season', guess.confidence('episodeNumber'))
+        log.debug('Trying to fix episodenumber %d' % num)
+        season = num // 100
+        if guess.get('season', season) != season:
+            log.warning('Not overwriting season already present: %d' % guess['season'])
+        else:
+            guess['season'] = num // 100
+            guess['episodeNumber'] = num % 100
+            guess.set_confidence('season', guess.confidence('episodeNumber'))
 
 
     return result
@@ -175,7 +185,7 @@ def guess_episode_filename_parts(filename):
 
 
 def guess_episode_filename(filename):
-    log.debug('Trying to guess info for episode: ' + filename)
+    log.debug('Trying to guess info for episode: ' + textutils.toUtf8(filename))
 
     # guess the video parts of it
     video_info, minidx = guess_video_filename(filename)
