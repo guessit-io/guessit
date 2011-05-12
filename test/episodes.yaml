@@ -57,3 +57,9 @@
   season: 6
   episodeNumber: 1
   container: avi
+
+? series/The Office/Season 4/The Office [401] Fun Run.avi
+: series: The Office
+  season: 4
+  episodeNumber: 1
+  container: avi

@@ -50,10 +50,10 @@ def guess_episode_filename_parts(filename):
         result.append(format_episode_guess(Guess(match, confidence = confidence)))
 
     # heuristic 1: try to guess the season & epnumber using S01E02 and 1x02 patterns
-    sep = '[ \._-]'
-    rexps = [ 'season (?P<season>[0-9]+)',
-              '[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]',
-              '[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]'
+    sep = r'[][)( \._-]' # regexp art, hehe :D
+    rexps = [ r'season (?P<season>[0-9]+)',
+              r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]',
+              r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]'
               ]
 
     basename_rexps = [ sep + '(?P<episodeNumber>[0-9]{1,3})(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips
@@ -164,10 +164,14 @@ def guess_episode_filename_parts(filename):
     for guess in [ guess for guess in result if guess.get('episodeNumber', 0) > 100 and guess.get('episodeNumber', 0) < 3000 ]:
         num = guess['episodeNumber']
         # it's the only guess we have, make it look like it's an episode
-        # FIXME: maybe we should check if we already have an estimate for the season number?
-        guess['season'] = num // 100
-        guess['episodeNumber'] = num % 100
-        guess.set_confidence('season', guess.confidence('episodeNumber'))
+        log.debug('Trying to fix episodenumber %d' % num)
+        season = num // 100
+        if guess.get('season', season) != season:
+            log.warning('Not overwriting season already present: %d' % guess['season'])
+        else:
+            guess['season'] = num // 100
+            guess['episodeNumber'] = num % 100
+            guess.set_confidence('season', guess.confidence('episodeNumber'))
 
 
     return result
