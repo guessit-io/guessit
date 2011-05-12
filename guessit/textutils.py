@@ -62,19 +62,24 @@ def matchRegexp(string, regexp):
         return match.groupdict()
     raise ValueError("'%s' Does not match regexp '%s'" % (string, regexp))
 
-def matchAllRegexp(string, regexps):
+def matchAllRegexpWithSpan(string, regexps):
     """Matches the string against a list of regexps (using named match groups) and
-    returns a list of all found matches."""
+    returns a list of all found matches coupled with their full group span."""
     result = []
     for regexp in regexps:
         s = string
         rexp = re.compile(regexp, re.IGNORECASE)
         match = rexp.search(s)
         while match:
-            result.append(match.groupdict())
+            result.append((match.groupdict(), match.span()))
             s = s[match.span()[1]:]
             match = rexp.search(s)
     return result
+
+def matchAllRegexp(string, regexps):
+    """Matches the string against a list of regexps (using named match groups) and
+    returns a list of all found matches."""
+    return [ match for match, span in matchAllRegexpWithSpan(string, regexps) ]
 
 def matchAllRegexpMinIndex(string, regexps):
     """Matches the string against a list of regexps (using named match groups) and
