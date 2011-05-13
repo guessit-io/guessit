@@ -19,17 +19,20 @@
 #
 
 from guessit import slogging, episode, movie, autodetect
+from optparse import OptionParser
 import sys
 import logging
 
 
-if __name__ == '__main__':
-    slogging.setupLogging()
-    logging.getLogger('guessit').setLevel(logging.DEBUG)
+def detect_filename(filename):
+    print 'For:', filename
+    print 'Found:', autodetect.guess_filename_info(filename).to_json()
 
+
+def run_demo(episodes = True, movies = True):
     # NOTE: tests should not be added here but rather in the test/ folder
     #       this is just intended as a quick example
-    if True:
+    if episodes:
         testeps = [ 'Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.[tvu.org.ru].avi',
                     'Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi',
                     'Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.[tvu.org.ru].avi',
@@ -43,13 +46,10 @@ if __name__ == '__main__':
 
         for f in testeps:
             print '-'*80
-            print 'For:', f
-            #result = episode.guess_episode_filename(f).to_json()
-            result = autodetect.guess_filename_info(f).to_json()
-            print 'Found:', result
+            detect_filename(f)
 
 
-    if True:
+    if movies:
         testmovies = [ 'Movies/Fear and Loathing in Las Vegas (1998)/Fear.and.Loathing.in.Las.Vegas.720p.HDDVD.DTS.x264-ESiR.mkv',
                        'Movies/El Dia de la Bestia (1995)/El.dia.de.la.bestia.DVDrip.Spanish.DivX.by.Artik[SEDG].avi',
                        'Movies/Blade Runner (1982)/Blade.Runner.(1982).(Director\'s.Cut).CD1.DVDRip.XviD.AC3-WAF.avi',
@@ -73,7 +73,28 @@ if __name__ == '__main__':
 
         for f in testmovies:
             print '-'*80
-            print 'For:', f
-            #result = movie.guess_movie_filename(f).to_json()
-            result = autodetect.guess_filename_info(f).to_json()
-            print 'Found:', result
+            detect_filename(f)
+
+
+if __name__ == '__main__':
+    slogging.setupLogging()
+
+    parser = OptionParser(usage = 'usage: %prog [options] file1 [file2...]')
+    parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
+                      help = 'display debug output')
+    parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
+                      help = 'run a few builtin tests instead of analyzing a file')
+
+    options, args = parser.parse_args()
+    if options.verbose:
+        logging.getLogger('guessit').setLevel(logging.DEBUG)
+
+    if options.demo:
+        run_demo(episodes = True, movies = True)
+    else:
+        if args:
+            for filename in args:
+                detect_filename(filename)
+
+        else:
+            parser.print_help()

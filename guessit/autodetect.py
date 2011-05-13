@@ -54,7 +54,7 @@ def guess_filename_info(filename):
         if size < 400:
             log.debug('Likely an episode due to its small size (%dMB): %s' % (size, filename))
             episode_info.update({ 'type': 'episode' }, confidence = 0.8)
-            return episode_indo
+            return episode_info
 
         # if size > 2G -> movie (even fullHD eps aren't that big yet)
         if size > 2048:

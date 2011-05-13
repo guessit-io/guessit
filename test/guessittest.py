@@ -53,6 +53,7 @@ from guessit import *
 from guessit.video import *
 from guessit.movie import *
 from guessit.episode import *
+from guessit.matcher import *
 
 
 def allTests(testClass):

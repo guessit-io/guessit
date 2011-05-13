@@ -85,7 +85,7 @@ def guess_XCT(filename):
         s = filename
         for c in '()[]':
             s = s.replace(c, ' ')
-        title = textutils.cleanString(s[:-3]) # to remove the extension if still left
+        title = textutils.clean_string(s[:-3]) # to remove the extension if still left
         log.debug('Found XCT title with confidence 0.6: %s' % title)
         result.set('title', title, confidence = 0.6)
 
@@ -129,12 +129,12 @@ def guess_movie_filename_parts(filename):
     result.append(video_info)
 
     # last chance on the full name: try some popular movie regexps
-    name = textutils.cleanString(filename)
+    name = textutils.clean_string(filename)
 
 
     # FIXME: this won't work with "2001 a space odyssey" for instance, where sth is incorrectly detected
     minidx = min(minidx, textutils.find_any(filename, '-()[]'))
-    title = textutils.cleanString(filename[:minidx])
+    title = textutils.clean_string(filename[:minidx])
 
     # NOTE: unneeded now as the previous operation already took care of parentheses...
     # small heuristic: if the title ends with something between parenthese, it might either be:

@@ -39,7 +39,7 @@ def find_any(s, chars):
 
     return pos
 
-def cleanString(s):
+def clean_string(s):
     for c in '.-_\\':
         s = s.replace(c, ' ')
     parts = s.split()

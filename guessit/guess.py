@@ -25,6 +25,9 @@ log = logging.getLogger("guessit.guess")
 
 
 class Guess(dict):
+    """A Guess is a dictionary which has an associated confidence for each of its values.
+
+    As it is a subclass of dict, you can use it everywhere you expect a simple dict"""
     def __init__(self, *args, **kwargs):
         try:
             confidence = kwargs.pop('confidence')
@@ -38,13 +41,18 @@ class Guess(dict):
             self._confidence[prop] = confidence
 
     def to_json(self):
-        parts = json.dumps(self, indent = 4).split('\n')
+        """NB: this doesn't return a valid json, maybe it should be renamed..."""
+        data = dict(self)
+        if 'date' in data:
+            data['date'] = data['date'].isoformat()
+
+        parts = json.dumps(data, indent = 4).split('\n')
         for i, p in enumerate(parts):
             if p[:5] != '    "':
                 continue
 
             prop = p.split('"')[1]
-            parts[i] = ('    [%.2f] "' % self._confidence.get(prop, -1)) + p[5:]
+            parts[i] = ('    [%.2f] "' % (self._confidence.get(prop) or -1)) + p[5:]
 
         return '\n'.join(parts)
 

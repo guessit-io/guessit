@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project GuessIt -->
-<!-- Saved: 2011-03-12, 21:51:08 -->
+<!-- Saved: 2011-05-13, 05:40:24 -->
 <!-- Copyright (C) 2011 Nicolas Wack, wackou@gmail.com -->
 <Project version="4.6">
   <Language>en</Language>
@@ -24,6 +24,8 @@
     <Source>setup.py</Source>
     <Source>NEWS.txt</Source>
     <Source>README.txt</Source>
+    <Source>guessit/matcher.py</Source>
+    <Source>guessit/language.py</Source>
   </Sources>
   <Forms>
   </Forms>

@@ -52,44 +52,32 @@ def guess_episode_filename_parts(filename):
     # heuristic 1: try to guess the season & epnumber using S01E02 and 1x02 patterns
     sep = r'[][)( \._-]' # regexp art, hehe :D
 
-    season_rexps = [ r'season (?P<season>[0-9]+)' ]
+    # format: [ (regexp, confidence, is_title_high_confidence, title_confidence) ]
+    season_rexps = [ (r'season (?P<season>[0-9]+)', 1.0, True, 0.8) ]
 
-    episodes_rexps = [ r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]',
-                       r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]'
+    episodes_rexps = [ (r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]', 0.8, False, 0.8),
+                       (r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]', 1.0, False, 0.8)
                        ]
 
-    basename_rexps = [ sep + '(?P<episodeNumber>[0-9]{1,3})(?:v[23])?' + sep, # v2 or v3 for some mangas which have multiples rips
+    basename_rexps = [ (sep + r'(?P<episodeNumber>[0-9]{1,3})' + sep, 0.3, False, 0.2),
+                       # v2 or v3 for some mangas which have multiples rips
+                       (sep + r'(?P<episodeNumber>[0-9]{1,3})v[23]' + sep, 0.6, False, 0.4)
                        ]
+
+    rexps = season_rexps + episodes_rexps + basename_rexps
 
     got_series_title_with_season = False
     for n in name:
         # try to match season and possibly deduce title
-        for match, span in textutils.matchAllRegexpWithSpan(n, season_rexps):
-            log.debug('Found with confidence 1.0: %s' % match)
-            guessed(match, confidence = 1.0)
-            if span[0] > 5:
-                got_series_title_with_season = True
-                title = { 'series': textutils.cleanString(n[:span[0]]) }
-                log.debug('Found with confidence 0.8: %s' % title)
-                guessed(title, confidence = 0.8)
-
-        # try to match (season,epnumber) and possibly deduce title
-        for match, span in textutils.matchAllRegexpWithSpan(n, episodes_rexps):
-            log.debug('Found with confidence 1.0: %s' % match)
-            guessed(match, confidence = 1.0)
-            if span[0] > 5:
-                title = { 'series': textutils.cleanString(n[:span[0]]) }
-                log.debug('Found with confidence 0.4: %s' % title)
-                guessed(title, confidence = 0.4)
-
-    for match, span in textutils.matchAllRegexpWithSpan(basename, basename_rexps):
-        log.debug('Found with confidence 0.3: %s' % match)
-        guessed(match, confidence = 0.3)
-        if span[0] > 5:
-            title = { 'series': textutils.cleanString(n[:span[0]]) }
-            log.debug('Found with confidence 0.2: %s' % title)
-            guessed(title, confidence = 0.2)
-
+        for rexp, confidence, is_title_high_confidence, title_confidence in rexps:
+            for match, span in textutils.matchAllRegexpWithSpan(n, [ rexp ]):
+                log.debug('Found with confidence %.2f: %s' % (confidence, match))
+                guessed(match, confidence = confidence)
+                if span[0] > 5:
+                    got_series_title_with_season = is_title_high_confidence
+                    title = { 'series': textutils.clean_string(n[:span[0]]) }
+                    log.debug('Found with confidence %.2f: %s' % (title_confidence, title))
+                    guessed(title, confidence = title_confidence)
 
     # cleanup a bit by removing unlikely eps numbers which are probably numbers in the title
     # or even dates in the filename, etc...
@@ -133,7 +121,7 @@ def guess_episode_filename_parts(filename):
         except: pass
 
     if pos > 4 and pos != 10000:
-        title = textutils.cleanString(basename[:pos])
+        title = textutils.clean_string(basename[:pos])
         # likely title if less than 4 words
         if len(title.split(' ')) <= 4:
             log.debug('Found with confidence 0.4: series title = %s' % textutils.toUtf8(title))

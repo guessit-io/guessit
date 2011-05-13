@@ -27,8 +27,22 @@ class TestEpisode(TestGuessit):
     def setUp(self):
         pass
 
-    def testMinimumFieldsCorrect(self):
+    def atestMinimumFieldsCorrect(self):
         self.checkMinimumFieldsCorrect(guess_episode_filename, 'episodes.yaml')
+
+
+    def testNewMatcher(self):
+        groundTruth = yaml.load(open(join(currentPath(), 'episodes.yaml')).read())
+
+        for filename, required in groundTruth.items():
+            if isinstance(filename, str):
+                filename = filename.decode('utf-8')
+
+            print '-' * 100
+            print 'matching', filename
+            print
+            m = IterativeMatcher(filename)
+
 
 
 suite = allTests(TestEpisode)

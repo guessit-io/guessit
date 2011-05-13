@@ -82,7 +82,7 @@ def guess_video_filename_parts(filename):
     matches, smin = textutils.matchAllRegexpMinIndex(filename, specific)
     for match in textutils.matchAllRegexp(filename, specific):
         if 'edition' in match:
-            match['edition'] = textutils.cleanString(match['edition'])
+            match['edition'] = textutils.clean_string(match['edition'])
 
         log.debug('Found with confidence 1.0: %s' % match)
         guessed(match, confidence = 1.0)
@@ -103,7 +103,7 @@ def guess_video_filename_parts(filename):
     name = filename.split(' ')
 
 
-    properties = { 'format': [ 'DVDRip', 'HDDVD', 'HDDVDRip', 'BDRip', 'R5', 'HDRip', 'DVD', 'Rip', 'HDTV' ],
+    properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip', 'R5', 'HDRip', 'DVD', 'Rip', 'HDTV' ],
                    'container': [ 'avi', 'mkv', 'ogv', 'wmv', 'mp4', 'mov' ],
                    'screenSize': [ '720p' ],
                    'videoCodec': [ 'XviD', 'DivX', 'x264', 'Rv10' ],
@@ -119,6 +119,11 @@ def guess_video_filename_parts(filename):
                               # TODO: director's cut
                               ],
                    }
+
+    property_synonyms = { 'DVD': [ 'DVDRip' ],
+                          'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
+                          'BluRay': [ 'BDRip' ]
+                          }
 
     # ensure they're all lowercase
     for prop, value in properties.items():
