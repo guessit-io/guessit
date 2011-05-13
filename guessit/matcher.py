@@ -20,6 +20,8 @@
 
 from guessit import fileutils, textutils
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
+from guessit.date import search_date
+from guessit.language import search_language
 import datetime
 import os.path
 import re
@@ -151,59 +153,6 @@ def format_episode_guess(guess):
     return guess
 
 
-def search_date(string):
-    """Looks for data patterns, and if found return the date and group span.
-    Assumes there are sentinels at the beginning and end of the string that
-    always allow matching a non-digit delimiting the date."""
-    dsep = r'[-/]'
-
-    date_rexps = [ r'[^0-9]' +
-                   r'(?P<year>[0-9]{4})' +
-                   r'(?P<month>[0-9]{2})' +
-                   r'(?P<day>[0-9]{2})' +
-                   r'[^0-9]',
-
-                   r'[^0-9]' +
-                   r'(?P<year>[0-9]{4})' + dsep +
-                   r'(?P<month>[0-9]{2})' + dsep +
-                   r'(?P<day>[0-9]{2})' +
-                   r'[^0-9]',
-
-                   r'[^0-9]' +
-                   r'(?P<day>[0-9]{2})' + dsep +
-                   r'(?P<month>[0-9]{2})' + dsep +
-                   r'(?P<year>[0-9]{4})' +
-                   r'[^0-9]'
-                   ]
-
-    for drexp in date_rexps:
-        match = re.search(drexp, string)
-
-        if match:
-            d = match.groupdict()
-            year, month, day = int(d['year']), int(d['month']), int(d['day'])
-            date = None
-            try:
-                date = datetime.date(year, month, day)
-            except ValueError:
-                try:
-                    date = datetime.date(year, day, month)
-                except ValueError:
-                    pass
-
-            if date is None:
-                continue
-
-            # check date plausibility
-            if not 1900 < date.year < datetime.date.today().year + 5:
-                continue
-
-            # looks like we have a valid date
-            # note: span is  [+1,-1] because we don't want to include the non-digit char
-            start, end = match.span()
-            return (date, (start+1, end-1))
-
-    return None, None
 
 
 sep = r'[][)( \._-]' # regexp art, hehe :D
@@ -262,14 +211,18 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
 
 property_synonyms = { 'DVD': [ 'DVDRip' ],
                       'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
-                      'BluRay': [ 'BDRip' ]
+                      'BluRay': [ 'BDRip' ],
+                      'DivX': [ 'DVDivX' ]
                       }
 
 
 reverse_synonyms = {}
 for canonical, synonyms in property_synonyms.items():
     for synonym in synonyms:
-        reverse_synonyms[synonym] = canonical
+        reverse_synonyms[synonym.lower()] = canonical
+
+def canonical_form(string):
+    return reverse_synonyms.get(string.lower(), string)
 
 # TODO: language, subs
 
@@ -308,7 +261,6 @@ class IterativeMatcher(object):
         #    blank the matching group in the string if we found something
         for pathpart in match_tree:
             for gidx, explicit_group in enumerate(pathpart):
-                #print 'trying regexps on', explicit_group
                 # add sentinels so we can match a separator char at either end of
                 # our groups, even when they are at the beginning or end of the string
                 # we will adjust the span accordingly later
@@ -337,6 +289,21 @@ class IterativeMatcher(object):
                         guessed(metadata, confidence = confidence)
                         current = update_found(current, match.span(), span_adjust)
 
+                # release groups have certain constraints, cannot be included in the previous general regexps
+                group_names = [ sep + r'(Xvid)-(?P<releaseGroup>.*?)[ \.]',
+                                 sep + r'(DivX)-(?P<releaseGroup>.*?)[ \.]',
+                                 sep + r'(DVDivX)-(?P<releaseGroup>.*?)[ \.]',
+                                 ]
+                for rexp in group_names:
+                    match = re.search(rexp, current, re.IGNORECASE)
+                    if match:
+                        print 'GOULOU RELEASE GROUP', current
+                        metadata = match.groupdict()
+                        metadata.update({ 'videoCodec': canonical_form(match.group(1)) })
+                        guessed(metadata, confidence = 1.0)
+                        current = update_found(current, match.span(), span_adjust = (1, -1))
+
+
                 # common well-defined words
                 clow = current.lower()
                 confidence = 1.0 # for all of them
@@ -345,14 +312,13 @@ class IterativeMatcher(object):
                         pos = clow.find(value.lower())
                         if pos != -1:
                             end = pos + len(value)
-                            if pos > 0 and clow[pos-1] not in sep:
+                            # make sure our word is always surrounded by separators
+                            if clow[pos-1] not in sep or clow[end] not in sep:
                                 # note: sep is a regexp, but in this case using it as
                                 #       a sequence achieves the same goal
                                 continue
-                            if end < len(clow) and clow[end] not in sep:
-                                continue
 
-                            guessed({ prop: reverse_synonyms.get(value, value) }, confidence = confidence)
+                            guessed({ prop: canonical_form(value) }, confidence = confidence)
                             current = update_found(current, (pos, end))
                             clow = current.lower()
 
@@ -364,6 +330,18 @@ class IterativeMatcher(object):
                             metadata = match.groupdict()
                             guessed(metadata, confidence = confidence)
                             current = update_found(current, match.span(), span_adjust)
+
+                # try to find languages now
+                language, span, confidence = search_language(current)
+                while language:
+                    # is it a subtitle language?
+                    if 'sub' in textutils.clean_string(current[:span[0]]).split(' '):
+                        guessed({ 'subtitleLanguage': language }, confidence = confidence)
+                    else:
+                        guessed({ 'language': language }, confidence = confidence)
+                    current = update_found(current, span)
+                    print 'current', current
+                    language, span, confidence = search_language(current)
 
 
 

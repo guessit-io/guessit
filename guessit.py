@@ -26,7 +26,12 @@ import logging
 
 def detect_filename(filename):
     print 'For:', filename
-    print 'Found:', autodetect.guess_filename_info(filename).to_json()
+    if isinstance(filename, basestring):
+        filename = filename.decode('utf-8')
+    print 'Old method found:', autodetect.guess_filename_info(filename).to_json()
+    from guessit.matcher import IterativeMatcher
+    m = IterativeMatcher(filename)
+    print 'New method found:',
 
 
 def run_demo(episodes = True, movies = True):

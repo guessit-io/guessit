@@ -19,6 +19,7 @@
 #
 
 import json
+import datetime
 import logging
 
 log = logging.getLogger("guessit.guess")
@@ -42,9 +43,13 @@ class Guess(dict):
 
     def to_json(self):
         """NB: this doesn't return a valid json, maybe it should be renamed..."""
+        from guessit.language import Language
         data = dict(self)
-        if 'date' in data:
-            data['date'] = data['date'].isoformat()
+        for prop, value in data.items():
+            if isinstance(value, datetime.date):
+                data[prop] = value.isoformat()
+            elif isinstance(value, Language):
+                data[prop] = str(value)
 
         parts = json.dumps(data, indent = 4).split('\n')
         for i, p in enumerate(parts):
