@@ -214,7 +214,7 @@ episodes_rexps = [ # ... Season 2 ...
                    (r'saison (?P<season>[0-9]+)', 1.0, (0, 0)),
 
                    # ... s02e13 ...
-                   (r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]', 1.0, (1, -1)),
+                   (r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]', 1.0, (0, -1)),
 
                    # ... 2x13 ...
                    (r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]', 0.8, (1, -1)),
@@ -280,6 +280,9 @@ def blank_region(string, region):
 
 class IterativeMatcher(object):
     def __init__(self, filename):
+        if not isinstance(filename, unicode):
+            log.debug('WARNING: given filename to matcher is not unicode...')
+
         match_tree = []
         result = [] # list of found metadata
 
@@ -369,7 +372,7 @@ class IterativeMatcher(object):
                 current = current[1:-1]
                 regions = [ (start-1, end-1) for start, end in regions ]
 
-                print 'remaining = "%s"' % current
+                print 'remaining = "%s"' % current.encode('utf8')
                 pathpart[gidx] = (explicit_group, current, regions)
 
         self.parts = result

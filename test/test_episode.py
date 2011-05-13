@@ -39,7 +39,7 @@ class TestEpisode(TestGuessit):
                 filename = filename.decode('utf-8')
 
             print '-' * 100
-            print 'matching', filename
+            print 'matching', filename.encode('utf-8')
             print
             m = IterativeMatcher(filename)
 

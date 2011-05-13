@@ -19,6 +19,7 @@
 #
 
 import ntpath
+import os.path
 
 
 def split_path(path):
@@ -65,3 +66,6 @@ def split_path(path):
         result = [ tail ] + result
         path = head
 
+
+def file_in_same_dir(ref_file, desired_file):
+    return os.path.join(*(split_path(ref_file)[:-1] + [ desired_file ]))
