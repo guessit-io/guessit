@@ -39,4 +39,20 @@ for lang, langs in _reverse_language_map.items():
         _language_map[l] = lang
 
 
+# downloaded from http://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
+#
+# Description of the fields:
+# "An alpha-3 (bibliographic) code, an alpha-3 (terminologic) code (when given),
+# an alpha-2 code (when given), an English name, and a French name of a language
+# are all separated by pipe (|) characters."
+language_matrix = [ l.strip().split('|') for l in open('ISO-639-2_utf-8.txt') ]
+
+class Language(object):
+    def __init__(self, language):
+        if len(language) == 2:
+            pass
+        elif len(language) == 3:
+            pass
+        else:
+            pass
 
