@@ -22,6 +22,9 @@ from guessit import fileutils, textutils
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
 from guessit.date import search_date
 from guessit.language import search_language
+from guessit.patterns import sep, deleted, episodes_rexps, weak_episodes_rexps, properties, canonical_form
+from guessit.textutils import find_first_level_groups, split_on_groups, blank_region
+from guessit.fileutils import split_path_components
 import datetime
 import os.path
 import re
@@ -29,109 +32,6 @@ import logging
 
 log = logging.getLogger("guessit.matcher")
 
-deleted = '_'
-
-
-def split_path_components(filename):
-    """Returns the filename split into [ dir*, basename, ext ]."""
-    result = fileutils.split_path(filename)
-    basename = result.pop(-1)
-    return result + list(os.path.splitext(basename))
-
-
-def find_first_level_groups_span(string, enclosing):
-    """Return a list of pairs (start, end) for the groups delimited by the given
-    enclosing characters.
-    This does not return nested groups, ie: '(ab(c)(d))' will return a single group
-    containing the whole string.
-
-    >>> find_first_level_group_span('abcd', '()')
-    []
-
-    >>> find_first_level_group_span('abc(de)fgh', '()')
-    [(3, 7)]
-
-    >>> find_first_level_group_span('(ab(c)(d))', '()')
-    [(0, 10)]
-
-    >>> find_first_level_group_span('ab[c]de[f]gh(i)', '[]')
-    [(2, 5), (7, 10)]
-    """
-    opening, closing = enclosing
-    depth = [] # depth is a stack of indices where we opened a group
-    result = []
-    for i, c, in enumerate(string):
-        if c == opening:
-            depth.append(i)
-        elif c == closing:
-            try:
-                start = depth.pop()
-                end = i
-                if not depth:
-                    # we emptied our stack, so we have a 1st level group
-                    result.append((start, end+1))
-            except IndexError:
-                # we closed a group which was not opened before
-                pass
-
-    return result
-
-
-def split_on_groups(string, groups):
-    if not groups:
-        return [ string ]
-
-    boundaries = sorted(set(reduce(lambda l, x: l + list(x), groups, [])))
-    if boundaries[0] != 0:
-        boundaries.insert(0, 0)
-    if boundaries[-1] != len(string):
-        boundaries.append(len(string))
-
-    #print 'boundaries', boundaries
-
-    groups = [ string[start:end] for start, end in zip(boundaries[:-1], boundaries[1:]) ]
-
-    return filter(bool, groups) # return only non-empty groups
-
-def str_replace(string, pos, c):
-    return string[:pos] + c + string[pos+1:]
-
-def find_first_level_groups(string, enclosing, blank_sep = True):
-    """Return a list of groups that could be split because of explicit grouping.
-    The groups are delimited by the given enclosing characters.
-
-    You can also specify if you want to blank the separator chars in the returned
-    list of groups.
-
-    This does not return nested groups, ie: '(ab(c)(d))' will return a single group
-    containing the whole string.
-
-    >>> find_first_level_group('', '()')
-    ['']
-
-    >>> find_first_level_group('abcd', '()')
-    ['abcd']
-
-    >>> find_first_level_group('abc(de)fgh', '()')
-    ['abc', 'de', 'fgh']
-
-    >>> find_first_level_group('(ab(c)(d))', '()')
-    ['ab(c)(d)']
-
-    >>> find_first_level_group('ab[c]de[f]gh(i)', '[]')
-    ['ab', 'c', 'de', 'f', 'gh(i)']
-
-    >>> find_first_level_group('()[]()', '()')
-    ['', '[]', '']
-
-    """
-    groups = find_first_level_groups_span(string, enclosing)
-    if blank_sep:
-        for start, end in groups:
-            string = str_replace(string, start, deleted)
-            string = str_replace(string, end-1, deleted)
-
-    return split_on_groups(string, groups)
 
 
 def split_explicit_groups(string):
@@ -164,81 +64,112 @@ def format_episode_guess(guess):
     return guess
 
 
+# TODO: subs
+
+def guess_groups(string, result):
+    # add sentinels so we can match a separator char at either end of
+    # our groups, even when they are at the beginning or end of the string
+    # we will adjust the span accordingly later
+    current = ' ' + string + ' '
+
+    regions = [] # list of (start, end) of matched regions
+
+    def guessed(match_dict, confidence):
+        guess = format_episode_guess(Guess(match_dict, confidence = confidence))
+        result.append(guess)
+        log.debug('Found with confidence %.2f: %s' % (confidence, guess))
+        return guess
+
+    def update_found(string, span, span_adjust = (0,0)):
+        span = (span[0] + span_adjust[0],
+                span[1] + span_adjust[1])
+        regions.append(span)
+        return blank_region(string, span)
+
+    # try to find dates first, as they are very specific
+    date, span = search_date(current)
+    if date:
+        guessed({ 'date': date }, confidence = 1.0)
+        current = update_found(current, span)
+
+    # specific regexps (ie: season X episode, ...)
+    for rexp, confidence, span_adjust in episodes_rexps:
+        match = re.search(rexp, current, re.IGNORECASE)
+        if match:
+            metadata = match.groupdict()
+            guessed(metadata, confidence = confidence)
+            current = update_found(current, match.span(), span_adjust)
+
+    # release groups have certain constraints, cannot be included in the previous general regexps
+    group_names = [ sep + r'(Xvid)-(?P<releaseGroup>.*?)[ \.]',
+                    sep + r'(DivX)-(?P<releaseGroup>.*?)[ \.]',
+                    sep + r'(DVDivX)-(?P<releaseGroup>.*?)[ \.]',
+                    ]
+    for rexp in group_names:
+        match = re.search(rexp, current, re.IGNORECASE)
+        if match:
+            metadata = match.groupdict()
+            metadata.update({ 'videoCodec': canonical_form(match.group(1)) })
+            guessed(metadata, confidence = 1.0)
+            current = update_found(current, match.span(), span_adjust = (1, -1))
 
 
-sep = r'[][)(}{ \._-]' # regexp art, hehe :D
+    # common well-defined words
+    clow = current.lower()
+    confidence = 1.0 # for all of them
+    for prop, values in properties.items():
+        for value in values:
+            pos = clow.find(value.lower())
+            if pos != -1:
+                end = pos + len(value)
+                # make sure our word is always surrounded by separators
+                if clow[pos-1] not in sep or clow[end] not in sep:
+                    # note: sep is a regexp, but in this case using it as
+                    #       a sequence achieves the same goal
+                    continue
 
-# format: [ (regexp, confidence, span_adjust) ]
-episodes_rexps = [ # ... Season 2 ...
-                   (r'season (?P<season>[0-9]+)', 1.0, (0, 0)),
-                   (r'saison (?P<season>[0-9]+)', 1.0, (0, 0)),
+                guessed({ prop: canonical_form(value) }, confidence = confidence)
+                current = update_found(current, (pos, end))
+                clow = current.lower()
 
-                   # ... s02e13 ...
-                   (r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]', 1.0, (0, -1)),
+    # weak guesses for episode number, only run it if we don't have an estimate already
+    if not any('episodeNumber' in match for match in result):
+        for rexp, confidence, span_adjust in weak_episodes_rexps:
+            match = re.search(rexp, current, re.IGNORECASE)
+            if match:
+                metadata = match.groupdict()
+                guessed(metadata, confidence = confidence)
+                current = update_found(current, match.span(), span_adjust)
 
-                   # ... 2x13 ...
-                   (r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]', 0.8, (1, -1)),
-
-                   # ... s02 ...
-                   (sep + r's(?P<season>[0-9]{1,2})' + sep, 0.6, (0, 0)),
-
-                   # v2 or v3 for some mangas which have multiples rips
-                   (sep + r'(?P<episodeNumber>[0-9]{1,3})v[23]' + sep, 0.6, (0, 0)),
-                   ]
-
-weak_episodes_rexps = [ # ... 213 ...
-                        (sep + r'(?P<episodeNumber>[0-9]{1,3})' + sep, 0.3, (1, -1)),
-                        ]
-
-
-
-
-
-properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip',
-                           'R5', 'HDRip', 'DVD', 'Rip', 'HDTV', 'DVB' ],
-
-               'container': [ 'avi', 'mkv', 'ogv', 'wmv', 'mp4', 'mov' ],
-
-               'screenSize': [ '720p' ],
-
-               'videoCodec': [ 'XviD', 'DivX', 'x264', 'Rv10' ],
-
-               'audioCodec': [ 'AC3', 'DTS', 'He-AAC', 'AAC-He', 'AAC' ],
-
-               'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA',
-                                 'CHD', 'ViTE', 'DiAMOND', 'TLF', 'DEiTY', 'FLAiTE',
-                                 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
-                                 'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV' ],
-
-               'website': [ 'tvu.org.ru', 'emule-island.com' ],
-
-               'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed',
-                          'complete', 'classic', # not so sure about these ones, could appear in a title
-                          'ws', # widescreen
-                          'SE', # special edition
-                          # TODO: director's cut
-                          ],
-               }
-
-property_synonyms = { 'DVD': [ 'DVDRip' ],
-                      'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
-                      'BluRay': [ 'BDRip' ],
-                      'DivX': [ 'DVDivX' ]
-                      }
+    # try to find languages now
+    language, span, confidence = search_language(current)
+    while language:
+        # is it a subtitle language?
+        if 'sub' in textutils.clean_string(current[:span[0]]).split(' '):
+            guessed({ 'subtitleLanguage': language }, confidence = confidence)
+        else:
+            guessed({ 'language': language }, confidence = confidence)
+        current = update_found(current, span)
+        #print 'current', current
+        language, span, confidence = search_language(current)
 
 
-reverse_synonyms = {}
-for canonical, synonyms in property_synonyms.items():
-    for synonym in synonyms:
-        reverse_synonyms[synonym.lower()] = canonical
+    # remove our sentinels now and ajust spans accordingly
+    assert(current[0] == ' ' and current[-1] == ' ')
+    current = current[1:-1]
+    regions = [ (start-1, end-1) for start, end in regions ]
 
-def canonical_form(string):
-    return reverse_synonyms.get(string.lower(), string)
+    # split into '-' separated subgroups (with required separator chars
+    # around the dash)
+    didx = current.find('-')
+    while didx > 0:
+        regions.append((didx, didx))
+        didx = current.find('-', didx+1)
 
-# TODO: language, subs
+    grps = split_on_groups(current, regions)
 
-def blank_region(string, region):
-    return string[:region[0]] + deleted * (region[1]-region[0]) + string[region[1]:]
+    return zip(split_on_groups(string, regions),
+               split_on_groups(current, regions))
 
 
 class IterativeMatcher(object):
@@ -258,7 +189,12 @@ class IterativeMatcher(object):
         # 1- first split our path into dirs + basename + ext
         match_tree = split_path_components(filename)
 
-        guessed({ 'extension': match_tree.pop(-1)[1:] }, confidence = 1.0)
+        fileext = match_tree.pop(-1)[1:].lower()
+        guessed({ 'extension':  fileext}, confidence = 1.0)
+
+        # TODO: depending on the extension, we could already grab some info and maybe specialized
+        #       guessers, eg: a lang parser for idx files, an automatic detection of the language
+        #       for srt files, a video metadata extractor for avi, mkv, ...
 
         # 2- split each of those into explicit groups, if any
         #   be careful, as this might split some regexps with more confidence such as Alfleni-Team, or [XCT]
@@ -269,137 +205,7 @@ class IterativeMatcher(object):
         #    blank the matching group in the string if we found something
         for pathpart in match_tree:
             for gidx, explicit_group in enumerate(pathpart):
-                # add sentinels so we can match a separator char at either end of
-                # our groups, even when they are at the beginning or end of the string
-                # we will adjust the span accordingly later
-                current = ' ' + explicit_group + ' '
-
-                regions = [] # list of (start, end) of matched regions
-
-                def update_found(string, span, span_adjust = (0,0)):
-                    span = (span[0] + span_adjust[0],
-                            span[1] + span_adjust[1])
-                    regions.append(span)
-                    return blank_region(string, span)
-
-                # try to find dates first, as they are very specific
-                date, span = search_date(current)
-                if date:
-                    guessed({ 'date': date }, confidence = 1.0)
-                    current = update_found(current, span)
-
-                # specific regexps (ie: season X episode, ...)
-                for rexp, confidence, span_adjust in episodes_rexps:
-                    match = re.search(rexp, current, re.IGNORECASE)
-                    if match:
-                        metadata = match.groupdict()
-                        guessed(metadata, confidence = confidence)
-                        current = update_found(current, match.span(), span_adjust)
-
-                # release groups have certain constraints, cannot be included in the previous general regexps
-                group_names = [ sep + r'(Xvid)-(?P<releaseGroup>.*?)[ \.]',
-                                sep + r'(DivX)-(?P<releaseGroup>.*?)[ \.]',
-                                sep + r'(DVDivX)-(?P<releaseGroup>.*?)[ \.]',
-                                ]
-                for rexp in group_names:
-                    match = re.search(rexp, current, re.IGNORECASE)
-                    if match:
-                        metadata = match.groupdict()
-                        metadata.update({ 'videoCodec': canonical_form(match.group(1)) })
-                        guessed(metadata, confidence = 1.0)
-                        current = update_found(current, match.span(), span_adjust = (1, -1))
-
-
-                # common well-defined words
-                clow = current.lower()
-                confidence = 1.0 # for all of them
-                for prop, values in properties.items():
-                    for value in values:
-                        pos = clow.find(value.lower())
-                        if pos != -1:
-                            end = pos + len(value)
-                            # make sure our word is always surrounded by separators
-                            if clow[pos-1] not in sep or clow[end] not in sep:
-                                # note: sep is a regexp, but in this case using it as
-                                #       a sequence achieves the same goal
-                                continue
-
-                            guessed({ prop: canonical_form(value) }, confidence = confidence)
-                            current = update_found(current, (pos, end))
-                            clow = current.lower()
-
-                # weak guesses for episode number, only run it if we don't have an estimate already
-                if not any('episodeNumber' in match for match in result):
-                    for rexp, confidence, span_adjust in weak_episodes_rexps:
-                        match = re.search(rexp, current, re.IGNORECASE)
-                        if match:
-                            metadata = match.groupdict()
-                            guessed(metadata, confidence = confidence)
-                            current = update_found(current, match.span(), span_adjust)
-
-                # try to find languages now
-                language, span, confidence = search_language(current)
-                while language:
-                    # is it a subtitle language?
-                    if 'sub' in textutils.clean_string(current[:span[0]]).split(' '):
-                        guessed({ 'subtitleLanguage': language }, confidence = confidence)
-                    else:
-                        guessed({ 'language': language }, confidence = confidence)
-                    current = update_found(current, span)
-                    #print 'current', current
-                    language, span, confidence = search_language(current)
-
-
-                # remove our sentinels now and ajust spans accordingly
-                assert(current[0] == ' ' and current[-1] == ' ')
-                current = current[1:-1]
-                regions = [ (start-1, end-1) for start, end in regions ]
-
-                # split into '-' separated subgroups (with required separator chars
-                # around the dash)
-                didx = current.find('-')
-                while didx > 0:
-                    regions.append((didx, didx))
-                    didx = current.find('-', didx+1)
-
-                grps = split_on_groups(current, regions)
-
-                pathpart[gidx] = zip(split_on_groups(explicit_group, regions),
-                                     split_on_groups(current, regions))
-                continue
-
-                subgroups = []
-                dash_rexp = re.compile(sep + '-' + sep, re.IGNORECASE)
-                match = dash_rexp.search(current)
-                while False:
-                    # create a new subgroup with what's on the left, get the text
-                    # and the spans which have indices lower than our pos
-                    pos = match.span()[0]
-                    subgroup = explicit_group[:pos]
-                    subtext = current[:pos]
-                    subregions = []
-                    for region in list(regions):
-                        if region[1] < pos:
-                            subregions.append(region)
-                            regions.remove(region)
-
-                    subgroups.append((subgroup, subtext, subregions))
-
-                    # keep only the string we had on the right, adjust all remaining
-                    # spans and iterate
-                    end = match.span()[1]
-                    explicit_group = explicit_group[end:]
-                    current = current[end:]
-                    regions = [ (start-end, endpos-end) for start, endpos in regions ]
-
-                    match = dash_rexp.search(current)
-
-                subgroups.append((explicit_group, current, regions))
-
-                pathpart[gidx] = subgroups
-
-                #print 'remaining = "%s"' % current.encode('utf8')
-                #pathpart[gidx] = (explicit_group, current, regions)
+                pathpart[gidx] = guess_groups(explicit_group, result)
 
         # TODO: some processing steps here such as
         # - if we matched a language in a file with a sub extension and that the group
@@ -409,19 +215,19 @@ class IterativeMatcher(object):
         #   - ep title would be the group just after s01e01
         #   - etc...
 
+        # re-append the extension now
+        match_tree.append([[(fileext,deleted*len(fileext))]])
 
         self.parts = result
         self.match_tree = match_tree
 
-        self.matched()
-
     def print_match_tree(self):
         """
-
-        000000 --------------- -------- 444444444444444444444444444444444444444444444 ---
-        000000 --------------- -------- 000000000000000000000000000000000000000000000 ---
-        000000 --------------- -------- 000000000000000 1111 2222222222 3333 44444444 ---
-        Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.avi
+        000000 11111 22222222222222222222222222222222222222222222222222222222222222
+        000000 00000 00000000000000000000000000000000000000000000000000111111111111
+        000000 00000 00000011112222222222222222222222222333345555555556011111111112
+        Series/Treme/Treme.____.Right.Place,.Wrong.Time.____._________.____________
+        Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.[tvu.org.ru].avi
         """
         m_tree = [ '', # path level index
                    '', # explicit group index
@@ -440,7 +246,10 @@ class IterativeMatcher(object):
             for eidx, explicit_group in enumerate(pathpart):
                 for gidx, (group, remaining) in enumerate(explicit_group):
                     add_char(pidx, eidx, gidx, remaining)
-            add_char(' ', ' ', ' ', '/')
+            if pidx < len(self.match_tree) - 2:
+                add_char(' ', ' ', ' ', '/')
+            elif pidx == len(self.match_tree) - 2:
+                add_char(' ', ' ', ' ', '.')
 
         return '\n'.join(m_tree)
 

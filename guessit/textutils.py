@@ -45,6 +45,110 @@ def clean_string(s):
     parts = s.split()
     return ' '.join(p for p in parts if p != '')
 
+# needed for the new Matcher
+
+from guessit.patterns import deleted
+
+def blank_region(string, region):
+    return string[:region[0]] + deleted * (region[1]-region[0]) + string[region[1]:]
+
+
+def find_first_level_groups_span(string, enclosing):
+    """Return a list of pairs (start, end) for the groups delimited by the given
+    enclosing characters.
+    This does not return nested groups, ie: '(ab(c)(d))' will return a single group
+    containing the whole string.
+
+    >>> find_first_level_group_span('abcd', '()')
+    []
+
+    >>> find_first_level_group_span('abc(de)fgh', '()')
+    [(3, 7)]
+
+    >>> find_first_level_group_span('(ab(c)(d))', '()')
+    [(0, 10)]
+
+    >>> find_first_level_group_span('ab[c]de[f]gh(i)', '[]')
+    [(2, 5), (7, 10)]
+    """
+    opening, closing = enclosing
+    depth = [] # depth is a stack of indices where we opened a group
+    result = []
+    for i, c, in enumerate(string):
+        if c == opening:
+            depth.append(i)
+        elif c == closing:
+            try:
+                start = depth.pop()
+                end = i
+                if not depth:
+                    # we emptied our stack, so we have a 1st level group
+                    result.append((start, end+1))
+            except IndexError:
+                # we closed a group which was not opened before
+                pass
+
+    return result
+
+
+def split_on_groups(string, groups):
+    if not groups:
+        return [ string ]
+
+    boundaries = sorted(set(reduce(lambda l, x: l + list(x), groups, [])))
+    if boundaries[0] != 0:
+        boundaries.insert(0, 0)
+    if boundaries[-1] != len(string):
+        boundaries.append(len(string))
+
+    #print 'boundaries', boundaries
+
+    groups = [ string[start:end] for start, end in zip(boundaries[:-1], boundaries[1:]) ]
+
+    return filter(bool, groups) # return only non-empty groups
+
+def str_replace(string, pos, c):
+    return string[:pos] + c + string[pos+1:]
+
+def find_first_level_groups(string, enclosing, blank_sep = deleted):
+    """Return a list of groups that could be split because of explicit grouping.
+    The groups are delimited by the given enclosing characters.
+
+    You can also specify if you want to blank the separator chars in the returned
+    list of groups by specifying a character for it. None means it won't be replaced.
+
+    This does not return nested groups, ie: '(ab(c)(d))' will return a single group
+    containing the whole string.
+
+    >>> find_first_level_group('', '()')
+    ['']
+
+    >>> find_first_level_group('abcd', '()')
+    ['abcd']
+
+    >>> find_first_level_group('abc(de)fgh', '()')
+    ['abc', 'de', 'fgh']
+
+    >>> find_first_level_group('(ab(c)(d))', '()')
+    ['ab(c)(d)']
+
+    >>> find_first_level_group('ab[c]de[f]gh(i)', '[]')
+    ['ab', 'c', 'de', 'f', 'gh(i)']
+
+    >>> find_first_level_group('()[]()', '()')
+    ['', '[]', '']
+
+    """
+    groups = find_first_level_groups_span(string, enclosing)
+    if blank_sep:
+        for start, end in groups:
+            string = str_replace(string, start, blank_sep)
+            string = str_replace(string, end-1, blank_sep)
+
+    return split_on_groups(string, groups)
+
+
+
 # regexps-related functions
 import re
 
