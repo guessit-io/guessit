@@ -22,7 +22,7 @@ from guessit import fileutils, textutils
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
 from guessit.date import search_date
 from guessit.language import search_language
-from guessit.patterns import sep, deleted, episodes_rexps, weak_episodes_rexps, properties, canonical_form
+from guessit.patterns import video_exts, subtitle_exts, sep, deleted, episodes_rexps, weak_episodes_rexps, properties, canonical_form
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region
 from guessit.fileutils import split_path_components
 import datetime
@@ -135,11 +135,16 @@ def guess_groups(string, result):
 
     # weak guesses for episode number, only run it if we don't have an estimate already
     if not any('episodeNumber' in match for match in result):
-        for rexp, confidence, span_adjust in weak_episodes_rexps:
+        for rexp, _, span_adjust in weak_episodes_rexps:
             match = re.search(rexp, current, re.IGNORECASE)
             if match:
                 metadata = match.groupdict()
-                guess = guessed(metadata, confidence = confidence)
+                epnum = int(metadata['episodeNumber'])
+                if epnum > 100:
+                    guess = guessed({ 'season': epnum // 100,
+                                      'episodeNumber': epnum % 100 }, confidence = 0.6)
+                else:
+                    guess = guessed(metadata, confidence = 0.3)
                 current = update_found(current, guess, match.span(), span_adjust)
 
     # try to find languages now
@@ -209,7 +214,13 @@ class IterativeMatcher(object):
         match_tree = split_path_components(filename)
 
         fileext = match_tree.pop(-1)[1:].lower()
-        extguess = guessed({ 'extension':  fileext}, confidence = 1.0)
+        if fileext in subtitle_exts:
+            extguess = guessed({ 'type': 'subtitle',
+                                 'container': fileext }, confidence = 1.0)
+        elif fileext in video_exts:
+            extguess = guessed({ 'container': fileext }, confidence = 1.0)
+        else:
+            extguess = guessed({ 'extension':  fileext}, confidence = 1.0)
 
         # TODO: depending on the extension, we could already grab some info and maybe specialized
         #       guessers, eg: a lang parser for idx files, an automatic detection of the language
@@ -324,7 +335,7 @@ class IterativeMatcher(object):
         #for p in parts:
         #    print p.to_json()
 
-        result = merge_all(parts)
+        result = merge_all(parts, append = ['language', 'subtitleLanguage'])
         #print result, parts
         log.debug('Final result: ' + result.to_json())
 

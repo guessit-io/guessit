@@ -219,8 +219,16 @@ def merge_append_guesses(guesses, prop):
         guesses.remove(m)
 
 
-def merge_all(guesses):
-    """Merges all the guesses in a single result, removes very unlikely values, and returns it."""
+def merge_all(guesses, append = []):
+    """Merges all the guesses in a single result, removes very unlikely values, and returns it.
+    You can specify a list of properties that should be appended into a list inteaf of being
+    merged.
+
+    >>> g1 = Guess({ 'season': 2 }, confidence = 0.6)
+    ... g2 = Guess({ 'episodeNumber': 13 }, confidence = 0.8)
+    ... merge_all([ g1, g2 ])
+
+    """
     if not guesses:
         return Guess()
 

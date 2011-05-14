@@ -19,6 +19,10 @@
 #
 
 
+subtitle_exts = [ 'srt', 'idx', 'sub' ]
+
+video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'mov', 'ogg', 'ogv', 'wmv' ]
+
 # separator character regexp
 sep = r'[][)(}{ \._-]' # regexp art, hehe :D
 

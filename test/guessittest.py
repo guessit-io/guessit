@@ -23,7 +23,7 @@ from unittest import *
 import yaml, logging, sys, os
 from os.path import *
 
-MAIN_LOGGING_LEVEL = logging.INFO
+MAIN_LOGGING_LEVEL = logging.DEBUG
 
 
 def currentPath():
@@ -72,13 +72,14 @@ class TestGuessit(TestCase):
 
             # props which are list of just 1 elem should be opened for easier writing of the tests
             for prop in ('language', 'subtitleLanguage'):
-                if len(found.get(prop, [])) == 1:
-                    found[prop] = found[prop][0]
+                value = found.get(prop, None)
+                if isinstance(value, list) and len(value) == 1:
+                    found[prop] = value[0]
 
             # compare all properties
             for prop, value in required.items():
                 if prop not in found:
-                    log.warning('Prop \'%s\' not found in: %s' % (prop, filename))
+                    log.warning('Prop \'%s\' not found in: %s' % (prop, filename.encode('utf-8')))
                     continue
 
                 if type(value) != type(found[prop]) and not (isinstance(value, basestring) and isinstance(found[prop], basestring)):

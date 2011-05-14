@@ -21,6 +21,9 @@
 
 from guessittest import *
 
+def new_guesser(filename):
+    m = IterativeMatcher(filename)
+    return m.matched()
 
 class TestEpisode(TestGuessit):
 
@@ -32,6 +35,8 @@ class TestEpisode(TestGuessit):
 
 
     def testNewMatcher(self):
+        self.checkMinimumFieldsCorrect(new_guesser, 'episodes.yaml')
+        return
         groundTruth = yaml.load(open(join(currentPath(), 'episodes.yaml')).read())
 
         for filename, required in groundTruth.items():
