@@ -30,7 +30,7 @@ def detect_filename(filename):
         filename = filename.decode('utf-8')
     print 'Old method found:', autodetect.guess_filename_info(filename).to_json()
     from guessit.matcher import IterativeMatcher
-    print '-'*120
+
     m = IterativeMatcher(filename)
     print 'New method found:', m.matched().to_json()
     print 'Match tree:'

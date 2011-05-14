@@ -28,6 +28,7 @@ from guessit.fileutils import split_path_components
 import datetime
 import os.path
 import re
+import copy
 import logging
 
 log = logging.getLogger("guessit.matcher")
@@ -80,25 +81,25 @@ def guess_groups(string, result):
         log.debug('Found with confidence %.2f: %s' % (confidence, guess))
         return guess
 
-    def update_found(string, span, span_adjust = (0,0)):
+    def update_found(string, guess, span, span_adjust = (0,0)):
         span = (span[0] + span_adjust[0],
                 span[1] + span_adjust[1])
-        regions.append(span)
+        regions.append((span, guess))
         return blank_region(string, span)
 
     # try to find dates first, as they are very specific
     date, span = search_date(current)
     if date:
-        guessed({ 'date': date }, confidence = 1.0)
-        current = update_found(current, span)
+        guess = guessed({ 'date': date }, confidence = 1.0)
+        current = update_found(current, guess, span)
 
     # specific regexps (ie: season X episode, ...)
     for rexp, confidence, span_adjust in episodes_rexps:
         match = re.search(rexp, current, re.IGNORECASE)
         if match:
             metadata = match.groupdict()
-            guessed(metadata, confidence = confidence)
-            current = update_found(current, match.span(), span_adjust)
+            guess = guessed(metadata, confidence = confidence)
+            current = update_found(current, guess, match.span(), span_adjust)
 
     # release groups have certain constraints, cannot be included in the previous general regexps
     group_names = [ sep + r'(Xvid)-(?P<releaseGroup>.*?)[ \.]',
@@ -110,8 +111,8 @@ def guess_groups(string, result):
         if match:
             metadata = match.groupdict()
             metadata.update({ 'videoCodec': canonical_form(match.group(1)) })
-            guessed(metadata, confidence = 1.0)
-            current = update_found(current, match.span(), span_adjust = (1, -1))
+            guess = guessed(metadata, confidence = 1.0)
+            current = update_found(current, guess, match.span(), span_adjust = (1, -1))
 
 
     # common well-defined words
@@ -128,8 +129,8 @@ def guess_groups(string, result):
                     #       a sequence achieves the same goal
                     continue
 
-                guessed({ prop: canonical_form(value) }, confidence = confidence)
-                current = update_found(current, (pos, end))
+                guess = guessed({ prop: canonical_form(value) }, confidence = confidence)
+                current = update_found(current, guess, (pos, end))
                 clow = current.lower()
 
     # weak guesses for episode number, only run it if we don't have an estimate already
@@ -138,18 +139,18 @@ def guess_groups(string, result):
             match = re.search(rexp, current, re.IGNORECASE)
             if match:
                 metadata = match.groupdict()
-                guessed(metadata, confidence = confidence)
-                current = update_found(current, match.span(), span_adjust)
+                guess = guessed(metadata, confidence = confidence)
+                current = update_found(current, guess, match.span(), span_adjust)
 
     # try to find languages now
     language, span, confidence = search_language(current)
     while language:
         # is it a subtitle language?
         if 'sub' in textutils.clean_string(current[:span[0]]).split(' '):
-            guessed({ 'subtitleLanguage': language }, confidence = confidence)
+            guess = guessed({ 'subtitleLanguage': language }, confidence = confidence)
         else:
-            guessed({ 'language': language }, confidence = confidence)
-        current = update_found(current, span)
+            guess = guessed({ 'language': language }, confidence = confidence)
+        current = update_found(current, guess, span)
         #print 'current', current
         language, span, confidence = search_language(current)
 
@@ -157,19 +158,37 @@ def guess_groups(string, result):
     # remove our sentinels now and ajust spans accordingly
     assert(current[0] == ' ' and current[-1] == ' ')
     current = current[1:-1]
-    regions = [ (start-1, end-1) for start, end in regions ]
+    regions = [ ((start-1, end-1), guess) for (start, end), guess in regions ]
 
     # split into '-' separated subgroups (with required separator chars
     # around the dash)
     didx = current.find('-')
     while didx > 0:
-        regions.append((didx, didx))
+        regions.append(((didx, didx), None))
         didx = current.find('-', didx+1)
 
-    grps = split_on_groups(current, regions)
+    # cut our final groups, and rematch the guesses to the group that created
+    # id, None if it is a leftover group
+    region_spans = [ span for span, guess in regions ]
+    string_groups = split_on_groups(string, region_spans)
+    remaining_groups = split_on_groups(current, region_spans)
+    guesses = []
 
-    return zip(split_on_groups(string, regions),
-               split_on_groups(current, regions))
+    pos = 0
+    for group in string_groups:
+        found = False
+        for span, guess in regions:
+            if span[0] == pos:
+                guesses.append(guess)
+                found = True
+        if not found:
+            guesses.append(None)
+
+        pos += len(group)
+
+    return  zip(string_groups,
+                remaining_groups,
+                guesses)
 
 
 class IterativeMatcher(object):
@@ -190,7 +209,7 @@ class IterativeMatcher(object):
         match_tree = split_path_components(filename)
 
         fileext = match_tree.pop(-1)[1:].lower()
-        guessed({ 'extension':  fileext}, confidence = 1.0)
+        extguess = guessed({ 'extension':  fileext}, confidence = 1.0)
 
         # TODO: depending on the extension, we could already grab some info and maybe specialized
         #       guessers, eg: a lang parser for idx files, an automatic detection of the language
@@ -216,7 +235,9 @@ class IterativeMatcher(object):
         #   - etc...
 
         # re-append the extension now
-        match_tree.append([[(fileext,deleted*len(fileext))]])
+        print '*'*100
+        print 'extguess', extguess
+        match_tree.append([[(fileext, deleted*len(fileext), extguess)]])
 
         self.parts = result
         self.match_tree = match_tree
@@ -233,19 +254,42 @@ class IterativeMatcher(object):
                    '', # explicit group index
                    '', # matched regexp and dash-separated
                    '', # groups leftover that couldn't be matched
+                   '', # meaning conveyed: E = episodenumber, S = season, ...
                    ]
 
-        def add_char(pidx, eidx, gidx, remaining):
+        def add_char(pidx, eidx, gidx, remaining, meaning = None):
             nr = len(remaining)
             m_tree[0] = m_tree[0] + str(pidx) * nr
             m_tree[1] = m_tree[1] + str(eidx) * nr
             m_tree[2] = m_tree[2] + str(gidx) * nr
             m_tree[3] = m_tree[3] + remaining
+            m_tree[4] = m_tree[4] + str(meaning or ' ') * nr
+
+        def meaning(result):
+            mmap = { 'episodeNumber': 'E',
+                     'season': 'S',
+                     'extension': 'e',
+                     'format': 'f',
+                     'language': 'l',
+                     'videoCodec': 'v',
+                     'website': 'w'
+                     }
+
+            if result is None:
+                return ' '
+
+            for prop, l in mmap.items():
+                if prop in result:
+                    return l
+
+            return 'x'
 
         for pidx, pathpart in enumerate(self.match_tree):
             for eidx, explicit_group in enumerate(pathpart):
-                for gidx, (group, remaining) in enumerate(explicit_group):
-                    add_char(pidx, eidx, gidx, remaining)
+                for gidx, (group, remaining, result) in enumerate(explicit_group):
+                    add_char(pidx, eidx, gidx, remaining, meaning(result))
+
+            # special conditions for the path separator
             if pidx < len(self.match_tree) - 2:
                 add_char(' ', ' ', ' ', '/')
             elif pidx == len(self.match_tree) - 2:
@@ -258,7 +302,7 @@ class IterativeMatcher(object):
         leftover = []
         for pathpart in self.match_tree:
             for explicit_group in pathpart:
-                for group, remaining in explicit_group:
+                for group, remaining, result in explicit_group:
                     leftover.append(remaining)
 
         leftover = [ textutils.clean_string(l) for l in leftover ]
@@ -268,7 +312,9 @@ class IterativeMatcher(object):
 
 
     def matched(self):
-        parts = self.parts
+        # we need to make a copy here, as the merge functions work in place and
+        # calling them on the match tree would modify it
+        parts = copy.deepcopy(self.parts)
 
         # 2- try to merge similar information together and give it a higher confidence
         merge_similar_guesses(parts, 'season', choose_int)
