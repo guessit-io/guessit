@@ -23,7 +23,7 @@ from unittest import *
 import yaml, logging, sys, os
 from os.path import *
 
-MAIN_LOGGING_LEVEL = logging.DEBUG
+MAIN_LOGGING_LEVEL = logging.INFO
 
 
 def currentPath():

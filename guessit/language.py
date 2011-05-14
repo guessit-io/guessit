@@ -106,9 +106,9 @@ def search_language(string):
     # are far too common to be able to say they represent a language in the
     # middle of a string (where they most likely carry their commmon meaning)
     lng_common_words = frozenset([ # english words
-                                   'is', 'it', 'mad', 'men', 'run',
+                                   'is', 'it', 'am', 'mad', 'men', 'run',
                                    # french words
-                                   'bas', 'de'
+                                   'bas', 'de', 'son'
                                    ])
     sep = r'[]() \._-'
 

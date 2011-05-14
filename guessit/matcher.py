@@ -29,6 +29,7 @@ import logging
 
 log = logging.getLogger("guessit.matcher")
 
+deleted = '_'
 
 
 def split_path_components(filename):
@@ -48,13 +49,13 @@ def find_first_level_groups_span(string, enclosing):
     []
 
     >>> find_first_level_group_span('abc(de)fgh', '()')
-    [(3, 6)]
+    [(3, 7)]
 
     >>> find_first_level_group_span('(ab(c)(d))', '()')
-    [(0, 9)]
+    [(0, 10)]
 
     >>> find_first_level_group_span('ab[c]de[f]gh(i)', '[]')
-    [(2, 4), (7, 9)]
+    [(2, 5), (7, 10)]
     """
     opening, closing = enclosing
     depth = [] # depth is a stack of indices where we opened a group
@@ -68,7 +69,7 @@ def find_first_level_groups_span(string, enclosing):
                 end = i
                 if not depth:
                     # we emptied our stack, so we have a 1st level group
-                    result.append((start, end))
+                    result.append((start, end+1))
             except IndexError:
                 # we closed a group which was not opened before
                 pass
@@ -76,25 +77,31 @@ def find_first_level_groups_span(string, enclosing):
     return result
 
 
-def split_on_groups(string, groups, exclude_splitter = False):
+def split_on_groups(string, groups):
     if not groups:
         return [ string ]
 
-    boundaries = reduce(lambda l, x: l + list(x), groups, [])
+    boundaries = sorted(set(reduce(lambda l, x: l + list(x), groups, [])))
     if boundaries[0] != 0:
-        boundaries.insert(0, -1)
-    if boundaries[-1] != len(string)-1:
+        boundaries.insert(0, 0)
+    if boundaries[-1] != len(string):
         boundaries.append(len(string))
 
-    offset = 1 if exclude_splitter else 0
-    groups = [ string[start+offset:end] for start, end in zip(boundaries[:-1], boundaries[1:]) ]
+    #print 'boundaries', boundaries
+
+    groups = [ string[start:end] for start, end in zip(boundaries[:-1], boundaries[1:]) ]
 
     return filter(bool, groups) # return only non-empty groups
 
+def str_replace(string, pos, c):
+    return string[:pos] + c + string[pos+1:]
 
-def find_first_level_groups(string, enclosing):
+def find_first_level_groups(string, enclosing, blank_sep = True):
     """Return a list of groups that could be split because of explicit grouping.
     The groups are delimited by the given enclosing characters.
+
+    You can also specify if you want to blank the separator chars in the returned
+    list of groups.
 
     This does not return nested groups, ie: '(ab(c)(d))' will return a single group
     containing the whole string.
@@ -119,8 +126,12 @@ def find_first_level_groups(string, enclosing):
 
     """
     groups = find_first_level_groups_span(string, enclosing)
+    if blank_sep:
+        for start, end in groups:
+            string = str_replace(string, start, deleted)
+            string = str_replace(string, end-1, deleted)
 
-    return split_on_groups(string, groups, exclude_splitter = True)
+    return split_on_groups(string, groups)
 
 
 def split_explicit_groups(string):
@@ -155,7 +166,7 @@ def format_episode_guess(guess):
 
 
 
-sep = r'[][)( \._-]' # regexp art, hehe :D
+sep = r'[][)(}{ \._-]' # regexp art, hehe :D
 
 # format: [ (regexp, confidence, span_adjust) ]
 episodes_rexps = [ # ... Season 2 ...
@@ -227,7 +238,6 @@ def canonical_form(string):
 # TODO: language, subs
 
 def blank_region(string, region):
-    deleted = '_'
     return string[:region[0]] + deleted * (region[1]-region[0]) + string[region[1]:]
 
 
@@ -249,8 +259,6 @@ class IterativeMatcher(object):
         match_tree = split_path_components(filename)
 
         guessed({ 'extension': match_tree.pop(-1)[1:] }, confidence = 1.0)
-
-        print match_tree
 
         # 2- split each of those into explicit groups, if any
         #   be careful, as this might split some regexps with more confidence such as Alfleni-Team, or [XCT]
@@ -279,7 +287,6 @@ class IterativeMatcher(object):
                 if date:
                     guessed({ 'date': date }, confidence = 1.0)
                     current = update_found(current, span)
-                    print 'current', current
 
                 # specific regexps (ie: season X episode, ...)
                 for rexp, confidence, span_adjust in episodes_rexps:
@@ -291,13 +298,12 @@ class IterativeMatcher(object):
 
                 # release groups have certain constraints, cannot be included in the previous general regexps
                 group_names = [ sep + r'(Xvid)-(?P<releaseGroup>.*?)[ \.]',
-                                 sep + r'(DivX)-(?P<releaseGroup>.*?)[ \.]',
-                                 sep + r'(DVDivX)-(?P<releaseGroup>.*?)[ \.]',
-                                 ]
+                                sep + r'(DivX)-(?P<releaseGroup>.*?)[ \.]',
+                                sep + r'(DVDivX)-(?P<releaseGroup>.*?)[ \.]',
+                                ]
                 for rexp in group_names:
                     match = re.search(rexp, current, re.IGNORECASE)
                     if match:
-                        print 'GOULOU RELEASE GROUP', current
                         metadata = match.groupdict()
                         metadata.update({ 'videoCodec': canonical_form(match.group(1)) })
                         guessed(metadata, confidence = 1.0)
@@ -340,23 +346,116 @@ class IterativeMatcher(object):
                     else:
                         guessed({ 'language': language }, confidence = confidence)
                     current = update_found(current, span)
-                    print 'current', current
+                    #print 'current', current
                     language, span, confidence = search_language(current)
 
 
-
-                # remove our sentinels now
+                # remove our sentinels now and ajust spans accordingly
                 assert(current[0] == ' ' and current[-1] == ' ')
                 current = current[1:-1]
                 regions = [ (start-1, end-1) for start, end in regions ]
 
-                print 'remaining = "%s"' % current.encode('utf8')
-                pathpart[gidx] = (explicit_group, current, regions)
+                # split into '-' separated subgroups (with required separator chars
+                # around the dash)
+                didx = current.find('-')
+                while didx > 0:
+                    regions.append((didx, didx))
+                    didx = current.find('-', didx+1)
+
+                grps = split_on_groups(current, regions)
+
+                pathpart[gidx] = zip(split_on_groups(explicit_group, regions),
+                                     split_on_groups(current, regions))
+                continue
+
+                subgroups = []
+                dash_rexp = re.compile(sep + '-' + sep, re.IGNORECASE)
+                match = dash_rexp.search(current)
+                while False:
+                    # create a new subgroup with what's on the left, get the text
+                    # and the spans which have indices lower than our pos
+                    pos = match.span()[0]
+                    subgroup = explicit_group[:pos]
+                    subtext = current[:pos]
+                    subregions = []
+                    for region in list(regions):
+                        if region[1] < pos:
+                            subregions.append(region)
+                            regions.remove(region)
+
+                    subgroups.append((subgroup, subtext, subregions))
+
+                    # keep only the string we had on the right, adjust all remaining
+                    # spans and iterate
+                    end = match.span()[1]
+                    explicit_group = explicit_group[end:]
+                    current = current[end:]
+                    regions = [ (start-end, endpos-end) for start, endpos in regions ]
+
+                    match = dash_rexp.search(current)
+
+                subgroups.append((explicit_group, current, regions))
+
+                pathpart[gidx] = subgroups
+
+                #print 'remaining = "%s"' % current.encode('utf8')
+                #pathpart[gidx] = (explicit_group, current, regions)
+
+        # TODO: some processing steps here such as
+        # - if we matched a language in a file with a sub extension and that the group
+        #   is the last group of the filename, it is probably the language of the subtitle
+        # - try to guess series and episode title with what we have left, such as
+        #   - series title would be the group before s01e01
+        #   - ep title would be the group just after s01e01
+        #   - etc...
+
 
         self.parts = result
         self.match_tree = match_tree
 
         self.matched()
+
+    def print_match_tree(self):
+        """
+
+        000000 --------------- -------- 444444444444444444444444444444444444444444444 ---
+        000000 --------------- -------- 000000000000000000000000000000000000000000000 ---
+        000000 --------------- -------- 000000000000000 1111 2222222222 3333 44444444 ---
+        Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.avi
+        """
+        m_tree = [ '', # path level index
+                   '', # explicit group index
+                   '', # matched regexp and dash-separated
+                   '', # groups leftover that couldn't be matched
+                   ]
+
+        def add_char(pidx, eidx, gidx, remaining):
+            nr = len(remaining)
+            m_tree[0] = m_tree[0] + str(pidx) * nr
+            m_tree[1] = m_tree[1] + str(eidx) * nr
+            m_tree[2] = m_tree[2] + str(gidx) * nr
+            m_tree[3] = m_tree[3] + remaining
+
+        for pidx, pathpart in enumerate(self.match_tree):
+            for eidx, explicit_group in enumerate(pathpart):
+                for gidx, (group, remaining) in enumerate(explicit_group):
+                    add_char(pidx, eidx, gidx, remaining)
+            add_char(' ', ' ', ' ', '/')
+
+        return '\n'.join(m_tree)
+
+    def leftover(self):
+        """Return the list of string groups that could not be matched to anything."""
+        leftover = []
+        for pathpart in self.match_tree:
+            for explicit_group in pathpart:
+                for group, remaining in explicit_group:
+                    leftover.append(remaining)
+
+        leftover = [ textutils.clean_string(l) for l in leftover ]
+        leftover = filter(bool, leftover)
+
+        return leftover
 
 
     def matched(self):
@@ -373,15 +472,9 @@ class IterativeMatcher(object):
         result = merge_all(parts)
         #print result, parts
         log.debug('Final result: ' + result.to_json())
-        leftover = []
-        for pathpart in self.match_tree:
-            for group, remaining, regions in pathpart:
-                leftover.append(split_on_groups(remaining, regions))
 
-        print leftover
-        leftover = [ textutils.clean_string(t) for l in leftover for s in l for t in s.split('-') ]
-        leftover = filter(bool, leftover)
-
+        leftover = self.leftover()
+        print 'Leftover from guessing: %s' % leftover
         log.debug('Leftover from guessing: %s' % leftover)
 
         return result

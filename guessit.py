@@ -30,8 +30,12 @@ def detect_filename(filename):
         filename = filename.decode('utf-8')
     print 'Old method found:', autodetect.guess_filename_info(filename).to_json()
     from guessit.matcher import IterativeMatcher
+    print '-'*120
     m = IterativeMatcher(filename)
-    print 'New method found:',
+    print 'New method found:', m.matched().to_json()
+    print 'Match tree:'
+    print m.print_match_tree()
+    print filename.encode('utf-8')
 
 
 def run_demo(episodes = True, movies = True):
@@ -95,7 +99,7 @@ if __name__ == '__main__':
         logging.getLogger('guessit').setLevel(logging.DEBUG)
 
     if options.demo:
-        run_demo(episodes = True, movies = True)
+        run_demo(episodes = True, movies = False)
     else:
         if args:
             for filename in args:
