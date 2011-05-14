@@ -18,6 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from guessit.patterns import sep
+
 # string cleaning related functions
 
 def stripBrackets(s):
@@ -40,7 +42,7 @@ def find_any(s, chars):
     return pos
 
 def clean_string(s):
-    for c in '.-_\\':
+    for c in sep:
         s = s.replace(c, ' ')
     parts = s.split()
     return ' '.join(p for p in parts if p != '')

@@ -23,7 +23,7 @@ from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, c
 from guessit.date import search_date
 from guessit.language import search_language
 from guessit.patterns import video_exts, subtitle_exts, sep, deleted, episodes_rexps, weak_episodes_rexps, properties, canonical_form
-from guessit.textutils import find_first_level_groups, split_on_groups, blank_region
+from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string
 from guessit.fileutils import split_path_components
 import datetime
 import os.path
@@ -64,8 +64,74 @@ def format_episode_guess(guess):
 
     return guess
 
+def tree_to_string(tree):
+    """
+    000000 11111 22222222222222222222222222222222222222222222222222222222222222
+    000000 00000 00000000000000000000000000000000000000000000000000111111111111
+    000000 00000 00000011112222222222222222222222222333345555555556011111111112
+    Series/Treme/Treme.____.Right.Place,.Wrong.Time.____._________.____________
+    Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.[tvu.org.ru].avi
+    """
+    m_tree = [ '', # path level index
+               '', # explicit group index
+               '', # matched regexp and dash-separated
+               '', # groups leftover that couldn't be matched
+               '', # meaning conveyed: E = episodenumber, S = season, ...
+               ]
+
+    def add_char(pidx, eidx, gidx, remaining, meaning = None):
+        nr = len(remaining)
+        m_tree[0] = m_tree[0] + str(pidx) * nr
+        m_tree[1] = m_tree[1] + str(eidx) * nr
+        m_tree[2] = m_tree[2] + str(gidx) * nr
+        m_tree[3] = m_tree[3] + remaining
+        m_tree[4] = m_tree[4] + str(meaning or ' ') * nr
+
+    def meaning(result):
+        mmap = { 'episodeNumber': 'E',
+                 'season': 'S',
+                 'extension': 'e',
+                 'format': 'f',
+                 'language': 'l',
+                 'videoCodec': 'v',
+                 'website': 'w',
+                 'container': 'c'
+                 }
+
+        if result is None:
+            return ' '
+
+        for prop, l in mmap.items():
+            if prop in result:
+                return l
+
+        return 'x'
+
+    for pidx, pathpart in enumerate(tree):
+        for eidx, explicit_group in enumerate(pathpart):
+            for gidx, (group, remaining, result) in enumerate(explicit_group):
+                add_char(pidx, eidx, gidx, remaining, meaning(result))
+
+        # special conditions for the path separator
+        if pidx < len(tree) - 2:
+            add_char(' ', ' ', ' ', '/')
+        elif pidx == len(tree) - 2:
+            add_char(' ', ' ', ' ', '.')
+
+    return '\n'.join(m_tree)
 
 # TODO: subs
+
+def find_group(tree, prop):
+    """Find the list of groups that resulted in a guess that contains the
+    asked property."""
+    result = []
+    for pidx, pathpart in enumerate(tree):
+        for eidx, explicit_group in enumerate(pathpart):
+            for gidx, (group, remaining, guess) in enumerate(explicit_group):
+                if guess and prop in guess:
+                    result.append((pidx, eidx, gidx))
+    return result
 
 def guess_groups(string, result):
     # add sentinels so we can match a separator char at either end of
@@ -151,7 +217,7 @@ def guess_groups(string, result):
     language, span, confidence = search_language(current)
     while language:
         # is it a subtitle language?
-        if 'sub' in textutils.clean_string(current[:span[0]]).split(' '):
+        if 'sub' in clean_string(current[:span[0]]).split(' '):
             guess = guessed({ 'subtitleLanguage': language }, confidence = confidence)
         else:
             guess = guessed({ 'language': language }, confidence = confidence)
@@ -237,6 +303,43 @@ class IterativeMatcher(object):
             for gidx, explicit_group in enumerate(pathpart):
                 pathpart[gidx] = guess_groups(explicit_group, result)
 
+        # 4- try to identify the remaining unknown groups by looking at their position
+        #    relative to other known elements
+
+        eps = find_group(match_tree, 'episodeNumber')
+        print tree_to_string(match_tree).encode('utf-8')
+        print filename.encode('utf-8')
+        print 'Found groups', eps
+        if eps:
+            pidx, eidx, gidx = eps[0]
+            groups = match_tree[pidx][eidx]
+            # note: groups = [ (origtext, remaining, guess) ]
+
+            print '--', groups[:gidx]
+            print map(lambda g: clean_string(g[1]),
+                      groups[:gidx])
+
+            # if we only have 1 valid group before the episodeNumber, then it's probably the series name
+            series_candidates = filter(lambda s: len(s) > 3,
+                                       map(lambda g: clean_string(g[1]),
+                                           groups[:gidx]))
+            if len(series_candidates) == 1:
+                guess = guessed({ 'series': series_candidates[0] }, confidence = 0.7)
+                # TODO: need to update the match tree too, but we need to know which
+                #       groups we actually matched (we might have removed some unlikely
+                #       ones)
+
+            # only 1 group after and it's probably the episode title
+            title_candidates = filter(lambda s: len(s) > 3,
+                                      map(lambda g: clean_string(g[1]),
+                                          groups[gidx+1:]))
+            if len(title_candidates) == 1:
+                guess = guessed({ 'title': title_candidates[0] }, confidence = 0.5)
+                # TODO: need to update the match tree too, but we need to know which
+                #       groups we actually matched (we might have removed some unlikely
+                #       ones)
+
+
         # TODO: some processing steps here such as
         # - if we matched a language in a file with a sub extension and that the group
         #   is the last group of the filename, it is probably the language of the subtitle
@@ -254,59 +357,9 @@ class IterativeMatcher(object):
         self.match_tree = match_tree
 
     def print_match_tree(self):
-        """
-        000000 11111 22222222222222222222222222222222222222222222222222222222222222
-        000000 00000 00000000000000000000000000000000000000000000000000111111111111
-        000000 00000 00000011112222222222222222222222222333345555555556011111111112
-        Series/Treme/Treme.____.Right.Place,.Wrong.Time.____._________.____________
-        Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.[tvu.org.ru].avi
-        """
-        m_tree = [ '', # path level index
-                   '', # explicit group index
-                   '', # matched regexp and dash-separated
-                   '', # groups leftover that couldn't be matched
-                   '', # meaning conveyed: E = episodenumber, S = season, ...
-                   ]
+        """TODO: rename me"""
+        return tree_to_string(self.match_tree)
 
-        def add_char(pidx, eidx, gidx, remaining, meaning = None):
-            nr = len(remaining)
-            m_tree[0] = m_tree[0] + str(pidx) * nr
-            m_tree[1] = m_tree[1] + str(eidx) * nr
-            m_tree[2] = m_tree[2] + str(gidx) * nr
-            m_tree[3] = m_tree[3] + remaining
-            m_tree[4] = m_tree[4] + str(meaning or ' ') * nr
-
-        def meaning(result):
-            mmap = { 'episodeNumber': 'E',
-                     'season': 'S',
-                     'extension': 'e',
-                     'format': 'f',
-                     'language': 'l',
-                     'videoCodec': 'v',
-                     'website': 'w'
-                     }
-
-            if result is None:
-                return ' '
-
-            for prop, l in mmap.items():
-                if prop in result:
-                    return l
-
-            return 'x'
-
-        for pidx, pathpart in enumerate(self.match_tree):
-            for eidx, explicit_group in enumerate(pathpart):
-                for gidx, (group, remaining, result) in enumerate(explicit_group):
-                    add_char(pidx, eidx, gidx, remaining, meaning(result))
-
-            # special conditions for the path separator
-            if pidx < len(self.match_tree) - 2:
-                add_char(' ', ' ', ' ', '/')
-            elif pidx == len(self.match_tree) - 2:
-                add_char(' ', ' ', ' ', '.')
-
-        return '\n'.join(m_tree)
 
     def leftover(self):
         """Return the list of string groups that could not be matched to anything."""
@@ -316,7 +369,7 @@ class IterativeMatcher(object):
                 for group, remaining, result in explicit_group:
                     leftover.append(remaining)
 
-        leftover = [ textutils.clean_string(l) for l in leftover ]
+        leftover = [ clean_string(l) for l in leftover ]
         leftover = filter(bool, leftover)
 
         return leftover

@@ -68,6 +68,9 @@ class TestGuessit(TestCase):
         for filename, required in groundTruth.items():
             if isinstance(filename, str):
                 filename = filename.decode('utf-8')
+
+            log.debug('Checking guessed information for file: %s' % filename)
+
             found = guesser(filename)
 
             # props which are list of just 1 elem should be opened for easier writing of the tests
