@@ -91,12 +91,16 @@ class Language(object):
         return hash(self.lang)
 
     def __eq__(self, other):
+        if isinstance(other, Language):
+            return self.lang == other.lang
+
         if isinstance(other, basestring):
             try:
-                other = Language(other)
+                return self == Language(other)
             except ValueError:
                 return False
-        return self.lang == other.lang
+
+        return False
 
     def __ne__(self, other):
         return not self == other
@@ -119,11 +123,15 @@ def search_language(string):
     # are far too common to be able to say they represent a language in the
     # middle of a string (where they most likely carry their commmon meaning)
     lng_common_words = frozenset([ # english words
-                                   'is', 'it', 'am', 'mad', 'men', 'run',
+                                   'is', 'it', 'am', 'mad', 'men', 'run', 'sin', 'st',
                                    # french words
-                                   'bas', 'de', 'son'
+                                   'bas', 'de', 'le', 'son',
+                                   # spanish words
+                                   'la', 'el',
+                                   # other
+                                   'ind',
                                    ])
-    sep = r'[]() \._-'
+    sep = r'[](){} \._-+'
 
     slow = string.lower()
     confidence = 1.0 # for all of them

@@ -22,7 +22,7 @@ from guessit import fileutils, textutils
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
 from guessit.date import search_date
 from guessit.language import search_language
-from guessit.patterns import video_exts, subtitle_exts, sep, deleted, episodes_rexps, weak_episodes_rexps, properties, canonical_form
+from guessit.patterns import video_exts, subtitle_exts, sep, deleted
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string
 from guessit.fileutils import split_path_components
 import datetime

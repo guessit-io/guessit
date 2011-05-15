@@ -24,46 +24,57 @@ subtitle_exts = [ 'srt', 'idx', 'sub' ]
 video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'mov', 'ogg', 'ogv', 'wmv' ]
 
 # separator character regexp
-sep = r'[][)(}{ \._-]' # regexp art, hehe :D
+sep = r'[][)(}{+ \._-]' # regexp art, hehe :D
 
 # character used to represent a deleted char (when matching groups)
 deleted = '_'
 
 # format: [ (regexp, confidence, span_adjust) ]
-episodes_rexps = [ # ... Season 2 ...
-                   (r'season (?P<season>[0-9]+)', 1.0, (0, 0)),
-                   (r'saison (?P<season>[0-9]+)', 1.0, (0, 0)),
+episode_rexps = [ # ... Season 2 ...
+                  (r'season (?P<season>[0-9]+)', 1.0, (0, 0)),
+                  (r'saison (?P<season>[0-9]+)', 1.0, (0, 0)),
 
-                   # ... s02e13 ...
-                   (r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]', 1.0, (0, -1)),
+                  # ... s02e13 ...
+                  (r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]', 1.0, (0, -1)),
 
-                   # ... 2x13 ...
-                   (r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]', 0.8, (1, -1)),
+                  # ... 2x13 ...
+                  (r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]', 0.8, (1, -1)),
 
-                   # ... s02 ...
-                   (sep + r's(?P<season>[0-9]{1,2})' + sep, 0.6, (0, 0)),
+                  # ... s02 ...
+                  (sep + r's(?P<season>[0-9]{1,2})' + sep, 0.6, (0, 0)),
 
-                   # v2 or v3 for some mangas which have multiples rips
-                   (sep + r'(?P<episodeNumber>[0-9]{1,3})v[23]' + sep, 0.6, (0, 0)),
-                   ]
-
-
-weak_episodes_rexps = [ # ... 213 ...
-                        (sep + r'(?P<episodeNumber>[0-9]{1,3})' + sep, 0.3, (1, -1)),
-                        ]
+                  # v2 or v3 for some mangas which have multiples rips
+                  (sep + r'(?P<episodeNumber>[0-9]{1,3})v[23]' + sep, 0.6, (0, 0)),
+                  ]
 
 
+weak_episode_rexps = [ # ... 213 ...
+                       (sep + r'(?P<episodeNumber>[0-9]{1,3})' + sep, 0.3, (1, -1)),
+                       ]
 
 
+
+video_rexps = [ # cd number
+                (r'cd ?(?P<cdNumber>[0-9])( ?of ?(?P<cdNumberTotal>[0-9]))?', 1.0, (0, 0)),
+
+                # special editions
+                (r'edition' + sep + r'(?P<edition>collector)', 1.0, (0, 0)),
+                (r'(?P<edition>collector)' + sep + 'edition', 1.0, (0, 0)),
+                (r'(?P<edition>special)' + sep + 'edition', 1.0, (0, 0)),
+                (r'(?P<edition>criterion)' + sep + 'edition', 1.0, (0, 0)),
+
+                # director's cut
+                (r"(?P<edition>director'?s?" + sep + "cut)", 1.0, (0, 0))
+                ]
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip',
-                           'R5', 'HDRip', 'DVD', 'Rip', 'HDTV', 'DVB' ],
+                           'HDRip', 'DVD', 'DVDivX', 'Rip', 'HDTV', 'DVB' ],
 
                'container': [ 'avi', 'mkv', 'ogv', 'wmv', 'mp4', 'mov' ],
 
                'screenSize': [ '720p' ],
 
-               'videoCodec': [ 'XviD', 'DivX', 'x264', 'Rv10' ],
+               'videoCodec': [ 'XviD', 'DivX', 'x264', 'h264', 'Rv10' ],
 
                'audioCodec': [ 'AC3', 'DTS', 'He-AAC', 'AAC-He', 'AAC' ],
 
@@ -74,7 +85,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
 
                'website': [ 'tvu.org.ru', 'emule-island.com' ],
 
-               'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed',
+               'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed', 'R5',
                           'complete', 'classic', # not so sure about these ones, could appear in a title
                           'ws', # widescreen
                           'SE', # special edition
@@ -82,10 +93,16 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                           ],
                }
 
+
 property_synonyms = { 'DVD': [ 'DVDRip' ],
                       'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
                       'BluRay': [ 'BDRip' ],
-                      'DivX': [ 'DVDivX' ]
+                      'DivX': [ 'DVDivX' ],
+                      'h264': [ 'x264' ],
+                      'AAC': [ 'He-AAC', 'AAC-He' ],
+                      'Special Edition': [ 'Special' ],
+                      'Collector Edition': [ 'Collector' ],
+                      'Criterion Edition': [ 'Criterion' ]
                       }
 
 

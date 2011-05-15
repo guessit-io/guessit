@@ -20,9 +20,9 @@
 
 from guessit import fileutils, textutils
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
-from guessit.date import search_date
+from guessit.date import search_date, search_year
 from guessit.language import search_language
-from guessit.patterns import video_exts, subtitle_exts, sep, deleted, episodes_rexps, weak_episodes_rexps, properties, canonical_form
+from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, episode_rexps, weak_episode_rexps, properties, canonical_form
 from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
 from guessit.fileutils import split_path_components
@@ -50,34 +50,44 @@ def split_explicit_groups(string):
     return result
 
 
-def format_episode_guess(guess):
+def format_guess(guess):
     """Format all the found values to their natural type.
     For instance, a year would be stored as an int value, etc...
 
     Note that this modifies the dictionary given as input.
     """
 
-    for prop in [ 'season', 'episodeNumber', 'year' ]:
-        try:
+    #for prop in [ 'season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal' ]:
+    #    try:
+    #        guess[prop] = int(guess[prop])
+    #    except KeyError:
+    #        pass
+
+    for prop, value in guess.items():
+        if prop in ('season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal'):
             guess[prop] = int(guess[prop])
-        except KeyError:
-            pass
+        elif isinstance(value, basestring):
+            if prop in ('edition',):
+                value = clean_string(value)
+            guess[prop] = canonical_form(value)
 
     return guess
 
 
 # TODO: subs
 
-def guess_groups(string, result, fileext = None):
+def guess_groups(string, result, filetype = 'video'):
     # add sentinels so we can match a separator char at either end of
     # our groups, even when they are at the beginning or end of the string
     # we will adjust the span accordingly later
+    #
+    # filetype can either be video, subtitle, movie, moviesubtitle, episode, episodesubtitle
     current = ' ' + string + ' '
 
     regions = [] # list of (start, end) of matched regions
 
     def guessed(match_dict, confidence):
-        guess = format_episode_guess(Guess(match_dict, confidence = confidence))
+        guess = format_guess(Guess(match_dict, confidence = confidence))
         result.append(guess)
         log.debug('Found with confidence %.2f: %s' % (confidence, guess))
         return guess
@@ -94,24 +104,45 @@ def guess_groups(string, result, fileext = None):
         guess = guessed({ 'date': date }, confidence = 1.0)
         current = update_found(current, guess, span)
 
-    # specific regexps (ie: season X episode, ...)
-    for rexp, confidence, span_adjust in episodes_rexps:
+    # for non episodes only, look for year information
+    if filetype not in ('episode', 'episodesubtitle'):
+        year, span = search_year(current)
+        if year:
+            guess = guessed({ 'year': year }, confidence = 1.0)
+            current = update_found(current, guess, span)
+
+    # specific regexps (ie: cd number, season X episode, ...)
+    for rexp, confidence, span_adjust in video_rexps:
         match = re.search(rexp, current, re.IGNORECASE)
         if match:
             metadata = match.groupdict()
+            # is this the better place to put it? (maybe, as it is at least the soonest that we can catch it)
+            if 'cdNumberTotal' in metadata and metadata['cdNumberTotal'] is None:
+                del metadata['cdNumberTotal']
+
             guess = guessed(metadata, confidence = confidence)
             current = update_found(current, guess, match.span(), span_adjust)
 
+    if filetype in ('episode', 'episodesubtitle'):
+        for rexp, confidence, span_adjust in episode_rexps:
+            match = re.search(rexp, current, re.IGNORECASE)
+            if match:
+                metadata = match.groupdict()
+                guess = guessed(metadata, confidence = confidence)
+                current = update_found(current, guess, match.span(), span_adjust)
+
+
+
     # release groups have certain constraints, cannot be included in the previous general regexps
-    group_names = [ sep + r'(Xvid)-(?P<releaseGroup>.*?)[ \.]',
-                    sep + r'(DivX)-(?P<releaseGroup>.*?)[ \.]',
-                    sep + r'(DVDivX)-(?P<releaseGroup>.*?)[ \.]',
+    group_names = [ r'\.(Xvid)-(?P<releaseGroup>.*?)[ \.]',
+                    r'\.(DivX)-(?P<releaseGroup>.*?)[\. ]',
+                    r'\.(DVDivX)-(?P<releaseGroup>.*?)[\. ]',
                     ]
     for rexp in group_names:
         match = re.search(rexp, current, re.IGNORECASE)
         if match:
             metadata = match.groupdict()
-            metadata.update({ 'videoCodec': canonical_form(match.group(1)) })
+            metadata.update({ 'videoCodec': match.group(1) })
             guess = guessed(metadata, confidence = 1.0)
             current = update_found(current, guess, match.span(), span_adjust = (1, -1))
 
@@ -130,23 +161,24 @@ def guess_groups(string, result, fileext = None):
                     #       a sequence achieves the same goal
                     continue
 
-                guess = guessed({ prop: canonical_form(value) }, confidence = confidence)
+                guess = guessed({ prop: value }, confidence = confidence)
                 current = update_found(current, guess, (pos, end))
                 clow = current.lower()
 
     # weak guesses for episode number, only run it if we don't have an estimate already
-    if not any('episodeNumber' in match for match in result):
-        for rexp, _, span_adjust in weak_episodes_rexps:
-            match = re.search(rexp, current, re.IGNORECASE)
-            if match:
-                metadata = match.groupdict()
-                epnum = int(metadata['episodeNumber'])
-                if epnum > 100:
-                    guess = guessed({ 'season': epnum // 100,
-                                      'episodeNumber': epnum % 100 }, confidence = 0.6)
-                else:
-                    guess = guessed(metadata, confidence = 0.3)
-                current = update_found(current, guess, match.span(), span_adjust)
+    if filetype in ('episode', 'episodesubtitle'):
+        if not any('episodeNumber' in match for match in result):
+            for rexp, _, span_adjust in weak_episode_rexps:
+                match = re.search(rexp, current, re.IGNORECASE)
+                if match:
+                    metadata = match.groupdict()
+                    epnum = int(metadata['episodeNumber'])
+                    if epnum > 100:
+                        guess = guessed({ 'season': epnum // 100,
+                                          'episodeNumber': epnum % 100 }, confidence = 0.6)
+                    else:
+                        guess = guessed(metadata, confidence = 0.3)
+                    current = update_found(current, guess, match.span(), span_adjust)
 
     # try to find languages now
     language, span, confidence = search_language(current)
@@ -266,7 +298,8 @@ def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
 
 
 class IterativeMatcher(object):
-    def __init__(self, filename):
+    def __init__(self, filename, filetype = 'video'):
+        """filetype in [ video, subtitle, movie, moviesubtitle, episode, episodesubtitle ]."""
         if not isinstance(filename, unicode):
             log.debug('WARNING: given filename to matcher is not unicode...')
 
@@ -274,7 +307,7 @@ class IterativeMatcher(object):
         result = [] # list of found metadata
 
         def guessed(match_dict, confidence):
-            guess = format_episode_guess(Guess(match_dict, confidence = confidence))
+            guess = format_guess(Guess(match_dict, confidence = confidence))
             result.append(guess)
             log.debug('Found with confidence %.2f: %s' % (confidence, guess))
             return guess
@@ -305,54 +338,75 @@ class IterativeMatcher(object):
         #       for srt files, a video metadata extractor for avi, mkv, ...
 
         # 2- split each of those into explicit groups, if any
-        #   be careful, as this might split some regexps with more confidence such as Alfleni-Team, or [XCT]
-        #     or split a date such as (14-01-2008)
+        # note: be careful, as this might split some regexps with more confidence such as
+        #       Alfleni-Team, or [XCT] or split a date such as (14-01-2008)
         match_tree = [ split_explicit_groups(part) for part in match_tree ]
 
         # 3- try to match information in decreasing order of confidence and
         #    blank the matching group in the string if we found something
         for pathpart in match_tree:
             for gidx, explicit_group in enumerate(pathpart):
-                pathpart[gidx] = guess_groups(explicit_group, result)
+                pathpart[gidx] = guess_groups(explicit_group, result, filetype = filetype)
 
         # 4- try to identify the remaining unknown groups by looking at their position
         #    relative to other known elements
 
-        eps = find_group(match_tree, 'episodeNumber')
-        #print tree_to_string(match_tree).encode('utf-8')
-        #print filename.encode('utf-8')
-        #print 'Found groups', eps
-        if eps:
-            match_tree = match_from_epnum_position(match_tree, eps[0], guessed, update_found)
+        if filetype in ('episode', 'episodesubtitle'):
+            eps = find_group(match_tree, 'episodeNumber')
+            #print tree_to_string(match_tree).encode('utf-8')
+            #print filename.encode('utf-8')
+            #print 'Found groups', eps
+            if eps:
+                match_tree = match_from_epnum_position(match_tree, eps[0], guessed, update_found)
 
-        leftover = leftover_valid_groups(match_tree)
+            leftover = leftover_valid_groups(match_tree)
 
-        # if there's a path group that only contains the season info, then the previous one
-        # is most likely the series title (ie: .../series/season X/...)
-        eps = [ gpos for gpos in find_group(match_tree, 'season')
-                if 'episodeNumber' not in get_group(match_tree, gpos)[2] ]
+            # if there's a path group that only contains the season info, then the previous one
+            # is most likely the series title (ie: .../series/season X/...)
+            eps = [ gpos for gpos in find_group(match_tree, 'season')
+                    if 'episodeNumber' not in get_group(match_tree, gpos)[2] ]
 
-        if eps:
-            pidx, eidx, gidx = eps[0]
-            previous = [ group for group in leftover if group[1][0] == pidx - 1 ]
-            if len(previous) == 1:
-                guess = guessed({ 'series': previous[0][0] }, confidence = 0.5)
-                leftover = update_found(leftover, previous[0][1], guess)
+            if eps:
+                pidx, eidx, gidx = eps[0]
+                previous = [ group for group in leftover if group[1][0] == pidx - 1 ]
+                if len(previous) == 1:
+                    guess = guessed({ 'series': previous[0][0] }, confidence = 0.5)
+                    leftover = update_found(leftover, previous[0][1], guess)
 
+        elif filetype in ('video', 'subtitle', 'movie', 'moviesubtitle'):
+            # first leftover group in the last path part sounds like a good candidate for title
+            leftover = leftover_valid_groups(match_tree)
+            leftover = [ g for g in leftover_valid_groups(match_tree) if g[1][0] == len(match_tree)-1 ]
+            if leftover:
+                guess = guessed({ 'title': leftover[0][0] }, confidence = 0.6)
+                leftover = update_found(leftover, leftover[0][1], guess)
 
 
         # 5- perform some post-processing steps
 
-        # - if we matched a language in a file with a sub extension and that the group
-        #   is the last group of the filename, it is probably the language of the subtitle
-        if fileext in subtitle_exts:
-            languages = find_group(match_tree, 'language')
-            for lang_gpos in languages:
-                string, remaining, guess = get_group(match_tree, lang_gpos)
-                if (lang_gpos[0] == len(match_tree) - 1 and
-                    lang_gpos[1] == len(match_tree[lang_gpos[0]]) - 1):
-                    guess.set('subtitleLanguage', guess['language'], confidence = guess.confidence('language'))
-                    del guess['language']
+        # 5.1- try to promote language to subtitle language where it makes sense
+        for pidx, eidx, gidx in find_group(match_tree, 'language'):
+            string, remaining, guess = get_group(match_tree, (pidx, eidx, gidx))
+
+            def promote_subtitle():
+                guess.set('subtitleLanguage', guess['language'], confidence = guess.confidence('language'))
+                del guess['language']
+
+            # - if we matched a language in a file with a sub extension and that the group
+            #   is the last group of the filename, it is probably the language of the subtitle
+            #   (eg: 'xxx.english.srt')
+            if (fileext in subtitle_exts and
+                pidx == len(match_tree) - 1 and
+                eidx == len(match_tree[pidx]) - 1):
+                promote_subtitle()
+
+            # - if a language is in an explicit group just preceded by "st", it is a subtitle
+            #   language (eg: '...st[fr-eng]...')
+            if eidx > 0:
+                previous = get_group(match_tree, (pidx, eidx-1, -1))
+                if previous[0][-2:].lower() == 'st':
+                    promote_subtitle()
+
 
 
         # re-append the extension now
@@ -390,16 +444,18 @@ class IterativeMatcher(object):
 
 
         # 2- try to merge similar information together and give it a higher confidence
+        merge_similar_guesses(parts, 'year', choose_int)
         merge_similar_guesses(parts, 'season', choose_int)
         merge_similar_guesses(parts, 'episodeNumber', choose_int)
         merge_similar_guesses(parts, 'series', choose_string)
         merge_similar_guesses(parts, 'container', choose_string)
+        merge_similar_guesses(parts, 'format', choose_string)
 
 
         #for p in parts:
         #    print p.to_json()
 
-        result = merge_all(parts, append = ['language', 'subtitleLanguage'])
+        result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
         #print result, parts
         log.debug('Final result: ' + result.to_json())
 

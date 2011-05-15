@@ -19,6 +19,8 @@
 #
 
 from guessit import slogging, episode, movie, autodetect
+from guessit.textutils import to_utf8
+from guessit.matchtree import tree_to_string
 from optparse import OptionParser
 import sys
 import logging
@@ -34,8 +36,8 @@ def detect_filename(filename):
     m = IterativeMatcher(filename)
     print 'New method found:', m.matched().to_json()
     print 'Match tree:'
-    print m.print_match_tree()
-    print filename.encode('utf-8')
+    print to_utf8(tree_to_string(m.match_tree))
+    print to_utf8(filename)
 
 
 def run_demo(episodes = True, movies = True):

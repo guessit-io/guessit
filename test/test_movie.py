@@ -21,14 +21,17 @@
 
 from guessittest import *
 
+def new_guesser(filename):
+    m = IterativeMatcher(filename, filetype = 'movie')
+    return m.matched()
 
 class TestMovie(TestGuessit):
 
-    def setUp(self):
-        pass
-
-    def testMinimumFieldsCorrect(self):
+    def oldTestMinimumFieldsCorrect(self):
         self.checkMinimumFieldsCorrect(guess_movie_filename, 'movies.yaml')
+
+    def testNewMatcher(self):
+        self.checkMinimumFieldsCorrect(new_guesser, 'movies.yaml')
 
 
 suite = allTests(TestMovie)
