@@ -95,7 +95,9 @@ def tree_to_string(tree):
                  'language': 'l',
                  'videoCodec': 'v',
                  'website': 'w',
-                 'container': 'c'
+                 'container': 'c',
+                 'series': 'T',
+                 'title': 't'
                  }
 
         if result is None:
@@ -319,25 +321,46 @@ class IterativeMatcher(object):
             print map(lambda g: clean_string(g[1]),
                       groups[:gidx])
 
+            def update_found(pidx, eidx, gidx, guess):
+                group = match_tree[pidx][eidx][gidx]
+                match_tree[pidx][eidx][gidx] = (group[0],
+                                                deleted * len(group[0]),
+                                                guess)
+
             # if we only have 1 valid group before the episodeNumber, then it's probably the series name
-            series_candidates = filter(lambda s: len(s) > 3,
-                                       map(lambda g: clean_string(g[1]),
-                                           groups[:gidx]))
+            series_candidates = [ (clean_string(g1[0]), group)
+                                  for group, g1 in enumerate(groups[:gidx]) if not g1[2]]
+            series_candidates = filter(lambda s: len(s[0]) > 3, series_candidates)
+
             if len(series_candidates) == 1:
-                guess = guessed({ 'series': series_candidates[0] }, confidence = 0.7)
-                # TODO: need to update the match tree too, but we need to know which
-                #       groups we actually matched (we might have removed some unlikely
-                #       ones)
+                guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
+                update_found(pidx, eidx, series_candidates[0][1], guess)
 
             # only 1 group after and it's probably the episode title
-            title_candidates = filter(lambda s: len(s) > 3,
-                                      map(lambda g: clean_string(g[1]),
-                                          groups[gidx+1:]))
+            title_candidates = [ (clean_string(g1[0]), gidx+1+group)
+                                 for group, g1 in enumerate(groups[gidx+1:]) if not g1[2] ]
+            title_candidates = filter(lambda s: len(s[0]) > 3, title_candidates)
+
             if len(title_candidates) == 1:
-                guess = guessed({ 'title': title_candidates[0] }, confidence = 0.5)
-                # TODO: need to update the match tree too, but we need to know which
-                #       groups we actually matched (we might have removed some unlikely
-                #       ones)
+                guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.5)
+                update_found(pidx, eidx, title_candidates[0][1], guess)
+
+            # if we only have 1 remaining valid group in the pathpart before the filename,
+            # then it's probably the series name
+            if pidx > 0:
+                series_candidates = []
+                for eeidx, ex_grp in enumerate(match_tree[pidx-1]):
+                    for ggidx, grp in enumerate(ex_grp):
+                        if grp[2]:
+                            continue # it is already a known guess
+                        cstring = clean_string(grp[0])
+                        if len(cstring) > 3:
+                            series_candidates.append((cstring, (eeidx, ggidx)))
+
+            if len(series_candidates) == 1:
+                guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
+                eeidx, ggidx = series_candidates[0][1]
+                update_found(pidx-1, eeidx, ggidx, guess)
 
 
         # TODO: some processing steps here such as
@@ -355,6 +378,8 @@ class IterativeMatcher(object):
 
         self.parts = result
         self.match_tree = match_tree
+        print self.print_match_tree().encode('utf-8')
+        print filename.encode('utf-8')
 
     def print_match_tree(self):
         """TODO: rename me"""
