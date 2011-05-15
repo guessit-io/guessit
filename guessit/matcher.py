@@ -23,7 +23,8 @@ from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, c
 from guessit.date import search_date
 from guessit.language import search_language
 from guessit.patterns import video_exts, subtitle_exts, sep, deleted, episodes_rexps, weak_episodes_rexps, properties, canonical_form
-from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string
+from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
+from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
 from guessit.fileutils import split_path_components
 import datetime
 import os.path
@@ -64,78 +65,10 @@ def format_episode_guess(guess):
 
     return guess
 
-def tree_to_string(tree):
-    """
-    000000 11111 22222222222222222222222222222222222222222222222222222222222222
-    000000 00000 00000000000000000000000000000000000000000000000000111111111111
-    000000 00000 00000011112222222222222222222222222333345555555556011111111112
-    Series/Treme/Treme.____.Right.Place,.Wrong.Time.____._________.____________
-    Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.[tvu.org.ru].avi
-    """
-    m_tree = [ '', # path level index
-               '', # explicit group index
-               '', # matched regexp and dash-separated
-               '', # groups leftover that couldn't be matched
-               '', # meaning conveyed: E = episodenumber, S = season, ...
-               ]
-
-    def add_char(pidx, eidx, gidx, remaining, meaning = None):
-        nr = len(remaining)
-        m_tree[0] = m_tree[0] + str(pidx) * nr
-        m_tree[1] = m_tree[1] + str(eidx) * nr
-        m_tree[2] = m_tree[2] + str(gidx) * nr
-        m_tree[3] = m_tree[3] + remaining
-        m_tree[4] = m_tree[4] + str(meaning or ' ') * nr
-
-    def meaning(result):
-        mmap = { 'episodeNumber': 'E',
-                 'season': 'S',
-                 'extension': 'e',
-                 'format': 'f',
-                 'language': 'l',
-                 'videoCodec': 'v',
-                 'website': 'w',
-                 'container': 'c',
-                 'series': 'T',
-                 'title': 't'
-                 }
-
-        if result is None:
-            return ' '
-
-        for prop, l in mmap.items():
-            if prop in result:
-                return l
-
-        return 'x'
-
-    for pidx, pathpart in enumerate(tree):
-        for eidx, explicit_group in enumerate(pathpart):
-            for gidx, (group, remaining, result) in enumerate(explicit_group):
-                add_char(pidx, eidx, gidx, remaining, meaning(result))
-
-        # special conditions for the path separator
-        if pidx < len(tree) - 2:
-            add_char(' ', ' ', ' ', '/')
-        elif pidx == len(tree) - 2:
-            add_char(' ', ' ', ' ', '.')
-
-    return '\n'.join(m_tree)
 
 # TODO: subs
 
-def find_group(tree, prop):
-    """Find the list of groups that resulted in a guess that contains the
-    asked property."""
-    result = []
-    for pidx, pathpart in enumerate(tree):
-        for eidx, explicit_group in enumerate(pathpart):
-            for gidx, (group, remaining, guess) in enumerate(explicit_group):
-                if guess and prop in guess:
-                    result.append((pidx, eidx, gidx))
-    return result
-
-def guess_groups(string, result):
+def guess_groups(string, result, fileext = None):
     # add sentinels so we can match a separator char at either end of
     # our groups, even when they are at the beginning or end of the string
     # we will adjust the span accordingly later
@@ -263,29 +196,72 @@ def guess_groups(string, result):
                 remaining_groups,
                 guesses)
 
-def iterate_groups(match_tree):
-    """Iterate over all the groups in a match_tree and return them as pairs
-    of (group_pos, group) where:
-     - group_pos = (pidx, eidx, gidx)
-     - group = (string, remaining, guess)
-    """
-    for pidx, pathpart in enumerate(match_tree):
-        for eidx, explicit_group in enumerate(pathpart):
-            for gidx, group in enumerate(explicit_group):
-                yield (pidx, eidx, gidx), group
+
+def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
+    """guessed is a callback function to call with the guessed group
+    update_found is a callback to update the match group and returns leftover groups."""
+    pidx, eidx, gidx = epnum_pos
+
+    # a few helper functions to be able to filter using high-level semantics
+    def same_pgroup_before(group):
+        _, (ppidx, eeidx, ggidx) = group
+        return ppidx == pidx and (eeidx, ggidx) < (eidx, gidx)
+
+    def same_pgroup_after(group):
+        _, (ppidx, eeidx, ggidx) = group
+        return ppidx == pidx and (eeidx, ggidx) > (eidx, gidx)
+
+    def same_egroup_before(group):
+        _, (ppidx, eeidx, ggidx) = group
+        return ppidx == pidx and eeidx == eidx and ggidx < gidx
+
+    def same_egroup_after(group):
+        _, (ppidx, eeidx, ggidx) = group
+        return ppidx == pidx and eeidx == eidx and ggidx > gidx
+
+    leftover = leftover_valid_groups(match_tree)
+
+    # if we only have 1 valid group before the episodeNumber, then it's probably the series name
+    series_candidates = filter(same_pgroup_before, leftover)
+    if len(series_candidates) == 1:
+        guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
+        leftover = update_found(leftover, series_candidates[0][1], guess)
+
+    # only 1 group after (in the same path group) and it's probably the episode title
+    title_candidates = filter(same_pgroup_after, leftover)
+    if len(title_candidates) == 1:
+        guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.5)
+        leftover = update_found(leftover, title_candidates[0][1], guess)
+    else:
+        # try in the same explicit group, with lower confidence
+        title_candidates = filter(same_egroup_after, leftover)
+        if len(title_candidates) == 1:
+            guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.4)
+            leftover = update_found(leftover, title_candidates[0][1], guess)
+
+    # epnumber is the first group and there are only 2 after it in same path group
+    #  -> season title - episode title
+    already_has_title = (find_group(match_tree, 'title') != [])
+
+    title_candidates = filter(same_pgroup_after, leftover)
+    if (not already_has_title and                    # no title
+        not filter(same_pgroup_before, leftover) and # no groups before
+        len(title_candidates) == 2):                 # only 2 groups after
+
+        guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
+        leftover = update_found(leftover, title_candidates[0][1], guess)
+        guess = guessed({ 'title': title_candidates[1][0] }, confidence = 0.4)
+        leftover = update_found(leftover, title_candidates[1][1], guess)
 
 
-def leftover_valid_groups(match_tree, valid = lambda s: len(s) > 3):
-    """Return the list of valid string groups (eg: len(s) > 3) that could not be
-    matched to anything as a list of pairs (cleaned_str, group_pos)."""
-    leftover = []
-    for gpos, (group, remaining, guess) in iterate_groups(match_tree):
-        if not guess:
-            clean_str = clean_string(remaining)
-            if valid(clean_str):
-                leftover.append((clean_str, gpos))
+    # if we only have 1 remaining valid group in the pathpart before the filename,
+    # then it's probably the series name
+    series_candidates = [ group for group in leftover if group[1][0] == pidx-1 ]
+    if len(series_candidates) == 1:
+        guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
+        leftover = update_found(leftover, series_candidates[0][1], guess)
 
-    return leftover
+    return match_tree
 
 
 
@@ -302,6 +278,15 @@ class IterativeMatcher(object):
             result.append(guess)
             log.debug('Found with confidence %.2f: %s' % (confidence, guess))
             return guess
+
+        def update_found(leftover, group_pos, guess):
+            pidx, eidx, gidx = group_pos
+            group = match_tree[pidx][eidx][gidx]
+            match_tree[pidx][eidx][gidx] = (group[0],
+                                            deleted * len(group[0]),
+                                            guess)
+            return [ g for g in leftover if g[1] != group_pos ]
+
 
         # 1- first split our path into dirs + basename + ext
         match_tree = split_path_components(filename)
@@ -338,73 +323,37 @@ class IterativeMatcher(object):
         #print filename.encode('utf-8')
         #print 'Found groups', eps
         if eps:
+            match_tree = match_from_epnum_position(match_tree, eps[0], guessed, update_found)
+
+        leftover = leftover_valid_groups(match_tree)
+
+        # if there's a path group that only contains the season info, then the previous one
+        # is most likely the series title (ie: .../series/season X/...)
+        eps = [ gpos for gpos in find_group(match_tree, 'season')
+                if 'episodeNumber' not in get_group(match_tree, gpos)[2] ]
+
+        if eps:
             pidx, eidx, gidx = eps[0]
-
-            def update_found(leftover, group_pos, guess):
-                pidx, eidx, gidx = group_pos
-                group = match_tree[pidx][eidx][gidx]
-                match_tree[pidx][eidx][gidx] = (group[0],
-                                                deleted * len(group[0]),
-                                                guess)
-                return [ g for g in leftover if g[1] != group_pos ]
-
-            # a few helper functions to be able to filter using high-level semantics
-            def same_pgroup_before(group):
-                _, (ppidx, eeidx, ggidx) = group
-                return ppidx == pidx and (eeidx, ggidx) < (eidx, gidx)
-
-            def same_pgroup_after(group):
-                _, (ppidx, eeidx, ggidx) = group
-                return ppidx == pidx and (eeidx, ggidx) > (eidx, gidx)
-
-            def same_egroup_before(group):
-                _, (ppidx, eeidx, ggidx) = group
-                return ppidx == pidx and eeidx == eidx and ggidx < gidx
-
-            def same_egroup_after(group):
-                _, (ppidx, eeidx, ggidx) = group
-                return ppidx == pidx and eeidx == eidx and ggidx > gidx
-
-            leftover = leftover_valid_groups(match_tree)
-
-            # if we only have 1 valid group before the episodeNumber, then it's probably the series name
-            series_candidates = filter(same_pgroup_before, leftover)
-            if len(series_candidates) == 1:
-                guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
-                leftover = update_found(leftover, series_candidates[0][1], guess)
-
-            # only 1 group after (in the same explicit group) and it's probably the episode title
-            title_candidates = filter(same_egroup_after, leftover)
-            if len(title_candidates) == 1:
-                guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.5)
-                leftover = update_found(leftover, title_candidates[0][1], guess)
-
-            # epnumber is the first group and there are only 2 after it in same path group
-            #  -> season title - episode title
-            already_has_title = (find_group(match_tree, 'title') != [])
-
-            title_candidates = filter(same_pgroup_after, leftover)
-            if (not already_has_title and                    # no title
-                not filter(same_pgroup_before, leftover) and # no groups before
-                len(title_candidates) == 2):                 # only 2 groups after
-
-                guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
-                leftover = update_found(leftover, title_candidates[0][1], guess)
-                guess = guessed({ 'title': title_candidates[1][0] }, confidence = 0.4)
-                leftover = update_found(leftover, title_candidates[1][1], guess)
+            previous = [ group for group in leftover if group[1][0] == pidx - 1 ]
+            if len(previous) == 1:
+                guess = guessed({ 'series': previous[0][0] }, confidence = 0.5)
+                leftover = update_found(leftover, previous[0][1], guess)
 
 
-            # if we only have 1 remaining valid group in the pathpart before the filename,
-            # then it's probably the series name
-            series_candidates = [ group for group in leftover if group[1][0] == pidx-1 ]
-            if len(series_candidates) == 1:
-                guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
-                leftover = update_found(leftover, series_candidates[0][1], guess)
 
+        # 5- perform some post-processing steps
 
-        # TODO: some processing steps here such as
         # - if we matched a language in a file with a sub extension and that the group
         #   is the last group of the filename, it is probably the language of the subtitle
+        if fileext in subtitle_exts:
+            languages = find_group(match_tree, 'language')
+            for lang_gpos in languages:
+                string, remaining, guess = get_group(match_tree, lang_gpos)
+                if (lang_gpos[0] == len(match_tree) - 1 and
+                    lang_gpos[1] == len(match_tree[lang_gpos[0]]) - 1):
+                    guess.set('subtitleLanguage', guess['language'], confidence = guess.confidence('language'))
+                    del guess['language']
+
 
         # re-append the extension now
         #print '*'*100
@@ -413,12 +362,9 @@ class IterativeMatcher(object):
 
         self.parts = result
         self.match_tree = match_tree
-        print self.print_match_tree().encode('utf-8')
-        print filename.encode('utf-8')
 
-    def print_match_tree(self):
-        """TODO: rename me"""
-        return tree_to_string(self.match_tree)
+        log.debug('Found match tree:\n%s\n%s' % (to_utf8(tree_to_string(match_tree)),
+                                                 to_utf8(filename)))
 
 
     def matched(self):
@@ -426,10 +372,29 @@ class IterativeMatcher(object):
         # calling them on the match tree would modify it
         parts = copy.deepcopy(self.parts)
 
+        # 1- start by doing some common preprocessing tasks
+
+        # 1.1- ", the" at the end of a series title should be prepended to it
+        for part in parts:
+            if 'series' not in part:
+                continue
+
+            series = part['series']
+            lseries = series.lower()
+
+            if lseries[-4:] == ',the':
+                part['series'] = 'The ' + series[:-4]
+
+            if lseries[-5:] == ', the':
+                part['series'] = 'The ' + series[:-5]
+
+
         # 2- try to merge similar information together and give it a higher confidence
         merge_similar_guesses(parts, 'season', choose_int)
         merge_similar_guesses(parts, 'episodeNumber', choose_int)
         merge_similar_guesses(parts, 'series', choose_string)
+        merge_similar_guesses(parts, 'container', choose_string)
+
 
         #for p in parts:
         #    print p.to_json()

@@ -50,6 +50,8 @@ class Guess(dict):
                 data[prop] = value.isoformat()
             elif isinstance(value, Language):
                 data[prop] = str(value)
+            elif isinstance(value, list):
+                data[prop] = [ str(x) for x in value ]
 
         parts = json.dumps(data, indent = 4).split('\n')
         for i, p in enumerate(parts):
@@ -221,7 +223,7 @@ def merge_append_guesses(guesses, prop):
 
 def merge_all(guesses, append = []):
     """Merges all the guesses in a single result, removes very unlikely values, and returns it.
-    You can specify a list of properties that should be appended into a list inteaf of being
+    You can specify a list of properties that should be appended into a list instead of being
     merged.
 
     >>> g1 = Guess({ 'season': 2 }, confidence = 0.6)
@@ -235,13 +237,30 @@ def merge_all(guesses, append = []):
     result = guesses[0]
 
     for g in guesses[1:]:
+        # first append our appendable properties
+        for prop in append:
+            if prop in g:
+                result.set(prop, result.get(prop, []) + [ g[prop] ],
+                           # TODO: what to do with confidence here? maybe an arithmetic mean...
+                           confidence = g.confidence(prop))
+
+                del g[prop]
+
+        # then merge the remaining ones
         if set(result) & set(g):
             log.warning('duplicate properties %s in merged result...' % (set(result) & set(g)))
+
         result.update_highest_confidence(g)
 
+    # delete very unlikely values
     for p in result.keys():
         if result.confidence(p) < 0.05:
             del result[p]
+
+    # make sure our appendable properties contain unique values
+    for prop in append:
+        if prop in result:
+            result[prop] = list(set(result[prop]))
 
     return result
 

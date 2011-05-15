@@ -23,7 +23,7 @@ from unittest import *
 import yaml, logging, sys, os
 from os.path import *
 
-MAIN_LOGGING_LEVEL = logging.DEBUG
+MAIN_LOGGING_LEVEL = logging.INFO
 
 
 def currentPath():
@@ -54,6 +54,7 @@ from guessit.video import *
 from guessit.movie import *
 from guessit.episode import *
 from guessit.matcher import *
+from guessit.textutils import to_utf8
 
 
 def allTests(testClass):
@@ -70,7 +71,7 @@ class TestGuessit(TestCase):
                 filename = filename.decode('utf-8')
 
             log.debug('\n' + '-' * 120)
-            log.debug('Guessing information for file: %s' % filename.encode('utf-8'))
+            log.info('Guessing information for file: %s' % to_utf8(filename))
 
             found = guesser(filename)
 
@@ -83,22 +84,24 @@ class TestGuessit(TestCase):
             # compare all properties
             for prop, value in required.items():
                 if prop not in found:
-                    log.warning('Prop \'%s\' not found in: %s' % (prop, filename.encode('utf-8')))
+                    log.warning('Prop \'%s\' not found in: %s' % (prop, to_utf8(filename)))
                     continue
 
-                if type(value) != type(found[prop]) and not (isinstance(value, basestring) and isinstance(found[prop], basestring)):
-                    log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, value, found[prop]))
+                #if type(value) != type(found[prop]) and not (isinstance(value, basestring) and isinstance(found[prop], basestring)):
+                #    log.warning("Wrong prop types for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), found[prop]))
 
-                elif isinstance(value, basestring):
+                if isinstance(value, basestring) and isinstance(found[prop], basestring):
                     if value.lower() != found[prop].lower():
-                        log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, value, found[prop]))
-                elif isinstance(value, list):
-                    s1 = set(s.lower() for s in value)
-                    s2 = set(s.lower() for s in found[prop])
+                        log.warning("Wrong prop value str for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), found[prop]))
+                elif isinstance(value, list) and isinstance(found[prop], list):
+                    s1 = set(str(s).lower() for s in value)
+                    s2 = set(str(s).lower() for s in found[prop])
+                    if s1 != s2:
+                        log.warning("Wrong prop value list for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), found[prop]))
                 else:
-                    if value != found[prop]:
-                        log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, value, found[prop]))
+                    if found[prop] != value:
+                        log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), found[prop]))
 
             for prop, value in found.items():
                 if prop not in required:
-                    log.info("Found additional info for prop = '%s': '%s'" % (prop, value))
+                    log.info("Found additional info for prop = '%s': '%s'" % (prop, to_utf8(value)))

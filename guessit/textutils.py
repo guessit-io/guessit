@@ -250,17 +250,17 @@ def multipleMatchRegexp(string, regexp):
 def between(s, left, right):
     return s.split(left)[1].split(right)[0]
 
-def toUtf8(o):
+def to_utf8(o):
     '''converts all unicode strings found in the given object to utf-8 strings'''
 
     if isinstance(o, unicode):
         return o.encode('utf-8')
     elif isinstance(o, list):
-        return [ toUtf8(i) for i in o ]
+        return [ to_utf8(i) for i in o ]
     elif isinstance(o, dict):
         result = {}
         for key, value in o.items():
-            result[toUtf8(key)] = toUtf8(value)
+            result[to_utf8(key)] = to_utf8(value)
         return result
 
     else:

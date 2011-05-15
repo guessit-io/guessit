@@ -18,8 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.guess import Guess, merge_append_guesses, merge_all
-from guessit import fileutils, textutils
+from guessit import fileutils
 import os.path
 import re
 import logging
@@ -87,6 +86,20 @@ class Language(object):
             raise ValueError, 'The given string "%s" could not be identified as a language' % language
 
         self.lang = lang
+
+    def __hash__(self):
+        return hash(self.lang)
+
+    def __eq__(self, other):
+        if isinstance(other, basestring):
+            try:
+                other = Language(other)
+            except ValueError:
+                return False
+        return self.lang == other.lang
+
+    def __ne__(self, other):
+        return not self == other
 
     def __str__(self):
         return lng3_to_lng_en_name[self.lang]
