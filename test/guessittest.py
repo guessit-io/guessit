@@ -69,7 +69,8 @@ class TestGuessit(TestCase):
             if isinstance(filename, str):
                 filename = filename.decode('utf-8')
 
-            log.debug('Checking guessed information for file: %s' % filename)
+            log.debug('\n' + '-' * 120)
+            log.debug('Guessing information for file: %s' % filename.encode('utf-8'))
 
             found = guesser(filename)
 

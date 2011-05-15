@@ -183,7 +183,7 @@ def guess_groups(string, result):
             current = update_found(current, guess, match.span(), span_adjust = (1, -1))
 
 
-    # common well-defined words
+    # common well-defined words and regexps
     clow = current.lower()
     confidence = 1.0 # for all of them
     for prop, values in properties.items():
@@ -263,6 +263,31 @@ def guess_groups(string, result):
                 remaining_groups,
                 guesses)
 
+def iterate_groups(match_tree):
+    """Iterate over all the groups in a match_tree and return them as pairs
+    of (group_pos, group) where:
+     - group_pos = (pidx, eidx, gidx)
+     - group = (string, remaining, guess)
+    """
+    for pidx, pathpart in enumerate(match_tree):
+        for eidx, explicit_group in enumerate(pathpart):
+            for gidx, group in enumerate(explicit_group):
+                yield (pidx, eidx, gidx), group
+
+
+def leftover_valid_groups(match_tree, valid = lambda s: len(s) > 3):
+    """Return the list of valid string groups (eg: len(s) > 3) that could not be
+    matched to anything as a list of pairs (cleaned_str, group_pos)."""
+    leftover = []
+    for gpos, (group, remaining, guess) in iterate_groups(match_tree):
+        if not guess:
+            clean_str = clean_string(remaining)
+            if valid(clean_str):
+                leftover.append((clean_str, gpos))
+
+    return leftover
+
+
 
 class IterativeMatcher(object):
     def __init__(self, filename):
@@ -309,71 +334,81 @@ class IterativeMatcher(object):
         #    relative to other known elements
 
         eps = find_group(match_tree, 'episodeNumber')
-        print tree_to_string(match_tree).encode('utf-8')
-        print filename.encode('utf-8')
-        print 'Found groups', eps
+        #print tree_to_string(match_tree).encode('utf-8')
+        #print filename.encode('utf-8')
+        #print 'Found groups', eps
         if eps:
             pidx, eidx, gidx = eps[0]
-            groups = match_tree[pidx][eidx]
-            # note: groups = [ (origtext, remaining, guess) ]
 
-            print '--', groups[:gidx]
-            print map(lambda g: clean_string(g[1]),
-                      groups[:gidx])
-
-            def update_found(pidx, eidx, gidx, guess):
+            def update_found(leftover, group_pos, guess):
+                pidx, eidx, gidx = group_pos
                 group = match_tree[pidx][eidx][gidx]
                 match_tree[pidx][eidx][gidx] = (group[0],
                                                 deleted * len(group[0]),
                                                 guess)
+                return [ g for g in leftover if g[1] != group_pos ]
+
+            # a few helper functions to be able to filter using high-level semantics
+            def same_pgroup_before(group):
+                _, (ppidx, eeidx, ggidx) = group
+                return ppidx == pidx and (eeidx, ggidx) < (eidx, gidx)
+
+            def same_pgroup_after(group):
+                _, (ppidx, eeidx, ggidx) = group
+                return ppidx == pidx and (eeidx, ggidx) > (eidx, gidx)
+
+            def same_egroup_before(group):
+                _, (ppidx, eeidx, ggidx) = group
+                return ppidx == pidx and eeidx == eidx and ggidx < gidx
+
+            def same_egroup_after(group):
+                _, (ppidx, eeidx, ggidx) = group
+                return ppidx == pidx and eeidx == eidx and ggidx > gidx
+
+            leftover = leftover_valid_groups(match_tree)
 
             # if we only have 1 valid group before the episodeNumber, then it's probably the series name
-            series_candidates = [ (clean_string(g1[0]), group)
-                                  for group, g1 in enumerate(groups[:gidx]) if not g1[2]]
-            series_candidates = filter(lambda s: len(s[0]) > 3, series_candidates)
-
+            series_candidates = filter(same_pgroup_before, leftover)
             if len(series_candidates) == 1:
                 guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
-                update_found(pidx, eidx, series_candidates[0][1], guess)
+                leftover = update_found(leftover, series_candidates[0][1], guess)
 
-            # only 1 group after and it's probably the episode title
-            title_candidates = [ (clean_string(g1[0]), gidx+1+group)
-                                 for group, g1 in enumerate(groups[gidx+1:]) if not g1[2] ]
-            title_candidates = filter(lambda s: len(s[0]) > 3, title_candidates)
-
+            # only 1 group after (in the same explicit group) and it's probably the episode title
+            title_candidates = filter(same_egroup_after, leftover)
             if len(title_candidates) == 1:
                 guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.5)
-                update_found(pidx, eidx, title_candidates[0][1], guess)
+                leftover = update_found(leftover, title_candidates[0][1], guess)
+
+            # epnumber is the first group and there are only 2 after it in same path group
+            #  -> season title - episode title
+            already_has_title = (find_group(match_tree, 'title') != [])
+
+            title_candidates = filter(same_pgroup_after, leftover)
+            if (not already_has_title and                    # no title
+                not filter(same_pgroup_before, leftover) and # no groups before
+                len(title_candidates) == 2):                 # only 2 groups after
+
+                guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
+                leftover = update_found(leftover, title_candidates[0][1], guess)
+                guess = guessed({ 'title': title_candidates[1][0] }, confidence = 0.4)
+                leftover = update_found(leftover, title_candidates[1][1], guess)
+
 
             # if we only have 1 remaining valid group in the pathpart before the filename,
             # then it's probably the series name
-            if pidx > 0:
-                series_candidates = []
-                for eeidx, ex_grp in enumerate(match_tree[pidx-1]):
-                    for ggidx, grp in enumerate(ex_grp):
-                        if grp[2]:
-                            continue # it is already a known guess
-                        cstring = clean_string(grp[0])
-                        if len(cstring) > 3:
-                            series_candidates.append((cstring, (eeidx, ggidx)))
-
+            series_candidates = [ group for group in leftover if group[1][0] == pidx-1 ]
             if len(series_candidates) == 1:
                 guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
-                eeidx, ggidx = series_candidates[0][1]
-                update_found(pidx-1, eeidx, ggidx, guess)
+                leftover = update_found(leftover, series_candidates[0][1], guess)
 
 
         # TODO: some processing steps here such as
         # - if we matched a language in a file with a sub extension and that the group
         #   is the last group of the filename, it is probably the language of the subtitle
-        # - try to guess series and episode title with what we have left, such as
-        #   - series title would be the group before s01e01
-        #   - ep title would be the group just after s01e01
-        #   - etc...
 
         # re-append the extension now
-        print '*'*100
-        print 'extguess', extguess
+        #print '*'*100
+        #print 'extguess', extguess
         match_tree.append([[(fileext, deleted*len(fileext), extguess)]])
 
         self.parts = result
@@ -384,20 +419,6 @@ class IterativeMatcher(object):
     def print_match_tree(self):
         """TODO: rename me"""
         return tree_to_string(self.match_tree)
-
-
-    def leftover(self):
-        """Return the list of string groups that could not be matched to anything."""
-        leftover = []
-        for pathpart in self.match_tree:
-            for explicit_group in pathpart:
-                for group, remaining, result in explicit_group:
-                    leftover.append(remaining)
-
-        leftover = [ clean_string(l) for l in leftover ]
-        leftover = filter(bool, leftover)
-
-        return leftover
 
 
     def matched(self):
@@ -416,9 +437,5 @@ class IterativeMatcher(object):
         result = merge_all(parts, append = ['language', 'subtitleLanguage'])
         #print result, parts
         log.debug('Final result: ' + result.to_json())
-
-        leftover = self.leftover()
-        print 'Leftover from guessing: %s' % leftover
-        log.debug('Leftover from guessing: %s' % leftover)
 
         return result
