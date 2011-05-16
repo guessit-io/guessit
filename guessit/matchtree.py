@@ -18,31 +18,37 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import fileutils, textutils
-from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
-from guessit.date import search_date
-from guessit.language import search_language
-from guessit.patterns import video_exts, subtitle_exts, sep, deleted
-from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string
-from guessit.fileutils import split_path_components
-import datetime
-import os.path
-import re
-import copy
+from guessit.patterns import deleted
+from guessit.textutils import clean_string
 import logging
 
 log = logging.getLogger("guessit.matchtree")
 
 
 
-
 def tree_to_string(tree):
-    """
-    000000 11111 22222222222222222222222222222222222222222222222222222222222222
-    000000 00000 00000000000000000000000000000000000000000000000000111111111111
-    000000 00000 00000011112222222222222222222222222333345555555556011111111112
-    Series/Treme/Treme.____.Right.Place,.Wrong.Time.____._________.____________
-    Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.[tvu.org.ru].avi
+    """Return a string representation for the given tree.
+
+    The lines convey the following information:
+     - line 1: path idx
+     - line 2: explicit group idx
+     - line 3: group index
+     - line 4: remaining info
+     - line 5: meaning conveyed
+
+    Meaning is a letter indicating what type of info was matched by this group,
+    for instance 't' = title, 'f' = format, 'l' = language, etc...
+
+    An example is the following:
+
+    0000000000000000000000000000000000000000000000000000000000000000000000000000000000 111
+    0000011111111111112222222222222233333333444444444444444455555555666777777778888888 000
+    0000000000000000000000000000000001111112011112222333333401123334000011233340000000 000
+    __________________(The.Prestige).______.[____.HP.______.{__-___}.St{__-___}.Chaps].___
+    xxxxxttttttttttttt               ffffff  vvvv    xxxxxx  ll lll     xx xxx         ccc
+    [XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv
+
+    (note: the last line representing the filename is not pat of the tree representation)
     """
     m_tree = [ '', # path level index
                '', # explicit group index

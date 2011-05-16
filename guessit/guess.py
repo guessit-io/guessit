@@ -226,9 +226,13 @@ def merge_all(guesses, append = []):
     You can specify a list of properties that should be appended into a list instead of being
     merged.
 
-    >>> g1 = Guess({ 'season': 2 }, confidence = 0.6)
-    ... g2 = Guess({ 'episodeNumber': 13 }, confidence = 0.8)
-    ... merge_all([ g1, g2 ])
+    >>> merge_all([ Guess({ 'season': 2 }, confidence = 0.6),
+    ...             Guess({ 'episodeNumber': 13 }, confidence = 0.8) ])
+    {'season': 2, 'episodeNumber': 13}
+
+    >>> merge_all([ Guess({ 'episodeNumber': 27 }, confidence = 0.02),
+    ...             Guess({ 'season': 1 }, confidence = 0.2) ])
+    {'season': 1}
 
     """
     if not guesses:

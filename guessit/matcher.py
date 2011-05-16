@@ -74,8 +74,6 @@ def format_guess(guess):
     return guess
 
 
-# TODO: subs
-
 def guess_groups(string, result, filetype = 'video'):
     # add sentinels so we can match a separator char at either end of
     # our groups, even when they are at the beginning or end of the string
