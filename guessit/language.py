@@ -72,6 +72,17 @@ def is_language(language):
     return language.lower() in lng_all_names
 
 class Language(object):
+    """This class represents a human language.
+
+    You can initialize it with pretty much everything, as it knows conversion from
+    ISO-639 2-letter and 3-letter codes, English and French names.
+
+    >>> Language('fr')
+    Language(French)
+
+    >>> Language('eng').french_name()
+    u'anglais'
+    """
     def __init__(self, language):
         lang = None
         language = language.lower()
@@ -86,6 +97,22 @@ class Language(object):
             raise ValueError, 'The given string "%s" could not be identified as a language' % language
 
         self.lang = lang
+
+    def lng2(self):
+        return lng3_to_lng2[self.lang]
+
+    def lng3(self):
+        return self.lang
+
+    def lng3term(self):
+        return lng3_to_lng3term[self.lang]
+
+    def english_name(self):
+        return lng3_to_lng_en_name[self.lang]
+
+    def french_name(self):
+        return lng3_to_lng_fr_name[self.lang]
+
 
     def __hash__(self):
         return hash(self.lang)

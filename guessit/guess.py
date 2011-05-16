@@ -124,7 +124,31 @@ def choose_int(g1, g2):
 
 def choose_string(g1, g2):
     """Function used by merge_similar_guesses to choose between 2 possible properties
-    when they are strings."""
+    when they are strings.
+
+    If the 2 strings are similar, or one is contained in the other, the latter is returned
+    with an increased confidence.
+
+    If the 2 strings are dissimilar, the one with the higher confidence is returned, with
+    a weaker confidence.
+
+    Note that here, 'similar' means that 2 strings are either equal, or that they
+    differ very little, such as one string being the other one with the 'the' word
+    prepended to it.
+
+    >>> choose_string(('Hello', 0.75), ('World', 0.5))
+    ('Hello', 0.25)
+
+    >>> choose_string(('Hello', 0.5), ('hello', 0.5))
+    ('Hello', 0.75)
+
+    >>> choose_string(('Hello', 0.4), ('Hello World', 0.4))
+    ('Hello', 0.64000000000000001)
+
+    >>> choose_string(('simpsons', 0.5), ('The Simpsons', 0.5))
+    ('The Simpsons', 0.75)
+
+    """
     v1, c1 = g1 # value, confidence
     v2, c2 = g2
 
@@ -214,7 +238,12 @@ def merge_similar_guesses(guesses, prop, choose):
 
 def merge_append_guesses(guesses, prop):
     """Take a list of guesses and merge those which have the same properties by
-    appending them in a list."""
+    appending them in a list.
+
+    DEPRECATED, remove with old guessers
+
+    """
+
 
     similar = [ guess for guess in guesses if prop in guess ]
     if not similar:

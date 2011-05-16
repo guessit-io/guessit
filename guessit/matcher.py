@@ -56,13 +56,6 @@ def format_guess(guess):
 
     Note that this modifies the dictionary given as input.
     """
-
-    #for prop in [ 'season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal' ]:
-    #    try:
-    #        guess[prop] = int(guess[prop])
-    #    except KeyError:
-    #        pass
-
     for prop, value in guess.items():
         if prop in ('season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal'):
             guess[prop] = int(guess[prop])
@@ -297,7 +290,43 @@ def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
 
 class IterativeMatcher(object):
     def __init__(self, filename, filetype = 'autodetect'):
-        """filetype in [ autodetect, subtitle, movie, moviesubtitle, episode, episodesubtitle ]."""
+        """An iterative matcher tries to match different patterns that appear
+        in the filename.
+
+        The 'filetype' argument indicates which type of file you want to match.
+        If it is 'autodetect', the matcher will try to see whether it can guess
+        that the file corresponds to an episode, or otherwise will assume it is
+        a movie.
+
+        The recognized 'filetype' values are:
+        [ autodetect, subtitle, movie, moviesubtitle, episode, episodesubtitle ]
+
+
+        The IterativeMatcher works mainly in 2 steps:
+
+        First, it splits the filename into a match_tree, which is a tree of groups
+        which have a semantic meaning, such as episode number, movie title,
+        etc...
+
+        The match_tree created looks like the following:
+
+        0000000000000000000000000000000000000000000000000000000000000000000000000000000000 111
+        0000011111111111112222222222222233333333444444444444444455555555666777777778888888 000
+        0000000000000000000000000000000001111112011112222333333401123334000011233340000000 000
+        __________________(The.Prestige).______.[____.HP.______.{__-___}.St{__-___}.Chaps].___
+        xxxxxttttttttttttt               ffffff  vvvv    xxxxxx  ll lll     xx xxx         ccc
+        [XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv
+
+        The first 3 lines indicates the group index in which a char in the
+        filename is located. So for instance, x264 is the group (0, 4, 1), and
+        it corresponds to a video codec, denoted by the letter'v' in the 4th line.
+        (for more info, see guess.matchtree.tree_to_string)
+
+
+         Second, it tries to merge all this information into a single object
+         containing all the found properties, and does some (basic) conflict
+         resolution when they arise.
+        """
 
         if not isinstance(filename, unicode):
             log.debug('WARNING: given filename to matcher is not unicode...')
@@ -478,12 +507,7 @@ class IterativeMatcher(object):
         merge_similar_guesses(parts, 'format', choose_string)
         merge_similar_guesses(parts, 'releaseGroup', choose_string)
 
-
-        #for p in parts:
-        #    print p.to_json()
-
         result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
-        #print result, parts
         log.debug('Final result: ' + result.to_json())
 
         return result

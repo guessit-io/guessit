@@ -23,7 +23,7 @@ import os.path
 
 
 def split_path(path):
-    """Splits the given path into the list of folders and the filename (or the
+    r"""Splits the given path into the list of folders and the filename (or the
     last folder if you gave it a folder path.
 
     If the given path was an absolute path, the first element will always be:
@@ -37,9 +37,9 @@ def split_path(path):
     ['relative_path', 'to', 'my_folder']
 
     >>> split_path(r'C:\Program Files\Smewt\smewt.exe')
-    ['C:\\\\', 'Program Files', 'Smewt', 'smewt.exe']
+    ['C:\\', 'Program Files', 'Smewt', 'smewt.exe']
 
-    >>> split_path(r'Documents and Settings\User\config\')
+    >>> split_path(r'Documents and Settings\User\config\\')
     ['Documents and Settings', 'User', 'config']
 
     """
