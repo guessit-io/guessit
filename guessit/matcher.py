@@ -285,10 +285,10 @@ def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
 
 
     # if we only have 1 remaining valid group in the pathpart before the filename,
-    # then it's probably the series name
+    # then it's likely that it is the series name
     series_candidates = [ group for group in leftover if group[1][0] == pidx-1 ]
     if len(series_candidates) == 1:
-        guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
+        guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.5)
         leftover = update_found(leftover, series_candidates[0][1], guess)
 
     return match_tree

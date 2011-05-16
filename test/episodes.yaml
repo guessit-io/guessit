@@ -102,3 +102,10 @@
   season: 2
   episodeNumber: 2
   container: avi
+
+? Series/Dr._Slump_-_002_DVB-Rip_Catalan_by_kelf.avi
+: series: Dr Slump
+  episodeNumber: 2
+  format: DVB
+  language: catalan
+  container: avi

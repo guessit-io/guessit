@@ -105,8 +105,11 @@ class Language(object):
     def __ne__(self, other):
         return not self == other
 
-    def __str__(self):
+    def __unicode__(self):
         return lng3_to_lng_en_name[self.lang]
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
     def __repr__(self):
         return 'Language(%s)' % self
@@ -125,7 +128,7 @@ def search_language(string):
     lng_common_words = frozenset([ # english words
                                    'is', 'it', 'am', 'mad', 'men', 'run', 'sin', 'st',
                                    # french words
-                                   'bas', 'de', 'le', 'son',
+                                   'bas', 'de', 'le', 'son', 'vo', 'vf',
                                    # spanish words
                                    'la', 'el',
                                    # other

@@ -64,11 +64,14 @@ video_rexps = [ # cd number
                 (r'(?P<edition>criterion)' + sep + 'edition', 1.0, (0, 0)),
 
                 # director's cut
-                (r"(?P<edition>director'?s?" + sep + "cut)", 1.0, (0, 0))
+                (r"(?P<edition>director'?s?" + sep + "cut)", 1.0, (0, 0)),
+
+                # video size
+                (r'(?P<width>[0-9]{3,4})x(?P<height>[0-9]{3,4})', 0.9, (0, 0)),
                 ]
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip',
-                           'HDRip', 'DVD', 'DVDivX', 'Rip', 'HDTV', 'DVB' ],
+                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB' ],
 
                'container': [ 'avi', 'mkv', 'ogv', 'wmv', 'mp4', 'mov' ],
 
@@ -77,6 +80,8 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                'videoCodec': [ 'XviD', 'DivX', 'x264', 'h264', 'Rv10' ],
 
                'audioCodec': [ 'AC3', 'DTS', 'He-AAC', 'AAC-He', 'AAC' ],
+
+               'audioChannels': [ '5.1' ],
 
                'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA',
                                  'CHD', 'ViTE', 'DiAMOND', 'TLF', 'DEiTY', 'FLAiTE',

@@ -19,6 +19,7 @@
 #
 
 from guessit.patterns import sep
+import copy
 
 # string cleaning related functions
 
@@ -258,7 +259,7 @@ def to_utf8(o):
     elif isinstance(o, list):
         return [ to_utf8(i) for i in o ]
     elif isinstance(o, dict):
-        result = {}
+        result = copy.deepcopy(o) # need to do it like that to handle Guess instances correctly
         for key, value in o.items():
             result[to_utf8(key)] = to_utf8(value)
         return result

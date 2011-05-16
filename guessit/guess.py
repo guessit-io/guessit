@@ -41,8 +41,7 @@ class Guess(dict):
         for prop in self:
             self._confidence[prop] = confidence
 
-    def to_json(self):
-        """NB: this doesn't return a valid json, maybe it should be renamed..."""
+    def to_utf8_dict(self):
         from guessit.language import Language
         data = dict(self)
         for prop, value in data.items():
@@ -50,8 +49,16 @@ class Guess(dict):
                 data[prop] = value.isoformat()
             elif isinstance(value, Language):
                 data[prop] = str(value)
+            elif isinstance(value, unicode):
+                data[prop] = value.encode('utf-8')
             elif isinstance(value, list):
                 data[prop] = [ str(x) for x in value ]
+
+        return data
+
+    def to_json(self):
+        """NB: this doesn't return a valid json, maybe it should be renamed..."""
+        data = self.to_utf8_dict()
 
         parts = json.dumps(data, indent = 4).split('\n')
         for i, p in enumerate(parts):
@@ -62,6 +69,9 @@ class Guess(dict):
             parts[i] = ('    [%.2f] "' % (self._confidence.get(prop) or -1)) + p[5:]
 
         return '\n'.join(parts)
+
+    def __str__(self):
+        return str(self.to_utf8_dict())
 
     def confidence(self, prop):
         return self._confidence[prop]
