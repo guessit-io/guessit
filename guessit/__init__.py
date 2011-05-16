@@ -24,6 +24,7 @@ __all__ = [ 'guess_file_info', 'guess_video_info',
 
 
 from guessit.guess import merge_all
+from guessit.matcher import IterativeMatcher
 import logging
 
 log = logging.getLogger("guessit")
@@ -60,6 +61,8 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
 
         # do some stuff
     """
+
+    return result
 
 
 def guess_video_info(filename, info = [ 'filename' ]):
