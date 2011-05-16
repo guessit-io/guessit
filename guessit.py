@@ -18,28 +18,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import slogging, autodetect
-from guessit.matcher import IterativeMatcher
+from guessit import slogging, autodetect, guess_file_info
 from guessit.textutils import to_utf8
-from guessit.matchtree import tree_to_string
 from optparse import OptionParser
 import sys
 import logging
 
 
-def detect_filename(filename, filetype):
+def detect_filename(filename, filetype, info = ['filename']):
     if isinstance(filename, str):
         filename = filename.decode('utf-8')
 
     print 'For:', to_utf8(filename)
     print 'Old method found:', autodetect.guess_filename_info(filename).to_json()
-
-
-    m = IterativeMatcher(filename, filetype = filetype)
-    print 'New method found:', m.matched().to_json()
-    print 'Match tree:'
-    print to_utf8(tree_to_string(m.match_tree))
-    print to_utf8(filename)
+    print 'New method found:', guess_file_info(filename, filetype, info).to_json()
 
 
 def run_demo(episodes = True, movies = True):
@@ -95,6 +87,8 @@ if __name__ == '__main__':
     parser = OptionParser(usage = 'usage: %prog [options] file1 [file2...]')
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
                       help = 'display debug output')
+    parser.add_option('-i', '--info', dest = 'info', default = 'filename',
+                      help = 'the desired information type: filename, hash_mpc or a list of them, comma-separated')
     parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
                       help = 'run a few builtin tests instead of analyzing a file')
 
@@ -107,7 +101,7 @@ if __name__ == '__main__':
     else:
         if args:
             for filename in args:
-                detect_filename(filename, filetype = 'autodetect')
+                detect_filename(filename, filetype = 'autodetect', info = options.info.split(','))
 
         else:
             parser.print_help()
