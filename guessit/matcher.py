@@ -74,12 +74,12 @@ def format_guess(guess):
     return guess
 
 
-def guess_groups(string, result, filetype = 'video'):
+def guess_groups(string, result, filetype):
     # add sentinels so we can match a separator char at either end of
     # our groups, even when they are at the beginning or end of the string
     # we will adjust the span accordingly later
     #
-    # filetype can either be video, subtitle, movie, moviesubtitle, episode, episodesubtitle
+    # filetype can either be movie, moviesubtitle, episode, episodesubtitle
     current = ' ' + string + ' '
 
     regions = [] # list of (start, end) of matched regions
@@ -296,8 +296,9 @@ def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
 
 
 class IterativeMatcher(object):
-    def __init__(self, filename, filetype = 'video'):
-        """filetype in [ video, subtitle, movie, moviesubtitle, episode, episodesubtitle ]."""
+    def __init__(self, filename, filetype = 'autodetect'):
+        """filetype in [ autodetect, subtitle, movie, moviesubtitle, episode, episodesubtitle ]."""
+
         if not isinstance(filename, unicode):
             log.debug('WARNING: given filename to matcher is not unicode...')
 
@@ -324,8 +325,13 @@ class IterativeMatcher(object):
 
         fileext = match_tree.pop(-1)[1:].lower()
         if fileext in subtitle_exts:
-            extguess = guessed({ 'type': 'subtitle',
-                                 'container': fileext }, confidence = 1.0)
+            if 'movie' in filetype:
+                filetype = 'moviesubtitle'
+            elif 'episode' in filetype:
+                filetype = 'episodesubtitle'
+            else:
+                filetype = 'subtitle'
+            extguess = guessed({ 'container': fileext }, confidence = 1.0)
         elif fileext in video_exts:
             extguess = guessed({ 'container': fileext }, confidence = 1.0)
         else:
@@ -335,10 +341,33 @@ class IterativeMatcher(object):
         #       guessers, eg: a lang parser for idx files, an automatic detection of the language
         #       for srt files, a video metadata extractor for avi, mkv, ...
 
+        # if we are on autodetect, try to do it now so we can tell the
+        # guess_groups function what type of info it should be looking for
+        if filetype in ('autodetect', 'subtitle'):
+            for rexp, confidence, span_adjust in episode_rexps:
+                print rexp, filename
+                match = re.search(rexp, filename, re.IGNORECASE)
+                if match:
+                    if filetype == 'autodetect':
+                        filetype = 'episode'
+                    elif filetype == 'subtitle':
+                        filetype = 'episodesubtitle'
+                    break
+            print 'autodetect', filetype
+            # if no episode info found, assume it's a movie
+            if filetype == 'autodetect':
+                filetype = 'movie'
+            elif filetype == 'subtitle':
+                filetype = 'moviesubtitle'
+
+        guessed({ 'type': filetype }, confidence = 1.0)
+
+
         # 2- split each of those into explicit groups, if any
         # note: be careful, as this might split some regexps with more confidence such as
         #       Alfleni-Team, or [XCT] or split a date such as (14-01-2008)
         match_tree = [ split_explicit_groups(part) for part in match_tree ]
+
 
         # 3- try to match information in decreasing order of confidence and
         #    blank the matching group in the string if we found something
@@ -371,7 +400,7 @@ class IterativeMatcher(object):
                     guess = guessed({ 'series': previous[0][0] }, confidence = 0.5)
                     leftover = update_found(leftover, previous[0][1], guess)
 
-        elif filetype in ('video', 'subtitle', 'movie', 'moviesubtitle'):
+        elif filetype in ('movie', 'moviesubtitle'):
             # first leftover group in the last path part sounds like a good candidate for title
             leftover = leftover_valid_groups(match_tree)
             leftover = [ g for g in leftover_valid_groups(match_tree) if g[1][0] == len(match_tree)-1 ]

@@ -106,8 +106,7 @@ if __name__ == '__main__':
     else:
         if args:
             for filename in args:
-                # FIXME: need to implement autodetection here
-                detect_filename(filename, filetype = 'episode')
+                detect_filename(filename, filetype = 'autodetect')
 
         else:
             parser.print_help()
