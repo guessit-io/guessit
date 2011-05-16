@@ -59,9 +59,13 @@ def tree_to_string(tree):
 
     def add_char(pidx, eidx, gidx, remaining, meaning = None):
         nr = len(remaining)
-        m_tree[0] = m_tree[0] + str(pidx) * nr
-        m_tree[1] = m_tree[1] + str(eidx) * nr
-        m_tree[2] = m_tree[2] + str(gidx) * nr
+        def to_hex(x):
+            if isinstance(x, int):
+                return str(x) if x < 10 else chr(55+x)
+            return x
+        m_tree[0] = m_tree[0] + to_hex(pidx) * nr
+        m_tree[1] = m_tree[1] + to_hex(eidx) * nr
+        m_tree[2] = m_tree[2] + to_hex(gidx) * nr
         m_tree[3] = m_tree[3] + remaining
         m_tree[4] = m_tree[4] + str(meaning or ' ') * nr
 
