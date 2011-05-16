@@ -19,7 +19,11 @@
 #
 
 __version__ = '0.1-dev'
+__all__ = [ 'guess_file_info', 'guess_video_info',
+            'guess_movie_info', 'guess_episode_info' ]
 
+
+from guessit.guess import merge_all
 import logging
 
 log = logging.getLogger("guessit")
@@ -31,5 +35,40 @@ class NullHandler(logging.Handler):
 # let's be a nicely behaving library
 h = NullHandler()
 log.addHandler(h)
+
+
+
+
+def guess_file_info(filename, filetype, info = [ 'filename' ]):
+    """info can contain the names of the various plugins, such as 'filename' to
+    detect filename info, or 'md5' to get the md5 hash of the file."""
+    result = []
+    if 'filename' in info:
+        m = IterativeMatcher(filename, filetype = 'autodetect')
+        result.append(m.matched())
+
+    if 'md5' in info:
+        pass
+
+    """For plugins which depend on some optional library, import them like that:
+
+    if 'plugin_name' in info:
+        try:
+            import optional_lib
+        except ImportError:
+            raise Exception, 'The plugin module cannot be loaded because the optional_lib lib is missing'
+
+        # do some stuff
+    """
+
+
+def guess_video_info(filename, info = [ 'filename' ]):
+    return merge_all(guess_file_info(filename, 'autodetect', info))
+
+def guess_movie_info(filename, info = [ 'filename' ]):
+    return merge_all(guess_file_info(filename, 'movie', info))
+
+def guess_episode_info(filename, info = [ 'filename' ]):
+    return merge_all(guess_file_info(filename, 'episode', info))
 
 

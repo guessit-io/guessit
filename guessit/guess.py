@@ -127,6 +127,12 @@ def choose_string(g1, g2):
     when they are strings."""
     v1, c1 = g1 # value, confidence
     v2, c2 = g2
+
+    if not v1:
+        return g2
+    elif not v2:
+        return g1
+
     v1, v2 = v1.strip(), v2.strip()
     v1l, v2l = v1.lower(), v2.lower()
 

@@ -18,7 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import slogging, episode, movie, autodetect
+from guessit import slogging, autodetect
+from guessit.matcher import IterativeMatcher
 from guessit.textutils import to_utf8
 from guessit.matchtree import tree_to_string
 from optparse import OptionParser
@@ -32,7 +33,7 @@ def detect_filename(filename, filetype):
 
     print 'For:', to_utf8(filename)
     print 'Old method found:', autodetect.guess_filename_info(filename).to_json()
-    from guessit.matcher import IterativeMatcher
+
 
     m = IterativeMatcher(filename, filetype = filetype)
     print 'New method found:', m.matched().to_json()

@@ -141,7 +141,7 @@ def guess_groups(string, result, filetype):
         if match:
             metadata = match.groupdict()
             metadata.update({ 'videoCodec': match.group(1) })
-            guess = guessed(metadata, confidence = 1.0)
+            guess = guessed(metadata, confidence = 0.8)
             current = update_found(current, guess, match.span(), span_adjust = (1, -1))
 
 
@@ -345,7 +345,6 @@ class IterativeMatcher(object):
         # guess_groups function what type of info it should be looking for
         if filetype in ('autodetect', 'subtitle'):
             for rexp, confidence, span_adjust in episode_rexps:
-                print rexp, filename
                 match = re.search(rexp, filename, re.IGNORECASE)
                 if match:
                     if filetype == 'autodetect':
@@ -353,7 +352,7 @@ class IterativeMatcher(object):
                     elif filetype == 'subtitle':
                         filetype = 'episodesubtitle'
                     break
-            print 'autodetect', filetype
+
             # if no episode info found, assume it's a movie
             if filetype == 'autodetect':
                 filetype = 'movie'
@@ -477,6 +476,7 @@ class IterativeMatcher(object):
         merge_similar_guesses(parts, 'series', choose_string)
         merge_similar_guesses(parts, 'container', choose_string)
         merge_similar_guesses(parts, 'format', choose_string)
+        merge_similar_guesses(parts, 'releaseGroup', choose_string)
 
 
         #for p in parts:

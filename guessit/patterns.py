@@ -86,7 +86,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA',
                                  'CHD', 'ViTE', 'DiAMOND', 'TLF', 'DEiTY', 'FLAiTE',
                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
-                                 'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV' ],
+                                 'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL' ],
 
                'website': [ 'tvu.org.ru', 'emule-island.com' ],
 
