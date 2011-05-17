@@ -26,17 +26,6 @@ import logging
 log = logging.getLogger('guessit.language')
 
 
-_reverse_language_map = { 'English': [ 'english', 'eng', 'en' ],
-                          'French': [ 'french', 'fr', 'francais', u'français' ],
-                          'Spanish': [ 'spanish', 'es', 'esp', 'espanol', u'español' ], # should we remove 'es'? (very common in spanish)
-                          'Italian': [ 'italian', 'italiano', 'ita' ]  # no 'it', too common a word
-                          }
-
-_language_map = {}
-for lang, langs in _reverse_language_map.items():
-    for l in langs:
-        _language_map[l] = lang
-
 
 # downloaded from http://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
 #
@@ -153,9 +142,9 @@ def search_language(string):
     # are far too common to be able to say they represent a language in the
     # middle of a string (where they most likely carry their commmon meaning)
     lng_common_words = frozenset([ # english words
-                                   'is', 'it', 'am', 'mad', 'men', 'run', 'sin', 'st',
+                                   'is', 'it', 'am', 'mad', 'men', 'run', 'sin', 'st', 'to', 'no',
                                    # french words
-                                   'bas', 'de', 'le', 'son', 'vo', 'vf', 'ne',
+                                   'bas', 'de', 'le', 'son', 'vo', 'vf', 'ne', 'ca', 'ce', 'et',
                                    # spanish words
                                    'la', 'el',
                                    # other
