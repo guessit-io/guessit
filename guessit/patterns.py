@@ -56,6 +56,7 @@ weak_episode_rexps = [ # ... 213 ...
 
 video_rexps = [ # cd number
                 (r'cd ?(?P<cdNumber>[0-9])( ?of ?(?P<cdNumberTotal>[0-9]))?', 1.0, (0, 0)),
+                (r'(?P<cdNumberTotal>[1-9]) cds?', 0.9, (0, 0)),
 
                 # special editions
                 (r'edition' + sep + r'(?P<edition>collector)', 1.0, (0, 0)),

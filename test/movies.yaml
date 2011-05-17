@@ -1,19 +1,19 @@
 
 ? Movies/Fear and Loathing in Las Vegas (1998)/Fear.and.Loathing.in.Las.Vegas.720p.HDDVD.DTS.x264-ESiR.mkv
 : title: Fear and Loathing in Las Vegas
+  year: 1998
   screenSize: 720p
   format: HD-DVD
   audioCodec: DTS
   videoCodec: h264
   releaseGroup: ESiR
-  container: mkv
 
 ? Movies/El Dia de la Bestia (1995)/El.dia.de.la.bestia.DVDrip.Spanish.DivX.by.Artik[SEDG].avi
 : title: El Dia de la Bestia
+  year: 1995
   format: DVD
   language: spanish
   videoCodec: DivX
-  container: avi
 
 ? Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
 : title: Dark City
@@ -23,7 +23,6 @@
   audioCodec: DTS
   videoCodec: h264
   releaseGroup: CHD
-  container: mkv
 
 ? Movies/Sin City (BluRay) (2005)/Sin.City.2005.BDRip.720p.x264.AC3-SEPTiC.mkv
 : title: Sin City
@@ -33,7 +32,6 @@
   videoCodec: h264
   audioCodec: AC3
   releaseGroup: SEPTiC
-  container: mkv
 
 
 ? Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi
@@ -44,7 +42,6 @@
   other: [ R5, PROPER, REPACK ]
   videoCodec: XviD
   releaseGroup: PUKKA
-  container: avi
 
 
 ? "[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv"
@@ -54,60 +51,57 @@
   audioCodec: AAC
   language: [ french, english ]
   subtitleLanguage: [ french, english ]
-  container: mkv
+  releaseGroup: '[XCT]'
 
 ? Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi
 : title: Battle Royale
   year: 2000
   edition: special edition
   cdNumber: 1
+  cdNumberTotal: 2
   format: DVD
   videoCodec: XviD
   releaseGroup: ZeaL
-  container: avi
 
 ? Movies/Brazil (1985)/Brazil_Criterion_Edition_(1985).CD2.avi
 : title: Brazil
   edition: Criterion Edition
   year: 1985
   cdNumber: 2
-  container: avi
 
 ? Movies/Persepolis (2007)/[XCT] Persepolis [H264+Aac-128(Fr-Eng)+ST(Fr-Eng)+Ind].mkv
 : releaseGroup: "[XCT]"
   title: Persepolis
+  year: 2007
   videoCodec: h264
   audioCodec: AAC
   language: [ French, English ]
   subtitleLanguage: [ French, English ]
-  container: mkv
 
 ? Movies/Toy Story (1995)/Toy Story [HDTV 720p English-Spanish].mkv
 : title: Toy Story
+  year: 1995
   format: HDTV
   screenSize: 720p
   language: [ english, spanish ]
-  container: mkv
 
 ? Movies/Office Space (1999)/Office.Space.[Dual-DVDRip].[Spanish-English].[XviD-AC3-AC3].[by.Oswald].avi
 : title: Office Space
+  year: 1999
   format: DVD
   language: [ english, spanish ]
   videoCodec: XviD
   audioCodec: AC3
-  container: avi
 
 ? Movies/Wild Zero (2000)/Wild.Zero.DVDivX-EPiC.avi
 : title: Wild Zero
+  year: 2000
+  videoCodec: DivX
   releaseGroup: EPiC
-  container: avi
-
 
 ? movies/Baraka_Edition_Collector.avi
 : title: Baraka
   edition: collector edition
-  container: avi
-
 
 ? Movies/Blade Runner (1982)/Blade.Runner.(1982).(Director's.Cut).CD1.DVDRip.XviD.AC3-WAF.avi
 : title: Blade Runner
@@ -118,7 +112,6 @@
   videoCodec: XviD
   audioCodec: AC3
   releaseGroup: WAF
-  container: avi
 
 ? movies/American.The.Bill.Hicks.Story.2009.DVDRip.XviD-EPiSODE.[UsaBit.com]/UsaBit.com_esd-americanbh.avi
 : title: American The Bill Hicks Story
@@ -128,6 +121,12 @@
   releaseGroup: EPiSODE
   website: UsaBit.com
 
+? movies/Charlie.And.Boots.DVDRip.XviD-TheWretched/wthd-cab.avi
+: title: Charlie And Boots
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: TheWretched
+
 ? movies/Steig Larsson Millenium Trilogy (2009) BRrip 720 AAC x264/(1)The Girl With The Dragon Tattoo (2009) BRrip 720 AAC x264.mkv
 : title: The Girl With The Dragon Tattoo
   year: 2009
@@ -135,4 +134,35 @@
   audioCodec: AAC
   videoCodec: h264
   screenSize: 720p
-  container: mkv
+
+? movies/Greenberg.REPACK.LiMiTED.DVDRip.XviD-ARROW/arw-repack-greenberg.dvdrip.xvid.avi
+: title: Greenberg
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: ARROW
+  other: ['repack', 'limited']
+
+? Movies/Fr - Paris 2054, Renaissance (2005) - De Christian Volckman - (Film Divx Science Fiction Fantastique Thriller Policier N&B).avi
+: title: Paris 2054, Renaissance
+  year: 2005
+  language: french
+
+? Movies/[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi
+: title: Avida
+  year: 2006
+  language: french
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: PROD
+
+? Movies/Alice in Wonderland DVDRip.XviD-DiAMOND/dmd-aw.avi
+: title: Alice in Wonderland
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: DiAMOND
+
+? Movies/Ne.Le.Dis.A.Personne.Fr 2 cd/personnea_mp.avi
+: title: Ne Le Dis A Personne
+  language: french
+  cdNumberTotal: 2
+

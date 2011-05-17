@@ -408,9 +408,6 @@ class IterativeMatcher(object):
 
         if filetype in ('episode', 'episodesubtitle'):
             eps = find_group(match_tree, 'episodeNumber')
-            #print tree_to_string(match_tree).encode('utf-8')
-            #print filename.encode('utf-8')
-            #print 'Found groups', eps
             if eps:
                 match_tree = match_from_epnum_position(match_tree, eps[0], guessed, update_found)
 
@@ -439,10 +436,10 @@ class IterativeMatcher(object):
                 print 'leftover', leftover
                 title, (pidx, eidx, gidx) = leftover[0]
                 previous_pgroup_leftover = filter(lambda g: g[1][0] == pidx-1, leftover_all)
-                print 'previous_pgroup_leftover', previous_pgroup_leftover
+                print previous_pgroup_leftover
                 if (title.count(' ') == 0 and
                     previous_pgroup_leftover and
-                    previous_pgroup_leftover[0][0].count(' ') > 2):
+                    previous_pgroup_leftover[0][0].count(' ') >= 2):
 
                     guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
                     leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
@@ -450,6 +447,14 @@ class IterativeMatcher(object):
                 else:
                     guess = guessed({ 'title': title }, confidence = 0.6)
                     leftover = update_found(leftover, leftover[0][1], guess)
+            else:
+                # if there were no leftover groups in the last path part, look in the one before that
+                previous_pgroup_leftover = filter(lambda g: g[1][0] == len(match_tree)-2, leftover_all)
+                if previous_pgroup_leftover:
+                    guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
+                    leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
+
+
 
 
         # 5- perform some post-processing steps

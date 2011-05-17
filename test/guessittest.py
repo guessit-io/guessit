@@ -75,10 +75,12 @@ class TestGuessit(TestCase):
 
             found = guesser(filename)
 
-            del found['type'] # no need for this in the unittests
+            # no need for this in the unittests
+            del found['type']
+            del found['container']
 
             # props which are list of just 1 elem should be opened for easier writing of the tests
-            for prop in ('language', 'subtitleLanguage'):
+            for prop in ('language', 'subtitleLanguage', 'other'):
                 value = found.get(prop, None)
                 if isinstance(value, list) and len(value) == 1:
                     found[prop] = value[0]

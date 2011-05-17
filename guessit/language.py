@@ -155,11 +155,11 @@ def search_language(string):
     lng_common_words = frozenset([ # english words
                                    'is', 'it', 'am', 'mad', 'men', 'run', 'sin', 'st',
                                    # french words
-                                   'bas', 'de', 'le', 'son', 'vo', 'vf',
+                                   'bas', 'de', 'le', 'son', 'vo', 'vf', 'ne',
                                    # spanish words
                                    'la', 'el',
                                    # other
-                                   'ind',
+                                   'ind', 'arw'
                                    ])
     sep = r'[](){} \._-+'
 
