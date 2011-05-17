@@ -75,4 +75,10 @@ def split_path_components(filename):
 
 
 def file_in_same_dir(ref_file, desired_file):
+    """Return the path for a file in the same dir as a given reference file.
+
+    >>> file_in_same_dir('~/smewt/smewt.db', 'smewt.settings')
+    '~/smewt/smewt.settings'
+
+    """
     return os.path.join(*(split_path(ref_file)[:-1] + [ desired_file ]))

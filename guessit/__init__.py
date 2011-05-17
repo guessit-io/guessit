@@ -19,11 +19,13 @@
 #
 
 __version__ = '0.1-dev'
-__all__ = [ 'Guess', 'guess_file_info', 'guess_video_info',
+__all__ = [ 'Guess', 'Language',
+            'guess_file_info', 'guess_video_info',
             'guess_movie_info', 'guess_episode_info' ]
 
 
 from guessit.guess import Guess, merge_all
+from guessit.language import Language
 from guessit.matcher import IterativeMatcher
 import logging
 

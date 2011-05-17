@@ -180,7 +180,7 @@ def guess_groups(string, result, filetype):
         else:
             guess = guessed({ 'language': language }, confidence = confidence)
         current = update_found(current, guess, span)
-        #print 'current', current
+
         language, span, confidence = search_language(current)
 
 
@@ -433,10 +433,9 @@ class IterativeMatcher(object):
             leftover_all = leftover_valid_groups(match_tree)
             leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-1 ]
             if leftover:
-                print 'leftover', leftover
                 title, (pidx, eidx, gidx) = leftover[0]
                 previous_pgroup_leftover = filter(lambda g: g[1][0] == pidx-1, leftover_all)
-                print previous_pgroup_leftover
+
                 if (title.count(' ') == 0 and
                     previous_pgroup_leftover and
                     previous_pgroup_leftover[0][0].count(' ') >= 2):
@@ -485,8 +484,6 @@ class IterativeMatcher(object):
 
 
         # re-append the extension now
-        #print '*'*100
-        #print 'extguess', extguess
         match_tree.append([[(fileext, deleted*len(fileext), extguess)]])
 
         self.parts = result

@@ -18,12 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.patterns import sep
+from guessit.patterns import sep, deleted
 import copy
 
-# string cleaning related functions
+# string-related functions
 
-def stripBrackets(s):
+def strip_brackets(s):
     if not s:
         return s
     if s[0] == '[' and s[-1] == ']': return s[1:-1]
@@ -31,16 +31,6 @@ def stripBrackets(s):
     if s[0] == '{' and s[-1] == '}': return s[1:-1]
     return s
 
-def find_any(s, chars):
-    """Return the index of the first appearence of any char from chars in s.
-    If no such character appear, return the length of the string (and not -1!!)."""
-    pos = len(s)
-    for c in chars:
-        try:
-            pos = min(pos, s.index(c))
-        except ValueError: pass
-
-    return pos
 
 def clean_string(s):
     for c in sep:
@@ -48,9 +38,6 @@ def clean_string(s):
     parts = s.split()
     return ' '.join(p for p in parts if p != '')
 
-# needed for the new Matcher
-
-from guessit.patterns import deleted
 
 def str_replace(string, pos, c):
     return string[:pos] + c + string[pos+1:]
@@ -59,6 +46,59 @@ def blank_region(string, region, blank_sep = deleted):
     start, end = region
     return string[:start] + blank_sep * (end - start) + string[end:]
 
+
+def between(s, left, right):
+    return s.split(left)[1].split(right)[0]
+
+def to_utf8(o):
+    '''converts all unicode strings found in the given object to utf-8 strings'''
+
+    if isinstance(o, unicode):
+        return o.encode('utf-8')
+    elif isinstance(o, list):
+        return [ to_utf8(i) for i in o ]
+    elif isinstance(o, dict):
+        result = copy.deepcopy(o) # need to do it like that to handle Guess instances correctly
+        for key, value in o.items():
+            result[to_utf8(key)] = to_utf8(value)
+        return result
+
+    else:
+        return o
+
+
+def levenshtein(a, b):
+    if not a: return len(b)
+    if not b: return len(a)
+
+    m = len(a)
+    n = len(b)
+    d = []
+    for i in range(m+1):
+        d.append([0] * (n+1))
+
+    for i in range(m+1):
+        d[i][0] = i
+
+    for j in range(n+1):
+        d[0][j] = j
+
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if a[i-1] == b[j-1]:
+                cost = 0
+            else:
+                cost = 1
+
+            d[i][j] = min(d[i-1][j] + 1,     # deletion
+                          d[i][j-1] + 1,     # insertion
+                          d[i-1][j-1] + cost # substitution
+                          )
+
+    return d[m][n]
+
+
+# group-related functions
 
 def find_first_level_groups_span(string, enclosing):
     """Return a list of pairs (start, end) for the groups delimited by the given
@@ -166,134 +206,5 @@ def find_first_level_groups(string, enclosing, blank_sep = None):
 
 
 
-# regexps-related functions
-import re
-
-def simpleMatch(string, regexp):
-    try:
-        return re.compile(regexp).search(string).groups()[0]
-    except IndexError:
-        raise ValueError("'%s' Does not match regexp '%s'" % (string, regexp))
-
-def matchRegexp(string, regexp):
-    """Tries to match the given string against the regexp (using named match groups)
-    and raises a SmewtException if it didn't match."""
-    match = re.compile(regexp, re.IGNORECASE | re.DOTALL).search(string)
-    if match:
-        return match.groupdict()
-    raise ValueError("'%s' Does not match regexp '%s'" % (string, regexp))
-
-def matchAllRegexpWithSpan(string, regexps):
-    """Matches the string against a list of regexps (using named match groups) and
-    returns a list of all found matches coupled with their full group span."""
-    result = []
-    for regexp in regexps:
-        s = string
-        rexp = re.compile(regexp, re.IGNORECASE)
-        match = rexp.search(s)
-        while match:
-            result.append((match.groupdict(), match.span()))
-            s = s[match.span()[1]:]
-            match = rexp.search(s)
-    return result
-
-def matchAllRegexp(string, regexps):
-    """Matches the string against a list of regexps (using named match groups) and
-    returns a list of all found matches."""
-    return [ match for match, span in matchAllRegexpWithSpan(string, regexps) ]
-
-def matchAllRegexpMinIndex(string, regexps):
-    """Matches the string against a list of regexps (using named match groups) and
-    returns a list of all found matches, as well as the index of the beginning of the
-    first match group."""
-    result = []
-    minidx = len(string)
-    for regexp in regexps:
-        s = string
-        removed = 0
-        rexp = re.compile(regexp, re.IGNORECASE)
-        match = rexp.search(s)
-        while match:
-            result.append(match.groupdict())
-            beg, end = match.span()
-            minidx = min(minidx, beg+removed)
-            s = s[end:]
-            removed += end
-            match = rexp.search(s)
-    return result, minidx
-
-def matchAnyRegexp(string, regexps):
-    """Matches the string against a list of regexps (using named match groups) and
-    returns the first match it could find, None if not found."""
-    for regexp in regexps:
-        result = re.compile(regexp, re.IGNORECASE).search(string)
-        if result:
-            return result.groupdict()
-    return None
-
-def multipleMatchRegexp(string, regexp):
-    """Matches the given string against the regexp (using named match groups) and returns
-    a list of all found matches in the string"""
-    rexp = re.compile(regexp, re.IGNORECASE | re.DOTALL)
-    result = []
-    while True:
-        match = rexp.search(string)
-        if match:
-            result += [ match.groupdict() ]
-            # keep everything after what's been matched, and try to match again
-            string = string[match.end(match.lastindex):]
-        else:
-            return result
 
 
-#string-related functions
-
-def between(s, left, right):
-    return s.split(left)[1].split(right)[0]
-
-def to_utf8(o):
-    '''converts all unicode strings found in the given object to utf-8 strings'''
-
-    if isinstance(o, unicode):
-        return o.encode('utf-8')
-    elif isinstance(o, list):
-        return [ to_utf8(i) for i in o ]
-    elif isinstance(o, dict):
-        result = copy.deepcopy(o) # need to do it like that to handle Guess instances correctly
-        for key, value in o.items():
-            result[to_utf8(key)] = to_utf8(value)
-        return result
-
-    else:
-        return o
-
-
-def levenshtein(a, b):
-    if not a: return len(b)
-    if not b: return len(a)
-
-    m = len(a)
-    n = len(b)
-    d = []
-    for i in range(m+1):
-        d.append([0] * (n+1))
-
-    for i in range(m+1):
-        d[i][0] = i
-
-    for j in range(n+1):
-        d[0][j] = j
-
-    for i in range(1, m+1):
-        for j in range(1, n+1):
-            if a[i-1] == b[j-1]:
-                cost = 0
-            else:
-                cost = 1
-
-            d[i][j] = min(d[i-1][j] + 1,     # deletion
-                          d[i][j-1] + 1,     # insertion
-                          d[i-1][j-1] + cost # substitution
-                          )
-
-    return d[m][n]

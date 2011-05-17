@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import slogging, autodetect, guess_file_info
+from guessit import slogging, guess_file_info
 from guessit.textutils import to_utf8
 from optparse import OptionParser
 import sys
@@ -30,8 +30,7 @@ def detect_filename(filename, filetype, info = ['filename']):
         filename = filename.decode('utf-8')
 
     print 'For:', to_utf8(filename)
-    print 'Old method found:', autodetect.guess_filename_info(filename).to_json()
-    print 'New method found:', guess_file_info(filename, filetype, info).to_json()
+    print 'GuessIt found:', guess_file_info(filename, filetype, info).to_json()
 
 
 def run_demo(episodes = True, movies = True):
