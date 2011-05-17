@@ -70,12 +70,12 @@ video_rexps = [ # cd number
                 (r'(?P<width>[0-9]{3,4})x(?P<height>[0-9]{3,4})', 0.9, (0, 0)),
                 ]
 
-properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip',
+properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip', 'BRRip',
                            'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB' ],
 
                'container': [ 'avi', 'mkv', 'ogv', 'wmv', 'mp4', 'mov' ],
 
-               'screenSize': [ '720p' ],
+               'screenSize': [ '720p', '720' ],
 
                'videoCodec': [ 'XviD', 'DivX', 'x264', 'h264', 'Rv10' ],
 
@@ -88,7 +88,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
                                  'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL' ],
 
-               'website': [ 'tvu.org.ru', 'emule-island.com' ],
+               'website': [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com' ],
 
                'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed', 'R5',
                           'complete', 'classic', # not so sure about these ones, could appear in a title
@@ -101,9 +101,10 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
 
 property_synonyms = { 'DVD': [ 'DVDRip' ],
                       'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
-                      'BluRay': [ 'BDRip' ],
+                      'BluRay': [ 'BDRip', 'BRRip' ],
                       'DivX': [ 'DVDivX' ],
                       'h264': [ 'x264' ],
+                      '720p': [ '720' ],
                       'AAC': [ 'He-AAC', 'AAC-He' ],
                       'Special Edition': [ 'Special' ],
                       'Collector Edition': [ 'Collector' ],

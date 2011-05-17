@@ -429,12 +429,27 @@ class IterativeMatcher(object):
                     leftover = update_found(leftover, previous[0][1], guess)
 
         elif filetype in ('movie', 'moviesubtitle'):
-            # first leftover group in the last path part sounds like a good candidate for title
-            leftover = leftover_valid_groups(match_tree)
-            leftover = [ g for g in leftover_valid_groups(match_tree) if g[1][0] == len(match_tree)-1 ]
+            # first leftover group in the last path part sounds like a good candidate for title,
+            # except if it's only one word and that the first group before has at least 3 words in it
+            # (case where the filename contains an 8 chars short name and the movie title is
+            #  actually in the parent directory name)
+            leftover_all = leftover_valid_groups(match_tree)
+            leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-1 ]
             if leftover:
-                guess = guessed({ 'title': leftover[0][0] }, confidence = 0.6)
-                leftover = update_found(leftover, leftover[0][1], guess)
+                print 'leftover', leftover
+                title, (pidx, eidx, gidx) = leftover[0]
+                previous_pgroup_leftover = filter(lambda g: g[1][0] == pidx-1, leftover_all)
+                print 'previous_pgroup_leftover', previous_pgroup_leftover
+                if (title.count(' ') == 0 and
+                    previous_pgroup_leftover and
+                    previous_pgroup_leftover[0][0].count(' ') > 2):
+
+                    guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
+                    leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
+
+                else:
+                    guess = guessed({ 'title': title }, confidence = 0.6)
+                    leftover = update_found(leftover, leftover[0][1], guess)
 
 
         # 5- perform some post-processing steps
@@ -499,15 +514,14 @@ class IterativeMatcher(object):
 
 
         # 2- try to merge similar information together and give it a higher confidence
-        merge_similar_guesses(parts, 'year', choose_int)
-        merge_similar_guesses(parts, 'season', choose_int)
-        merge_similar_guesses(parts, 'episodeNumber', choose_int)
-        merge_similar_guesses(parts, 'series', choose_string)
-        merge_similar_guesses(parts, 'container', choose_string)
-        merge_similar_guesses(parts, 'format', choose_string)
-        merge_similar_guesses(parts, 'releaseGroup', choose_string)
+        for int_part in ('year', 'season', 'episodeNumber'):
+            merge_similar_guesses(parts, int_part, choose_int)
+
+        for string_part in ('series', 'container', 'format', 'releaseGroup', 'website',
+                            'audioCodec', 'videoCodec', 'screenSize'):
+            merge_similar_guesses(parts, string_part, choose_int)
 
         result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
-        log.debug('Final result: ' + result.to_json())
 
+        log.debug('Final result: ' + result.to_json())
         return result

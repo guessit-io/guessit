@@ -63,7 +63,7 @@
   cdNumber: 1
   format: DVD
   videoCodec: XviD
-  releaseGroup: [ZeaL]
+  releaseGroup: ZeaL
   container: avi
 
 ? Movies/Brazil (1985)/Brazil_Criterion_Edition_(1985).CD2.avi
@@ -120,4 +120,19 @@
   releaseGroup: WAF
   container: avi
 
+? movies/American.The.Bill.Hicks.Story.2009.DVDRip.XviD-EPiSODE.[UsaBit.com]/UsaBit.com_esd-americanbh.avi
+: title: American The Bill Hicks Story
+  year: 2009
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: EPiSODE
+  website: UsaBit.com
 
+? movies/Steig Larsson Millenium Trilogy (2009) BRrip 720 AAC x264/(1)The Girl With The Dragon Tattoo (2009) BRrip 720 AAC x264.mkv
+: title: The Girl With The Dragon Tattoo
+  year: 2009
+  format: BluRay
+  audioCodec: AAC
+  videoCodec: h264
+  screenSize: 720p
+  container: mkv

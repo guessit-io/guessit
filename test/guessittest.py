@@ -75,6 +75,8 @@ class TestGuessit(TestCase):
 
             found = guesser(filename)
 
+            del found['type'] # no need for this in the unittests
+
             # props which are list of just 1 elem should be opened for easier writing of the tests
             for prop in ('language', 'subtitleLanguage'):
                 value = found.get(prop, None)
