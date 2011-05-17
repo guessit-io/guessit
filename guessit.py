@@ -30,7 +30,7 @@ def detect_filename(filename, filetype, info = ['filename']):
         filename = filename.decode('utf-8')
 
     print 'For:', to_utf8(filename)
-    print 'GuessIt found:', guess_file_info(filename, filetype, info).to_json()
+    print 'GuessIt found:', guess_file_info(filename, filetype, info).nice_string()
 
 
 def run_demo(episodes = True, movies = True):

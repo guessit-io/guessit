@@ -2,37 +2,118 @@ GuessIt
 =======
 
 GuessIt is a python library that tries to extract as much information as
-possible from a filename.
+possible from a file.
 
-GuessIt works with video files, both movies and tv shows episodes.
+It has a very powerful filename matcher that allows to guess a lot of
+metadata from a video using only its filename. This matcher works with
+both movies and tv shows episodes.
 
-Currently, GuessIt only extract information from the filename, but it could very
-well be in the future that it uses some other libraries to extract information
-from the video metadata itself (ie: codec, bitrate, etc...)
+Guessit also allows you to compute a whole lof of hashes from a file,
+namely all the ones you can find in the hashlib python module, but
+also the Media Player Classic hash that is used (amongst others) by
+OpenSubtitles and SMPlayer.
+
+
+Properties recognized by the filename matcher
+---------------------------------------------
+
+At the moment, the filename matcher is able to recognize the following
+property types:
+
+    [ title,                                 # for movies and episodes
+      series, season, episodeNumber,         # for episodes only
+      videoCodec, audioCodec,
+      audioChannels, format,
+      releaseGroup, website, other
+      ]
+
 
 Command-line usage
 ==================
 
-To have GuessIt try to guess some information from a filename, just run it as a command:
+To have GuessIt try to guess some information from a filename, just run it as a command::
 
-user@home:~$ /home/download/tmp/testsmewt_bugs/series/Ren\ and\ Stimpy\ -\ Black_hole_\[DivX\].avi
+    user@home:~$ python guessit.py "Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv"
+    For: Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
+    GuessIt found: {
+        [1.00] "videoCodec": "h264",
+        [1.00] "container": "mkv",
+        [1.00] "format": "BluRay",
+        [0.60] "title": "Dark City",
+        [1.00] "releaseGroup": "CHD",
+        [1.00] "screenSize": "720p",
+        [1.00] "year": 1998,
+        [1.00] "type": "movie",
+        [1.00] "audioCodec": "DTS"
+    }
 
-For: /home/download/tmp/testsmewt_bugs/series/Ren and Stimpy - Black_hole_[DivX].avi
-Found: {
-    [0.10] "series": "Ren and Stimpy",
-    [1.00] "videoCodec": "DivX",
-    [1.00] "container": "avi",
-    [0.80] "type": "episode"
-}
+The numbers between square brackets indicate the confidence in the
+value, so for instance in the previous example, GuessIt is sure that
+the videoCodec is h264, but only 60% confident that the title is 'Dark
+City'.
 
-user@home:~$
 
 You can use the '-v' or '--verbose' flag to have it display debug information.
 
-You can also run a '--demo' mode which will run a few tests and display the results
+You can also run a '--demo' mode which will run a few tests and
+display the results.
+
+Guessit also allows you to specify the type of information you want
+using the -i or --info flag::
+
+    user@home:~$ python guessit.py -i hash_md5,hash_sha1,hash_mpc "Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv"
+    For: Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
+    GuessIt found: {
+        [1.00] "hash_md5": "ec237dbae95387fd99fb1f3c92dea5e4",
+        [1.00] "hash_mpc": "c065bf9633f613a2",
+        [1.00] "hash_sha1": "94079ad92fd2089a1fde3fc08ce8c814ad880eb2"
+    }
 
 
 Python module usage
 ===================
+
+The main entry points to the python module are the guess_video_info,
+guess_movie_info and guess_episode_info.
+
+The guess_video_info function will try to autodetect the type of the
+file, either movie, moviesubtitle, episode or episodesubtitle.
+
+Pass them the filename and
+the desired information type:
+
+    >>> import guessit
+    >>> guess = guessit.guess_movie_info('Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv', info = ['filename'])
+
+    >>> print type(guess)
+    <class 'guessit.guess.Guess'>
+
+    >>> print guess
+    {'videoCodec': 'h264', 'container': 'mkv', 'format': 'BluRay', 'title': 'Dark City', 'releaseGroup': 'CHD', 'screenSize': '720p', 'year': 1998, 'type': 'movie', 'audioCodec': 'DTS'}
+
+    >>> print guess.nice_string()
+    {
+        [1.00] "videoCodec": "h264",
+        [1.00] "container": "mkv",
+        [1.00] "format": "BluRay",
+        [0.60] "title": "Dark City",
+        [1.00] "releaseGroup": "CHD",
+        [1.00] "screenSize": "720p",
+        [1.00] "year": 1998,
+        [1.00] "type": "movie",
+        [1.00] "audioCodec": "DTS"
+    }
+
+A Guess instance is a dictionary which has an associated confidence
+for each of the properties it has.
+
+A Guess instance is also a python dict instance, so you can use it
+wherever you would use a normal python dict
+
+
+
+
+How does the filename matcher work?
+===================================
 
 TODO

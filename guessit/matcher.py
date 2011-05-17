@@ -525,5 +525,5 @@ class IterativeMatcher(object):
 
         result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
 
-        log.debug('Final result: ' + result.to_json())
+        log.debug('Final result: ' + result.nice_string())
         return result

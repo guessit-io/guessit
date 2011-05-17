@@ -56,8 +56,7 @@ class Guess(dict):
 
         return data
 
-    def to_json(self):
-        """NB: this doesn't return a valid json, maybe it should be renamed..."""
+    def nice_string(self):
         data = self.to_utf8_dict()
 
         parts = json.dumps(data, indent = 4).split('\n')
