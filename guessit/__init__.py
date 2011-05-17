@@ -44,14 +44,14 @@ log.addHandler(h)
 
 def guess_file_info(filename, filetype, info = [ 'filename' ]):
     """info can contain the names of the various plugins, such as 'filename' to
-    detect filename info, or 'md5' to get the md5 hash of the file."""
+    detect filename info, or 'hash_md5' to get the md5 hash of the file."""
     result = []
     for infotype in info:
         if infotype == 'filename':
             m = IterativeMatcher(filename, filetype = 'autodetect')
             result.append(m.matched())
 
-        if infotype == 'hash_mpc':
+        elif infotype == 'hash_mpc':
             import hash_mpc
             try:
                 result.append(Guess({ 'hash_mpc': hash_mpc.hash_file(filename) },
@@ -59,13 +59,30 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
             except Exception, e:
                 log.warning('Could not compute MPC-style hash because: %s' % e)
 
-        if infotype == 'md5':
-            log.error('MD5 not implemented yet')
-            pass
+        elif infotype.startswith('hash_'):
+            import hashlib
+            hashname = infotype[5:]
+            try:
+                hasher = getattr(hashlib, hashname)()
+                blocksize = 8192
+                with open(filename, 'rb') as f:
+                    for chunk in iter(lambda: f.read(blocksize), ''):
+                        hasher.update(chunk)
+
+                result.append(Guess({ infotype: hasher.hexdigest() },
+                                    confidence = 1.0))
+            except AttributeError:
+                log.warning('Could not compute %s hash because it is not available from python\'s hashlib module' % hashname)
+            except Exception, e:
+                log.warning('Could not compute %s hash because: %s' % (hashname, e))
+
+        else:
+            log.warning('Invalid infotype: %s' % infotype)
+
 
         """For plugins which depend on some optional library, import them like that:
 
-        if 'plugin_name' in info:
+        if infotype == 'plugin_name':
             try:
                 import optional_lib
             except ImportError:

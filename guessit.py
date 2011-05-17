@@ -87,7 +87,9 @@ if __name__ == '__main__':
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
                       help = 'display debug output')
     parser.add_option('-i', '--info', dest = 'info', default = 'filename',
-                      help = 'the desired information type: filename, hash_mpc or a list of them, comma-separated')
+                      help = 'the desired information type: filename, hash_mpc or a hash from python\'s '
+                             'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
+                             'them, comma-separated')
     parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
                       help = 'run a few builtin tests instead of analyzing a file')
 
