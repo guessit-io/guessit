@@ -132,29 +132,48 @@ class Language(object):
 
 
 
-def search_language(string):
+def search_language(string, lang_filter = None):
     """Looks for language patterns, and if found return the language object,
     its group span and an associated confidence.
+
+    you can specify a list of allowed languages using the lang_filter argument,
+    as in lang_filter = [ 'fr', 'eng', 'spanish' ]
+
     Assumes there are sentinels at the beginning and end of the string that
-    always allow matching a non-letter delimiting the language."""
+    always allow matching a non-letter delimiting the language.
+
+    >>> search_language('movie [en].avi')
+    (Language(English), (7, 9), 0.80000000000000004)
+
+    >>> search_language('the zen fat cat and the gay mad men got a new fan', lang_filter = ['en', 'fr', 'es'])
+    (None, None, None)
+    """
 
     # list of common words which could be interpreted as languages, but which
     # are far too common to be able to say they represent a language in the
     # middle of a string (where they most likely carry their commmon meaning)
     lng_common_words = frozenset([ # english words
-                                   'is', 'it', 'am', 'mad', 'men', 'run', 'sin', 'st', 'to', 'no',
+                                   'is', 'it', 'am', 'mad', 'men', 'man', 'run', 'sin', 'st', 'to',
+                                   'no', 'non', 'war', 'min', 'new', 'car', 'day', 'bad', 'bat', 'fan',
+                                   'fry', 'cop', 'zen', 'gay', 'fat', 'cherokee', 'got', 'an', 'as',
+                                   'cat', 'her', 'be', 'hat', 'sun', 'may', 'my',
                                    # french words
-                                   'bas', 'de', 'le', 'son', 'vo', 'vf', 'ne', 'ca', 'ce', 'et',
+                                   'bas', 'de', 'le', 'son', 'vo', 'vf', 'ne', 'ca', 'ce', 'et', 'que',
+                                   'mal', 'est', 'vol', 'or',
                                    # spanish words
-                                   'la', 'el',
+                                   'la', 'el', 'del', 'por', 'mar',
                                    # other
-                                   'ind', 'arw'
+                                   'ind', 'arw', 'ts', 'ii', 'bin', 'chan', 'ss', 'san'
                                    ])
     sep = r'[](){} \._-+'
+
+    if lang_filter:
+        lang_filter = set(Language(l) for l in lang_filter)
 
     slow = string.lower()
     confidence = 1.0 # for all of them
     for lang in lng_all_names:
+
         if lang in lng_common_words:
             continue
 
@@ -164,6 +183,10 @@ def search_language(string):
             end = pos + len(lang)
             # make sure our word is always surrounded by separators
             if slow[pos-1] not in sep or slow[end] not in sep:
+                continue
+
+            language = Language(slow[pos:end])
+            if lang_filter and language not in lang_filter:
                 continue
 
             # confidence depends on lng2, lng3, english name, ...
@@ -176,6 +199,6 @@ def search_language(string):
                 #       or assume that full language names are too common words
                 confidence = 0.3 # going with the low-confidence route here
 
-            return Language(slow[pos:end]), (pos, end), confidence
+            return language, (pos, end), confidence
 
     return None, None, None

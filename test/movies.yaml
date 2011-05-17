@@ -166,3 +166,54 @@
   language: french
   cdNumberTotal: 2
 
+? Movies/Bunker Palace Hôtel (Enki Bilal) (1989)/Enki Bilal - Bunker Palace Hotel (Fr Vhs Rip).avi
+: title: Bunker Palace Hôtel
+  year: 1989
+  language: french
+  format: VHS
+
+? Movies/21 (2008)/21.(2008).DVDRip.x264.AC3-FtS.[sharethefiles.com].mkv
+: title: 21
+  year: 2008
+  format: DVD
+  videoCodec: h264
+  audioCodec: AC3
+  website: sharethefiles.com
+
+? Movies/9 (2009)/9.2009.Blu-ray.DTS.720p.x264.HDBRiSe.[sharethefiles.com].mkv
+: title: 9
+  year: 2009
+  format: BluRay
+  audioCodec: DTS
+  screenSize: 720p
+  videoCodec: h264
+  website: sharethefiles.com
+
+? Movies/Mamma.Mia.2008.DVDRip.AC3.XviD-CrazyTeam/Mamma.Mia.2008.DVDRip.AC3.XviD-CrazyTeam.avi
+: title: Mamma Mia
+  year: 2008
+  format: DVD
+  audioCodec: AC3
+  videoCodec: XviD
+  releaseGroup: CrazyTeam
+
+? Movies/M.A.S.H. (1970)/MASH.(1970).[Divx.5.02][Dual-Subtitulos][DVDRip].ogm
+: title: M A S H
+  year: 1970
+  videoCodec: DivX
+  format: DVD
+
+? Movies/The Doors (1991)/09.03.08.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv
+: title: The Doors
+  year: 1991
+  date: 2008-03-09
+  format: BluRay
+  screenSize: 720p
+  audioCodec: AC3
+  videoCodec: h264
+  language: english
+  website: sharethefiles.com
+
+? Movies/Ratatouille/video_ts-ratatouille.srt
+: title: Ratatouille
+

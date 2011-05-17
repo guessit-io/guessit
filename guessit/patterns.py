@@ -21,7 +21,7 @@
 
 subtitle_exts = [ 'srt', 'idx', 'sub' ]
 
-video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'mov', 'ogg', 'ogv', 'wmv' ]
+video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'mov', 'ogg', 'ogm', 'ogv', 'wmv' ]
 
 # separator character regexp
 sep = r'[][)(}{+ \._-]' # regexp art, hehe :D
@@ -74,7 +74,7 @@ video_rexps = [ # cd number
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip', 'BRRip',
                            'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB' ],
 
-               'container': [ 'avi', 'mkv', 'ogv', 'wmv', 'mp4', 'mov' ],
+               'container': [ 'avi', 'mkv', 'ogv', 'ogm', 'wmv', 'mp4', 'mov' ],
 
                'screenSize': [ '720p', '720' ],
 
@@ -89,7 +89,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
                                  'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL' ],
 
-               'website': [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com' ],
+               'website': [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com', 'sharethefiles.com' ],
 
                'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed', 'R5',
                           'complete', 'classic', # not so sure about these ones, could appear in a title

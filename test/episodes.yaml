@@ -140,3 +140,34 @@
 : series: Ren and Stimpy
   title: Black hole
   videoCodec: DivX
+
+? Series/Walt Disney/Donald.Duck.-.Good.Scouts.[www.bigernie.jump.to].avi
+: series: Walt Disney
+  website: www.bigernie.jump.to
+
+? Series/Neverwhere/Neverwhere.05.Down.Street.[tvu.org.ru].avi
+: series: Neverwhere
+  episodeNumber: 5
+  title: Down Street
+  website: tvu.org.ru
+
+? Series/South Park/Season 4/South.Park.4x07.Cherokee.Hair.Tampons.DVDRip.[tvu.org.ru].avi
+: series: South Park
+  season: 4
+  episodeNumber: 7
+  title: Cherokee Hair Tampons
+  format: DVD
+
+? Series/Kaamelott/Kaamelott - Livre V - Ep 23 - Le Forfait.avi
+: series: Kaamelott
+  episodeNumber: 23
+  title: Le Forfait
+
+? Series/Duckman/Duckman - 110 (10) - 20021218 - Cellar Beware.avi
+: series: Duckman
+  season: 1
+  episodeNumber: 10
+  date: 2002-12-18
+  title: Cellar Beware
+
+
