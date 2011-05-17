@@ -9,9 +9,9 @@ metadata from a video using only its filename. This matcher works with
 both movies and tv shows episodes.
 
 Guessit also allows you to compute a whole lof of hashes from a file,
-namely all the ones you can find in the hashlib python module, but
-also the Media Player Classic hash that is used (amongst others) by
-OpenSubtitles and SMPlayer.
+namely all the ones you can find in the hashlib python module (md5,
+sha1, ...), but also the Media Player Classic hash that is used (amongst
+others) by OpenSubtitles and SMPlayer, as well as the ed2k hash.
 
 
 Properties recognized by the filename matcher
@@ -22,9 +22,14 @@ property types:
 
     [ title,                                 # for movies and episodes
       series, season, episodeNumber,         # for episodes only
+      date, year,                            # date instance of datetime.date
+      language, subtitleLanguage,            # instances of guessit.Language
+      container, format,
       videoCodec, audioCodec,
-      audioChannels, format,
-      releaseGroup, website, other
+      audioChannels, screenSize,
+      releaseGroup, website,
+      cdNumber, cdNumberTotal,
+      edition, other
       ]
 
 
