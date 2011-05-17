@@ -66,12 +66,12 @@ display the results.
 Guessit also allows you to specify the type of information you want
 using the -i or --info flag::
 
-    user@home:~$ python guessit.py -i hash_md5,hash_sha1,hash_mpc "Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv"
-    For: Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
+    user@home:~$  python guessit.py -i hash_md5,hash_sha1,hash_ed2k test/dummy.srt
+    For: test/dummy.srt
     GuessIt found: {
-        [1.00] "hash_md5": "ec237dbae95387fd99fb1f3c92dea5e4",
-        [1.00] "hash_mpc": "c065bf9633f613a2",
-        [1.00] "hash_sha1": "94079ad92fd2089a1fde3fc08ce8c814ad880eb2"
+        [1.00] "hash_ed2k": "ed2k://|file|dummy.srt|44|1CA0B9DED3473B926AA93A0A546138BB|/",
+        [1.00] "hash_md5": "e781de9b94ba2753a8e2945b2c0a123d",
+        [1.00] "hash_sha1": "bfd18e2f4e5d59775c2bc14d80f56971891ed620"
     }
 
 

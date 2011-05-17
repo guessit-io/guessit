@@ -50,6 +50,8 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
     {'hash_md5': 'e781de9b94ba2753a8e2945b2c0a123d', 'hash_sha1': 'bfd18e2f4e5d59775c2bc14d80f56971891ed620'}
     """
     result = []
+    hashers = []
+
     for infotype in info:
         if infotype == 'filename':
             m = IterativeMatcher(filename, filetype = filetype)
@@ -63,22 +65,22 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
             except Exception, e:
                 log.warning('Could not compute MPC-style hash because: %s' % e)
 
+        elif infotype == 'hash_ed2k':
+            import hash_ed2k
+            try:
+                result.append(Guess({ 'hash_ed2k': hash_ed2k.hash_file(filename) },
+                                    confidence = 1.0))
+            except Exception, e:
+                log.warning('Could not compute ed2k hash because: %s' % e)
+
         elif infotype.startswith('hash_'):
             import hashlib
             hashname = infotype[5:]
             try:
                 hasher = getattr(hashlib, hashname)()
-                blocksize = 8192
-                with open(filename, 'rb') as f:
-                    for chunk in iter(lambda: f.read(blocksize), ''):
-                        hasher.update(chunk)
-
-                result.append(Guess({ infotype: hasher.hexdigest() },
-                                    confidence = 1.0))
+                hashers.append((infotype, hasher))
             except AttributeError:
                 log.warning('Could not compute %s hash because it is not available from python\'s hashlib module' % hashname)
-            except Exception, e:
-                log.warning('Could not compute %s hash because: %s' % (hashname, e))
 
         else:
             log.warning('Invalid infotype: %s' % infotype)
@@ -94,6 +96,23 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
 
         # do some stuff
         """
+
+    # do all the hashes now, but on a single pass
+    try:
+        blocksize = 8192
+        hasherobjs = dict(hashers).values()
+
+        with open(filename, 'rb') as f:
+            for chunk in iter(lambda: f.read(blocksize), ''):
+                for hasher in hasherobjs:
+                    hasher.update(chunk)
+
+        for infotype, hasher in hashers:
+            result.append(Guess({ infotype: hasher.hexdigest() },
+                                confidence = 1.0))
+    except Exception, e:
+        log.warning('Could not compute hash because: %s' % e)
+
 
     return merge_all(result)
 
