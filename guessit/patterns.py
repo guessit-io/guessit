@@ -74,7 +74,7 @@ video_rexps = [ # cd number
                 (r'(?P<website>www(\.[a-zA-Z0-9]+){2,3})', 0.8, (0, 0))
                 ]
 
-properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip', 'BRRip',
+properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'Blu-ray', 'BDRip', 'BRRip',
                            'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB' ],
 
                'container': [ 'avi', 'mkv', 'ogv', 'ogm', 'wmv', 'mp4', 'mov' ],
@@ -105,7 +105,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
 
 property_synonyms = { 'DVD': [ 'DVDRip' ],
                       'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
-                      'BluRay': [ 'BDRip', 'BRRip' ],
+                      'BluRay': [ 'BDRip', 'BRRip', 'Blu-ray' ],
                       'DivX': [ 'DVDivX' ],
                       'h264': [ 'x264' ],
                       '720p': [ '720' ],

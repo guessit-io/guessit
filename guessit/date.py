@@ -60,33 +60,49 @@ def search_date(string):
     (None, None)
     """
 
-    dsep = r'[-/]'
+    dsep = r'[-/ \.]'
 
-    date_rexps = [ r'[^0-9]' +
+    date_rexps = [ # 20010823
+                   r'[^0-9]' +
                    r'(?P<year>[0-9]{4})' +
                    r'(?P<month>[0-9]{2})' +
                    r'(?P<day>[0-9]{2})' +
                    r'[^0-9]',
 
+                   # 2001-08-23
                    r'[^0-9]' +
                    r'(?P<year>[0-9]{4})' + dsep +
                    r'(?P<month>[0-9]{2})' + dsep +
                    r'(?P<day>[0-9]{2})' +
                    r'[^0-9]',
 
+                   # 23-08-2001
                    r'[^0-9]' +
                    r'(?P<day>[0-9]{2})' + dsep +
                    r'(?P<month>[0-9]{2})' + dsep +
                    r'(?P<year>[0-9]{4})' +
-                   r'[^0-9]'
+                   r'[^0-9]',
+
+                   # 23-08-01
+                   r'[^0-9]' +
+                   r'(?P<day>[0-9]{2})' + dsep +
+                   r'(?P<month>[0-9]{2})' + dsep +
+                   r'(?P<year>[0-9]{2})' +
+                   r'[^0-9]',
                    ]
 
     for drexp in date_rexps:
         match = re.search(drexp, string)
-
         if match:
             d = match.groupdict()
             year, month, day = int(d['year']), int(d['month']), int(d['day'])
+            # years specified as 2 digits should be adjusted here
+            if year < 100:
+                if year > (datetime.date.today().year % 100)+ 5:
+                    year = 1900 + year
+                else:
+                    year = 2000 + year
+
             date = None
             try:
                 date = datetime.date(year, month, day)
