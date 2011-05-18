@@ -75,7 +75,7 @@ video_rexps = [ # cd number
                 ]
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'Blu-ray', 'BDRip', 'BRRip',
-                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB' ],
+                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'VHS', 'VIDEO_TS' ],
 
                'container': [ 'avi', 'mkv', 'ogv', 'ogm', 'wmv', 'mp4', 'mov' ],
 
@@ -103,7 +103,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                }
 
 
-property_synonyms = { 'DVD': [ 'DVDRip' ],
+property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
                       'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
                       'BluRay': [ 'BDRip', 'BRRip', 'Blu-ray' ],
                       'DivX': [ 'DVDivX' ],

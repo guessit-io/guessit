@@ -197,8 +197,6 @@ def _merge_similar_guesses_nocheck(guesses, prop, choose):
 
     other_props = set(g1) & set(g2) - set([prop])
     if other_props:
-        print 'prop', prop
-        print 'other props', other_props
         for prop in other_props:
             if g1[prop] != g2[prop]:
                 log.warning('both guesses to be merged have more than one different property in common, bailing out...')

@@ -442,11 +442,47 @@ class IterativeMatcher(object):
 
 
         elif filetype in ('movie', 'moviesubtitle'):
+            leftover_all = leftover_valid_groups(match_tree)
+
+            # specific cases:
+            #  - movies/tttttt (yyyy)/tttttt.ccc
+            try:
+                if match_tree[-3][0][0][0].lower() == 'movies':
+                    # Note:too generic, might solve all the unittests as they all contain 'movies'
+                    # in their path
+                    #
+                    #if len(match_tree[-2][0]) == 1:
+                    #    title = match_tree[-2][0][0]
+                    #    guess = guessed({ 'title': clean_string(title[0]) }, confidence = 0.7)
+                    #    update_found(leftover_all, title, guess)
+
+                    year_group = filter(lambda gpos: gpos[0] == len(match_tree)-2,
+                                        find_group(match_tree, 'year'))[0]
+                    leftover = leftover_valid_groups(match_tree,
+                                                     valid = lambda g: ((g[0] and g[0][0] not in sep) and
+                                                                        g[1][0] == len(match_tree) - 2))
+                    if len(match_tree[-2]) == 2 and year_group[1] == 1:
+                        title = leftover[0]
+                        guess = guessed({ 'title': clean_string(title[0]) },
+                                        confidence = 0.8)
+                        update_found(leftover_all, title[1], guess)
+                        raise Exception # to exit the try catch now
+
+                    leftover = [ g for g in leftover_all if (g[1][0] == year_group[0] and
+                                                             g[1][1] < year_group[1] and
+                                                             g[1][2] < year_group[2]) ]
+                    leftover = sorted(leftover, key = lambda x:x[1])
+                    title = leftover[0]
+                    guess = guessed({ 'title': title[0] }, confidence = 0.8)
+                    leftover = update_found(leftover, title[1], guess)
+            except:
+                pass
+
+
             # first leftover group in the last path part sounds like a good candidate for title,
             # except if it's only one word and that the first group before has at least 3 words in it
             # (case where the filename contains an 8 chars short name and the movie title is
             #  actually in the parent directory name)
-            leftover_all = leftover_valid_groups(match_tree)
             leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-1 ]
             if leftover:
                 title, (pidx, eidx, gidx) = leftover[0]
@@ -468,6 +504,8 @@ class IterativeMatcher(object):
                 if previous_pgroup_leftover:
                     guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
                     leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
+
+
 
 
 
@@ -535,7 +573,7 @@ class IterativeMatcher(object):
         for int_part in ('year', 'season', 'episodeNumber'):
             merge_similar_guesses(parts, int_part, choose_int)
 
-        for string_part in ('series', 'container', 'format', 'releaseGroup', 'website',
+        for string_part in ('title', 'series', 'container', 'format', 'releaseGroup', 'website',
                             'audioCodec', 'videoCodec', 'screenSize'):
             merge_similar_guesses(parts, string_part, choose_int)
 

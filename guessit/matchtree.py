@@ -132,14 +132,14 @@ def get_group(match_tree, gpos):
     return match_tree[pidx][eidx][gidx]
 
 
-def leftover_valid_groups(match_tree, valid = lambda s: len(s) > 3):
+def leftover_valid_groups(match_tree, valid = lambda s: len(s[0]) > 3):
     """Return the list of valid string groups (eg: len(s) > 3) that could not be
     matched to anything as a list of pairs (cleaned_str, group_pos)."""
     leftover = []
     for gpos, (group, remaining, guess) in iterate_groups(match_tree):
         if not guess:
             clean_str = clean_string(remaining)
-            if valid(clean_str):
+            if valid((clean_str, gpos)):
                 leftover.append((clean_str, gpos))
 
     return leftover

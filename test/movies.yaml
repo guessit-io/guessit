@@ -146,6 +146,7 @@
 : title: Paris 2054, Renaissance
   year: 2005
   language: french
+  videoCodec: DivX
 
 ? Movies/[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi
 : title: Avida
@@ -173,7 +174,7 @@
   format: VHS
 
 ? Movies/21 (2008)/21.(2008).DVDRip.x264.AC3-FtS.[sharethefiles.com].mkv
-: title: 21
+: title: "21"
   year: 2008
   format: DVD
   videoCodec: h264
@@ -181,7 +182,7 @@
   website: sharethefiles.com
 
 ? Movies/9 (2009)/9.2009.Blu-ray.DTS.720p.x264.HDBRiSe.[sharethefiles.com].mkv
-: title: 9
+: title: "9"
   year: 2009
   format: BluRay
   audioCodec: DTS
