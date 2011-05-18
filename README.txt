@@ -18,12 +18,12 @@ Properties recognized by the filename matcher
 ---------------------------------------------
 
 At the moment, the filename matcher is able to recognize the following
-property types:
+property types::
 
-    [ title,                                 # for movies and episodes
-      series, season, episodeNumber,         # for episodes only
-      date, year,                            # date instance of datetime.date
-      language, subtitleLanguage,            # instances of guessit.Language
+    [ title,                             # for movies and episodes
+      series, season, episodeNumber,     # for episodes only
+      date, year,                        # 'date' instance of datetime.date
+      language, subtitleLanguage,        # instances of guessit.Language
       container, format,
       videoCodec, audioCodec,
       audioChannels, screenSize,
