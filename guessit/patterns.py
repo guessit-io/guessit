@@ -88,7 +88,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                'audioChannels': [ '5.1' ],
 
                'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA',
-                                 'CHD', 'ViTE', 'DiAMOND', 'TLF', 'DEiTY', 'FLAiTE',
+                                 'CHD', 'ViTE', 'TLF', 'DEiTY', 'FLAiTE',
                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
                                  'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL' ],
 
@@ -97,7 +97,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed', 'R5',
                           'complete', 'classic', # not so sure about these ones, could appear in a title
                           'ws', # widescreen
-                          'SE', # special edition
+                          #'SE', # special edition
                           # TODO: director's cut
                           ],
                }

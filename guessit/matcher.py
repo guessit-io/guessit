@@ -543,6 +543,9 @@ class IterativeMatcher(object):
         self.parts = result
         self.match_tree = match_tree
 
+        if filename.startswith('/'):
+            filename = ' ' + filename
+
         log.debug('Found match tree:\n%s\n%s' % (to_utf8(tree_to_string(match_tree)),
                                                  to_utf8(filename)))
 

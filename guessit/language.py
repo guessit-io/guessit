@@ -156,10 +156,10 @@ def search_language(string, lang_filter = None):
                                    'is', 'it', 'am', 'mad', 'men', 'man', 'run', 'sin', 'st', 'to',
                                    'no', 'non', 'war', 'min', 'new', 'car', 'day', 'bad', 'bat', 'fan',
                                    'fry', 'cop', 'zen', 'gay', 'fat', 'cherokee', 'got', 'an', 'as',
-                                   'cat', 'her', 'be', 'hat', 'sun', 'may', 'my',
+                                   'cat', 'her', 'be', 'hat', 'sun', 'may', 'my', 'mr',
                                    # french words
                                    'bas', 'de', 'le', 'son', 'vo', 'vf', 'ne', 'ca', 'ce', 'et', 'que',
-                                   'mal', 'est', 'vol', 'or',
+                                   'mal', 'est', 'vol', 'or', 'mon', 'se',
                                    # spanish words
                                    'la', 'el', 'del', 'por', 'mar',
                                    # other
