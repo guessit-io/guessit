@@ -102,7 +102,6 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
         try:
             blocksize = 8192
             hasherobjs = dict(hashers).values()
-            print hasherobjs
 
             with open(filename, 'rb') as f:
                 for chunk in iter(lambda: f.read(blocksize), ''):
