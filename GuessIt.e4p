@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project GuessIt -->
-<!-- Saved: 2011-05-17, 03:39:45 -->
+<!-- Saved: 2011-05-18, 04:23:12 -->
 <!-- Copyright (C) 2011 Nicolas Wack, wackou@gmail.com -->
 <Project version="4.6">
   <Language>en</Language>
@@ -28,6 +28,14 @@
     <Source>guessit/hash_mpc.py</Source>
     <Source>guessit/matchtree.py</Source>
     <Source>guessit/patterns.py</Source>
+    <Source>test/episodes.yaml</Source>
+    <Source>test/guessittest.py</Source>
+    <Source>test/movies.yaml</Source>
+    <Source>test/test_episode.py</Source>
+    <Source>test/test_movie.py</Source>
+    <Source>guessit/hash_ed2k.py</Source>
+    <Source>MANIFEST.in</Source>
+    <Source>guessit/ISO-639-2_utf-8.txt</Source>
   </Sources>
   <Forms>
   </Forms>

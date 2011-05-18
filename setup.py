@@ -29,7 +29,7 @@ NEWS = open(os.path.join(here, 'NEWS.txt')).read()
 
 args = dict(name = 'guessit',
             version = guessit.__version__,
-            description = 'Guessit - a library for guessing video information from their filename.',
+            description = 'Guessit - a library for guessing information from video files.',
             long_description = README + '\n\n' + NEWS,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
             classifiers = [ 'Development Status :: 4 - Beta',
@@ -44,9 +44,8 @@ args = dict(name = 'guessit',
             author_email = 'wackou@gmail.com',
             url = 'http://www.smewt.com/',
             license = 'LGPLv3',
-            packages = find_packages(exclude = [ 'ez_setup', 'examples', 'tests', 'utils' ]),
-            #package_data = dict((package, datafiles_exts) for package in find_packages()),
-            include_package_data = True,
+            packages = [ 'guessit' ],
+            package_data = { 'guessit': [ '*.txt' ] },
             install_requires = []
             )
 
