@@ -69,6 +69,9 @@ video_rexps = [ # cd number
 
                 # video size
                 (r'(?P<width>[0-9]{3,4})x(?P<height>[0-9]{3,4})', 0.9, (0, 0)),
+
+                # website
+                (r'(?P<website>www(\.[a-zA-Z0-9]+){2,3})', 0.8, (0, 0))
                 ]
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'BDRip', 'BRRip',

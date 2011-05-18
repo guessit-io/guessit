@@ -328,6 +328,9 @@ class IterativeMatcher(object):
          resolution when they arise.
         """
 
+        if filetype not in ('autodetect', 'subtitle', 'movie', 'moviesubtitle',
+                            'episode', 'episodesubtitle'):
+            raise ValueError, "filetype needs to be one of ('autodetect', 'subtitle', 'movie', 'moviesubtitle', 'episode', 'episodesubtitle')"
         if not isinstance(filename, unicode):
             log.debug('WARNING: given filename to matcher is not unicode...')
 
@@ -413,6 +416,18 @@ class IterativeMatcher(object):
 
             leftover = leftover_valid_groups(match_tree)
 
+            if not eps:
+                # if we don't have the episode number, but 2 groups in the last path group,
+                # then it's probably series - eptitle
+                title_candidates = filter(lambda g: g[1][0] == len(match_tree)-1,
+                                          leftover_valid_groups(match_tree))
+                if len(title_candidates) == 2:
+                    guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
+                    leftover = update_found(leftover, title_candidates[0][1], guess)
+                    guess = guessed({ 'title': title_candidates[1][0] }, confidence = 0.4)
+                    leftover = update_found(leftover, title_candidates[1][1], guess)
+
+
             # if there's a path group that only contains the season info, then the previous one
             # is most likely the series title (ie: .../series/season X/...)
             eps = [ gpos for gpos in find_group(match_tree, 'season')
@@ -424,6 +439,7 @@ class IterativeMatcher(object):
                 if len(previous) == 1:
                     guess = guessed({ 'series': previous[0][0] }, confidence = 0.5)
                     leftover = update_found(leftover, previous[0][1], guess)
+
 
         elif filetype in ('movie', 'moviesubtitle'):
             # first leftover group in the last path part sounds like a good candidate for title,

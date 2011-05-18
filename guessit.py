@@ -90,6 +90,8 @@ if __name__ == '__main__':
                       help = 'the desired information type: filename, hash_mpc or a hash from python\'s '
                              'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
                              'them, comma-separated')
+    parser.add_option('-t', '--type', dest = 'filetype', default = 'autodetect',
+                      help = 'the suggested file type: movie, episode or autodetect')
     parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
                       help = 'run a few builtin tests instead of analyzing a file')
 
@@ -102,7 +104,7 @@ if __name__ == '__main__':
     else:
         if args:
             for filename in args:
-                detect_filename(filename, filetype = 'autodetect', info = options.info.split(','))
+                detect_filename(filename, filetype = options.filetype, info = options.info.split(','))
 
         else:
             parser.print_help()

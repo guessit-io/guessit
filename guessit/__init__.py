@@ -98,20 +98,22 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
         """
 
     # do all the hashes now, but on a single pass
-    try:
-        blocksize = 8192
-        hasherobjs = dict(hashers).values()
+    if hashers:
+        try:
+            blocksize = 8192
+            hasherobjs = dict(hashers).values()
+            print hasherobjs
 
-        with open(filename, 'rb') as f:
-            for chunk in iter(lambda: f.read(blocksize), ''):
-                for hasher in hasherobjs:
-                    hasher.update(chunk)
+            with open(filename, 'rb') as f:
+                for chunk in iter(lambda: f.read(blocksize), ''):
+                    for hasher in hasherobjs:
+                        hasher.update(chunk)
 
-        for infotype, hasher in hashers:
-            result.append(Guess({ infotype: hasher.hexdigest() },
-                                confidence = 1.0))
-    except Exception, e:
-        log.warning('Could not compute hash because: %s' % e)
+            for infotype, hasher in hashers:
+                result.append(Guess({ infotype: hasher.hexdigest() },
+                                    confidence = 1.0))
+        except Exception, e:
+            log.warning('Could not compute hash because: %s' % e)
 
 
     return merge_all(result)

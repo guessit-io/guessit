@@ -112,12 +112,6 @@
   title: Ménage à trois
   date: 2008-01-14
 
-? Series/Dr._Slump_-_002_DVB-Rip_Catalan_by_kelf.avi
-: series: Dr Slump
-  episodeNumber: 2
-  format: DVB
-  language: catalan
-
 ? The.Mentalist.2x21.18-5-4.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi
 : series: The Mentalist
   season: 2
@@ -142,7 +136,8 @@
   videoCodec: DivX
 
 ? Series/Walt Disney/Donald.Duck.-.Good.Scouts.[www.bigernie.jump.to].avi
-: series: Walt Disney
+: series: Donald Duck
+  title: Good Scouts
   website: www.bigernie.jump.to
 
 ? Series/Neverwhere/Neverwhere.05.Down.Street.[tvu.org.ru].avi
@@ -157,6 +152,7 @@
   episodeNumber: 7
   title: Cherokee Hair Tampons
   format: DVD
+  website: tvu.org.ru
 
 ? Series/Kaamelott/Kaamelott - Livre V - Ep 23 - Le Forfait.avi
 : series: Kaamelott
