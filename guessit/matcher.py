@@ -22,7 +22,7 @@ from guessit import fileutils, textutils
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
 from guessit.date import search_date, search_year
 from guessit.language import search_language
-from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, episode_rexps, weak_episode_rexps, properties, canonical_form
+from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, properties, canonical_form
 from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
 from guessit.fileutils import split_path_components
@@ -123,6 +123,15 @@ def guess_groups(string, result, filetype):
                 current = update_found(current, guess, match.span(), span_adjust)
 
 
+    # Now websites, but as exact string instead of regexps
+    clow = current.lower()
+    for site in websites:
+        pos = clow.find(site.lower())
+        if pos != -1:
+            guess = guessed({ 'website': site }, confidence = confidence)
+            current = update_found(current, guess, (pos, pos+len(site)))
+            clow = current.lower()
+
 
     # release groups have certain constraints, cannot be included in the previous general regexps
     group_names = [ r'\.(Xvid)-(?P<releaseGroup>.*?)[ \.]',
@@ -175,7 +184,7 @@ def guess_groups(string, result, filetype):
     language, span, confidence = search_language(current)
     while language:
         # is it a subtitle language?
-        if 'sub' in clean_string(current[:span[0]]).split(' '):
+        if 'sub' in clean_string(current[:span[0]]).lower().split(' '):
             guess = guessed({ 'subtitleLanguage': language }, confidence = confidence)
         else:
             guess = guessed({ 'language': language }, confidence = confidence)
@@ -417,11 +426,11 @@ class IterativeMatcher(object):
             leftover = leftover_valid_groups(match_tree)
 
             if not eps:
-                # if we don't have the episode number, but 2 groups in the last path group,
-                # then it's probably series - eptitle
+                # if we don't have the episode number, but at least 2 groups in the
+                # last path group, then it's probably series - eptitle
                 title_candidates = filter(lambda g: g[1][0] == len(match_tree)-1,
                                           leftover_valid_groups(match_tree))
-                if len(title_candidates) == 2:
+                if len(title_candidates) >= 2:
                     guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
                     leftover = update_found(leftover, title_candidates[0][1], guess)
                     guess = guessed({ 'title': title_candidates[1][0] }, confidence = 0.4)
@@ -578,7 +587,7 @@ class IterativeMatcher(object):
 
         for string_part in ('title', 'series', 'container', 'format', 'releaseGroup', 'website',
                             'audioCodec', 'videoCodec', 'screenSize'):
-            merge_similar_guesses(parts, string_part, choose_int)
+            merge_similar_guesses(parts, string_part, choose_string)
 
         result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
 
