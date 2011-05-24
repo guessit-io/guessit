@@ -48,8 +48,8 @@ episode_rexps = [ # ... Season 2 ...
                   ]
 
 
-weak_episode_rexps = [ # ... 213 ...
-                       (sep + r'(?P<episodeNumber>[0-9]{1,3})' + sep, 0.3, (1, -1)),
+weak_episode_rexps = [ # ... 213 or 0106 ...
+                       (sep + r'(?P<episodeNumber>[0-9]{1,4})' + sep, 0.3, (1, -1)),
                        ]
 
 
