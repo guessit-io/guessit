@@ -492,13 +492,16 @@ class IterativeMatcher(object):
             except:
                 pass
 
-            # if we have either format or videoCodec in the folder containing the file,
-            # then we should probably look for the title in there rather than in the basename
-            props = filter(lambda g: g[0] == len(match_tree) - 2,
+            # if we have either format or videoCodec in the folder containing the file
+            # or one of its parents, then we should probably look for the title in
+            # there rather than in the basename
+            props = filter(lambda g: g[0] <= len(match_tree) - 2,
                            find_group(match_tree, 'videoCodec') +
                            find_group(match_tree, 'format') +
                            find_group(match_tree, 'language'))
-            leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-2 ]
+            leftover = None
+            if props and all(g[0] == props[0][0] for g in props):
+                leftover = [ g for g in leftover_all if g[1][0] == props[0][0] ]
 
             if props and leftover:
                 guess = guessed({ 'title': leftover[0][0] }, confidence = 0.7)
