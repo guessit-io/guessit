@@ -22,7 +22,7 @@ from guessit import fileutils, textutils
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
 from guessit.date import search_date, search_year
 from guessit.language import search_language
-from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, properties, canonical_form
+from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, non_episode_title, properties, canonical_form
 from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
 from guessit.fileutils import split_path_components
@@ -261,13 +261,15 @@ def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
         leftover = update_found(leftover, series_candidates[0][1], guess)
 
     # only 1 group after (in the same path group) and it's probably the episode title
-    title_candidates = filter(same_pgroup_after, leftover)
+    title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
+                              filter(same_pgroup_after, leftover))
     if len(title_candidates) == 1:
         guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.5)
         leftover = update_found(leftover, title_candidates[0][1], guess)
     else:
         # try in the same explicit group, with lower confidence
-        title_candidates = filter(same_egroup_after, leftover)
+        title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
+                                  filter(same_egroup_after, leftover))
         if len(title_candidates) == 1:
             guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.4)
             leftover = update_found(leftover, title_candidates[0][1], guess)
@@ -276,7 +278,8 @@ def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
     #  -> season title - episode title
     already_has_title = (find_group(match_tree, 'title') != [])
 
-    title_candidates = filter(same_pgroup_after, leftover)
+    title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
+                              filter(same_pgroup_after, leftover))
     if (not already_has_title and                    # no title
         not filter(same_pgroup_before, leftover) and # no groups before
         len(title_candidates) == 2):                 # only 2 groups after
@@ -429,8 +432,9 @@ class IterativeMatcher(object):
             if not eps:
                 # if we don't have the episode number, but at least 2 groups in the
                 # last path group, then it's probably series - eptitle
-                title_candidates = filter(lambda g: g[1][0] == len(match_tree)-1,
-                                          leftover_valid_groups(match_tree))
+                title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
+                                          filter(lambda g: g[1][0] == len(match_tree)-1,
+                                                 leftover_valid_groups(match_tree)))
                 if len(title_candidates) >= 2:
                     guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
                     leftover = update_found(leftover, title_candidates[0][1], guess)

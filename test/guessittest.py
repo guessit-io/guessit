@@ -50,9 +50,6 @@ log = logging.getLogger('GuessItTest')
 
 import guessit
 from guessit import *
-from guessit.video import *
-from guessit.movie import *
-from guessit.episode import *
 from guessit.matcher import *
 from guessit.textutils import to_utf8
 
