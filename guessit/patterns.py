@@ -96,6 +96,8 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
                                  'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL', 'LOL' ],
 
+               'episodeFormat': [ 'Minisode', 'Minisodes' ],
+
                'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed', 'R5',
                           'complete', 'classic', # not so sure about these ones, could appear in a title
                           'ws', # widescreen
@@ -115,7 +117,8 @@ property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
                       'AAC': [ 'He-AAC', 'AAC-He' ],
                       'Special Edition': [ 'Special' ],
                       'Collector Edition': [ 'Collector' ],
-                      'Criterion Edition': [ 'Criterion' ]
+                      'Criterion Edition': [ 'Criterion' ],
+                      'Minisode': [ 'Minisodes' ]
                       }
 
 

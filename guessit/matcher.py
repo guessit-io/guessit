@@ -606,10 +606,16 @@ class IterativeMatcher(object):
             merge_similar_guesses(parts, int_part, choose_int)
 
         for string_part in ('title', 'series', 'container', 'format', 'releaseGroup', 'website',
-                            'audioCodec', 'videoCodec', 'screenSize'):
+                            'audioCodec', 'videoCodec', 'screenSize', 'episodeFormat'):
             merge_similar_guesses(parts, string_part, choose_string)
 
         result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
+
+        # 3- some last minute post-processing
+        if (result['type'] == 'episode' and
+            'season' not in result and
+            result.get('episodeFormat', '') == 'Minisode'):
+            result['season'] = 0
 
         log.debug('Final result: ' + result.nice_string())
         return result
