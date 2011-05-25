@@ -189,6 +189,11 @@ def search_language(string, lang_filter = None):
             if lang_filter and language not in lang_filter:
                 continue
 
+            # only allow those languages that have a 2-letter code, those who
+            # don't are too esoteric and probably false matches
+            if language.lang not in lng3_to_lng2:
+                continue
+
             # confidence depends on lng2, lng3, english name, ...
             if len(lang) == 2:
                 confidence = 0.8
