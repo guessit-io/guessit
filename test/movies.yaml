@@ -240,3 +240,10 @@
   language: [ french, english ]
   subtitleLanguage: [ french, english ]
   website: sharethefiles.com
+
+? Movies/Somewhere.2010.DVDRip.XviD-iLG/i-smwhr.avi
+: title: Somewhere
+  year: 2010
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: iLG

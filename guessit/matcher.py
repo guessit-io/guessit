@@ -492,32 +492,44 @@ class IterativeMatcher(object):
             except:
                 pass
 
+            # if we have either format or videoCodec in the folder containing the file,
+            # then we should probably look for the title in there rather than in the basename
+            props = filter(lambda g: g[0] == len(match_tree) - 2,
+                           find_group(match_tree, 'videoCodec') +
+                           find_group(match_tree, 'format') +
+                           find_group(match_tree, 'language'))
+            leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-2 ]
 
-            # first leftover group in the last path part sounds like a good candidate for title,
-            # except if it's only one word and that the first group before has at least 3 words in it
-            # (case where the filename contains an 8 chars short name and the movie title is
-            #  actually in the parent directory name)
-            leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-1 ]
-            if leftover:
-                title, (pidx, eidx, gidx) = leftover[0]
-                previous_pgroup_leftover = filter(lambda g: g[1][0] == pidx-1, leftover_all)
+            if props and leftover:
+                guess = guessed({ 'title': leftover[0][0] }, confidence = 0.7)
+                leftover = update_found(leftover, leftover[0][1], guess)
 
-                if (title.count(' ') == 0 and
-                    previous_pgroup_leftover and
-                    previous_pgroup_leftover[0][0].count(' ') >= 2):
-
-                    guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
-                    leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
-
-                else:
-                    guess = guessed({ 'title': title }, confidence = 0.6)
-                    leftover = update_found(leftover, leftover[0][1], guess)
             else:
-                # if there were no leftover groups in the last path part, look in the one before that
-                previous_pgroup_leftover = filter(lambda g: g[1][0] == len(match_tree)-2, leftover_all)
-                if previous_pgroup_leftover:
-                    guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
-                    leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
+                # first leftover group in the last path part sounds like a good candidate for title,
+                # except if it's only one word and that the first group before has at least 3 words in it
+                # (case where the filename contains an 8 chars short name and the movie title is
+                #  actually in the parent directory name)
+                leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-1 ]
+                if leftover:
+                    title, (pidx, eidx, gidx) = leftover[0]
+                    previous_pgroup_leftover = filter(lambda g: g[1][0] == pidx-1, leftover_all)
+
+                    if (title.count(' ') == 0 and
+                        previous_pgroup_leftover and
+                        previous_pgroup_leftover[0][0].count(' ') >= 2):
+
+                        guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
+                        leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
+
+                    else:
+                        guess = guessed({ 'title': title }, confidence = 0.6)
+                        leftover = update_found(leftover, leftover[0][1], guess)
+                else:
+                    # if there were no leftover groups in the last path part, look in the one before that
+                    previous_pgroup_leftover = filter(lambda g: g[1][0] == len(match_tree)-2, leftover_all)
+                    if previous_pgroup_leftover:
+                        guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
+                        leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
 
 
 
