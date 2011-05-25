@@ -92,7 +92,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA',
                                  'CHD', 'ViTE', 'TLF', 'DEiTY', 'FLAiTE',
                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
-                                 'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL' ],
+                                 'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL', 'LOL' ],
 
                'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed', 'R5',
                           'complete', 'classic', # not so sure about these ones, could appear in a title
