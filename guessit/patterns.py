@@ -77,7 +77,7 @@ video_rexps = [ # cd number
 websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com', 'sharethefiles.com' ]
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'Blu-ray', 'BDRip', 'BRRip',
-                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'VHS', 'VIDEO_TS' ],
+                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'WEBRip', 'VHS', 'VIDEO_TS' ],
 
                'container': [ 'avi', 'mkv', 'ogv', 'ogm', 'wmv', 'mp4', 'mov' ],
 

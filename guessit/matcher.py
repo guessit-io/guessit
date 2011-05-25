@@ -253,9 +253,10 @@ def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
 
     leftover = leftover_valid_groups(match_tree)
 
-    # if we only have 1 valid group before the episodeNumber, then it's probably the series name
+    # if we have at least 1 valid group before the episodeNumber, then it's probably
+    # the series name
     series_candidates = filter(same_pgroup_before, leftover)
-    if len(series_candidates) == 1:
+    if len(series_candidates) >= 1:
         guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
         leftover = update_found(leftover, series_candidates[0][1], guess)
 
