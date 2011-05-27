@@ -76,10 +76,15 @@ def tree_to_string(tree):
                  'format': 'f',
                  'language': 'l',
                  'videoCodec': 'v',
+                 'audioCodec': 'a',
                  'website': 'w',
                  'container': 'c',
                  'series': 'T',
-                 'title': 't'
+                 'title': 't',
+                 'date': 'd',
+                 'year': 'y',
+                 'releaseGroup': 'r',
+                 'screenSize': 's'
                  }
 
         if result is None:
