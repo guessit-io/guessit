@@ -6,6 +6,15 @@
 News
 ====
 
+0.2
+---
+
+*Release date: 27-May-2011*
+
+* new parser/matcher completely replaced the old one
+* quite a few more unittests and fixes
+
+
 0.2b1
 -----
 
