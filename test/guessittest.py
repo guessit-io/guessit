@@ -101,7 +101,6 @@ class TestGuessit(TestCase):
                         log.warning("Wrong prop value list for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), to_utf8(found[prop])))
                 else:
                     if found[prop] != value:
-                        print type(value), type(found[prop])
                         log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), to_utf8(found[prop])))
 
             for prop, value in found.items():
