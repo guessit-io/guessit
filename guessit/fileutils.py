@@ -20,6 +20,7 @@
 
 import ntpath
 import os.path
+import zipfile
 
 
 def split_path(path):
