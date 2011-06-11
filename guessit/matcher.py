@@ -3,6 +3,7 @@
 #
 # GuessIt - A library for guessing information from filenames
 # Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
+# Copyright (c) 2011 Ricard Marxer <ricardmp@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
 # the terms of the Lesser GNU General Public License as published by
@@ -31,6 +32,7 @@ import os.path
 import re
 import copy
 import logging
+import mimetypes
 
 log = logging.getLogger("guessit.matcher")
 
@@ -386,6 +388,13 @@ class IterativeMatcher(object):
         #       guessers, eg: a lang parser for idx files, an automatic detection of the language
         #       for srt files, a video metadata extractor for avi, mkv, ...
 
+        # guess the mimetype of the filename
+        # TODO: handle other mimetypes not found on the default type_maps
+        # mimetypes.types_map['.srt']='text/subtitle'
+        mime, _ = mimetypes.guess_type(filename, strict=False)
+        if not mime is None:
+            guessed({ 'mime': mime }, confidence = 1.0)
+        
         # if we are on autodetect, try to do it now so we can tell the
         # guess_groups function what type of info it should be looking for
         if filetype in ('autodetect', 'subtitle'):
