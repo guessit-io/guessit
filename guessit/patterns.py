@@ -19,9 +19,9 @@
 #
 
 
-subtitle_exts = [ 'srt', 'idx', 'sub' ]
+subtitle_exts = [ 'srt', 'idx', 'sub', 'ssa' ]
 
-video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'mov', 'ogg', 'ogm', 'ogv', 'wmv' ]
+video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'mov', 'ogg', 'ogm', 'ogv', 'wmv', 'divx' ]
 
 # separator character regexp
 sep = r'[][)(}{+ \._-]' # regexp art, hehe :D
@@ -78,9 +78,10 @@ video_rexps = [ # cd number
 websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com', 'sharethefiles.com' ]
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'Blu-ray', 'BDRip', 'BRRip',
-                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'WEBRip', 'DVDSCR', 'Screener', 'VHS',
-                           'VIDEO_TS' ],
+                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'DVBRip', 'PDTV', 'WEBRip',
+                           'DVDSCR', 'Screener', 'VHS', 'VIDEO_TS' ],
 
+               # duplicate with the matcher with filetypes?
                'container': [ 'avi', 'mkv', 'ogv', 'ogm', 'wmv', 'mp4', 'mov' ],
 
                'screenSize': [ '720p', '720' ],
@@ -106,10 +107,29 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                           ],
                }
 
+def find_properties(filename):
+    result = []
+    clow = filename.lower()
+    for prop, values in properties.items():
+        for value in values:
+            pos = clow.find(value.lower())
+            if pos != -1:
+                end = pos + len(value)
+                # make sure our word is always surrounded by separators
+                if ((pos > 0 and clow[pos-1] not in sep) or
+                    (end < len(clow) and clow[end] not in sep)):
+                    # note: sep is a regexp, but in this case using it as
+                    #       a sequence achieves the same goal
+                    continue
+
+                result.append((prop, value, pos, end))
+    return result
+
 
 property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
                       'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
                       'BluRay': [ 'BDRip', 'BRRip', 'Blu-ray' ],
+                      'DVB': [ 'DVBRip', 'PDTV' ],
                       'Screener': [ 'DVDSCR' ],
                       'DivX': [ 'DVDivX' ],
                       'h264': [ 'x264' ],
