@@ -81,9 +81,6 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                            'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'DVBRip', 'PDTV', 'WEBRip',
                            'DVDSCR', 'Screener', 'VHS', 'VIDEO_TS' ],
 
-               # duplicate with the matcher with filetypes?
-               'container': [ 'avi', 'mkv', 'ogv', 'ogm', 'wmv', 'mp4', 'mov' ],
-
                'screenSize': [ '720p', '720' ],
 
                'videoCodec': [ 'XviD', 'DivX', 'x264', 'h264', 'Rv10' ],

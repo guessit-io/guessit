@@ -22,6 +22,7 @@ from guessit import fileutils, textutils
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
 from guessit.date import search_date, search_year
 from guessit.language import search_language
+from guessit.filetype import guess_filetype
 from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, non_episode_title, find_properties, canonical_form
 from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
@@ -359,55 +360,13 @@ class IterativeMatcher(object):
         match_tree = split_path_components(filename)
 
         # try to detect the file type
-        fileext = match_tree.pop(-1)[1:].lower()
-        if fileext in subtitle_exts:
-            if 'movie' in filetype:
-                filetype = 'moviesubtitle'
-            elif 'episode' in filetype:
-                filetype = 'episodesubtitle'
-            else:
-                filetype = 'subtitle'
-            extguess = guessed({ 'container': fileext }, confidence = 1.0)
-        elif fileext in video_exts:
-            if filetype == 'autodetect':
-                filetype = 'video'
-            extguess = guessed({ 'container': fileext }, confidence = 1.0)
-        else:
-            if filetype == 'autodetect':
-                filetype = 'unknown'
-            extguess = guessed({ 'extension':  fileext}, confidence = 1.0)
-
-        # TODO: depending on the extension, we could already grab some info and maybe specialized
-        #       guessers, eg: a lang parser for idx files, an automatic detection of the language
-        #       for srt files, a video metadata extractor for avi, mkv, ...
-
-        # if we are on autodetect, try to do it now so we can tell the
-        # guess_groups function what type of info it should be looking for
-        if filetype in ('video', 'subtitle'):
-            for rexp, confidence, span_adjust in episode_rexps:
-                match = re.search(rexp, filename, re.IGNORECASE)
-                if match:
-                    if filetype == 'video':
-                        filetype = 'episode'
-                    elif filetype == 'subtitle':
-                        filetype = 'episodesubtitle'
-                    break
-
-            for prop, value, start, end in find_properties(filename):
-                if canonical_form(value) == 'DVB':
-                    if filetype == 'video':
-                        filetype = 'episode'
-                    elif filetype == 'subtitle':
-                        filetype = 'episodesubtitle'
-                    break
-
-            # if no episode info found, assume it's a movie
-            if filetype == 'video':
-                filetype = 'movie'
-            elif filetype == 'subtitle':
-                filetype = 'moviesubtitle'
-
+        filetype, other = guess_filetype(filename, filetype)
         guessed({ 'type': filetype }, confidence = 1.0)
+        extguess = guessed(other, confidence = 1.0)
+
+        # remove the extension from the match tree, as all indices relative
+        # the the filename groups assume the basename is the last one
+        fileext = match_tree.pop(-1)[1:].lower()
 
 
         # 2- split each of those into explicit groups, if any
