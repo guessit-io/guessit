@@ -330,9 +330,10 @@ class IterativeMatcher(object):
          resolution when they arise.
         """
 
-        if filetype not in ('autodetect', 'subtitle', 'movie', 'moviesubtitle',
+        if filetype not in ('autodetect', 'subtitle', 'video',
+                            'movie', 'moviesubtitle',
                             'episode', 'episodesubtitle'):
-            raise ValueError, "filetype needs to be one of ('autodetect', 'subtitle', 'movie', 'moviesubtitle', 'episode', 'episodesubtitle')"
+            raise ValueError, "filetype needs to be one of ('autodetect', 'subtitle', 'video', 'movie', 'moviesubtitle', 'episode', 'episodesubtitle')"
         if not isinstance(filename, unicode):
             log.debug('WARNING: given filename to matcher is not unicode...')
 
@@ -357,6 +358,7 @@ class IterativeMatcher(object):
         # 1- first split our path into dirs + basename + ext
         match_tree = split_path_components(filename)
 
+        # try to detect the file type
         fileext = match_tree.pop(-1)[1:].lower()
         if fileext in subtitle_exts:
             if 'movie' in filetype:
@@ -367,8 +369,12 @@ class IterativeMatcher(object):
                 filetype = 'subtitle'
             extguess = guessed({ 'container': fileext }, confidence = 1.0)
         elif fileext in video_exts:
+            if filetype == 'autodetect':
+                filetype = 'video'
             extguess = guessed({ 'container': fileext }, confidence = 1.0)
         else:
+            if filetype == 'autodetect':
+                filetype = 'unknown'
             extguess = guessed({ 'extension':  fileext}, confidence = 1.0)
 
         # TODO: depending on the extension, we could already grab some info and maybe specialized
@@ -377,18 +383,26 @@ class IterativeMatcher(object):
 
         # if we are on autodetect, try to do it now so we can tell the
         # guess_groups function what type of info it should be looking for
-        if filetype in ('autodetect', 'subtitle'):
+        if filetype in ('video', 'subtitle'):
             for rexp, confidence, span_adjust in episode_rexps:
                 match = re.search(rexp, filename, re.IGNORECASE)
                 if match:
-                    if filetype == 'autodetect':
+                    if filetype == 'video':
+                        filetype = 'episode'
+                    elif filetype == 'subtitle':
+                        filetype = 'episodesubtitle'
+                    break
+
+            for prop, value, start, end in find_properties(filename):
+                if canonical_form(value) == 'DVB':
+                    if filetype == 'video':
                         filetype = 'episode'
                     elif filetype == 'subtitle':
                         filetype = 'episodesubtitle'
                     break
 
             # if no episode info found, assume it's a movie
-            if filetype == 'autodetect':
+            if filetype == 'video':
                 filetype = 'movie'
             elif filetype == 'subtitle':
                 filetype = 'moviesubtitle'
