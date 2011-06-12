@@ -123,6 +123,10 @@ property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
 
 
 reverse_synonyms = {}
+for prop, values in properties.items():
+    for value in values:
+        reverse_synonyms[value.lower()] = value
+
 for canonical, synonyms in property_synonyms.items():
     for synonym in synonyms:
         reverse_synonyms[synonym.lower()] = canonical
