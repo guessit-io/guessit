@@ -3,6 +3,7 @@
 #
 # GuessIt - A library for guessing information from filenames
 # Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
+# Copyright (c) 2011 Ricard Marxer <ricardmp@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
 # the terms of the Lesser GNU General Public License as published by
@@ -32,6 +33,7 @@ import os.path
 import re
 import copy
 import logging
+import mimetypes
 
 log = logging.getLogger("guessit.matcher")
 
@@ -363,6 +365,13 @@ class IterativeMatcher(object):
         filetype, other = guess_filetype(filename, filetype)
         guessed({ 'type': filetype }, confidence = 1.0)
         extguess = guessed(other, confidence = 1.0)
+
+        # guess the mimetype of the filename
+        # TODO: handle other mimetypes not found on the default type_maps
+        # mimetypes.types_map['.srt']='text/subtitle'
+        mime, _ = mimetypes.guess_type(filename, strict=False)
+        if mime is not None:
+            guessed({ 'mimetype': mime }, confidence = 1.0)
 
         # remove the extension from the match tree, as all indices relative
         # the the filename groups assume the basename is the last one
