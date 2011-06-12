@@ -22,16 +22,16 @@
 from guessittest import *
 
 def new_guesser(filename):
-    m = IterativeMatcher(filename, filetype = 'movie')
+    m = IterativeMatcher(filename, filetype = 'autodetect')
     return m.matched()
 
-class TestMovie(TestGuessit):
+class TestAutoDetect(TestGuessit):
 
     def testNewMatcher(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'movies.yaml')
+        self.checkMinimumFieldsCorrect(new_guesser, 'autodetect.yaml', removeType = False)
 
 
-suite = allTests(TestMovie)
+suite = allTests(TestAutoDetect)
 
 if __name__ == '__main__':
     TextTestRunner(verbosity=2).run(suite)

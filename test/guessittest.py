@@ -60,7 +60,7 @@ def allTests(testClass):
 
 class TestGuessit(TestCase):
 
-    def checkMinimumFieldsCorrect(self, guesser, filename):
+    def checkMinimumFieldsCorrect(self, guesser, filename, removeType = True):
         groundTruth = yaml.load(open(join(currentPath(), filename)).read())
 
         for filename, required in groundTruth.items():
@@ -73,8 +73,10 @@ class TestGuessit(TestCase):
             found = guesser(filename)
 
             # no need for this in the unittests
-            del found['type']
-            del found['container']
+            if removeType:
+                del found['type']
+            if 'container' in found:
+                del found['container']
 
             # props which are list of just 1 elem should be opened for easier writing of the tests
             for prop in ('language', 'subtitleLanguage', 'other'):
@@ -105,4 +107,4 @@ class TestGuessit(TestCase):
 
             for prop, value in found.items():
                 if prop not in required:
-                    log.info("Found additional info for prop = '%s': '%s'" % (prop, to_utf8(value)))
+                    log.warning("Found additional info for prop = '%s': '%s'" % (prop, to_utf8(value)))
