@@ -3,6 +3,7 @@
 #
 # GuessIt - A library for guessing information from filenames
 # Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
+# Copyright (c) 2011 Ricard Marxer <ricardmp@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
 # the terms of the Lesser GNU General Public License as published by
@@ -76,6 +77,8 @@ video_rexps = [ # cd number
                 ]
 
 websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com', 'sharethefiles.com' ]
+
+unlikely_series = ['series']
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'Blu-ray', 'BDRip', 'BRRip',
                            'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'DVBRip', 'PDTV', 'WEBRip',
