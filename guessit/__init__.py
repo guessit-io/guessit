@@ -52,6 +52,9 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
     result = []
     hashers = []
 
+    if isinstance(info, basestring):
+        info = [ info ]
+
     for infotype in info:
         if infotype == 'filename':
             m = IterativeMatcher(filename, filetype = filetype)
