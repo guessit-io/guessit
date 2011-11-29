@@ -24,7 +24,7 @@ from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, c
 from guessit.date import search_date, search_year
 from guessit.language import search_language
 from guessit.filetype import guess_filetype
-from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, non_episode_title, find_properties, canonical_form
+from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, non_episode_title, find_properties, canonical_form, unlikely_series
 from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
 from guessit.fileutils import split_path_components
@@ -424,8 +424,14 @@ class IterativeMatcher(object):
                 if len(previous) == 1:
                     guess = guessed({ 'series': previous[0][0] }, confidence = 0.5)
                     leftover = update_found(leftover, previous[0][1], guess)
-
-
+            
+            # reduce the confidence of unlikely series
+            for guess in result:
+                if 'series' in guess:
+                  if guess['series'].lower() in unlikely_series:
+                      guess.set_confidence('series', guess.confidence('series') * 0.5)
+            
+            
         elif filetype in ('movie', 'moviesubtitle'):
             leftover_all = leftover_valid_groups(match_tree)
 
