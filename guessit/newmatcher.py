@@ -100,6 +100,42 @@ def guess_website(string):
             return { 'website': site }, (pos, pos+len(site))
     return None, None
 
+def guess_video_rexps(string):
+    for rexp, confidence, span_adjust in video_rexps:
+        match = re.search(rexp, string, re.IGNORECASE)
+        if match:
+            metadata = match.groupdict()
+            # is this the better place to put it? (maybe, as it is at least the soonest that we can catch it)
+            if 'cdNumberTotal' in metadata and metadata['cdNumberTotal'] is None:
+                del metadata['cdNumberTotal']
+            return metadata, (match.start() + span_adjust[0],
+                              match.end() + span_adjust[1])
+
+    return None, None
+
+def guess_episodes_rexps(string):
+    for rexp, confidence, span_adjust in episode_rexps:
+        match = re.search(rexp, string, re.IGNORECASE)
+        if match:
+            return match.groupdict(), (match.start() + span_adjust[0],
+                                       match.end() + span_adjust[1])
+
+    return None, None
+
+def guess_release_group(string):
+    group_names = [ r'\.(Xvid)-(?P<releaseGroup>.*?)[ \.]',
+                    r'\.(DivX)-(?P<releaseGroup>.*?)[\. ]',
+                    r'\.(DVDivX)-(?P<releaseGroup>.*?)[\. ]',
+                    ]
+    for rexp in group_names:
+        match = re.search(rexp, string, re.IGNORECASE)
+        if match:
+            metadata = match.groupdict()
+            metadata.update({ 'videoCodec': match.group(1) })
+            return metadata, (match.start() + 1, match.end() - 1)
+
+    return None, None
+
 def guess_properties(string):
     low = string.lower()
     for prop, values in properties.items():
@@ -114,6 +150,18 @@ def guess_properties(string):
                     #       a sequence achieves the same goal
                     continue
                 return { prop: value }, (pos, end)
+
+    return None, None
+
+
+def guess_language(string):
+    language, span, confidence = search_language(string)
+    if language:
+        # is it a subtitle language?
+        if 'sub' in clean_string(string[:span[0]]).lower().split(' '):
+            return Guess({ 'subtitleLanguage': language }, confidence = confidence), span
+        else:
+            return Guess({ 'language': language }, confidence = confidence), span
 
     return None, None
 
@@ -142,6 +190,31 @@ def guess_movie_title_from_position(mtree):
 
     except:
         pass
+
+
+    # if we have either format or videoCodec in the folder containing the file
+    # or one of its parents, then we should probably look for the title in
+    # there rather than in the basename
+    props = [ leaf for leaf in mtree.leaves()
+              if (leaf.node_idx <= (len(mtree.children)-3,) and
+                  ('videoCodec' in leaf.guess or
+                   'format' in leaf.guess or
+                   'language' in leaf.guess)) ]
+
+    leftover = None
+    if props:
+        group_idx = props[0].node_idx[0]
+        if all(g.node_idx[0] == group_idx for g in props):
+            # if they're all in the same group, take leftover info from there
+            leftover = [ leaf for leaf in mtree.leaves if not leaf.guess and leaf.node_idx[0] == group_idx ]
+
+    if props and leftover:
+        title_candidate = leftover[0]
+        title_candidate.guess = Guess({ 'title': title_candidate.value }, confidence = 0.7)
+    else:
+        # FIXME: need to do the rest here
+        pass
+
 
 
 def find_and_split_node(node, strategy):
@@ -239,7 +312,11 @@ class IterativeMatcher(object):
         strategy = [ (guess_date, 1.0),
                      (guess_year, 0.9),
                      (guess_website, 0.8),
-                     (guess_properties, 0.7)
+                     (guess_properties, 0.7),
+                     (guess_video_rexps, 0.6),
+                     (guess_episodes_rexps, 0.5),
+                     (guess_release_group, 0.4),
+                     (guess_language, 0.3)
                      ]
 
         # 3- try to match information for specific patterns
