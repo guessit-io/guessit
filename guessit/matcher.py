@@ -263,7 +263,7 @@ def guess_movie_title_from_position(mtree):
         # except if it's only one word and that the first group before has at least 3 words in it
         # (case where the filename contains an 8 chars short name and the movie title is
         #  actually in the parent directory name)
-        leftover = [ leaf for leaf in mtree.node_at((-2,)).unidentified_leaves() if len(leaf.clean_value) > 3 ]
+        leftover = mtree.node_at((-2,)).unidentified_leaves()
         try:
             previous_pgroup_leftover = mtree.node_at((-3,)).unidentified_leaves()
         except:
@@ -295,7 +295,6 @@ def guess_movie_title_from_position(mtree):
 
 
 def match_from_epnum_position(mtree, node):
-    print 'match', node, node.node_idx
     epnum_idx = node.node_idx
 
     # a few helper functions to be able to filter using high-level semantics
