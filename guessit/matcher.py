@@ -406,7 +406,7 @@ def post_process(mtree):
         #   is the last group of the filename, it is probably the language of the subtitle
         #   (eg: 'xxx.english.srt')
         if (mtree.node_at((-1,)).value.lower() in subtitle_exts and
-            node == mtree.leaves()[-1]):
+            node == mtree.leaves()[-2]):
             promote_subtitle()
 
         # - if a language is in an explicit group just preceded by "st", it is a subtitle
