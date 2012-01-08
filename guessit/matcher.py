@@ -37,6 +37,10 @@ import mimetypes
 log = logging.getLogger("guessit.newmatcher")
 
 
+def use_node(f):
+    f.use_node = True
+    return f
+
 
 def split_tree(mtree, components):
     offset = 0
@@ -139,6 +143,27 @@ def guess_episodes_rexps(string):
                      match.end() + span_adjust[1]))
 
     return None, None
+
+@use_node
+def guess_weak_episodes_rexps(string, node):
+    if 'episodeNumber' in node.root.info:
+        return None, None
+
+    for rexp, span_adjust in weak_episode_rexps:
+        match = re.search(rexp, string, re.IGNORECASE)
+        if match:
+            metadata = match.groupdict()
+            span = (match.start() + span_adjust[0], match.end() + span_adjust[1])
+
+            epnum = int(metadata['episodeNumber'])
+            if epnum > 100:
+                return Guess({ 'season': epnum // 100,
+                               'episodeNumber': epnum % 100 }, confidence = 0.6), span
+            else:
+                return Guess(metadata, confidence = 0.3), span
+
+    return None, None
+
 
 def guess_release_group(string):
     group_names = [ r'\.(Xvid)-(?P<releaseGroup>.*?)[ \.]',
@@ -314,7 +339,11 @@ def post_process(mtree):
 def find_and_split_node(node, strategy):
     string = ' %s ' % node.value # add sentinels
     for matcher, confidence in strategy:
-        result, span = matcher(string)
+        if getattr(matcher, 'use_node', False):
+            result, span = matcher(string, node)
+        else:
+            result, span = matcher(string)
+
         if result:
             span = (span[0]-1, span[1]-1) # readjust span to compensate for sentinels
             if isinstance(result, Guess):
@@ -424,13 +453,27 @@ class IterativeMatcher(object):
                            (guess_website, 1.0),
                            (guess_release_group, 0.8),
                            (guess_properties, 1.0),
-                           (guess_language, None),
-                           #(guess_episodes_rexps, 0.5)
+                           (guess_language, None)
                            ]
+
+        episode_strategy = [ (guess_date, 1.0),
+                             (guess_video_rexps, None),
+                             (guess_episodes_rexps, None),
+                             (guess_website, 1.0),
+                             (guess_release_group, 0.8),
+                             (guess_properties, 1.0),
+                             (guess_weak_episodes_rexps, 0.6),
+                             (guess_language, None)
+                           ]
+
+        if mtree.guess['type'] in ('episode', 'episodesubtitle'):
+            strategy = episode_strategy
+        else:
+            strategy = movie_strategy
 
         # 3- try to match information for specific patterns
         for node in mtree.nodes_at_depth(2):
-            find_and_split_node(node, movie_strategy)
+            find_and_split_node(node, strategy)
 
         # split into '-' separated subgroups (with required separator chars
         # around the dash)

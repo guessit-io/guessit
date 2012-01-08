@@ -188,6 +188,13 @@ class MatchTree(object):
         return result
 
     @property
+    def root(self):
+        if not self.parent:
+            return self
+
+        return self.parent.root
+
+    @property
     def depth(self):
         if self.is_leaf():
             return 0
