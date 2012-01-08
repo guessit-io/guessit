@@ -77,6 +77,22 @@ from date import search_date, search_year
 from guessit.guess import Guess
 from patterns import websites, properties, sep
 
+def format_guess(guess):
+    """Format all the found values to their natural type.
+    For instance, a year would be stored as an int value, etc...
+
+    Note that this modifies the dictionary given as input.
+    """
+    for prop, value in guess.items():
+        if prop in ('season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal'):
+            guess[prop] = int(guess[prop])
+        elif isinstance(value, basestring):
+            if prop in ('edition',):
+                value = clean_string(value)
+            guess[prop] = canonical_form(value)
+
+    return guess
+
 
 def guess_date(string):
     date, span = search_date(string)
@@ -181,8 +197,8 @@ def guess_movie_title_from_position(mtree):
             #                                    confidence = 0.7)
 
             year_group = [ leaf for leaf in containing_folder.leaves() if 'year' in leaf.guess ][0]
-            groups_before = [ leaf for leaf in containing_folder.leaves()
-                              if not leaf.guess and leaf.node_idx < year_group.node_idx ]
+            groups_before = [ leaf for leaf in containing_folder.unidentified_leaves()
+                              if leaf.node_idx < year_group.node_idx ]
 
             title_candidate = groups_before[0]
             title_candidate.guess = Guess({ 'title': clean_string(title_candidate.value) },
@@ -206,15 +222,83 @@ def guess_movie_title_from_position(mtree):
         group_idx = props[0].node_idx[0]
         if all(g.node_idx[0] == group_idx for g in props):
             # if they're all in the same group, take leftover info from there
-            leftover = [ leaf for leaf in mtree.leaves if not leaf.guess and leaf.node_idx[0] == group_idx ]
+            leftover = mtree.node_at((group_idx,)).unidentified_leaves()
 
     if props and leftover:
         title_candidate = leftover[0]
         title_candidate.guess = Guess({ 'title': title_candidate.value }, confidence = 0.7)
     else:
-        # FIXME: need to do the rest here
-        pass
+        # first leftover group in the last path part sounds like a good candidate for title,
+        # except if it's only one word and that the first group before has at least 3 words in it
+        # (case where the filename contains an 8 chars short name and the movie title is
+        #  actually in the parent directory name)
+        leftover = mtree.node_at((-2,)).unidentified_leaves()
+        try:
+            previous_pgroup_leftover = mtree.node_at((-3,)).unidentified_leaves()
+        except:
+            previous_pgroup_leftover = []
 
+        if leftover:
+            title_candidate = leftover[0]
+
+            if (title_candidate.clean_value.count(' ') == 0 and
+                previous_pgroup_leftover and
+                previous_pgroup_leftover[0].clean_value.count(' ') >= 2):
+
+                previous_pgroup_leftover[0].guess = Guess({ 'title': previous_pgroup_leftover[0].clean_value },
+                                                          confidence = 0.6)
+            else:
+                title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
+                                              confidence = 0.6)
+
+        else:
+            # if there were no leftover groups in the last path part, look in the one before that
+            if previous_pgroup_leftover:
+                title_candidate = previous_pgroup_leftover[0]
+                title_candidate.guess = Guess({ 'title': title_candidate.clean_string },
+                                              confidence = 0.6)
+
+
+def post_process(mtree):
+    # 1- try to promote language to subtitle language where it makes sense
+    for node in mtree.nodes():
+        if 'language' not in node.guess:
+            continue
+
+        def promote_subtitle():
+            node.guess.set('subtitleLanguage', node.guess['language'], confidence = node.guess.confidence('language'))
+            del node.guess['language']
+
+        # - if we matched a language in a file with a sub extension and that the group
+        #   is the last group of the filename, it is probably the language of the subtitle
+        #   (eg: 'xxx.english.srt')
+        if (mtree.node_at((-1,)).value.lower() in subtitle_exts and
+            node == mtree.leaves()[-1]):
+            promote_subtitle()
+
+        # - if a language is in an explicit group just preceded by "st", it is a subtitle
+        #   language (eg: '...st[fr-eng]...')
+        try:
+            idx = node.node_idx
+            previous = mtree.node_at((idx[0], idx[1]-1)).leaves()[-1]
+            if previous.value.lower()[-2:] == 'st':
+                promote_subtitle()
+        except:
+            pass
+
+    # 2- ", the" at the end of a series title should be prepended to it
+    for node in mtree.nodes():
+        if 'series' not in node.guess:
+            continue
+
+        series = node.guess['series']
+        lseries = series.lower()
+
+        if lseries[-4:] == ',the':
+            node.guess['series'] = 'The ' + series[:-4]
+
+        if lseries[-5:] == ', the':
+            node.guess['series'] = 'The ' + series[:-5]
 
 
 def find_and_split_node(node, strategy):
@@ -222,7 +306,7 @@ def find_and_split_node(node, strategy):
     for matcher, confidence in strategy:
         result, span = matcher(string)
         if result:
-            guess = Guess(result, confidence = confidence)
+            guess = format_guess(Guess(result, confidence = confidence))
             log.debug('Found with confidence %.2f: %s' % (confidence, guess))
 
             node.partition(span)
@@ -290,8 +374,9 @@ class IterativeMatcher(object):
 
         # try to detect the file type
         filetype, other = guess_filetype(filename, filetype)
-        filetype_info = Guess({ 'type': filetype }, confidence = 1.0)
-        filetype_info.update(other, confidence = 1.0)
+        mtree.guess = Guess({ 'type': filetype }, confidence = 1.0)
+
+        filetype_info = Guess(other, confidence = 1.0)
 
         # guess the mimetype of the filename
         # TODO: handle other mimetypes not found on the default type_maps
@@ -328,6 +413,9 @@ class IterativeMatcher(object):
         #    relative to other known elements
         guess_movie_title_from_position(mtree)
 
+        # 5- perform some post-processing steps
+        post_process(mtree)
+
         log.debug('Found match tree:\n%s' % (to_utf8(tree_to_string(mtree))))
 
         self.match_tree = mtree
@@ -340,11 +428,7 @@ class IterativeMatcher(object):
 
         # 2-
 
-        # 3- try to match information in decreasing order of confidence and
-        #    blank the matching group in the string if we found something
-        for pathpart in match_tree:
-            for gidx, explicit_group in enumerate(pathpart):
-                pathpart[gidx] = guess_groups(explicit_group, result, filetype = filetype)
+        # 3-
 
         # 4- try to identify the remaining unknown groups by looking at their position
         #    relative to other known elements
@@ -516,29 +600,10 @@ class IterativeMatcher(object):
         # we need to make a copy here, as the merge functions work in place and
         # calling them on the match tree would modify it
 
-        return Guess(self.match_tree.info, confidence = 1.0)
+        parts = [ node.guess for node in self.match_tree.nodes() if node.guess ]
+        parts = copy.deepcopy(parts)
 
-
-        parts = copy.deepcopy(self.parts)
-
-        # 1- start by doing some common preprocessing tasks
-
-        # 1.1- ", the" at the end of a series title should be prepended to it
-        for part in parts:
-            if 'series' not in part:
-                continue
-
-            series = part['series']
-            lseries = series.lower()
-
-            if lseries[-4:] == ',the':
-                part['series'] = 'The ' + series[:-4]
-
-            if lseries[-5:] == ', the':
-                part['series'] = 'The ' + series[:-5]
-
-
-        # 2- try to merge similar information together and give it a higher confidence
+        # 1- try to merge similar information together and give it a higher confidence
         for int_part in ('year', 'season', 'episodeNumber'):
             merge_similar_guesses(parts, int_part, choose_int)
 

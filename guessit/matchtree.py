@@ -171,6 +171,10 @@ class MatchTree(object):
         return self.string[self.span[0]:self.span[1]]
 
     @property
+    def clean_value(self):
+        return clean_string(self.value)
+
+    @property
     def offset(self):
         return self.span[0]
 
@@ -236,19 +240,30 @@ class MatchTree(object):
         except:
             raise ValueError('Non-existent node index: %s' % (idx,))
 
-    def all_nodes(self):
+    def nodes(self):
         yield self
         for child in self.children:
-            for node in child.all_nodes():
+            for node in child.nodes():
                 yield node
 
-    def leaves(self):
+    def _leaves(self):
         if self.is_leaf():
             yield self
         else:
             for child in self.children:
                 for leaf in child.leaves():
                     yield leaf
+
+    def leaves(self):
+        return list(self._leaves())
+
+    def _unidentified_leaves(self):
+        for leaf in self._leaves():
+            if not leaf.guess:
+                yield leaf
+
+    def unidentified_leaves(self):
+        return list(self._unidentified_leaves())
 
 
 def tree_to_string(mtree):
@@ -289,7 +304,10 @@ def tree_to_string(mtree):
     lines = [ empty_line ] * (mtree.depth + 2) # +2: remaining, meaning
     lines[-2] = mtree.string
 
-    for node in mtree.all_nodes():
+    for node in mtree.nodes():
+        if node == mtree:
+            continue
+
         idx = node.node_idx
         depth = len(idx) - 1
         if idx:
