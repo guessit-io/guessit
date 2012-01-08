@@ -294,6 +294,105 @@ def guess_movie_title_from_position(mtree):
                 log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
 
 
+def match_from_epnum_position(mtree, node):
+    print 'match', node, node.node_idx
+    epnum_idx = node.node_idx
+
+    # a few helper functions to be able to filter using high-level semantics
+    def before_epnum_in_same_pathgroup():
+        return [ leaf for leaf in mtree.unidentified_leaves()
+                 if leaf.node_idx[0] == epnum_idx[0] and leaf.node_idx[1:] < epnum_idx[1:] ]
+
+    def after_epnum_in_same_pathgroup():
+        return [ leaf for leaf in mtree.unidentified_leaves()
+                 if leaf.node_idx[0] == epnum_idx[0] and leaf.node_idx[1:] > epnum_idx[1:] ]
+
+    def before_epnum_in_same_explicitgroup():
+        return [ leaf for leaf in mtree.unidentified_leaves()
+                 if leaf.node_idx[:2] == epnum_idx[:2] and leaf.node_idx[2:] < epnum_idx[2:] ]
+
+    def after_epnum_in_same_explicitgroup():
+        return [ leaf for leaf in mtree.unidentified_leaves()
+                 if leaf.node_idx[:2] == epnum_idx[:2] and leaf.node_idx[2:] > epnum_idx[2:] ]
+
+    # if we have at least 1 valid group before the episodeNumber, then it's probably
+    # the series name
+    series_candidates = before_epnum_in_same_pathgroup()
+    if len(series_candidates) >= 1:
+        series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.7)
+
+    # only 1 group after (in the same path group) and it's probably the episode title
+    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                              after_epnum_in_same_pathgroup())
+
+    if len(title_candidates) == 1:
+        title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.5)
+    else:
+        # try in the same explicit group, with lower confidence
+        title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                                  after_epnum_in_same_explicitgroup())
+        if len(title_candidates) == 1:
+            title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.4)
+
+    # epnumber is the first group and there are only 2 after it in same path group
+    #  -> season title - episode title
+    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                              after_epnum_in_same_pathgroup())
+    if ('title' not in mtree.info and                # no title
+        before_epnum_in_same_pathgroup() == [] and   # no groups before
+        len(title_candidates) == 2):                 # only 2 groups after
+
+        title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
+        title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
+
+
+    # if we only have 1 remaining valid group in the pathpart before the filename,
+    # then it's likely that it is the series name
+    try:
+        series_candidates = mtree.node_at((-3,)).unidentified_leaves()
+    except:
+        series_candidates = []
+
+    if len(series_candidates) == 1:
+        series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.5)
+
+
+
+def guess_episode_info_from_position(mtree):
+    eps = [ node for node in mtree.leaves() if 'episodeNumber' in node.guess ]
+    if eps:
+        match_from_epnum_position(mtree, eps[0])
+
+    else:
+        # if we don't have the episode number, but at least 2 groups in the
+        # last path group, then it's probably series - eptitle
+        title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                                  mtree.node_at((-2,)).unidentified_leaves())
+
+        if len(title_candidates) >= 2:
+            title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
+            title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
+
+    # if there's a path group that only contains the season info, then the previous one
+    # is most likely the series title (ie: .../series/season X/...)
+    eps = [ node for node in mtree.nodes()
+            if 'season' in node.guess and 'episodeNumber' not in node.guess ]
+
+    if eps:
+        previous = [ node for node in mtree.unidentified_leaves()
+                     if node.node_idx[0] == eps[0].node_idx[0] - 1 ]
+        if len(previous) == 1:
+            previous[0].guess = Guess({ 'series': previous[0].clean_value }, confidence = 0.5)
+
+    # reduce the confidence of unlikely series
+    for node in mtree.nodes():
+        if 'series' in node.guess:
+          if node.guess['series'].lower() in unlikely_series:
+              node.guess.set_confidence('series', node.guess.confidence('series') * 0.5)
+
+
+
+
 def post_process(mtree):
     # 1- try to promote language to subtitle language where it makes sense
     for node in mtree.nodes():
@@ -489,7 +588,10 @@ class IterativeMatcher(object):
 
         # 4- try to identify the remaining unknown groups by looking at their position
         #    relative to other known elements
-        guess_movie_title_from_position(mtree)
+        if mtree.guess['type'] in ('episode', 'episodesubtitle'):
+            guess_episode_info_from_position(mtree)
+        else:
+            guess_movie_title_from_position(mtree)
 
         # 5- perform some post-processing steps
         post_process(mtree)
@@ -497,181 +599,6 @@ class IterativeMatcher(object):
         log.debug('Found match tree:\n%s' % (to_utf8(tree_to_string(mtree))))
 
         self.match_tree = mtree
-        return
-
-
-        #-------------
-
-        # 1-
-
-        # 2-
-
-        # 3-
-
-        # 4- try to identify the remaining unknown groups by looking at their position
-        #    relative to other known elements
-
-        if filetype in ('episode', 'episodesubtitle'):
-            eps = find_group(match_tree, 'episodeNumber')
-            if eps:
-                match_tree = match_from_epnum_position(match_tree, eps[0], guessed, update_found)
-
-            leftover = leftover_valid_groups(match_tree)
-
-            if not eps:
-                # if we don't have the episode number, but at least 2 groups in the
-                # last path group, then it's probably series - eptitle
-                title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
-                                          filter(lambda g: g[1][0] == len(match_tree)-1,
-                                                 leftover_valid_groups(match_tree)))
-                if len(title_candidates) >= 2:
-                    guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
-                    leftover = update_found(leftover, title_candidates[0][1], guess)
-                    guess = guessed({ 'title': title_candidates[1][0] }, confidence = 0.4)
-                    leftover = update_found(leftover, title_candidates[1][1], guess)
-
-
-            # if there's a path group that only contains the season info, then the previous one
-            # is most likely the series title (ie: .../series/season X/...)
-            eps = [ gpos for gpos in find_group(match_tree, 'season')
-                    if 'episodeNumber' not in get_group(match_tree, gpos)[2] ]
-
-            if eps:
-                pidx, eidx, gidx = eps[0]
-                previous = [ group for group in leftover if group[1][0] == pidx - 1 ]
-                if len(previous) == 1:
-                    guess = guessed({ 'series': previous[0][0] }, confidence = 0.5)
-                    leftover = update_found(leftover, previous[0][1], guess)
-
-            # reduce the confidence of unlikely series
-            for guess in result:
-                if 'series' in guess:
-                  if guess['series'].lower() in unlikely_series:
-                      guess.set_confidence('series', guess.confidence('series') * 0.5)
-
-
-        elif filetype in ('movie', 'moviesubtitle'):
-            leftover_all = leftover_valid_groups(match_tree)
-
-            # specific cases:
-            #  - movies/tttttt (yyyy)/tttttt.ccc
-            try:
-                if match_tree[-3][0][0][0].lower() == 'movies':
-                    # Note:too generic, might solve all the unittests as they all contain 'movies'
-                    # in their path
-                    #
-                    #if len(match_tree[-2][0]) == 1:
-                    #    title = match_tree[-2][0][0]
-                    #    guess = guessed({ 'title': clean_string(title[0]) }, confidence = 0.7)
-                    #    update_found(leftover_all, title, guess)
-
-                    year_group = filter(lambda gpos: gpos[0] == len(match_tree)-2,
-                                        find_group(match_tree, 'year'))[0]
-                    leftover = leftover_valid_groups(match_tree,
-                                                     valid = lambda g: ((g[0] and g[0][0] not in sep) and
-                                                                        g[1][0] == len(match_tree) - 2))
-                    if len(match_tree[-2]) == 2 and year_group[1] == 1:
-                        title = leftover[0]
-                        guess = guessed({ 'title': clean_string(title[0]) },
-                                        confidence = 0.8)
-                        update_found(leftover_all, title[1], guess)
-                        raise Exception # to exit the try catch now
-
-                    leftover = [ g for g in leftover_all if (g[1][0] == year_group[0] and
-                                                             g[1][1] < year_group[1] and
-                                                             g[1][2] < year_group[2]) ]
-                    leftover = sorted(leftover, key = lambda x:x[1])
-                    title = leftover[0]
-                    guess = guessed({ 'title': title[0] }, confidence = 0.8)
-                    leftover = update_found(leftover, title[1], guess)
-            except:
-                pass
-
-            # if we have either format or videoCodec in the folder containing the file
-            # or one of its parents, then we should probably look for the title in
-            # there rather than in the basename
-            props = filter(lambda g: g[0] <= len(match_tree) - 2,
-                           find_group(match_tree, 'videoCodec') +
-                           find_group(match_tree, 'format') +
-                           find_group(match_tree, 'language'))
-            leftover = None
-            if props and all(g[0] == props[0][0] for g in props):
-                leftover = [ g for g in leftover_all if g[1][0] == props[0][0] ]
-
-            if props and leftover:
-                guess = guessed({ 'title': leftover[0][0] }, confidence = 0.7)
-                leftover = update_found(leftover, leftover[0][1], guess)
-
-            else:
-                # first leftover group in the last path part sounds like a good candidate for title,
-                # except if it's only one word and that the first group before has at least 3 words in it
-                # (case where the filename contains an 8 chars short name and the movie title is
-                #  actually in the parent directory name)
-                leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-1 ]
-                if leftover:
-                    title, (pidx, eidx, gidx) = leftover[0]
-                    previous_pgroup_leftover = filter(lambda g: g[1][0] == pidx-1, leftover_all)
-
-                    if (title.count(' ') == 0 and
-                        previous_pgroup_leftover and
-                        previous_pgroup_leftover[0][0].count(' ') >= 2):
-
-                        guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
-                        leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
-
-                    else:
-                        guess = guessed({ 'title': title }, confidence = 0.6)
-                        leftover = update_found(leftover, leftover[0][1], guess)
-                else:
-                    # if there were no leftover groups in the last path part, look in the one before that
-                    previous_pgroup_leftover = filter(lambda g: g[1][0] == len(match_tree)-2, leftover_all)
-                    if previous_pgroup_leftover:
-                        guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
-                        leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
-
-
-
-
-
-
-        # 5- perform some post-processing steps
-
-        # 5.1- try to promote language to subtitle language where it makes sense
-        for pidx, eidx, gidx in find_group(match_tree, 'language'):
-            string, remaining, guess = get_group(match_tree, (pidx, eidx, gidx))
-
-            def promote_subtitle():
-                guess.set('subtitleLanguage', guess['language'], confidence = guess.confidence('language'))
-                del guess['language']
-
-            # - if we matched a language in a file with a sub extension and that the group
-            #   is the last group of the filename, it is probably the language of the subtitle
-            #   (eg: 'xxx.english.srt')
-            if (fileext in subtitle_exts and
-                pidx == len(match_tree) - 1 and
-                eidx == len(match_tree[pidx]) - 1):
-                promote_subtitle()
-
-            # - if a language is in an explicit group just preceded by "st", it is a subtitle
-            #   language (eg: '...st[fr-eng]...')
-            if eidx > 0:
-                previous = get_group(match_tree, (pidx, eidx-1, -1))
-                if previous[0][-2:].lower() == 'st':
-                    promote_subtitle()
-
-
-
-        # re-append the extension now
-        match_tree.append([[(fileext, deleted*len(fileext), extguess)]])
-
-        self.parts = result
-        self.match_tree = match_tree
-
-        if filename.startswith('/'):
-            filename = ' ' + filename
-
-        log.debug('Found match tree:\n%s\n%s' % (to_utf8(tree_to_string(match_tree)),
-                                                 to_utf8(filename)))
 
 
     def matched(self):
@@ -691,7 +618,7 @@ class IterativeMatcher(object):
 
         result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
 
-        # 3- some last minute post-processing
+        # 2- some last minute post-processing
         if (result['type'] == 'episode' and
             'season' not in result and
             result.get('episodeFormat', '') == 'Minisode'):
