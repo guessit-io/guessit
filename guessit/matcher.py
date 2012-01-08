@@ -124,8 +124,9 @@ def guess_video_rexps(string):
             # is this the better place to put it? (maybe, as it is at least the soonest that we can catch it)
             if 'cdNumberTotal' in metadata and metadata['cdNumberTotal'] is None:
                 del metadata['cdNumberTotal']
-            return metadata, (match.start() + span_adjust[0],
-                              match.end() + span_adjust[1])
+            return (Guess(metadata, confidence = confidence),
+                    (match.start() + span_adjust[0],
+                     match.end() + span_adjust[1]))
 
     return None, None
 
@@ -133,8 +134,9 @@ def guess_episodes_rexps(string):
     for rexp, confidence, span_adjust in episode_rexps:
         match = re.search(rexp, string, re.IGNORECASE)
         if match:
-            return match.groupdict(), (match.start() + span_adjust[0],
-                                       match.end() + span_adjust[1])
+            return (Guess(match.groupdict(), confidence = confidence),
+                    (match.start() + span_adjust[0],
+                     match.end() + span_adjust[1]))
 
     return None, None
 
@@ -302,10 +304,18 @@ def post_process(mtree):
 
 
 def find_and_split_node(node, strategy):
-    string = node.value
+    string = ' %s ' % node.value # add sentinels
     for matcher, confidence in strategy:
         result, span = matcher(string)
         if result:
+            span = (span[0]-1, span[1]-1) # readjust span to compensate for sentinels
+            if isinstance(result, Guess):
+                if confidence is None:
+                    confidence = result.confidence(result.keys()[0])
+            else:
+                if confidence is None:
+                    confidence = 1.0
+
             guess = format_guess(Guess(result, confidence = confidence))
             log.debug('Found with confidence %.2f: %s' % (confidence, guess))
 
@@ -393,20 +403,24 @@ class IterativeMatcher(object):
         for c in mtree.children:
             split_explicit_groups(c)
 
-
-        strategy = [ (guess_date, 1.0),
-                     (guess_year, 0.9),
-                     (guess_website, 0.8),
-                     (guess_properties, 0.7),
-                     (guess_video_rexps, 0.6),
-                     (guess_episodes_rexps, 0.5),
-                     (guess_release_group, 0.4),
-                     (guess_language, 0.3)
-                     ]
+        # strategy is a list of pairs (guesser, confidence)
+        # - if the guesser returns a guessit.Guess and confidence is specified,
+        #   it will override it, otherwise it will leave the guess confidence
+        # - if the guesser returns a simple dict as a guess and confidence is
+        #   specified, it will use it, or 1.0 otherwise
+        movie_strategy = [ (guess_date, 1.0),
+                           (guess_year, 1.0),
+                           (guess_video_rexps, None),
+                           (guess_website, 1.0),
+                           (guess_release_group, 0.8),
+                           (guess_properties, 1.0),
+                           (guess_language, None),
+                           #(guess_episodes_rexps, 0.5)
+                           ]
 
         # 3- try to match information for specific patterns
         for node in mtree.nodes_at_depth(2):
-            find_and_split_node(node, strategy)
+            find_and_split_node(node, movie_strategy)
 
 
         # 4- try to identify the remaining unknown groups by looking at their position
