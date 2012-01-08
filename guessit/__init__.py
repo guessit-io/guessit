@@ -26,7 +26,7 @@ __all__ = [ 'Guess', 'Language',
 
 from guessit.guess import Guess, merge_all
 from guessit.language import Language
-from guessit.newmatcher import IterativeMatcher
+from guessit.matcher import IterativeMatcher
 import logging
 
 log = logging.getLogger("guessit")
