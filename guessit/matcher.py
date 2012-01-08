@@ -238,7 +238,7 @@ def guess_movie_title_from_position(mtree):
         # except if it's only one word and that the first group before has at least 3 words in it
         # (case where the filename contains an 8 chars short name and the movie title is
         #  actually in the parent directory name)
-        leftover = mtree.node_at((-2,)).unidentified_leaves()
+        leftover = [ leaf for leaf in mtree.node_at((-2,)).unidentified_leaves() if len(leaf.clean_value) > 3 ]
         try:
             previous_pgroup_leftover = mtree.node_at((-3,)).unidentified_leaves()
         except:
