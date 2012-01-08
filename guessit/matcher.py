@@ -203,8 +203,10 @@ def guess_movie_title_from_position(mtree):
                               if leaf.node_idx < year_group.node_idx ]
 
             title_candidate = groups_before[0]
-            title_candidate.guess = Guess({ 'title': clean_string(title_candidate.value) },
+            title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
                                           confidence = 0.8)
+            log.debug('Found with confidence %.2f: %s' % (0.8, title_candidate.guess))
+
 
     except:
         pass
@@ -214,12 +216,13 @@ def guess_movie_title_from_position(mtree):
     # or one of its parents, then we should probably look for the title in
     # there rather than in the basename
     props = [ leaf for leaf in mtree.leaves()
-              if (leaf.node_idx <= (len(mtree.children)-3,) and
+              if (leaf.node_idx <= (len(mtree.children)-2,) and
                   ('videoCodec' in leaf.guess or
                    'format' in leaf.guess or
                    'language' in leaf.guess)) ]
 
     leftover = None
+
     if props:
         group_idx = props[0].node_idx[0]
         if all(g.node_idx[0] == group_idx for g in props):
@@ -228,7 +231,8 @@ def guess_movie_title_from_position(mtree):
 
     if props and leftover:
         title_candidate = leftover[0]
-        title_candidate.guess = Guess({ 'title': title_candidate.value }, confidence = 0.7)
+        title_candidate.guess = Guess({ 'title': title_candidate.clean_value }, confidence = 0.7)
+        log.debug('Found with confidence %.2f: %s' % (0.7, title_candidate.guess))
     else:
         # first leftover group in the last path part sounds like a good candidate for title,
         # except if it's only one word and that the first group before has at least 3 words in it
@@ -249,16 +253,20 @@ def guess_movie_title_from_position(mtree):
 
                 previous_pgroup_leftover[0].guess = Guess({ 'title': previous_pgroup_leftover[0].clean_value },
                                                           confidence = 0.6)
+                log.debug('Found with confidence %.2f: %s' % (0.6, previous_pgroup_leftover[0].guess))
+
             else:
                 title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
                                               confidence = 0.6)
+                log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
 
         else:
             # if there were no leftover groups in the last path part, look in the one before that
             if previous_pgroup_leftover:
                 title_candidate = previous_pgroup_leftover[0]
-                title_candidate.guess = Guess({ 'title': title_candidate.clean_string },
+                title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
                                               confidence = 0.6)
+                log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
 
 
 def post_process(mtree):
@@ -385,6 +393,7 @@ class IterativeMatcher(object):
         # try to detect the file type
         filetype, other = guess_filetype(filename, filetype)
         mtree.guess = Guess({ 'type': filetype }, confidence = 1.0)
+        log.debug('Found with confidence %.2f: %s' % (1.0, mtree.guess))
 
         filetype_info = Guess(other, confidence = 1.0)
 
@@ -396,6 +405,7 @@ class IterativeMatcher(object):
             filetype_info.update({ 'mimetype': mime }, confidence = 1.0)
 
         mtree.node_at((-1,)).guess = filetype_info
+        log.debug('Found with confidence %.2f: %s' % (1.0, mtree.node_at((-1,)).guess))
 
         # 2- split each of those into explicit groups, if any
         # note: be careful, as this might split some regexps with more confidence such as
