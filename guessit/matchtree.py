@@ -259,7 +259,7 @@ class MatchTree(object):
 
     def _unidentified_leaves(self):
         for leaf in self._leaves():
-            if not leaf.guess:
+            if not leaf.guess and leaf.clean_value != '':
                 yield leaf
 
     def unidentified_leaves(self):

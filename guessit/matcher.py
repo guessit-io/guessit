@@ -432,6 +432,17 @@ class IterativeMatcher(object):
         for node in mtree.nodes_at_depth(2):
             find_and_split_node(node, movie_strategy)
 
+        # split into '-' separated subgroups (with required separator chars
+        # around the dash)
+        for node in mtree.unidentified_leaves():
+            indices = []
+            didx = node.value.find('-')
+            while didx > 0:
+                indices.extend([ didx, didx+1 ])
+                didx = node.value.find('-', didx+1)
+            if indices:
+                node.partition(indices)
+
 
         # 4- try to identify the remaining unknown groups by looking at their position
         #    relative to other known elements
