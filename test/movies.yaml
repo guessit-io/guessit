@@ -248,3 +248,42 @@
   format: DVD
   videoCodec: XviD
   releaseGroup: iLG
+
+? Movies/Moon_(2009).mkv
+: title: Moon
+  year: 2009
+
+? Movies/Moon_(2009)-x01.mkv
+: title: Moon
+  year: 2009
+  bonusNumber: 1
+
+? Movies/Moon_(2009)-x02-Making_Of.mkv
+: title: Moon
+  year: 2009
+  bonusNumber: 2
+  bonusTitle: Making Of
+
+? movies/James_Bond-f17-Goldeneye.mkv
+: title: Goldeneye
+  filmSeries: James Bond
+  filmNumber: 17
+
+? /movies/James_Bond-f21-Casino_Royale.mkv
+: title: Casino Royale
+  filmSeries: James Bond
+  filmNumber: 21
+
+? /movies/James_Bond-f21-Casino_Royale-x01-Becoming_Bond.mkv
+: title: Casino Royale
+  filmSeries: James Bond
+  filmNumber: 21
+  bonusNumber: 1
+  bonusTitle: Becoming Bond
+
+? /movies/James_Bond-f21-Casino_Royale-x02-Stunts.mkv
+: title: Casino Royale
+  filmSeries: James Bond
+  filmNumber: 21
+  bonusNumber: 2
+  bonusTitle: Stunts
