@@ -35,6 +35,9 @@ episode_rexps = [ # ... Season 2 ...
                   (r'season (?P<season>[0-9]+)', 1.0, (0, 0)),
                   (r'saison (?P<season>[0-9]+)', 1.0, (0, 0)),
 
+                  # ... s02-x01 ...
+                  (r's(?P<season>[0-9]{1,2})-x(?P<bonusNumber>[0-9]{1,2})[^0-9]', 1.0, (0, -1)),
+
                   # ... s02e13 ...
                   (r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]', 1.0, (0, -1)),
 
