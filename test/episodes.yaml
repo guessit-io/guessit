@@ -190,3 +190,25 @@
 : series: The Big Bang Theory
   season: 1
   episodeNumber: 1
+
+? /media/Parks_and_Recreation-s03-e01.mkv
+: series: Parks and Recreation
+  season: 3
+  episodeNumber: 1
+
+? /media/Parks_and_Recreation-s03-e02-Flu_Season.mkv
+: series: Parks and Recreation
+  season: 3
+  title: Flu Season
+  episodeNumber: 2
+
+? /media/Parks_and_Recreation-s03-x01.mkv
+: series: Parks and Recreation
+  season: 3
+  bonusNumber: 1
+
+? /media/Parks_and_Recreation-s03-x02-Gag_Reel.mkv
+: series: Parks and Recreation
+  season: 3
+  bonusNumber: 2
+  bonusTitle: Gag Reel
