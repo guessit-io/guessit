@@ -24,6 +24,8 @@ subtitle_exts = [ 'srt', 'idx', 'sub', 'ssa', 'txt' ]
 
 video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'm4v', 'mov', 'ogg', 'ogm', 'ogv', 'wmv', 'divx' ]
 
+group_delimiters = [ '()', '[]', '{}' ]
+
 # separator character regexp
 sep = r'[][)(}{+ \._-]' # regexp art, hehe :D
 
@@ -45,7 +47,8 @@ episode_rexps = [ # ... Season 2 ...
                   (r'[^0-9](?P<season>[0-9]{1,2})[x\.](?P<episodeNumber>[0-9]{2})[^0-9]', 0.8, (1, -1)),
 
                   # ... s02 ...
-                  (sep + r's(?P<season>[0-9]{1,2})' + sep + '?', 0.6, (1, -1)),
+                  (sep + r's(?P<season>[0-9]{1,2})' + sep, 0.6, (1, -1)),
+                  (sep + r's(?P<season>[0-9]{1,2})', 0.6, (1, 0)),
 
                   # v2 or v3 for some mangas which have multiples rips
                   (sep + r'(?P<episodeNumber>[0-9]{1,3})v[23]' + sep, 0.6, (0, 0)),
@@ -53,7 +56,7 @@ episode_rexps = [ # ... Season 2 ...
 
 
 weak_episode_rexps = [ # ... 213 or 0106 ...
-                       (sep + r'(?P<episodeNumber>[0-9]{1,4})' + sep, 0.3, (1, -1)),
+                       (sep + r'(?P<episodeNumber>[0-9]{1,4})' + sep, (1, -1)),
                        ]
 
 non_episode_title = [ 'extras' ]

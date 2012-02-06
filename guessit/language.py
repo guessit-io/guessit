@@ -140,9 +140,6 @@ def search_language(string, lang_filter = None):
     you can specify a list of allowed languages using the lang_filter argument,
     as in lang_filter = [ 'fr', 'eng', 'spanish' ]
 
-    Assumes there are sentinels at the beginning and end of the string that
-    always allow matching a non-letter delimiting the language.
-
     >>> search_language('movie [en].avi')
     (Language(English), (7, 9), 0.80000000000000004)
 
@@ -171,7 +168,7 @@ def search_language(string, lang_filter = None):
     if lang_filter:
         lang_filter = set(Language(l) for l in lang_filter)
 
-    slow = string.lower()
+    slow = ' %s ' % string.lower()
     confidence = 1.0 # for all of them
     for lang in lng_all_names:
 
@@ -205,6 +202,6 @@ def search_language(string, lang_filter = None):
                 #       or assume that full language names are too common words
                 confidence = 0.3 # going with the low-confidence route here
 
-            return language, (pos, end), confidence
+            return language, (pos-1, end-1), confidence
 
     return None, None, None

@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # GuessIt - A library for guessing information from filenames
-# Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
-# Copyright (c) 2011 Ricard Marxer <ricardmp@gmail.com>
+# Copyright (c) 2012 Nicolas Wack <wackou@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
 # the terms of the Lesser GNU General Public License as published by
@@ -20,14 +19,14 @@
 #
 
 from guessit import fileutils, textutils
+from guessit.matchtree import MatchTree
 from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
 from guessit.date import search_date, search_year
 from guessit.language import search_language
 from guessit.filetype import guess_filetype
-from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, non_episode_title, find_properties, canonical_form, unlikely_series
+from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, non_episode_title, find_properties, canonical_form, unlikely_series, group_delimiters
 from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
-from guessit.fileutils import split_path_components
 import datetime
 import os.path
 import re
@@ -35,23 +34,52 @@ import copy
 import logging
 import mimetypes
 
-log = logging.getLogger("guessit.matcher")
+log = logging.getLogger("guessit.newmatcher")
 
 
+def use_node(f):
+    f.use_node = True
+    return f
 
-def split_explicit_groups(string):
+
+def split_tree(mtree, components):
+    offset = 0
+    for c in components:
+        start = mtree.value.find(c, offset)
+        end = start + len(c)
+        mtree.add_child(span = (mtree.offset + start,
+                                mtree.offset + end))
+        offset = end
+
+
+def split_path_components(mtree):
+    # FIXME: duplicate from fileutils
+    """Returns the filename split into [ dir*, basename, ext ]."""
+    components = fileutils.split_path(mtree.value)
+    basename = components.pop(-1)
+    components += list(os.path.splitext(basename))
+    components[-1] = components[-1][1:] # remove the '.' from the extension
+
+    split_tree(mtree, components)
+
+def split_explicit_groups(mtree):
     """return the string split into explicit groups, that is, those either
     between parenthese, square brackets or curly braces, and those separated
     by a dash."""
-    result = find_first_level_groups(string, '()')
-    result = reduce(lambda l, x: l + find_first_level_groups(x, '[]'), result, [])
-    result = reduce(lambda l, x: l + find_first_level_groups(x, '{}'), result, [])
+    groups = find_first_level_groups(mtree.value, group_delimiters[0])
+    for delimiters in group_delimiters:
+        groups = reduce(lambda l, x: l + find_first_level_groups(x, delimiters), groups, [])
+
     # do not do this at this moment, it is not strong enough and can break other
     # patterns, such as dates, etc...
-    #result = reduce(lambda l, x: l + x.split('-'), result, [])
+    #groups = reduce(lambda l, x: l + x.split('-'), groups, [])
 
-    return result
+    split_tree(mtree, groups)
 
+
+from date import search_date, search_year
+from guessit.guess import Guess
+from patterns import websites, properties, sep
 
 def format_guess(guess):
     """Format all the found values to their natural type.
@@ -70,226 +98,370 @@ def format_guess(guess):
     return guess
 
 
-def guess_groups(string, result, filetype):
-    # add sentinels so we can match a separator char at either end of
-    # our groups, even when they are at the beginning or end of the string
-    # we will adjust the span accordingly later
-    #
-    # filetype can either be movie, moviesubtitle, episode, episodesubtitle
-    current = ' ' + string + ' '
-
-    regions = [] # list of (start, end) of matched regions
-
-    def guessed(match_dict, confidence):
-        guess = format_guess(Guess(match_dict, confidence = confidence))
-        result.append(guess)
-        log.debug('Found with confidence %.2f: %s' % (confidence, guess))
-        return guess
-
-    def update_found(string, guess, span, span_adjust = (0,0)):
-        span = (span[0] + span_adjust[0],
-                span[1] + span_adjust[1])
-        regions.append((span, guess))
-        return blank_region(string, span)
-
-    # try to find dates first, as they are very specific
-    date, span = search_date(current)
+def guess_date(string):
+    date, span = search_date(string)
     if date:
-        guess = guessed({ 'date': date }, confidence = 1.0)
-        current = update_found(current, guess, span)
+        return { 'date': date }, span
+    else:
+        return None, None
 
-    # for non episodes only, look for year information
-    if filetype not in ('episode', 'episodesubtitle'):
-        year, span = search_year(current)
-        if year:
-            guess = guessed({ 'year': year }, confidence = 1.0)
-            current = update_found(current, guess, span)
+def guess_year(string):
+    year, span = search_year(string)
+    if year:
+        return { 'year': year }, span
+    else:
+        return None, None
 
-    # specific regexps (ie: cd number, season X episode, ...)
+def guess_website(string):
+    low = string.lower()
+    for site in websites:
+        pos = low.find(site.lower())
+        if pos != -1:
+            return { 'website': site }, (pos, pos+len(site))
+    return None, None
+
+def guess_video_rexps(string):
     for rexp, confidence, span_adjust in video_rexps:
-        match = re.search(rexp, current, re.IGNORECASE)
+        match = re.search(rexp, string, re.IGNORECASE)
         if match:
             metadata = match.groupdict()
             # is this the better place to put it? (maybe, as it is at least the soonest that we can catch it)
             if 'cdNumberTotal' in metadata and metadata['cdNumberTotal'] is None:
                 del metadata['cdNumberTotal']
+            return (Guess(metadata, confidence = confidence),
+                    (match.start() + span_adjust[0],
+                     match.end() + span_adjust[1]))
 
-            guess = guessed(metadata, confidence = confidence)
-            current = update_found(current, guess, match.span(), span_adjust)
+    return None, None
 
-    if filetype in ('episode', 'episodesubtitle'):
-        for rexp, confidence, span_adjust in episode_rexps:
-            match = re.search(rexp, current, re.IGNORECASE)
-            if match:
-                metadata = match.groupdict()
-                guess = guessed(metadata, confidence = confidence)
-                current = update_found(current, guess, match.span(), span_adjust)
+def guess_episodes_rexps(string):
+    for rexp, confidence, span_adjust in episode_rexps:
+        match = re.search(rexp, string, re.IGNORECASE)
+        if match:
+            return (Guess(match.groupdict(), confidence = confidence),
+                    (match.start() + span_adjust[0],
+                     match.end() + span_adjust[1]))
+
+    return None, None
+
+@use_node
+def guess_weak_episodes_rexps(string, node):
+    if 'episodeNumber' in node.root.info:
+        return None, None
+
+    for rexp, span_adjust in weak_episode_rexps:
+        match = re.search(rexp, string, re.IGNORECASE)
+        if match:
+            metadata = match.groupdict()
+            span = (match.start() + span_adjust[0], match.end() + span_adjust[1])
+
+            epnum = int(metadata['episodeNumber'])
+            if epnum > 100:
+                return Guess({ 'season': epnum // 100,
+                               'episodeNumber': epnum % 100 }, confidence = 0.6), span
+            else:
+                return Guess(metadata, confidence = 0.3), span
+
+    return None, None
 
 
-    # Now websites, but as exact string instead of regexps
-    clow = current.lower()
-    for site in websites:
-        pos = clow.find(site.lower())
-        if pos != -1:
-            guess = guessed({ 'website': site }, confidence = confidence)
-            current = update_found(current, guess, (pos, pos+len(site)))
-            clow = current.lower()
-
-
-    # release groups have certain constraints, cannot be included in the previous general regexps
+def guess_release_group(string):
     group_names = [ r'\.(Xvid)-(?P<releaseGroup>.*?)[ \.]',
                     r'\.(DivX)-(?P<releaseGroup>.*?)[\. ]',
                     r'\.(DVDivX)-(?P<releaseGroup>.*?)[\. ]',
                     ]
     for rexp in group_names:
-        match = re.search(rexp, current, re.IGNORECASE)
+        match = re.search(rexp, string, re.IGNORECASE)
         if match:
             metadata = match.groupdict()
             metadata.update({ 'videoCodec': match.group(1) })
-            guess = guessed(metadata, confidence = 0.8)
-            current = update_found(current, guess, match.span(), span_adjust = (1, -1))
+            return metadata, (match.start() + 1, match.end() - 1)
+
+    return None, None
+
+def guess_properties(string):
+    low = string.lower()
+    for prop, values in properties.items():
+        for value in values:
+            pos = low.find(value.lower())
+            if pos != -1:
+                end = pos + len(value)
+                # make sure our word is always surrounded by separators
+                if ((pos > 0 and low[pos-1] not in sep) or
+                    (end < len(low) and low[end] not in sep)):
+                    # note: sep is a regexp, but in this case using it as
+                    #       a sequence achieves the same goal
+                    continue
+                return { prop: value }, (pos, end)
+
+    return None, None
 
 
-    # common well-defined words and regexps
-    confidence = 1.0 # for all of them
-    for prop, value, pos, end in find_properties(current):
-        guess = guessed({ prop: value }, confidence = confidence)
-        current = update_found(current, guess, (pos, end))
-
-
-    # weak guesses for episode number, only run it if we don't have an estimate already
-    if filetype in ('episode', 'episodesubtitle'):
-        if not any('episodeNumber' in match for match in result):
-            for rexp, _, span_adjust in weak_episode_rexps:
-                match = re.search(rexp, current, re.IGNORECASE)
-                if match:
-                    metadata = match.groupdict()
-                    epnum = int(metadata['episodeNumber'])
-                    if epnum > 100:
-                        guess = guessed({ 'season': epnum // 100,
-                                          'episodeNumber': epnum % 100 }, confidence = 0.6)
-                    else:
-                        guess = guessed(metadata, confidence = 0.3)
-                    current = update_found(current, guess, match.span(), span_adjust)
-
-    # try to find languages now
-    language, span, confidence = search_language(current)
-    while language:
+def guess_language(string):
+    language, span, confidence = search_language(string)
+    if language:
         # is it a subtitle language?
-        if 'sub' in clean_string(current[:span[0]]).lower().split(' '):
-            guess = guessed({ 'subtitleLanguage': language }, confidence = confidence)
+        if 'sub' in clean_string(string[:span[0]]).lower().split(' '):
+            return Guess({ 'subtitleLanguage': language }, confidence = confidence), span
         else:
-            guess = guessed({ 'language': language }, confidence = confidence)
-        current = update_found(current, guess, span)
+            return Guess({ 'language': language }, confidence = confidence), span
 
-        language, span, confidence = search_language(current)
-
-
-    # remove our sentinels now and ajust spans accordingly
-    assert(current[0] == ' ' and current[-1] == ' ')
-    current = current[1:-1]
-    regions = [ ((start-1, end-1), guess) for (start, end), guess in regions ]
-
-    # split into '-' separated subgroups (with required separator chars
-    # around the dash)
-    didx = current.find('-')
-    while didx > 0:
-        regions.append(((didx, didx), None))
-        didx = current.find('-', didx+1)
-
-    # cut our final groups, and rematch the guesses to the group that created
-    # id, None if it is a leftover group
-    region_spans = [ span for span, guess in regions ]
-    string_groups = split_on_groups(string, region_spans)
-    remaining_groups = split_on_groups(current, region_spans)
-    guesses = []
-
-    pos = 0
-    for group in string_groups:
-        found = False
-        for span, guess in regions:
-            if span[0] == pos:
-                guesses.append(guess)
-                found = True
-        if not found:
-            guesses.append(None)
-
-        pos += len(group)
-
-    return  zip(string_groups,
-                remaining_groups,
-                guesses)
+    return None, None
 
 
-def match_from_epnum_position(match_tree, epnum_pos, guessed, update_found):
-    """guessed is a callback function to call with the guessed group
-    update_found is a callback to update the match group and returns leftover groups."""
-    pidx, eidx, gidx = epnum_pos
+def guess_movie_title_from_position(mtree):
+    # specific cases:
+    #  - movies/tttttt (yyyy)/tttttt.ccc
+    try:
+        if mtree.node_at((-4, 0)).value.lower() == 'movies':
+            containing_folder = mtree.node_at((-3,))
+
+            # Note:too generic, might solve all the unittests as they all contain 'movies'
+            # in their path
+            #
+            #if containing_folder.is_leaf() and not containing_folder.guess:
+            #    containing_folder.guess = Guess({ 'title': clean_string(containing_folder.value) },
+            #                                    confidence = 0.7)
+
+            year_group = [ leaf for leaf in containing_folder.leaves() if 'year' in leaf.guess ][0]
+            groups_before = [ leaf for leaf in containing_folder.unidentified_leaves()
+                              if leaf.node_idx < year_group.node_idx ]
+
+            title_candidate = groups_before[0]
+            title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
+                                          confidence = 0.8)
+            log.debug('Found with confidence %.2f: %s' % (0.8, title_candidate.guess))
+
+
+    except:
+        pass
+
+
+    # if we have either format or videoCodec in the folder containing the file
+    # or one of its parents, then we should probably look for the title in
+    # there rather than in the basename
+    props = [ leaf for leaf in mtree.leaves()
+              if (leaf.node_idx <= (len(mtree.children)-2,) and
+                  ('videoCodec' in leaf.guess or
+                   'format' in leaf.guess or
+                   'language' in leaf.guess)) ]
+
+    leftover = None
+
+    if props:
+        group_idx = props[0].node_idx[0]
+        if all(g.node_idx[0] == group_idx for g in props):
+            # if they're all in the same group, take leftover info from there
+            leftover = mtree.node_at((group_idx,)).unidentified_leaves()
+
+    if props and leftover:
+        title_candidate = leftover[0]
+        title_candidate.guess = Guess({ 'title': title_candidate.clean_value }, confidence = 0.7)
+        log.debug('Found with confidence %.2f: %s' % (0.7, title_candidate.guess))
+    else:
+        # first leftover group in the last path part sounds like a good candidate for title,
+        # except if it's only one word and that the first group before has at least 3 words in it
+        # (case where the filename contains an 8 chars short name and the movie title is
+        #  actually in the parent directory name)
+        leftover = mtree.node_at((-2,)).unidentified_leaves()
+        try:
+            previous_pgroup_leftover = mtree.node_at((-3,)).unidentified_leaves()
+        except:
+            previous_pgroup_leftover = []
+
+        if leftover:
+            title_candidate = leftover[0]
+
+            if (title_candidate.clean_value.count(' ') == 0 and
+                previous_pgroup_leftover and
+                previous_pgroup_leftover[0].clean_value.count(' ') >= 2):
+
+                previous_pgroup_leftover[0].guess = Guess({ 'title': previous_pgroup_leftover[0].clean_value },
+                                                          confidence = 0.6)
+                log.debug('Found with confidence %.2f: %s' % (0.6, previous_pgroup_leftover[0].guess))
+
+            else:
+                title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
+                                              confidence = 0.6)
+                log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
+
+        else:
+            # if there were no leftover groups in the last path part, look in the one before that
+            if previous_pgroup_leftover:
+                title_candidate = previous_pgroup_leftover[0]
+                title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
+                                              confidence = 0.6)
+                log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
+
+
+def match_from_epnum_position(mtree, node):
+    epnum_idx = node.node_idx
 
     # a few helper functions to be able to filter using high-level semantics
-    def same_pgroup_before(group):
-        _, (ppidx, eeidx, ggidx) = group
-        return ppidx == pidx and (eeidx, ggidx) < (eidx, gidx)
+    def before_epnum_in_same_pathgroup():
+        return [ leaf for leaf in mtree.unidentified_leaves()
+                 if leaf.node_idx[0] == epnum_idx[0] and leaf.node_idx[1:] < epnum_idx[1:] ]
 
-    def same_pgroup_after(group):
-        _, (ppidx, eeidx, ggidx) = group
-        return ppidx == pidx and (eeidx, ggidx) > (eidx, gidx)
+    def after_epnum_in_same_pathgroup():
+        return [ leaf for leaf in mtree.unidentified_leaves()
+                 if leaf.node_idx[0] == epnum_idx[0] and leaf.node_idx[1:] > epnum_idx[1:] ]
 
-    def same_egroup_before(group):
-        _, (ppidx, eeidx, ggidx) = group
-        return ppidx == pidx and eeidx == eidx and ggidx < gidx
+    def before_epnum_in_same_explicitgroup():
+        return [ leaf for leaf in mtree.unidentified_leaves()
+                 if leaf.node_idx[:2] == epnum_idx[:2] and leaf.node_idx[2:] < epnum_idx[2:] ]
 
-    def same_egroup_after(group):
-        _, (ppidx, eeidx, ggidx) = group
-        return ppidx == pidx and eeidx == eidx and ggidx > gidx
-
-    leftover = leftover_valid_groups(match_tree)
+    def after_epnum_in_same_explicitgroup():
+        return [ leaf for leaf in mtree.unidentified_leaves()
+                 if leaf.node_idx[:2] == epnum_idx[:2] and leaf.node_idx[2:] > epnum_idx[2:] ]
 
     # if we have at least 1 valid group before the episodeNumber, then it's probably
     # the series name
-    series_candidates = filter(same_pgroup_before, leftover)
+    series_candidates = before_epnum_in_same_pathgroup()
     if len(series_candidates) >= 1:
-        guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.7)
-        leftover = update_found(leftover, series_candidates[0][1], guess)
+        series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.7)
 
     # only 1 group after (in the same path group) and it's probably the episode title
-    title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
-                              filter(same_pgroup_after, leftover))
+    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                              after_epnum_in_same_pathgroup())
+
     if len(title_candidates) == 1:
-        guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.5)
-        leftover = update_found(leftover, title_candidates[0][1], guess)
+        title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.5)
     else:
         # try in the same explicit group, with lower confidence
-        title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
-                                  filter(same_egroup_after, leftover))
+        title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                                  after_epnum_in_same_explicitgroup())
         if len(title_candidates) == 1:
-            guess = guessed({ 'title': title_candidates[0][0] }, confidence = 0.4)
-            leftover = update_found(leftover, title_candidates[0][1], guess)
+            title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.4)
 
     # epnumber is the first group and there are only 2 after it in same path group
     #  -> season title - episode title
-    already_has_title = (find_group(match_tree, 'title') != [])
-
-    title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
-                              filter(same_pgroup_after, leftover))
-    if (not already_has_title and                    # no title
-        not filter(same_pgroup_before, leftover) and # no groups before
+    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                              after_epnum_in_same_pathgroup())
+    if ('title' not in mtree.info and                # no title
+        before_epnum_in_same_pathgroup() == [] and   # no groups before
         len(title_candidates) == 2):                 # only 2 groups after
 
-        guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
-        leftover = update_found(leftover, title_candidates[0][1], guess)
-        guess = guessed({ 'title': title_candidates[1][0] }, confidence = 0.4)
-        leftover = update_found(leftover, title_candidates[1][1], guess)
+        title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
+        title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
 
 
     # if we only have 1 remaining valid group in the pathpart before the filename,
     # then it's likely that it is the series name
-    series_candidates = [ group for group in leftover if group[1][0] == pidx-1 ]
-    if len(series_candidates) == 1:
-        guess = guessed({ 'series': series_candidates[0][0] }, confidence = 0.5)
-        leftover = update_found(leftover, series_candidates[0][1], guess)
+    try:
+        series_candidates = mtree.node_at((-3,)).unidentified_leaves()
+    except:
+        series_candidates = []
 
-    return match_tree
+    if len(series_candidates) == 1:
+        series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.5)
+
+
+
+def guess_episode_info_from_position(mtree):
+    eps = [ node for node in mtree.leaves() if 'episodeNumber' in node.guess ]
+    if eps:
+        match_from_epnum_position(mtree, eps[0])
+
+    else:
+        # if we don't have the episode number, but at least 2 groups in the
+        # last path group, then it's probably series - eptitle
+        title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                                  mtree.node_at((-2,)).unidentified_leaves())
+
+        if len(title_candidates) >= 2:
+            title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
+            title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
+
+    # if there's a path group that only contains the season info, then the previous one
+    # is most likely the series title (ie: .../series/season X/...)
+    eps = [ node for node in mtree.nodes()
+            if 'season' in node.guess and 'episodeNumber' not in node.guess ]
+
+    if eps:
+        previous = [ node for node in mtree.unidentified_leaves()
+                     if node.node_idx[0] == eps[0].node_idx[0] - 1 ]
+        if len(previous) == 1:
+            previous[0].guess = Guess({ 'series': previous[0].clean_value }, confidence = 0.5)
+
+    # reduce the confidence of unlikely series
+    for node in mtree.nodes():
+        if 'series' in node.guess:
+          if node.guess['series'].lower() in unlikely_series:
+              node.guess.set_confidence('series', node.guess.confidence('series') * 0.5)
+
+
+
+
+def post_process(mtree):
+    # 1- try to promote language to subtitle language where it makes sense
+    for node in mtree.nodes():
+        if 'language' not in node.guess:
+            continue
+
+        def promote_subtitle():
+            node.guess.set('subtitleLanguage', node.guess['language'], confidence = node.guess.confidence('language'))
+            del node.guess['language']
+
+        # - if we matched a language in a file with a sub extension and that the group
+        #   is the last group of the filename, it is probably the language of the subtitle
+        #   (eg: 'xxx.english.srt')
+        if (mtree.node_at((-1,)).value.lower() in subtitle_exts and
+            node == mtree.leaves()[-2]):
+            promote_subtitle()
+
+        # - if a language is in an explicit group just preceded by "st", it is a subtitle
+        #   language (eg: '...st[fr-eng]...')
+        try:
+            idx = node.node_idx
+            previous = mtree.node_at((idx[0], idx[1]-1)).leaves()[-1]
+            if previous.value.lower()[-2:] == 'st':
+                promote_subtitle()
+        except:
+            pass
+
+    # 2- ", the" at the end of a series title should be prepended to it
+    for node in mtree.nodes():
+        if 'series' not in node.guess:
+            continue
+
+        series = node.guess['series']
+        lseries = series.lower()
+
+        if lseries[-4:] == ',the':
+            node.guess['series'] = 'The ' + series[:-4]
+
+        if lseries[-5:] == ', the':
+            node.guess['series'] = 'The ' + series[:-5]
+
+
+def find_and_split_node(node, strategy):
+    string = ' %s ' % node.value # add sentinels
+    for matcher, confidence in strategy:
+        if getattr(matcher, 'use_node', False):
+            result, span = matcher(string, node)
+        else:
+            result, span = matcher(string)
+
+        if result:
+            span = (span[0]-1, span[1]-1) # readjust span to compensate for sentinels
+            if isinstance(result, Guess):
+                if confidence is None:
+                    confidence = result.confidence(result.keys()[0])
+            else:
+                if confidence is None:
+                    confidence = 1.0
+
+            guess = format_guess(Guess(result, confidence = confidence))
+            log.debug('Found with confidence %.2f: %s' % (confidence, guess))
+
+            node.partition(span)
+            absolute_span = (span[0] + node.offset, span[1] + node.offset)
+            for child in node.children:
+                if child.span == absolute_span:
+                    child.guess = guess
+                else:
+                    find_and_split_node(child, strategy)
+            return
 
 
 
@@ -340,245 +512,102 @@ class IterativeMatcher(object):
         if not isinstance(filename, unicode):
             log.debug('WARNING: given filename to matcher is not unicode...')
 
-        match_tree = []
-        result = [] # list of found metadata
-
-        def guessed(match_dict, confidence):
-            guess = format_guess(Guess(match_dict, confidence = confidence))
-            result.append(guess)
-            log.debug('Found with confidence %.2f: %s' % (confidence, guess))
-            return guess
-
-        def update_found(leftover, group_pos, guess):
-            pidx, eidx, gidx = group_pos
-            group = match_tree[pidx][eidx][gidx]
-            match_tree[pidx][eidx][gidx] = (group[0],
-                                            deleted * len(group[0]),
-                                            guess)
-            return [ g for g in leftover if g[1] != group_pos ]
-
+        mtree = MatchTree(filename)
 
         # 1- first split our path into dirs + basename + ext
-        match_tree = split_path_components(filename)
+        split_path_components(mtree)
 
         # try to detect the file type
         filetype, other = guess_filetype(filename, filetype)
-        guessed({ 'type': filetype }, confidence = 1.0)
-        extguess = guessed(other, confidence = 1.0)
+        mtree.guess = Guess({ 'type': filetype }, confidence = 1.0)
+        log.debug('Found with confidence %.2f: %s' % (1.0, mtree.guess))
+
+        filetype_info = Guess(other, confidence = 1.0)
 
         # guess the mimetype of the filename
         # TODO: handle other mimetypes not found on the default type_maps
         # mimetypes.types_map['.srt']='text/subtitle'
         mime, _ = mimetypes.guess_type(filename, strict=False)
         if mime is not None:
-            guessed({ 'mimetype': mime }, confidence = 1.0)
+            filetype_info.update({ 'mimetype': mime }, confidence = 1.0)
 
-        # remove the extension from the match tree, as all indices relative
-        # the the filename groups assume the basename is the last one
-        fileext = match_tree.pop(-1)[1:].lower()
-
+        mtree.node_at((-1,)).guess = filetype_info
+        log.debug('Found with confidence %.2f: %s' % (1.0, mtree.node_at((-1,)).guess))
 
         # 2- split each of those into explicit groups, if any
         # note: be careful, as this might split some regexps with more confidence such as
         #       Alfleni-Team, or [XCT] or split a date such as (14-01-2008)
-        match_tree = [ split_explicit_groups(part) for part in match_tree ]
+        for c in mtree.children:
+            split_explicit_groups(c)
 
+        # strategy is a list of pairs (guesser, confidence)
+        # - if the guesser returns a guessit.Guess and confidence is specified,
+        #   it will override it, otherwise it will leave the guess confidence
+        # - if the guesser returns a simple dict as a guess and confidence is
+        #   specified, it will use it, or 1.0 otherwise
+        movie_strategy = [ (guess_date, 1.0),
+                           (guess_year, 1.0),
+                           (guess_video_rexps, None),
+                           (guess_website, 1.0),
+                           (guess_release_group, 0.8),
+                           (guess_properties, 1.0),
+                           (guess_language, None)
+                           ]
 
-        # 3- try to match information in decreasing order of confidence and
-        #    blank the matching group in the string if we found something
-        for pathpart in match_tree:
-            for gidx, explicit_group in enumerate(pathpart):
-                pathpart[gidx] = guess_groups(explicit_group, result, filetype = filetype)
+        episode_strategy = [ (guess_date, 1.0),
+                             (guess_video_rexps, None),
+                             (guess_episodes_rexps, None),
+                             (guess_website, 1.0),
+                             (guess_release_group, 0.8),
+                             (guess_properties, 1.0),
+                             (guess_weak_episodes_rexps, 0.6),
+                             (guess_language, None)
+                           ]
+
+        if mtree.guess['type'] in ('episode', 'episodesubtitle'):
+            strategy = episode_strategy
+        else:
+            strategy = movie_strategy
+
+        # 3- try to match information for specific patterns
+        for node in mtree.nodes_at_depth(2):
+            find_and_split_node(node, strategy)
+
+        # split into '-' separated subgroups (with required separator chars
+        # around the dash)
+        for node in mtree.unidentified_leaves():
+            indices = []
+            didx = node.value.find('-')
+            while didx > 0:
+                indices.extend([ didx, didx+1 ])
+                didx = node.value.find('-', didx+1)
+            if indices:
+                node.partition(indices)
+
 
         # 4- try to identify the remaining unknown groups by looking at their position
         #    relative to other known elements
-
-        if filetype in ('episode', 'episodesubtitle'):
-            eps = find_group(match_tree, 'episodeNumber')
-            if eps:
-                match_tree = match_from_epnum_position(match_tree, eps[0], guessed, update_found)
-
-            leftover = leftover_valid_groups(match_tree)
-
-            if not eps:
-                # if we don't have the episode number, but at least 2 groups in the
-                # last path group, then it's probably series - eptitle
-                title_candidates = filter(lambda g:g[0].lower() not in non_episode_title,
-                                          filter(lambda g: g[1][0] == len(match_tree)-1,
-                                                 leftover_valid_groups(match_tree)))
-                if len(title_candidates) >= 2:
-                    guess = guessed({ 'series': title_candidates[0][0] }, confidence = 0.4)
-                    leftover = update_found(leftover, title_candidates[0][1], guess)
-                    guess = guessed({ 'title': title_candidates[1][0] }, confidence = 0.4)
-                    leftover = update_found(leftover, title_candidates[1][1], guess)
-
-
-            # if there's a path group that only contains the season info, then the previous one
-            # is most likely the series title (ie: .../series/season X/...)
-            eps = [ gpos for gpos in find_group(match_tree, 'season')
-                    if 'episodeNumber' not in get_group(match_tree, gpos)[2] ]
-
-            if eps:
-                pidx, eidx, gidx = eps[0]
-                previous = [ group for group in leftover if group[1][0] == pidx - 1 ]
-                if len(previous) == 1:
-                    guess = guessed({ 'series': previous[0][0] }, confidence = 0.5)
-                    leftover = update_found(leftover, previous[0][1], guess)
-            
-            # reduce the confidence of unlikely series
-            for guess in result:
-                if 'series' in guess:
-                  if guess['series'].lower() in unlikely_series:
-                      guess.set_confidence('series', guess.confidence('series') * 0.5)
-            
-            
-        elif filetype in ('movie', 'moviesubtitle'):
-            leftover_all = leftover_valid_groups(match_tree)
-
-            # specific cases:
-            #  - movies/tttttt (yyyy)/tttttt.ccc
-            try:
-                if match_tree[-3][0][0][0].lower() == 'movies':
-                    # Note:too generic, might solve all the unittests as they all contain 'movies'
-                    # in their path
-                    #
-                    #if len(match_tree[-2][0]) == 1:
-                    #    title = match_tree[-2][0][0]
-                    #    guess = guessed({ 'title': clean_string(title[0]) }, confidence = 0.7)
-                    #    update_found(leftover_all, title, guess)
-
-                    year_group = filter(lambda gpos: gpos[0] == len(match_tree)-2,
-                                        find_group(match_tree, 'year'))[0]
-                    leftover = leftover_valid_groups(match_tree,
-                                                     valid = lambda g: ((g[0] and g[0][0] not in sep) and
-                                                                        g[1][0] == len(match_tree) - 2))
-                    if len(match_tree[-2]) == 2 and year_group[1] == 1:
-                        title = leftover[0]
-                        guess = guessed({ 'title': clean_string(title[0]) },
-                                        confidence = 0.8)
-                        update_found(leftover_all, title[1], guess)
-                        raise Exception # to exit the try catch now
-
-                    leftover = [ g for g in leftover_all if (g[1][0] == year_group[0] and
-                                                             g[1][1] < year_group[1] and
-                                                             g[1][2] < year_group[2]) ]
-                    leftover = sorted(leftover, key = lambda x:x[1])
-                    title = leftover[0]
-                    guess = guessed({ 'title': title[0] }, confidence = 0.8)
-                    leftover = update_found(leftover, title[1], guess)
-            except:
-                pass
-
-            # if we have either format or videoCodec in the folder containing the file
-            # or one of its parents, then we should probably look for the title in
-            # there rather than in the basename
-            props = filter(lambda g: g[0] <= len(match_tree) - 2,
-                           find_group(match_tree, 'videoCodec') +
-                           find_group(match_tree, 'format') +
-                           find_group(match_tree, 'language'))
-            leftover = None
-            if props and all(g[0] == props[0][0] for g in props):
-                leftover = [ g for g in leftover_all if g[1][0] == props[0][0] ]
-
-            if props and leftover:
-                guess = guessed({ 'title': leftover[0][0] }, confidence = 0.7)
-                leftover = update_found(leftover, leftover[0][1], guess)
-
-            else:
-                # first leftover group in the last path part sounds like a good candidate for title,
-                # except if it's only one word and that the first group before has at least 3 words in it
-                # (case where the filename contains an 8 chars short name and the movie title is
-                #  actually in the parent directory name)
-                leftover = [ g for g in leftover_all if g[1][0] == len(match_tree)-1 ]
-                if leftover:
-                    title, (pidx, eidx, gidx) = leftover[0]
-                    previous_pgroup_leftover = filter(lambda g: g[1][0] == pidx-1, leftover_all)
-
-                    if (title.count(' ') == 0 and
-                        previous_pgroup_leftover and
-                        previous_pgroup_leftover[0][0].count(' ') >= 2):
-
-                        guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
-                        leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
-
-                    else:
-                        guess = guessed({ 'title': title }, confidence = 0.6)
-                        leftover = update_found(leftover, leftover[0][1], guess)
-                else:
-                    # if there were no leftover groups in the last path part, look in the one before that
-                    previous_pgroup_leftover = filter(lambda g: g[1][0] == len(match_tree)-2, leftover_all)
-                    if previous_pgroup_leftover:
-                        guess = guessed({ 'title': previous_pgroup_leftover[0][0] }, confidence = 0.6)
-                        leftover = update_found(leftover, previous_pgroup_leftover[0][1], guess)
-
-
-
-
-
+        if mtree.guess['type'] in ('episode', 'episodesubtitle'):
+            guess_episode_info_from_position(mtree)
+        else:
+            guess_movie_title_from_position(mtree)
 
         # 5- perform some post-processing steps
+        post_process(mtree)
 
-        # 5.1- try to promote language to subtitle language where it makes sense
-        for pidx, eidx, gidx in find_group(match_tree, 'language'):
-            string, remaining, guess = get_group(match_tree, (pidx, eidx, gidx))
+        log.debug('Found match tree:\n%s' % (to_utf8(tree_to_string(mtree))))
 
-            def promote_subtitle():
-                guess.set('subtitleLanguage', guess['language'], confidence = guess.confidence('language'))
-                del guess['language']
-
-            # - if we matched a language in a file with a sub extension and that the group
-            #   is the last group of the filename, it is probably the language of the subtitle
-            #   (eg: 'xxx.english.srt')
-            if (fileext in subtitle_exts and
-                pidx == len(match_tree) - 1 and
-                eidx == len(match_tree[pidx]) - 1):
-                promote_subtitle()
-
-            # - if a language is in an explicit group just preceded by "st", it is a subtitle
-            #   language (eg: '...st[fr-eng]...')
-            if eidx > 0:
-                previous = get_group(match_tree, (pidx, eidx-1, -1))
-                if previous[0][-2:].lower() == 'st':
-                    promote_subtitle()
-
-
-
-        # re-append the extension now
-        match_tree.append([[(fileext, deleted*len(fileext), extguess)]])
-
-        self.parts = result
-        self.match_tree = match_tree
-
-        if filename.startswith('/'):
-            filename = ' ' + filename
-
-        log.debug('Found match tree:\n%s\n%s' % (to_utf8(tree_to_string(match_tree)),
-                                                 to_utf8(filename)))
+        self.match_tree = mtree
 
 
     def matched(self):
         # we need to make a copy here, as the merge functions work in place and
         # calling them on the match tree would modify it
-        parts = copy.deepcopy(self.parts)
 
-        # 1- start by doing some common preprocessing tasks
+        parts = [ node.guess for node in self.match_tree.nodes() if node.guess ]
+        parts = copy.deepcopy(parts)
 
-        # 1.1- ", the" at the end of a series title should be prepended to it
-        for part in parts:
-            if 'series' not in part:
-                continue
-
-            series = part['series']
-            lseries = series.lower()
-
-            if lseries[-4:] == ',the':
-                part['series'] = 'The ' + series[:-4]
-
-            if lseries[-5:] == ', the':
-                part['series'] = 'The ' + series[:-5]
-
-
-        # 2- try to merge similar information together and give it a higher confidence
+        # 1- try to merge similar information together and give it a higher confidence
         for int_part in ('year', 'season', 'episodeNumber'):
             merge_similar_guesses(parts, int_part, choose_int)
 
@@ -588,7 +617,7 @@ class IterativeMatcher(object):
 
         result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
 
-        # 3- some last minute post-processing
+        # 2- some last minute post-processing
         if (result['type'] == 'episode' and
             'season' not in result and
             result.get('episodeFormat', '') == 'Minisode'):
@@ -596,3 +625,4 @@ class IterativeMatcher(object):
 
         log.debug('Final result: ' + result.nice_string())
         return result
+

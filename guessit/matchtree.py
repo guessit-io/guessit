@@ -19,14 +19,17 @@
 #
 
 from guessit.patterns import deleted
-from guessit.textutils import clean_string
+from guessit.textutils import clean_string, str_fill, find_first_level_groups
+from guessit.fileutils import split_path
+from guessit.patterns import group_delimiters
+import os.path
 import logging
 
 log = logging.getLogger("guessit.matchtree")
 
 
 
-def tree_to_string(tree):
+def old_tree_to_string(tree):
     """Return a string representation for the given tree.
 
     The lines convey the following information:
@@ -150,4 +153,177 @@ def leftover_valid_groups(match_tree, valid = lambda s: len(s[0]) > 3):
     return leftover
 
 
+
+class MatchTree(object):
+    """A MatchTree represents the hierarchical split of a string into its
+    constituent semantic groups."""
+
+    def __init__(self, string = '', span = None, parent = None):
+        # TODO: make sure string is unicode (?)
+        self.string = string
+        self.span = span or (0,len(string))
+        self.parent = parent
+        self.children = []
+        self.guess = {} # instance of guessit.Guess if something is found
+
+    @property
+    def value(self):
+        return self.string[self.span[0]:self.span[1]]
+
+    @property
+    def clean_value(self):
+        return clean_string(self.value)
+
+    @property
+    def offset(self):
+        return self.span[0]
+
+    @property
+    def info(self):
+        result = dict(self.guess)
+
+        for c in self.children:
+            result.update(c.info)
+
+        return result
+
+    @property
+    def root(self):
+        if not self.parent:
+            return self
+
+        return self.parent.root
+
+    @property
+    def depth(self):
+        if self.is_leaf():
+            return 0
+
+        return 1 + max(c.depth for c in self.children)
+
+    def is_explicit(self):
+        """Return whether the group was explicitly enclosed by
+        parentheses/square brackets/etc."""
+        pass
+
+    def is_leaf(self):
+        return self.children == []
+
+    def add_child(self, span):
+        child = MatchTree(self.string, span = span, parent = self)
+        self.children.append(child)
+
+    def partition(self, indices):
+        indices = sorted(indices)
+        if indices[0] != 0:
+            indices.insert(0, 0)
+        if indices[-1] != len(self.value):
+            indices.append(len(self.value))
+
+        for start, end in zip(indices[:-1], indices[1:]):
+            self.add_child(span = (start + self.offset, end + self.offset))
+
+
+    def nodes_at_depth(self, depth):
+        if depth == 0:
+            yield self
+
+        for child in self.children:
+            for node in child.nodes_at_depth(depth-1):
+                yield node
+
+    @property
+    def node_idx(self):
+        if self.parent is None:
+            return ()
+        return self.parent.node_idx + (self.parent.children.index(self),)
+
+    def node_at(self, idx):
+        if not idx:
+            return self
+
+        try:
+            return self.children[idx[0]].node_at(idx[1:])
+        except:
+            raise ValueError('Non-existent node index: %s' % (idx,))
+
+    def nodes(self):
+        yield self
+        for child in self.children:
+            for node in child.nodes():
+                yield node
+
+    def _leaves(self):
+        if self.is_leaf():
+            yield self
+        else:
+            for child in self.children:
+                for leaf in child.leaves():
+                    yield leaf
+
+    def leaves(self):
+        return list(self._leaves())
+
+    def _unidentified_leaves(self):
+        for leaf in self._leaves():
+            if not leaf.guess and len(leaf.clean_value) > 3:
+                yield leaf
+
+    def unidentified_leaves(self):
+        return list(self._unidentified_leaves())
+
+
+def tree_to_string(mtree):
+    empty_line = ' ' * len(mtree.string)
+
+    def to_hex(x):
+        if isinstance(x, int):
+            return str(x) if x < 10 else chr(55+x)
+        return x
+
+    def meaning(result):
+        mmap = { 'episodeNumber': 'E',
+                 'season': 'S',
+                 'extension': 'e',
+                 'format': 'f',
+                 'language': 'l',
+                 'videoCodec': 'v',
+                 'audioCodec': 'a',
+                 'website': 'w',
+                 'container': 'c',
+                 'series': 'T',
+                 'title': 't',
+                 'date': 'd',
+                 'year': 'y',
+                 'releaseGroup': 'r',
+                 'screenSize': 's'
+                 }
+
+        if result is None:
+            return ' '
+
+        for prop, l in mmap.items():
+            if prop in result:
+                return l
+
+        return 'x'
+
+    lines = [ empty_line ] * (mtree.depth + 2) # +2: remaining, meaning
+    lines[-2] = mtree.string
+
+    for node in mtree.nodes():
+        if node == mtree:
+            continue
+
+        idx = node.node_idx
+        depth = len(idx) - 1
+        if idx:
+            lines[depth] = str_fill(lines[depth], node.span, to_hex(idx[-1]))
+        if node.guess:
+            lines[-2] = str_fill(lines[-2], node.span, '_')
+            lines[-1] = str_fill(lines[-1], node.span, meaning(node.guess))
+
+    lines.append(mtree.string)
+
+    return '\n'.join(lines)
 

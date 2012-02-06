@@ -42,10 +42,13 @@ def clean_string(s):
 def str_replace(string, pos, c):
     return string[:pos] + c + string[pos+1:]
 
-def blank_region(string, region, blank_sep = deleted):
+def str_fill(string, region, c):
     start, end = region
-    return string[:start] + blank_sep * (end - start) + string[end:]
+    return string[:start] + c * (end - start) + string[end:]
 
+def blank_region(string, region, blank_sep = deleted):
+    """FIXME: remove me, duplicate"""
+    return str_fill(string, region, c = blank_sep)
 
 def between(s, left, right):
     return s.split(left)[1].split(right)[0]
