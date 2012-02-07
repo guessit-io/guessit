@@ -24,6 +24,7 @@ from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, c
 from guessit.date import search_date, search_year
 from guessit.language import search_language
 from guessit.filetype import guess_filetype
+from guessit.transfo import format_guess
 from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, non_episode_title, find_properties, canonical_form, unlikely_series, group_delimiters
 from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
 from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
@@ -42,171 +43,12 @@ def use_node(f):
     return f
 
 
-def split_tree(mtree, components):
-    offset = 0
-    for c in components:
-        start = mtree.value.find(c, offset)
-        end = start + len(c)
-        mtree.add_child(span = (mtree.offset + start,
-                                mtree.offset + end))
-        offset = end
-
-
-def split_path_components(mtree):
-    # FIXME: duplicate from fileutils
-    """Returns the filename split into [ dir*, basename, ext ]."""
-    components = fileutils.split_path(mtree.value)
-    basename = components.pop(-1)
-    components += list(os.path.splitext(basename))
-    components[-1] = components[-1][1:] # remove the '.' from the extension
-
-    split_tree(mtree, components)
-
-def split_explicit_groups(mtree):
-    """return the string split into explicit groups, that is, those either
-    between parenthese, square brackets or curly braces, and those separated
-    by a dash."""
-    groups = find_first_level_groups(mtree.value, group_delimiters[0])
-    for delimiters in group_delimiters:
-        groups = reduce(lambda l, x: l + find_first_level_groups(x, delimiters), groups, [])
-
-    # do not do this at this moment, it is not strong enough and can break other
-    # patterns, such as dates, etc...
-    #groups = reduce(lambda l, x: l + x.split('-'), groups, [])
-
-    split_tree(mtree, groups)
 
 
 from date import search_date, search_year
 from guessit.guess import Guess
 from patterns import websites, properties, sep
 
-def format_guess(guess):
-    """Format all the found values to their natural type.
-    For instance, a year would be stored as an int value, etc...
-
-    Note that this modifies the dictionary given as input.
-    """
-    for prop, value in guess.items():
-        if prop in ('season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal'):
-            guess[prop] = int(guess[prop])
-        elif isinstance(value, basestring):
-            if prop in ('edition',):
-                value = clean_string(value)
-            guess[prop] = canonical_form(value)
-
-    return guess
-
-
-def guess_date(string):
-    date, span = search_date(string)
-    if date:
-        return { 'date': date }, span
-    else:
-        return None, None
-
-def guess_year(string):
-    year, span = search_year(string)
-    if year:
-        return { 'year': year }, span
-    else:
-        return None, None
-
-def guess_website(string):
-    low = string.lower()
-    for site in websites:
-        pos = low.find(site.lower())
-        if pos != -1:
-            return { 'website': site }, (pos, pos+len(site))
-    return None, None
-
-def guess_video_rexps(string):
-    for rexp, confidence, span_adjust in video_rexps:
-        match = re.search(rexp, string, re.IGNORECASE)
-        if match:
-            metadata = match.groupdict()
-            # is this the better place to put it? (maybe, as it is at least the soonest that we can catch it)
-            if 'cdNumberTotal' in metadata and metadata['cdNumberTotal'] is None:
-                del metadata['cdNumberTotal']
-            return (Guess(metadata, confidence = confidence),
-                    (match.start() + span_adjust[0],
-                     match.end() + span_adjust[1]))
-
-    return None, None
-
-def guess_episodes_rexps(string):
-    for rexp, confidence, span_adjust in episode_rexps:
-        match = re.search(rexp, string, re.IGNORECASE)
-        if match:
-            return (Guess(match.groupdict(), confidence = confidence),
-                    (match.start() + span_adjust[0],
-                     match.end() + span_adjust[1]))
-
-    return None, None
-
-@use_node
-def guess_weak_episodes_rexps(string, node):
-    if 'episodeNumber' in node.root.info:
-        return None, None
-
-    for rexp, span_adjust in weak_episode_rexps:
-        match = re.search(rexp, string, re.IGNORECASE)
-        if match:
-            metadata = match.groupdict()
-            span = (match.start() + span_adjust[0], match.end() + span_adjust[1])
-
-            epnum = int(metadata['episodeNumber'])
-            if epnum > 100:
-                return Guess({ 'season': epnum // 100,
-                               'episodeNumber': epnum % 100 }, confidence = 0.6), span
-            else:
-                return Guess(metadata, confidence = 0.3), span
-
-    return None, None
-
-
-def guess_release_group(string):
-    group_names = [ r'\.(Xvid)-(?P<releaseGroup>.*?)[ \.]',
-                    r'\.(DivX)-(?P<releaseGroup>.*?)[\. ]',
-                    r'\.(DVDivX)-(?P<releaseGroup>.*?)[\. ]',
-                    ]
-    for rexp in group_names:
-        match = re.search(rexp, string, re.IGNORECASE)
-        if match:
-            metadata = match.groupdict()
-            metadata.update({ 'videoCodec': match.group(1) })
-            return metadata, (match.start() + 1, match.end() - 1)
-
-    return None, None
-
-def guess_properties(string):
-    low = string.lower()
-    for prop, values in properties.items():
-        for value in values:
-            pos = low.find(value.lower())
-            if pos != -1:
-                end = pos + len(value)
-                # make sure our word is always surrounded by separators
-                if ((pos > 0 and low[pos-1] not in sep) or
-                    (end < len(low) and low[end] not in sep)):
-                    # note: sep is a regexp, but in this case using it as
-                    #       a sequence achieves the same goal
-                    continue
-                return { prop: value }, (pos, end)
-
-    return None, None
-
-
-def guess_language(string):
-    language, span, confidence = search_language(string)
-    if language:
-        # is it a subtitle language?
-        if 'sub' in clean_string(string[:span[0]]).lower().split(' '):
-            return Guess({ 'subtitleLanguage': language }, confidence = confidence), span
-        else:
-            return Guess({ 'language': language }, confidence = confidence), span
-
-    return None, None
 
 
 def guess_movie_title_from_position(mtree):
@@ -434,35 +276,6 @@ def post_process(mtree):
             node.guess['series'] = 'The ' + series[:-5]
 
 
-def find_and_split_node(node, strategy):
-    string = ' %s ' % node.value # add sentinels
-    for matcher, confidence in strategy:
-        if getattr(matcher, 'use_node', False):
-            result, span = matcher(string, node)
-        else:
-            result, span = matcher(string)
-
-        if result:
-            span = (span[0]-1, span[1]-1) # readjust span to compensate for sentinels
-            if isinstance(result, Guess):
-                if confidence is None:
-                    confidence = result.confidence(result.keys()[0])
-            else:
-                if confidence is None:
-                    confidence = 1.0
-
-            guess = format_guess(Guess(result, confidence = confidence))
-            log.debug('Found with confidence %.2f: %s' % (confidence, guess))
-
-            node.partition(span)
-            absolute_span = (span[0] + node.offset, span[1] + node.offset)
-            for child in node.children:
-                if child.span == absolute_span:
-                    child.guess = guess
-                else:
-                    find_and_split_node(child, strategy)
-            return
-
 
 
 class IterativeMatcher(object):
@@ -513,40 +326,33 @@ class IterativeMatcher(object):
             log.debug('WARNING: given filename to matcher is not unicode...')
 
         mtree = MatchTree(filename)
+        mtree.guess.set('type', filetype, confidence = 1.0)
 
-        # 1- first split our path into dirs + basename + ext
-        split_path_components(mtree)
+        def apply_transfo(transfo_name):
+            # FIXME: this is NOT idiomatic
+            exec 'from transfo.%s import process' % transfo_name in globals(), locals()
+            process(mtree)
+            #exec('transfo.%s.process(mtree)' % transfo_name, globals(), locals())
 
-        # try to detect the file type
-        filetype, other = guess_filetype(filename, filetype)
-        mtree.guess = Guess({ 'type': filetype }, confidence = 1.0)
-        log.debug('Found with confidence %.2f: %s' % (1.0, mtree.guess))
+        apply_transfo('split_groups')
 
-        filetype_info = Guess(other, confidence = 1.0)
+        #import transfo.split_groups
+        #transfo.split_groups.process(mtree)
 
-        # guess the mimetype of the filename
-        # TODO: handle other mimetypes not found on the default type_maps
-        # mimetypes.types_map['.srt']='text/subtitle'
-        mime, _ = mimetypes.guess_type(filename, strict=False)
-        if mime is not None:
-            filetype_info.update({ 'mimetype': mime }, confidence = 1.0)
+        #import transfo.guess_date
+        #transfo.guess_date.process(mtree)
 
-        mtree.node_at((-1,)).guess = filetype_info
-        log.debug('Found with confidence %.2f: %s' % (1.0, mtree.node_at((-1,)).guess))
-
-        # 2- split each of those into explicit groups, if any
-        # note: be careful, as this might split some regexps with more confidence such as
-        #       Alfleni-Team, or [XCT] or split a date such as (14-01-2008)
-        for c in mtree.children:
-            split_explicit_groups(c)
+        #import transfo.guess_year
+        #transfo.guess_year.process(mtree)
 
         # strategy is a list of pairs (guesser, confidence)
         # - if the guesser returns a guessit.Guess and confidence is specified,
         #   it will override it, otherwise it will leave the guess confidence
         # - if the guesser returns a simple dict as a guess and confidence is
         #   specified, it will use it, or 1.0 otherwise
-        movie_strategy = [ (guess_date, 1.0),
-                           (guess_year, 1.0),
+        '''
+        movie_strategy = [ #(guess_date, 1.0),
+                           #(guess_year, 1.0),
                            (guess_video_rexps, None),
                            (guess_website, 1.0),
                            (guess_release_group, 0.8),
@@ -554,7 +360,7 @@ class IterativeMatcher(object):
                            (guess_language, None)
                            ]
 
-        episode_strategy = [ (guess_date, 1.0),
+        episode_strategy = [ #(guess_date, 1.0),
                              (guess_video_rexps, None),
                              (guess_episodes_rexps, None),
                              (guess_website, 1.0),
@@ -563,15 +369,22 @@ class IterativeMatcher(object):
                              (guess_weak_episodes_rexps, 0.6),
                              (guess_language, None)
                            ]
+                           '''
 
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
-            strategy = episode_strategy
+            strategy = [ 'guess_date', 'guess_video_rexps', 'guess_episodes_rexps',
+                         'guess_website', 'guess_release_group', 'guess_properties',
+                         'guess_weak_episodes_rexps', 'guess_language' ]
         else:
-            strategy = movie_strategy
+            strategy = [ 'guess_date', 'guess_year', 'guess_video_rexps',
+                         'guess_website', 'guess_release_group', 'guess_properties',
+                         'guess_language' ]
 
         # 3- try to match information for specific patterns
-        for node in mtree.nodes_at_depth(2):
-            find_and_split_node(node, strategy)
+        #for node in mtree.nodes_at_depth(2):
+        #    find_and_split_node(node, strategy)
+        for name in strategy:
+            apply_transfo(name)
 
         # split into '-' separated subgroups (with required separator chars
         # around the dash)

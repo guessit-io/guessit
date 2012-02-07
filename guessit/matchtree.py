@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from guessit import Guess
 from guessit.patterns import deleted
 from guessit.textutils import clean_string, str_fill, find_first_level_groups
 from guessit.fileutils import split_path
@@ -164,7 +165,7 @@ class MatchTree(object):
         self.span = span or (0,len(string))
         self.parent = parent
         self.children = []
-        self.guess = {} # instance of guessit.Guess if something is found
+        self.guess = Guess()
 
     @property
     def value(self):
