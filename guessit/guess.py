@@ -197,6 +197,8 @@ def _merge_similar_guesses_nocheck(guesses, prop, choose):
 
     other_props = set(g1) & set(g2) - set([prop])
     if other_props:
+        log.debug('guess 1: %s' % g1)
+        log.debug('guess 2: %s' % g2)
         for prop in other_props:
             if g1[prop] != g2[prop]:
                 log.warning('both guesses to be merged have more than one different property in common, bailing out...')
@@ -233,9 +235,13 @@ def merge_similar_guesses(guesses, prop, choose):
 
     if len(similar) > 2:
         log.debug('complex merge, trying our best...')
+        before = len(guesses)
         _merge_similar_guesses_nocheck(guesses, prop, choose)
-        merge_similar_guesses(guesses, prop, choose)
-        return
+        after = len(guesses)
+        if after < before:
+            # recurse only when the previous call actually did something,
+            # otherwise we end up in an infinite loop
+            merge_similar_guesses(guesses, prop, choose)
 
 
 def merge_append_guesses(guesses, prop):
