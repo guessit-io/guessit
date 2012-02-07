@@ -38,7 +38,7 @@ def setupLogging(colored = True):
 
     class ColoredFormatter(logging.Formatter):
         def __init__(self):
-            self.fmt = '%(levelname)-8s ' + BLUE_FONT + '%(module)s:%(funcName)s' + RESET_FONT + ' -- %(message)s'
+            self.fmt = '%(levelname)-8s ' + BLUE_FONT + '%(name)s:%(funcName)s' + RESET_FONT + ' -- %(message)s'
             logging.Formatter.__init__(self, self.fmt)
 
         def format(self, record):
