@@ -35,12 +35,7 @@ import copy
 import logging
 import mimetypes
 
-log = logging.getLogger("guessit.newmatcher")
-
-
-def use_node(f):
-    f.use_node = True
-    return f
+log = logging.getLogger("guessit.matcher")
 
 
 
@@ -48,189 +43,6 @@ def use_node(f):
 from date import search_date, search_year
 from guessit.guess import Guess
 from patterns import websites, properties, sep
-
-
-
-def guess_movie_title_from_position(mtree):
-    # specific cases:
-    #  - movies/tttttt (yyyy)/tttttt.ccc
-    try:
-        if mtree.node_at((-4, 0)).value.lower() == 'movies':
-            containing_folder = mtree.node_at((-3,))
-
-            # Note:too generic, might solve all the unittests as they all contain 'movies'
-            # in their path
-            #
-            #if containing_folder.is_leaf() and not containing_folder.guess:
-            #    containing_folder.guess = Guess({ 'title': clean_string(containing_folder.value) },
-            #                                    confidence = 0.7)
-
-            year_group = [ leaf for leaf in containing_folder.leaves() if 'year' in leaf.guess ][0]
-            groups_before = [ leaf for leaf in containing_folder.unidentified_leaves()
-                              if leaf.node_idx < year_group.node_idx ]
-
-            title_candidate = groups_before[0]
-            title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
-                                          confidence = 0.8)
-            log.debug('Found with confidence %.2f: %s' % (0.8, title_candidate.guess))
-
-
-    except:
-        pass
-
-
-    # if we have either format or videoCodec in the folder containing the file
-    # or one of its parents, then we should probably look for the title in
-    # there rather than in the basename
-    props = [ leaf for leaf in mtree.leaves()
-              if (leaf.node_idx <= (len(mtree.children)-2,) and
-                  ('videoCodec' in leaf.guess or
-                   'format' in leaf.guess or
-                   'language' in leaf.guess)) ]
-
-    leftover = None
-
-    if props:
-        group_idx = props[0].node_idx[0]
-        if all(g.node_idx[0] == group_idx for g in props):
-            # if they're all in the same group, take leftover info from there
-            leftover = mtree.node_at((group_idx,)).unidentified_leaves()
-
-    if props and leftover:
-        title_candidate = leftover[0]
-        title_candidate.guess = Guess({ 'title': title_candidate.clean_value }, confidence = 0.7)
-        log.debug('Found with confidence %.2f: %s' % (0.7, title_candidate.guess))
-    else:
-        # first leftover group in the last path part sounds like a good candidate for title,
-        # except if it's only one word and that the first group before has at least 3 words in it
-        # (case where the filename contains an 8 chars short name and the movie title is
-        #  actually in the parent directory name)
-        leftover = mtree.node_at((-2,)).unidentified_leaves()
-        try:
-            previous_pgroup_leftover = mtree.node_at((-3,)).unidentified_leaves()
-        except:
-            previous_pgroup_leftover = []
-
-        if leftover:
-            title_candidate = leftover[0]
-
-            if (title_candidate.clean_value.count(' ') == 0 and
-                previous_pgroup_leftover and
-                previous_pgroup_leftover[0].clean_value.count(' ') >= 2):
-
-                previous_pgroup_leftover[0].guess = Guess({ 'title': previous_pgroup_leftover[0].clean_value },
-                                                          confidence = 0.6)
-                log.debug('Found with confidence %.2f: %s' % (0.6, previous_pgroup_leftover[0].guess))
-
-            else:
-                title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
-                                              confidence = 0.6)
-                log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
-
-        else:
-            # if there were no leftover groups in the last path part, look in the one before that
-            if previous_pgroup_leftover:
-                title_candidate = previous_pgroup_leftover[0]
-                title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
-                                              confidence = 0.6)
-                log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
-
-
-def match_from_epnum_position(mtree, node):
-    epnum_idx = node.node_idx
-
-    # a few helper functions to be able to filter using high-level semantics
-    def before_epnum_in_same_pathgroup():
-        return [ leaf for leaf in mtree.unidentified_leaves()
-                 if leaf.node_idx[0] == epnum_idx[0] and leaf.node_idx[1:] < epnum_idx[1:] ]
-
-    def after_epnum_in_same_pathgroup():
-        return [ leaf for leaf in mtree.unidentified_leaves()
-                 if leaf.node_idx[0] == epnum_idx[0] and leaf.node_idx[1:] > epnum_idx[1:] ]
-
-    def before_epnum_in_same_explicitgroup():
-        return [ leaf for leaf in mtree.unidentified_leaves()
-                 if leaf.node_idx[:2] == epnum_idx[:2] and leaf.node_idx[2:] < epnum_idx[2:] ]
-
-    def after_epnum_in_same_explicitgroup():
-        return [ leaf for leaf in mtree.unidentified_leaves()
-                 if leaf.node_idx[:2] == epnum_idx[:2] and leaf.node_idx[2:] > epnum_idx[2:] ]
-
-    # if we have at least 1 valid group before the episodeNumber, then it's probably
-    # the series name
-    series_candidates = before_epnum_in_same_pathgroup()
-    if len(series_candidates) >= 1:
-        series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.7)
-
-    # only 1 group after (in the same path group) and it's probably the episode title
-    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                              after_epnum_in_same_pathgroup())
-
-    if len(title_candidates) == 1:
-        title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.5)
-    else:
-        # try in the same explicit group, with lower confidence
-        title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                                  after_epnum_in_same_explicitgroup())
-        if len(title_candidates) == 1:
-            title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.4)
-
-    # epnumber is the first group and there are only 2 after it in same path group
-    #  -> season title - episode title
-    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                              after_epnum_in_same_pathgroup())
-    if ('title' not in mtree.info and                # no title
-        before_epnum_in_same_pathgroup() == [] and   # no groups before
-        len(title_candidates) == 2):                 # only 2 groups after
-
-        title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
-        title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
-
-
-    # if we only have 1 remaining valid group in the pathpart before the filename,
-    # then it's likely that it is the series name
-    try:
-        series_candidates = mtree.node_at((-3,)).unidentified_leaves()
-    except:
-        series_candidates = []
-
-    if len(series_candidates) == 1:
-        series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.5)
-
-
-
-def guess_episode_info_from_position(mtree):
-    eps = [ node for node in mtree.leaves() if 'episodeNumber' in node.guess ]
-    if eps:
-        match_from_epnum_position(mtree, eps[0])
-
-    else:
-        # if we don't have the episode number, but at least 2 groups in the
-        # last path group, then it's probably series - eptitle
-        title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                                  mtree.node_at((-2,)).unidentified_leaves())
-
-        if len(title_candidates) >= 2:
-            title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
-            title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
-
-    # if there's a path group that only contains the season info, then the previous one
-    # is most likely the series title (ie: .../series/season X/...)
-    eps = [ node for node in mtree.nodes()
-            if 'season' in node.guess and 'episodeNumber' not in node.guess ]
-
-    if eps:
-        previous = [ node for node in mtree.unidentified_leaves()
-                     if node.node_idx[0] == eps[0].node_idx[0] - 1 ]
-        if len(previous) == 1:
-            previous[0].guess = Guess({ 'series': previous[0].clean_value }, confidence = 0.5)
-
-    # reduce the confidence of unlikely series
-    for node in mtree.nodes():
-        if 'series' in node.guess:
-          if node.guess['series'].lower() in unlikely_series:
-              node.guess.set_confidence('series', node.guess.confidence('series') * 0.5)
-
 
 
 
@@ -317,9 +129,9 @@ class IterativeMatcher(object):
         # 4- try to identify the remaining unknown groups by looking at their position
         #    relative to other known elements
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
-            guess_episode_info_from_position(mtree)
+            apply_transfo('guess_episode_info_from_position')
         else:
-            guess_movie_title_from_position(mtree)
+            apply_transfo('guess_movie_title_from_position')
 
         # 5- perform some post-processing steps
         apply_transfo('post_process')
