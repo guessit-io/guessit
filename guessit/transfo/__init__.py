@@ -80,7 +80,12 @@ class SingleNodeGuesser(object):
         self.logger = logger
 
     def process(self, mtree):
+        # strategy is a list of pairs (guesser, confidence)
+        # - if the guesser returns a guessit.Guess and confidence is specified,
+        #   it will override it, otherwise it will leave the guess confidence
+        # - if the guesser returns a simple dict as a guess and confidence is
+        #   specified, it will use it, or 1.0 otherwise
         strategy = [ (self.guess_func, self.confidence) ]
-        #for node in mtree.nodes_at_depth(2):
+
         for node in mtree.unidentified_leaves():
             find_and_split_node(node, strategy, self.logger)

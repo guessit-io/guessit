@@ -234,49 +234,6 @@ def guess_episode_info_from_position(mtree):
 
 
 
-def post_process(mtree):
-    # 1- try to promote language to subtitle language where it makes sense
-    for node in mtree.nodes():
-        if 'language' not in node.guess:
-            continue
-
-        def promote_subtitle():
-            node.guess.set('subtitleLanguage', node.guess['language'], confidence = node.guess.confidence('language'))
-            del node.guess['language']
-
-        # - if we matched a language in a file with a sub extension and that the group
-        #   is the last group of the filename, it is probably the language of the subtitle
-        #   (eg: 'xxx.english.srt')
-        if (mtree.node_at((-1,)).value.lower() in subtitle_exts and
-            node == mtree.leaves()[-2]):
-            promote_subtitle()
-
-        # - if a language is in an explicit group just preceded by "st", it is a subtitle
-        #   language (eg: '...st[fr-eng]...')
-        try:
-            idx = node.node_idx
-            previous = mtree.node_at((idx[0], idx[1]-1)).leaves()[-1]
-            if previous.value.lower()[-2:] == 'st':
-                promote_subtitle()
-        except:
-            pass
-
-    # 2- ", the" at the end of a series title should be prepended to it
-    for node in mtree.nodes():
-        if 'series' not in node.guess:
-            continue
-
-        series = node.guess['series']
-        lseries = series.lower()
-
-        if lseries[-4:] == ',the':
-            node.guess['series'] = 'The ' + series[:-4]
-
-        if lseries[-5:] == ', the':
-            node.guess['series'] = 'The ' + series[:-5]
-
-
-
 
 class IterativeMatcher(object):
     def __init__(self, filename, filetype = 'autodetect'):
@@ -329,48 +286,18 @@ class IterativeMatcher(object):
         mtree.guess.set('type', filetype, confidence = 1.0)
 
         def apply_transfo(transfo_name):
-            # FIXME: this is NOT idiomatic
+            # FIXME: there should be a more idiomatic way of doing this...
             exec 'from transfo.%s import process' % transfo_name in globals(), locals()
             process(mtree)
-            #exec('transfo.%s.process(mtree)' % transfo_name, globals(), locals())
 
+        # 1- first split our path into dirs + basename + ext
+        # 2- split each of those into explicit groups, if any
+        # note: be careful, as this might split some regexps with more confidence such as
+        #       Alfleni-Team, or [XCT] or split a date such as (14-01-2008)
         apply_transfo('split_groups')
 
-        #import transfo.split_groups
-        #transfo.split_groups.process(mtree)
 
-        #import transfo.guess_date
-        #transfo.guess_date.process(mtree)
-
-        #import transfo.guess_year
-        #transfo.guess_year.process(mtree)
-
-        # strategy is a list of pairs (guesser, confidence)
-        # - if the guesser returns a guessit.Guess and confidence is specified,
-        #   it will override it, otherwise it will leave the guess confidence
-        # - if the guesser returns a simple dict as a guess and confidence is
-        #   specified, it will use it, or 1.0 otherwise
-        '''
-        movie_strategy = [ #(guess_date, 1.0),
-                           #(guess_year, 1.0),
-                           (guess_video_rexps, None),
-                           (guess_website, 1.0),
-                           (guess_release_group, 0.8),
-                           (guess_properties, 1.0),
-                           (guess_language, None)
-                           ]
-
-        episode_strategy = [ #(guess_date, 1.0),
-                             (guess_video_rexps, None),
-                             (guess_episodes_rexps, None),
-                             (guess_website, 1.0),
-                             (guess_release_group, 0.8),
-                             (guess_properties, 1.0),
-                             (guess_weak_episodes_rexps, 0.6),
-                             (guess_language, None)
-                           ]
-                           '''
-
+        # 3- try to match information for specific patterns
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
             strategy = [ 'guess_date', 'guess_video_rexps', 'guess_episodes_rexps',
                          'guess_website', 'guess_release_group', 'guess_properties',
@@ -380,23 +307,12 @@ class IterativeMatcher(object):
                          'guess_website', 'guess_release_group', 'guess_properties',
                          'guess_language' ]
 
-        # 3- try to match information for specific patterns
-        #for node in mtree.nodes_at_depth(2):
-        #    find_and_split_node(node, strategy)
         for name in strategy:
             apply_transfo(name)
 
         # split into '-' separated subgroups (with required separator chars
         # around the dash)
-        for node in mtree.unidentified_leaves():
-            indices = []
-            didx = node.value.find('-')
-            while didx > 0:
-                indices.extend([ didx, didx+1 ])
-                didx = node.value.find('-', didx+1)
-            if indices:
-                node.partition(indices)
-
+        apply_transfo('split_on_dash')
 
         # 4- try to identify the remaining unknown groups by looking at their position
         #    relative to other known elements
@@ -406,7 +322,7 @@ class IterativeMatcher(object):
             guess_movie_title_from_position(mtree)
 
         # 5- perform some post-processing steps
-        post_process(mtree)
+        apply_transfo('post_process')
 
         log.debug('Found match tree:\n%s' % (to_utf8(tree_to_string(mtree))))
 
