@@ -18,32 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import fileutils, textutils
-from guessit.matchtree import MatchTree
-from guessit.guess import Guess, merge_similar_guesses, merge_all, choose_int, choose_string
-from guessit.date import search_date, search_year
-from guessit.language import search_language
-from guessit.filetype import guess_filetype
-from guessit.transfo import format_guess
-from guessit.patterns import video_exts, subtitle_exts, sep, deleted, video_rexps, websites, episode_rexps, weak_episode_rexps, non_episode_title, find_properties, canonical_form, unlikely_series, group_delimiters
-from guessit.matchtree import get_group, find_group, leftover_valid_groups, tree_to_string
-from guessit.textutils import find_first_level_groups, split_on_groups, blank_region, clean_string, to_utf8
-import datetime
-import os.path
-import re
+from guessit.matchtree import MatchTree, tree_to_string
+from guessit.textutils import to_utf8
+from guessit.guess import merge_similar_guesses, merge_all, choose_int, choose_string
 import copy
 import logging
-import mimetypes
 
 log = logging.getLogger("guessit.matcher")
-
-
-
-
-from date import search_date, search_year
-from guessit.guess import Guess
-from patterns import websites, properties, sep
-
 
 
 
