@@ -55,6 +55,7 @@ def match_from_epnum_position(mtree, node):
     series_candidates = before_epnum_in_same_pathgroup()
     if len(series_candidates) >= 1:
         series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.7)
+        log.debug('Found with confidence %.2f: %s' % (0.7, series_candidates[0].guess))
 
     # only 1 group after (in the same path group) and it's probably the episode title
     title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
@@ -62,15 +63,21 @@ def match_from_epnum_position(mtree, node):
 
     if len(title_candidates) == 1:
         title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.5)
+        log.debug('Found with confidence %.2f: %s' % (0.5, title_candidates[0].guess))
     else:
         # try in the same explicit group, with lower confidence
         title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
                                   after_epnum_in_same_explicitgroup())
         if len(title_candidates) == 1:
             title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.4)
+            log.debug('Found with confidence %.2f: %s' % (0.4, title_candidates[0].guess))
+        elif len(title_candidates) > 1:
+            title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.3)
+            log.debug('Found with confidence %.2f: %s' % (0.3, title_candidates[0].guess))
+
 
     # epnumber is the first group and there are only 2 after it in same path group
-    #  -> season title - episode title
+    #  -> series title - episode title
     title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
                               after_epnum_in_same_pathgroup())
     if ('title' not in mtree.info and                # no title
@@ -78,7 +85,9 @@ def match_from_epnum_position(mtree, node):
         len(title_candidates) == 2):                 # only 2 groups after
 
         title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
+        log.debug('Found with confidence %.2f: %s' % (0.4, title_candidates[0].guess))
         title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
+        log.debug('Found with confidence %.2f: %s' % (0.4, title_candidates[1].guess))
 
 
     # if we only have 1 remaining valid group in the pathpart before the filename,
@@ -90,6 +99,8 @@ def match_from_epnum_position(mtree, node):
 
     if len(series_candidates) == 1:
         series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.5)
+        log.debug('Found with confidence %.2f: %s' % (0.4, series_candidates[0].guess))
+
 
 
 def process(mtree):
@@ -105,7 +116,11 @@ def process(mtree):
 
         if len(title_candidates) >= 2:
             title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
+            log.debug('Found with confidence %.2f: %s' % (0.4, title_candidates[0].guess))
+
             title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
+            log.debug('Found with confidence %.2f: %s' % (0.4, title_candidates[1].guess))
+
 
     # if there's a path group that only contains the season info, then the previous one
     # is most likely the series title (ie: .../series/season X/...)
@@ -117,6 +132,7 @@ def process(mtree):
                      if node.node_idx[0] == eps[0].node_idx[0] - 1 ]
         if len(previous) == 1:
             previous[0].guess = Guess({ 'series': previous[0].clean_value }, confidence = 0.5)
+            log.debug('Found with confidence %.2f: %s' % (0.5, previous[0].guess))
 
     # reduce the confidence of unlikely series
     for node in mtree.nodes():
