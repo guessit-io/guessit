@@ -37,9 +37,6 @@ episode_rexps = [ # ... Season 2 ...
                   (r'season (?P<season>[0-9]+)', 1.0, (0, 0)),
                   (r'saison (?P<season>[0-9]+)', 1.0, (0, 0)),
 
-                  # ... s02-x01 ...
-                  (r's(?P<season>[0-9]{1,2})-x(?P<bonusNumber>[0-9]{1,2})[^0-9]', 1.0, (0, -1)),
-
                   # ... s02e13 ...
                   (r'[Ss](?P<season>[0-9]{1,2}).{,3}[EeXx](?P<episodeNumber>[0-9]{1,2})[^0-9]', 1.0, (0, -1)),
 
@@ -79,7 +76,13 @@ video_rexps = [ # cd number
                 (r'(?P<width>[0-9]{3,4})x(?P<height>[0-9]{3,4})', 0.9, (0, 0)),
 
                 # website
-                (r'(?P<website>www(\.[a-zA-Z0-9]+){2,3})', 0.8, (0, 0))
+                (r'(?P<website>www(\.[a-zA-Z0-9]+){2,3})', 0.8, (0, 0)),
+
+                # bonusNumber: ... x01 ...
+                (r'x(?P<bonusNumber>[0-9]{1,2})', 1.0, (0, 0)),
+
+                # filmNumber: ... f01 ...
+                (r'f(?P<filmNumber>[0-9]{1,2})', 1.0, (0, 0))
                 ]
 
 websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com', 'sharethefiles.com' ]

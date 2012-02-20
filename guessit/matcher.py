@@ -103,6 +103,10 @@ class IterativeMatcher(object):
         for name in strategy:
             apply_transfo(name)
 
+        # more guessers for both movies and episodes
+        for name in [ 'guess_bonus_features' ]:
+            apply_transfo(name)
+
         # split into '-' separated subgroups (with required separator chars
         # around the dash)
         apply_transfo('split_on_dash')

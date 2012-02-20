@@ -32,7 +32,8 @@ def format_guess(guess):
     Note that this modifies the dictionary given as input.
     """
     for prop, value in guess.items():
-        if prop in ('season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal'):
+        if prop in ('season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal',
+                    'bonusNumber', 'filmNumber'):
             guess[prop] = int(guess[prop])
         elif isinstance(value, basestring):
             if prop in ('edition',):
@@ -52,6 +53,7 @@ def find_and_split_node(node, strategy, logger):
 
         if result:
             span = (span[0]-1, span[1]-1) # readjust span to compensate for sentinels
+
             if isinstance(result, Guess):
                 if confidence is None:
                     confidence = result.confidence(result.keys()[0])
