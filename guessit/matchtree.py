@@ -202,10 +202,6 @@ class BaseMatchTree(object):
 
         return 1 + max(c.depth for c in self.children)
 
-    def is_explicit(self):
-        """Return whether the group was explicitly enclosed by
-        parentheses/square brackets/etc."""
-        pass
 
     def is_leaf(self):
         return self.children == []
@@ -317,6 +313,10 @@ class MatchTree(BaseMatchTree):
     def previous_leaves_containing(self, node, property_name):
         return list(self._previous_leaves_containing(node, property_name))
 
+    def is_explicit(self):
+        """Return whether the group was explicitly enclosed by
+        parentheses/square brackets/etc."""
+        return (self.value[0] + self.value[-1]) in group_delimiters
 
 
 def tree_to_string(mtree):

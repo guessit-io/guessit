@@ -64,50 +64,65 @@ def process(mtree):
     except:
         props = []
 
-    leftover = None
-
     if props:
         group_idx = props[0].node_idx[0]
         if all(g.node_idx[0] == group_idx for g in props):
             # if they're all in the same group, take leftover info from there
             leftover = mtree.node_at((group_idx,)).unidentified_leaves()
 
-    if props and leftover:
-        title_candidate = leftover[0]
-        title_candidate.guess = Guess({ 'title': title_candidate.clean_value }, confidence = 0.7)
-        log.debug('Found with confidence %.2f: %s' % (0.7, title_candidate.guess))
-    else:
-        # first leftover group in the last path part sounds like a good candidate for title,
-        # except if it's only one word and that the first group before has at least 3 words in it
-        # (case where the filename contains an 8 chars short name and the movie title is
-        #  actually in the parent directory name)
-        leftover = mtree.node_at((-2,)).unidentified_leaves()
-        try:
-            previous_pgroup_leftover = mtree.node_at((-3,)).unidentified_leaves()
-        except:
-            previous_pgroup_leftover = []
+            if leftover:
+                title_candidate = leftover[0]
+                title_candidate.guess = Guess({ 'title': title_candidate.clean_value }, confidence = 0.7)
+                log.debug('Found with confidence %.2f: %s' % (0.7, title_candidate.guess))
+                return
 
-        if leftover:
-            title_candidate = leftover[0]
+    # first leftover group in the last path part sounds like a good candidate for title,
+    # except
+    basename_leftover = mtree.node_at((-2,)).unidentified_leaves()
+    try:
+        folder_leftover = mtree.node_at((-3,)).unidentified_leaves()
+    except:
+        folder_leftover = []
 
-            if (title_candidate.clean_value.count(' ') == 0 and
-                previous_pgroup_leftover and
-                previous_pgroup_leftover[0].clean_value.count(' ') >= 2):
+    # look for title in basename if there are some remaining undidentified groups there
+    if basename_leftover:
+        title_candidate = basename_leftover[0]
 
-                previous_pgroup_leftover[0].guess = Guess({ 'title': previous_pgroup_leftover[0].clean_value },
-                                                          confidence = 0.6)
-                log.debug('Found with confidence %.2f: %s' % (0.6, previous_pgroup_leftover[0].guess))
+        # if basename is only one word and the containing folder has at least 3 words in it,
+        # we should take the title from the folder name
+        # ex: Movies/Alice in Wonderland DVDRip.XviD-DiAMOND/dmd-aw.avi
+        # ex: Movies/Somewhere.2010.DVDRip.XviD-iLG/i-smwhr.avi  <-- TODO: gets caught here?
+        if (title_candidate.clean_value.count(' ') == 0 and
+            folder_leftover and
+            folder_leftover[0].clean_value.count(' ') >= 2):
 
-            else:
-                title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
-                                              confidence = 0.6)
-                log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
+            folder_leftover[0].guess = Guess({ 'title': folder_leftover[0].clean_value },
+                                             confidence = 0.7)
+            log.debug('Found with confidence %.2f: %s' % (0.7, folder_leftover[0].guess))
+            return
 
-        else:
-            # if there were no leftover groups in the last path part, look in the one before that
-            if previous_pgroup_leftover:
-                title_candidate = previous_pgroup_leftover[0]
-                title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
-                                              confidence = 0.6)
-                log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
+        # if there are only 2 unidentified groups, the first of which is inside
+        # brackets or parentheses, we take the second one for the title:
+        # ex: Movies/[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi
+        if len(basename_leftover) == 2 and basename_leftover[0].is_explicit():
+            title = basename_leftover[1]
+            title.guess = Guess({ 'title': title.clean_value },
+                                confidence = 0.8)
+            log.debug('Found with confidence %.2f: %s' % (0.8, title.guess))
+            return
 
+        # if all else fails, take the first remaining unidentified group in the
+        # basename as title
+        title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
+                                      confidence = 0.6)
+        log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
+        return
+
+
+    # if there are no leftover groups in the basename, look in the folder name
+    if folder_leftover:
+        title_candidate = folder_leftover[0]
+        title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
+                                      confidence = 0.5)
+        log.debug('Found with confidence %.2f: %s' % (0.5, title_candidate.guess))
+        return
