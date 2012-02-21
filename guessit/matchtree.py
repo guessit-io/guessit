@@ -268,12 +268,14 @@ class MatchTree(BaseMatchTree):
     for the BaseMatchTree, but add a lot of convenience for writing
     higher-level rules."""
 
-    def _unidentified_leaves(self):
+    def _unidentified_leaves(self,
+                             valid = lambda leaf: len(leaf.clean_value) >= 2):
         for leaf in self._leaves():
-            if not leaf.guess and len(leaf.clean_value) >= 2:
+            if not leaf.guess and valid(leaf):
                 yield leaf
 
-    def unidentified_leaves(self):
+    def unidentified_leaves(self,
+                            valid = lambda leaf: len(leaf.clean_value) >= 2):
         return list(self._unidentified_leaves())
 
     def _leaves_containing(self, property_name):

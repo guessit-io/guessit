@@ -29,6 +29,11 @@ DEPENDS = []
 PROVIDES = []
 
 def process(mtree):
+    def found_title(node, confidence):
+        node.guess = Guess({ 'title': node.clean_value },
+                           confidence = confidence)
+        log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
+
     # specific cases:
     #  - movies/tttttt (yyyy)/tttttt.ccc
     try:
@@ -45,10 +50,8 @@ def process(mtree):
             year_group = containing_folder.first_leaf_containing('year')
             groups_before = containing_folder.previous_unidentified_leaves(year_group)
 
-            title_candidate = groups_before[0]
-            title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
-                                          confidence = 0.8)
-            log.debug('Found with confidence %.2f: %s' % (0.8, title_candidate.guess))
+            found_title(groups_before[0], confidence = 0.8)
+            return
 
 
     except:
@@ -71,9 +74,7 @@ def process(mtree):
             leftover = mtree.node_at((group_idx,)).unidentified_leaves()
 
             if leftover:
-                title_candidate = leftover[0]
-                title_candidate.guess = Guess({ 'title': title_candidate.clean_value }, confidence = 0.7)
-                log.debug('Found with confidence %.2f: %s' % (0.7, title_candidate.guess))
+                found_title(leftover[0], confidence = 0.7)
                 return
 
     # first leftover group in the last path part sounds like a good candidate for title,
@@ -96,33 +97,29 @@ def process(mtree):
             folder_leftover and
             folder_leftover[0].clean_value.count(' ') >= 2):
 
-            folder_leftover[0].guess = Guess({ 'title': folder_leftover[0].clean_value },
-                                             confidence = 0.7)
-            log.debug('Found with confidence %.2f: %s' % (0.7, folder_leftover[0].guess))
+            found_title(folder_leftover[0], confidence = 0.7)
             return
 
         # if there are only 2 unidentified groups, the first of which is inside
         # brackets or parentheses, we take the second one for the title:
         # ex: Movies/[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi
         if len(basename_leftover) == 2 and basename_leftover[0].is_explicit():
-            title = basename_leftover[1]
-            title.guess = Guess({ 'title': title.clean_value },
-                                confidence = 0.8)
-            log.debug('Found with confidence %.2f: %s' % (0.8, title.guess))
+            found_title(basename_leftover[1], confidence = 0.8)
             return
 
         # if all else fails, take the first remaining unidentified group in the
         # basename as title
-        title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
-                                      confidence = 0.6)
-        log.debug('Found with confidence %.2f: %s' % (0.6, title_candidate.guess))
+        found_title(title_candidate, confidence = 0.6)
         return
 
 
     # if there are no leftover groups in the basename, look in the folder name
     if folder_leftover:
-        title_candidate = folder_leftover[0]
-        title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
-                                      confidence = 0.5)
-        log.debug('Found with confidence %.2f: %s' % (0.5, title_candidate.guess))
+        found_title(folder_leftover[0], confidence = 0.5)
+        return
+
+    # if nothing worked, look if we have a very small group at the beginning of the basename
+    basename_leftover = mtree.node_at((-2,)).unidentified_leaves(valid = lambda: True)
+    if basename_leftover:
+        found_title(basename_leftover[0], confidence = 0.4)
         return
