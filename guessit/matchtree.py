@@ -155,7 +155,7 @@ def leftover_valid_groups(match_tree, valid = lambda s: len(s[0]) > 3):
 
 
 
-class MatchTree(object):
+class BaseMatchTree(object):
     """A MatchTree represents the hierarchical split of a string into its
     constituent semantic groups."""
 
@@ -259,11 +259,18 @@ class MatchTree(object):
             yield self
         else:
             for child in self.children:
-                for leaf in child.leaves():
+                for leaf in child._leaves():
                     yield leaf
 
     def leaves(self):
         return list(self._leaves())
+
+
+
+class MatchTree(BaseMatchTree):
+    """The MatchTree contains a few "utility" methods which are not necessary
+    for the BaseMatchTree, but add a lot of convenience for writing
+    higher-level rules."""
 
     def _unidentified_leaves(self):
         for leaf in self._leaves():
@@ -272,6 +279,44 @@ class MatchTree(object):
 
     def unidentified_leaves(self):
         return list(self._unidentified_leaves())
+
+    def _leaves_containing(self, property_name):
+        if isinstance(property_name, basestring):
+            property_name = [ property_name ]
+
+        for leaf in self._leaves():
+            for prop in property_name:
+                if prop in leaf.guess:
+                    yield leaf
+                    break
+
+    def leaves_containing(self, property_name):
+        return list(self._leaves_containing(property_name))
+
+    def first_leaf_containing(self, property_name):
+        try:
+            return next(self._leaves_containing(property_name))
+        except StopIteration:
+            return None
+
+    def _previous_unidentified_leaves(self, node):
+        node_idx = node.node_idx
+        for leaf in self._unidentified_leaves():
+            if leaf.node_idx < node_idx:
+                yield leaf
+
+    def previous_unidentified_leaves(self, node):
+        return list(self._previous_unidentified_leaves(node))
+
+    def _previous_leaves_containing(self, node, property_name):
+        node_idx = node.node_idx
+        for leaf in self._leaves_containing(property_name):
+            if leaf.node_idx < node_idx:
+                yield leaf
+
+    def previous_leaves_containing(self, node, property_name):
+        return list(self._previous_leaves_containing(node, property_name))
+
 
 
 def tree_to_string(mtree):

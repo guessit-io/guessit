@@ -42,9 +42,8 @@ def process(mtree):
             #    containing_folder.guess = Guess({ 'title': clean_string(containing_folder.value) },
             #                                    confidence = 0.7)
 
-            year_group = [ leaf for leaf in containing_folder.leaves() if 'year' in leaf.guess ][0]
-            groups_before = [ leaf for leaf in containing_folder.unidentified_leaves()
-                              if leaf.node_idx < year_group.node_idx ]
+            year_group = containing_folder.first_leaf_containing('year')
+            groups_before = containing_folder.previous_unidentified_leaves(year_group)
 
             title_candidate = groups_before[0]
             title_candidate.guess = Guess({ 'title': title_candidate.clean_value },
@@ -59,11 +58,11 @@ def process(mtree):
     # if we have either format or videoCodec in the folder containing the file
     # or one of its parents, then we should probably look for the title in
     # there rather than in the basename
-    props = [ leaf for leaf in mtree.leaves()
-              if (leaf.node_idx <= (len(mtree.children)-2,) and
-                  ('videoCodec' in leaf.guess or
-                   'format' in leaf.guess or
-                   'language' in leaf.guess)) ]
+    try:
+        props = mtree.previous_leaves_containing(mtree.children[-2],
+                                                 [ 'videoCodec', 'format', 'language' ])
+    except:
+        props = []
 
     leftover = None
 
