@@ -276,7 +276,7 @@ class MatchTree(BaseMatchTree):
 
     def unidentified_leaves(self,
                             valid = lambda leaf: len(leaf.clean_value) >= 2):
-        return list(self._unidentified_leaves())
+        return list(self._unidentified_leaves(valid))
 
     def _leaves_containing(self, property_name):
         if isinstance(property_name, basestring):

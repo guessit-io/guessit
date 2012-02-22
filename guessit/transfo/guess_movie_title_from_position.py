@@ -119,7 +119,7 @@ def process(mtree):
         return
 
     # if nothing worked, look if we have a very small group at the beginning of the basename
-    basename_leftover = mtree.node_at((-2,)).unidentified_leaves(valid = lambda: True)
+    basename_leftover = mtree.node_at((-2,)).unidentified_leaves(valid = lambda leaf: True)
     if basename_leftover:
         found_title(basename_leftover[0], confidence = 0.4)
         return

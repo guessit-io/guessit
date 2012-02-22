@@ -129,6 +129,8 @@
 
 ? movies/Steig Larsson Millenium Trilogy (2009) BRrip 720 AAC x264/(1)The Girl With The Dragon Tattoo (2009) BRrip 720 AAC x264.mkv
 : title: The Girl With The Dragon Tattoo
+  filmSeries: Steig Larsson Millenium Trilogy
+  filmNumber: 1
   year: 2009
   format: BluRay
   audioCodec: AAC
