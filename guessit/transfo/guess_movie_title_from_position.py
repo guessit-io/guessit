@@ -29,10 +29,64 @@ DEPENDS = []
 PROVIDES = []
 
 def process(mtree):
-    def found_title(node, confidence):
-        node.guess = Guess({ 'title': node.clean_value },
+    def found_property(node, name, value, confidence):
+        node.guess = Guess({ name: value },
                            confidence = confidence)
         log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
+
+    def found_title(node, confidence):
+        found_property(node, 'title', node.clean_value, confidence)
+
+    basename = mtree.node_at((-2,))
+    basename_leftover = basename.unidentified_leaves(valid = lambda leaf: len(leaf.clean_value) > 0)
+
+    try:
+        folder = mtree.node_at((-3,))
+        folder_leftover = folder.unidentified_leaves()
+    except:
+        folder = None
+        folder_leftover = []
+
+    log.debug('folder: %s' % folder_leftover)
+    log.debug('basename: %s' % basename_leftover)
+
+    # specific cases:
+    # if we find the same group both in the folder name and the filename,
+    # it's a good candidate for title
+    if (folder_leftover and basename_leftover and
+        folder_leftover[0].clean_value == basename_leftover[0].clean_value):
+
+        found_title(folder_leftover[0], confidence = 0.8)
+        return
+
+    # specific cases:
+    # if the basename contains a number first followed by an unidentified group,
+    # and the folder only contains 1 unidentified one, then we have a series
+    # ex: Steig Larsson Millenium Trilogy (2009)/(1)The Girl With The Dragon Tattoo (2009) x264.mkv
+    try:
+        series = folder_leftover[0]
+        filmNumber = basename_leftover[0]
+        title = basename_leftover[1]
+
+        basename_leaves = basename.leaves()
+
+        num = int(filmNumber.clean_value)
+
+        log.debug('series: %s' % series.clean_value)
+        log.debug('title: %s' % title.clean_value)
+        if (series.clean_value != title.clean_value and
+            series.clean_value != filmNumber.clean_value and
+            basename_leaves.index(filmNumber) == 0 and
+            basename_leaves.index(title) == 1):
+
+            found_title(title, confidence = 0.6)
+            found_property(series, 'filmSeries',
+                           series.clean_value, confidence = 0.6)
+            found_property(filmNumber, 'filmNumber',
+                           num, confidence = 0.6)
+        return
+    except:
+        pass
 
     # specific cases:
     #  - movies/tttttt (yyyy)/tttttt.ccc
@@ -77,13 +131,6 @@ def process(mtree):
                 found_title(leftover[0], confidence = 0.7)
                 return
 
-    # first leftover group in the last path part sounds like a good candidate for title,
-    # except
-    basename_leftover = mtree.node_at((-2,)).unidentified_leaves()
-    try:
-        folder_leftover = mtree.node_at((-3,)).unidentified_leaves()
-    except:
-        folder_leftover = []
 
     # look for title in basename if there are some remaining undidentified groups there
     if basename_leftover:
@@ -106,6 +153,8 @@ def process(mtree):
         if len(basename_leftover) == 2 and basename_leftover[0].is_explicit():
             found_title(basename_leftover[1], confidence = 0.8)
             return
+
+
 
         # if all else fails, take the first remaining unidentified group in the
         # basename as title
