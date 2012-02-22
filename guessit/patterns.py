@@ -56,7 +56,7 @@ weak_episode_rexps = [ # ... 213 or 0106 ...
                        (sep + r'(?P<episodeNumber>[0-9]{1,4})' + sep, (1, -1)),
                        ]
 
-non_episode_title = [ 'extras' ]
+non_episode_title = [ 'extras', 'rip' ]
 
 
 video_rexps = [ # cd number

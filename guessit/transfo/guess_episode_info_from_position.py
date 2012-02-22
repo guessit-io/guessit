@@ -30,6 +30,11 @@ DEPENDS = []
 PROVIDES = []
 
 
+def found_property(node, name, confidence):
+    node.guess = Guess({ name: node.clean_value }, confidence = confidence)
+    log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
+
+
 def match_from_epnum_position(mtree, node):
     epnum_idx = node.node_idx
 
@@ -58,36 +63,45 @@ def match_from_epnum_position(mtree, node):
         before_epnum_in_same_pathgroup() == [] and   # no groups before
         len(title_candidates) == 2):                 # only 2 groups after
 
-        title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
-        log.debug('Found with confidence %.2f: %s' % (0.4, title_candidates[0].guess))
-        title_candidates[1].guess = Guess({ 'title':  title_candidates[1].clean_value }, confidence = 0.4)
-        log.debug('Found with confidence %.2f: %s' % (0.4, title_candidates[1].guess))
+        found_property(title_candidates[0], 'series', confidence = 0.4)
+        found_property(title_candidates[1], 'title', confidence = 0.4)
+        return
 
     # if we have at least 1 valid group before the episodeNumber, then it's probably
     # the series name
     series_candidates = before_epnum_in_same_pathgroup()
     if len(series_candidates) >= 1:
-        series_candidates[0].guess = Guess({ 'series': series_candidates[0].clean_value }, confidence = 0.7)
-        log.debug('Found with confidence %.2f: %s' % (0.7, series_candidates[0].guess))
+        found_property(series_candidates[0], 'series', confidence = 0.7)
 
     # only 1 group after (in the same path group) and it's probably the episode title
     title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
                               after_epnum_in_same_pathgroup())
 
     if len(title_candidates) == 1:
-        title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.5)
-        log.debug('Found with confidence %.2f: %s' % (0.5, title_candidates[0].guess))
+        found_property(title_candidates[0], 'title', confidence = 0.5)
+        return
     else:
         # try in the same explicit group, with lower confidence
         title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
                                   after_epnum_in_same_explicitgroup())
         if len(title_candidates) == 1:
-            title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.4)
-            log.debug('Found with confidence %.2f: %s' % (0.4, title_candidates[0].guess))
-        #elif len(title_candidates) > 1:
-        #    title_candidates[0].guess = Guess({ 'title': title_candidates[0].clean_value }, confidence = 0.3)
-        #    log.debug('Found with confidence %.2f: %s' % (0.3, title_candidates[0].guess))
+            found_property(title_candidates[0], 'title', confidence = 0.4)
+            return
+        elif len(title_candidates) > 1:
+            found_property(title_candidates[0], 'title', confidence = 0.3)
+            return
 
+    # get the one with the longest value
+    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
+                              after_epnum_in_same_pathgroup())
+    if title_candidates:
+        maxidx = -1
+        maxv = -1
+        for i, c in enumerate(title_candidates):
+            if len(c.clean_value) > maxv:
+                maxidx = i
+                maxv = len(c.clean_value)
+        found_property(title_candidates[maxidx], 'title', confidence = 0.3)
 
 
 
