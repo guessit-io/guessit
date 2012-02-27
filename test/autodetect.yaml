@@ -19,3 +19,48 @@
 ? Leopard.dmg
 : type: unknown
   extension: dmg
+
+? Series/Duckman/Duckman - 101 (01) - 20021107 - I, Duckman.avi
+: series: Duckman
+  season: 1
+  episodeNumber: 1
+  title: I, Duckman
+  date: 2002-11-07
+
+? Series/Neverwhere/Neverwhere.05.Down.Street.[tvu.org.ru].avi
+: series: Neverwhere
+  episodeNumber: 5
+  title: Down Street
+  website: tvu.org.ru
+
+? Series/Breaking Bad/Minisodes/Breaking.Bad.(Minisodes).01.Good.Cop.Bad.Cop.WEBRip.XviD.avi
+: series: Breaking Bad
+  episodeFormat: Minisode
+  season: 0
+  episodeNumber: 1
+  title: Good Cop Bad Cop
+  format: WEBRip
+  videoCodec: XviD
+
+? Series/Kaamelott/Kaamelott - Livre V - Ep 23 - Le Forfait.avi
+: series: Kaamelott
+  episodeNumber: 23
+  title: Le Forfait
+
+? Movies/The Doors (1991)/09.03.08.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv
+: title: The Doors
+  year: 1991
+  date: 2008-03-09
+  format: BluRay
+  screenSize: 720p
+  audioCodec: AC3
+  videoCodec: h264
+  language: english
+  website: sharethefiles.com
+
+? Movies/M.A.S.H. (1970)/MASH.(1970).[Divx.5.02][Dual-Subtitulos][DVDRip].ogm
+: title: M A S H
+  year: 1970
+  videoCodec: DivX
+  format: DVD
+
