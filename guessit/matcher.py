@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.matchtree import MatchTree, tree_to_string
+from guessit.matchtree import MatchTree
 from guessit.textutils import to_utf8
 from guessit.guess import merge_similar_guesses, merge_all, choose_int, choose_string
 import copy
@@ -60,7 +60,7 @@ class IterativeMatcher(object):
         The first 3 lines indicates the group index in which a char in the
         filename is located. So for instance, x264 is the group (0, 4, 1), and
         it corresponds to a video codec, denoted by the letter'v' in the 4th line.
-        (for more info, see guess.matchtree.tree_to_string)
+        (for more info, see guess.matchtree.to_string)
 
 
          Second, it tries to merge all this information into a single object
@@ -121,7 +121,7 @@ class IterativeMatcher(object):
         # 5- perform some post-processing steps
         apply_transfo('post_process')
 
-        log.debug('Found match tree:\n%s' % (to_utf8(tree_to_string(mtree))))
+        log.debug('Found match tree:\n%s' % (to_utf8(unicode(mtree))))
 
         self.match_tree = mtree
 
