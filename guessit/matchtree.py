@@ -20,7 +20,7 @@
 
 from guessit import Guess
 from guessit.patterns import deleted
-from guessit.textutils import clean_string, str_fill, find_first_level_groups
+from guessit.textutils import clean_string, str_fill
 from guessit.fileutils import split_path
 from guessit.patterns import group_delimiters
 import os.path
@@ -93,8 +93,17 @@ class BaseMatchTree(object):
             indices.append(len(self.value))
 
         for start, end in zip(indices[:-1], indices[1:]):
-            self.add_child(span = (start + self.offset, end + self.offset))
+            self.add_child(span = (self.offset + start,
+                                   self.offset + end))
 
+    def split_on_components(self, components):
+        offset = 0
+        for c in components:
+            start = self.value.find(c, offset)
+            end = start + len(c)
+            self.add_child(span = (self.offset + start,
+                                   self.offset + end))
+            offset = end
 
     def nodes_at_depth(self, depth):
         if depth == 0:

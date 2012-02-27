@@ -78,19 +78,23 @@ class IterativeMatcher(object):
         mtree = MatchTree(filename)
         mtree.guess.set('type', filetype, confidence = 1.0)
 
-        def apply_transfo(transfo_name):
+        def apply_transfo(transfo_name, *args, **kwargs):
             # FIXME: there should be a more idiomatic way of doing this...
             exec 'from transfo.%s import process' % transfo_name in globals(), locals()
-            process(mtree)
+            process(mtree, *args, **kwargs)
 
         # 1- first split our path into dirs + basename + ext
-        # 2- split each of those into explicit groups, if any
-        # note: be careful, as this might split some regexps with more confidence such as
-        #       Alfleni-Team, or [XCT] or split a date such as (14-01-2008)
-        apply_transfo('split_groups')
+        apply_transfo('split_path_components')
+
+        # 2- guess the file type now (will be useful later)
+        apply_transfo('guess_filetype', filetype)
+
+        # 3- split each of those into explicit groups (separated by parentheses
+        #    or square brackets)
+        apply_transfo('split_explicit_groups')
 
 
-        # 3- try to match information for specific patterns
+        # 4- try to match information for specific patterns
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
             strategy = [ 'guess_date', 'guess_video_rexps', 'guess_episodes_rexps',
                          'guess_website', 'guess_release_group', 'guess_properties',
@@ -111,14 +115,14 @@ class IterativeMatcher(object):
         # around the dash)
         apply_transfo('split_on_dash')
 
-        # 4- try to identify the remaining unknown groups by looking at their position
+        # 5- try to identify the remaining unknown groups by looking at their position
         #    relative to other known elements
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
             apply_transfo('guess_episode_info_from_position')
         else:
             apply_transfo('guess_movie_title_from_position')
 
-        # 5- perform some post-processing steps
+        # 6- perform some post-processing steps
         apply_transfo('post_process')
 
         log.debug('Found match tree:\n%s' % (to_utf8(unicode(mtree))))
