@@ -68,13 +68,6 @@ def split_path(path):
         path = head
 
 
-def split_path_components(filename):
-    """Returns the filename split into [ dir*, basename, ext ]."""
-    result = split_path(filename)
-    basename = result.pop(-1)
-    return result + list(os.path.splitext(basename))
-
-
 def file_in_same_dir(ref_file, desired_file):
     """Return the path for a file in the same dir as a given reference file.
 

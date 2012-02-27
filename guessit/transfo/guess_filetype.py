@@ -19,8 +19,9 @@
 #
 
 from guessit import Guess
-from guessit.patterns import subtitle_exts, video_exts
+from guessit.patterns import subtitle_exts, video_exts, episode_rexps, find_properties, canonical_form
 import os.path
+import re
 import mimetypes
 import logging
 

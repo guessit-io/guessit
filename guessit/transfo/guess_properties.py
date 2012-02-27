@@ -19,7 +19,7 @@
 #
 
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import properties, sep
+from guessit.patterns import properties, sep, find_properties
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_properties")
@@ -30,22 +30,11 @@ PROVIDES = []
 
 
 def guess_properties(string):
-    low = string.lower()
-    for prop, values in properties.items():
-        for value in values:
-            pos = low.find(value.lower())
-            if pos != -1:
-                end = pos + len(value)
-                # make sure our word is always surrounded by separators
-                if ((pos > 0 and low[pos-1] not in sep) or
-                    (end < len(low) and low[end] not in sep)):
-                    # note: sep is a regexp, but in this case using it as
-                    #       a sequence achieves the same goal
-                    continue
-                return { prop: value }, (pos, end)
-
-    return None, None
-
+    try:
+        prop, value, pos, end = find_properties(string)[0]
+        return { prop: value }, (pos, end)
+    except IndexError:
+        return None, None
 
 def process(mtree):
     SingleNodeGuesser(guess_properties, 1.0, log).process(mtree)

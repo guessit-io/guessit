@@ -54,12 +54,6 @@ def str_fill(string, region, c):
     start, end = region
     return string[:start] + c * (end - start) + string[end:]
 
-def blank_region(string, region, blank_sep = deleted):
-    """FIXME: remove me, duplicate"""
-    return str_fill(string, region, c = blank_sep)
-
-def between(s, left, right):
-    return s.split(left)[1].split(right)[0]
 
 def to_utf8(o):
     '''converts all unicode strings found in the given object to utf-8 strings'''
