@@ -161,7 +161,7 @@ def search_language(string, lang_filter = None):
                                    # spanish words
                                    'la', 'el', 'del', 'por', 'mar',
                                    # other
-                                   'ind', 'arw', 'ts', 'ii', 'bin', 'chan', 'ss', 'san'
+                                   'ind', 'arw', 'ts', 'ii', 'bin', 'chan', 'ss', 'san', 'oss'
                                    ])
     sep = r'[](){} \._-+'
 
