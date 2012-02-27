@@ -32,3 +32,7 @@ def tests():
     doctests()
     unittests()
 
+
+def clean_pyc():
+    """Removes all the *.pyc files found in the repository."""
+    local('find . -iname "*.pyc" -delete')
