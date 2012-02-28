@@ -57,18 +57,20 @@ def guess_filetype(filename, filetype):
         for rexp, confidence, span_adjust in episode_rexps:
             match = re.search(rexp, filename, re.IGNORECASE)
             if match:
-                if filetype == 'video':
-                    filetype = 'episode'
-                elif filetype == 'subtitle':
-                    filetype = 'episodesubtitle'
+                if   filetype == 'video':    filetype = 'episode'
+                elif filetype == 'subtitle': filetype = 'episodesubtitle'
                 break
 
         for prop, value, start, end in find_properties(filename):
-            if canonical_form(value) == 'DVB':
-                if filetype == 'video':
-                    filetype = 'episode'
-                elif filetype == 'subtitle':
-                    filetype = 'episodesubtitle'
+            log.debug('prop: %s = %s' % (prop, value))
+            if prop == 'episodeFormat':
+                if   filetype == 'video':    filetype = 'episode'
+                elif filetype == 'subtitle': filetype = 'episodesubtitle'
+                break
+
+            elif canonical_form(value) == 'DVB':
+                if   filetype == 'video':    filetype = 'episode'
+                elif filetype == 'subtitle': filetype = 'episodesubtitle'
                 break
 
         # if no episode info found, assume it's a movie

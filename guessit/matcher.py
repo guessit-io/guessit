@@ -75,7 +75,8 @@ class IterativeMatcher(object):
         if not isinstance(filename, unicode):
             log.debug('WARNING: given filename to matcher is not unicode...')
 
-        mtree = MatchTree(filename)
+        self.match_tree = MatchTree(filename)
+        mtree = self.match_tree
         mtree.guess.set('type', filetype, confidence = 1.0)
 
         def apply_transfo(transfo_name, *args, **kwargs):
@@ -88,6 +89,8 @@ class IterativeMatcher(object):
 
         # 2- guess the file type now (will be useful later)
         apply_transfo('guess_filetype', filetype)
+        if mtree.guess['type'] == 'unknown':
+            return
 
         # 3- split each of those into explicit groups (separated by parentheses
         #    or square brackets)
@@ -127,7 +130,6 @@ class IterativeMatcher(object):
 
         log.debug('Found match tree:\n%s' % (to_utf8(unicode(mtree))))
 
-        self.match_tree = mtree
 
 
     def matched(self):
@@ -146,12 +148,6 @@ class IterativeMatcher(object):
             merge_similar_guesses(parts, string_part, choose_string)
 
         result = merge_all(parts, append = ['language', 'subtitleLanguage', 'other'])
-
-        # 2- some last minute post-processing
-        if (result['type'] == 'episode' and
-            'season' not in result and
-            result.get('episodeFormat', '') == 'Minisode'):
-            result['season'] = 0
 
         log.debug('Final result: ' + result.nice_string())
         return result

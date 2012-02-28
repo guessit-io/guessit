@@ -73,7 +73,7 @@ class Guess(dict):
         return str(self.to_utf8_dict())
 
     def confidence(self, prop):
-        return self._confidence[prop]
+        return self._confidence.get(prop, -1)
 
     def set(self, prop, value, confidence = None):
         self[prop] = value
