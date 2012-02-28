@@ -47,18 +47,14 @@ def match_from_epnum_position(mtree, node):
         return [ leaf for leaf in mtree.unidentified_leaves()
                  if leaf.node_idx[0] == epnum_idx[0] and leaf.node_idx[1:] > epnum_idx[1:] ]
 
-    def before_epnum_in_same_explicitgroup():
-        return [ leaf for leaf in mtree.unidentified_leaves()
-                 if leaf.node_idx[:2] == epnum_idx[:2] and leaf.node_idx[2:] < epnum_idx[2:] ]
-
     def after_epnum_in_same_explicitgroup():
         return [ leaf for leaf in mtree.unidentified_leaves()
                  if leaf.node_idx[:2] == epnum_idx[:2] and leaf.node_idx[2:] > epnum_idx[2:] ]
 
     # epnumber is the first group and there are only 2 after it in same path group
     #  -> series title - episode title
-    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                              after_epnum_in_same_pathgroup())
+    title_candidates = [ n for n in after_epnum_in_same_pathgroup()
+                         if n.clean_value.lower() not in non_episode_title ]
     if ('title' not in mtree.info and                # no title
         before_epnum_in_same_pathgroup() == [] and   # no groups before
         len(title_candidates) == 2):                 # only 2 groups after
@@ -74,16 +70,16 @@ def match_from_epnum_position(mtree, node):
         found_property(series_candidates[0], 'series', confidence = 0.7)
 
     # only 1 group after (in the same path group) and it's probably the episode title
-    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                              after_epnum_in_same_pathgroup())
+    title_candidates = [ n for n in after_epnum_in_same_pathgroup()
+                         if n.clean_value.lower() not in non_episode_title ]
 
     if len(title_candidates) == 1:
         found_property(title_candidates[0], 'title', confidence = 0.5)
         return
     else:
         # try in the same explicit group, with lower confidence
-        title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                                  after_epnum_in_same_explicitgroup())
+        title_candidates = [ n for n in after_epnum_in_same_explicitgroup()
+                             if n.clean_value.lower() not in non_episode_title ]
         if len(title_candidates) == 1:
             found_property(title_candidates[0], 'title', confidence = 0.4)
             return
@@ -92,8 +88,8 @@ def match_from_epnum_position(mtree, node):
             return
 
     # get the one with the longest value
-    title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                              after_epnum_in_same_pathgroup())
+    title_candidates = [ n for n in after_epnum_in_same_pathgroup()
+                         if n.clean_value.lower() not in non_episode_title ]
     if title_candidates:
         maxidx = -1
         maxv = -1
@@ -114,8 +110,8 @@ def process(mtree):
     else:
         # if we don't have the episode number, but at least 2 groups in the
         # last path group, then it's probably series - eptitle
-        title_candidates = filter(lambda n: n.clean_value.lower() not in non_episode_title,
-                                  mtree.node_at((-2,)).unidentified_leaves())
+        title_candidates = [ n for n in mtree.node_at((-2,)).unidentified_leaves()
+                             if n.clean_value.lower() not in non_episode_title ]
 
         if len(title_candidates) >= 2:
             title_candidates[0].guess = Guess({ 'series': title_candidates[0].clean_value }, confidence = 0.4)
@@ -129,7 +125,7 @@ def process(mtree):
     # then it's likely that it is the series name
     try:
         series_candidates = mtree.node_at((-3,)).unidentified_leaves()
-    except:
+    except ValueError:
         series_candidates = []
 
     if len(series_candidates) == 1:
@@ -152,7 +148,7 @@ def process(mtree):
     # reduce the confidence of unlikely series
     for node in mtree.nodes():
         if 'series' in node.guess:
-          if node.guess['series'].lower() in unlikely_series:
-              node.guess.set_confidence('series', node.guess.confidence('series') * 0.5)
+            if node.guess['series'].lower() in unlikely_series:
+                node.guess.set_confidence('series', node.guess.confidence('series') * 0.5)
 
 

@@ -19,8 +19,6 @@
 #
 
 from guessit import fileutils
-import os.path
-import re
 import logging
 
 log = logging.getLogger('guessit.language')
@@ -36,11 +34,11 @@ log = logging.getLogger('guessit.language')
 language_matrix = [ l.strip().decode('utf-8').split('|')
                     for l in fileutils.load_file_in_same_dir(__file__, 'ISO-639-2_utf-8.txt').split('\n') ]
 
-lng3        = frozenset(filter(bool, (l[0] for l in language_matrix)))
-lng3term    = frozenset(filter(bool, (l[1] for l in language_matrix)))
-lng2        = frozenset(filter(bool, (l[2] for l in language_matrix)))
-lng_en_name = frozenset(filter(bool, (lng for l in language_matrix for lng in l[3].lower().split('; '))))
-lng_fr_name = frozenset(filter(bool, (lng for l in language_matrix for lng in l[4].lower().split('; '))))
+lng3        = frozenset(l[0] for l in language_matrix if l[0])
+lng3term    = frozenset(l[1] for l in language_matrix if l[1])
+lng2        = frozenset(l[2] for l in language_matrix if l[2])
+lng_en_name = frozenset(lng for l in language_matrix for lng in l[3].lower().split('; ') if lng)
+lng_fr_name = frozenset(lng for l in language_matrix for lng in l[4].lower().split('; ') if lng)
 lng_all_names = lng3 | lng3term | lng2 | lng_en_name | lng_fr_name
 
 lng3_to_lng3term = dict((l[0], l[1]) for l in language_matrix if l[1])

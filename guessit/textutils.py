@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.patterns import sep, deleted
+from guessit.patterns import sep
 import copy
 
 # string-related functions
@@ -167,7 +167,7 @@ def split_on_groups(string, groups):
 
     groups = [ string[start:end] for start, end in zip(boundaries[:-1], boundaries[1:]) ]
 
-    return filter(bool, groups) # return only non-empty groups
+    return [ g for g in groups if g ] # return only non-empty groups
 
 
 

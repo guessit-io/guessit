@@ -34,6 +34,7 @@ def process(mtree):
             continue
 
         def promote_subtitle():
+            # pylint: disable=W0631
             node.guess.set('subtitleLanguage', node.guess['language'], confidence = node.guess.confidence('language'))
             del node.guess['language']
 
@@ -51,7 +52,7 @@ def process(mtree):
             previous = mtree.node_at((idx[0], idx[1]-1)).leaves()[-1]
             if previous.value.lower()[-2:] == 'st':
                 promote_subtitle()
-        except:
+        except IndexError:
             pass
 
     # 2- ", the" at the end of a series title should be prepended to it

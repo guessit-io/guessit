@@ -119,8 +119,6 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed', 'R5',
                           'complete', 'classic', # not so sure about these ones, could appear in a title
                           'ws', # widescreen
-                          #'SE', # special edition
-                          # TODO: director's cut
                           ],
                }
 
@@ -159,14 +157,21 @@ property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
                       }
 
 
-reverse_synonyms = {}
-for prop, values in properties.items():
-    for value in values:
-        reverse_synonyms[value.lower()] = value
 
-for canonical, synonyms in property_synonyms.items():
-    for synonym in synonyms:
-        reverse_synonyms[synonym.lower()] = canonical
+def revert_synonyms():
+    reverse = {}
+
+    for _, values in properties.items():
+        for value in values:
+            reverse[value.lower()] = value
+
+    for canonical, synonyms in property_synonyms.items():
+        for synonym in synonyms:
+            reverse[synonym.lower()] = canonical
+
+    return reverse
+
+reverse_synonyms = revert_synonyms()
 
 def canonical_form(string):
     return reverse_synonyms.get(string.lower(), string)

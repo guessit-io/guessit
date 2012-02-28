@@ -18,7 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
 import hashlib, os.path
 
 def hash_file(filename):
@@ -55,4 +54,4 @@ def hash_filehash(filename):
         hashes = [md4_hash(data).digest() for data in a]
         if len(hashes) == 1:
             return hashes[0].encode("hex")
-        else: return md4_hash(reduce(lambda a,d: a + d, hashes, "")).hexd
+        else: return md4_hash(reduce(lambda a, d: a + d, hashes, "")).hexd

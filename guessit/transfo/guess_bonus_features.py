@@ -19,7 +19,6 @@
 #
 
 from guessit import Guess
-from guessit.patterns import non_episode_title, unlikely_series
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_bonus_features")

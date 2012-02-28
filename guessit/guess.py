@@ -100,10 +100,10 @@ class Guess(dict):
             raise ValueError, 'Can only call this function on Guess instances'
 
         for prop in other:
-            if prop in self and self._confidence[prop] >= other._confidence[prop]:
+            if prop in self and self.confidence(prop) >= other.confidence(prop):
                 continue
             self[prop] = other[prop]
-            self._confidence[prop] = other._confidence[prop]
+            self._confidence[prop] = other.confidence(prop)
 
 
 
@@ -267,14 +267,14 @@ def merge_append_guesses(guesses, prop):
                 merged[prop].append(m[prop])
             else:
                 if prop2 in m:
-                    log.warning('overwriting property "%s" with value ' % (prop2, m[prop2]))
+                    log.warning('overwriting property "%s" with value %s' % (prop2, m[prop2]))
                 merged[prop2] = m[prop2]
                 # TODO: confidence also
 
         guesses.remove(m)
 
 
-def merge_all(guesses, append = []):
+def merge_all(guesses, append = None):
     """Merges all the guesses in a single result, removes very unlikely values, and returns it.
     You can specify a list of properties that should be appended into a list instead of being
     merged.
@@ -292,6 +292,8 @@ def merge_all(guesses, append = []):
         return Guess()
 
     result = guesses[0]
+    if append is None:
+        append = []
 
     for g in guesses[1:]:
         # first append our appendable properties

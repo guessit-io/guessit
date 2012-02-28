@@ -19,7 +19,7 @@
 #
 
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import properties, sep, find_properties
+from guessit.patterns import find_properties
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_properties")

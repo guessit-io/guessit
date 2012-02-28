@@ -42,7 +42,7 @@ log.addHandler(h)
 
 
 
-def guess_file_info(filename, filetype, info = [ 'filename' ]):
+def guess_file_info(filename, filetype, info = None):
     """info can contain the names of the various plugins, such as 'filename' to
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
@@ -51,6 +51,9 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
     """
     result = []
     hashers = []
+
+    if info is None:
+        info = [ 'filename' ]
 
     if isinstance(info, basestring):
         info = [ info ]
@@ -61,7 +64,7 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
             result.append(m.matched())
 
         elif infotype == 'hash_mpc':
-            import hash_mpc
+            from guessit import hash_mpc
             try:
                 result.append(Guess({ 'hash_mpc': hash_mpc.hash_file(filename) },
                                     confidence = 1.0))
@@ -69,7 +72,7 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
                 log.warning('Could not compute MPC-style hash because: %s' % e)
 
         elif infotype == 'hash_ed2k':
-            import hash_ed2k
+            from guessit import hash_ed2k
             try:
                 result.append(Guess({ 'hash_ed2k': hash_ed2k.hash_file(filename) },
                                     confidence = 1.0))
@@ -88,17 +91,6 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
         else:
             log.warning('Invalid infotype: %s' % infotype)
 
-
-        """For plugins which depend on some optional library, import them like that:
-
-        if infotype == 'plugin_name':
-            try:
-                import optional_lib
-            except ImportError:
-                raise Exception, 'The plugin module cannot be loaded because the optional_lib lib is missing'
-
-        # do some stuff
-        """
 
     # do all the hashes now, but on a single pass
     if hashers:
@@ -121,13 +113,13 @@ def guess_file_info(filename, filetype, info = [ 'filename' ]):
     return merge_all(result)
 
 
-def guess_video_info(filename, info = [ 'filename' ]):
+def guess_video_info(filename, info = None):
     return guess_file_info(filename, 'autodetect', info)
 
-def guess_movie_info(filename, info = [ 'filename' ]):
+def guess_movie_info(filename, info = None):
     return guess_file_info(filename, 'movie', info)
 
-def guess_episode_info(filename, info = [ 'filename' ]):
+def guess_episode_info(filename, info = None):
     return guess_file_info(filename, 'episode', info)
 
 

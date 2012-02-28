@@ -18,7 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
 from guessit.date import search_date
 import logging

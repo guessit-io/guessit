@@ -36,3 +36,12 @@ def tests():
 def clean_pyc():
     """Removes all the *.pyc files found in the repository."""
     local('find . -iname "*.pyc" -delete')
+
+
+def pylint():
+    """Runs pylint on GuessIt's source code. Only show problems, no report."""
+    local('pylint --reports=n --include-ids=y --disable=C,I,W0703 guessit')
+
+def pylint_report():
+    """Runs pylint on GuessIt's source code, full report."""
+    local('pylint guessit')

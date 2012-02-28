@@ -19,11 +19,8 @@
 #
 
 from guessit import Guess
-from guessit.patterns import deleted
 from guessit.textutils import clean_string, str_fill
-from guessit.fileutils import split_path
 from guessit.patterns import group_delimiters
-import os.path
 import logging
 
 log = logging.getLogger("guessit.matchtree")
@@ -35,7 +32,6 @@ class BaseMatchTree(object):
     constituent semantic groups."""
 
     def __init__(self, string = '', span = None, parent = None):
-        # TODO: make sure string is unicode (?)
         self.string = string
         self.span = span or (0,len(string))
         self.parent = parent
@@ -139,6 +135,7 @@ class BaseMatchTree(object):
             yield self
         else:
             for child in self.children:
+                # pylint: disable=W0212
                 for leaf in child._leaves():
                     yield leaf
 
@@ -146,8 +143,8 @@ class BaseMatchTree(object):
         return list(self._leaves())
 
 
-    def to_string(mtree):
-        empty_line = ' ' * len(mtree.string)
+    def to_string(self):
+        empty_line = ' ' * len(self.string)
 
         def to_hex(x):
             if isinstance(x, int):
@@ -181,11 +178,11 @@ class BaseMatchTree(object):
 
             return 'x'
 
-        lines = [ empty_line ] * (mtree.depth + 2) # +2: remaining, meaning
-        lines[-2] = mtree.string
+        lines = [ empty_line ] * (self.depth + 2) # +2: remaining, meaning
+        lines[-2] = self.string
 
-        for node in mtree.nodes():
-            if node == mtree:
+        for node in self.nodes():
+            if node == self:
                 continue
 
             idx = node.node_idx
@@ -196,7 +193,7 @@ class BaseMatchTree(object):
                 lines[-2] = str_fill(lines[-2], node.span, '_')
                 lines[-1] = str_fill(lines[-1], node.span, meaning(node.guess))
 
-        lines.append(mtree.string)
+        lines.append(self.string)
 
         return '\n'.join(lines)
 

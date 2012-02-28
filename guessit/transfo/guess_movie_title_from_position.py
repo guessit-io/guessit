@@ -43,7 +43,7 @@ def process(mtree):
     try:
         folder = mtree.node_at((-3,))
         folder_leftover = folder.unidentified_leaves()
-    except:
+    except ValueError:
         folder = None
         folder_leftover = []
 
@@ -85,7 +85,7 @@ def process(mtree):
             found_property(filmNumber, 'filmNumber',
                            num, confidence = 0.6)
         return
-    except:
+    except Exception:
         pass
 
     # specific cases:
@@ -108,7 +108,7 @@ def process(mtree):
             return
 
 
-    except:
+    except Exception:
         pass
 
 
@@ -118,7 +118,7 @@ def process(mtree):
     try:
         props = mtree.previous_leaves_containing(mtree.children[-2],
                                                  [ 'videoCodec', 'format', 'language' ])
-    except:
+    except IndexError:
         props = []
 
     if props:

@@ -26,7 +26,6 @@ log = logging.getLogger("guessit.transfo.split_path_components")
 
 
 def process(mtree):
-    # FIXME: duplicate from fileutils
     """Returns the filename split into [ dir*, basename, ext ]."""
     components = fileutils.split_path(mtree.value)
     basename = components.pop(-1)
