@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 from fabric.api import *
 
 def doctests():
@@ -45,3 +46,24 @@ def pylint():
 def pylint_report():
     """Runs pylint on GuessIt's source code, full report."""
     local('pylint guessit')
+
+def open(filename):
+    """Open the given file using the OS's native programs."""
+    if sys.platform.startswith('linux'):
+        local('xdg-open "%s"' % filename)
+    elif sys.platform == 'darwin':
+        local('open "%s"' % filename)
+    else:
+        print 'Platform not supported:', sys.platform
+
+def doc():
+    """Build the Sphinx documentation and open it in a web browser."""
+    with lcd('docs'):
+        local('make html')
+        open('_build/html/index.html')
+
+def pypi_doc():
+    """Builds the main page that will be uploaded to PyPI and open it in a
+    web browser."""
+    local('python setup.py --long-description | rst2html.py > /tmp/guessit_pypi_doc.html')
+    open('/tmp/guessit_pypi_doc.html')
