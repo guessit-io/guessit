@@ -19,7 +19,7 @@
 #
 
 from guessit import Guess
-from guessit.textutils import clean_string, str_fill
+from guessit.textutils import clean_string, str_fill, to_utf8
 from guessit.patterns import group_delimiters
 import logging
 
@@ -199,6 +199,9 @@ class BaseMatchTree(object):
 
     def __unicode__(self):
         return self.to_string()
+
+    def __str__(self):
+        return to_utf8(unicode(self))
 
 
 class MatchTree(BaseMatchTree):

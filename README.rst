@@ -11,15 +11,15 @@ both movies and tv shows episodes.
 
 For example, GuessIt can do the following::
 
-    $ python guessit.py "Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
-    For: Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
+    $ python guessit.py "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
+    For: Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
     GuessIt found: {
         [1.00] "mimetype": "video/x-msvideo",
         [0.80] "episodeNumber": 3,
         [0.80] "videoCodec": "XviD",
         [1.00] "container": "avi",
         [1.00] "format": "HDTV",
-        [0.79] "series": "Treme",
+        [0.70] "series": "Treme",
         [0.50] "title": "Right Place, Wrong Time",
         [0.80] "releaseGroup": "NoTV",
         [0.80] "season": 1,
