@@ -52,14 +52,14 @@ class Guess(dict):
             elif isinstance(value, unicode):
                 data[prop] = value.encode('utf-8')
             elif isinstance(value, list):
-                data[prop] = [ str(x) for x in value ]
+                data[prop] = [str(x) for x in value]
 
         return data
 
     def nice_string(self):
         data = self.to_utf8_dict()
 
-        parts = json.dumps(data, indent = 4).split('\n')
+        parts = json.dumps(data, indent=4).split('\n')
         for i, p in enumerate(parts):
             if p[:5] != '    "':
                 continue
@@ -75,7 +75,7 @@ class Guess(dict):
     def confidence(self, prop):
         return self._confidence.get(prop, -1)
 
-    def set(self, prop, value, confidence = None):
+    def set(self, prop, value, confidence=None):
         self[prop] = value
         if confidence is not None:
             self._confidence[prop] = confidence
@@ -83,7 +83,7 @@ class Guess(dict):
     def set_confidence(self, prop, value):
         self._confidence[prop] = value
 
-    def update(self, other, confidence = None):
+    def update(self, other, confidence=None):
         dict.update(self, other)
         if isinstance(other, Guess):
             for prop in other:
@@ -97,7 +97,7 @@ class Guess(dict):
         """Update this guess with the values from the given one. In case there is
         property present in both, only the one with the highest one is kept."""
         if not isinstance(other, Guess):
-            raise ValueError, 'Can only call this function on Guess instances'
+            raise ValueError('Can only call this function on Guess instances')
 
         for prop in other:
             if prop in self and self.confidence(prop) >= other.confidence(prop):
@@ -106,20 +106,19 @@ class Guess(dict):
             self._confidence[prop] = other.confidence(prop)
 
 
-
-
 def choose_int(g1, g2):
     """Function used by merge_similar_guesses to choose between 2 possible properties
     when they are integers."""
     v1, c1 = g1 # value, confidence
     v2, c2 = g2
     if (v1 == v2):
-        return (v1, 1 - (1-c1)*(1-c2))
+        return (v1, 1 - (1 - c1) * (1 - c2))
     else:
         if c1 > c2:
             return (v1, c1 - c2)
         else:
             return (v2, c2 - c1)
+
 
 def choose_string(g1, g2):
     """Function used by merge_similar_guesses to choose between 2 possible properties
@@ -159,7 +158,7 @@ def choose_string(g1, g2):
     v1, v2 = v1.strip(), v2.strip()
     v1l, v2l = v1.lower(), v2.lower()
 
-    combined_prob = 1 - (1-c1)*(1-c2)
+    combined_prob = 1 - (1 - c1) * (1 - c2)
 
     if v1l == v2l:
         return (v1, combined_prob)
@@ -191,7 +190,7 @@ def _merge_similar_guesses_nocheck(guesses, prop, choose):
 
     This function assumes there are at least 2 valid guesses."""
 
-    similar = [ guess for guess in guesses if prop in guess ]
+    similar = [guess for guess in guesses if prop in guess]
 
     g1, g2 = similar[0], similar[1]
 
@@ -220,12 +219,13 @@ def _merge_similar_guesses_nocheck(guesses, prop, choose):
     g1.update(g2)
     guesses.remove(g2)
 
+
 def merge_similar_guesses(guesses, prop, choose):
     """Take a list of guesses and merge those which have the same properties,
     increasing or decreasing the confidence depending on whether their values
     are similar."""
 
-    similar = [ guess for guess in guesses if prop in guess ]
+    similar = [guess for guess in guesses if prop in guess]
     if len(similar) < 2:
         # nothing to merge
         return
@@ -251,14 +251,12 @@ def merge_append_guesses(guesses, prop):
     DEPRECATED, remove with old guessers
 
     """
-
-
-    similar = [ guess for guess in guesses if prop in guess ]
+    similar = [guess for guess in guesses if prop in guess]
     if not similar:
         return
 
     merged = similar[0]
-    merged[prop] = [ merged[prop] ]
+    merged[prop] = [merged[prop]]
     # TODO: what to do with global confidence? mean of them all?
 
     for m in similar[1:]:
@@ -274,7 +272,7 @@ def merge_append_guesses(guesses, prop):
         guesses.remove(m)
 
 
-def merge_all(guesses, append = None):
+def merge_all(guesses, append=None):
     """Merges all the guesses in a single result, removes very unlikely values, and returns it.
     You can specify a list of properties that should be appended into a list instead of being
     merged.
@@ -299,9 +297,9 @@ def merge_all(guesses, append = None):
         # first append our appendable properties
         for prop in append:
             if prop in g:
-                result.set(prop, result.get(prop, []) + [ g[prop] ],
+                result.set(prop, result.get(prop, []) + [g[prop]],
                            # TODO: what to do with confidence here? maybe an arithmetic mean...
-                           confidence = g.confidence(prop))
+                           confidence=g.confidence(prop))
 
                 del g[prop]
 
@@ -322,4 +320,3 @@ def merge_all(guesses, append = None):
             result[prop] = list(set(result[prop]))
 
     return result
-

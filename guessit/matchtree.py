@@ -26,14 +26,13 @@ import logging
 log = logging.getLogger("guessit.matchtree")
 
 
-
 class BaseMatchTree(object):
     """A MatchTree represents the hierarchical split of a string into its
     constituent semantic groups."""
 
-    def __init__(self, string = '', span = None, parent = None):
+    def __init__(self, string='', span=None, parent=None):
         self.string = string
-        self.span = span or (0,len(string))
+        self.span = span or (0, len(string))
         self.parent = parent
         self.children = []
         self.guess = Guess()
@@ -73,12 +72,11 @@ class BaseMatchTree(object):
 
         return 1 + max(c.depth for c in self.children)
 
-
     def is_leaf(self):
         return self.children == []
 
     def add_child(self, span):
-        child = MatchTree(self.string, span = span, parent = self)
+        child = MatchTree(self.string, span=span, parent=self)
         self.children.append(child)
 
     def partition(self, indices):
@@ -89,16 +87,16 @@ class BaseMatchTree(object):
             indices.append(len(self.value))
 
         for start, end in zip(indices[:-1], indices[1:]):
-            self.add_child(span = (self.offset + start,
-                                   self.offset + end))
+            self.add_child(span=(self.offset + start,
+                                 self.offset + end))
 
     def split_on_components(self, components):
         offset = 0
         for c in components:
             start = self.value.find(c, offset)
             end = start + len(c)
-            self.add_child(span = (self.offset + start,
-                                   self.offset + end))
+            self.add_child(span=(self.offset + start,
+                                 self.offset + end))
             offset = end
 
     def nodes_at_depth(self, depth):
@@ -106,7 +104,7 @@ class BaseMatchTree(object):
             yield self
 
         for child in self.children:
-            for node in child.nodes_at_depth(depth-1):
+            for node in child.nodes_at_depth(depth - 1):
                 yield node
 
     @property
@@ -142,13 +140,12 @@ class BaseMatchTree(object):
     def leaves(self):
         return list(self._leaves())
 
-
     def to_string(self):
         empty_line = ' ' * len(self.string)
 
         def to_hex(x):
             if isinstance(x, int):
-                return str(x) if x < 10 else chr(55+x)
+                return str(x) if x < 10 else chr(55 + x)
             return x
 
         def meaning(result):
@@ -210,13 +207,13 @@ class MatchTree(BaseMatchTree):
     higher-level rules."""
 
     def _unidentified_leaves(self,
-                             valid = lambda leaf: len(leaf.clean_value) >= 2):
+                             valid=lambda leaf: len(leaf.clean_value) >= 2):
         for leaf in self._leaves():
             if not leaf.guess and valid(leaf):
                 yield leaf
 
     def unidentified_leaves(self,
-                            valid = lambda leaf: len(leaf.clean_value) >= 2):
+                            valid=lambda leaf: len(leaf.clean_value) >= 2):
         return list(self._unidentified_leaves(valid))
 
     def _leaves_containing(self, property_name):
@@ -260,6 +257,3 @@ class MatchTree(BaseMatchTree):
         """Return whether the group was explicitly enclosed by
         parentheses/square brackets/etc."""
         return (self.value[0] + self.value[-1]) in group_delimiters
-
-
-

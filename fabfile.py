@@ -79,3 +79,6 @@ def set_version(version):
                       r"__version__ = '%s'" % version,
                       initfile)
     open('guessit/__init__.py', 'w').write(initfile)
+
+def upload_pypi():
+    local('python setup.py register sdist upload')

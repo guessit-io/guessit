@@ -18,7 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import struct, os
+import struct
+import os
+
 
 def hash_file(filename):
     """This function is taken from:
@@ -34,19 +36,18 @@ def hash_file(filename):
     hash_value = filesize
 
     if filesize < 65536 * 2:
-        raise Exception, "SizeError: size is %d, should be > 132K..." % filesize
+        raise Exception("SizeError: size is %d, should be > 132K..." % filesize)
 
-    for x in range(65536/bytesize):
+    for x in range(65536 / bytesize):
         buf = f.read(bytesize)
-        (l_value,)= struct.unpack(longlongformat, buf)
+        (l_value,) = struct.unpack(longlongformat, buf)
         hash_value += l_value
         hash_value = hash_value & 0xFFFFFFFFFFFFFFFF #to remain as 64bit number
 
-
-    f.seek(max(0, filesize-65536), 0)
-    for x in range(65536/bytesize):
+    f.seek(max(0, filesize - 65536), 0)
+    for x in range(65536 / bytesize):
         buf = f.read(bytesize)
-        (l_value,)= struct.unpack(longlongformat, buf)
+        (l_value,) = struct.unpack(longlongformat, buf)
         hash_value += l_value
         hash_value = hash_value & 0xFFFFFFFFFFFFFFFF
 

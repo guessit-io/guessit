@@ -122,6 +122,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                           ],
                }
 
+
 def find_properties(filename):
     result = []
     clow = filename.lower()
@@ -131,7 +132,7 @@ def find_properties(filename):
             if pos != -1:
                 end = pos + len(value)
                 # make sure our word is always surrounded by separators
-                if ((pos > 0 and clow[pos-1] not in sep) or
+                if ((pos > 0 and clow[pos - 1] not in sep) or
                     (end < len(clow) and clow[end] not in sep)):
                     # note: sep is a regexp, but in this case using it as
                     #       a sequence achieves the same goal
@@ -157,7 +158,6 @@ property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
                       }
 
 
-
 def revert_synonyms():
     reverse = {}
 
@@ -172,6 +172,7 @@ def revert_synonyms():
     return reverse
 
 reverse_synonyms = revert_synonyms()
+
 
 def canonical_form(string):
     return reverse_synonyms.get(string.lower(), string)

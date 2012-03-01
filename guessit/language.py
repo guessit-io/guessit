@@ -23,16 +23,14 @@ import logging
 
 log = logging.getLogger('guessit.language')
 
-
-
 # downloaded from http://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
 #
 # Description of the fields:
 # "An alpha-3 (bibliographic) code, an alpha-3 (terminologic) code (when given),
 # an alpha-2 code (when given), an English name, and a French name of a language
 # are all separated by pipe (|) characters."
-language_matrix = [ l.strip().decode('utf-8').split('|')
-                    for l in fileutils.load_file_in_same_dir(__file__, 'ISO-639-2_utf-8.txt').split('\n') ]
+language_matrix = [l.strip().decode('utf-8').split('|')
+                   for l in fileutils.load_file_in_same_dir(__file__, 'ISO-639-2_utf-8.txt').split('\n')]
 
 lng3        = frozenset(l[0] for l in language_matrix if l[0])
 lng3term    = frozenset(l[1] for l in language_matrix if l[1])
@@ -59,6 +57,7 @@ lng_fr_name_to_lng3 = dict((fr_name.lower(), l[0]) for l in language_matrix if l
 def is_language(language):
     return language.lower() in lng_all_names
 
+
 class Language(object):
     """This class represents a human language.
 
@@ -82,7 +81,7 @@ class Language(object):
             lang = lng_en_name_to_lng3.get(language) or lng_fr_name_to_lng3.get(language)
 
         if lang is None:
-            raise ValueError, 'The given string "%s" could not be identified as a language' % language
+            raise ValueError('The given string "%s" could not be identified as a language' % language)
 
         self.lang = lang
 
@@ -100,7 +99,6 @@ class Language(object):
 
     def french_name(self):
         return lng3_to_lng_fr_name[self.lang]
-
 
     def __hash__(self):
         return hash(self.lang)
@@ -130,8 +128,7 @@ class Language(object):
         return 'Language(%s)' % self
 
 
-
-def search_language(string, lang_filter = None):
+def search_language(string, lang_filter=None):
     """Looks for language patterns, and if found return the language object,
     its group span and an associated confidence.
 
@@ -178,7 +175,7 @@ def search_language(string, lang_filter = None):
         if pos != -1:
             end = pos + len(lang)
             # make sure our word is always surrounded by separators
-            if slow[pos-1] not in sep or slow[end] not in sep:
+            if slow[pos - 1] not in sep or slow[end] not in sep:
                 continue
 
             language = Language(slow[pos:end])
@@ -200,6 +197,6 @@ def search_language(string, lang_filter = None):
                 #       or assume that full language names are too common words
                 confidence = 0.3 # going with the low-confidence route here
 
-            return language, (pos-1, end-1), confidence
+            return language, (pos - 1, end - 1), confidence
 
     return None, None, None

@@ -21,6 +21,7 @@
 import datetime
 import re
 
+
 def search_year(string):
     """Looks for year patterns, and if found return the year and group span.
     Assumes there are sentinels at the beginning and end of the string that
@@ -98,7 +99,7 @@ def search_date(string):
             year, month, day = int(d['year']), int(d['month']), int(d['day'])
             # years specified as 2 digits should be adjusted here
             if year < 100:
-                if year > (datetime.date.today().year % 100)+ 5:
+                if year > (datetime.date.today().year % 100) + 5:
                     year = 1900 + year
                 else:
                     year = 2000 + year
@@ -122,6 +123,6 @@ def search_date(string):
             # looks like we have a valid date
             # note: span is  [+1,-1] because we don't want to include the non-digit char
             start, end = match.span()
-            return (date, (start+1, end-1))
+            return (date, (start + 1, end - 1))
 
     return None, None

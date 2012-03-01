@@ -23,12 +23,16 @@ import copy
 
 # string-related functions
 
+
 def strip_brackets(s):
     if not s:
         return s
-    if s[0] == '[' and s[-1] == ']': return s[1:-1]
-    if s[0] == '(' and s[-1] == ')': return s[1:-1]
-    if s[0] == '{' and s[-1] == '}': return s[1:-1]
+
+    if ((s[0] == '[' and s[-1] == ']') or
+        (s[0] == '(' and s[-1] == ')') or
+        (s[0] == '{' and s[-1] == '}')):
+        return s[1:-1]
+
     return s
 
 
@@ -49,6 +53,7 @@ def clean_string(s):
 
 def str_replace(string, pos, c):
     return string[:pos] + c + string[pos+1:]
+
 
 def str_fill(string, region, c):
     start, end = region
@@ -73,8 +78,10 @@ def to_utf8(o):
 
 
 def levenshtein(a, b):
-    if not a: return len(b)
-    if not b: return len(a)
+    if not a:
+        return len(b)
+    if not b:
+        return len(a)
 
     m = len(a)
     n = len(b)
