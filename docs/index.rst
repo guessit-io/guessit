@@ -1,7 +1,7 @@
 GuessIt
 =======
 
-Release v\ |version|. (:ref:`Installation <install>`)
+Release v\ |version| (:ref:`Installation <install>`)
 
 .. include:: presentation.rst
 

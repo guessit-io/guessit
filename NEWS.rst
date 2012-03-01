@@ -6,6 +6,15 @@
 News
 ====
 
+0.3b1
+-----
+
+*Release date: 1-Mar-2012*
+
+* refactored quite a bit, code is much cleaner now
+* fixed quite a few tests
+* re-vamped the documentation, wrote some more
+
 0.2
 ---
 
