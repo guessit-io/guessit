@@ -6,6 +6,13 @@
 News
 ====
 
+0.3b2
+-----
+
+*Release date: 2-Mar-2012*
+
+* fixed the package installation
+
 0.3b1
 -----
 
