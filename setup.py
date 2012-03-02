@@ -19,13 +19,14 @@
 #
 
 from setuptools import setup, find_packages
-import os, sys
+import os
+import sys
 import guessit
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 NEWS = open(os.path.join(here, 'NEWS.rst')).read()
-
 
 args = dict(name = 'guessit',
             version = guessit.__version__,
@@ -35,9 +36,12 @@ args = dict(name = 'guessit',
             classifiers = [ 'Development Status :: 4 - Beta',
                             'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
                             'Operating System :: OS Independent',
+                            'Intended Audience :: Developers',
                             'Programming Language :: Python :: 2',
+                            'Programming Language :: Python :: 2.6',
+                            'Programming Language :: Python :: 2.7',
                             'Topic :: Multimedia',
-                            'Topic :: Software Development :: Libraries'
+                            'Topic :: Software Development :: Libraries :: Python Modules'
                             ],
             keywords = 'smewt media video metadata python library',
             author = 'Nicolas Wack',
@@ -45,7 +49,7 @@ args = dict(name = 'guessit',
             url = 'http://www.smewt.com/',
             license = 'LGPLv3',
             packages = [ 'guessit' ],
-            package_data = { 'guessit': [ '*.txt' ] },
+            include_package_data=True,
             install_requires = []
             )
 

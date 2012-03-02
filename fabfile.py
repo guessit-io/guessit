@@ -82,3 +82,18 @@ def set_version(version):
 
 def upload_pypi():
     local('python setup.py register sdist upload')
+
+def test_pypi_sdist():
+    d = '_tmp_pypi_guessit'
+    local('rm -fr dist %s' % d)
+    local('python setup.py sdist')
+    local('virtualenv %s' % d)
+    with lcd(d):
+        with prefix('source bin/activate'):
+            local('pip install ../dist/*')
+            local('pip install PyYaml') # to be able to run the tests
+            local('cp ../test/*.py ../test/*.yaml .')
+            local('python test_autodetect.py')
+            local('python test_movie.py')
+            local('python test_episode.py')
+    local('rm -fr %s' % d)
