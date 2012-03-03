@@ -27,15 +27,11 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_episodes_rexps")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_episodes_rexps(string):
     for rexp, confidence, span_adjust in episode_rexps:
         match = re.search(rexp, string, re.IGNORECASE)
         if match:
-            return (Guess(match.groupdict(), confidence = confidence),
+            return (Guess(match.groupdict(), confidence=confidence),
                     (match.start() + span_adjust[0],
                      match.end() + span_adjust[1]))
 

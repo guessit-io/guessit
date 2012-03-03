@@ -61,14 +61,16 @@ def str_fill(string, region, c):
 
 
 def to_utf8(o):
-    '''converts all unicode strings found in the given object to utf-8 strings'''
+    """Convert all unicode strings found in the given object to utf-8
+    strings."""
 
     if isinstance(o, unicode):
         return o.encode('utf-8')
     elif isinstance(o, list):
         return [ to_utf8(i) for i in o ]
     elif isinstance(o, dict):
-        result = copy.deepcopy(o) # need to do it like that to handle Guess instances correctly
+        # need to do it like that to handle Guess instances correctly
+        result = copy.deepcopy(o)
         for key, value in o.items():
             result[to_utf8(key)] = to_utf8(value)
         return result
@@ -172,14 +174,13 @@ def split_on_groups(string, groups):
     if boundaries[-1] != len(string):
         boundaries.append(len(string))
 
-    groups = [ string[start:end] for start, end in zip(boundaries[:-1], boundaries[1:]) ]
+    groups = [ string[start:end] for start, end in zip(boundaries[:-1],
+                                                       boundaries[1:]) ]
 
     return [ g for g in groups if g ] # return only non-empty groups
 
 
-
-
-def find_first_level_groups(string, enclosing, blank_sep = None):
+def find_first_level_groups(string, enclosing, blank_sep=None):
     """Return a list of groups that could be split because of explicit grouping.
     The groups are delimited by the given enclosing characters.
 
@@ -215,8 +216,3 @@ def find_first_level_groups(string, enclosing, blank_sep = None):
             string = str_replace(string, end-1, blank_sep)
 
     return split_on_groups(string, groups)
-
-
-
-
-

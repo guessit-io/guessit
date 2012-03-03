@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
+from guessit.transfo import found_property
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_bonus_features")
@@ -42,22 +42,19 @@ def process(mtree):
     if bonus:
         bonusTitle = next_group(bonus[0])
         if same_group(bonusTitle, bonus[0]):
-            bonusTitle.guess = Guess({ 'bonusTitle': bonusTitle.clean_value }, confidence = 0.8)
-            log.debug('Found with confidence %.2f: %s' % (0.8, bonusTitle.guess))
+            found_property(bonusTitle, 'bonusTitle', 0.8)
 
-    filmNumber = [ node for node in mtree.leaves() if 'filmNumber' in node.guess ]
+    filmNumber = [ node for node in mtree.leaves()
+                   if 'filmNumber' in node.guess ]
     if filmNumber:
         filmSeries = previous_group(filmNumber[0])
-        filmSeries.guess = Guess({ 'filmSeries': filmSeries.clean_value }, confidence = 0.9)
-        log.debug('Found with confidence %.2f: %s' % (0.9, filmSeries.guess))
+        found_property(filmSeries, 'filmSeries', 0.9)
 
         title = next_group(filmNumber[0])
-        title.guess = Guess({ 'title': title.clean_value }, confidence = 0.9)
-        log.debug('Found with confidence %.2f: %s' % (0.9, title.guess))
+        found_property(title, 'title', 0.9)
 
     season = [ node for node in mtree.leaves() if 'season' in node.guess ]
     if season and 'bonusNumber' in mtree.info:
         series = previous_group(season[0])
         if same_group(series, season[0]):
-            series.guess = Guess({ 'series': series.clean_value }, confidence = 0.9)
-            log.debug('Found with confidence %.2f: %s' % (0.9, series.guess))
+            found_property(series, 'series', 0.9)

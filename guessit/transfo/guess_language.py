@@ -27,21 +27,20 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_language")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_language(string):
     language, span, confidence = search_language(string)
     if language:
         # is it a subtitle language?
         if 'sub' in clean_string(string[:span[0]]).lower().split(' '):
-            return Guess({ 'subtitleLanguage': language }, confidence = confidence), span
+            return (Guess({'subtitleLanguage': language},
+                          confidence=confidence),
+                    span)
         else:
-            return Guess({ 'language': language }, confidence = confidence), span
+            return (Guess({'language': language},
+                          confidence=confidence),
+                    span)
 
     return None, None
-
 
 
 def process(mtree):

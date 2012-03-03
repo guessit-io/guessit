@@ -25,31 +25,27 @@ import logging
 log = logging.getLogger("guessit.transfo.split_on_dash")
 
 
-DEPENDS = []
-PROVIDES = []
-
 def process(mtree):
     for node in mtree.unidentified_leaves():
         indices = []
 
         didx = 0
-        pattern = re.compile(sep + '-' +sep)
+        pattern = re.compile(sep + '-' + sep)
         match = pattern.search(node.value)
         while match:
             span = match.span()
             indices.extend([ span[0], span[1] ])
             match = pattern.search(node.value, span[1])
 
-
         didx = node.value.find('-')
         while didx > 0:
             if (didx > 10 and
-                (didx-1 not in indices and
-                 didx+2 not in indices)):
+                (didx - 1 not in indices and
+                 didx + 2 not in indices)):
 
-                indices.extend([ didx, didx+1 ])
+                indices.extend([ didx, didx + 1 ])
 
-            didx = node.value.find('-', didx+1)
+            didx = node.value.find('-', didx + 1)
 
         if indices:
             node.partition(indices)

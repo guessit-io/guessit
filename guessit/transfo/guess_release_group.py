@@ -25,10 +25,6 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_release_group")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_release_group(string):
     group_names = [ r'\.(Xvid)-(?P<releaseGroup>.*?)[ \.]',
                     r'\.(DivX)-(?P<releaseGroup>.*?)[\. ]',

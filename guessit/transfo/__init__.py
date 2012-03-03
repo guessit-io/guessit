@@ -25,6 +25,12 @@ import logging
 
 log = logging.getLogger('guessit.transfo')
 
+
+def found_property(node, name, confidence):
+    node.guess = Guess({name: node.clean_value}, confidence=confidence)
+    log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
+
+
 def format_guess(guess):
     """Format all the found values to their natural type.
     For instance, a year would be stored as an int value, etc...
@@ -32,8 +38,8 @@ def format_guess(guess):
     Note that this modifies the dictionary given as input.
     """
     for prop, value in guess.items():
-        if prop in ('season', 'episodeNumber', 'year', 'cdNumber', 'cdNumberTotal',
-                    'bonusNumber', 'filmNumber'):
+        if prop in ('season', 'episodeNumber', 'year', 'cdNumber',
+                    'cdNumberTotal', 'bonusNumber', 'filmNumber'):
             guess[prop] = int(guess[prop])
         elif isinstance(value, basestring):
             if prop in ('edition',):
@@ -52,7 +58,8 @@ def find_and_split_node(node, strategy, logger):
             result, span = matcher(string)
 
         if result:
-            span = (span[0]-1, span[1]-1) # readjust span to compensate for sentinels
+            # readjust span to compensate for sentinels
+            span = (span[0] - 1, span[1] - 1)
 
             if isinstance(result, Guess):
                 if confidence is None:
@@ -61,9 +68,9 @@ def find_and_split_node(node, strategy, logger):
                 if confidence is None:
                     confidence = 1.0
 
-            guess = format_guess(Guess(result, confidence = confidence))
-
-            (logger or log).debug('Found with confidence %.2f: %s' % (confidence, guess))
+            guess = format_guess(Guess(result, confidence=confidence))
+            msg = 'Found with confidence %.2f: %s' % (confidence, guess)
+            (logger or log).debug(msg)
 
             node.partition(span)
             absolute_span = (span[0] + node.offset, span[1] + node.offset)
@@ -76,7 +83,7 @@ def find_and_split_node(node, strategy, logger):
 
 
 class SingleNodeGuesser(object):
-    def __init__(self, guess_func, confidence, logger = None):
+    def __init__(self, guess_func, confidence, logger=None):
         self.guess_func = guess_func
         self.confidence = confidence
         self.logger = logger

@@ -32,7 +32,8 @@ def process(mtree):
     for c in mtree.children:
         groups = find_first_level_groups(c.value, group_delimiters[0])
         for delimiters in group_delimiters:
-            groups = reduce(lambda l, x: l + find_first_level_groups(x, delimiters), groups, [])
+            flatten = lambda l, x: l + find_first_level_groups(x, delimiters)
+            groups = reduce(flatten, groups, [])
 
         # do not do this at this moment, it is not strong enough and can break other
         # patterns, such as dates, etc...

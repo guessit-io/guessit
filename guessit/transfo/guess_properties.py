@@ -25,16 +25,13 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_properties")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_properties(string):
     try:
         prop, value, pos, end = find_properties(string)[0]
         return { prop: value }, (pos, end)
     except IndexError:
         return None, None
+
 
 def process(mtree):
     SingleNodeGuesser(guess_properties, 1.0, log).process(mtree)

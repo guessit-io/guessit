@@ -27,10 +27,6 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_weak_episodes_rexps")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_weak_episodes_rexps(string, node):
     if 'episodeNumber' in node.root.info:
         return None, None
@@ -39,18 +35,22 @@ def guess_weak_episodes_rexps(string, node):
         match = re.search(rexp, string, re.IGNORECASE)
         if match:
             metadata = match.groupdict()
-            span = (match.start() + span_adjust[0], match.end() + span_adjust[1])
+            span = (match.start() + span_adjust[0],
+                    match.end() + span_adjust[1])
 
             epnum = int(metadata['episodeNumber'])
             if epnum > 100:
                 return Guess({ 'season': epnum // 100,
-                               'episodeNumber': epnum % 100 }, confidence = 0.6), span
+                               'episodeNumber': epnum % 100 },
+                             confidence=0.6), span
             else:
-                return Guess(metadata, confidence = 0.3), span
+                return Guess(metadata, confidence=0.3), span
 
     return None, None
 
+
 guess_weak_episodes_rexps.use_node = True
+
 
 def process(mtree):
     SingleNodeGuesser(guess_weak_episodes_rexps, 0.6, log).process(mtree)

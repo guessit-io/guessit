@@ -121,7 +121,8 @@ def search_date(string):
                 continue
 
             # looks like we have a valid date
-            # note: span is  [+1,-1] because we don't want to include the non-digit char
+            # note: span is  [+1,-1] because we don't want to include the
+            # non-digit char
             start, end = match.span()
             return (date, (start + 1, end - 1))
 

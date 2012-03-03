@@ -46,7 +46,7 @@ def pylint():
 
 def pylint_report():
     """Runs pylint on GuessIt's source code, full report."""
-    local('pylint guessit')
+    local('pylint --include-ids=y --disable=C0103,C0111 guessit')
 
 def open_file(filename):
     """Open the given file using the OS's native programs."""

@@ -24,9 +24,6 @@ import logging
 log = logging.getLogger("guessit.transfo.post_process")
 
 
-DEPENDS = []
-PROVIDES = []
-
 def process(mtree):
     # 1- try to promote language to subtitle language where it makes sense
     for node in mtree.nodes():
@@ -35,21 +32,23 @@ def process(mtree):
 
         def promote_subtitle():
             # pylint: disable=W0631
-            node.guess.set('subtitleLanguage', node.guess['language'], confidence = node.guess.confidence('language'))
+            node.guess.set('subtitleLanguage', node.guess['language'],
+                           confidence=node.guess.confidence('language'))
             del node.guess['language']
 
-        # - if we matched a language in a file with a sub extension and that the group
-        #   is the last group of the filename, it is probably the language of the subtitle
+        # - if we matched a language in a file with a sub extension and that
+        #   the group is the last group of the filename, it is probably the
+        #   language of the subtitle
         #   (eg: 'xxx.english.srt')
         if (mtree.node_at((-1,)).value.lower() in subtitle_exts and
             node == mtree.leaves()[-2]):
             promote_subtitle()
 
-        # - if a language is in an explicit group just preceded by "st", it is a subtitle
-        #   language (eg: '...st[fr-eng]...')
+        # - if a language is in an explicit group just preceded by "st",
+        #   it is a subtitle language (eg: '...st[fr-eng]...')
         try:
             idx = node.node_idx
-            previous = mtree.node_at((idx[0], idx[1]-1)).leaves()[-1]
+            previous = mtree.node_at((idx[0], idx[1] - 1)).leaves()[-1]
             if previous.value.lower()[-2:] == 'st':
                 promote_subtitle()
         except IndexError:
@@ -68,4 +67,3 @@ def process(mtree):
 
         if lseries[-5:] == ', the':
             node.guess['series'] = 'The ' + series[:-5]
-

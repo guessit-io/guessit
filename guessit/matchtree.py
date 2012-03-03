@@ -185,7 +185,8 @@ class BaseMatchTree(object):
             idx = node.node_idx
             depth = len(idx) - 1
             if idx:
-                lines[depth] = str_fill(lines[depth], node.span, to_hex(idx[-1]))
+                lines[depth] = str_fill(lines[depth], node.span,
+                                        to_hex(idx[-1]))
             if node.guess:
                 lines[-2] = str_fill(lines[-2], node.span, '_')
                 lines[-1] = str_fill(lines[-1], node.span, meaning(node.guess))

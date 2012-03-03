@@ -20,7 +20,8 @@
 
 from guessit.matchtree import MatchTree
 from guessit.textutils import to_utf8
-from guessit.guess import merge_similar_guesses, merge_all, choose_int, choose_string
+from guessit.guess import (merge_similar_guesses, merge_all,
+                           choose_int, choose_string)
 import copy
 import logging
 
@@ -67,10 +68,11 @@ class IterativeMatcher(object):
          resolution when they arise.
         """
 
-        if filetype not in ('autodetect', 'subtitle', 'video',
+        valid_filetypes = ('autodetect', 'subtitle', 'video',
                             'movie', 'moviesubtitle',
-                            'episode', 'episodesubtitle'):
-            raise ValueError("filetype needs to be one of ('autodetect', 'subtitle', 'video', 'movie', 'moviesubtitle', 'episode', 'episodesubtitle')")
+                            'episode', 'episodesubtitle')
+        if filetype not in valid_filetypes:
+            raise ValueError("filetype needs to be one of %s" % valid_filetypes)
         if not isinstance(filename, unicode):
             log.debug('WARNING: given filename to matcher is not unicode...')
 
@@ -97,13 +99,14 @@ class IterativeMatcher(object):
 
         # 4- try to match information for specific patterns
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
-            strategy = ['guess_date', 'guess_video_rexps', 'guess_episodes_rexps',
-                        'guess_website', 'guess_release_group', 'guess_properties',
+            strategy = ['guess_date', 'guess_video_rexps',
+                        'guess_episodes_rexps', 'guess_website',
+                        'guess_release_group', 'guess_properties',
                         'guess_weak_episodes_rexps', 'guess_language']
         else:
             strategy = ['guess_date', 'guess_year', 'guess_video_rexps',
-                        'guess_website', 'guess_release_group', 'guess_properties',
-                        'guess_language']
+                        'guess_website', 'guess_release_group',
+                        'guess_properties', 'guess_language']
 
         for name in strategy:
             apply_transfo(name)
@@ -116,8 +119,8 @@ class IterativeMatcher(object):
         # around the dash)
         apply_transfo('split_on_dash')
 
-        # 5- try to identify the remaining unknown groups by looking at their position
-        #    relative to other known elements
+        # 5- try to identify the remaining unknown groups by looking at their
+        #    position relative to other known elements
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
             apply_transfo('guess_episode_info_from_position')
         else:
@@ -135,15 +138,18 @@ class IterativeMatcher(object):
         parts = [node.guess for node in self.match_tree.nodes() if node.guess]
         parts = copy.deepcopy(parts)
 
-        # 1- try to merge similar information together and give it a higher confidence
+        # 1- try to merge similar information together and give it a higher
+        #    confidence
         for int_part in ('year', 'season', 'episodeNumber'):
             merge_similar_guesses(parts, int_part, choose_int)
 
-        for string_part in ('title', 'series', 'container', 'format', 'releaseGroup', 'website',
-                            'audioCodec', 'videoCodec', 'screenSize', 'episodeFormat'):
+        for string_part in ('title', 'series', 'container', 'format',
+                            'releaseGroup', 'website', 'audioCodec',
+                            'videoCodec', 'screenSize', 'episodeFormat'):
             merge_similar_guesses(parts, string_part, choose_string)
 
-        result = merge_all(parts, append=['language', 'subtitleLanguage', 'other'])
+        result = merge_all(parts,
+                           append=['language', 'subtitleLanguage', 'other'])
 
         log.debug('Final result: ' + result.nice_string())
         return result

@@ -22,7 +22,8 @@
 
 subtitle_exts = [ 'srt', 'idx', 'sub', 'ssa', 'txt' ]
 
-video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'm4v', 'mov', 'ogg', 'ogm', 'ogv', 'wmv', 'divx' ]
+video_exts = [ 'avi', 'mkv', 'mpg', 'mp4', 'm4v', 'mov', 'ogg', 'ogm', 'ogv',
+               'wmv', 'divx' ]
 
 group_delimiters = [ '()', '[]', '{}' ]
 

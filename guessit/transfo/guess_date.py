@@ -25,10 +25,6 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_date")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_date(string):
     date, span = search_date(string)
     if date:

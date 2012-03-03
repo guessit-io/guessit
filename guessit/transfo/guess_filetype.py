@@ -19,15 +19,14 @@
 #
 
 from guessit import Guess
-from guessit.patterns import subtitle_exts, video_exts, episode_rexps, find_properties, canonical_form
+from guessit.patterns import (subtitle_exts, video_exts, episode_rexps,
+                              find_properties, canonical_form)
 import os.path
 import re
 import mimetypes
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_filetype")
-
-
 
 
 def guess_filetype(filename, filetype):
@@ -52,50 +51,62 @@ def guess_filetype(filename, filetype):
             filetype = 'unknown'
         other = { 'extension': fileext }
 
+    # put the filetype inside a dummy container to be able to have the
+    # following functions work correctly as closures
+    # this is a workaround for python 2 which doesn't have the
+    # 'nonlocal' keyword (python 3 does have it)
+    filetype_container = [filetype]
+
+    def upgrade_episode():
+        if filetype_container[0] == 'video':
+            filetype_container[0] = 'episode'
+        elif filetype_container[0] == 'subtitle':
+            filetype_container[0] = 'episodesubtitle'
+
+    def upgrade_movie():
+        if filetype_container[0] == 'video':
+            filetype_container[0] = 'movie'
+        elif filetype_container[0] == 'subtitle':
+            filetype_container[0] = 'moviesubtitle'
+
     # now look whether there are some specific hints for episode vs movie
     if filetype in ('video', 'subtitle'):
         for rexp, _, _ in episode_rexps:
             match = re.search(rexp, filename, re.IGNORECASE)
             if match:
-                if   filetype == 'video':    filetype = 'episode'
-                elif filetype == 'subtitle': filetype = 'episodesubtitle'
+                upgrade_episode()
                 break
 
         for prop, value, _, _ in find_properties(filename):
             log.debug('prop: %s = %s' % (prop, value))
             if prop == 'episodeFormat':
-                if   filetype == 'video':    filetype = 'episode'
-                elif filetype == 'subtitle': filetype = 'episodesubtitle'
+                upgrade_episode()
                 break
 
             elif canonical_form(value) == 'DVB':
-                if   filetype == 'video':    filetype = 'episode'
-                elif filetype == 'subtitle': filetype = 'episodesubtitle'
+                upgrade_episode()
                 break
 
         # if no episode info found, assume it's a movie
-        if filetype == 'video':
-            filetype = 'movie'
-        elif filetype == 'subtitle':
-            filetype = 'moviesubtitle'
+        upgrade_movie()
 
-
+    filetype = filetype_container[0]
     return filetype, other
 
 
-def process(mtree, filetype = 'autodetect'):
+def process(mtree, filetype='autodetect'):
     filetype, other = guess_filetype(mtree.string, filetype)
 
-    mtree.guess.set('type', filetype, confidence = 1.0)
+    mtree.guess.set('type', filetype, confidence=1.0)
     log.debug('Found with confidence %.2f: %s' % (1.0, mtree.guess))
 
-    filetype_info = Guess(other, confidence = 1.0)
+    filetype_info = Guess(other, confidence=1.0)
     # guess the mimetype of the filename
     # TODO: handle other mimetypes not found on the default type_maps
     # mimetypes.types_map['.srt']='text/subtitle'
     mime, _ = mimetypes.guess_type(mtree.string, strict=False)
     if mime is not None:
-        filetype_info.update({ 'mimetype': mime }, confidence = 1.0)
+        filetype_info.update({'mimetype': mime}, confidence=1.0)
 
     node_ext = mtree.node_at((-1,))
     node_ext.guess = filetype_info

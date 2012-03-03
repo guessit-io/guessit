@@ -25,10 +25,6 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_year")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_year(string):
     year, span = search_year(string)
     if year:

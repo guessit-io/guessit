@@ -25,16 +25,12 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_website")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_website(string):
     low = string.lower()
     for site in websites:
         pos = low.find(site.lower())
         if pos != -1:
-            return { 'website': site }, (pos, pos+len(site))
+            return {'website': site}, (pos, pos + len(site))
     return None, None
 
 

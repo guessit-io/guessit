@@ -27,20 +27,17 @@ import logging
 log = logging.getLogger("guessit.transfo.guess_video_rexps")
 
 
-DEPENDS = []
-PROVIDES = []
-
-
 def guess_video_rexps(string):
     string = '-' + string + '-'
     for rexp, confidence, span_adjust in video_rexps:
         match = re.search(sep + rexp + sep, string, re.IGNORECASE)
         if match:
             metadata = match.groupdict()
-            # is this the better place to put it? (maybe, as it is at least the soonest that we can catch it)
-            if 'cdNumberTotal' in metadata and metadata['cdNumberTotal'] is None:
+            # is this the better place to put it? (maybe, as it is at least
+            # the soonest that we can catch it)
+            if metadata.get('cdNumberTotal', -1) is None:
                 del metadata['cdNumberTotal']
-            return (Guess(metadata, confidence = confidence),
+            return (Guess(metadata, confidence=confidence),
                     (match.start() + span_adjust[0],
                      match.end() + span_adjust[1] - 2))
 

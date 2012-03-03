@@ -63,17 +63,17 @@ def guess_file_info(filename, filetype, info=None):
             result.append(m.matched())
 
         elif infotype == 'hash_mpc':
-            from guessit import hash_mpc
+            from guessit.hash_mpc import hash_file
             try:
-                result.append(Guess({'hash_mpc': hash_mpc.hash_file(filename)},
+                result.append(Guess({'hash_mpc': hash_file(filename)},
                                     confidence=1.0))
             except Exception, e:
                 log.warning('Could not compute MPC-style hash because: %s' % e)
 
         elif infotype == 'hash_ed2k':
-            from guessit import hash_ed2k
+            from guessit.hash_ed2k import hash_file
             try:
-                result.append(Guess({'hash_ed2k': hash_ed2k.hash_file(filename)},
+                result.append(Guess({'hash_ed2k': hash_file(filename)},
                                     confidence=1.0))
             except Exception, e:
                 log.warning('Could not compute ed2k hash because: %s' % e)
