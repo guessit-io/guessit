@@ -141,7 +141,7 @@ def choose_string(g1, g2):
     ('Hello', 0.75)
 
     >>> choose_string(('Hello', 0.4), ('Hello World', 0.4))
-    ('Hello', 0.64000000000000001)
+    ('Hello', 0.64)
 
     >>> choose_string(('simpsons', 0.5), ('The Simpsons', 0.5))
     ('The Simpsons', 0.75)

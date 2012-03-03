@@ -136,7 +136,7 @@ def search_language(string, lang_filter=None):
     as in lang_filter = [ 'fr', 'eng', 'spanish' ]
 
     >>> search_language('movie [en].avi')
-    (Language(English), (7, 9), 0.80000000000000004)
+    (Language(English), (7, 9), 0.8)
 
     >>> search_language('the zen fat cat and the gay mad men got a new fan', lang_filter = ['en', 'fr', 'es'])
     (None, None, None)
