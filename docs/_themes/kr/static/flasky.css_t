@@ -2,7 +2,7 @@
  * flasky.css_t
  * ~~~~~~~~~~~~
  *
- * :copyright: Copyright 2010 by Armin Ronacher. Modifications by Kenneth Reitz.
+ * :copyright: Copyright 2010 by Armin Ronacher. Modifications by Kenneth Reitz and Nicolas Wack.
  * :license: Flask Design License, see LICENSE for details.
  */
 
@@ -14,7 +14,7 @@
 /* -- page layout ----------------------------------------------------------- */
 
 body {
-    font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
+    font-family: 'Ubuntu', sans-serif;
     font-size: 17px;
     background-color: white;
     color: #000;
@@ -98,7 +98,7 @@ div.sphinxsidebarwrapper p.logo {
 
 div.sphinxsidebar h3,
 div.sphinxsidebar h4 {
-    font-family: 'Garamond', 'Georgia', serif;
+    font-family: 'Ubuntu', sans-serif;
     color: #444;
     font-size: 24px;
     font-weight: normal;
@@ -134,7 +134,7 @@ div.sphinxsidebar ul {
 
 div.sphinxsidebar input {
     border: 1px solid #ccc;
-    font-family: 'Georgia', serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 1em;
 }
 
@@ -156,7 +156,7 @@ div.body h3,
 div.body h4,
 div.body h5,
 div.body h6 {
-    font-family: 'Garamond', 'Georgia', serif;
+    font-family: 'Ubuntu', sans-serif;
     font-weight: normal;
     margin: 30px 0px 10px 0px;
     padding: 0;
@@ -202,7 +202,7 @@ dd div.admonition {
 }
 
 div.admonition p.admonition-title {
-    font-family: 'Garamond', 'Georgia', serif;
+    font-family: 'Ubuntu', sans-serif;
     font-weight: normal;
     font-size: 24px;
     margin: 0 0 10px 0;
@@ -245,7 +245,7 @@ p.admonition-title:after {
 }
 
 pre, tt {
-    font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    font-family: 'Ubuntu Mono', sans-serif;
     font-size: 0.9em;
 }
 
