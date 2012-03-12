@@ -6,6 +6,13 @@
 News
 ====
 
+0.3
+---
+
+*Release date: 12-Mar-2012*
+
+* fix to recognize 1080p format (thanks to Jonathan Lauwers)
+
 0.3b2
 -----
 
