@@ -81,9 +81,10 @@ class IterativeMatcher(object):
         mtree.guess.set('type', filetype, confidence=1.0)
 
         def apply_transfo(transfo_name, *args, **kwargs):
-            # FIXME: there should be a more idiomatic way of doing this...
-            exec 'from transfo.%s import process' % transfo_name in globals(), locals()
-            process(mtree, *args, **kwargs)
+            transfo = __import__('transfo.' + transfo_name,
+                                 globals=globals(), locals=locals(),
+                                 fromlist=['process'], level=-1)
+            transfo.process(mtree, *args, **kwargs)
 
         # 1- first split our path into dirs + basename + ext
         apply_transfo('split_path_components')
