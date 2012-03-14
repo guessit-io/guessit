@@ -81,7 +81,7 @@ class IterativeMatcher(object):
         mtree.guess.set('type', filetype, confidence=1.0)
 
         def apply_transfo(transfo_name, *args, **kwargs):
-            transfo = __import__('transfo.' + transfo_name,
+            transfo = __import__('guessit.transfo.' + transfo_name,
                                  globals=globals(), locals=locals(),
                                  fromlist=['process'], level=-1)
             transfo.process(mtree, *args, **kwargs)
