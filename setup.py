@@ -48,7 +48,7 @@ args = dict(name = 'guessit',
             author_email = 'wackou@gmail.com',
             url = 'http://www.smewt.com/',
             license = 'LGPLv3',
-            packages = [ 'guessit' ],
+            packages = [ 'guessit', 'guessit.transfo' ],
             include_package_data=True,
             install_requires = []
             )
