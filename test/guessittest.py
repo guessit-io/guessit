@@ -36,8 +36,8 @@ def addImportPath(path):
     importPath = abspath(join(currentPath(), path))
     sys.path = [ importPath ] + sys.path
 
-addImportPath('.')  # for the tests
-addImportPath('..') # for import guessit
+#addImportPath('.')  # for the tests
+#addImportPath('..') # for import guessit
 
 
 from guessit.slogging import setupLogging
