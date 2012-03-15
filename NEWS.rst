@@ -6,6 +6,15 @@
 News
 ====
 
+0.3.1
+-----
+
+*Release date: 15-Mar-2012*
+
+* fixed package installation from PyPI
+* better imports for the transformations (thanks Diaoul!)
+* some small language fixes
+
 0.3
 ---
 
