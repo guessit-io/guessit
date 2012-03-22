@@ -112,6 +112,9 @@ def process(mtree):
         if len(title_candidates) >= 2:
             found_property(title_candidates[0], 'series', 0.4)
             found_property(title_candidates[1], 'title', 0.4)
+        elif len(title_candidates) == 1:
+            # but if there's only one candidate, it's probably the series name
+            found_property(title_candidates[0], 'series', 0.4)
 
     # if we only have 1 remaining valid group in the folder containing the
     # file, then it's likely that it is the series name
