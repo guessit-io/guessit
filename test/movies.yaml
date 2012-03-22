@@ -299,3 +299,14 @@
 
 ? Foobar Part VI.mkv
 : title: Foobar Part VI
+
+? The_Insider-(1999)-x02-60_Minutes_Interview-1996.mp4
+: title: The Insider
+  year: 1999
+  bonusNumber: 2
+  bonusTitle: 60 Minutes Interview-1996
+
+? Rush.._Beyond_The_Lighted_Stage-x09-Between_Sun_and_Moon-2002_Hartford.mkv
+: title: Rush Beyond The Lighted Stage
+  bonusNumber: 9
+  bonusTitle: Between Sun and Moon-2002 Hartford
