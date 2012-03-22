@@ -62,6 +62,8 @@ weak_episode_rexps = [ # ... 213 or 0106 ...
                        # ... 2x13 ...
                        (sep + r'[^0-9](?P<season>[0-9]{1,2})\.(?P<episodeNumber>[0-9]{2})[^0-9]' + sep, (1, -1)),
 
+                       # ... e13 ... for a mini-series without a season number
+                       (r'e(?P<episodeNumber>[0-9]{1,4})[^0-9]', (0, -1)),
                        ]
 
 non_episode_title = [ 'extras', 'rip' ]
