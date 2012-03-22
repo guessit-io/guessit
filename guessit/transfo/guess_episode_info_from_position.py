@@ -18,8 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.transfo import found_property
-from guessit.patterns import non_episode_title, unlikely_series
+from . import found_property
+from ..patterns import non_episode_title, unlikely_series
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_episode_info_from_position")

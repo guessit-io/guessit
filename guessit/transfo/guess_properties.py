@@ -18,8 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import find_properties
+from . import SingleNodeGuesser
+from ..patterns import find_properties
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_properties")

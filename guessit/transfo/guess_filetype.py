@@ -18,8 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
-from guessit.patterns import (subtitle_exts, video_exts, episode_rexps,
+from .. import Guess
+from ..patterns import (subtitle_exts, video_exts, episode_rexps,
                               find_properties, canonical_form)
 import os.path
 import re

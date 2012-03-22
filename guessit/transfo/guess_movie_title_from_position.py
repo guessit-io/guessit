@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
+from .. import Guess
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_movie_title_from_position")

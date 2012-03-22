@@ -18,9 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
-from guessit.patterns import canonical_form
-from guessit.textutils import clean_string
+from .. import Guess
+from ..patterns import canonical_form
+from ..textutils import clean_string
 import logging
 
 log = logging.getLogger('guessit.transfo')

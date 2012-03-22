@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.patterns import subtitle_exts
+from ..patterns import subtitle_exts
 import logging
 
 log = logging.getLogger("guessit.transfo.post_process")
