@@ -19,9 +19,12 @@
 #
 
 from guessit import fileutils
+from guessit.country import Country
+import re
 import logging
 
 log = logging.getLogger('guessit.language')
+
 
 # downloaded from http://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
 #
@@ -32,7 +35,7 @@ log = logging.getLogger('guessit.language')
 _iso639_contents = fileutils.load_file_in_same_dir(__file__,
                                                    'ISO-639-2_utf-8.txt')
 language_matrix = [ l.strip().decode('utf-8').split('|')
-                    for l in _iso639_contents.split('\n') ]
+                    for l in _iso639_contents.strip().split('\n') ]
 
 lng3        = frozenset(l[0] for l in language_matrix if l[0])
 lng3term    = frozenset(l[1] for l in language_matrix if l[1])
@@ -63,54 +66,83 @@ lng_fr_name_to_lng3 = dict((fr_name.lower(), l[0])
                            for l in language_matrix if l[4]
                            for fr_name in l[4].split('; '))
 
+lng_exceptions = { 'gr': ('gre', None)
+                   }
+
+
+def is_iso_language(language):
+    return language.lower() in lng_all_names
 
 def is_language(language):
-    return language.lower() in lng_all_names
+    return is_iso_language(language) or language in lng_exceptions
 
 
 class Language(object):
     """This class represents a human language.
 
-    You can initialize it with pretty much everything, as it knows conversion
+    You can initialize it with pretty much anything, as it knows conversion
     from ISO-639 2-letter and 3-letter codes, English and French names.
+
+    You can also distinguish languages for specific countries, such as
+    Portuguese and Brazilian Portuguese.
 
     >>> Language('fr')
     Language(French)
 
-    >>> Language('eng').french_name()
+    >>> Language('eng').french_name
     u'anglais'
+
+    >>> Language('pt(br)').country.english_name
+    u'Brazil'
     """
-    def __init__(self, language):
-        lang = None
+
+    _with_country_regexp = re.compile('(.*)\((.*)\)')
+
+    def __init__(self, language, country = None):
+        with_country = Language._with_country_regexp.match(language)
+        if with_country:
+            self.lang = Language(with_country.group(1)).lang
+            self.country = Country(with_country.group(2))
+            return
+
+        self.lang = None
+        self.country = Country(country) if country else None
+
         language = language.lower()
         if len(language) == 2:
-            lang = lng2_to_lng3.get(language)
+            self.lang = lng2_to_lng3.get(language)
         elif len(language) == 3:
-            lang = (language
-                    if language in lng3
-                    else lng3term_to_lng3.get(language))
+            self.lang = (language
+                         if language in lng3
+                         else lng3term_to_lng3.get(language))
         else:
-            lang = (lng_en_name_to_lng3.get(language) or
+            self.lang = (lng_en_name_to_lng3.get(language) or
                     lng_fr_name_to_lng3.get(language))
 
-        if lang is None:
+        if self.lang is None and language in lng_exceptions:
+            self.lang, self.country = lng_exceptions[language]
+
+        if self.lang is None:
             msg = 'The given string "%s" could not be identified as a language'
             raise ValueError(msg % language)
 
-        self.lang = lang
-
-    def lng2(self):
+    @property
+    def alpha2(self):
         return lng3_to_lng2[self.lang]
 
-    def lng3(self):
+    @property
+    def alpha3(self):
         return self.lang
 
-    def lng3term(self):
+    @property
+    def alpha3term(self):
         return lng3_to_lng3term[self.lang]
 
+    @property
     def english_name(self):
         return lng3_to_lng_en_name[self.lang]
 
+    @property
     def french_name(self):
         return lng3_to_lng_fr_name[self.lang]
 
@@ -133,13 +165,19 @@ class Language(object):
         return not self == other
 
     def __unicode__(self):
-        return lng3_to_lng_en_name[self.lang]
+        if self.country:
+            return '%s(%s)' % (self.english_name, self.country.alpha2)
+        else:
+            return self.english_name
 
     def __str__(self):
         return unicode(self).encode('utf-8')
 
     def __repr__(self):
-        return 'Language(%s)' % self
+        if self.country:
+            return 'Language(%s, country=%s)' % (self.english_name, self.country)
+        else:
+            return 'Language(%s)' % self.english_name
 
 
 def search_language(string, lang_filter=None):
