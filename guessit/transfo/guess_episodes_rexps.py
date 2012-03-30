@@ -18,9 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
-from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import episode_rexps
+from .. import Guess
+from . import SingleNodeGuesser
+from ..patterns import episode_rexps
 import re
 import logging
 

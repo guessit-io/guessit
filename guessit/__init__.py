@@ -24,9 +24,9 @@ __all__ = ['Guess', 'Language',
            'guess_movie_info', 'guess_episode_info']
 
 
-from guessit.guess import Guess, merge_all
-from guessit.language import Language
-from guessit.matcher import IterativeMatcher
+from .guess import Guess, merge_all
+from .language import Language
+from .matcher import IterativeMatcher
 import logging
 
 log = logging.getLogger("guessit")
@@ -63,7 +63,7 @@ def guess_file_info(filename, filetype, info=None):
             result.append(m.matched())
 
         elif infotype == 'hash_mpc':
-            from guessit.hash_mpc import hash_file
+            from .hash_mpc import hash_file
             try:
                 result.append(Guess({'hash_mpc': hash_file(filename)},
                                     confidence=1.0))
@@ -71,7 +71,7 @@ def guess_file_info(filename, filetype, info=None):
                 log.warning('Could not compute MPC-style hash because: %s' % e)
 
         elif infotype == 'hash_ed2k':
-            from guessit.hash_ed2k import hash_file
+            from .hash_ed2k import hash_file
             try:
                 result.append(Guess({'hash_ed2k': hash_file(filename)},
                                     confidence=1.0))

@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.patterns import sep
+from .patterns import sep
 import copy
 
 # string-related functions

@@ -18,9 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
-from guessit.textutils import clean_string, str_fill, to_utf8
-from guessit.patterns import group_delimiters
+from . import Guess
+from .textutils import clean_string, str_fill, to_utf8
+from .patterns import group_delimiters
 import logging
 
 log = logging.getLogger("guessit.matchtree")
