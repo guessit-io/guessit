@@ -18,10 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.matchtree import MatchTree
-from guessit.textutils import to_utf8
-from guessit.guess import (merge_similar_guesses, merge_all,
-                           choose_int, choose_string)
+from .matchtree import MatchTree
+from .textutils import to_utf8
+from .guess import (merge_similar_guesses, merge_all,
+                    choose_int, choose_string)
 import copy
 import logging
 
@@ -81,7 +81,7 @@ class IterativeMatcher(object):
         mtree.guess.set('type', filetype, confidence=1.0)
 
         def apply_transfo(transfo_name, *args, **kwargs):
-            transfo = __import__('guessit.transfo.' + transfo_name,
+            transfo = __import__('transfo.' + transfo_name,
                                  globals=globals(), locals=locals(),
                                  fromlist=['process'], level=-1)
             transfo.process(mtree, *args, **kwargs)

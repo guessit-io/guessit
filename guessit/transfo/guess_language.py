@@ -18,10 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import Guess
-from guessit.transfo import SingleNodeGuesser
-from guessit.language import search_language
-from guessit.textutils import clean_string
+from .. import Guess
+from . import SingleNodeGuesser
+from ..language import search_language
+from ..textutils import clean_string
 import logging
 
 log = logging.getLogger("guessit.transfo.guess_language")

@@ -18,8 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit.textutils import find_first_level_groups
-from guessit.patterns import group_delimiters
+from ..textutils import find_first_level_groups
+from ..patterns import group_delimiters
 import logging
 
 log = logging.getLogger("guessit.transfo.split_explicit_groups")

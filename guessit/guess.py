@@ -45,7 +45,7 @@ class Guess(dict):
             self._confidence[prop] = confidence
 
     def to_utf8_dict(self):
-        from guessit.language import Language
+        from .language import Language
         data = dict(self)
         for prop, value in data.items():
             if isinstance(value, datetime.date):

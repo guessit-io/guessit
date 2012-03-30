@@ -18,8 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessit import fileutils
-from guessit.country import Country
+from . import fileutils
+from .country import Country
 import re
 import logging
 
