@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
 from guessit import fileutils
 import logging
 
@@ -31,13 +32,21 @@ log = logging.getLogger('guessit.country')
 # an alpha-3 code (when given), a numeric code, and an ISO 31666-2 code
 # are all separated by pipe (|) characters."
 _iso3166_contents = fileutils.load_file_in_same_dir(__file__,
-                                                    'ISO-3166-1_utf8.txt')
-country_matrix = [ l.strip().decode('utf-8').split('|')
+                                                    'ISO-3166-1_utf8.txt').decode('utf-8')
+country_matrix = [ l.strip().split('|')
                    for l in _iso3166_contents.strip().split('\n') ]
+
+country_matrix += [ [ 'Unknown', 'un', 'unk', '', '' ],
+                    [ 'Latin America', '', 'lat', '', '' ]
+                    ]
 
 country_to_alpha3 = dict((c[0].lower(), c[2].lower()) for c in country_matrix)
 country_to_alpha3.update(dict((c[1].lower(), c[2].lower()) for c in country_matrix))
 country_to_alpha3.update(dict((c[2].lower(), c[2].lower()) for c in country_matrix))
+
+# add here exceptions / non ISO representations
+# Note: remember to put those exceptions in lower-case, they won't work otherwise
+country_to_alpha3.update({ 'latinoamérica': 'lat' })
 
 country_alpha3_to_en_name = dict((c[2].lower(), c[0]) for c in country_matrix)
 country_alpha3_to_alpha2 = dict((c[2].lower(), c[1].lower()) for c in country_matrix)
@@ -50,12 +59,17 @@ class Country(object):
     You can initialize it with pretty much anything, as it knows conversion
     from ISO-3166 2-letter and 3-letter codes, and an English name.
     """
-    def __init__(self, country):
+
+    def __init__(self, country, strict=True):
         self.alpha3 = country_to_alpha3.get(country.lower())
 
-        if not self.alpha3:
+        if self.alpha3 is None and strict:
             msg = 'The given string "%s" could not be identified as a country'
             raise ValueError(msg % country)
+
+        if self.alpha3 is None:
+            self.alpha3 = 'unk'
+
 
     @property
     def alpha2(self):

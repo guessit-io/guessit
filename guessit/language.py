@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
 from guessit import fileutils
 from guessit.country import Country
 import re
@@ -33,9 +34,11 @@ log = logging.getLogger('guessit.language')
 # an alpha-2 code (when given), an English name, and a French name of a language
 # are all separated by pipe (|) characters."
 _iso639_contents = fileutils.load_file_in_same_dir(__file__,
-                                                   'ISO-639-2_utf-8.txt')
-language_matrix = [ l.strip().decode('utf-8').split('|')
+                                                   'ISO-639-2_utf-8.txt').decode('utf-8')
+language_matrix = [ l.strip().split('|')
                     for l in _iso639_contents.strip().split('\n') ]
+
+language_matrix += [ [ 'unk', '', 'un', 'Unknown', 'inconnu' ] ]
 
 lng3        = frozenset(l[0] for l in language_matrix if l[0])
 lng3term    = frozenset(l[1] for l in language_matrix if l[1])
@@ -66,7 +69,11 @@ lng_fr_name_to_lng3 = dict((fr_name.lower(), l[0])
                            for l in language_matrix if l[4]
                            for fr_name in l[4].split('; '))
 
-lng_exceptions = { 'gr': ('gre', None)
+# contains a list of exceptions: strings that should be parsed as a language
+# but which are not in an ISO form
+lng_exceptions = { 'gr': ('gre', None),
+                   'esp': ('spa', None),
+                   'español': ('spa', None),
                    }
 
 
@@ -94,11 +101,23 @@ class Language(object):
 
     >>> Language('pt(br)').country.english_name
     u'Brazil'
+
+    >>> Language('Español (Latinoamérica)').country.english_name
+    u'Latin America'
+
+    >>> Language('Spanish (Latin America)') == Language('Español (Latinoamérica)')
+    True
+
+    >>> Language('zz', strict=False).english_name
+    u'Unknown'
     """
 
     _with_country_regexp = re.compile('(.*)\((.*)\)')
 
-    def __init__(self, language, country = None):
+    def __init__(self, language, country=None, strict=True):
+        language = language.strip().lower()
+        if isinstance(language, str):
+            language = language.decode('utf-8')
         with_country = Language._with_country_regexp.match(language)
         if with_country:
             self.lang = Language(with_country.group(1)).lang
@@ -108,7 +127,6 @@ class Language(object):
         self.lang = None
         self.country = Country(country) if country else None
 
-        language = language.lower()
         if len(language) == 2:
             self.lang = lng2_to_lng3.get(language)
         elif len(language) == 3:
@@ -122,9 +140,12 @@ class Language(object):
         if self.lang is None and language in lng_exceptions:
             self.lang, self.country = lng_exceptions[language]
 
-        if self.lang is None:
+        if self.lang is None and strict:
             msg = 'The given string "%s" could not be identified as a language'
             raise ValueError(msg % language)
+
+        if self.lang is None:
+            self.lang = 'unk'
 
     @property
     def alpha2(self):
