@@ -65,7 +65,7 @@ class Country(object):
     from ISO-3166 2-letter and 3-letter codes, and an English name.
     """
 
-    def __init__(self, country, strict=True):
+    def __init__(self, country, strict=False):
         self.alpha3 = country_to_alpha3.get(country.lower())
 
         if self.alpha3 is None and strict:
