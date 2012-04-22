@@ -130,7 +130,7 @@ class Language(object):
 
     _with_country_regexp = re.compile('(.*)\((.*)\)')
 
-    def __init__(self, language, country=None, strict=True):
+    def __init__(self, language, country=None, strict=False):
         language = language.strip().lower()
         if isinstance(language, str):
             language = language.decode('utf-8')
