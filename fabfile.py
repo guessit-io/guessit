@@ -20,11 +20,16 @@ def test_autodetect():
     """Run the unittests for autodetected files."""
     local('PYTHONPATH=. python test/test_autodetect.py')
 
+def test_language():
+    """Run the unittests for languages."""
+    local('PYTHONPATH=. python test/test_language.py')
+
 def unittests():
     """Run all the unittests."""
     test_movie()
     test_episode()
     test_autodetect()
+    test_language()
 
 def tests():
     """Run both the doctests and the unittests."""
@@ -93,4 +98,5 @@ def test_pypi_sdist():
             local('python test_autodetect.py')
             local('python test_movie.py')
             local('python test_episode.py')
+            local('python test_languages.py')
     local('rm -fr %s' % d)

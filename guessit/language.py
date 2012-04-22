@@ -35,10 +35,20 @@ log = logging.getLogger('guessit.language')
 # are all separated by pipe (|) characters."
 _iso639_contents = fileutils.load_file_in_same_dir(__file__,
                                                    'ISO-639-2_utf-8.txt').decode('utf-8')
+
+# drop the BOM from the beginning of the file
+_iso639_contents = _iso639_contents[1:]
+
 language_matrix = [ l.strip().split('|')
                     for l in _iso639_contents.strip().split('\n') ]
 
 language_matrix += [ [ 'unk', '', 'un', 'Unknown', 'inconnu' ] ]
+
+
+# remove unused languages that shadow other common ones with a non-official form
+for lang in language_matrix:
+    if lang[2] == 'se': # Northern Sami shadows Swedish
+        language_matrix.remove(lang)
 
 lng3        = frozenset(l[0] for l in language_matrix if l[0])
 lng3term    = frozenset(l[1] for l in language_matrix if l[1])
@@ -72,8 +82,14 @@ lng_fr_name_to_lng3 = dict((fr_name.lower(), l[0])
 # contains a list of exceptions: strings that should be parsed as a language
 # but which are not in an ISO form
 lng_exceptions = { 'gr': ('gre', None),
+                   'greek': ('gre', None),
                    'esp': ('spa', None),
                    'español': ('spa', None),
+                   'se': ('swe', None),
+                   'po': ('pt', 'br'),
+                   'pob': ('pt', 'br'),
+                   'brazilian': ('pt', 'br'),
+                   'català': ('cat', None)
                    }
 
 
@@ -135,10 +151,12 @@ class Language(object):
                          else lng3term_to_lng3.get(language))
         else:
             self.lang = (lng_en_name_to_lng3.get(language) or
-                    lng_fr_name_to_lng3.get(language))
+                         lng_fr_name_to_lng3.get(language))
 
         if self.lang is None and language in lng_exceptions:
-            self.lang, self.country = lng_exceptions[language]
+            lang, country = lng_exceptions[language]
+            self.lang = Language(lang).alpha3
+            self.country = Country(country) if country else None
 
         if self.lang is None and strict:
             msg = 'The given string "%s" could not be identified as a language'

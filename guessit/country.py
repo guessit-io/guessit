@@ -33,6 +33,7 @@ log = logging.getLogger('guessit.country')
 # are all separated by pipe (|) characters."
 _iso3166_contents = fileutils.load_file_in_same_dir(__file__,
                                                     'ISO-3166-1_utf8.txt').decode('utf-8')
+
 country_matrix = [ l.strip().split('|')
                    for l in _iso3166_contents.strip().split('\n') ]
 
@@ -46,7 +47,11 @@ country_to_alpha3.update(dict((c[2].lower(), c[2].lower()) for c in country_matr
 
 # add here exceptions / non ISO representations
 # Note: remember to put those exceptions in lower-case, they won't work otherwise
-country_to_alpha3.update({ 'latinoamérica': 'lat' })
+country_to_alpha3.update({ 'latinoamérica': 'lat',
+                           'brazilian': 'bra',
+                           'españa': 'esp',
+                           'uk': 'gbr'
+                           })
 
 country_alpha3_to_en_name = dict((c[2].lower(), c[0]) for c in country_matrix)
 country_alpha3_to_alpha2 = dict((c[2].lower(), c[1].lower()) for c in country_matrix)

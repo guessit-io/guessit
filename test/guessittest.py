@@ -36,6 +36,7 @@ def addImportPath(path):
     importPath = abspath(join(currentPath(), path))
     sys.path = [ importPath ] + sys.path
 
+# do not add those because it messes with the dirs when testing the pypi sdist
 #addImportPath('.')  # for the tests
 #addImportPath('..') # for import guessit
 
