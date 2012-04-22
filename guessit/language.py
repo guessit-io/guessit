@@ -203,6 +203,9 @@ class Language(object):
     def __ne__(self, other):
         return not self == other
 
+    def __nonzero__(self):
+        return self.lang != 'unk'
+
     def __unicode__(self):
         if self.country:
             return '%s(%s)' % (self.english_name, self.country.alpha2)
