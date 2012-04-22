@@ -24,6 +24,10 @@ from guessit.country import Country
 import re
 import logging
 
+__all__ = [ 'is_iso_language', 'is_language', 'Language', 'ALL_LANGUAGES',
+            'ALL_LANGUAGES_NAMES', 'search_language' ]
+
+
 log = logging.getLogger('guessit.language')
 
 
@@ -221,6 +225,9 @@ class Language(object):
         else:
             return 'Language(%s)' % self.english_name
 
+
+ALL_LANGUAGES = frozenset(Language(lng) for lng in lng_all_names)
+ALL_LANGUAGES_NAMES = lng_all_names
 
 def search_language(string, lang_filter=None):
     """Looks for language patterns, and if found return the language object,
