@@ -51,8 +51,10 @@ language_matrix += [ [ 'unk', '', 'un', 'Unknown', 'inconnu' ] ]
 
 # remove unused languages that shadow other common ones with a non-official form
 for lang in language_matrix:
-    if lang[2] == 'se': # Northern Sami shadows Swedish
+    if (lang[2] == 'se' or # Northern Sami shadows Swedish
+        lang[2] == 'br'):  # Breton shadows Brazilian
         language_matrix.remove(lang)
+
 
 lng3        = frozenset(l[0] for l in language_matrix if l[0])
 lng3term    = frozenset(l[1] for l in language_matrix if l[1])
@@ -92,8 +94,10 @@ lng_exceptions = { 'gr': ('gre', None),
                    'se': ('swe', None),
                    'po': ('pt', 'br'),
                    'pob': ('pt', 'br'),
+                   'br': ('pt', 'br'),
                    'brazilian': ('pt', 'br'),
-                   'català': ('cat', None)
+                   'català': ('cat', None),
+                   'cz': ('cze', None)
                    }
 
 
@@ -162,11 +166,13 @@ class Language(object):
             self.lang = Language(lang).alpha3
             self.country = Country(country) if country else None
 
+        msg = 'The given string "%s" could not be identified as a language' % language
+
         if self.lang is None and strict:
-            msg = 'The given string "%s" could not be identified as a language'
-            raise ValueError(msg % language)
+            raise ValueError(msg)
 
         if self.lang is None:
+            log.debug(msg)
             self.lang = 'unk'
 
     @property
@@ -226,7 +232,7 @@ class Language(object):
             return 'Language(%s)' % self.english_name
 
 
-ALL_LANGUAGES = frozenset(Language(lng) for lng in lng_all_names)
+ALL_LANGUAGES = frozenset(Language(lng) for lng in lng_all_names) - frozenset([Language('unk')])
 ALL_LANGUAGES_NAMES = lng_all_names
 
 def search_language(string, lang_filter=None):

@@ -64,7 +64,7 @@ class TestLanguage(TestGuessit):
         languages = {'aa': 'aar', 'ab': 'abk', 'af': 'afr', 'ak': 'aka', 'sq': 'alb', 'am': 'amh', 'ar': 'ara',
                      'an': 'arg', 'hy': 'arm', 'as': 'asm', 'av': 'ava', 'ae': 'ave', 'ay': 'aym', 'az': 'aze',
                      'ba': 'bak', 'bm': 'bam', 'eu': 'baq', 'be': 'bel', 'bn': 'ben', 'bh': 'bih', 'bi': 'bis',
-                     'bs': 'bos', 'br': 'bre', 'bg': 'bul', 'my': 'bur', 'ca': 'cat', 'ch': 'cha', 'ce': 'che',
+                     'bs': 'bos',              'bg': 'bul', 'my': 'bur', 'ca': 'cat', 'ch': 'cha', 'ce': 'che',
                      'zh': 'chi', 'cu': 'chu', 'cv': 'chv', 'kw': 'cor', 'co': 'cos', 'cr': 'cre', 'cs': 'cze',
                      'da': 'dan', 'dv': 'div', 'nl': 'dut', 'dz': 'dzo', 'en': 'eng', 'eo': 'epo', 'et': 'est',
                      'ee': 'ewe', 'fo': 'fao', 'fj': 'fij', 'fi': 'fin', 'fr': 'fre', 'fy': 'fry', 'ff': 'ful',
@@ -90,7 +90,7 @@ class TestLanguage(TestGuessit):
                      'za': 'zha', 'zu': 'zul', 'ro': 'rum', 'po': 'pob', 'un': 'unk'}
 
         # could not identify these languages in the ISO-639-2 doc
-        languages_taken_out =  { 'mo': 'mol', 'sr': 'scc', 'se': 'sme', 'ay': 'ass' }
+        languages_taken_out =  { 'mo': 'mol', 'sr': 'scc', 'se': 'sme', 'br': 'bre', 'ay': 'ass' }
 
         self.check_languages(languages)
 
@@ -118,6 +118,17 @@ class TestLanguage(TestGuessit):
 
         self.check_languages(languages)
 
+    def test_language_object(self):
+        self.assertEqual(len(list(set([Language('qwerty'), Language('asdf')]))), 1)
+        d = { Language('qwerty'): 7 }
+        d[Language('asdf')] = 23
+        self.assertEqual(d[Language('qwerty')], 23)
+
+    def test_exceptions(self):
+        self.assertEqual(Language('br'), Language('pt(br)'))
+
+        # languages should be equal regardless of country
+        self.assertEqual(Language('br'), Language('pt'))
 
 suite = allTests(TestLanguage)
 
