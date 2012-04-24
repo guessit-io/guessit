@@ -24,8 +24,8 @@ from guessit.country import Country
 import re
 import logging
 
-__all__ = [ 'is_iso_language', 'is_language', 'Language', 'ALL_LANGUAGES',
-            'ALL_LANGUAGES_NAMES', 'search_language' ]
+__all__ = [ 'is_iso_language', 'is_language', 'lang_set', 'Language',
+            'ALL_LANGUAGES', 'ALL_LANGUAGES_NAMES', 'search_language' ]
 
 
 log = logging.getLogger('guessit.language')
@@ -107,6 +107,8 @@ def is_iso_language(language):
 def is_language(language):
     return is_iso_language(language) or language in lng_exceptions
 
+def lang_set(languages):
+    return set(Language(l) for l in languages)
 
 class Language(object):
     """This class represents a human language.
@@ -270,7 +272,7 @@ def search_language(string, lang_filter=None):
     sep = r'[](){} \._-+'
 
     if lang_filter:
-        lang_filter = set(Language(l) for l in lang_filter)
+        lang_filter = lang_set(lang_filter)
 
     slow = ' %s ' % string.lower()
     confidence = 1.0 # for all of them

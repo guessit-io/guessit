@@ -98,5 +98,5 @@ def test_pypi_sdist():
             local('python test_autodetect.py')
             local('python test_movie.py')
             local('python test_episode.py')
-            local('python test_languages.py')
+            local('python test_language.py')
     local('rm -fr %s' % d)
