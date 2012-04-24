@@ -102,6 +102,16 @@ class TestLanguage(TestGuessit):
 
         self.check_languages(languages)
 
+    def test_opensubtitles(self):
+        languages = {u'English': 'en', u'Español': 'es', u'French': 'fr', u'German': 'de',
+                     u'Brazilian': 'br', u'Russian': 'ru', u'Ukrainian': 'ua', u'Italian': 'it',
+                     u'Greek': 'gr', u'Arabic': 'ar', u'Hungarian': 'hu', u'Polish': 'pl',
+                     u'Turkish': 'tr', u'Dutch': 'nl', u'Portuguese': 'pt', u'Swedish': 'sv',
+                     u'Danish': 'da', u'Finnish': 'fi', u'Korean': 'ko', u'Chinese': 'cn',
+                     u'Japanese': 'jp', u'Bulgarian': 'bg', u'Czech': 'cz', u'Romanian': 'ro'}
+
+        self.check_languages(languages)
+
     def test_subtitulos(self):
         languages = {u'English (US)': 'en', u'English (UK)': 'en', u'English': 'en',
                      u'French': 'fr', u'Brazilian': 'po', u'Portuguese': 'pt',
@@ -129,6 +139,7 @@ class TestLanguage(TestGuessit):
 
         # languages should be equal regardless of country
         self.assertEqual(Language('br'), Language('pt'))
+
 
 suite = allTests(TestLanguage)
 

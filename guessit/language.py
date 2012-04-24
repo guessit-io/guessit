@@ -97,7 +97,11 @@ lng_exceptions = { 'gr': ('gre', None),
                    'br': ('pt', 'br'),
                    'brazilian': ('pt', 'br'),
                    'català': ('cat', None),
-                   'cz': ('cze', None)
+                   'cz': ('cze', None),
+                   'ua': ('ukr', None),
+                   'cn': ('chi', None),
+                   'chs': ('chi', None),
+                   'jp': ('jpn', None)
                    }
 
 
@@ -107,8 +111,15 @@ def is_iso_language(language):
 def is_language(language):
     return is_iso_language(language) or language in lng_exceptions
 
-def lang_set(languages):
-    return set(Language(l) for l in languages)
+def lang_set(languages, strict=False):
+    """Return a set of guessit.Language created from their given string
+    representation.
+
+    if strict is True, then this will raise an exception if any language
+    could not be identified.
+    """
+    return set(Language(l, strict=strict) for l in languages)
+
 
 class Language(object):
     """This class represents a human language.
