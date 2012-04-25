@@ -102,7 +102,7 @@ class TestLanguage(TestGuessit):
 
         self.check_languages(languages)
 
-    def test_opensubtitles(self):
+    def test_tvsubtitles(self):
         languages = {u'English': 'en', u'Español': 'es', u'French': 'fr', u'German': 'de',
                      u'Brazilian': 'br', u'Russian': 'ru', u'Ukrainian': 'ua', u'Italian': 'it',
                      u'Greek': 'gr', u'Arabic': 'ar', u'Hungarian': 'hu', u'Polish': 'pl',
