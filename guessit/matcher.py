@@ -25,7 +25,7 @@ from guessit.guess import (merge_similar_guesses, merge_all,
 import copy
 import logging
 
-log = logging.getLogger("guessit.matcher")
+log = logging.getLogger(__name__)
 
 
 class IterativeMatcher(object):

@@ -22,7 +22,7 @@ from __future__ import unicode_literals
 from guessit import fileutils
 import logging
 
-log = logging.getLogger('guessit.country')
+log = logging.getLogger(__name__)
 
 
 # parsed from http://en.wikipedia.org/wiki/ISO_3166-1

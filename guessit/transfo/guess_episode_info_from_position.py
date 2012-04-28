@@ -22,7 +22,7 @@ from guessit.transfo import found_property
 from guessit.patterns import non_episode_title, unlikely_series
 import logging
 
-log = logging.getLogger("guessit.transfo.guess_episode_info_from_position")
+log = logging.getLogger(__name__)
 
 
 def match_from_epnum_position(mtree, node):

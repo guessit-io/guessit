@@ -29,7 +29,7 @@ from guessit.language import Language
 from guessit.matcher import IterativeMatcher
 import logging
 
-log = logging.getLogger("guessit")
+log = logging.getLogger(__name__)
 
 
 class NullHandler(logging.Handler):

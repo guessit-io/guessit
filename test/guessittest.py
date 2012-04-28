@@ -46,7 +46,7 @@ from guessit.slogging import setupLogging
 setupLogging()
 logging.getLogger().setLevel(MAIN_LOGGING_LEVEL)
 
-log = logging.getLogger('GuessItTest')
+log = logging.getLogger(__name__)
 
 
 import guessit

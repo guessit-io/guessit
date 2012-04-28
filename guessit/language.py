@@ -28,7 +28,7 @@ __all__ = [ 'is_iso_language', 'is_language', 'lang_set', 'Language',
             'ALL_LANGUAGES', 'ALL_LANGUAGES_NAMES', 'search_language' ]
 
 
-log = logging.getLogger('guessit.language')
+log = logging.getLogger(__name__)
 
 
 # downloaded from http://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
