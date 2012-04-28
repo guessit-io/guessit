@@ -6,6 +6,15 @@
 News
 ====
 
+0.4
+---
+
+*Release date: 28-Apr-2012*
+
+* much improved language detection, now also detect language variants
+* supports more video filetypes (thanks to Rob McMullen)
+
+
 0.3.1
 -----
 
