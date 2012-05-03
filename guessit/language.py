@@ -21,6 +21,7 @@
 from __future__ import unicode_literals
 from guessit import fileutils
 from guessit.country import Country
+from guessit.textutils import to_unicode
 import re
 import logging
 
@@ -152,9 +153,7 @@ class Language(object):
     _with_country_regexp = re.compile('(.*)\((.*)\)')
 
     def __init__(self, language, country=None, strict=False):
-        language = language.strip().lower()
-        if isinstance(language, str):
-            language = language.decode('utf-8')
+        language = to_unicode(language.strip().lower())
         with_country = Language._with_country_regexp.match(language)
         if with_country:
             self.lang = Language(with_country.group(1)).lang
