@@ -47,8 +47,6 @@ _iso639_contents = _iso639_contents[1:]
 language_matrix = [ l.strip().split('|')
                     for l in _iso639_contents.strip().split('\n') ]
 
-language_matrix += [ [ 'unk', '', 'un', 'Unknown', 'inconnu' ] ]
-
 
 # remove unused languages that shadow other common ones with a non-official form
 for lang in language_matrix:
@@ -88,7 +86,11 @@ lng_fr_name_to_lng3 = dict((fr_name.lower(), l[0])
 
 # contains a list of exceptions: strings that should be parsed as a language
 # but which are not in an ISO form
-lng_exceptions = { 'gr': ('gre', None),
+lng_exceptions = { 'unknown': ('und', None),
+                   'inconnu': ('und', None),
+                   'unk': ('und', None),
+                   'un': ('und', None),
+                   'gr': ('gre', None),
                    'greek': ('gre', None),
                    'esp': ('spa', None),
                    'español': ('spa', None),

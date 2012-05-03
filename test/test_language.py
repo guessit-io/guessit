@@ -140,6 +140,8 @@ class TestLanguage(TestGuessit):
         # languages should be equal regardless of country
         self.assertEqual(Language('br'), Language('pt'))
 
+        self.assertEqual(Language('unknown'), Language('und'))
+
 
 suite = allTests(TestLanguage)
 
