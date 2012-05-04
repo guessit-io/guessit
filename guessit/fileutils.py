@@ -18,7 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import ntpath
 import os.path
 import zipfile
 
@@ -46,14 +45,14 @@ def split_path(path):
     """
     result = []
     while True:
-        head, tail = ntpath.split(path)
+        head, tail = os.path.split(path)
 
         # on Unix systems, the root folder is '/'
         if head == '/' and tail == '':
             return ['/'] + result
 
-        # on Windows, the root folder is a drive letter (eg: 'C:\')
-        if len(head) == 3 and head[1:] == ':\\' and tail == '':
+        # on Windows, the root folder is a drive letter (eg: 'C:\') or for shares \\
+        if ((len(head) == 3 and head[1:] == ':\\') or (len(head) == 2 and head == '\\\\')) and tail == '':
             return [head] + result
 
         if head == '' and tail == '':
