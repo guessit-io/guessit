@@ -25,15 +25,20 @@ from guessit.fileutils import split_path
 class TestUtils(TestGuessit):
 
     def test_splitpath(self):
-        tests = { '/usr/bin/smewt': ['/', 'usr', 'bin', 'smewt'],
-                  'relative_path/to/my_folder/': ['relative_path', 'to', 'my_folder'],
-                  r'C:\Program Files\Smewt\smewt.exe': ['C:\\', 'Program Files', 'Smewt', 'smewt.exe'],
-                  r'Documents and Settings\User\config\\': ['Documents and Settings', 'User', 'config'],
-                  r'C:\Documents and Settings\User\config\\': ['C:\\', 'Documents and Settings', 'User', 'config'],
-                  r'\\netdrive\\share': ['netdrive', 'share']
-                  }
-        for path, split in tests.items():
-            self.assertEqual(split, split_path(path))
+        alltests = { ('linux2', 'darwin'): { '/usr/bin/smewt': ['/', 'usr', 'bin', 'smewt'],
+                                             'relative_path/to/my_folder/': ['relative_path', 'to', 'my_folder']
+                                             },
+                     ('win32',): { r'C:\Program Files\Smewt\smewt.exe': ['C:\\', 'Program Files', 'Smewt', 'smewt.exe'],
+                                   r'Documents and Settings\User\config\\': ['Documents and Settings', 'User', 'config'],
+                                   r'C:\Documents and Settings\User\config\\': ['C:\\', 'Documents and Settings', 'User', 'config'],
+                                   r'\\netdrive\share': [r'\\', 'netdrive', 'share'],
+                                   r'\\netdrive\share\folder': [r'\\', 'netdrive', 'share', 'folder']
+                                   }
+                     }
+        for platforms, tests in alltests.items():
+            if sys.platform in platforms:
+                for path, split in tests.items():
+                    self.assertEqual(split, split_path(path))
 
 
 suite = allTests(TestUtils)
