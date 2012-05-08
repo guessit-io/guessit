@@ -42,8 +42,8 @@ def unittests():
 @task
 def tests():
     """Run both the doctests and the unittests"""
-    doctests()
     unittests()
+    doctests()
 
 
 @task

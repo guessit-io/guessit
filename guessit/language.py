@@ -48,12 +48,15 @@ _iso639_contents = _iso639_contents[1:]
 language_matrix = [ l.strip().split('|')
                     for l in _iso639_contents.strip().split('\n') ]
 
-
-# remove unused languages that shadow other common ones with a non-official form
+# update information in the language matrix
 for lang in language_matrix:
+    # remove unused languages that shadow other common ones with a non-official form
     if (lang[2] == 'se' or # Northern Sami shadows Swedish
         lang[2] == 'br'):  # Breton shadows Brazilian
         language_matrix.remove(lang)
+    # add missing information
+    if lang[0] == 'und':
+        lang[2] = 'un'
 
 
 lng3        = frozenset(l[0] for l in language_matrix if l[0])
