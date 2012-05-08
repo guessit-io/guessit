@@ -25,7 +25,7 @@ test_ep = TestTask('episode', 'episodes')
 test_movie = TestTask('movie', 'movies')
 test_auto = TestTask('autodetect', 'autodetected files')
 test_lang = TestTask('language', 'languages')
-
+test_utils = TestTask('utils', 'utility functions')
 
 @task
 def unittests():
