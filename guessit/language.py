@@ -26,7 +26,8 @@ import re
 import logging
 
 __all__ = [ 'is_iso_language', 'is_language', 'lang_set', 'Language',
-            'ALL_LANGUAGES', 'ALL_LANGUAGES_NAMES', 'search_language' ]
+            'ALL_LANGUAGES', 'ALL_LANGUAGES_NAMES', 'UNDETERMINED',
+            'search_language' ]
 
 
 log = logging.getLogger(__name__)
@@ -149,7 +150,7 @@ class Language(object):
     True
 
     >>> Language('zz', strict=False).english_name
-    u'Unknown'
+    u'Undetermined'
     """
 
     _with_country_regexp = re.compile('(.*)\((.*)\)')
@@ -187,7 +188,7 @@ class Language(object):
 
         if self.lang is None:
             log.debug(msg)
-            self.lang = 'unk'
+            self.lang = 'und'
 
     @property
     def alpha2(self):
@@ -248,6 +249,7 @@ class Language(object):
 
 ALL_LANGUAGES = frozenset(Language(lng) for lng in lng_all_names) - frozenset([Language('unk')])
 ALL_LANGUAGES_NAMES = lng_all_names
+UNDETERMINED = Language('und')
 
 def search_language(string, lang_filter=None):
     """Looks for language patterns, and if found return the language object,
