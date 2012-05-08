@@ -247,9 +247,9 @@ class Language(object):
             return 'Language(%s)' % self.english_name
 
 
-ALL_LANGUAGES = frozenset(Language(lng) for lng in lng_all_names) - frozenset([Language('unk')])
-ALL_LANGUAGES_NAMES = lng_all_names
 UNDETERMINED = Language('und')
+ALL_LANGUAGES = frozenset(Language(lng) for lng in lng_all_names) - frozenset([UNDETERMINED])
+ALL_LANGUAGES_NAMES = lng_all_names
 
 def search_language(string, lang_filter=None):
     """Looks for language patterns, and if found return the language object,
