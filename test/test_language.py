@@ -112,6 +112,19 @@ class TestLanguage(TestGuessit):
 
         self.check_languages(languages)
 
+    def test_opensubtitles2(self):
+        langs = [ l.strip().split('\t') for l in open('test/opensubtitles_languages_2012_05_09.txt') ][1:]
+        langs = [ l for l in langs if l[3] == '1' or l[4] == '1' ]
+        for lang in langs:
+            if lang[0] == 'bre':
+                continue
+            # check that we recognize the opensubtitles language code correctly
+            # and that we are able to output this code from a language
+            self.assertEqual(lang[0], Language(lang[0]).opensubtitles)
+            if lang[1]:
+                # check we recognize the opensubtitles 2-letter code correctly
+                self.check_languages({lang[0]: lang[1]})
+
     def test_subtitulos(self):
         languages = {u'English (US)': 'en', u'English (UK)': 'en', u'English': 'en',
                      u'French': 'fr', u'Brazilian': 'po', u'Portuguese': 'pt',

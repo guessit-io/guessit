@@ -53,7 +53,7 @@ for lang in language_matrix:
     # remove unused languages that shadow other common ones with a non-official form
     if (lang[2] == 'se' or # Northern Sami shadows Swedish
         lang[2] == 'br'):  # Breton shadows Brazilian
-        language_matrix.remove(lang)
+        lang[2] = ''
     # add missing information
     if lang[0] == 'und':
         lang[2] = 'un'
@@ -100,6 +100,7 @@ lng_exceptions = { 'unknown': ('und', None),
                    'español': ('spa', None),
                    'se': ('swe', None),
                    'po': ('pt', 'br'),
+                   'pb': ('pt', 'br'),
                    'pob': ('pt', 'br'),
                    'br': ('pt', 'br'),
                    'brazilian': ('pt', 'br'),
@@ -108,7 +109,8 @@ lng_exceptions = { 'unknown': ('und', None),
                    'ua': ('ukr', None),
                    'cn': ('chi', None),
                    'chs': ('chi', None),
-                   'jp': ('jpn', None)
+                   'jp': ('jpn', None),
+                   'scc': ('srp', None)
                    }
 
 
@@ -137,6 +139,11 @@ class Language(object):
     You can also distinguish languages for specific countries, such as
     Portuguese and Brazilian Portuguese.
 
+    There are various properties on the language object that give you the
+    representation of the language for a specific usage, such as .alpha3
+    to get the ISO 3-letter code, or .opensubtitles to get the OpenSubtitles
+    language code.
+
     >>> Language('fr')
     Language(French)
 
@@ -154,6 +161,9 @@ class Language(object):
 
     >>> Language('zz', strict=False).english_name
     u'Undetermined'
+
+    >>> Language('pt(br)').opensubtitles
+    u'pob'
     """
 
     _with_country_regexp = re.compile('(.*)\((.*)\)')
@@ -212,6 +222,16 @@ class Language(object):
     @property
     def french_name(self):
         return lng3_to_lng_fr_name[self.lang]
+
+    @property
+    def opensubtitles(self):
+        if self.lang == 'por' and self.country and self.country.alpha2 == 'br':
+            return 'pob'
+        elif self.lang == 'srp':
+            return 'scc'
+        elif self.lang in ['gre', 'wel', 'eus']:
+            return self.alpha3term
+        return self.alpha3
 
     def __hash__(self):
         return hash(self.lang)
