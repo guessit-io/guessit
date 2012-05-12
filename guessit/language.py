@@ -48,7 +48,11 @@ _iso639_contents = _iso639_contents[1:]
 language_matrix = [ l.strip().split('|')
                     for l in _iso639_contents.strip().split('\n') ]
 
+
 # update information in the language matrix
+language_matrix += [['mol', '', 'mo', 'Moldavian', 'moldave'],
+                    ['ass', '', '', 'Assyrian', 'assyrien']]
+
 for lang in language_matrix:
     # remove unused languages that shadow other common ones with a non-official form
     if (lang[2] == 'se' or # Northern Sami shadows Swedish
@@ -57,6 +61,8 @@ for lang in language_matrix:
     # add missing information
     if lang[0] == 'und':
         lang[2] = 'un'
+    if lang[0] == 'srp':
+        lang[1] = 'scc' # from OpenSubtitles
 
 
 lng3        = frozenset(l[0] for l in language_matrix if l[0])
@@ -110,7 +116,8 @@ lng_exceptions = { 'unknown': ('und', None),
                    'cn': ('chi', None),
                    'chs': ('chi', None),
                    'jp': ('jpn', None),
-                   'scc': ('srp', None)
+                   'scc': ('srp', None),
+                   'scr': ('hrv', None)
                    }
 
 
@@ -168,7 +175,7 @@ class Language(object):
 
     _with_country_regexp = re.compile('(.*)\((.*)\)')
 
-    def __init__(self, language, country=None, strict=False):
+    def __init__(self, language, country=None, strict=False, scheme=None):
         language = to_unicode(language.strip().lower())
         with_country = Language._with_country_regexp.match(language)
         if with_country:
@@ -179,6 +186,18 @@ class Language(object):
         self.lang = None
         self.country = Country(country) if country else None
 
+        # first look for scheme specific languages
+        if scheme == 'opensubtitles':
+            if language == 'br':
+                self.lang = 'bre'
+                return
+            elif language == 'se':
+                self.lang = 'sme'
+                return
+        elif scheme is not None:
+            log.warning('Unrecognized scheme: "%s" - Proceeding with standard one' % scheme)
+
+        # look for ISO language codes
         if len(language) == 2:
             self.lang = lng2_to_lng3.get(language)
         elif len(language) == 3:
@@ -189,6 +208,7 @@ class Language(object):
             self.lang = (lng_en_name_to_lng3.get(language) or
                          lng_fr_name_to_lng3.get(language))
 
+        # general language exceptions
         if self.lang is None and language in lng_exceptions:
             lang, country = lng_exceptions[language]
             self.lang = Language(lang).alpha3
@@ -227,9 +247,7 @@ class Language(object):
     def opensubtitles(self):
         if self.lang == 'por' and self.country and self.country.alpha2 == 'br':
             return 'pob'
-        elif self.lang == 'srp':
-            return 'scc'
-        elif self.lang in ['gre', 'wel', 'eus']:
+        elif self.lang in ['gre', 'eus', 'ice', 'srp']:
             return self.alpha3term
         return self.alpha3
 

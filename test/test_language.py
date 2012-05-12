@@ -23,9 +23,10 @@ from guessittest import *
 
 class TestLanguage(TestGuessit):
 
-    def check_languages(self, languages):
+    def check_languages(self, languages, scheme=None):
         for lang1, lang2 in languages.items():
-            self.assertEqual(Language(lang1), Language(lang2))
+            self.assertEqual(Language(lang1, scheme=scheme),
+                             Language(lang2, scheme=scheme))
 
     def test_addic7ed(self):
         languages = {u'English': 'en',
@@ -114,16 +115,23 @@ class TestLanguage(TestGuessit):
 
     def test_opensubtitles2(self):
         langs = [ l.strip().split('\t') for l in open('test/opensubtitles_languages_2012_05_09.txt') ][1:]
-        langs = [ l for l in langs if l[3] == '1' or l[4] == '1' ]
         for lang in langs:
-            if lang[0] == 'bre':
+            # incompatible duplicate in opensubtitles' API itself
+            # in case of duplicates, the one removed is the one which has
+            # the most functionality disabled, ie lang[3] == '0' or
+            # lang[4] == '0'
+            if lang[0] in ['eus', 'fra', 'deu', 'hye', 'ice', 'kat', 'mkd',
+                           'mri', 'msa', 'mya', 'nld', 'fas', 'scr', 'slk',
+                           'sqi', 'srp', 'bod', 'cym', 'zho', 'ron', 'unk',
+                           'ass']:
                 continue
+
             # check that we recognize the opensubtitles language code correctly
             # and that we are able to output this code from a language
-            self.assertEqual(lang[0], Language(lang[0]).opensubtitles)
+            self.assertEqual(lang[0], Language(lang[0], scheme='opensubtitles').opensubtitles)
             if lang[1]:
                 # check we recognize the opensubtitles 2-letter code correctly
-                self.check_languages({lang[0]: lang[1]})
+                self.check_languages({lang[0]: lang[1]}, scheme='opensubtitles')
 
     def test_subtitulos(self):
         languages = {u'English (US)': 'en', u'English (UK)': 'en', u'English': 'en',
