@@ -6,6 +6,14 @@
 News
 ====
 
+0.4.1
+-----
+
+*Release date: 12-May-2012*
+
+* bugfixes for unicode, paths on Windows, autodetection, and language issues
+
+
 0.4
 ---
 
