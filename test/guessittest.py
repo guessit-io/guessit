@@ -53,7 +53,7 @@ import guessit
 from guessit import *
 from guessit.matcher import *
 from guessit.textutils import to_utf8
-
+from guessit.fileutils import *
 
 def allTests(testClass):
     return TestLoader().loadTestsFromTestCase(testClass)

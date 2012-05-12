@@ -80,7 +80,8 @@ class TestLanguage(TestGuessit):
         self.check_languages(languages)
 
     def test_opensubtitles(self):
-        langs = [ l.strip().split('\t') for l in open('test/opensubtitles_languages_2012_05_09.txt') ][1:]
+        opensubtitles_langfile = file_in_same_dir(__file__, 'opensubtitles_languages_2012_05_09.txt')
+        langs = [ l.strip().split('\t') for l in open(opensubtitles_langfile) ][1:]
         for lang in langs:
             # incompatible duplicate in opensubtitles' API itself
             # in case of duplicates, the one removed is the one which has
