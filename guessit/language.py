@@ -174,10 +174,12 @@ class Language(object):
     """
 
     _with_country_regexp = re.compile('(.*)\((.*)\)')
+    _with_country_regexp2 = re.compile('(.*)-(.*)')
 
     def __init__(self, language, country=None, strict=False, scheme=None):
         language = to_unicode(language.strip().lower())
-        with_country = Language._with_country_regexp.match(language)
+        with_country = (Language._with_country_regexp.match(language) or
+                        Language._with_country_regexp2.match(language))
         if with_country:
             self.lang = Language(with_country.group(1)).lang
             self.country = Country(with_country.group(2))
@@ -250,6 +252,12 @@ class Language(object):
         elif self.lang in ['gre', 'eus', 'ice', 'srp']:
             return self.alpha3term
         return self.alpha3
+
+    @property
+    def tmdb(self):
+        if self.country:
+            return '%s-%s' % (self.alpha2, self.country.alpha2.upper())
+        return self.alpha2
 
     def __hash__(self):
         return hash(self.lang)

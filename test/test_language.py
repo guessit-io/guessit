@@ -100,6 +100,12 @@ class TestLanguage(TestGuessit):
                 # check we recognize the opensubtitles 2-letter code correctly
                 self.check_languages({lang[0]: lang[1]}, scheme='opensubtitles')
 
+    def test_tmdb(self):
+        # examples from http://api.themoviedb.org/2.1/language-tags
+        for lang in ['en-US', 'en-CA', 'es-MX', 'fr-PF']:
+            self.assertEqual(lang, Language(lang).tmdb)
+
+
     def test_subtitulos(self):
         languages = {u'English (US)': 'en', u'English (UK)': 'en', u'English': 'en',
                      u'French': 'fr', u'Brazilian': 'po', u'Portuguese': 'pt',
