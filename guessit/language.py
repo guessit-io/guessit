@@ -278,7 +278,7 @@ class Language(object):
         return not self == other
 
     def __nonzero__(self):
-        return self.lang != 'unk'
+        return self.lang != 'und'
 
     def __unicode__(self):
         if self.country:
