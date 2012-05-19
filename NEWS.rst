@@ -6,6 +6,16 @@
 News
 ====
 
+0.4.2
+-----
+
+*Release date: 19-May-2012*
+
+* added Language.tmdb language code property for TheMovieDB
+* added ability to recognize list of episodes
+* bugfixes for Language.__nonzero__ and episode regexps
+
+
 0.4.1
 -----
 
