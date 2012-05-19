@@ -233,3 +233,9 @@
   episodeNumber: 17
   format: HDTV
   releaseGroup: LOL
+
+? Kaamelott - 5x44x45x46x47x48x49x50.avi
+: series: Kaamelott
+  season: 5
+  episodeNumber: 44
+  episodeList: [44, 45, 46, 47, 48, 49, 50]
