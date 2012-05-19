@@ -222,14 +222,14 @@
   bonusNumber: 2
   bonusTitle: We Stand Alone Together
 
-? /TV\ Shows/Mad.M-5x9.mkv
+? /TV Shows/Mad.M-5x9.mkv
 : series: Mad M
   season: 5
   episodeNumber: 9
 
-? /TV\ Shows/new.girl.117.hdtv-lol.mp4
+? /TV Shows/new.girl.117.hdtv-lol.mp4
 : series: New Girl
   season: 1
-  episode: 17
-  format: HTDTV
-  container: mp4
+  episodeNumber: 17
+  format: HDTV
+  releaseGroup: LOL
