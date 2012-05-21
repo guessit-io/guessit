@@ -56,7 +56,6 @@ bin		Bini	0	0
 bis	bi	Bislama	0	0
 bla		Siksika	0	0
 bnt		Bantu (Other)	0	0
-bod		Tibetan	0	0
 bos	bs	Bosnian	1	0
 bra		Braj	0	0
 bre	br	Breton	1	0
@@ -99,7 +98,6 @@ crh		Crimean Tatar	0	0
 crp		Creoles and pidgins (Other)	0	0
 csb		Kashubian	0	0
 cus		Cushitic (Other)' couchitiques, autres langues	0	0
-cym		Welsh	0	0
 cze	cs	Czech	1	1
 dak		Dakota	0	0
 dan	da	Danish	1	1
@@ -107,7 +105,6 @@ dar		Dargwa	0	0
 day		Dayak	0	0
 del		Delaware	0	0
 den		Slave (Athapascan)	0	0
-deu		German	0	0
 dgr		Dogrib	0	0
 din		Dinka	0	0
 div	dv	Divehi	0	0
@@ -126,19 +123,16 @@ eng	en	English	1	1
 enm		English, Middle (1100-1500)	0	0
 epo	eo	Esperanto	1	0
 est	et	Estonian	1	1
-eus		Basque	0	0
 ewe	ee	Ewe	0	0
 ewo		Ewondo	0	0
 fan		Fang	0	0
 fao	fo	Faroese	0	0
-fas		Persian	0	0
 fat		Fanti	0	0
 fij	fj	Fijian	0	0
 fil		Filipino	0	0
 fin	fi	Finnish	1	1
 fiu		Finno-Ugrian (Other)	0	0
 fon		Fon	0	0
-fra		French	0	0
 fre	fr	French	1	1
 frm		French, Middle (ca.1400-1600)	0	0
 fro		French, Old (842-ca.1400)	0	0
@@ -183,7 +177,6 @@ hmo	ho	Hiri Motu	0	0
 hrv	hr	Croatian	1	1
 hun	hu	Hungarian	1	1
 hup		Hupa	0	0
-hye		Armenian	0	0
 iba		Iban	0	0
 ibo	ig	Igbo	0	0
 ice	is	Icelandic	1	1
@@ -201,7 +194,6 @@ inh		Ingush	0	0
 ipk	ik	Inupiaq	0	0
 ira		Iranian (Other)	0	0
 iro		Iroquoian languages	0	0
-isl		Icelandic	0	0
 ita	it	Italian	1	1
 jav	jv	Javanese	0	0
 jpn	ja	Japanese	1	1
@@ -215,7 +207,6 @@ kam		Kamba	0	0
 kan	kn	Kannada	0	0
 kar		Karen	0	0
 kas	ks	Kashmiri	0	0
-kat		Georgian	0	0
 kau	kr	Kanuri	0	0
 kaw		Kawi	0	0
 kaz	kk	Kazakh	1	0
@@ -281,7 +272,6 @@ mga		Irish, Middle (900-1200)	0	0
 mic		Mi'kmaq	0	0
 min		Minangkabau	0	0
 mis		Miscellaneous languages	0	0
-mkd		Macedonian	0	0
 mkh		Mon-Khmer (Other)	0	0
 mlg	mg	Malagasy	0	0
 mlt	mt	Maltese	0	0
@@ -290,16 +280,13 @@ mni		Manipuri	0	0
 mno		Manobo languages	0	0
 moh		Mohawk	0	0
 mol	mo	Moldavian	0	0
-mon	mn	Mongolian	0	0
+mon	mn	Mongolian	1	0
 mos		Mossi	0	0
-mri		Maori	0	0
-msa		Malay	0	0
 mwl		Mirandese	0	0
 mul		Multiple languages	0	0
 mun		Munda languages	0	0
 mus		Creek	0	0
 mwr		Marwari	0	0
-mya		Burmese	0	0
 myn		Mayan languages	0	0
 myv		Erzya	0	0
 nah		Nahuatl	0	0
@@ -316,7 +303,6 @@ new		Nepal Bhasa	0	0
 nia		Nias	0	0
 nic		Niger-Kordofanian (Other)	0	0
 niu		Niuean	0	0
-nld		Dutch	0	0
 nno	nn	Norwegian Nynorsk	0	0
 nob	nb	Norwegian Bokmal	0	0
 nog		Nogai	0	0
@@ -363,7 +349,6 @@ rar		Rarotongan	0	0
 roa		Romance (Other)	0	0
 roh	rm	Raeto-Romance	0	0
 rom		Romany	0	0
-ron		Romanian	0	0
 run	rn	Rundi	0	0
 rup		Aromanian	0	0
 rus	ru	Russian	1	1
@@ -379,7 +364,6 @@ sat		Santali	0	0
 scc	sr	Serbian	1	1
 scn		Sicilian	0	0
 sco		Scots	0	0
-scr		Croatian	0	0
 sel		Selkup	0	0
 sem		Semitic (Other)	0	0
 sga		Irish, Old (to 900)	0	0
@@ -390,7 +374,6 @@ sin	si	Sinhalese	1	1
 sio		Siouan languages	0	0
 sit		Sino-Tibetan (Other)	0	0
 sla		Slavic (Other)	0	0
-slk		Slovak	0	0
 slo	sk	Slovak	1	1
 slv	sl	Slovenian	1	1
 sma		Southern Sami	0	0
@@ -408,9 +391,7 @@ som	so	Somali	0	0
 son		Songhai	0	0
 sot	st	Sotho, Southern	0	0
 spa	es	Spanish	1	1
-sqi		Albanian	0	0
 srd	sc	Sardinian	0	0
-srp		Serbian	0	0
 srr		Serer	0	0
 ssa		Nilo-Saharan (Other)	0	0
 ssw	ss	Swati	0	0
@@ -485,11 +466,8 @@ ypk		Yupik languages	0	0
 zap		Zapotec	0	0
 zen		Zenaga	0	0
 zha	za	Zhuang	0	0
-zho		Chinese, chinois	0	0
 znd		Zande	0	0
 zul	zu	Zulu	0	0
 zun		Zuni	0	0
 rum	ro	Romanian	1	1
 pob	pb	Brazilian	1	1
-unk	un	Unknown	0	0
-ass	ay	Assyrian	0	0

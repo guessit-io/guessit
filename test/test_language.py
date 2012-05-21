@@ -83,16 +83,6 @@ class TestLanguage(TestGuessit):
         opensubtitles_langfile = file_in_same_dir(__file__, 'opensubtitles_languages_2012_05_09.txt')
         langs = [ l.strip().split('\t') for l in open(opensubtitles_langfile) ][1:]
         for lang in langs:
-            # incompatible duplicate in opensubtitles' API itself
-            # in case of duplicates, the one removed is the one which has
-            # the most functionality disabled, ie lang[3] == '0' or
-            # lang[4] == '0'
-            if lang[0] in ['eus', 'fra', 'deu', 'hye', 'ice', 'kat', 'mkd',
-                           'mri', 'msa', 'mya', 'nld', 'fas', 'scr', 'slk',
-                           'sqi', 'srp', 'bod', 'cym', 'zho', 'ron', 'unk',
-                           'ass']:
-                continue
-
             # check that we recognize the opensubtitles language code correctly
             # and that we are able to output this code from a language
             self.assertEqual(lang[0], Language(lang[0], scheme='opensubtitles').opensubtitles)

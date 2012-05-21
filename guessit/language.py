@@ -116,7 +116,6 @@ lng_exceptions = { 'unknown': ('und', None),
                    'cn': ('chi', None),
                    'chs': ('chi', None),
                    'jp': ('jpn', None),
-                   'scc': ('srp', None),
                    'scr': ('hrv', None)
                    }
 
@@ -249,7 +248,7 @@ class Language(object):
     def opensubtitles(self):
         if self.lang == 'por' and self.country and self.country.alpha2 == 'br':
             return 'pob'
-        elif self.lang in ['gre', 'eus', 'ice', 'srp']:
+        elif self.lang in ['gre', 'srp']:
             return self.alpha3term
         return self.alpha3
 
