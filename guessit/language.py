@@ -19,7 +19,7 @@
 #
 
 from __future__ import unicode_literals
-from guessit import UnicodeMixin, base_text_type, u
+from guessit import UnicodeMixin, base_text_type, u, s
 from guessit.fileutils import load_file_in_same_dir
 from guessit.country import Country
 import re
@@ -152,23 +152,23 @@ class Language(UnicodeMixin):
     >>> Language('fr')
     Language(French)
 
-    >>> Language('eng').french_name
-    u'anglais'
+    >>> s(Language('eng').french_name)
+    'anglais'
 
-    >>> Language('pt(br)').country.english_name
-    u'Brazil'
+    >>> s(Language('pt(br)').country.english_name)
+    'Brazil'
 
-    >>> Language('Español (Latinoamérica)').country.english_name
-    u'Latin America'
+    >>> s(Language('Español (Latinoamérica)').country.english_name)
+    'Latin America'
 
     >>> Language('Spanish (Latin America)') == Language('Español (Latinoamérica)')
     True
 
-    >>> Language('zz', strict=False).english_name
-    u'Undetermined'
+    >>> s(Language('zz', strict=False).english_name)
+    'Undetermined'
 
-    >>> Language('pt(br)').opensubtitles
-    u'pob'
+    >>> s(Language('pt(br)').opensubtitles)
+    'pob'
     """
 
     _with_country_regexp = re.compile('(.*)\((.*)\)')

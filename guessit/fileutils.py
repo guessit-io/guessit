@@ -19,7 +19,7 @@
 #
 
 from __future__ import unicode_literals
-from guessit import u
+from guessit import s, u
 import os.path
 import zipfile
 
@@ -33,10 +33,10 @@ def split_path(path):
      - the drive letter on Windows systems (eg: r'C:\')
      - the mount point '\\' on Windows systems (eg: r'\\host\share')
 
-    >>> split_path('/usr/bin/smewt')
+    >>> s(split_path('/usr/bin/smewt'))
     ['/', 'usr', 'bin', 'smewt']
 
-    >>> split_path('relative_path/to/my_folder/')
+    >>> s(split_path('relative_path/to/my_folder/'))
     ['relative_path', 'to', 'my_folder']
 
     """
@@ -67,7 +67,7 @@ def split_path(path):
 def file_in_same_dir(ref_file, desired_file):
     """Return the path for a file in the same dir as a given reference file.
 
-    >>> file_in_same_dir('~/smewt/smewt.db', 'smewt.settings')
+    >>> s(file_in_same_dir('~/smewt/smewt.db', 'smewt.settings'))
     '~/smewt/smewt.settings'
 
     """

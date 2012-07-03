@@ -19,6 +19,7 @@
 #
 
 from __future__ import unicode_literals
+from guessit import s
 from guessit.patterns import sep
 import functools
 import unicodedata
@@ -139,14 +140,13 @@ def find_first_level_groups_span(string, enclosing):
 
 def split_on_groups(string, groups):
     """Split the given string using the different known groups for boundaries.
-
-    >>> split_on_groups('0123456789', [ (2, 4) ])
+    >>> s(split_on_groups('0123456789', [ (2, 4) ]))
     ['01', '23', '456789']
 
-    >>> split_on_groups('0123456789', [ (2, 4), (4, 6) ])
+    >>> s(split_on_groups('0123456789', [ (2, 4), (4, 6) ]))
     ['01', '23', '45', '6789']
 
-    >>> split_on_groups('0123456789', [ (5, 7), (2, 4) ])
+    >>> s(split_on_groups('0123456789', [ (5, 7), (2, 4) ]))
     ['01', '23', '4', '56', '789']
 
     """
@@ -175,22 +175,22 @@ def find_first_level_groups(string, enclosing, blank_sep=None):
     This does not return nested groups, ie: '(ab(c)(d))' will return a single group
     containing the whole string.
 
-    >>> find_first_level_groups('', '()')
+    >>> s(find_first_level_groups('', '()'))
     ['']
 
-    >>> find_first_level_groups('abcd', '()')
+    >>> s(find_first_level_groups('abcd', '()'))
     ['abcd']
 
-    >>> find_first_level_groups('abc(de)fgh', '()')
+    >>> s(find_first_level_groups('abc(de)fgh', '()'))
     ['abc', '(de)', 'fgh']
 
-    >>> find_first_level_groups('(ab(c)(d))', '()', blank_sep = '_')
+    >>> s(find_first_level_groups('(ab(c)(d))', '()', blank_sep = '_'))
     ['_ab(c)(d)_']
 
-    >>> find_first_level_groups('ab[c]de[f]gh(i)', '[]')
+    >>> s(find_first_level_groups('ab[c]de[f]gh(i)', '[]'))
     ['ab', '[c]', 'de', '[f]', 'gh(i)']
 
-    >>> find_first_level_groups('()[]()', '()', blank_sep = '-')
+    >>> s(find_first_level_groups('()[]()', '()', blank_sep = '-'))
     ['--', '[]', '--']
 
     """

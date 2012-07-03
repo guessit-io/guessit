@@ -18,7 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
 
 __version__ = '0.5-dev'
 __all__ = ['Guess', 'Language',
@@ -36,27 +35,46 @@ if sys.version_info[0] >= 3:
     native_text_type = str
     base_text_type = str
     def u(x):
-        return str(x)
+        return x
     def s(x):
-        return str(x)
+        return x
     class UnicodeMixin(object):
         __str__ = lambda x: x.__unicode__()
+    import binascii
+    def to_hex(x):
+        return binascii.hexlify(x).decode('utf-8')
 
 else:
     PY3 = False
+    __all__ = [ str(s) for s in __all__ ] # fix imports for python2
     unicode_text_type = unicode
     native_text_type = str
     base_text_type = basestring
     def u(x):
         if isinstance(x, str):
             return x.decode('utf-8')
-        return unicode(x)
+        if isinstance(x, list):
+            return [ u(y) for y in x ]
+        if isinstance(x, tuple):
+            return tuple(u(y) for y in x)
+        if isinstance(x, dict):
+            return dict((u(key), u(value)) for key, value in x.items())
+        return x
     def s(x):
         if isinstance(x, unicode):
             return x.encode('utf-8')
-        return str(x)
+        if isinstance(x, list):
+            return [ s(y) for y in x ]
+        if isinstance(x, tuple):
+            return tuple(s(y) for y in x)
+        if isinstance(x, dict):
+            return dict((s(key), s(value)) for key, value in x.items())
+        return x
     class UnicodeMixin(object):
         __str__ = lambda x: unicode(x).encode('utf-8')
+    def to_hex(x):
+        return x.encode('hex')
+
 
 from guessit.guess import Guess, merge_all
 from guessit.language import Language
@@ -89,7 +107,7 @@ def guess_file_info(filename, filetype, info=None):
     if info is None:
         info = ['filename']
 
-    if isinstance(info, basestring):
+    if isinstance(info, base_text_type):
         info = [info]
 
     for infotype in info:
@@ -132,9 +150,11 @@ def guess_file_info(filename, filetype, info=None):
             hasherobjs = dict(hashers).values()
 
             with open(filename, 'rb') as f:
-                for chunk in iter(lambda: f.read(blocksize), ''):
+                chunk = f.read(blocksize)
+                while chunk:
                     for hasher in hasherobjs:
                         hasher.update(chunk)
+                    chunk = f.read(blocksize)
 
             for infotype, hasher in hashers:
                 result.append(Guess({infotype: hasher.hexdigest()},

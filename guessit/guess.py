@@ -19,7 +19,7 @@
 #
 
 from __future__ import unicode_literals
-from guessit import UnicodeMixin, u, native_text_type, base_text_type
+from guessit import UnicodeMixin, s, u, native_text_type, base_text_type
 from guessit.language import Language
 import json
 import datetime
@@ -141,16 +141,16 @@ def choose_string(g1, g2):
     differ very little, such as one string being the other one with the 'the' word
     prepended to it.
 
-    >>> choose_string(('Hello', 0.75), ('World', 0.5))
+    >>> s(choose_string(('Hello', 0.75), ('World', 0.5)))
     ('Hello', 0.25)
 
-    >>> choose_string(('Hello', 0.5), ('hello', 0.5))
+    >>> s(choose_string(('Hello', 0.5), ('hello', 0.5)))
     ('Hello', 0.75)
 
-    >>> choose_string(('Hello', 0.4), ('Hello World', 0.4))
+    >>> s(choose_string(('Hello', 0.4), ('Hello World', 0.4)))
     ('Hello', 0.64)
 
-    >>> choose_string(('simpsons', 0.5), ('The Simpsons', 0.5))
+    >>> s(choose_string(('simpsons', 0.5), ('The Simpsons', 0.5)))
     ('The Simpsons', 0.75)
 
     """
@@ -288,12 +288,12 @@ def merge_all(guesses, append=None):
     You can specify a list of properties that should be appended into a list
     instead of being merged.
 
-    >>> merge_all([ Guess({ 'season': 2 }, confidence = 0.6),
-    ...             Guess({ 'episodeNumber': 13 }, confidence = 0.8) ])
+    >>> s(merge_all([ Guess({ 'season': 2 }, confidence = 0.6),
+    ...               Guess({ 'episodeNumber': 13 }, confidence = 0.8) ]))
     {'season': 2, 'episodeNumber': 13}
 
-    >>> merge_all([ Guess({ 'episodeNumber': 27 }, confidence = 0.02),
-    ...             Guess({ 'season': 1 }, confidence = 0.2) ])
+    >>> s(merge_all([ Guess({ 'episodeNumber': 27 }, confidence = 0.02),
+    ...               Guess({ 'season': 1 }, confidence = 0.2) ]))
     {'season': 1}
 
     """
