@@ -18,6 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
+from guessit import base_text_type, u
 from unittest import *
 
 import yaml, logging, sys, os
@@ -52,7 +54,6 @@ log = logging.getLogger(__name__)
 import guessit
 from guessit import *
 from guessit.matcher import *
-from guessit.textutils import to_utf8
 from guessit.fileutils import *
 
 def allTests(testClass):
@@ -62,14 +63,12 @@ def allTests(testClass):
 class TestGuessit(TestCase):
 
     def checkMinimumFieldsCorrect(self, guesser, filename, removeType = True):
-        groundTruth = yaml.load(open(join(currentPath(), filename)).read())
+        groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
 
         for filename, required in groundTruth.items():
-            if isinstance(filename, str):
-                filename = filename.decode('utf-8')
-
+            filename = u(filename)
             log.debug('\n' + '-' * 120)
-            log.info('Guessing information for file: %s' % to_utf8(filename))
+            log.info('Guessing information for file: %s' % filename)
 
             found = guesser(filename)
 
@@ -89,24 +88,24 @@ class TestGuessit(TestCase):
             # compare all properties
             for prop, value in required.items():
                 if prop not in found:
-                    log.warning('Prop \'%s\' not found in: %s' % (prop, to_utf8(filename)))
+                    log.warning('Prop \'%s\' not found in: %s' % (prop, filename))
                     continue
 
                 #if type(value) != type(found[prop]) and not (isinstance(value, basestring) and isinstance(found[prop], basestring)):
-                #    log.warning("Wrong prop types for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), found[prop]))
+                #    log.warning("Wrong prop types for '%s': expected = '%s' - received = '%s'" % (prop, u(value), found[prop]))
 
-                if isinstance(value, basestring) and isinstance(found[prop], basestring):
+                if isinstance(value, base_text_type) and isinstance(found[prop], base_text_type):
                     if value.lower() != found[prop].lower():
-                        log.warning("Wrong prop value str for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), to_utf8(found[prop])))
+                        log.warning("Wrong prop value str for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
                 elif isinstance(value, list) and isinstance(found[prop], list):
-                    s1 = set(str(s).lower() for s in value)
-                    s2 = set(str(s).lower() for s in found[prop])
+                    s1 = set(u(s).lower() for s in value)
+                    s2 = set(u(s).lower() for s in found[prop])
                     if s1 != s2:
-                        log.warning("Wrong prop value list for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), to_utf8(found[prop])))
+                        log.warning("Wrong prop value list for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
                 else:
                     if found[prop] != value:
-                        log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, to_utf8(value), to_utf8(found[prop])))
+                        log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
 
             for prop, value in found.items():
                 if prop not in required:
-                    log.warning("Found additional info for prop = '%s': '%s'" % (prop, to_utf8(value)))
+                    log.warning("Found additional info for prop = '%s': '%s'" % (prop, u(value)))

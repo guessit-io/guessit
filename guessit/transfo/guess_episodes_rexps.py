@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns import episode_rexps
@@ -27,7 +28,7 @@ import logging
 log = logging.getLogger(__name__)
 
 def number_list(s):
-    return re.sub('[^0-9]+', ' ', s).split()
+    return list(re.sub('[^0-9]+', ' ', s).split())
 
 def guess_episodes_rexps(string):
     for rexp, confidence, span_adjust in episode_rexps:
@@ -48,7 +49,7 @@ def guess_episodes_rexps(string):
                 result[0].set('episodeNumber', int(eplist[0]), confidence=confidence)
 
                 if len(eplist) > 1:
-                    result[0].set('episodeList', map(int, eplist), confidence=confidence)
+                    result[0].set('episodeList', list(map(int, eplist)), confidence=confidence)
 
             return result
 

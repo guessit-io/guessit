@@ -18,7 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
 from guessit.patterns import sep
+import functools
 import unicodedata
 import copy
 
@@ -60,45 +62,6 @@ def str_fill(string, region, c):
     start, end = region
     return string[:start] + c * (end - start) + string[end:]
 
-
-def to_utf8(o):
-    """Convert all unicode strings found in the given object to utf-8
-    strings."""
-
-    if isinstance(o, unicode):
-        return o.encode('utf-8')
-    elif isinstance(o, list):
-        return [ to_utf8(i) for i in o ]
-    elif isinstance(o, dict):
-        # need to do it like that to handle Guess instances correctly
-        # FIXME: why is that necessary?
-        result = copy.deepcopy(o)
-        for key, value in o.items():
-            result[to_utf8(key)] = to_utf8(value)
-        return result
-
-    else:
-        return o
-
-def to_unicode(o):
-    """Convert all strings found in the given object to normalized
-    unicode strings, using the UTF-8 codec if needed."""
-
-    if isinstance(o, unicode):
-        return unicodedata.normalize('NFC', o)
-    if isinstance(o, str):
-        return unicodedata.normalize('NFC', o.decode('utf-8'))
-    elif isinstance(o, list):
-        return [ to_unicode(i) for i in o ]
-    elif isinstance(o, dict):
-        # need to do it like that to handle Guess instances correctly
-        #result = copy.deepcopy(o)
-        for key, value in o.items():
-            result[to_unicode(key)] = to_unicode(value)
-        return result
-
-    else:
-        return o
 
 
 def levenshtein(a, b):
@@ -190,7 +153,7 @@ def split_on_groups(string, groups):
     if not groups:
         return [ string ]
 
-    boundaries = sorted(set(reduce(lambda l, x: l + list(x), groups, [])))
+    boundaries = sorted(set(functools.reduce(lambda l, x: l + list(x), groups, [])))
     if boundaries[0] != 0:
         boundaries.insert(0, 0)
     if boundaries[-1] != len(string):

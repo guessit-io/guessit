@@ -18,6 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
+from guessit import u
 import os.path
 import zipfile
 
@@ -82,4 +84,4 @@ def load_file_in_same_dir(ref_file, filename):
             zfile = zipfile.ZipFile(zfilename)
             return zfile.read('/'.join(path[i + 1:]))
 
-    return open(os.path.join(*path)).read()
+    return u(open(os.path.join(*path)).read())

@@ -18,11 +18,45 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
+
 __version__ = '0.5-dev'
 __all__ = ['Guess', 'Language',
            'guess_file_info', 'guess_video_info',
            'guess_movie_info', 'guess_episode_info']
 
+
+# Do python3 detection before importing any other module, to be sure that
+# it will then always be available
+# with code from http://lucumr.pocoo.org/2011/1/22/forwards-compatible-python/
+import sys
+if sys.version_info[0] >= 3:
+    PY3 = True
+    unicode_text_type = str
+    native_text_type = str
+    base_text_type = str
+    def u(x):
+        return str(x)
+    def s(x):
+        return str(x)
+    class UnicodeMixin(object):
+        __str__ = lambda x: x.__unicode__()
+
+else:
+    PY3 = False
+    unicode_text_type = unicode
+    native_text_type = str
+    base_text_type = basestring
+    def u(x):
+        if isinstance(x, str):
+            return x.decode('utf-8')
+        return unicode(x)
+    def s(x):
+        if isinstance(x, unicode):
+            return x.encode('utf-8')
+        return str(x)
+    class UnicodeMixin(object):
+        __str__ = lambda x: unicode(x).encode('utf-8')
 
 from guessit.guess import Guess, merge_all
 from guessit.language import Language
@@ -30,6 +64,7 @@ from guessit.matcher import IterativeMatcher
 import logging
 
 log = logging.getLogger(__name__)
+
 
 
 class NullHandler(logging.Handler):
@@ -67,7 +102,7 @@ def guess_file_info(filename, filetype, info=None):
             try:
                 result.append(Guess({'hash_mpc': hash_file(filename)},
                                     confidence=1.0))
-            except Exception, e:
+            except Exception as e:
                 log.warning('Could not compute MPC-style hash because: %s' % e)
 
         elif infotype == 'hash_ed2k':
@@ -75,7 +110,7 @@ def guess_file_info(filename, filetype, info=None):
             try:
                 result.append(Guess({'hash_ed2k': hash_file(filename)},
                                     confidence=1.0))
-            except Exception, e:
+            except Exception as e:
                 log.warning('Could not compute ed2k hash because: %s' % e)
 
         elif infotype.startswith('hash_'):
@@ -104,7 +139,7 @@ def guess_file_info(filename, filetype, info=None):
             for infotype, hasher in hashers:
                 result.append(Guess({infotype: hasher.hexdigest()},
                                     confidence=1.0))
-        except Exception, e:
+        except Exception as e:
             log.warning('Could not compute hash because: %s' % e)
 
     return merge_all(result)

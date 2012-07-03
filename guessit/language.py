@@ -19,9 +19,9 @@
 #
 
 from __future__ import unicode_literals
-from guessit import fileutils
+from guessit import UnicodeMixin, base_text_type, u
+from guessit.fileutils import load_file_in_same_dir
 from guessit.country import Country
-from guessit.textutils import to_unicode
 import re
 import logging
 
@@ -39,8 +39,7 @@ log = logging.getLogger(__name__)
 # "An alpha-3 (bibliographic) code, an alpha-3 (terminologic) code (when given),
 # an alpha-2 code (when given), an English name, and a French name of a language
 # are all separated by pipe (|) characters."
-_iso639_contents = fileutils.load_file_in_same_dir(__file__,
-                                                   'ISO-639-2_utf-8.txt').decode('utf-8')
+_iso639_contents = load_file_in_same_dir(__file__, 'ISO-639-2_utf-8.txt')
 
 # drop the BOM from the beginning of the file
 _iso639_contents = _iso639_contents[1:]
@@ -136,7 +135,7 @@ def lang_set(languages, strict=False):
     return set(Language(l, strict=strict) for l in languages)
 
 
-class Language(object):
+class Language(UnicodeMixin):
     """This class represents a human language.
 
     You can initialize it with pretty much anything, as it knows conversion
@@ -176,7 +175,7 @@ class Language(object):
     _with_country_regexp2 = re.compile('(.*)-(.*)')
 
     def __init__(self, language, country=None, strict=False, scheme=None):
-        language = to_unicode(language.strip().lower())
+        language = u(language.strip().lower())
         with_country = (Language._with_country_regexp.match(language) or
                         Language._with_country_regexp2.match(language))
         if with_country:
@@ -265,7 +264,7 @@ class Language(object):
         if isinstance(other, Language):
             return self.lang == other.lang
 
-        if isinstance(other, basestring):
+        if isinstance(other, base_text_type):
             try:
                 return self == Language(other)
             except ValueError:
@@ -284,9 +283,6 @@ class Language(object):
             return '%s(%s)' % (self.english_name, self.country.alpha2)
         else:
             return self.english_name
-
-    def __str__(self):
-        return unicode(self).encode('utf-8')
 
     def __repr__(self):
         if self.country:

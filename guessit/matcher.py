@@ -18,8 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
+from guessit import PY3, u
 from guessit.matchtree import MatchTree
-from guessit.textutils import to_utf8
 from guessit.guess import (merge_similar_guesses, merge_all,
                            choose_int, choose_string)
 import copy
@@ -73,8 +74,8 @@ class IterativeMatcher(object):
                             'episode', 'episodesubtitle')
         if filetype not in valid_filetypes:
             raise ValueError("filetype needs to be one of %s" % valid_filetypes)
-        if not isinstance(filename, unicode):
-            log.debug('WARNING: given filename to matcher is not unicode...')
+        if not PY3 and not isinstance(filename, unicode):
+            log.warning('Given filename to matcher is not unicode...')
 
         self.match_tree = MatchTree(filename)
         mtree = self.match_tree
@@ -131,7 +132,7 @@ class IterativeMatcher(object):
         # 6- perform some post-processing steps
         apply_transfo('post_process')
 
-        log.debug('Found match tree:\n%s' % (to_utf8(unicode(mtree))))
+        log.debug('Found match tree:\n%s' % u(mtree))
 
     def matched(self):
         # we need to make a copy here, as the merge functions work in place and

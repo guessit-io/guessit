@@ -18,18 +18,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
+from guessit import u
 from guessit import slogging, guess_file_info
-from guessit.textutils import to_utf8
 from optparse import OptionParser
 import sys
 import logging
 
 
 def detect_filename(filename, filetype, info = ['filename']):
-    if isinstance(filename, str):
-        filename = filename.decode('utf-8')
+    filename = u(filename)
 
-    print 'For:', to_utf8(filename)
+    print 'For:', filename
     print 'GuessIt found:', guess_file_info(filename, filetype, info).nice_string()
 
 

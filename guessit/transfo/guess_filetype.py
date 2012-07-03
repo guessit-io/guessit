@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
 from guessit import Guess
 from guessit.patterns import (subtitle_exts, video_exts, episode_rexps,
                               find_properties, canonical_form)

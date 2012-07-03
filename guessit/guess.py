@@ -18,6 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
+from guessit import UnicodeMixin, u, native_text_type, base_text_type
+from guessit.language import Language
 import json
 import datetime
 import logging
@@ -25,7 +28,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class Guess(dict):
+class Guess(UnicodeMixin, dict):
     """A Guess is a dictionary which has an associated confidence for each of
     its values.
 
@@ -44,23 +47,23 @@ class Guess(dict):
         for prop in self:
             self._confidence[prop] = confidence
 
-    def to_utf8_dict(self):
-        from guessit.language import Language
+
+    def to_dict(self):
         data = dict(self)
         for prop, value in data.items():
             if isinstance(value, datetime.date):
                 data[prop] = value.isoformat()
             elif isinstance(value, Language):
-                data[prop] = str(value)
-            elif isinstance(value, unicode):
-                data[prop] = value.encode('utf-8')
+                data[prop] = u(value)
+            elif isinstance(value, base_text_type):
+                data[prop] = u(value)
             elif isinstance(value, list):
-                data[prop] = [str(x) for x in value]
+                data[prop] = [u(x) for x in value]
 
         return data
 
     def nice_string(self):
-        data = self.to_utf8_dict()
+        data = self.to_dict()
 
         parts = json.dumps(data, indent=4).split('\n')
         for i, p in enumerate(parts):
@@ -72,8 +75,8 @@ class Guess(dict):
 
         return '\n'.join(parts)
 
-    def __str__(self):
-        return str(self.to_utf8_dict())
+    def __unicode__(self):
+        return u(self.to_dict())
 
     def confidence(self, prop):
         return self._confidence.get(prop, -1)
