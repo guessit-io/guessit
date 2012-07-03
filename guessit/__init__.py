@@ -35,7 +35,7 @@ if sys.version_info[0] >= 3:
     native_text_type = str
     base_text_type = str
     def u(x):
-        return x
+        return str(x)
     def s(x):
         return x
     class UnicodeMixin(object):
@@ -53,13 +53,7 @@ else:
     def u(x):
         if isinstance(x, str):
             return x.decode('utf-8')
-        if isinstance(x, list):
-            return [ u(y) for y in x ]
-        if isinstance(x, tuple):
-            return tuple(u(y) for y in x)
-        if isinstance(x, dict):
-            return dict((u(key), u(value)) for key, value in x.items())
-        return x
+        return unicode(x)
     def s(x):
         if isinstance(x, unicode):
             return x.encode('utf-8')
