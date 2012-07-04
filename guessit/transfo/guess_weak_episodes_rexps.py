@@ -41,8 +41,13 @@ def guess_weak_episodes_rexps(string, node):
 
             epnum = int(metadata['episodeNumber'])
             if epnum > 100:
-                return Guess({ 'season': epnum // 100,
-                               'episodeNumber': epnum % 100 },
+                season, epnum = epnum // 100, epnum % 100
+                # episodes which have a season > 25 are most likely errors
+                # (Simpsons is at 23!)
+                if season > 25:
+                    continue
+                return Guess({ 'season': season,
+                               'episodeNumber': epnum },
                              confidence=0.6), span
             else:
                 return Guess(metadata, confidence=0.3), span

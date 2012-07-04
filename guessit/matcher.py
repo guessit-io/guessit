@@ -100,15 +100,20 @@ class IterativeMatcher(object):
         apply_transfo('split_explicit_groups')
 
         # 4- try to match information for specific patterns
+        # NOTE: order needs to comply to the following:
+        #       - website before language (eg: tvu.org.ru vs russian)
+        #       - language before episodes_rexps
+        #       - properties before language (eg: he-aac vs hebrew)
+        #       - release_group before properties (eg: XviD-?? vs xvid)
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
-            strategy = ['guess_date', 'guess_video_rexps',
-                        'guess_episodes_rexps', 'guess_website',
-                        'guess_release_group', 'guess_properties',
-                        'guess_weak_episodes_rexps', 'guess_language']
+            strategy = [ 'guess_date', 'guess_website', 'guess_release_group',
+                         'guess_properties', 'guess_language',
+                         'guess_video_rexps',
+                         'guess_episodes_rexps', 'guess_weak_episodes_rexps' ]
         else:
-            strategy = ['guess_date', 'guess_video_rexps',
-                        'guess_website', 'guess_release_group',
-                        'guess_properties', 'guess_language']
+            strategy = [ 'guess_date', 'guess_website', 'guess_release_group',
+                         'guess_properties', 'guess_language',
+                         'guess_video_rexps' ]
 
         for name in strategy:
             apply_transfo(name)
@@ -148,7 +153,8 @@ class IterativeMatcher(object):
 
         for string_part in ('title', 'series', 'container', 'format',
                             'releaseGroup', 'website', 'audioCodec',
-                            'videoCodec', 'screenSize', 'episodeFormat'):
+                            'videoCodec', 'screenSize', 'episodeFormat',
+                            'audioChannels'):
             merge_similar_guesses(parts, string_part, choose_string)
 
         result = merge_all(parts,

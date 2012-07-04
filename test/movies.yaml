@@ -310,3 +310,12 @@
 : title: Rush Beyond The Lighted Stage
   bonusNumber: 9
   bonusTitle: Between Sun and Moon-2002 Hartford
+
+? /public/uTorrent/Downloads Finished/Movies/Indiana.Jones.and.the.Temple.of.Doom.1984.HDTV.720p.x264.AC3.5.1-REDµX/Indiana.Jones.and.the.Temple.of.Doom.1984.HDTV.720p.x264.AC3.5.1-REDµX.mkv
+: title: Indiana Jones and the Temple of Doom
+  year: 1984
+  format: HDTV
+  screenSize: 720p
+  videoCodec: h264
+  audioCodec: AC3
+  audioChannels: "5.1"

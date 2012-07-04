@@ -96,15 +96,15 @@ class TestGuessit(TestCase):
 
                 if isinstance(value, base_text_type) and isinstance(found[prop], base_text_type):
                     if value.lower() != found[prop].lower():
-                        log.warning("Wrong prop value str for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        log.warning("Wrong prop value [str] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
                 elif isinstance(value, list) and isinstance(found[prop], list):
                     s1 = set(u(s).lower() for s in value)
                     s2 = set(u(s).lower() for s in found[prop])
                     if s1 != s2:
-                        log.warning("Wrong prop value list for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        log.warning("Wrong prop value [list] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
                 else:
                     if found[prop] != value:
-                        log.warning("Wrong prop value for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        log.warning("Wrong prop value [%s] for '%s': expected = '%s' - received = '%s'" % (type(prop), prop, u(value), u(found[prop])))
 
             for prop, value in found.items():
                 if prop not in required:
