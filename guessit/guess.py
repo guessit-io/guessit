@@ -323,7 +323,7 @@ def merge_all(guesses, append=None):
         result.update_highest_confidence(g)
 
     # delete very unlikely values
-    for p in result.keys():
+    for p in list(result.keys()):
         if result.confidence(p) < 0.05:
             del result[p]
 
