@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
+from __future__ import unicode_literals
 from guessittest import *
 
 class TestLanguage(TestGuessit):
@@ -29,59 +29,59 @@ class TestLanguage(TestGuessit):
                              Language(lang2, scheme=scheme))
 
     def test_addic7ed(self):
-        languages = {u'English': 'en',
-                     u'English (US)': 'en',
-                     u'English (UK)': 'en',
-                     u'Italian': 'it',
-                     u'Portuguese': 'pt',
-                     u'Portuguese (Brazilian)': 'pt',
-                     u'Romanian': 'ro',
-                     u'Español (Latinoamérica)': 'es',
-                     u'Español (España)': 'es',
-                     u'Spanish (Latin America)': 'es',
-                     u'Español': 'es',
-                     u'Spanish': 'es',
-                     u'Spanish (Spain)': 'es',
-                     u'French': 'fr',
-                     u'Greek': 'el',
-                     u'Arabic': 'ar',
-                     u'German': 'de',
-                     u'Croatian': 'hr',
-                     u'Indonesian': 'id',
-                     u'Hebrew': 'he',
-                     u'Russian': 'ru',
-                     u'Turkish': 'tr',
-                     u'Swedish': 'se',
-                     u'Czech': 'cs',
-                     u'Dutch': 'nl',
-                     u'Hungarian': 'hu',
-                     u'Norwegian': 'no',
-                     u'Polish': 'pl',
-                     u'Persian': 'fa'}
+        languages = {'English': 'en',
+                     'English (US)': 'en',
+                     'English (UK)': 'en',
+                     'Italian': 'it',
+                     'Portuguese': 'pt',
+                     'Portuguese (Brazilian)': 'pt',
+                     'Romanian': 'ro',
+                     'Español (Latinoamérica)': 'es',
+                     'Español (España)': 'es',
+                     'Spanish (Latin America)': 'es',
+                     'Español': 'es',
+                     'Spanish': 'es',
+                     'Spanish (Spain)': 'es',
+                     'French': 'fr',
+                     'Greek': 'el',
+                     'Arabic': 'ar',
+                     'German': 'de',
+                     'Croatian': 'hr',
+                     'Indonesian': 'id',
+                     'Hebrew': 'he',
+                     'Russian': 'ru',
+                     'Turkish': 'tr',
+                     'Swedish': 'se',
+                     'Czech': 'cs',
+                     'Dutch': 'nl',
+                     'Hungarian': 'hu',
+                     'Norwegian': 'no',
+                     'Polish': 'pl',
+                     'Persian': 'fa'}
 
         self.check_languages(languages)
 
     def test_subswiki(self):
-        languages = {u'English (US)': 'en', u'English (UK)': 'en', u'English': 'en',
-                     u'French': 'fr', u'Brazilian': 'po', u'Portuguese': 'pt',
-                     u'Español (Latinoamérica)': 'es', u'Español (España)': 'es',
-                     u'Español': 'es', u'Italian': 'it', u'Català': 'ca'}
+        languages = {'English (US)': 'en', 'English (UK)': 'en', 'English': 'en',
+                     'French': 'fr', 'Brazilian': 'po', 'Portuguese': 'pt',
+                     'Español (Latinoamérica)': 'es', 'Español (España)': 'es',
+                     'Español': 'es', 'Italian': 'it', 'Català': 'ca'}
 
         self.check_languages(languages)
 
     def test_tvsubtitles(self):
-        languages = {u'English': 'en', u'Español': 'es', u'French': 'fr', u'German': 'de',
-                     u'Brazilian': 'br', u'Russian': 'ru', u'Ukrainian': 'ua', u'Italian': 'it',
-                     u'Greek': 'gr', u'Arabic': 'ar', u'Hungarian': 'hu', u'Polish': 'pl',
-                     u'Turkish': 'tr', u'Dutch': 'nl', u'Portuguese': 'pt', u'Swedish': 'sv',
-                     u'Danish': 'da', u'Finnish': 'fi', u'Korean': 'ko', u'Chinese': 'cn',
-                     u'Japanese': 'jp', u'Bulgarian': 'bg', u'Czech': 'cz', u'Romanian': 'ro'}
+        languages = {'English': 'en', 'Español': 'es', 'French': 'fr', 'German': 'de',
+                     'Brazilian': 'br', 'Russian': 'ru', 'Ukrainian': 'ua', 'Italian': 'it',
+                     'Greek': 'gr', 'Arabic': 'ar', 'Hungarian': 'hu', 'Polish': 'pl',
+                     'Turkish': 'tr', 'Dutch': 'nl', 'Portuguese': 'pt', 'Swedish': 'sv',
+                     'Danish': 'da', 'Finnish': 'fi', 'Korean': 'ko', 'Chinese': 'cn',
+                     'Japanese': 'jp', 'Bulgarian': 'bg', 'Czech': 'cz', 'Romanian': 'ro'}
 
         self.check_languages(languages)
 
     def test_opensubtitles(self):
         opensubtitles_langfile = file_in_same_dir(__file__, 'opensubtitles_languages_2012_05_09.txt')
-        langs = [ l.strip().split('\t') for l in open(opensubtitles_langfile) ][1:]
+        langs = [ u(l).strip().split('\t') for l in open(opensubtitles_langfile) ][1:]
         for lang in langs:
             # check that we recognize the opensubtitles language code correctly
             # and that we are able to output this code from a language
@@ -97,10 +97,10 @@ class TestLanguage(TestGuessit):
 
 
     def test_subtitulos(self):
-        languages = {u'English (US)': 'en', u'English (UK)': 'en', u'English': 'en',
-                     u'French': 'fr', u'Brazilian': 'po', u'Portuguese': 'pt',
-                     u'Español (Latinoamérica)': 'es', u'Español (España)': 'es',
-                     u'Español': 'es', u'Italian': 'it', u'Català': 'ca'}
+        languages = {'English (US)': 'en', 'English (UK)': 'en', 'English': 'en',
+                     'French': 'fr', 'Brazilian': 'po', 'Portuguese': 'pt',
+                     'Español (Latinoamérica)': 'es', 'Español (España)': 'es',
+                     'Español': 'es', 'Italian': 'it', 'Català': 'ca'}
 
         self.check_languages(languages)
 
