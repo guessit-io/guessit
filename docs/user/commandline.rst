@@ -37,8 +37,8 @@ guess, movie or episode. If you want to force one of those, use the ``-t movie``
 Guessit also allows you to specify the type of information you want
 using the ``-i`` or ``--info`` flag::
 
-    $ python guessit.py -i hash_md5,hash_sha1,hash_ed2k test/dummy.srt
-    For: test/dummy.srt
+    $ python guessit.py -i hash_md5,hash_sha1,hash_ed2k tests/dummy.srt
+    For: tests/dummy.srt
     GuessIt found: {
         [1.00] "hash_ed2k": "ed2k://|file|dummy.srt|44|1CA0B9DED3473B926AA93A0A546138BB|/",
         [1.00] "hash_md5": "e781de9b94ba2753a8e2945b2c0a123d",

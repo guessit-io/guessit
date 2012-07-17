@@ -92,7 +92,7 @@ def guess_file_info(filename, filetype, info=None):
     """info can contain the names of the various plugins, such as 'filename' to
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
-    >>> guess_file_info('test/dummy.srt', 'autodetect', info = ['hash_md5', 'hash_sha1'])
+    >>> guess_file_info('tests/dummy.srt', 'autodetect', info = ['hash_md5', 'hash_sha1'])
     {'hash_md5': 'e781de9b94ba2753a8e2945b2c0a123d', 'hash_sha1': 'bfd18e2f4e5d59775c2bc14d80f56971891ed620'}
     """
     result = []

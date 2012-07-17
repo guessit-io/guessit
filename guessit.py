@@ -35,7 +35,7 @@ def detect_filename(filename, filetype, info=['filename']):
 
 
 def run_demo(episodes=True, movies=True):
-    # NOTE: tests should not be added here but rather in the test/ folder
+    # NOTE: tests should not be added here but rather in the tests/ folder
     #       this is just intended as a quick example
     if episodes:
         testeps = [ 'Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.[tvu.org.ru].avi',

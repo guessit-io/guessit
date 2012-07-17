@@ -19,7 +19,7 @@ class TestTask(Task):
         self.__doc__ = 'Run the unittests for %s' % docstring
 
     def run(self):
-        local('PYTHONPATH=. python test/%s.py' % self.name)
+        local('PYTHONPATH=. python tests/%s.py' % self.name)
 
 test_ep = TestTask('episode', 'episodes')
 test_movie = TestTask('movie', 'movies')
@@ -115,7 +115,7 @@ def test_pypi_sdist():
         with prefix('source bin/activate'):
             local('pip install ../dist/*')
             local('pip install PyYaml') # to be able to run the tests
-            local('cp ../test/*.py ../test/*.yaml ../test/*.txt .')
+            local('cp ../tests/*.py ../tests/*.yaml ../tests/*.txt .')
             local('python test_autodetect.py')
             local('python test_movie.py')
             local('python test_episode.py')
