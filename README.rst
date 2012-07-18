@@ -1,6 +1,7 @@
 Guessit
 =======
 
+.. image:: https://secure.travis-ci.org/wackou/guessit.png?branch=master
 
 GuessIt is a python library that tries to extract as much information as
 possible from a video file.
