@@ -62,15 +62,23 @@ def allTests(testClass):
 
 class TestGuessit(TestCase):
 
-    def checkMinimumFieldsCorrect(self, guesser, filename, removeType = True):
+    def checkMinimumFieldsCorrect(self, guesser, filename, removeType=True, required=None):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
+        correct, total = 0, 0
 
-        for filename, required in groundTruth.items():
+        for filename, required_fields in groundTruth.items():
             filename = u(filename)
             log.debug('\n' + '-' * 120)
             log.info('Guessing information for file: %s' % filename)
 
             found = guesser(filename)
+
+            total = total + 1
+            is_incomplete = [False]
+
+            def error(*args):
+                log.warning(args[0] % args[1:])
+                is_incomplete[0] = True
 
             # no need for this in the unittests
             if removeType:
@@ -85,27 +93,42 @@ class TestGuessit(TestCase):
                 if isinstance(value, list) and len(value) == 1:
                     found[prop] = value[0]
 
-            # compare all properties
-            for prop, value in required.items():
+            # look for missing properties
+            for prop, value in required_fields.items():
                 if prop not in found:
-                    log.warning('Prop \'%s\' not found in: %s' % (prop, filename))
+                    error("Prop '%s' not found in: %s", prop, filename)
                     continue
 
-                #if type(value) != type(found[prop]) and not (isinstance(value, basestring) and isinstance(found[prop], basestring)):
-                #    log.warning("Wrong prop types for '%s': expected = '%s' - received = '%s'" % (prop, u(value), found[prop]))
-
-                if isinstance(value, base_text_type) and isinstance(found[prop], base_text_type):
+                # if both properties are strings, do a case-insensitive comparison
+                if (isinstance(value, base_text_type) and
+                    isinstance(found[prop], base_text_type)):
                     if value.lower() != found[prop].lower():
-                        log.warning("Wrong prop value [str] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        error("Wrong prop value [str] for '%s': expected = '%s' - received = '%s'",
+                              prop, u(value), u(found[prop]))
+
+                # if both are lists, we assume list of strings and do a case-insensitive
+                # comparison on their elements
                 elif isinstance(value, list) and isinstance(found[prop], list):
                     s1 = set(u(s).lower() for s in value)
                     s2 = set(u(s).lower() for s in found[prop])
                     if s1 != s2:
-                        log.warning("Wrong prop value [list] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        error("Wrong prop value [list] for '%s': expected = '%s' - received = '%s'",
+                              prop, u(value), u(found[prop]))
+                # otherwise, just compare their values directly
                 else:
                     if found[prop] != value:
-                        log.warning("Wrong prop value [%s] for '%s': expected = '%s' - received = '%s'" % (type(prop), prop, u(value), u(found[prop])))
+                        error("Wrong prop value for '%s': expected = '%s' [%s] - received = '%s' [%s]",
+                              prop, u(value), type(value), u(found[prop]), type(found[prop]))
 
+            # look for additional properties
             for prop, value in found.items():
-                if prop not in required:
+                if prop not in required_fields:
                     log.warning("Found additional info for prop = '%s': '%s'" % (prop, u(value)))
+
+            if not is_incomplete[0]:
+                correct = correct + 1
+
+        log.info('SUMMARY: Guessed correctly %d out of %d filenames' % (correct, total))
+
+        if required:
+            self.assertTrue(correct >= required)

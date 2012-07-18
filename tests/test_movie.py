@@ -28,7 +28,7 @@ def new_guesser(filename):
 class TestMovie(TestGuessit):
 
     def testNewMatcher(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'movies.yaml')
+        self.checkMinimumFieldsCorrect(new_guesser, 'movies.yaml', required=46)
 
 
 suite = allTests(TestMovie)

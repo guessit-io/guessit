@@ -28,7 +28,7 @@ def new_guesser(filename):
 class TestAutoDetect(TestGuessit):
 
     def testNewMatcher(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'autodetect.yaml', removeType = False)
+        self.checkMinimumFieldsCorrect(new_guesser, 'autodetect.yaml', removeType = False, required=7)
 
 
 suite = allTests(TestAutoDetect)
