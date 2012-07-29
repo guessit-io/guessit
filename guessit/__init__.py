@@ -19,7 +19,7 @@
 #
 
 
-__version__ = '0.5-dev'
+__version__ = '0.5'
 __all__ = ['Guess', 'Language',
            'guess_file_info', 'guess_video_info',
            'guess_movie_info', 'guess_episode_info']

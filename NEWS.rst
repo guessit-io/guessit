@@ -6,6 +6,15 @@
 News
 ====
 
+0.5
+---
+
+*Release date: 29-Jul-2012*
+
+* Python3 compatibility
+* the usual assortment of bugfixes
+
+
 0.4.2
 -----
 
@@ -107,4 +116,3 @@ News
 
 * first pre-release version; imported from Smewt with a few enhancements already
   in there.
-

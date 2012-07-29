@@ -18,9 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
-import sys
 import guessit
 
 
@@ -30,7 +29,7 @@ NEWS = open(os.path.join(here, 'NEWS.rst')).read()
 
 args = dict(name = 'guessit',
             version = guessit.__version__,
-            description = 'Guessit - a library for guessing information from video files.',
+            description = 'GuessIt - a library for guessing information from video files.',
             long_description = README + '\n\n' + NEWS,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
             classifiers = [ 'Development Status :: 5 - Production/Stable',
@@ -41,8 +40,6 @@ args = dict(name = 'guessit',
                             'Programming Language :: Python :: 2.6',
                             'Programming Language :: Python :: 2.7',
                             'Programming Language :: Python :: 3',
-                            'Programming Language :: Python :: 3.0',
-                            'Programming Language :: Python :: 3.1',
                             'Programming Language :: Python :: 3.2',
                             'Topic :: Multimedia',
                             'Topic :: Software Development :: Libraries :: Python Modules'
