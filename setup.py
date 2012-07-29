@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
@@ -47,7 +48,7 @@ args = dict(name = 'guessit',
             keywords = 'smewt media video metadata python library',
             author = 'Nicolas Wack',
             author_email = 'wackou@gmail.com',
-            url = 'http://www.smewt.com/',
+            url = 'http://guessit.readthedocs.org/',
             license = 'LGPLv3',
             packages = [ 'guessit', 'guessit.transfo' ],
             include_package_data=True,
