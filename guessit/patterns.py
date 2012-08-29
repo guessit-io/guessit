@@ -104,7 +104,7 @@ unlikely_series = ['series']
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'Blu-ray', 'BDRip', 'BRRip',
                            'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'DVBRip', 'PDTV', 'WEBRip',
-                           'DVDSCR', 'Screener', 'VHS', 'VIDEO_TS' ],
+                           'DVDSCR', 'Screener', 'VHS', 'VIDEO_TS', 'WEB-DL', 'WEBDL' ],
 
                'screenSize': [ '720p', '720', '1080p', '1080' ],
 
@@ -151,6 +151,7 @@ def find_properties(filename):
 property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
                       'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
                       'BluRay': [ 'BDRip', 'BRRip', 'Blu-ray' ],
+                      'WEB-DL': [ 'WEBDL' ],
                       'DVB': [ 'DVBRip', 'PDTV' ],
                       'Screener': [ 'DVDSCR' ],
                       'DivX': [ 'DVDivX' ],
