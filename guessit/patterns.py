@@ -118,6 +118,9 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                                  'CHD', 'ViTE', 'TLF', 'DEiTY', 'FLAiTE',
                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
                                  'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL', 'LOL',
+                                 'SiNNERS', 'DiRTY', 'REWARD', 'ECI', 'KiNGS', 'CLUE',
+                                 'CtrlHD', 'POD', 'WiKi', 'DIMENSION', 'IMMERSE', 'FQM',
+                                 '2HD', 'REPTiLE', 'CTU', 'HALCYON', 'EbP', 'SiTV', 'SAiNTS',
                                  'HDBRiSe' ],
 
                'episodeFormat': [ 'Minisode', 'Minisodes' ],
