@@ -70,8 +70,8 @@ class IterativeMatcher(object):
         """
 
         valid_filetypes = ('autodetect', 'subtitle', 'video',
-                            'movie', 'moviesubtitle',
-                            'episode', 'episodesubtitle')
+                           'movie', 'moviesubtitle',
+                           'episode', 'episodesubtitle')
         if filetype not in valid_filetypes:
             raise ValueError("filetype needs to be one of %s" % valid_filetypes)
         if not PY3 and not isinstance(filename, unicode):
@@ -119,7 +119,7 @@ class IterativeMatcher(object):
             apply_transfo(name)
 
         # more guessers for both movies and episodes
-        for name in ['guess_bonus_features']:
+        for name in ['guess_bonus_features', 'guess_year']:
             apply_transfo(name)
 
         # split into '-' separated subgroups (with required separator chars
@@ -131,7 +131,6 @@ class IterativeMatcher(object):
         if mtree.guess['type'] in ('episode', 'episodesubtitle'):
             apply_transfo('guess_episode_info_from_position')
         else:
-            apply_transfo('guess_year')
             apply_transfo('guess_movie_title_from_position')
 
         # 6- perform some post-processing steps
