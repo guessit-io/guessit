@@ -19,7 +19,7 @@
 #
 
 from __future__ import unicode_literals
-from guessit import UnicodeMixin, u
+from guessit import UnicodeMixin, base_text_type, u
 from guessit.fileutils import load_file_in_same_dir
 import logging
 
@@ -94,7 +94,7 @@ class Country(UnicodeMixin):
         if isinstance(other, Country):
             return self.alpha3 == other.alpha3
 
-        if isinstance(other, basestring):
+        if isinstance(other, base_text_type):
             try:
                 return self == Country(other)
             except ValueError:

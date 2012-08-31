@@ -19,8 +19,9 @@
 #
 
 from __future__ import unicode_literals
-from guessit import UnicodeMixin, s, u, native_text_type, base_text_type
+from guessit import UnicodeMixin, s, u, base_text_type
 from guessit.language import Language
+from guessit.country import Country
 import json
 import datetime
 import logging
@@ -53,9 +54,7 @@ class Guess(UnicodeMixin, dict):
         for prop, value in data.items():
             if isinstance(value, datetime.date):
                 data[prop] = value.isoformat()
-            elif isinstance(value, Language):
-                data[prop] = u(value)
-            elif isinstance(value, base_text_type):
+            elif isinstance(value, (Language, Country, base_text_type)):
                 data[prop] = u(value)
             elif isinstance(value, list):
                 data[prop] = [u(x) for x in value]

@@ -23,7 +23,6 @@ from __future__ import print_function
 from guessit import u
 from guessit import slogging, guess_file_info
 from optparse import OptionParser
-import sys
 import logging
 
 
