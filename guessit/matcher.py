@@ -156,6 +156,8 @@ class IterativeMatcher(object):
                             'audioChannels'):
             merge_similar_guesses(parts, string_part, choose_string)
 
+        # 2- merge the rest, potentially discarding information not properly
+        #    merged before
         result = merge_all(parts,
                            append=['language', 'subtitleLanguage', 'other'])
 

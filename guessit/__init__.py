@@ -156,7 +156,16 @@ def guess_file_info(filename, filetype, info=None):
         except Exception as e:
             log.warning('Could not compute hash because: %s' % e)
 
-    return merge_all(result)
+    result = merge_all(result)
+
+    # last minute adjustments
+
+    # if country is in the guessed properties, make it part of the filename
+    if 'country' in result:
+        result['series'] += ' (%s)' % result['country'].alpha2.upper()
+
+
+    return result
 
 
 def guess_video_info(filename, info=None):

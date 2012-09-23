@@ -22,8 +22,8 @@
 from guessittest import *
 
 def new_guesser(filename):
-    m = IterativeMatcher(filename, filetype = 'movie')
-    return m.matched()
+    return guess_file_info(filename, filetype='movie')
+
 
 class TestMovie(TestGuessit):
 

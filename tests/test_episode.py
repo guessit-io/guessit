@@ -22,13 +22,13 @@
 from guessittest import *
 
 def new_guesser(filename):
-    m = IterativeMatcher(filename, filetype = 'episode')
-    return m.matched()
+    return guess_file_info(filename, filetype='episode')
+
 
 class TestEpisode(TestGuessit):
 
     def testNewMatcher(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'episodes.yaml', required=37)
+        self.checkMinimumFieldsCorrect(new_guesser, 'episodes.yaml', required=40)
 
 
 suite = allTests(TestEpisode)
