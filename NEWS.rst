@@ -6,6 +6,15 @@
 News
 ====
 
+0.5.1
+-----
+
+*Release date: 23-Sep-2012*
+
+* now detects 'country' property; also detect 'year' property for series
+* more patterns and bugfixes
+
+
 0.5
 ---
 
