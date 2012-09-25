@@ -155,6 +155,7 @@ class BaseMatchTree(UnicodeMixin):
                      'extension': 'e',
                      'format': 'f',
                      'language': 'l',
+                     'country': 'C',
                      'videoCodec': 'v',
                      'audioCodec': 'a',
                      'website': 'w',
