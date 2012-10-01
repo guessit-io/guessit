@@ -51,6 +51,7 @@
   screenSize: 720p
   audioCodec: AC3
   videoCodec: h264
+  releaseGroup: HiS@SiLUHD
   language: english
   website: sharethefiles.com
 
@@ -61,3 +62,27 @@
   videoCodec: DivX
   format: DVD
 
+? the.mentalist.501.hdtv-lol.mp4
+: type: episode
+  series: The Mentalist
+  season: 5
+  episodeNumber: 1
+  format: HDTV
+  releaseGroup: LOL
+
+? the.simpsons.2401.hdtv-lol.mp4
+: type: episode
+  series: The Simpsons
+  season: 24
+  episodeNumber: 1
+  format: HDTV
+  releaseGroup: LOL
+
+? Homeland.S02E01.HDTV.x264-EVOLVE.mp4
+: type: episode
+  series: Homeland
+  season: 2
+  episodeNumber: 1
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: EVOLVE

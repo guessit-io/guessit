@@ -121,7 +121,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                                  'SiNNERS', 'DiRTY', 'REWARD', 'ECI', 'KiNGS', 'CLUE',
                                  'CtrlHD', 'POD', 'WiKi', 'DIMENSION', 'IMMERSE', 'FQM',
                                  '2HD', 'REPTiLE', 'CTU', 'HALCYON', 'EbP', 'SiTV', 'SAiNTS',
-                                 'HDBRiSe' ],
+                                 'HDBRiSe', 'AlFleNi-TeaM', 'EVOLVE', '0TV' ],
 
                'episodeFormat': [ 'Minisode', 'Minisodes' ],
 
