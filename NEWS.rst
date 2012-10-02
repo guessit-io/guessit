@@ -6,6 +6,15 @@
 News
 ====
 
+0.5.2
+-----
+
+*Release Date: 2-Oct-2012*
+
+* Much improved auto-detection of filetype
+* Fixed some issues with the detection of release groups
+
+
 0.5.1
 -----
 
