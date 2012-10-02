@@ -21,20 +21,20 @@
 
 from guessittest import *
 
-def new_guesser(filename):
-    m = IterativeMatcher(filename, filetype = 'autodetect')
-    return m.matched()
 
 class TestAutoDetectAll(TestGuessit):
-
-    def testNewMatcher(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'autodetect.yaml', removeType = False)
+    def testAutoMatcher(self):
+        self.checkMinimumFieldsCorrect(filetype='autodetect',
+                                       filename='autodetect.yaml',
+                                       removeType=False)
 
     def testAutoMatcherMovies(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'movies.yaml')
+        self.checkMinimumFieldsCorrect(filetype='autodetect',
+                                       filename='movies.yaml')
 
     def testAutoMatcherEpisodes(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'episodes.yaml')
+        self.checkMinimumFieldsCorrect(filetype='autodetect',
+                                       filename='episodes.yaml')
 
 
 suite = allTests(TestAutoDetectAll)

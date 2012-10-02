@@ -21,14 +21,12 @@
 
 from guessittest import *
 
-def new_guesser(filename):
-    return guess_file_info(filename, filetype='episode')
-
 
 class TestEpisode(TestGuessit):
-
-    def testNewMatcher(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'episodes.yaml', required=40)
+    def testEpisodes(self):
+        self.checkMinimumFieldsCorrect(filetype='episode',
+                                       filename='episodes.yaml',
+                                       required=40)
 
 
 suite = allTests(TestEpisode)

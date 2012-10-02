@@ -125,3 +125,20 @@
   format: HDTV
   videoCodec: XviD
   releaseGroup: LOL
+
+? The_Insider-(1999)-x02-60_Minutes_Interview-1996.mp4
+: type: movie
+  title: The Insider
+  year: 1999
+  bonusNumber: 2
+  bonusTitle: 60 Minutes Interview-1996
+
+? OSS_117--Cairo,_Nest_of_Spies.mkv
+: type: movie
+  title: OSS 117--Cairo, Nest of Spies
+
+? Rush.._Beyond_The_Lighted_Stage-x09-Between_Sun_and_Moon-2002_Hartford.mkv
+: type: movie
+  title: Rush Beyond The Lighted Stage
+  bonusNumber: 9
+  bonusTitle: Between Sun and Moon-2002 Hartford

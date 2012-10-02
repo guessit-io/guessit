@@ -23,6 +23,7 @@ from guessit import Guess
 from guessit.patterns import (subtitle_exts, video_exts, episode_rexps,
                               find_properties, canonical_form)
 from guessit.date import valid_year
+from guessit.textutils import clean_string
 import os.path
 import re
 import mimetypes
@@ -30,6 +31,13 @@ import logging
 
 log = logging.getLogger(__name__)
 
+# List of well known movies and series, hardcoded because they cannot be
+# guessed appropriately otherwise
+MOVIES = [ 'OSS 117' ]
+SERIES = [ 'Band of Brothers' ]
+
+MOVIES = [ m.lower() for m in MOVIES ]
+SERIES = [ s.lower() for s in SERIES ]
 
 def guess_filetype(mtree, filetype):
     # put the filetype inside a dummy container to be able to have the
@@ -90,7 +98,16 @@ def guess_filetype(mtree, filetype):
             if frexp.match(pathgroup.value):
                 upgrade_func()
 
-
+    # check for a few specific cases which will unintentionally make the
+    # following heuristics confused (eg: OSS 117 will look like an episode,
+    # season 1, epnum 17, when it is in fact a movie)
+    fname = clean_string(filename).lower()
+    for m in MOVIES:
+        if m in fname:
+            upgrade_movie()
+    for s in SERIES:
+        if s in fname:
+            upgrade_episode()
 
     # now look whether there are some specific hints for episode vs movie
     if filetype_container[0] in ('video', 'subtitle'):
@@ -105,7 +122,7 @@ def guess_filetype(mtree, filetype):
         match = re.search(r'[^0-9]([0-9]{3,4})[^0-9]', filename)
         if match:
             fullnumber = int(match.group()[1:-1])
-            season = fullnumber // 100
+            #season = fullnumber // 100
             epnumber = fullnumber % 100
             possible = True
 

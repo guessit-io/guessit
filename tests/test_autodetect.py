@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # GuessIt - A library for guessing information from filenames
-# Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
+# Copyright (c) 2011-2012 Nicolas Wack <wackou@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
 # the terms of the Lesser GNU General Public License as published by
@@ -21,14 +21,11 @@
 
 from guessittest import *
 
-def new_guesser(filename):
-    m = IterativeMatcher(filename, filetype = 'autodetect')
-    return m.matched()
-
 class TestAutoDetect(TestGuessit):
-
-    def testNewMatcher(self):
-        self.checkMinimumFieldsCorrect(new_guesser, 'autodetect.yaml', removeType = False, required=7)
+    def testAutoDetect(self):
+        self.checkMinimumFieldsCorrect(filetype='autodetect',
+                                       filename='autodetect.yaml',
+                                       removeType=False, required=19)
 
 
 suite = allTests(TestAutoDetect)
