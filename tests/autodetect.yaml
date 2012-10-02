@@ -86,3 +86,42 @@
   format: HDTV
   videoCodec: h264
   releaseGroup: EVOLVE
+
+? /media/Band_of_Brothers-e01-Currahee.mkv
+: type: episode
+  series: Band of Brothers
+  episodeNumber: 1
+  title: Currahee
+
+? /media/Band_of_Brothers-x02-We_Stand_Alone_Together.mkv
+: type: episode
+  series: Band of Brothers
+  bonusNumber: 2
+  bonusTitle: We Stand Alone Together
+
+? /movies/James_Bond-f21-Casino_Royale-x02-Stunts.mkv
+: type: movie
+  title: Casino Royale
+  filmSeries: James Bond
+  filmNumber: 21
+  bonusNumber: 2
+  bonusTitle: Stunts
+
+? /TV Shows/new.girl.117.hdtv-lol.mp4
+: type: episode
+  series: New Girl
+  season: 1
+  episodeNumber: 17
+  format: HDTV
+  releaseGroup: LOL
+
+? The.Office.(US).1x03.Health.Care.HDTV.XviD-LOL.avi
+: type: episode
+  series: The Office (US)
+  country: US
+  season: 1
+  episodeNumber: 3
+  title: Health Care
+  format: HDTV
+  videoCodec: XviD
+  releaseGroup: LOL

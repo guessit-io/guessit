@@ -39,7 +39,7 @@ def guess_episodes_rexps(string):
                     match.end() + span_adjust[1])
 
             # episodes which have a season > 25 are most likely errors
-            # (Simpsons is at 23!)
+            # (Simpsons is at 24!)
             if int(guess.get('season', 0)) > 25:
                 continue
 
@@ -51,6 +51,10 @@ def guess_episodes_rexps(string):
 
                 if len(eplist) > 1:
                     guess.set('episodeList', list(map(int, eplist)), confidence=confidence)
+
+            if guess.get('bonusNumber'):
+                eplist = number_list(guess['bonusNumber'])
+                guess.set('bonusNumber', int(eplist[0]), confidence=confidence)
 
             return guess, span
 
