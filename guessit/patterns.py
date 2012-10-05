@@ -104,7 +104,7 @@ websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.c
 unlikely_series = ['series']
 
 properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'Blu-ray', 'BDRip', 'BRRip',
-                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'DVB', 'DVBRip', 'PDTV', 'WEBRip',
+                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'HD-TV', 'HD TV', 'DVB', 'DVBRip', 'PDTV', 'WEBRip',
                            'DVDSCR', 'Screener', 'VHS', 'VIDEO_TS', 'WEB-DL', 'WEBDL' ],
 
                'screenSize': [ '720p', '720', '1080p', '1080' ],
@@ -155,6 +155,7 @@ def find_properties(filename):
 property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
                       'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
                       'BluRay': [ 'BDRip', 'BRRip', 'Blu-ray' ],
+                      'HDTV': [ 'HD-TV', 'HD TV' ],
                       'WEB-DL': [ 'WEBDL' ],
                       'DVB': [ 'DVBRip', 'PDTV' ],
                       'Screener': [ 'DVDSCR' ],
