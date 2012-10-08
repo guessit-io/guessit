@@ -107,7 +107,7 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                            'HDRip', 'DVD', 'DVDivX', 'HDTV', 'HD-TV', 'HD TV', 'DVB', 'DVBRip', 'PDTV', 'WEBRip',
                            'DVDSCR', 'Screener', 'VHS', 'VIDEO_TS', 'WEB-DL', 'WEBDL' ],
 
-               'screenSize': [ '720p', '720', '1080p', '1080' ],
+               'screenSize': [ '480p', '480', '720p', '720', '1080p', '1080' ],
 
                'videoCodec': [ 'XviD', 'DivX', 'x264', 'h264', 'Rv10' ],
 
@@ -161,6 +161,7 @@ property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
                       'Screener': [ 'DVDSCR' ],
                       'DivX': [ 'DVDivX' ],
                       'h264': [ 'x264' ],
+                      '480p': [ '480' ],
                       '720p': [ '720' ],
                       '1080p': [ '1080' ],
                       'AAC': [ 'He-AAC', 'AAC-He' ],
