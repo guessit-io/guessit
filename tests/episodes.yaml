@@ -265,3 +265,12 @@
 : series: Futurama
   season: 3
   format: DVD
+
+? Ben.and.Kate.S01E02.720p.HDTV.X264-DIMENSION.mkv
+: series: Ben and Kate
+  season: 1
+  episodeNumber: 2
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: DIMENSION
