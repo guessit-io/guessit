@@ -52,7 +52,8 @@ args = dict(name = 'guessit',
             license = 'LGPLv3',
             packages = [ 'guessit', 'guessit.transfo' ],
             include_package_data=True,
-            install_requires = []
+            install_requires = [],
+            extras_require = { 'language_detection':  ['guess-language>=0.2'] }
             )
 
 
