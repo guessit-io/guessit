@@ -274,3 +274,6 @@
   format: HDTV
   videoCodec: h264
   releaseGroup: DIMENSION
+
+? "finale "
+: releaseGroup: FiNaLe

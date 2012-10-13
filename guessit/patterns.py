@@ -117,14 +117,14 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
 
                'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA',
                                  'CHD', 'ViTE', 'TLF', 'DEiTY', 'FLAiTE',
-                                 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', ' FiNaLe',
+                                 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', 'FiNaLe',
                                  'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL', 'LOL',
                                  'SiNNERS', 'DiRTY', 'REWARD', 'ECI', 'KiNGS', 'CLUE',
                                  'CtrlHD', 'POD', 'WiKi', 'DIMENSION', 'IMMERSE', 'FQM',
                                  '2HD', 'REPTiLE', 'CTU', 'HALCYON', 'EbP', 'SiTV',
                                  'SAiNTS', 'HDBRiSe', 'AlFleNi-TeaM', 'EVOLVE', '0TV',
                                  'TLA', 'NTB', 'ASAP', 'MOMENTUM'
-                             ],
+                                 ],
 
                'episodeFormat': [ 'Minisode', 'Minisodes' ],
 
@@ -135,9 +135,9 @@ properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'B
                }
 
 
-def find_properties(filename):
+def find_properties(string):
     result = []
-    clow = filename.lower()
+    clow = string.lower()
     for prop, values in properties.items():
         for value in values:
             pos = clow.find(value.lower())
