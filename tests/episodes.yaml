@@ -277,3 +277,10 @@
 
 ? "finale "
 : releaseGroup: FiNaLe
+  extension: ""
+
+? /volume1/TV Series/Drawn Together/Season 1/Drawn Together 1x04 Requiem for a Reality Show.avi
+: series: Drawn Together
+  season: 1
+  episodeNumber: 4
+  title: Requiem for a Reality Show

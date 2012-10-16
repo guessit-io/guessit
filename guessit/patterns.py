@@ -61,7 +61,7 @@ episode_rexps = [ # ... Season 2 ...
                   ('ep' + sep + r'(?P<episodeNumber>[0-9]{1,2})[^0-9]', 0.7, (0, -1)),
 
                   # ... e13 ... for a mini-series without a season number
-                  (r'e(?P<episodeNumber>[0-9]{1,2})[^0-9]', 0.6, (0, -1))
+                  (sep + r'e(?P<episodeNumber>[0-9]{1,2})[^0-9]', 0.6, (1, -1))
 
                   ]
 
