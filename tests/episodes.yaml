@@ -284,3 +284,13 @@
   season: 1
   episodeNumber: 4
   title: Requiem for a Reality Show
+
+? Sons.of.Anarchy.S05E06.720p.WEB.DL.DD5.1.H.264-CtrlHD.mkv
+: series: Sons of Anarchy
+  season: 5
+  episodeNumber: 6
+  screenSize: 720p
+  format: WEB-DL
+  audioChannels: '5.1'
+  videoCodec: h264
+  releaseGroup: CtrlHD

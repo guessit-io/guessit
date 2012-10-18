@@ -20,6 +20,7 @@
 #
 
 from __future__ import unicode_literals
+import re
 
 
 subtitle_exts = [ 'srt', 'idx', 'sub', 'ssa', 'txt' ]
@@ -99,87 +100,109 @@ video_rexps = [ # cd number
                 (r'f(?P<filmNumber>[0-9]{1,2})', 1.0, (0, 0))
                 ]
 
-websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com', 'sharethefiles.com' ]
+websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com',
+             'sharethefiles.com' ]
 
-unlikely_series = ['series']
+unlikely_series = [ 'series' ]
 
-properties = { 'format': [ 'DVDRip', 'HD-DVD', 'HDDVD', 'HDDVDRip', 'BluRay', 'Blu-ray', 'BDRip', 'BRRip',
-                           'HDRip', 'DVD', 'DVDivX', 'HDTV', 'HD-TV', 'HD TV', 'DVB', 'DVBRip', 'PDTV', 'WEBRip',
-                           'DVDSCR', 'Screener', 'VHS', 'VIDEO_TS', 'WEB-DL', 'WEBDL' ],
 
-               'screenSize': [ '480p', '480', '720p', '720', '1080p', '1080' ],
+# prop_multi is a dict of { property_name: { canonical_form: [ pattern ] } }
+# pattern is a string considered as a regexp, with the addition that dashes are
+# replaced with '([ \.-_])?' which matches more types of separators (or none)
+# note: simpler patterns need to be at the end of the list to not shadow more
+#       complete ones, eg: 'AAC' needs to come after 'He-AAC'
+#       ie: from most specific to less specific
+prop_multi = { 'format': { 'DVD': [ 'DVD', 'DVD-Rip', 'VIDEO-TS', 'DVDivX' ],
+                           'HD-DVD': [ 'HD-(?:DVD)?-Rip', 'HD-DVD' ],
+                           'BluRay': [ 'Blu-ray', 'B[DR]Rip' ],
+                           'HDTV': [ 'HD-TV' ],
+                           'DVB': [ 'DVB-Rip', 'DVB', 'PD-TV' ],
+                           'WEBRip': [ 'WEB-Rip' ],
+                           'Screener': [ 'DVD-SCR', 'Screener' ],
+                           'VHS': [ 'VHS' ],
+                           'WEB-DL': [ 'WEB-DL' ] },
 
-               'videoCodec': [ 'XviD', 'DivX', 'x264', 'h264', 'Rv10' ],
+               'screenSize': { '480p': [ '480p?' ],
+                               '720p': [ '720p?' ],
+                               '1080p': [ '1080p?' ] },
 
-               'audioCodec': [ 'AC3', 'DTS', 'He-AAC', 'AAC-He', 'AAC' ],
+               'videoCodec': { 'XviD': [ 'Xvid' ],
+                               'DivX': [ 'DVDivX', 'DivX' ],
+                               'h264': [ '[hx]-264' ],
+                               'Rv10': [ 'Rv10' ] },
 
-               'audioChannels': [ '5.1' ],
+               'audioCodec': { 'AC3': [ 'AC3' ],
+                               'DTS': [ 'DTS' ],
+                               'AAC': [ 'He-AAC', 'AAC-He', 'AAC' ] },
 
-               'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', '[XCT]', 'iNT', 'PUKKA',
-                                 'CHD', 'ViTE', 'TLF', 'DEiTY', 'FLAiTE',
-                                 'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', 'FiNaLe',
-                                 'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL', 'LOL',
-                                 'SiNNERS', 'DiRTY', 'REWARD', 'ECI', 'KiNGS', 'CLUE',
-                                 'CtrlHD', 'POD', 'WiKi', 'DIMENSION', 'IMMERSE', 'FQM',
-                                 '2HD', 'REPTiLE', 'CTU', 'HALCYON', 'EbP', 'SiTV',
-                                 'SAiNTS', 'HDBRiSe', 'AlFleNi-TeaM', 'EVOLVE', '0TV',
-                                 'TLA', 'NTB', 'ASAP', 'MOMENTUM'
-                                 ],
+               'audioChannels': { '5.1': [ r'5\.1', 'DD5', '5ch' ] },
 
-               'episodeFormat': [ 'Minisode', 'Minisodes' ],
+               'episodeFormat': { 'Minisode': [ 'Minisodes?' ] }
 
-               'other': [ '5ch', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'iNTERNAL', 'Audiofixed', 'R5',
-                          'complete', 'classic', # not so sure about these ones, could appear in a title
-                          'ws', # widescreen
-                          ],
                }
+
+# prop_single dict of { property_name: [ canonical_form ] }
+prop_single = { 'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', r'\[XCT\]', 'iNT', 'PUKKA',
+                                  'CHD', 'ViTE', 'TLF', 'DEiTY', 'FLAiTE',
+                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS', 'FiNaLe',
+                                  'UnSeeN', 'aXXo', 'KLAXXON', 'NoTV', 'ZeaL', 'LOL',
+                                  'SiNNERS', 'DiRTY', 'REWARD', 'ECI', 'KiNGS', 'CLUE',
+                                  'CtrlHD', 'POD', 'WiKi', 'DIMENSION', 'IMMERSE', 'FQM',
+                                  '2HD', 'REPTiLE', 'CTU', 'HALCYON', 'EbP', 'SiTV',
+                                  'SAiNTS', 'HDBRiSe', 'AlFleNi-TeaM', 'EVOLVE', '0TV',
+                                  'TLA', 'NTB', 'ASAP', 'MOMENTUM' ],
+
+                'other': [ 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'Audiofixed', 'R5',
+                           'complete', 'classic', # not so sure about these ones, could appear in a title
+                           'ws' ] # widescreen
+                }
+
+_dash = '-'
+_psep = '[-\. _]?'
+
+def _to_rexp(prop):
+    return re.compile(prop.replace(_dash, _psep), re.IGNORECASE)
+
+# properties_rexps dict of { property_name: { canonical_form: [ rexp ] } }
+# containing the rexps compiled from both prop_multi and prop_single
+properties_rexps = dict((type, dict((canonical_form,
+                                     [ _to_rexp(pattern) for pattern in patterns ])
+                                    for canonical_form, patterns in props.items()))
+                        for type, props in prop_multi.items())
+
+properties_rexps.update(dict((type, dict((canonical_form, [ _to_rexp(canonical_form) ])
+                                         for canonical_form in props))
+                             for type, props in prop_single.items()))
+
 
 
 def find_properties(string):
     result = []
-    clow = string.lower()
-    for prop, values in properties.items():
-        for value in values:
-            pos = clow.find(value.lower())
-            if pos != -1:
-                end = pos + len(value)
-                # make sure our word is always surrounded by separators
-                if ((pos > 0 and clow[pos - 1] not in sep) or
-                    (end < len(clow) and clow[end] not in sep)):
+    for property_name, props in properties_rexps.items():
+        for canonical_form, rexps in props.items():
+            for value_rexp in rexps:
+                match = value_rexp.search(string)
+                if match:
+                    start, end = match.span()
+                    # make sure our word is always surrounded by separators
                     # note: sep is a regexp, but in this case using it as
-                    #       a sequence achieves the same goal
-                    continue
+                    #       a char sequence achieves the same goal
+                    if ((start > 0 and string[start-1] not in sep) or
+                        (end < len(string) and string[end] not in sep)):
+                        continue
 
-                result.append((prop, value, pos, end))
+                    result.append((property_name, canonical_form, start, end))
     return result
 
 
-property_synonyms = { 'DVD': [ 'DVDRip', 'VIDEO_TS' ],
-                      'HD-DVD': [ 'HDDVD', 'HDDVDRip' ],
-                      'BluRay': [ 'BDRip', 'BRRip', 'Blu-ray' ],
-                      'HDTV': [ 'HD-TV', 'HD TV' ],
-                      'WEB-DL': [ 'WEBDL' ],
-                      'DVB': [ 'DVBRip', 'PDTV' ],
-                      'Screener': [ 'DVDSCR' ],
-                      'DivX': [ 'DVDivX' ],
-                      'h264': [ 'x264' ],
-                      '480p': [ '480' ],
-                      '720p': [ '720' ],
-                      '1080p': [ '1080' ],
-                      'AAC': [ 'He-AAC', 'AAC-He' ],
-                      'Special Edition': [ 'Special' ],
+property_synonyms = { 'Special Edition': [ 'Special' ],
                       'Collector Edition': [ 'Collector' ],
-                      'Criterion Edition': [ 'Criterion' ],
-                      'Minisode': [ 'Minisodes' ]
+                      'Criterion Edition': [ 'Criterion' ]
                       }
 
 
 def revert_synonyms():
     reverse = {}
-
-    for _, values in properties.items():
-        for value in values:
-            reverse[value.lower()] = value
 
     for canonical, synonyms in property_synonyms.items():
         for synonym in synonyms:
@@ -187,8 +210,19 @@ def revert_synonyms():
 
     return reverse
 
+
 reverse_synonyms = revert_synonyms()
 
 
 def canonical_form(string):
     return reverse_synonyms.get(string.lower(), string)
+
+
+def compute_canonical_form(property_name, value):
+    """Return the canonical form of a property given its type if it is a valid
+    one, None otherwise."""
+    for canonical_form, rexps in properties_rexps[property_name].items():
+        for rexp in rexps:
+            if rexp.match(value):
+                return canonical_form
+    return None

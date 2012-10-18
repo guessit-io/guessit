@@ -21,7 +21,7 @@
 from __future__ import unicode_literals
 from guessit import Guess
 from guessit.patterns import (subtitle_exts, video_exts, episode_rexps,
-                              find_properties, canonical_form)
+                              find_properties, compute_canonical_form)
 from guessit.date import valid_year
 from guessit.textutils import clean_string
 import os.path
@@ -142,7 +142,7 @@ def guess_filetype(mtree, filetype):
                 upgrade_episode()
                 break
 
-            elif canonical_form(value) == 'DVB':
+            elif compute_canonical_form('format', value) == 'DVB':
                 upgrade_episode()
                 break
 
