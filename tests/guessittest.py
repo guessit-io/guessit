@@ -62,7 +62,7 @@ def allTests(testClass):
 
 class TestGuessit(TestCase):
 
-    def checkMinimumFieldsCorrect(self, filetype, filename, removeType=True, required=None):
+    def checkMinimumFieldsCorrect(self, filetype, filename, removeType=True):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
         correct, total = 0, 0
 
@@ -130,6 +130,5 @@ class TestGuessit(TestCase):
 
         log.info('SUMMARY: Guessed correctly %d out of %d filenames' % (correct, total))
 
-        if required:
-            self.assertTrue(correct >= required,
-                            msg='Correct: %d < Required: %d' % (correct, required))
+        self.assertTrue(correct == total,
+                        msg='Correct: %d < Total: %d' % (correct, total))

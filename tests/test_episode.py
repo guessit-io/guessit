@@ -25,8 +25,7 @@ from guessittest import *
 class TestEpisode(TestGuessit):
     def testEpisodes(self):
         self.checkMinimumFieldsCorrect(filetype='episode',
-                                       filename='episodes.yaml',
-                                       required=43)
+                                       filename='episodes.yaml')
 
 
 suite = allTests(TestEpisode)
