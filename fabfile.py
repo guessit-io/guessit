@@ -26,6 +26,7 @@ test_movie = TestTask('movie', 'movies')
 test_auto = TestTask('autodetect', 'autodetected files')
 test_lang = TestTask('language', 'languages')
 test_utils = TestTask('utils', 'utility functions')
+test_matchtree = TestTask('matchtree', 'MatchTree')
 
 @task
 def unittests():

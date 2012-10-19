@@ -62,8 +62,16 @@ def allTests(testClass):
 
 class TestGuessit(TestCase):
 
+
+
     def checkMinimumFieldsCorrect(self, filetype, filename, removeType=True):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
+        def guess_func(string):
+            return guess_file_info(string, filetype=filetype)
+
+        return self.checkFields(groundTruth, guess_func, removeType)
+
+    def checkFields(self, groundTruth, guess_func, removeType=True):
         correct, total = 0, 0
 
         for filename, required_fields in groundTruth.items():
@@ -71,7 +79,7 @@ class TestGuessit(TestCase):
             log.debug('\n' + '-' * 120)
             log.info('Guessing information for file: %s' % filename)
 
-            found = guess_file_info(filename, filetype=filetype)
+            found = guess_func(filename)
 
             total = total + 1
             is_incomplete = [False]
@@ -80,9 +88,12 @@ class TestGuessit(TestCase):
                 log.warning(args[0] % args[1:])
                 is_incomplete[0] = True
 
-            # no need for this in the unittests
+            # no need for these in the unittests
             if removeType:
-                del found['type']
+                try:
+                    del found['type']
+                except:
+                    pass
             for prop in ('container', 'mimetype'):
                 if prop in found:
                     del found[prop]
