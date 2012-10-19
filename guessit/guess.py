@@ -253,34 +253,6 @@ def merge_similar_guesses(guesses, prop, choose):
             merge_similar_guesses(guesses, prop, choose)
 
 
-def merge_append_guesses(guesses, prop):
-    """Take a list of guesses and merge those which have the same properties by
-    appending them in a list.
-
-    DEPRECATED, remove with old guessers
-
-    """
-    similar = [guess for guess in guesses if prop in guess]
-    if not similar:
-        return
-
-    merged = similar[0]
-    merged[prop] = [merged[prop]]
-    # TODO: what to do with global confidence? mean of them all?
-
-    for m in similar[1:]:
-        for prop2 in m:
-            if prop == prop2:
-                merged[prop].append(m[prop])
-            else:
-                if prop2 in m:
-                    log.warning('overwriting property "%s" with value %s' % (prop2, m[prop2]))
-                merged[prop2] = m[prop2]
-                # TODO: confidence also
-
-        guesses.remove(m)
-
-
 def merge_all(guesses, append=None):
     """Merge all the guesses in a single result, remove very unlikely values,
     and return it.
