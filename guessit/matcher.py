@@ -81,7 +81,7 @@ class IterativeMatcher(object):
         def apply_transfo(transfo_name, *args, **kwargs):
             transfo = __import__('guessit.transfo.' + transfo_name,
                                  globals=globals(), locals=locals(),
-                                 fromlist=['process'], level=-1)
+                                 fromlist=['process'], level=0)
             transfo.process(mtree, *args, **kwargs)
 
         # 1- first split our path into dirs + basename + ext
