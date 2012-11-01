@@ -38,15 +38,10 @@ def adjust_metadata(md):
 
 
 def guess_release_group(string):
-    group_names = [ r'\.(Xvid)-(?P<releaseGroup>.*?)[ \.]',
-                    r'\.(DivX)-(?P<releaseGroup>.*?)[\. ]',
-                    r'\.(DVDivX)-(?P<releaseGroup>.*?)[\. ]',
-                    ]
-
     # first try to see whether we have both a known codec and a known release group
-    group_names = [ r'\.(?P<videoCodec>' + codec + r')-(?P<releaseGroup>.*?)[ \.]'
+    group_names = [ r'(?P<videoCodec>' + codec + r')-?(?P<releaseGroup>.*?)[ \.]'
                     for codec in CODECS ]
-    group_names += [ r'\.(?P<format>' + fmt + r')-(?P<releaseGroup>.*?)[ \.]'
+    group_names += [ r'(?P<format>' + fmt + r')-?(?P<releaseGroup>.*?)[ \.]'
                      for fmt in FORMATS ]
 
     for rexp in group_names:
