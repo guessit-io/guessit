@@ -6,6 +6,18 @@
 News
 ====
 
+0.5.3
+-----
+
+*Release Date: 1-Nov-2012*
+
+* GuessIt can now optionally act as a wrapper around the 'guess-language' python
+  module, and thus provide detection of the natural language in which a body of
+  text is written
+
+* Lots of fixes everywhere, mostly for properties and release group detection
+
+
 0.5.2
 -----
 
