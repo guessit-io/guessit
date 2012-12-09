@@ -89,7 +89,7 @@ def guess_filetype(mtree, filetype):
 
     # check whether we are in a 'Movies', 'Tv Shows', ... folder
     folder_rexps = [ (r'Movies?', upgrade_movie),
-                     (r'Tv ?Shows?', upgrade_episode),
+                     (r'Tv[ _-]?Shows?', upgrade_episode),
                      (r'Series', upgrade_episode)
                      ]
     for frexp, upgrade_func in folder_rexps:

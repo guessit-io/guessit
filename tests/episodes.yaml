@@ -294,3 +294,16 @@
   audioChannels: '5.1'
   videoCodec: h264
   releaseGroup: CtrlHD
+
+? /media/bdc64bfe-e36f-4af8-b550-e6fd2dfaa507/TV_Shows/Doctor Who (2005)/Saison 6/Doctor Who (2005) - S06E13 - The Wedding of River Song.mkv
+: series: Doctor Who
+  season: 6
+  episodeNumber: 13
+  year: 2005
+  title: The Wedding of River Song
+
+? /mnt/videos/tvshows/Doctor Who/Season 06/E13 - The Wedding of River Song.mkv
+: series: Doctor Who
+  season: 6
+  episodeNumber: 13
+  title: The Wedding of River Song
