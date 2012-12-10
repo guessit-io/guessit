@@ -98,6 +98,9 @@ def guess_file_info(filename, filetype, info=None):
     result = []
     hashers = []
 
+    # Force unicode as soon as possible
+    filename = u(filename)
+
     if info is None:
         info = ['filename']
 

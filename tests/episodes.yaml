@@ -169,7 +169,7 @@
 
 ? Series/Ren & Stimpy/Ren And Stimpy - Onward & Upward-Adult Party Cartoon.avi
 : series: Ren And Stimpy
-  title: Onward & Upward
+  title: Onward & Upward-Adult Party Cartoon
 
 ? Series/Breaking Bad/Minisodes/Breaking.Bad.(Minisodes).01.Good.Cop.Bad.Cop.WEBRip.XviD.avi
 : series: Breaking Bad
@@ -241,6 +241,18 @@
   episodeNumber: 44
   episodeList: [44, 45, 46, 47, 48, 49, 50]
 
+? Example S01E01-02.avi
+: series: Example
+  season: 1
+  episodeNumber: 1
+  episodeList: [1, 2]
+
+? Example S01E01E02.avi
+: series: Example
+  season: 1
+  episodeNumber: 1
+  episodeList: [1, 2]
+
 ? Series/Baccano!/Baccano!_-_T1_-_Trailer_-_[Ayu](dae8173e).mkv
 : series: Baccano!
 
@@ -307,3 +319,14 @@
   season: 6
   episodeNumber: 13
   title: The Wedding of River Song
+
+? The.Simpsons.S24E03.Adventures.in.Baby-Getting.720p.WEB-DL.DD5.1.H.264-CtrlHD.mkv
+: series: The Simpsons
+  season: 24
+  episodeNumber: 3
+  title: Adventures in Baby-Getting
+  screenSize: 720p
+  format: WEB-DL
+  audioChannels: "5.1"
+  videoCodec: h264
+  releaseGroup: CtrlHD
