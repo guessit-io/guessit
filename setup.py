@@ -28,6 +28,17 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 NEWS = open(os.path.join(here, 'NEWS.rst')).read()
 
+
+requires = []
+
+
+entry_points = {
+    'console_scripts' : [
+        'guessit = guessit.__main__:main'
+    ]
+}
+
+
 args = dict(name = 'guessit',
             version = guessit.__version__,
             description = 'GuessIt - a library for guessing information from video files.',
@@ -52,7 +63,8 @@ args = dict(name = 'guessit',
             license = 'LGPLv3',
             packages = [ 'guessit', 'guessit.transfo' ],
             include_package_data=True,
-            install_requires = [],
+            install_requires = requires,
+            entry_points=entry_points,
             extras_require = { 'language_detection':  ['guess-language>=0.2'] }
             )
 
