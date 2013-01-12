@@ -80,7 +80,7 @@ def run_demo(episodes=True, movies=True):
             detect_filename(f, filetype = 'movie')
 
 
-if __name__ == '__main__':
+def main():
     slogging.setupLogging()
 
     parser = OptionParser(usage = 'usage: %prog [options] file1 [file2...]')
@@ -110,3 +110,6 @@ if __name__ == '__main__':
 
         else:
             parser.print_help()
+
+if __name__ == '__main__':
+    main()
