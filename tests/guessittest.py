@@ -20,6 +20,7 @@
 
 from __future__ import unicode_literals
 from guessit import base_text_type, u
+from guessit.slogging import setupLogging
 from unittest import *
 
 import yaml, logging, sys, os
@@ -38,12 +39,7 @@ def addImportPath(path):
     importPath = abspath(join(currentPath(), path))
     sys.path = [ importPath ] + sys.path
 
-# do not add those because it messes with the dirs when testing the pypi sdist
-#addImportPath('.')  # for the tests
-#addImportPath('..') # for import guessit
 
-
-from guessit.slogging import setupLogging
 
 setupLogging()
 logging.getLogger().setLevel(MAIN_LOGGING_LEVEL)

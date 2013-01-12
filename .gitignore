@@ -3,5 +3,6 @@
 .ropeproject
 
 dist
+build
 docs/_build
 guessit.egg-info

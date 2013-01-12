@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
 
 __version__ = '0.6-dev'
 __all__ = ['Guess', 'Language',
