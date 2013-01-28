@@ -328,3 +328,12 @@
   videoCodec: h264
   screenSize: 720p
   audioCodec: AC3
+
+? /Users/wackou/Movies/Cosmopolis.2012.LiMiTED.720p.BluRay.x264-AN0NYM0US[bb]/ano-cosmo.720p.mkv
+: title: Cosmopolis
+  year: 2012
+  screenSize: 720p
+  videoCodec: h264
+  releaseGroup: AN0NYM0US
+  format: BluRay
+  other: LIMITED

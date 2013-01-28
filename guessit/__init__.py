@@ -165,7 +165,7 @@ def guess_file_info(filename, filetype, info=None):
     # last minute adjustments
 
     # if country is in the guessed properties, make it part of the filename
-    if 'country' in result:
+    if 'series' in result and 'country' in result:
         result['series'] += ' (%s)' % result['country'].alpha2.upper()
 
 
