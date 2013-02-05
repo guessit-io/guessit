@@ -29,7 +29,7 @@ RED_FONT = "\x1B[0;31m"
 RESET_FONT = "\x1B[0m"
 
 
-def setupLogging(colored=True, with_time=False, with_thread=False):
+def setupLogging(colored=True, with_time=False, with_thread=False, filename=None):
     """Set up a nice colored logger as the main application logger."""
 
     class SimpleFormatter(logging.Formatter):
@@ -67,9 +67,14 @@ def setupLogging(colored=True, with_time=False, with_thread=False):
             result = result.replace('-CC-', color)
             return result
 
-    ch = logging.StreamHandler()
-    if colored and sys.platform != 'win32':
-        ch.setFormatter(ColoredFormatter(with_time, with_thread))
-    else:
+    if filename is not None:
+        ch = logging.FileHandler(filename, mode='w')
         ch.setFormatter(SimpleFormatter(with_time, with_thread))
+    else:
+        ch = logging.StreamHandler()
+        if colored and sys.platform != 'win32':
+            ch.setFormatter(ColoredFormatter(with_time, with_thread))
+        else:
+            ch.setFormatter(SimpleFormatter(with_time, with_thread))
+
     logging.getLogger().addHandler(ch)
