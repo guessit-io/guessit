@@ -6,10 +6,20 @@
 News
 ====
 
+0.5.4
+-----
+
+*Release date: 11-Feb-2013*
+
+* guessit can be installed as a system wide script (thanks @dplarson)
+* Enhanced logging facilities
+* Fixes for episode number and country detection
+
+
 0.5.3
 -----
 
-*Release Date: 1-Nov-2012*
+*Release date: 1-Nov-2012*
 
 * GuessIt can now optionally act as a wrapper around the 'guess-language' python
   module, and thus provide detection of the natural language in which a body of
@@ -21,7 +31,7 @@ News
 0.5.2
 -----
 
-*Release Date: 2-Oct-2012*
+*Release date: 2-Oct-2012*
 
 * Much improved auto-detection of filetype
 * Fixed some issues with the detection of release groups
