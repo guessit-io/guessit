@@ -37,6 +37,7 @@ def setupLogging(colored=True, with_time=False, with_thread=False, filename=None
     class SimpleFormatter(logging.Formatter):
         def __init__(self, with_time, with_thread):
             self.fmt = (('%(asctime)s ' if with_time else '') +
+                        '%(levelname)-8s ' +
                         '[%(name)s:%(funcName)s]' +
                         ('[%(threadName)s]' if with_thread else '') +
                         ' -- %(message)s')
