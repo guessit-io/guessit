@@ -21,6 +21,8 @@
 from __future__ import unicode_literals
 import logging
 import sys
+import os, os.path
+
 
 GREEN_FONT = "\x1B[0;32m"
 YELLOW_FONT = "\x1B[0;33m"
@@ -68,6 +70,10 @@ def setupLogging(colored=True, with_time=False, with_thread=False, filename=None
             return result
 
     if filename is not None:
+        # make sure we can write to our log file
+        logdir = os.path.dirname(filename)
+        if not os.path.exists(logdir):
+            os.makedirs(logdir)
         ch = logging.FileHandler(filename, mode='w')
         ch.setFormatter(SimpleFormatter(with_time, with_thread))
     else:
