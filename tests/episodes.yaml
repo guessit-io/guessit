@@ -330,3 +330,15 @@
   audioChannels: "5.1"
   videoCodec: h264
   releaseGroup: CtrlHD
+
+? /home/disaster/Videos/TV/Merlin/merlin_2008.5x02.arthurs_bane_part_two.repack.720p_hdtv_x264-fov.mkv
+: series: Merlin
+  season: 5
+  episodeNumber: 02
+  title: Arthurs bane part two
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: Fov
+  year: 2008
+  other: repack
