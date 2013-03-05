@@ -329,7 +329,7 @@
   screenSize: 720p
   audioCodec: AC3
 
-? /Users/wackou/Movies/Cosmopolis.2012.LiMiTED.720p.BluRay.x264-AN0NYM0US[bb]/ano-cosmo.720p.mkv
+? Movies/Cosmopolis.2012.LiMiTED.720p.BluRay.x264-AN0NYM0US[bb]/ano-cosmo.720p.mkv
 : title: Cosmopolis
   year: 2012
   screenSize: 720p
@@ -337,3 +337,11 @@
   releaseGroup: AN0NYM0US
   format: BluRay
   other: LIMITED
+
+? movies/La Science des Rêves (2006)/La.Science.Des.Reves.FRENCH.DVDRip.XviD-MP-AceBot.avi
+: title: La Science des Rêves
+  year: 2006
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: MP
+  language: French
