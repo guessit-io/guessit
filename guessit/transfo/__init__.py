@@ -22,15 +22,13 @@ from __future__ import unicode_literals
 from guessit import base_text_type, Guess
 from guessit.patterns import canonical_form
 from guessit.textutils import clean_string
-import unicodedata
 import logging
 
 log = logging.getLogger(__name__)
 
 
 def found_property(node, name, confidence):
-    node.guess = Guess({name: unicodedata.normalize('NFC', node.clean_value)},
-                       confidence=confidence)
+    node.guess = Guess({name: node.clean_value}, confidence=confidence)
     log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
 
 

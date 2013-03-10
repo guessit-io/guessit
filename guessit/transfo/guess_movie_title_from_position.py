@@ -33,8 +33,7 @@ def process(mtree):
         log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
 
     def found_title(node, confidence):
-        # apple, why oh why do you impose NFD on your poor users?...
-        found_property(node, 'title', unicodedata.normalize('NFC', node.clean_value), confidence)
+        found_property(node, 'title', node.clean_value, confidence)
 
     basename = mtree.node_at((-2,))
     all_valid = lambda leaf: len(leaf.clean_value) > 0

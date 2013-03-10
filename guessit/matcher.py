@@ -21,6 +21,7 @@
 from __future__ import unicode_literals
 from guessit import PY3, u
 from guessit.matchtree import MatchTree
+from guessit.textutils import normalize_unicode
 import logging
 
 log = logging.getLogger(__name__)
@@ -73,6 +74,9 @@ class IterativeMatcher(object):
             raise ValueError("filetype needs to be one of %s" % valid_filetypes)
         if not PY3 and not isinstance(filename, unicode):
             log.warning('Given filename to matcher is not unicode...')
+            filename = filename.decode('utf-8')
+
+        filename = normalize_unicode(filename)
 
         self.match_tree = MatchTree(filename)
         mtree = self.match_tree
