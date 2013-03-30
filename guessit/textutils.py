@@ -19,6 +19,7 @@
 #
 
 from __future__ import unicode_literals
+from guessit import s
 from guessit.patterns import sep
 import functools
 import unicodedata

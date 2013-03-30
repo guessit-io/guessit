@@ -19,7 +19,7 @@
 #
 
 from __future__ import unicode_literals
-from guessit import PY3, u
+from guessit import PY3, u, base_text_type
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode
 import logging
@@ -28,7 +28,7 @@ log = logging.getLogger(__name__)
 
 
 class IterativeMatcher(object):
-    def __init__(self, filename, filetype='autodetect'):
+    def __init__(self, filename, filetype='autodetect', opts=None):
         """An iterative matcher tries to match different patterns that appear
         in the filename.
 
@@ -78,6 +78,11 @@ class IterativeMatcher(object):
 
         filename = normalize_unicode(filename)
 
+        if opts is None:
+            opts = []
+        elif isinstance(opts, base_text_type):
+            opts = opts.split()
+
         self.match_tree = MatchTree(filename)
         mtree = self.match_tree
         mtree.guess.set('type', filetype, confidence=1.0)
@@ -116,12 +121,19 @@ class IterativeMatcher(object):
                          'guess_properties', 'guess_language',
                          'guess_video_rexps' ]
 
+        if 'nolanguage' in opts:
+            strategy.remove('guess_language')
+
         for name in strategy:
             apply_transfo(name)
 
         # more guessers for both movies and episodes
-        for name in ['guess_bonus_features', 'guess_year', 'guess_country']:
+        for name in ['guess_bonus_features', 'guess_year']:
             apply_transfo(name)
+
+        if 'nocountry' not in opts:
+            apply_transfo('guess_country')
+
 
         # split into '-' separated subgroups (with required separator chars
         # around the dash)
