@@ -21,7 +21,7 @@
 from __future__ import unicode_literals
 from guessit import base_text_type, u
 from guessit.slogging import setupLogging
-from unittest import *
+from unittest import TestCase, TestLoader, TextTestRunner
 
 import yaml, logging, sys, os
 from os.path import *
@@ -58,20 +58,25 @@ def allTests(testClass):
 
 class TestGuessit(TestCase):
 
-
-
-    def checkMinimumFieldsCorrect(self, filetype, filename, removeType=True):
+    def checkMinimumFieldsCorrect(self, filetype, filename, remove_type=True,
+                                  exclude_files=None):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
         def guess_func(string):
             return guess_file_info(string, filetype=filetype)
 
-        return self.checkFields(groundTruth, guess_func, removeType)
+        return self.checkFields(groundTruth, guess_func, remove_type, exclude_files)
 
-    def checkFields(self, groundTruth, guess_func, removeType=True):
+
+    def checkFields(self, groundTruth, guess_func, remove_type=True,
+                    exclude_files=None):
         correct, total = 0, 0
+        exclude_files = exclude_files or []
 
         for filename, required_fields in groundTruth.items():
             filename = u(filename)
+            if filename in exclude_files:
+                continue
+
             log.debug('\n' + '-' * 120)
             log.info('Guessing information for file: %s' % filename)
 
@@ -85,7 +90,7 @@ class TestGuessit(TestCase):
                 is_incomplete[0] = True
 
             # no need for these in the unittests
-            if removeType:
+            if remove_type:
                 try:
                     del found['type']
                 except:

@@ -18,23 +18,27 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
+from __future__ import unicode_literals
 from guessittest import *
 
+IGNORE_EPISODES = [ 'finale ' ]
+IGNORE_MOVIES = []
 
 class TestAutoDetectAll(TestGuessit):
     def testAutoMatcher(self):
         self.checkMinimumFieldsCorrect(filetype='autodetect',
                                        filename='autodetect.yaml',
-                                       removeType=False)
+                                       remove_type=False)
 
     def testAutoMatcherMovies(self):
         self.checkMinimumFieldsCorrect(filetype='autodetect',
-                                       filename='movies.yaml')
+                                       filename='movies.yaml',
+                                       exclude_files=IGNORE_MOVIES)
 
     def testAutoMatcherEpisodes(self):
         self.checkMinimumFieldsCorrect(filetype='autodetect',
-                                       filename='episodes.yaml')
+                                       filename='episodes.yaml',
+                                       exclude_files=IGNORE_EPISODES)
 
 
 suite = allTests(TestAutoDetectAll)

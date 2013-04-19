@@ -25,6 +25,7 @@ class TestTask(Task):
 test_ep = TestTask('episode', 'episodes')
 test_movie = TestTask('movie', 'movies')
 test_auto = TestTask('autodetect', 'autodetected files')
+test_auto_all = TestTask('autodetect_all', 'all files using autodetected type')
 test_lang = TestTask('language', 'languages')
 test_utils = TestTask('utils', 'utility functions')
 test_matchtree = TestTask('matchtree', 'MatchTree')

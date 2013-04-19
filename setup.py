@@ -65,7 +65,8 @@ args = dict(name = 'guessit',
             include_package_data=True,
             install_requires = requires,
             entry_points=entry_points,
-            extras_require = { 'language_detection':  ['guess-language>=0.2'] }
+            extras_require = { 'language_detection':  ['guess-language>=0.2'] },
+            test_suite = 'tests'
             )
 
 

@@ -25,7 +25,7 @@ class TestAutoDetect(TestGuessit):
     def testAutoDetect(self):
         self.checkMinimumFieldsCorrect(filetype='autodetect',
                                        filename='autodetect.yaml',
-                                       removeType=False)
+                                       remove_type=False)
 
 
 suite = allTests(TestAutoDetect)
