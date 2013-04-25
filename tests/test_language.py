@@ -20,6 +20,7 @@
 
 from __future__ import unicode_literals
 from guessittest import *
+import io
 
 class TestLanguage(TestGuessit):
 
@@ -81,7 +82,7 @@ class TestLanguage(TestGuessit):
 
     def test_opensubtitles(self):
         opensubtitles_langfile = file_in_same_dir(__file__, 'opensubtitles_languages_2012_05_09.txt')
-        langs = [ u(l).strip().split('\t') for l in open(opensubtitles_langfile) ][1:]
+        langs = [ u(l).strip().split('\t') for l in io.open(opensubtitles_langfile, encoding='utf-8') ][1:]
         for lang in langs:
             # check that we recognize the opensubtitles language code correctly
             # and that we are able to output this code from a language
