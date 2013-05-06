@@ -334,7 +334,7 @@
 ? /home/disaster/Videos/TV/Merlin/merlin_2008.5x02.arthurs_bane_part_two.repack.720p_hdtv_x264-fov.mkv
 : series: Merlin
   season: 5
-  episodeNumber: 02
+  episodeNumber: 2
   title: Arthurs bane part two
   screenSize: 720p
   format: HDTV
@@ -342,3 +342,9 @@
   releaseGroup: Fov
   year: 2008
   other: repack
+
+? "Da Vinci's Demons - 1x04 - The Magician.mkv"
+: series: "Da Vinci's Demons"
+  season: 1
+  episodeNumber: 4
+  title: The Magician
