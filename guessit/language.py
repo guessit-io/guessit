@@ -318,7 +318,7 @@ def search_language(string, lang_filter=None):
         'is', 'it', 'am', 'mad', 'men', 'man', 'run', 'sin', 'st', 'to',
         'no', 'non', 'war', 'min', 'new', 'car', 'day', 'bad', 'bat', 'fan',
         'fry', 'cop', 'zen', 'gay', 'fat', 'cherokee', 'got', 'an', 'as',
-        'cat', 'her', 'be', 'hat', 'sun', 'may', 'my', 'mr',
+        'cat', 'her', 'be', 'hat', 'sun', 'may', 'my', 'mr', 'rum', 'pi',
         # french words
         'bas', 'de', 'le', 'son', 'vo', 'vf', 'ne', 'ca', 'ce', 'et', 'que',
         'mal', 'est', 'vol', 'or', 'mon', 'se',

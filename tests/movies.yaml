@@ -348,3 +348,21 @@
 
 ? The_Italian_Job.mkv
 : title: The Italian Job
+
+? The.Rum.Diary.2011.1080p.BluRay.DTS.x264.D-Z0N3.mkv
+: title: The Rum Diary
+  year: 2011
+  screenSize: 1080p
+  format: BluRay
+  videoCodec: h264
+  audioCodec: DTS
+  releaseGroup: D-Z0N3
+
+? Life.Of.Pi.2012.1080p.BluRay.DTS.x264.D-Z0N3.mkv
+: title: Life Of Pi
+  year: 2012
+  screenSize: 1080p
+  format: BluRay
+  videoCodec: h264
+  audioCodec: DTS
+  releaseGroup: D-Z0N3
