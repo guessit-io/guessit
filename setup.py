@@ -61,12 +61,12 @@ args = dict(name = 'guessit',
             author_email = 'wackou@gmail.com',
             url = 'http://guessit.readthedocs.org/',
             license = 'LGPLv3',
-            packages = [ 'guessit', 'guessit.transfo' ],
+            packages = [ 'guessit', 'guessit.transfo', 'guessit.test' ],
             include_package_data=True,
             install_requires = requires,
             entry_points=entry_points,
             extras_require = { 'language_detection':  ['guess-language>=0.2'] },
-            test_suite = 'tests'
+            test_suite = 'guessit.test'
             )
 
 
