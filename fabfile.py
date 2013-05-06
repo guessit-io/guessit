@@ -118,9 +118,11 @@ def test_pypi_sdist():
         with prefix('source bin/activate'):
             local('pip install ../dist/*')
             local('pip install PyYaml') # to be able to run the tests
-            local('cp ../tests/*.py ../tests/*.yaml ../tests/*.txt .')
-            local('python test_autodetect.py')
-            local('python test_movie.py')
-            local('python test_episode.py')
-            local('python test_language.py')
+            local('python -m guessit.test.test_autodetect')
+            local('python -m guessit.test.test_autodetect_all')
+            local('python -m guessit.test.test_movie')
+            local('python -m guessit.test.test_episode')
+            local('python -m guessit.test.test_language')
+            local('python -m guessit.test.test_matchtree')
+            local('python -m guessit.test.test_utils')
     local('rm -fr %s' % d)
