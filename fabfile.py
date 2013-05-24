@@ -20,7 +20,7 @@ class TestTask(Task):
         self.__doc__ = 'Run the unittests for %s' % docstring
 
     def run(self):
-        local('PYTHONPATH=.:$PYTHONPATH python tests/%s.py' % self.name)
+        local('PYTHONPATH=.:$PYTHONPATH python guessit/test/%s.py' % self.name)
 
 test_ep = TestTask('episode', 'episodes')
 test_movie = TestTask('movie', 'movies')
