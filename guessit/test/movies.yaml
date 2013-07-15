@@ -326,6 +326,7 @@
   year: 2006
   format: BluRay
   videoCodec: h264
+  videoApi: DXVA
   screenSize: 720p
   audioCodec: AC3
 
@@ -383,6 +384,7 @@
   screenSize: 1080p
   audioCodec: DTS
   videoCodec: h264
+  videoApi: DXVA
   releaseGroup: EuReKa
 
 ? 2001.A.Space.Odyssey.1968.HDDVD.1080p.DTS.x264.dxva EuReKA.mkv
@@ -392,6 +394,7 @@
   screenSize: 1080p
   audioCodec: DTS
   videoCodec: h264
+  videoApi: DXVA
   releaseGroup: EuReKa
 
 ? 2012.2009.720p.BluRay.x264.DTS WiKi.mkv

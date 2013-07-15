@@ -1,3 +1,10 @@
+# Dubious tests
+#
+#? "finale "
+#: releaseGroup: FiNaLe
+#  extension: ""
+
+
 ? Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.avi
 : series: Californication
   season: 2
@@ -287,10 +294,6 @@
   videoCodec: h264
   releaseGroup: DIMENSION
 
-? "finale "
-: releaseGroup: FiNaLe
-  extension: ""
-
 ? /volume1/TV Series/Drawn Together/Season 1/Drawn Together 1x04 Requiem for a Reality Show.avi
 : series: Drawn Together
   season: 1
@@ -363,8 +366,17 @@
 : series: Game of Thrones
   season: 3
   episodeNumber: 6
-  screenSize: 1080i
+  screenSize: 1080p
   format: HDTV
   audioChannels: "5.1"
   videoCodec: MPEG2
   releaseGroup: TrollHD
+
+? gossip.girl.s01e18.hdtv.xvid-2hd.eng.srt
+: series: gossip girl
+  season: 1
+  episodeNumber: 18
+  format: HDTV
+  videoCodec: XviD
+  releaseGroup: 2HD
+  subtitleLanguage: english

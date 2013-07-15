@@ -110,11 +110,13 @@ def _guess_filename(filename, filetype):
             if any(prop in node.guess for prop in props):
                 yield node
 
-
     def warning(title):
         log.warning('%s, guesses: %s - %s' % (title, m.nice_string(), m2.nice_string()))
         return m
 
+
+    if m.get('title') is None:
+        return m
 
     if m.get('title') != m2.get('title'):
         title = next(find_nodes(mtree.match_tree, 'title'))
