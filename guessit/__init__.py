@@ -91,17 +91,6 @@ log.addHandler(h)
 
 
 def _guess_filename(filename, filetype):
-    mtree = IterativeMatcher(filename, filetype=filetype)
-    m = mtree.matched()
-
-    if 'language' not in m and 'subtitleLanguage' not in m:
-        return m
-
-    # if we found some language, make sure we didn't cut a title or sth...
-    mtree2 = IterativeMatcher(filename, filetype=filetype,
-                              opts=['nolanguage', 'nocountry'])
-    m2 = mtree2.matched()
-
     def find_nodes(tree, props):
         """Yields all nodes containing any of the given props."""
         if isinstance(props, base_text_type):
@@ -113,6 +102,26 @@ def _guess_filename(filename, filetype):
     def warning(title):
         log.warning('%s, guesses: %s - %s' % (title, m.nice_string(), m2.nice_string()))
         return m
+
+    mtree = IterativeMatcher(filename, filetype=filetype)
+
+    # if there are multiple possible years found, we assume the first one is
+    # part of the title, reparse the tree taking this into account
+    years = set(n.value for n in find_nodes(mtree.match_tree, 'year'))
+    if len(years) >= 2:
+        mtree = IterativeMatcher(filename, filetype=filetype,
+                                 opts=['skip_first_year'])
+
+
+    m = mtree.matched()
+
+    if 'language' not in m and 'subtitleLanguage' not in m:
+        return m
+
+    # if we found some language, make sure we didn't cut a title or sth...
+    mtree2 = IterativeMatcher(filename, filetype=filetype,
+                              opts=['nolanguage', 'nocountry'])
+    m2 = mtree2.matched()
 
 
     if m.get('title') is None:

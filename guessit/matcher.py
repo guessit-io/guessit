@@ -128,8 +128,8 @@ class IterativeMatcher(object):
             apply_transfo(name)
 
         # more guessers for both movies and episodes
-        for name in ['guess_bonus_features', 'guess_year']:
-            apply_transfo(name)
+        apply_transfo('guess_bonus_features')
+        apply_transfo('guess_year', skip_first_year=('skip_first_year' in opts))
 
         if 'nocountry' not in opts:
             apply_transfo('guess_country')
