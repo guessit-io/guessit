@@ -6,6 +6,16 @@
 News
 ====
 
+0.6
+---
+
+*Release date: 16-Jul-2013*
+
+* Better packaging: unittests and doc included in source tarball
+* Fixes everywhere: unicode, release group detection, language detection, ...
+* A few speed optimizations
+
+
 0.5.4
 -----
 
