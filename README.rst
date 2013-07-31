@@ -1,7 +1,11 @@
 Guessit
 =======
 
+.. image:: https://pypip.in/v/guessit/badge.png
+   :target: https://crate.io/packages/guessit
+
 .. image:: https://secure.travis-ci.org/wackou/guessit.png?branch=master
+   :target: http://travis-ci.org/wackou/guessit
 
 GuessIt is a python library that tries to extract as much information as
 possible from a video file.
@@ -12,7 +16,7 @@ both movies and tv shows episodes.
 
 For example, GuessIt can do the following::
 
-    $ python guessit.py "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
+    $ python -m guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
     For: Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
     GuessIt found: {
         [1.00] "mimetype": "video/x-msvideo",
