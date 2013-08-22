@@ -140,7 +140,7 @@ prop_multi = { 'format': { 'DVD': [ 'DVD', 'DVD-Rip', 'VIDEO-TS', 'DVDivX' ],
                                'DTS': [ 'DTS' ],
                                'AAC': [ 'He-AAC', 'AAC-He', 'AAC' ] },
 
-               'audioChannels': { '5.1': [ r'5\.1', 'DD5\.1', '5ch' ] },
+               'audioChannels': { '5.1': [ r'5\.1', 'DD5[\._ ]1', '5ch' ] },
 
                'episodeFormat': { 'Minisode': [ 'Minisodes?' ] }
 

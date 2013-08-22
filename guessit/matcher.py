@@ -134,6 +134,8 @@ class IterativeMatcher(object):
         if 'nocountry' not in opts:
             apply_transfo('guess_country')
 
+        apply_transfo('guess_idnumber')
+
 
         # split into '-' separated subgroups (with required separator chars
         # around the dash)
