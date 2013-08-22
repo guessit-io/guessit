@@ -19,7 +19,8 @@ def doctests():
     local('nosetests --with-doctest -vv guessit')
 
 
-TESTS = ['episode', 'movie', 'autodetect', 'language', 'utils']
+TESTS = ['episode', 'movie', 'autodetect', 'autodetect_all', 'language',
+         'utils', 'matchtree']
 
 def unittests():
     for t in TESTS:
