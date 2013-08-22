@@ -380,3 +380,43 @@
   videoCodec: XviD
   releaseGroup: 2HD
   subtitleLanguage: english
+
+? Wheels.S03E01E02.720p.HDTV.x264-IMMERSE.mkv
+: series: Wheels
+  season: 3
+  episodeNumber: 1
+  episodeList: [1, 2]
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: IMMERSE
+
+? Wheels.S03E01-02.720p.HDTV.x264-IMMERSE.mkv
+: series: Wheels
+  season: 3
+  episodeNumber: 1
+  episodeList: [1, 2]
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: IMMERSE
+
+? Wheels.S03E01-E02.720p.HDTV.x264-IMMERSE.mkv
+: series: Wheels
+  season: 3
+  episodeNumber: 1
+  episodeList: [1, 2]
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: IMMERSE
+
+? Wheels.S03E01-03.720p.HDTV.x264-IMMERSE.mkv
+: series: Wheels
+  season: 3
+  episodeNumber: 1
+  episodeList: [1, 2, 3]
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: IMMERSE
