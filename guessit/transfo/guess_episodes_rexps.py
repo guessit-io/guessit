@@ -44,11 +44,6 @@ def guess_episodes_rexps(string):
             span = (match.start() + span_adjust[0],
                     match.end() + span_adjust[1])
 
-            # episodes which have a season > 30 are most likely errors
-            # (Simpsons is at 24!)
-            if int(guess.get('season', 0)) > 30:
-                continue
-
             # decide whether we have only a single episode number or an
             # episode list
             if guess.get('episodeNumber'):
