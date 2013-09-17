@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 
-__version__ = '0.7-dev'
+__version__ = '0.6.1'
 __all__ = ['Guess', 'Language',
            'guess_file_info', 'guess_video_info',
            'guess_movie_info', 'guess_episode_info']

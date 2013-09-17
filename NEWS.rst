@@ -6,6 +6,15 @@
 News
 ====
 
+0.6.1
+-----
+
+*Release date: 18-Sep-2013*
+
+* New property "idNumber" that tries to identify a hash value or a
+  serial number
+* The usual bugfixes
+
 0.6
 ---
 
