@@ -42,7 +42,9 @@ property types::
       releaseGroup, website,
       cdNumber, cdNumberTotal,
       filmNumber, filmSeries,
-      bonusNumber, edition, other
+      bonusNumber, edition,
+      idNumber,                          # tries to identify a hash or a serial number
+      other
       ]
 
 

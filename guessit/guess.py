@@ -181,7 +181,7 @@ def choose_string(g1, g2):
     elif v1l in v2l:
         return (v1, combined_prob)
 
-    # in case of conflict, return the one with highest priority
+    # in case of conflict, return the one with highest confidence
     else:
         if c1 > c2:
             return (v1, c1 - c2)
