@@ -26,7 +26,7 @@ import guessit
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
-NEWS = open(os.path.join(here, 'NEWS.rst')).read()
+HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
 requires = []
@@ -42,7 +42,7 @@ entry_points = {
 args = dict(name = 'guessit',
             version = guessit.__version__,
             description = 'GuessIt - a library for guessing information from video files.',
-            long_description = README + '\n\n' + NEWS,
+            long_description = README + '\n\n' + HISTORY,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
             classifiers = [ 'Development Status :: 5 - Production/Stable',
                             'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
