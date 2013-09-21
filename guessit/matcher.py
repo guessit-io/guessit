@@ -21,7 +21,7 @@
 from __future__ import unicode_literals
 from guessit import PY3, u, base_text_type
 from guessit.matchtree import MatchTree
-from guessit.textutils import normalize_unicode
+from guessit.textutils import normalize_unicode, clean_string
 import logging
 
 log = logging.getLogger(__name__)
@@ -62,9 +62,9 @@ class IterativeMatcher(object):
         (for more info, see guess.matchtree.to_string)
 
 
-         Second, it tries to merge all this information into a single object
-         containing all the found properties, and does some (basic) conflict
-         resolution when they arise.
+        Second, it tries to merge all this information into a single object
+        containing all the found properties, and does some (basic) conflict
+        resolution when they arise.
         """
 
         valid_filetypes = ('autodetect', 'subtitle', 'video',
@@ -84,6 +84,11 @@ class IterativeMatcher(object):
             opts = opts.split()
 
         self.match_tree = MatchTree(filename)
+
+        # sanity check: make sure we don't process a (mostly) empty string
+        if clean_string(filename) == '':
+            return
+
         mtree = self.match_tree
         mtree.guess.set('type', filetype, confidence=1.0)
 
