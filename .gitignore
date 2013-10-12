@@ -1,6 +1,7 @@
 *.pyc
 .eric4project
 .ropeproject
+.idea
 
 dist
 build

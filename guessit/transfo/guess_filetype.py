@@ -104,9 +104,11 @@ def guess_filetype(mtree, filetype):
     fname = clean_string(filename).lower()
     for m in MOVIES:
         if m in fname:
+            log.debug('Found in exception list of movies -> type = movie')
             upgrade_movie()
     for s in SERIES:
         if s in fname:
+            log.debug('Found in exception list of series -> type = episode')
             upgrade_episode()
 
     # now look whether there are some specific hints for episode vs movie
@@ -115,6 +117,7 @@ def guess_filetype(mtree, filetype):
         for rexp, _, _ in episode_rexps:
             match = re.search(rexp, filename, re.IGNORECASE)
             if match:
+                log.debug('Found matching regexp: "%s" (string = "%s") -> type = episode', rexp, match.group())
                 upgrade_episode()
                 break
 
@@ -133,24 +136,29 @@ def guess_filetype(mtree, filetype):
                 possible = False
 
             if possible:
+                log.debug('Found possible episode number: %s (from string "%s") -> type = episode', epnumber, match.group())
                 upgrade_episode()
 
         # if we have certain properties characteristic of episodes, it is an ep
         for prop, value, _, _ in find_properties(filename):
             log.debug('prop: %s = %s' % (prop, value))
             if prop == 'episodeFormat':
+                log.debug('Found characteristic property of episodes: %s = "%s"', prop, value)
                 upgrade_episode()
                 break
 
             elif compute_canonical_form('format', value) == 'DVB':
+                log.debug('Found characteristic property of episodes: %s = "%s"', prop, value)
                 upgrade_episode()
                 break
 
         # origin-specific type
         if 'tvu.org.ru' in filename:
+            log.debug('Found characteristic property of episodes: %s = "%s"', prop, value)
             upgrade_episode()
 
         # if no episode info found, assume it's a movie
+        log.debug('Nothing characteristic found, assuming type = movie')
         upgrade_movie()
 
     filetype = filetype_container[0]
