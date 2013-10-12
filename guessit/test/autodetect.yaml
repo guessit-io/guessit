@@ -151,3 +151,14 @@
   screenSize: 720p
   format: HDTV
   videoCodec: h264
+
+? White.House.Down.2013.1080p.BluRay.DTS-HD.MA.5.1.x264-PublicHD.mkv
+: type: movie
+  title: White House Down
+  year: 2013
+  screenSize: 1080p
+  format: BluRay
+  audioCodec: DTS
+  videoCodec: h264
+  releaseGroup: PublicHD
+  audioChannels: "5.1"
