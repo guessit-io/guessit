@@ -162,3 +162,15 @@
   videoCodec: h264
   releaseGroup: PublicHD
   audioChannels: "5.1"
+
+? Hostages.S01E01.Pilot.for.Air.720p.WEB-DL.DD5.1.H.264-NTb.nfo
+: type: episodeinfo
+  series: Hostages
+  title: Pilot for Air
+  season: 1
+  episodeNumber: 1
+
+? Despicable.Me.2.2013.1080p.BluRay.x264-VeDeTT.nfo
+: type: movieinfo
+  title: Despicable Me 2
+  year: 2013

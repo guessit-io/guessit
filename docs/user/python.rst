@@ -8,7 +8,8 @@ The main entry points to the python module are the ``guess_video_info``,
 ``guess_movie_info`` and ``guess_episode_info``.
 
 The ``guess_video_info`` function will try to autodetect the type of the
-file, either movie, moviesubtitle, episode or episodesubtitle.
+file, either movie, moviesubtitle, movieinfo, episode, episodesubtitle or
+episodeinfo.
 
 Pass them the filename and the desired information type:
 
