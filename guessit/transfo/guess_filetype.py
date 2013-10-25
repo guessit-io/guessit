@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from guessit import Guess
-from guessit.patterns import (subtitle_exts, video_exts, episode_rexps,
+from guessit.patterns import (subtitle_exts, info_exts, video_exts, episode_rexps,
                               find_properties, compute_canonical_form)
 from guessit.date import valid_year
 from guessit.textutils import clean_string
@@ -53,12 +53,16 @@ def guess_filetype(mtree, filetype):
             filetype_container[0] = 'episode'
         elif filetype_container[0] == 'subtitle':
             filetype_container[0] = 'episodesubtitle'
+        elif filetype_container[0] == 'info':
+            filetype_container[0] = 'episodeinfo'
 
     def upgrade_movie():
         if filetype_container[0] == 'video':
             filetype_container[0] = 'movie'
         elif filetype_container[0] == 'subtitle':
             filetype_container[0] = 'moviesubtitle'
+        elif filetype_container[0] == 'info':
+            filetype_container[0] = 'movieinfo'
 
     def upgrade_subtitle():
         if 'movie' in filetype_container[0]:
@@ -67,6 +71,14 @@ def guess_filetype(mtree, filetype):
             filetype_container[0] = 'episodesubtitle'
         else:
             filetype_container[0] = 'subtitle'
+
+    def upgrade_info():
+        if 'movie' in filetype_container[0]:
+            filetype_container[0] = 'movieinfo'
+        elif 'episode' in filetype_container[0]:
+            filetype_container[0] = 'episodeinfo'
+        else:
+            filetype_container[0] = 'info'
 
     def upgrade(type='unknown'):
         if filetype_container[0] == 'autodetect':
@@ -77,6 +89,9 @@ def guess_filetype(mtree, filetype):
     fileext = os.path.splitext(filename)[1][1:].lower()
     if fileext in subtitle_exts:
         upgrade_subtitle()
+        other = { 'container': fileext }
+    elif fileext in info_exts:
+        upgrade_info()
         other = { 'container': fileext }
     elif fileext in video_exts:
         upgrade(type='video')
@@ -112,7 +127,7 @@ def guess_filetype(mtree, filetype):
             upgrade_episode()
 
     # now look whether there are some specific hints for episode vs movie
-    if filetype_container[0] in ('video', 'subtitle'):
+    if filetype_container[0] in ('video', 'subtitle', 'info'):
         # if we have an episode_rexp (eg: s02e13), it is an episode
         for rexp, _, _ in episode_rexps:
             match = re.search(rexp, filename, re.IGNORECASE)
