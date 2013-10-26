@@ -38,7 +38,8 @@ class IterativeMatcher(object):
         a movie.
 
         The recognized 'filetype' values are:
-        [ autodetect, subtitle, movie, moviesubtitle, episode, episodesubtitle ]
+        [ autodetect, subtitle, info, movie, moviesubtitle, movieinfo, episode,
+        episodesubtitle, episodeinfo ]
 
 
         The IterativeMatcher works mainly in 2 steps:
@@ -67,9 +68,9 @@ class IterativeMatcher(object):
         resolution when they arise.
         """
 
-        valid_filetypes = ('autodetect', 'subtitle', 'video',
-                           'movie', 'moviesubtitle',
-                           'episode', 'episodesubtitle')
+        valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
+                           'movie', 'moviesubtitle', 'movieinfo',
+                           'episode', 'episodesubtitle', 'episodeinfo')
         if filetype not in valid_filetypes:
             raise ValueError("filetype needs to be one of %s" % valid_filetypes)
         if not PY3 and not isinstance(filename, unicode):
@@ -116,7 +117,7 @@ class IterativeMatcher(object):
         #       - language before episodes_rexps
         #       - properties before language (eg: he-aac vs hebrew)
         #       - release_group before properties (eg: XviD-?? vs xvid)
-        if mtree.guess['type'] in ('episode', 'episodesubtitle'):
+        if mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo'):
             strategy = [ 'guess_date', 'guess_website', 'guess_release_group',
                          'guess_properties', 'guess_language',
                          'guess_video_rexps',
@@ -148,7 +149,7 @@ class IterativeMatcher(object):
 
         # 5- try to identify the remaining unknown groups by looking at their
         #    position relative to other known elements
-        if mtree.guess['type'] in ('episode', 'episodesubtitle'):
+        if mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo'):
             apply_transfo('guess_episode_info_from_position')
         else:
             apply_transfo('guess_movie_title_from_position')
