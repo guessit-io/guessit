@@ -32,7 +32,8 @@ def guess_language(string):
     language, span, confidence = search_language(string)
     if language:
         return (Guess({'language': language},
-                      confidence=confidence),
+                      confidence=confidence,
+                      raw= string[span[0]:span[1]]),
                 span)
 
     return None, None
