@@ -127,7 +127,7 @@ prop_multi = { 'format': { 'DVD': [ 'DVD', 'DVD-Rip', 'VIDEO-TS', 'DVDivX' ],
                'screenSize': { '480p': [ '480[pi]?' ],
                                '720p': [ '720[pi]?' ],
                                '1080i': [ '1080i' ],
-                               '1080p': [ '1080p' ] },
+                               '1080p': [ '1080p', '1080[^i]' ] },
 
                'videoCodec': { 'XviD': [ 'Xvid' ],
                                'DivX': [ 'DVDivX', 'DivX' ],
