@@ -69,18 +69,22 @@ class Guess(UnicodeMixin, dict):
 
         return data
 
-    def nice_string(self):
-        data = self.to_dict()
-
-        parts = json.dumps(data, indent=4).split('\n')
-        for i, p in enumerate(parts):
-            if p[:5] != '    "':
-                continue
-
-            prop = p.split('"')[1]
-            parts[i] = ('    [%.2f] "' % self.confidence(prop)) + p[5:]
-
-        return '\n'.join(parts)
+    def nice_string(self, advanced=False):
+        if advanced:
+            data = self.to_dict(advanced)
+            return json.dumps(data, indent=4)
+        else:            
+            data = self.to_dict()
+    
+            parts = json.dumps(data, indent=4).split('\n')
+            for i, p in enumerate(parts):
+                if p[:5] != '    "':
+                    continue
+    
+                prop = p.split('"')[1]
+                parts[i] = ('    [%.2f] "' % self.confidence(prop)) + p[5:]
+    
+            return '\n'.join(parts)
 
     def __unicode__(self):
         return u(self.to_dict())
