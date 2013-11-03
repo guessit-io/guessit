@@ -130,8 +130,20 @@ class IterativeMatcher(object):
         if 'nolanguage' in opts:
             strategy.remove('guess_language')
 
+        strategies_opts = {} 
         for name in strategy:
-            apply_transfo(name)
+            for opt in opts:
+                if opt.startswith(name):
+                    if not name in strategies_opts:
+                        strategies_opts[name] = []
+                    strategies_opts[name].append(opt[len(name)+1:])
+
+        for name in strategy:
+            strategy_opts = strategies_opts.get(name)
+            if strategy_opts:
+                apply_transfo(name, strategy_opts)
+            else:
+                apply_transfo(name)
 
         # more guessers for both movies and episodes
         apply_transfo('guess_bonus_features')
