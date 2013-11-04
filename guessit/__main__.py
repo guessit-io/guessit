@@ -24,6 +24,9 @@ from guessit import u
 from guessit import slogging, guess_file_info
 from optparse import OptionParser
 import logging
+import sys
+import os
+import locale
 
 
 def detect_filename(filename, filetype, info=['filename']):
@@ -83,6 +86,11 @@ def run_demo(episodes=True, movies=True):
 def main():
     slogging.setupLogging()
 
+    # see http://bugs.python.org/issue2128
+    if sys.version_info.major < 3 and os.name == 'nt':        
+        for i, a in enumerate(sys.argv):
+            sys.argv[i] = a.decode(locale.getpreferredencoding())
+        
     parser = OptionParser(usage = 'usage: %prog [options] file1 [file2...]')
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
                       help = 'display debug output')
