@@ -34,7 +34,7 @@ video_exts = ['3g2', '3gp', '3gp2', 'asf', 'avi', 'divx', 'flv', 'm4v', 'mk2',
 group_delimiters = [ '()', '[]', '{}' ]
 
 # separator character regexp
-sep = r'[][)(}{+ /\._-]' # regexp art, hehe :D
+sep = r'[][,)(}{+ /\._-]' # regexp art, hehe :D
 
 # character used to represent a deleted char (when matching groups)
 deleted = '_'
