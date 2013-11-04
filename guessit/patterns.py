@@ -124,6 +124,9 @@ prop_multi = { 'format': { 'DVD': [ 'DVD', 'DVD-Rip', 'VIDEO-TS', 'DVDivX' ],
                            'VHS': [ 'VHS' ],
                            'WEB-DL': [ 'WEB-DL' ] },
 
+               'dimension': { '2D': [ '2D' ],
+                              '3D': [ '3D' ] },
+
                'screenSize': { '480p': [ '480[pi]?' ],
                                '720p': [ '720[pi]?' ],
                                '1080i': [ '1080i' ],
