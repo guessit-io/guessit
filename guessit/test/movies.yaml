@@ -413,3 +413,11 @@
   videoCodec: XviD
   audioChannels: "5.1"
   idNumber: XD607ebb-BRc59935-5155473f-1c5f49
+  
+? Pacific.Rim.3D.2013.COMPLETE.BLURAY-PCH.avi
+: title: Pacific Rim
+  year: 2013
+  format: BluRay
+  is3D: True
+  releaseGroup: PCH
+  other: complete

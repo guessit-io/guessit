@@ -4,7 +4,7 @@
 .idea
 .project
 .pydevproject
-.settings/
+.settings
 
 dist
 build
