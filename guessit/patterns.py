@@ -124,8 +124,7 @@ prop_multi = { 'format': { 'DVD': [ 'DVD', 'DVD-Rip', 'VIDEO-TS', 'DVDivX' ],
                            'VHS': [ 'VHS' ],
                            'WEB-DL': [ 'WEB-DL' ] },
 
-               'dimension': { '2D': [ '2D' ],
-                              '3D': [ '3D' ] },
+               'is3D': { True: [ '3D' ] },
 
                'screenSize': { '480p': [ '480[pi]?' ],
                                '720p': [ '720[pi]?' ],
@@ -242,8 +241,9 @@ def canonical_form(string):
 def compute_canonical_form(property_name, value):
     """Return the canonical form of a property given its type if it is a valid
     one, None otherwise."""
-    for canonical_form, rexps in properties_rexps[property_name].items():
-        for rexp in rexps:
-            if rexp.match(value):
-                return canonical_form
+    if isinstance(value, basestring):
+        for canonical_form, rexps in properties_rexps[property_name].items():
+            for rexp in rexps:
+                if rexp.match(value):
+                    return canonical_form
     return None
