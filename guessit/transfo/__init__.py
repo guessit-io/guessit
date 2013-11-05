@@ -52,11 +52,17 @@ def format_guess(guess):
 
 def find_and_split_node(node, strategy, logger):
     string = ' %s ' % node.value # add sentinels
-    for matcher, confidence in strategy:
+    for matcher, confidence, args, kwargs in strategy:
+        all_args = [string]
         if getattr(matcher, 'use_node', False):
-            result, span = matcher(string, node)
+            all_args.append(node)
+        if args:
+            all_args.append(args)
+
+        if kwargs:
+            result, span = matcher(*all_args, **kwargs)
         else:
-            result, span = matcher(string)
+            result, span = matcher(*all_args)
 
         if result:
             # readjust span to compensate for sentinels
@@ -84,10 +90,12 @@ def find_and_split_node(node, strategy, logger):
 
 
 class SingleNodeGuesser(object):
-    def __init__(self, guess_func, confidence, logger=None):
+    def __init__(self, guess_func, confidence, logger, *args, **kwargs):
         self.guess_func = guess_func
         self.confidence = confidence
         self.logger = logger
+        self.args = args
+        self.kwargs = kwargs
 
     def process(self, mtree):
         # strategy is a list of pairs (guesser, confidence)
@@ -95,7 +103,7 @@ class SingleNodeGuesser(object):
         #   it will override it, otherwise it will leave the guess confidence
         # - if the guesser returns a simple dict as a guess and confidence is
         #   specified, it will use it, or 1.0 otherwise
-        strategy = [ (self.guess_func, self.confidence) ]
+        strategy = [ (self.guess_func, self.confidence, self.args, self.kwargs) ]
 
         for node in mtree.unidentified_leaves():
             find_and_split_node(node, strategy, self.logger)
