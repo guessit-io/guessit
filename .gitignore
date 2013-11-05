@@ -2,6 +2,9 @@
 .eric4project
 .ropeproject
 .idea
+.project
+.pydevproject
+.settings
 
 dist
 build
