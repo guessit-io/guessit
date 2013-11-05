@@ -106,6 +106,8 @@ def _guess_filename(filename, filetype):
 
     mtree = IterativeMatcher(filename, filetype=filetype)
 
+    m = mtree.matched()
+
     second_pass_opts = []
 
     # if there are multiple possible years found, we assume the first one is
@@ -121,7 +123,7 @@ def _guess_filename(filename, filetype):
     for title_node in title_nodes:
         title_spans[title_node.span[0]] = title_node
         title_spans[title_node.span[1]] = title_node
-        
+                
     for lang_key in ('language', 'subtitleLanguage'):
         langs = {}        
         lang_nodes = set(n for n in find_nodes(mtree.match_tree, lang_key))
@@ -130,6 +132,13 @@ def _guess_filename(filename, filetype):
             lang = lang_node.guess.get(lang_key, None)
             if len(lang_node.value) > 3 and (lang_node.span[0] in title_spans.keys() or lang_node.span[1] in title_spans.keys()):
                 # Language is next or before title, and is not a language code. Add to skip for 2nd pass.
+                
+                # if filetype is subtitle and the language appears last, just before
+                # the extension, then it is likely a subtitle language
+                parts = clean_string(lang_node.root.value).split()
+                if m['type'] in ['moviesubtitle', 'episodesubtitle'] and (parts.index(lang_node.value) == len(parts) - 2):
+                    continue
+                
                 to_skip_language_nodes.append(lang_node)
             elif not lang in langs:
                 langs[lang] = lang_node
@@ -169,29 +178,7 @@ def _guess_filename(filename, filetype):
     if m.get('title') != m2.get('title'):
         title = next(find_nodes(mtree.match_tree, 'title'))
         title2 = next(find_nodes(mtree2.match_tree, 'title'))
-
-        langs = list(find_nodes(mtree.match_tree, ['language', 'subtitleLanguage']))
-        if not langs:
-            return warning('A weird error happened with language detection')
-
-        # find the language that is likely more relevant
-        for lng in langs:
-            if lng.value in title2.value:
-                # if the language was detected as part of a potential title,
-                # look at this one in particular
-                lang = lng
-                break
-        else:
-            # pick the first one if we don't have a better choice
-            lang = langs[0]
-
-        # if filetype is subtitle and the language appears last, just before
-        # the extension, then it is likely a subtitle language
-        parts = clean_string(title.root.value).split()
-        if (m['type'] in ['moviesubtitle', 'episodesubtitle'] and
-            parts.index(lang.value) == len(parts) - 2):
-            return m
-
+                            
         # if a node is in an explicit group, then the correct title is probably
         # the other one
         if title.root.node_at(title.node_idx[:2]).is_explicit():
