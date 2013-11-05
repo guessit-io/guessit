@@ -116,33 +116,35 @@ def _guess_filename(filename, filetype):
         
     to_skip_language_nodes = []    
 
-    lang_nodes = set(n for n in find_nodes(mtree.match_tree, ['language', 'subtitleLanguage']))
     title_nodes = set(n for n in find_nodes(mtree.match_tree, ['title', 'series']))
     title_spans = {}
     for title_node in title_nodes:
         title_spans[title_node.span[0]] = title_node
         title_spans[title_node.span[1]] = title_node
         
-    langs = {}
-    for lang_node in lang_nodes:
-        lang = lang_node.guess.get('language', lang_node.guess.get('subtitleLanguage', None))
-        if len(lang_node.value) > 3 and (lang_node.span[0] in title_spans.keys() or lang_node.span[1] in title_spans.keys()):
-            # Language is next or before title, and is not a language code. Add to skip for 2nd pass.
-            to_skip_language_nodes.append(lang_node)
-        elif not lang in langs:
-            langs[lang] = lang_node
-        else:
-            # The same language was found. Keep the more confident one, and add others to skip for 2nd pass.
-            existing_lang_node = langs[lang]          
-            to_skip = None
-            if existing_lang_node.guess.confidence('language') >= lang_node.guess.confidence('language'):
-                # lang_node is to remove
-                to_skip = lang_node
-            else:
-                # existing_lang_node is to remove
+    for lang_key in ('language', 'subtitleLanguage'):
+        langs = {}        
+        lang_nodes = set(n for n in find_nodes(mtree.match_tree, lang_key))
+        
+        for lang_node in lang_nodes:
+            lang = lang_node.guess.get(lang_key, None)
+            if len(lang_node.value) > 3 and (lang_node.span[0] in title_spans.keys() or lang_node.span[1] in title_spans.keys()):
+                # Language is next or before title, and is not a language code. Add to skip for 2nd pass.
+                to_skip_language_nodes.append(lang_node)
+            elif not lang in langs:
                 langs[lang] = lang_node
-                to_skip = existing_lang_node
-            to_skip_language_nodes.append(to_skip)
+            else:
+                # The same language was found. Keep the more confident one, and add others to skip for 2nd pass.
+                existing_lang_node = langs[lang]          
+                to_skip = None
+                if existing_lang_node.guess.confidence('language') >= lang_node.guess.confidence('language'):
+                    # lang_node is to remove
+                    to_skip = lang_node
+                else:
+                    # existing_lang_node is to remove
+                    langs[lang] = lang_node
+                    to_skip = existing_lang_node
+                to_skip_language_nodes.append(to_skip)
             
     if to_skip_language_nodes:
         for to_skip_language_node in to_skip_language_nodes:
