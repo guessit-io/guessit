@@ -43,7 +43,7 @@ property types::
       series, season, episodeNumber,     # for episodes only
       date, year,                        # 'date' instance of datetime.date
       language, subtitleLanguage,        # instances of guessit.Language
-      container, format,
+      container, format, is3D,
       videoCodec, audioCodec,
       audioChannels, screenSize,
       releaseGroup, website,
