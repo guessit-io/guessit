@@ -34,7 +34,7 @@ def guess_properties(string):
     except IndexError:
         return None, None
 
-_idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{10,})') # 1.0, (0, 0))
+_idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})') # 1.0, (0, 0))
 
 def guess_idnumber(string):
     match = _idnum.search(string)
