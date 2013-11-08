@@ -8,6 +8,12 @@ History
 
 
 
+0.7 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
 0.6.2 (2013-11-08)
 ------------------
 
