@@ -29,14 +29,14 @@ import os
 import locale
 
 
-def detect_filename(filename, filetype, info=['filename']):
+def detect_filename(filename, filetype, info=['filename'], advanced = False):
     filename = u(filename)
 
     print('For:', filename)
-    print('GuessIt found:', guess_file_info(filename, filetype, info).nice_string())
+    print('GuessIt found:', guess_file_info(filename, filetype, info).nice_string(advanced))
 
 
-def run_demo(episodes=True, movies=True):
+def run_demo(episodes=True, movies=True, advanced=False):
     # NOTE: tests should not be added here but rather in the tests/ folder
     #       this is just intended as a quick example
     if episodes:
@@ -53,7 +53,7 @@ def run_demo(episodes=True, movies=True):
 
         for f in testeps:
             print('-'*80)
-            detect_filename(f, filetype='episode')
+            detect_filename(f, filetype='episode', advanced=advanced)
 
 
     if movies:
@@ -80,7 +80,7 @@ def run_demo(episodes=True, movies=True):
 
         for f in testmovies:
             print('-'*80)
-            detect_filename(f, filetype = 'movie')
+            detect_filename(f, filetype = 'movie', advanced = advanced)
 
 
 def main():
@@ -100,6 +100,8 @@ def main():
                              'them, comma-separated')
     parser.add_option('-t', '--type', dest = 'filetype', default = 'autodetect',
                       help = 'the suggested file type: movie, episode or autodetect')
+    parser.add_option('-a', '--advanced', dest = 'advanced', action='store_true', default = False,
+                  help = 'display advanced information for filename guesses, as json output')
     parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
                       help = 'run a few builtin tests instead of analyzing a file')
 
@@ -108,13 +110,14 @@ def main():
         logging.getLogger('guessit').setLevel(logging.DEBUG)
 
     if options.demo:
-        run_demo(episodes=True, movies=True)
+        run_demo(episodes=True, movies=True, advanced=options.advanced)
     else:
         if args:
             for filename in args:
                 detect_filename(filename,
                                 filetype = options.filetype,
-                                info = options.info.split(','))
+                                info = options.info.split(','),
+                                advanced = options.advanced)
 
         else:
             parser.print_help()

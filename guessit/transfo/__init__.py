@@ -28,7 +28,7 @@ log = logging.getLogger(__name__)
 
 
 def found_property(node, name, confidence):
-    node.guess = Guess({name: node.clean_value}, confidence=confidence)
+    node.guess = Guess({name: node.clean_value}, confidence=confidence, raw=node.value)
     log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
 
 
@@ -75,7 +75,7 @@ def find_and_split_node(node, strategy, logger):
                 if confidence is None:
                     confidence = 1.0
 
-            guess = format_guess(Guess(result, confidence=confidence))
+            guess = format_guess(Guess(result, confidence=confidence, raw=string[span[0] + 1:span[1] + 1]))
             msg = 'Found with confidence %.2f: %s' % (confidence, guess)
             (logger or log).debug(msg)
 
