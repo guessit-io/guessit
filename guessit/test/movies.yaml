@@ -413,7 +413,7 @@
   videoCodec: XviD
   audioChannels: "5.1"
   idNumber: XD607ebb-BRc59935-5155473f-1c5f49
-  
+
 ? Pacific.Rim.3D.2013.COMPLETE.BLURAY-PCH.avi
 : title: Pacific Rim
   year: 2013
@@ -421,3 +421,24 @@
   is3D: True
   releaseGroup: PCH
   other: complete
+
+? Immersion.French.2011.STV.READNFO.QC.FRENCH.ENGLISH.NTSC.DVDR.nfo
+: title: Immersion French
+  year: 2011
+  language:
+    - French
+    - English
+
+? Immersion.French.2011.STV.READNFO.QC.FRENCH.NTSC.DVDR.nfo
+: title: Immersion French
+  year: 2011
+  language: French
+
+? Immersion.French.2011.STV.READNFO.QC.NTSC.DVDR.nfo
+: title: Immersion French
+  year: 2011
+
+? French.Immersion.2011.STV.READNFO.QC.ENGLISH.NTSC.DVDR.nfo
+: title: French Immersion
+  year: 2011
+  language: ENGLISH
