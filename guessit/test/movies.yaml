@@ -442,3 +442,11 @@
 : title: French Immersion
   year: 2011
   language: ENGLISH
+
+? Howl's_Moving_Castle_(2004)_[720p,HDTV,x264,DTS]-FlexGet.avi
+: videoCodec: h264
+  format: HDTV
+  title: Howl's Moving Castle
+  screenSize: 720p
+  year: 2004
+  audioCodec: DTS
