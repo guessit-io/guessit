@@ -43,19 +43,35 @@ def strip_brackets(s):
     return s
 
 
+_dotted_rexp = re.compile(r'(?:\W|^)(([A-Za-z]\.){2,}[A-Za-z]\.?)')
+
 def clean_string(st):
     for c in sep:
         # do not remove certain chars
         if c in ['-', ',']:
             continue
+
+        if c == '.':
+            # we should not remove the dots for acronyms and such
+            dotted = _dotted_rexp.search(st)
+            if dotted:
+                s = dotted.group(1)
+                exclude_begin, exclude_end = dotted.span(1)
+
+                st = (st[:exclude_begin].replace(c, ' ') +
+                      st[exclude_begin:exclude_end] +
+                      st[exclude_end:].replace(c, ' '))
+                continue
+
+
         st = st.replace(c, ' ')
     parts = st.split()
     result = ' '.join(p for p in parts if p != '')
 
     # now also remove dashes on the outer part of the string
-    while result and result[0] in sep:
+    while result and result[0] in '-':
         result = result[1:]
-    while result and result[-1] in sep:
+    while result and result[-1] in '-':
         result = result[:-1]
 
     return result
