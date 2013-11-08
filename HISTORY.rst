@@ -8,7 +8,7 @@ History
 
 
 
-0.6.2 (unreleased)
+0.6.2 (2013-11-08)
 ------------------
 
 * Added support for nfo files
