@@ -1,4 +1,4 @@
-Guessit
+GuessIt
 =======
 
 .. image:: https://pypip.in/v/guessit/badge.png
@@ -55,10 +55,13 @@ property types::
       ]
 
 
-Guessit also allows you to compute a whole lof of hashes from a file,
+GuessIt also allows you to compute a whole lof of hashes from a file,
 namely all the ones you can find in the hashlib python module (md5,
 sha1, ...), but also the Media Player Classic hash that is used (amongst
 others) by OpenSubtitles and SMPlayer, as well as the ed2k hash.
+
+If you have the 'guess-language' python module installed, GuessIt can also
+analyze a subtitle file's contents and detect which language it is written in.
 
 
 Install

@@ -1,4 +1,5 @@
 recursive-include docs *.rst *.py *.html *.png
+include HISTORY.rst
 graft docs/_themes
 include guessit/*.txt
 include guessit/test/*.yaml

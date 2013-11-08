@@ -11,7 +11,10 @@ History
 0.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+* Added support for nfo files
+* GuessIt can now output advanced information as json ('-a' on the command line)
+* Better language detection
+* Added new property: 'is3D'
 
 
 0.6.1 (2013-09-18)
