@@ -54,6 +54,8 @@ else:
     def u(x):
         if isinstance(x, str):
             return x.decode('utf-8')
+        if isinstance(x, list):
+            return [ u(s) for s in x ]
         return unicode(x)
     def s(x):
         if isinstance(x, unicode):
@@ -171,7 +173,7 @@ def _guess_filename(filename, filetype):
                                  opts=second_pass_opts,
                                  transfo_opts=second_pass_transfo_opts)
 
-    m = mtree.matched()
+        m = mtree.matched()
 
     if 'language' not in m and 'subtitleLanguage' not in m or 'title' not in m:
         return m

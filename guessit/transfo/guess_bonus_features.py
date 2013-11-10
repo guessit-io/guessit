@@ -42,7 +42,7 @@ def process(mtree):
     bonus = [ node for node in mtree.leaves() if 'bonusNumber' in node.guess ]
     if bonus:
         bonusTitle = next_group(bonus[0])
-        if same_group(bonusTitle, bonus[0]):
+        if bonusTitle and same_group(bonusTitle, bonus[0]):
             found_property(bonusTitle, 'bonusTitle', 0.8)
 
     filmNumber = [ node for node in mtree.leaves()
