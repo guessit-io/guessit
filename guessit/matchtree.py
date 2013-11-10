@@ -31,7 +31,7 @@ log = logging.getLogger(__name__)
 
 
 class BaseMatchTree(UnicodeMixin):
-    """A MatchTree represents the hierarchical split of a string into its
+    """A BaseMatchTree represents the hierarchical split of a string into its
     constituent semantic groups."""
 
     def __init__(self, string='', span=None, parent=None):
@@ -203,6 +203,8 @@ class BaseMatchTree(UnicodeMixin):
     def __unicode__(self):
         return self.to_string()
 
+    def __repr__(self):
+        return '<MatchTree: root=%s>' % self.value
 
 class MatchTree(BaseMatchTree):
     """The MatchTree contains a few "utility" methods which are not necessary

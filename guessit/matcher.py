@@ -28,51 +28,49 @@ log = logging.getLogger(__name__)
 
 
 class IterativeMatcher(object):
+    """An iterative matcher tries to match different patterns that appear
+    in the filename.
+
+    The ``filetype`` argument indicates which type of file you want to match.
+    If it is ``'autodetect'``, the matcher will try to see whether it can guess
+    that the file corresponds to an episode, or otherwise will assume it is
+    a movie.
+
+    The recognized ``filetype`` values are:
+    ``['autodetect', 'subtitle', 'info', 'movie', 'moviesubtitle', 'movieinfo', 'episode',
+    'episodesubtitle', 'episodeinfo']``
+
+    ``opts`` is a list of option names, that act as global flags for the matcher
+
+    ``transfo_opts`` is a dict of args to be passed to the transformations used
+    by the matcher. Its schema is: ``{ transfo_name: (transfo_args, transfo_kwargs) }``
+
+
+    The IterativeMatcher works mainly in 2 steps:
+
+    First, it splits the filename into a match_tree, which is a tree of groups
+    which have a semantic meaning, such as episode number, movie title,
+    etc...
+
+    The match_tree created looks like the following::
+
+      0000000000000000000000000000000000000000000000000000000000000000000000000000000000 111
+      0000011111111111112222222222222233333333444444444444444455555555666777777778888888 000
+      0000000000000000000000000000000001111112011112222333333401123334000011233340000000 000
+      __________________(The.Prestige).______.[____.HP.______.{__-___}.St{__-___}.Chaps].___
+      xxxxxttttttttttttt               ffffff  vvvv    xxxxxx  ll lll     xx xxx         ccc
+      [XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv
+
+    The first 3 lines indicates the group index in which a char in the
+    filename is located. So for instance, ``x264`` (in the middle) is the group (0, 4, 1), and
+    it corresponds to a video codec, denoted by the letter ``v`` in the 4th line.
+    (for more info, see guess.matchtree.to_string)
+
+    Second, it tries to merge all this information into a single object
+    containing all the found properties, and does some (basic) conflict
+    resolution when they arise.
+    """
     def __init__(self, filename, filetype='autodetect', opts=None, transfo_opts=None):
-        """An iterative matcher tries to match different patterns that appear
-        in the filename.
-
-        The 'filetype' argument indicates which type of file you want to match.
-        If it is 'autodetect', the matcher will try to see whether it can guess
-        that the file corresponds to an episode, or otherwise will assume it is
-        a movie.
-
-        The recognized 'filetype' values are:
-        [ autodetect, subtitle, info, movie, moviesubtitle, movieinfo, episode,
-        episodesubtitle, episodeinfo ]
-
-
-        The IterativeMatcher works mainly in 2 steps:
-
-        First, it splits the filename into a match_tree, which is a tree of groups
-        which have a semantic meaning, such as episode number, movie title,
-        etc...
-
-        The match_tree created looks like the following:
-
-        0000000000000000000000000000000000000000000000000000000000000000000000000000000000 111
-        0000011111111111112222222222222233333333444444444444444455555555666777777778888888 000
-        0000000000000000000000000000000001111112011112222333333401123334000011233340000000 000
-        __________________(The.Prestige).______.[____.HP.______.{__-___}.St{__-___}.Chaps].___
-        xxxxxttttttttttttt               ffffff  vvvv    xxxxxx  ll lll     xx xxx         ccc
-        [XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv
-
-        The first 3 lines indicates the group index in which a char in the
-        filename is located. So for instance, x264 is the group (0, 4, 1), and
-        it corresponds to a video codec, denoted by the letter'v' in the 4th line.
-        (for more info, see guess.matchtree.to_string)
-
-        Second, it tries to merge all this information into a single object
-        containing all the found properties, and does some (basic) conflict
-        resolution when they arise.
-
-
-        When you create the Matcher, you can pass it:
-         - a list 'opts' of option names, that act as global flags
-         - a dict 'transfo_opts' of { transfo_name: (transfo_args, transfo_kwargs) }
-           with which to call the transfo.process() function.
-        """
-
         valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
                            'movie', 'moviesubtitle', 'movieinfo',
                            'episode', 'episodesubtitle', 'episodeinfo')

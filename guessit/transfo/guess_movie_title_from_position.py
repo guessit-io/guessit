@@ -19,7 +19,7 @@
 #
 
 from __future__ import unicode_literals
-from guessit import Guess
+from guessit import Guess, u
 import unicodedata
 import logging
 
@@ -47,8 +47,8 @@ def process(mtree):
         folder = None
         folder_leftover = []
 
-    log.debug('folder: %s' % folder_leftover)
-    log.debug('basename: %s' % basename_leftover)
+    log.debug('folder: %s' % u(folder_leftover))
+    log.debug('basename: %s' % u(basename_leftover))
 
     # specific cases:
     # if we find the same group both in the folder name and the filename,

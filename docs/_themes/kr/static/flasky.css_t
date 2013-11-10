@@ -6,8 +6,8 @@
  * :license: Flask Design License, see LICENSE for details.
  */
 
-{% set page_width = '940px' %}
-{% set sidebar_width = '220px' %}
+{% set page_width = '1024px' %}
+{% set sidebar_width = '280px' %}
 
 @import url("basic.css");
 
@@ -336,14 +336,14 @@ ul, ol {
 
 pre {
     background: #eee;
-    padding: 7px 30px;
-    margin: 15px -30px;
+    padding: 7px 10px;
+    margin: 15px -10px;
     line-height: 1.3em;
 }
 
 dl pre, blockquote pre, li pre {
-    margin-left: -60px;
-    padding-left: 60px;
+    margin-left: -20px;
+    padding-left: 20px;
 }
 
 dl dl pre {

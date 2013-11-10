@@ -41,7 +41,7 @@ class Guess(UnicodeMixin, dict):
             confidence = kwargs.pop('confidence')
         except KeyError:
             confidence = 0
-            
+
         try:
             raw = kwargs.pop('raw')
         except KeyError:
@@ -54,8 +54,13 @@ class Guess(UnicodeMixin, dict):
         for prop in self:
             self._confidence[prop] = confidence
             self._raw[prop] = raw
-            
+
     def to_dict(self, advanced=False):
+        """Return the guess as a dict containing only base types, ie:
+        where dates, languages, countries, etc. are converted to strings.
+
+        if advanced is True, return the data as a json string containing
+        also the raw information of the properties."""
         data = dict(self)
         for prop, value in data.items():
             if isinstance(value, datetime.date):
@@ -70,29 +75,37 @@ class Guess(UnicodeMixin, dict):
         return data
 
     def nice_string(self, advanced=False):
+        """Return a string with the property names and their values,
+        that also displays the associated confidence to each property.
+
+        FIXME: doc with param"""
         if advanced:
             data = self.to_dict(advanced)
             return json.dumps(data, indent=4)
-        else:            
+        else:
             data = self.to_dict()
-    
+
             parts = json.dumps(data, indent=4).split('\n')
             for i, p in enumerate(parts):
                 if p[:5] != '    "':
                     continue
-    
+
                 prop = p.split('"')[1]
                 parts[i] = ('    [%.2f] "' % self.confidence(prop)) + p[5:]
-    
+
             return '\n'.join(parts)
 
     def __unicode__(self):
         return u(self.to_dict())
 
     def confidence(self, prop):
+        """Return the confidence associated with the given property name,
+        -1 if not found."""
         return self._confidence.get(prop, -1)
-    
+
     def raw(self, prop):
+        """Return the raw information (original match from the string,
+        not the cleaned version) associated with the given property name."""
         return self._raw.get(prop, None)
 
     def set(self, prop, value, confidence=None, raw=None):
@@ -104,7 +117,7 @@ class Guess(UnicodeMixin, dict):
 
     def set_confidence(self, prop, value):
         self._confidence[prop] = value
-        
+
     def set_raw(self, prop, value):
         self._raw[prop] = value
 

@@ -41,7 +41,7 @@ For instance, the part of the filename 'BDRip' is the leaf with index
 What does the IterativeMatcher do?
 ----------------------------------
 
-The goal of the ``IterativeMatcher`` is to take a ``MatchTree`` which
+The goal of the :ref:`api/matcher` is to take a ``MatchTree`` which
 contains no information (yet!) at the beginning, and apply a succession of
 rules to try to guess parts of the filename. These rules are called
 transformations and work in-place on the tree, splitting into new leaves
@@ -62,9 +62,8 @@ This gives us the following tree, which has 4 leaves (from 0 to 3)::
 Splitting into explicit groups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Then, we want to split each of those groups into "explicit" groups, ie.
-groups which are enclosed in parenthese, square brackets, curly braces,
-etc...::
+Then, we want to split each of those groups into "explicit" groups, i.e.:
+groups which are enclosed in parentheses, square brackets, curly braces, etc.::
 
     000000 1111111111111111 2222222222222222222222222222222222222222222 333
     000000 0000000000111111 0000000000111111222222222222222222222222222 000
@@ -82,11 +81,11 @@ above.
 Finding interesting patterns
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-That is all and well, but we need to get finding some known patterns which
-we can identify in the filename. That is the main objective of the
-``IterativeMatcher``, which will run a series of transformations which
-can identify groups in the filename and will annotate the corresponding
-nodes.
+Now that this first split has been made, we can start finding some known
+patterns which we can identify in the filename.
+That is the main objective of the ``IterativeMatcher``, which will run
+a series of transformations which can identify groups in the filename and
+will annotate the corresponding nodes.
 
 For instance, the year::
 
@@ -162,5 +161,3 @@ Here::
     'year': 1998, 'type': 'movie', 'audioCodec': 'DTS'}
 
 And that gives you your final guess!
-
-

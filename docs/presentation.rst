@@ -2,7 +2,7 @@
 GuessIt is a python library that tries to extract as much information as
 possible from a video file.
 
-It has a very powerful filename matcher that allows to guess a lot of
+It has a powerful filename matcher that allows to guess a lot of
 metadata from a video using only its filename. This matcher works with
 both movies and tv shows episodes.
 
@@ -52,3 +52,6 @@ Guessit also allows you to compute a whole lof of hashes from a file,
 namely all the ones you can find in the hashlib python module (md5,
 sha1, ...), but also the Media Player Classic hash that is used (amongst
 others) by OpenSubtitles and SMPlayer, as well as the ed2k hash.
+
+If you have the 'guess-language' python module installed, GuessIt can also
+analyze a subtitle file's contents and detect which language it is written in.

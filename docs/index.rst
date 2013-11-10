@@ -32,6 +32,14 @@ you.
 
    dev/internals
 
+You may also want to familiarize yourself with the following classes:
+
+.. toctree::
+   :maxdepth: 2
+
+   api/guess
+   api/matchtree
+   api/matcher
 
 
 .. include:: projectinfo.rst
