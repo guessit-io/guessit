@@ -21,8 +21,7 @@
 from __future__ import unicode_literals
 from guessit import UnicodeMixin, base_text_type, u, s
 from guessit.textutils import find_words
-from babelfish import Language, LANGUAGES
-from babelfish.converters.name import NameConverter
+from babelfish import Language, LANGUAGES, LANGUAGE_MATRIX, COUNTRIES, COUNTRY_CONVERTERS
 import babelfish
 import re
 import logging
@@ -34,82 +33,120 @@ log = logging.getLogger(__name__)
 
 UNDETERMINED = babelfish.Language('und')
 
-
-class INameConverter(babelfish.ReverseConverter):
-    def __init__(self):
-        self.nc = NameConverter()
-        self.codes = self.nc.codes
-        self.from_lower = { s.lower(): alpha3 for s, alpha3 in self.nc.from_name.items() }
-
-    def convert(self, alpha3, country=None):
-        return self.nc.convert(alpha3, country)
-
-    def reverse(self, iname):
-        try:
-            return (self.from_lower[iname.lower()], None)
-        except KeyError:
-            raise babelfish.ReverseError(iname)
-
-
 SYN = { ('und', None): [ 'unknown', 'inconnu', 'unk', 'un' ],
-        ('gre', None): [ 'gr', 'greek' ],
+        ('ell', None): [ 'gr', 'greek' ],
         ('spa', None): [ 'esp', 'español' ],
         ('fra', None): [ 'français' ],
         ('swe', None): [ 'se' ],
-        ('por', 'br'): [ 'po', 'pb', 'pob', 'br', 'brazilian' ],
+        ('por', 'BR'): [ 'po', 'pb', 'pob', 'br', 'brazilian' ],
         ('cat', None): [ 'català' ],
-        ('cze', None): [ 'cz' ],
+        ('ces', None): [ 'cz' ],
         ('ukr', None): [ 'ua' ],
-        ('chi', None): [ 'cn' ],
+        ('zho', None): [ 'cn' ],
         ('jpn', None): [ 'jp' ],
         ('hrv', None): [ 'scr' ]
         }
 
-class GuessitConverter(babelfish.ReverseConverter):
+class GuessitConverter(babelfish.LanguageReverseConverter):
+
+    _with_country_regexp = re.compile('(.*)\((.*)\)')
+    _with_country_regexp2 = re.compile('(.*)-(.*)')
+
     def __init__(self):
         self.codes = set()
-        self.to_guessit = {}
         self.guessit_exceptions = {}
 
         self.alpha3b = babelfish.converters.alpha3b.Alpha3BConverter()
         self.alpha2 = babelfish.converters.alpha2.Alpha2Converter()
-        self.iname = INameConverter()
+        self.name = babelfish.converters.name.NameConverter()
 
-        self.codes |= LANGUAGES | self.alpha3b.codes | self.alpha2.codes | self.iname.codes
+        self.codes |= LANGUAGES | self.alpha3b.codes | self.alpha2.codes | self.name.codes
 
         for (alpha3, country), synlist in SYN.items():
-            self.to_guessit[alpha3] = synlist[0]
             for syn in synlist:
-                self.guessit_exceptions[syn.lower()] = (alpha3, country)
+                self.guessit_exceptions[syn.lower()] = (alpha3, country, None)
                 self.codes.add(syn)
 
     def convert(self, alpha3, country=None):
         return str(babelfish.Language(alpha3, country))
 
     def reverse(self, name):
-        for conv in [ babelfish.Language,
-                      babelfish.Language.fromalpha3b,
-                      babelfish.Language.fromalpha2,
-                      babelfish.Language.frominame ]:
-            try:
-                c = conv(name)
-                return c.alpha3, c.country
-            except (ValueError, babelfish.ReverseError):
-                pass
+        with_country = (GuessitConverter._with_country_regexp.match(name) or
+                        GuessitConverter._with_country_regexp2.match(name))
 
+        if with_country:
+            lang = babelfish.Language.fromguessit(with_country.group(1).strip())
+            lang.country = babelfish.Country.fromguessit(with_country.group(2).strip())
+            return (lang.alpha3, lang.country.alpha2 if lang.country else None, lang.script or None)
+
+        # exceptions come first, as they need to override a potential match
+        # with any of the other guessers
         try:
             return self.guessit_exceptions[name.lower()]
         except KeyError:
             pass
 
-        raise babelfish.ReverseError(name)
+        for conv in [ babelfish.Language,
+                      babelfish.Language.fromalpha3b,
+                      babelfish.Language.fromalpha2,
+                      babelfish.Language.fromname ]:
+            try:
+                c = conv(name)
+                return c.alpha3, c.country, c.script
+            except (ValueError, babelfish.LanguageReverseError):
+                pass
+
+        raise babelfish.LanguageReverseError(name)
 
 
 ALL_NAMES = frozenset(c.lower() for c in GuessitConverter().codes)
 
-babelfish.register_converter('iname', INameConverter)
-babelfish.register_converter('guessit', GuessitConverter)
+babelfish.register_language_converter('guessit', GuessitConverter)
 
+COUNTRIES_SYN = { 'ES': [ 'españa' ],
+                  'GB': [ 'UK' ],
+                  'BR': [ 'brazilian', 'bra' ],
+                  # FIXME: this one is a bit of a stretch, not sure how to do
+                  #        it properly, though...
+                  'MX': [ 'Latinoamérica', 'latin america' ]
+                  }
+
+class GuessitCountryConverter(babelfish.CountryReverseConverter):
+    def __init__(self):
+        self.codes = set()
+        self.guessit_exceptions = {}
+
+        self.name = babelfish.converters.countryname.CountryNameConverter()
+
+        self.codes |= set(COUNTRIES.keys()) | self.name.codes
+
+        for alpha2, synlist in COUNTRIES_SYN.items():
+            for syn in synlist:
+                self.guessit_exceptions[syn.lower()] = alpha2
+                self.codes.add(syn)
+
+    def convert(self, alpha2):
+        return str(babelfish.Country(alpha2))
+
+    def reverse(self, name):
+        # exceptions come first, as they need to override a potential match
+        # with any of the other guessers
+        try:             return self.guessit_exceptions[name.lower()]
+        except KeyError: pass
+
+        try:               return babelfish.Country(name.upper()).alpha2
+        except ValueError: pass
+
+        for conv in [ babelfish.Country.fromname ]:
+            try:
+                return conv(name).alpha2
+            except babelfish.CountryReverseError:
+                pass
+
+        raise babelfish.CountryReverseError(name)
+
+
+babelfish.register_country_converter('guessit', GuessitCountryConverter)
 
 class Language(UnicodeMixin):
     """This class represents a human language.
@@ -147,34 +184,27 @@ class Language(UnicodeMixin):
     'pob'
     """
 
-    _with_country_regexp = re.compile('(.*)\((.*)\)')
-    _with_country_regexp2 = re.compile('(.*)-(.*)')
-
     def __init__(self, language, country=None, strict=False, scheme=None):
         language = u(language.strip().lower())
-        with_country = (Language._with_country_regexp.match(language) or
-                        Language._with_country_regexp2.match(language))
-        if with_country:
-            self.lang = babelfish.Language.fromguessit(with_country.group(1)).alpha3
-            self.country = babelfish.Country(with_country.group(2).upper())
-            return
-
-        self.lang = None
-        self.country = babelfish.Country(country.upper()) if country else None
+        country = babelfish.Country(country.upper()) if country else None
 
         try:
             self.lang = babelfish.Language.fromguessit(language)
-        except babelfish.ReverseError:
-            pass
+            # user given country overrides guessed one
+            if country:
+                self.lang.country = country
 
-        msg = 'The given string "%s" could not be identified as a language' % language
+        except babelfish.LanguageReverseError:
+            msg = 'The given string "%s" could not be identified as a language' % language
+            if strict:
+                raise ValueError(msg)
 
-        if self.lang is None and strict:
-            raise ValueError(msg)
-
-        if self.lang is None:
             log.debug(msg)
             self.lang = UNDETERMINED
+
+    @property
+    def country(self):
+        return self.lang.country
 
     @property
     def alpha2(self):
@@ -194,16 +224,16 @@ class Language(UnicodeMixin):
 
     @property
     def opensubtitles(self):
-        if self.lang == 'por' and self.country and self.country.alpha2 == 'br':
+        if self.alpha3 == 'por' and self.country and self.country.alpha2 == 'BR':
             return 'pob'
-        elif self.lang in ['gre', 'srp']:
+        elif self.alpha3 in ['gre', 'srp']:
             return self.alpha3term
         return self.alpha3
 
     @property
     def tmdb(self):
         if self.country:
-            return '%s-%s' % (self.alpha2, self.country.alpha2.upper())
+            return '%s-%s' % (self.alpha2, self.country.alpha2)
         return self.alpha2
 
     def __hash__(self):
@@ -211,7 +241,8 @@ class Language(UnicodeMixin):
 
     def __eq__(self, other):
         if isinstance(other, Language):
-            return self.lang == other.lang
+            # in Guessit, languages are considered equal if their main languages are equal
+            return self.alpha3 == other.alpha3
 
         if isinstance(other, base_text_type):
             try:
@@ -228,14 +259,14 @@ class Language(UnicodeMixin):
         return self.lang != UNDETERMINED
 
     def __unicode__(self):
-        if self.country:
+        if self.lang.country:
             return '%s(%s)' % (self.english_name, self.country.alpha2)
         else:
             return self.english_name
 
     def __repr__(self):
-        if self.country:
-            return 'Language(%s, country=%s)' % (self.english_name, self.country)
+        if self.lang.country:
+            return 'Language(%s, country=%s)' % (self.english_name, self.lang.country)
         else:
             return 'Language(%s)' % self.english_name
 
