@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from __future__ import print_function
-from guessit import u
+from guessit import PY2, u
 from guessit import slogging, guess_file_info
 from optparse import OptionParser
 import logging
@@ -87,10 +87,21 @@ def main():
     slogging.setupLogging()
 
     # see http://bugs.python.org/issue2128
-    if sys.version_info.major < 3 and os.name == 'nt':        
+    if PY2 and os.name == 'nt':
         for i, a in enumerate(sys.argv):
             sys.argv[i] = a.decode(locale.getpreferredencoding())
-        
+
+    # see https://github.com/wackou/guessit/issues/43
+    # and http://stackoverflow.com/questions/4545661/unicodedecodeerror-when-redirecting-to-file
+    if PY2:
+        import codecs
+        import locale
+        import sys
+
+        # Wrap sys.stdout into a StreamWriter to allow writing unicode.
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
+
+
     parser = OptionParser(usage = 'usage: %prog [options] file1 [file2...]')
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
                       help = 'display debug output')
