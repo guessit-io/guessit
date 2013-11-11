@@ -20,6 +20,7 @@
 #
 
 from __future__ import unicode_literals
+from guessit import base_text_type
 import re
 
 
@@ -242,7 +243,7 @@ def canonical_form(string):
 def compute_canonical_form(property_name, value):
     """Return the canonical form of a property given its type if it is a valid
     one, None otherwise."""
-    if isinstance(value, basestring):
+    if isinstance(value, base_text_type):
         for canonical_form, rexps in properties_rexps[property_name].items():
             for rexp in rexps:
                 if rexp.match(value):

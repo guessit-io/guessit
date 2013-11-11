@@ -255,8 +255,9 @@ class Language(UnicodeMixin):
     def __ne__(self, other):
         return not self == other
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.lang != UNDETERMINED
+    __nonzero__ = __bool__
 
     def __unicode__(self):
         if self.lang.country:
