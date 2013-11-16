@@ -41,7 +41,36 @@ digital_numeral = '[0-9]{1,3}'
 
 roman_numeral = "(?=[MCDLXVI]+)M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})"
 
-numeral = '(?:' + digital_numeral + '|' + roman_numeral + ')'
+english_word_numeral_list = [
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'
+]
+
+french_word_numeral_list = [
+  'zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 
+  'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf', 'vingt'
+]
+
+french_alt_word_numeral_list = [
+  'zero', 'une', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 
+  'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dixsept', 'dixhuit', 'dixneuf', 'vingt'
+]
+
+def __build_word_numeral(*args, **kwargs):
+    re = None
+    for word_list in args:
+        for word in word_list:
+            if not re:
+                re = '(?:(?=\w+)'
+            else:
+                re += '|'
+            re += word
+    re += ')'
+    return re
+
+word_numeral = __build_word_numeral(english_word_numeral_list, french_word_numeral_list, french_alt_word_numeral_list)
+
+numeral = '(?:' + digital_numeral + '|' + roman_numeral + '|' + word_numeral + ')'
 
 # character used to represent a deleted char (when matching groups)
 deleted = '_'
@@ -284,6 +313,15 @@ def __parse_roman(value):
             index += len(numeral)
     return result
 
+def __parse_word(value):
+    """convert Word numeral to integer"""
+    for word_list in [english_word_numeral_list, french_word_numeral_list, french_alt_word_numeral_list]:
+        try:
+            return word_list.index(value)
+        except ValueError:
+            pass
+    raise ValueError
+
 def parse_numeral(value):
     try:
         return int(value)
@@ -291,6 +329,10 @@ def parse_numeral(value):
         pass
     try:
         return __parse_roman(value)
+    except ValueError:
+        pass
+    try:
+        return __parse_word(value)
     except ValueError:
         pass
     raise ValueError
