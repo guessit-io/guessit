@@ -39,7 +39,7 @@ sep = r'[][,)(}{+ /\._-]' # regexp art, hehe :D
 
 digital_numeral = '[0-9]{1,3}'
 
-roman_numeral = "M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})"
+roman_numeral = "(?=[MCDLXVI]+)M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})"
 
 numeral = '(?:' + digital_numeral + '|' + roman_numeral + ')'
 
@@ -48,7 +48,7 @@ deleted = '_'
 
 # format: [ (regexp, confidence, span_adjust) ]
 episode_rexps = [ # ... Season 2 ...
-                  (r'(?:season|saison) (?P<season>'+numeral+')', 1.0, (0, 0)),
+                  (r'(?:season|saison)\s+(?P<season>'+numeral+')', 1.0, (0, 0)),
 
                   # ... s02e13 ...
                   (r'[Ss](?P<season>[0-9]{1,3})[^0-9]?(?P<episodeNumber>(?:-?[eE-][0-9]{1,3})+)[^0-9]', 1.0, (0, -1)),
