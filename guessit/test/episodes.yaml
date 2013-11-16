@@ -461,3 +461,18 @@
   language: French
   format: BluRay
   releaseGroup: MiND
+
+? "Pokémon S16 - E29 - 1280*720 HDTV VF.mkv"
+: series: Pokémon
+  format: HDTV
+  title: VF
+  season: 16
+  episodeNumber: 29
+  screenSize: 720p
+  
+? One.Piece.E576.VOSTFR.720p.HDTV.x264-MARINE-FORD.mkv
+: episodeNumber: 576
+  videoCodec: h264
+  format: HDTV
+  series: One Piece
+  releaseGroup: MARINE-FORD
