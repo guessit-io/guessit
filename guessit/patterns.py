@@ -37,13 +37,18 @@ group_delimiters = [ '()', '[]', '{}' ]
 # separator character regexp
 sep = r'[][,)(}{+ /\._-]' # regexp art, hehe :D
 
+digital_numeral = '[0-9]{1,3}'
+
+roman_numeral = "M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})"
+
+numeral = '(?:' + digital_numeral + '|' + roman_numeral + ')'
+
 # character used to represent a deleted char (when matching groups)
 deleted = '_'
 
 # format: [ (regexp, confidence, span_adjust) ]
 episode_rexps = [ # ... Season 2 ...
-                  (r'season (?P<season>[0-9]+)', 1.0, (0, 0)),
-                  (r'saison (?P<season>[0-9]+)', 1.0, (0, 0)),
+                  (r'(?:season|saison) (?P<season>'+numeral+')', 1.0, (0, 0)),
 
                   # ... s02e13 ...
                   (r'[Ss](?P<season>[0-9]{1,3})[^0-9]?(?P<episodeNumber>(?:-?[eE-][0-9]{1,3})+)[^0-9]', 1.0, (0, -1)),
@@ -249,3 +254,43 @@ def compute_canonical_form(property_name, value):
                 if rexp.match(value):
                     return canonical_form
     return None
+
+__romanNumeralMap = (('M',  1000),
+                   ('CM', 900),
+                   ('D',  500),
+                   ('CD', 400),
+                   ('C',  100),
+                   ('XC', 90),
+                   ('L',  50),
+                   ('XL', 40),
+                   ('X',  10),
+                   ('IX', 9),
+                   ('V',  5),
+                   ('IV', 4),
+                   ('I',  1))
+
+__romanNumeralPattern = re.compile('^' + roman_numeral + '$')
+
+def __parse_roman(value):
+    """convert Roman numeral to integer"""
+    if not __romanNumeralPattern.search(value):
+        raise ValueError('Invalid Roman numeral: %s' % value)
+    
+    result = 0
+    index = 0
+    for numeral, integer in __romanNumeralMap:
+        while value[index:index+len(numeral)] == numeral:
+            result += integer
+            index += len(numeral)
+    return result
+
+def parse_numeral(value):
+    try:
+        return int(value)
+    except ValueError:
+        pass
+    try:
+        return __parse_roman(value)
+    except ValueError:
+        pass
+    raise ValueError

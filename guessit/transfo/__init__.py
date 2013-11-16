@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from guessit import base_text_type, Guess
-from guessit.patterns import canonical_form
+from guessit.patterns import canonical_form, parse_numeral
 from guessit.textutils import clean_string
 import logging
 
@@ -41,7 +41,7 @@ def format_guess(guess):
     for prop, value in guess.items():
         if prop in ('season', 'episodeNumber', 'year', 'cdNumber',
                     'cdNumberTotal', 'bonusNumber', 'filmNumber'):
-            guess[prop] = int(guess[prop])
+            guess[prop] = parse_numeral(guess[prop])
         elif isinstance(value, base_text_type):
             if prop in ('edition',):
                 value = clean_string(value)
