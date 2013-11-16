@@ -51,26 +51,26 @@ episode_rexps = [ # ... Season 2 ...
                   (r'(?:season|saison)\s+(?P<season>'+numeral+')', 1.0, (0, 0)),
 
                   # ... s02e13 ...
-                  (r'[Ss](?P<season>[0-9]{1,3})[^0-9]?(?P<episodeNumber>(?:-?[eE-][0-9]{1,3})+)[^0-9]', 1.0, (0, -1)),
+                  (r's(?P<season>'+digital_numeral+')[^0-9]?(?P<episodeNumber>(?:-?[e-]'+digital_numeral+')+)[^0-9]', 1.0, (0, -1)),
 
                   # ... s03-x02 ... # FIXME: redundant? remove it?
                   #(r'[Ss](?P<season>[0-9]{1,3})[^0-9]?(?P<bonusNumber>(?:-?[xX-][0-9]{1,3})+)[^0-9]', 1.0, (0, -1)),
 
                   # ... 2x13 ...
-                  (r'[^0-9](?P<season>[0-9]{1,2})[^0-9 .-]?(?P<episodeNumber>(?:-?[xX][0-9]{1,3})+)[^0-9]', 1.0, (1, -1)),
+                  (r'[^0-9](?P<season>'+digital_numeral+')[^0-9 .-]?(?P<episodeNumber>(?:-?x'+digital_numeral+')+)[^0-9]', 1.0, (1, -1)),
 
                   # ... s02 ...
                   #(sep + r's(?P<season>[0-9]{1,2})' + sep, 0.6, (1, -1)),
-                  (r's(?P<season>[0-9]{1,2})[^0-9]', 0.6, (0, -1)),
+                  (r's(?P<season>'+digital_numeral+')[^0-9]', 0.6, (0, -1)),
 
                   # v2 or v3 for some mangas which have multiples rips
-                  (r'(?P<episodeNumber>[0-9]{1,3})v[23]' + sep, 0.6, (0, 0)),
+                  (r'(?P<episodeNumber>'+digital_numeral+')v[23]' + sep, 0.6, (0, 0)),
 
                   # ... ep 23 ...
-                  ('ep' + sep + r'(?P<episodeNumber>[0-9]{1,2})[^0-9]', 0.7, (0, -1)),
+                  ('ep' + sep + r'(?P<episodeNumber>'+digital_numeral+')[^0-9]', 0.7, (0, -1)),
 
                   # ... e13 ... for a mini-series without a season number
-                  (sep + r'e(?P<episodeNumber>[0-9]{1,2})' + sep, 0.6, (1, -1))
+                  (sep + r'e(?P<episodeNumber>'+digital_numeral+')' + sep, 0.6, (1, -1))
 
                   ]
 
