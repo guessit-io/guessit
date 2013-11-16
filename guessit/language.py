@@ -22,6 +22,10 @@ from __future__ import unicode_literals
 from guessit import UnicodeMixin, base_text_type, u, s
 from guessit.textutils import find_words
 from babelfish import Language, LANGUAGES, LANGUAGE_MATRIX, COUNTRIES, COUNTRY_CONVERTERS
+from babelfish.converters.alpha2 import Alpha2Converter
+from babelfish.converters.alpha3b import Alpha3BConverter
+from babelfish.converters.name import NameConverter
+from babelfish.converters.countryname import CountryNameConverter
 import babelfish
 import re
 import logging
@@ -31,7 +35,7 @@ __all__ = [ 'Language','UNDETERMINED',
 
 log = logging.getLogger(__name__)
 
-UNDETERMINED = babelfish.Language('und')
+UNDETERMINED = Language('und')
 
 SYN = { ('und', None): [ 'unknown', 'inconnu', 'unk', 'un' ],
         ('ell', None): [ 'gr', 'greek' ],
@@ -56,9 +60,9 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
         self.codes = set()
         self.guessit_exceptions = {}
 
-        self.alpha3b = babelfish.converters.alpha3b.Alpha3BConverter()
-        self.alpha2 = babelfish.converters.alpha2.Alpha2Converter()
-        self.name = babelfish.converters.name.NameConverter()
+        self.alpha3b = Alpha3BConverter()
+        self.alpha2 = Alpha2Converter()
+        self.name = NameConverter()
 
         self.codes |= LANGUAGES | self.alpha3b.codes | self.alpha2.codes | self.name.codes
 
@@ -68,14 +72,14 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
                 self.codes.add(syn)
 
     def convert(self, alpha3, country=None):
-        return str(babelfish.Language(alpha3, country))
+        return str(Language(alpha3, country))
 
     def reverse(self, name):
         with_country = (GuessitConverter._with_country_regexp.match(name) or
                         GuessitConverter._with_country_regexp2.match(name))
 
         if with_country:
-            lang = babelfish.Language.fromguessit(with_country.group(1).strip())
+            lang = Language.fromguessit(with_country.group(1).strip())
             lang.country = babelfish.Country.fromguessit(with_country.group(2).strip())
             return (lang.alpha3, lang.country.alpha2 if lang.country else None, lang.script or None)
 
@@ -86,10 +90,10 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
         except KeyError:
             pass
 
-        for conv in [ babelfish.Language,
-                      babelfish.Language.fromalpha3b,
-                      babelfish.Language.fromalpha2,
-                      babelfish.Language.fromname ]:
+        for conv in [ Language,
+                      Language.fromalpha3b,
+                      Language.fromalpha2,
+                      Language.fromname ]:
             try:
                 c = conv(name)
                 return c.alpha3, c.country, c.script
@@ -116,7 +120,7 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):
         self.codes = set()
         self.guessit_exceptions = {}
 
-        self.name = babelfish.converters.countryname.CountryNameConverter()
+        self.name = CountryNameConverter()
 
         self.codes |= set(COUNTRIES.keys()) | self.name.codes
 
@@ -314,7 +318,7 @@ def search_language(string, lang_filter=None, skip=None):
     sep = r'[](){} \._-+'
 
     if lang_filter:
-        lang_filter = set(babelfish.Language.fromguessit(lang) for lang in lang_filter)
+        lang_filter = set(Language.fromguessit(lang) for lang in lang_filter)
 
     slow = ' %s ' % string.lower()
     confidence = 1.0 # for all of them
@@ -371,7 +375,7 @@ def guess_language(text):
     """
     try:
         from guess_language import guessLanguage
-        return babelfish.Language.fromguessit(guessLanguage(text))
+        return Language.fromguessit(guessLanguage(text))
 
     except ImportError:
         log.error('Cannot detect the language of the given text body, missing dependency: guess-language')
