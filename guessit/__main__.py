@@ -24,9 +24,7 @@ from guessit import PY2, u
 from guessit import slogging, guess_file_info
 from optparse import OptionParser
 import logging
-import sys
 import os
-import locale
 
 
 def detect_filename(filename, filetype, info=['filename'], advanced = False):
@@ -86,21 +84,20 @@ def run_demo(episodes=True, movies=True, advanced=False):
 def main():
     slogging.setupLogging()
 
-    # see http://bugs.python.org/issue2128
-    if PY2 and os.name == 'nt':
-        for i, a in enumerate(sys.argv):
-            sys.argv[i] = a.decode(locale.getpreferredencoding())
-
-    # see https://github.com/wackou/guessit/issues/43
-    # and http://stackoverflow.com/questions/4545661/unicodedecodeerror-when-redirecting-to-file
     if PY2:
         import codecs
         import locale
         import sys
 
+        # see http://bugs.python.org/issue2128
+        if os.name == 'nt':
+            for i, a in enumerate(sys.argv):
+                sys.argv[i] = a.decode(locale.getpreferredencoding())
+
+        # see https://github.com/wackou/guessit/issues/43
+        # and http://stackoverflow.com/questions/4545661/unicodedecodeerror-when-redirecting-to-file
         # Wrap sys.stdout into a StreamWriter to allow writing unicode.
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
-
 
     parser = OptionParser(usage = 'usage: %prog [options] file1 [file2...]')
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
