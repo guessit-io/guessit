@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import find_properties
+from guessit.patterns.properties import find_properties
 import logging
 
 log = logging.getLogger(__name__)

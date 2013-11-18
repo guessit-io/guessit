@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from guessit.transfo import found_property
-from guessit.patterns import non_episode_title, unlikely_series
+from guessit.patterns.episode import non_episode_title, unlikely_series
 import logging
 
 log = logging.getLogger(__name__)

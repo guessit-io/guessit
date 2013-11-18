@@ -19,7 +19,7 @@
 #
 
 from __future__ import unicode_literals
-from guessit.patterns import subtitle_exts
+from guessit.patterns.extension import subtitle_exts
 from guessit.textutils import reorder_title, find_words
 import logging
 

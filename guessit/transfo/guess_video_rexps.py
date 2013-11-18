@@ -21,7 +21,8 @@
 from __future__ import unicode_literals
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import video_rexps, sep
+from guessit.patterns import sep
+from guessit.patterns.video import video_rexps
 import re
 import logging
 

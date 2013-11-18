@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import compute_canonical_form, enhance_property_patterns
+from guessit.patterns.properties import compute_canonical_form, enhance_property_patterns
 import re
 import logging
 

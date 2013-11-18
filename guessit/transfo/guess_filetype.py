@@ -20,8 +20,9 @@
 
 from __future__ import unicode_literals
 from guessit import Guess
-from guessit.patterns import (subtitle_exts, info_exts, video_exts, episode_rexps,
-                              find_properties, compute_canonical_form)
+from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
+from guessit.patterns.properties import find_properties, compute_canonical_form
+from guessit.patterns.episode import episode_rexps
 from guessit.date import valid_year
 from guessit.textutils import clean_string
 import os.path

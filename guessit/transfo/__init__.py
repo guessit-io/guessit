@@ -20,7 +20,8 @@
 
 from __future__ import unicode_literals
 from guessit import base_text_type, Guess
-from guessit.patterns import canonical_form, parse_numeral
+from guessit.patterns.synonyms import get_synonym
+from guessit.patterns.numeral import parse_numeral
 from guessit.textutils import clean_string
 import logging
 
@@ -45,7 +46,7 @@ def format_guess(guess):
         elif isinstance(value, base_text_type):
             if prop in ('edition',):
                 value = clean_string(value)
-            guess[prop] = canonical_form(value).replace('\\', '')
+            guess[prop] = get_synonym(value).replace('\\', '')
 
     return guess
 

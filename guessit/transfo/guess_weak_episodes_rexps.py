@@ -21,7 +21,7 @@
 from __future__ import unicode_literals
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import weak_episode_rexps
+from guessit.patterns.episode import weak_episode_rexps
 import re
 import logging
 
