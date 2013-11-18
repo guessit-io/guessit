@@ -142,13 +142,6 @@ websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.c
 
 unlikely_series = [ 'series' ]
 
-
-# prop_multi is a dict of { property_name: { canonical_form: [ pattern ] } }
-# pattern is a string considered as a regexp, with the addition that dashes are
-# replaced with '([ \.-_])?' which matches more types of separators (or none)
-# note: simpler patterns need to be at the end of the list to not shadow more
-#       complete ones, eg: 'AAC' needs to come after 'He-AAC'
-#       ie: from most specific to less specific
 prop_multi = { 'format': { 'DVD': [ 'DVD', 'DVD-Rip', 'VIDEO-TS', 'DVDivX' ],
                            'HD-DVD': [ 'HD-(?:DVD)?-Rip', 'HD-DVD' ],
                            'BluRay': [ 'Blu-ray', 'B[DR]Rip' ],
@@ -213,28 +206,110 @@ prop_single = { 'releaseGroup': [ 'ESiR', 'WAF', 'SEPTiC', r'\[XCT\]', 'iNT', 'P
                            'ws' ] # widescreen
                 }
 
-_dash = '-'
-_psep = '[-. _]?'
+__dash = '-'
+__psep = '[-. _]?'
 
-def _to_rexp(prop):
-    return re.compile(prop.replace(_dash, _psep), re.IGNORECASE)
+def compile_pattern(pattern):
+    return re.compile(enhance_pattern(pattern), re.IGNORECASE)
 
-# properties_rexps dict of { property_name: { canonical_form: [ rexp ] } }
-# containing the rexps compiled from both prop_multi and prop_single
-properties_rexps = dict((type, dict((canonical_form,
-                                     [ _to_rexp(pattern) for pattern in patterns ])
-                                    for canonical_form, patterns in props.items()))
-                        for type, props in prop_multi.items())
+def enhance_pattern(pattern):
+    """
+    Enhance pattern to match more equivalent values.
+    
+    @param pattern: string considered as a regexp.
+    
+    '-' are replaced by ([ \.-_]), which matches more types of separators (or none)
+    """
+    return pattern.replace(__dash, __psep)
 
-properties_rexps.update(dict((type, dict((canonical_form, [ _to_rexp(canonical_form) ])
-                                         for canonical_form in props))
-                             for type, props in prop_single.items()))
+def enhance_property_patterns(name):
+    """
+    Get the enhanced pattern of given property.
+    
+    @param name: property name of patterns to enhance. 
+    
+    @see enhance_pattern(pattern)
+    """
+    return [ enhance_pattern(p) for patterns in prop_multi[name].values() for p in patterns  ]
 
+def unregister_property_patterns(name, canonical_form):
+    """
+    Unregister a property pattern canonical_form
+    """
+    prop_canonical_forms = prop_multi.get(name)
+    
+    if not prop_canonical_forms is None:
+        prop_patterns = prop_canonical_forms.get(canonical_form)
+        
+        if not prop_patterns is None:
+            del prop_canonical_forms[canonical_form]
+        
+        if not prop_canonical_forms:
+            del prop_multi[name]
 
+def register_property_pattern(name, canonical_form, *patterns):
+    """
+    Register a property pattern canonical_form
+    
+    @param name: name of the property (format, screenSize, ...)
+    @param canonical_form: value of the property (DVD, 720p, ...)
+    @param patterns: regular expression patterns to register for the property canonical_form
+    
+    @note: simpler patterns need to be at the end of the list to not shadow more
+    complete ones, eg: 'AAC' needs to come after 'He-AAC'
+    ie: from most specific to less specific
+    """
+    global prop_multi
+    
+    prop_canonical_forms = prop_multi.get(name)
+    
+    if prop_canonical_forms is None:
+        prop_canonical_forms = {}
+        prop_multi[name] = prop_canonical_forms
+    prop_patterns = prop_canonical_forms.get(canonical_form)
+    
+    if prop_patterns is None:
+        prop_patterns = []
+        prop_canonical_forms[canonical_form] = prop_patterns
+    
+    for pattern in patterns:
+        prop_patterns.append(pattern)
+        
+__properties_rexps = None
+
+def compile_all():
+    """
+    After changing patterns in this file, this method should be called before trying to guess anything.
+    
+    It compiles defined properties (prop_multi & prop_single) into patterns.__properties_rexps
+    
+    @return __properties_rexps dict of { property_name: { canonical_form: [ rexp ] } }
+    containing the rexps compiled from both prop_multi and prop_single
+    """
+    global __properties_rexps
+    __properties_rexps = dict((type_, dict((canonical_form,
+                                         [ compile_pattern(pattern) for pattern in patterns ])
+                                        for canonical_form, patterns in props.items()))
+                            for type_, props in prop_multi.items())
+
+    __properties_rexps.update(dict((type_, dict((canonical_form, [ compile_pattern(canonical_form) ])
+                                             for canonical_form in props))
+                                 for type_, props in prop_single.items()))
+
+    return __properties_rexps
+
+compile_all()
 
 def find_properties(string):
+    """
+    Find properties for given string.
+    
+    A property must always be surrounded by separators to be returned.
+    
+    @return: list of tuple (property_name, canonical_form, start, end)
+    """
     result = []
-    for property_name, props in properties_rexps.items():
+    for property_name, props in __properties_rexps.items():
         # FIXME: this should be done in a more flexible way...
         if property_name in ['weakReleaseGroup']:
             continue
@@ -279,10 +354,11 @@ def canonical_form(string):
 
 
 def compute_canonical_form(property_name, value):
-    """Return the canonical form of a property given its type if it is a valid
-    one, None otherwise."""
+    """
+    @return: Canonical form of a property given its name if it is a valid one, None otherwise.
+    """
     if isinstance(value, base_text_type):
-        for canonical_form, rexps in properties_rexps[property_name].items():
+        for canonical_form, rexps in __properties_rexps[property_name].items():
             for rexp in rexps:
                 if rexp.match(value):
                     return canonical_form
@@ -327,6 +403,15 @@ def __parse_word(value):
     raise ValueError
 
 def parse_numeral(value):
+    """
+    Parse a numeric value into integer. 
+    
+    input can be an integer as a string, a roman numeral or a word
+    
+    @return: numeric value as an int
+    
+    @raise ValueError: if value can't be parsed
+    """
     try:
         return int(value)
     except ValueError:

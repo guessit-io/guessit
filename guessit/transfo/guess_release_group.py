@@ -20,18 +20,15 @@
 
 from __future__ import unicode_literals
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import prop_multi, compute_canonical_form, _dash, _psep
+from guessit.patterns import compute_canonical_form, enhance_property_patterns
 import re
 import logging
 
 log = logging.getLogger(__name__)
 
-def get_patterns(property_name):
-    return [ p.replace(_dash, _psep) for patterns in prop_multi[property_name].values() for p in patterns  ]
-
-CODECS = get_patterns('videoCodec')
-FORMATS = get_patterns('format')
-VAPIS = get_patterns('videoApi')
+CODECS = enhance_property_patterns('videoCodec')
+FORMATS = enhance_property_patterns('format')
+VAPIS = enhance_property_patterns('videoApi')
 
 # RG names following a codec or format, with a potential space or dash inside the name
 GROUP_NAMES = [ r'(?P<videoCodec>' + codec + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
