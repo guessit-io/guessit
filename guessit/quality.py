@@ -3,7 +3,6 @@
 #
 # GuessIt - A library for guessing information from filenames
 # Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
-# Copyright (c) 2011 Ricard Marxer <ricardmp@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
 # the terms of the Lesser GNU General Public License as published by
@@ -19,17 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-qualities = {'screenSize':
-                {'360p': -300,
-                 '368p': -200,
-                 '480p': -100,
-                 '576p': 0,
-                 '720p': 100,
-                 '1080i': 180,
-                 '1080p': 200,
-                 '4K': 400
-                }
-             }
+_qualities = {}
 
 
 def rate_quality(guess, *props):
@@ -47,7 +36,7 @@ def rate_quality(guess, *props):
         props = guess.keys()
     for prop in props:
         prop_value = guess.get(prop)
-        prop_qualities = qualities.get(prop)
+        prop_qualities = _qualities.get(prop)
         if not prop_value is None and not prop_qualities is None:
             rate += prop_qualities.get(prop_value, 0)
     return rate
@@ -88,3 +77,51 @@ def best_quality(*guesses):
             best_rate = rate
             best_guess = guess
     return best_guess
+
+
+def register_quality(property_name, property_canonical_form, rating):
+    """
+    Register a quality rating for given property name and canonical_form
+
+    @param property_name: name of the property
+    @param property_canonical_form: canonical form of the property
+    @param rating: estimated quality rating for the property
+    """
+    property_qualities = _qualities.get(property_name)
+
+    if property_qualities is None:
+        property_qualities = {}
+        _qualities[property_name] = property_qualities
+
+    property_qualities[property_canonical_form] = rating
+
+
+def unregister_quality(property_name, *property_canonical_forms):
+    """
+    Unregister quality ratings for given property name.
+
+    If property_canonical_forms are specified, only those values will be unregistered
+
+    @param property_name: name of the property
+    @param property_canonical_form: canonical form of the property
+    """
+    if not property_canonical_forms:
+        if property_name in _qualities:
+            del _qualities[property_name]
+    else:
+        property_qualities = _qualities.get(property_name)
+        if not property_qualities is None:
+            for property_canonical_form in property_canonical_forms:
+                if property_canonical_form in property_qualities:
+                    del property_qualities[property_canonical_form]
+        if not property_qualities:
+            del _qualities[property_name]
+
+register_quality('screenSize', '360p', -300)
+register_quality('screenSize', '368p', -200)
+register_quality('screenSize', '480p', -100)
+register_quality('screenSize', '576p', 0)
+register_quality('screenSize', '720p', 100)
+register_quality('screenSize', '1080i', 180)
+register_quality('screenSize', '1080p', 200)
+register_quality('screenSize', '4K', 400)
