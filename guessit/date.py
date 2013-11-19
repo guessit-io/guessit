@@ -22,8 +22,10 @@ from __future__ import unicode_literals
 import datetime
 import re
 
+
 def valid_year(year):
     return 1920 < year < datetime.date.today().year + 5
+
 
 def search_year(string):
     """Looks for year patterns, and if found return the year and group span.

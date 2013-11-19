@@ -27,14 +27,16 @@ import logging
 
 log = logging.getLogger(__name__)
 
+
 def number_list(s):
-    l = [ int(n) for n in re.sub('[^0-9]+', ' ', s).split() ]
+    l = [int(n) for n in re.sub('[^0-9]+', ' ', s).split()]
 
     if len(l) == 2:
         # it is an episode interval, return all numbers in between
-        return list(range(l[0], l[1]+1))
+        return list(range(l[0], l[1] + 1))
 
     return l
+
 
 def guess_episodes_rexps(string):
     for rexp, confidence, span_adjust in episode_rexps:

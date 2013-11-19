@@ -29,7 +29,7 @@ log = logging.getLogger(__name__)
 def guess_properties(string):
     try:
         prop, value, pos, end = find_properties(string)[0]
-        return { prop: value }, (pos, end)
+        return {prop: value}, (pos, end)
     except IndexError:
         return None, None
 

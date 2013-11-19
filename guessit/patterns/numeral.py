@@ -28,19 +28,20 @@ digital_numeral = '[0-9]{1,3}'
 roman_numeral = "(?=[MCDLXVI]+)M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})"
 
 english_word_numeral_list = [
-  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
   'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'
 ]
 
 french_word_numeral_list = [
-  'zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 
+  'zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix',
   'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf', 'vingt'
 ]
 
 french_alt_word_numeral_list = [
-  'zero', 'une', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 
+  'zero', 'une', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix',
   'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dixsept', 'dixhuit', 'dixneuf', 'vingt'
 ]
+
 
 def __build_word_numeral(*args, **kwargs):
     re = None
@@ -58,28 +59,30 @@ word_numeral = __build_word_numeral(english_word_numeral_list, french_word_numer
 
 numeral = '(?:' + digital_numeral + '|' + roman_numeral + '|' + word_numeral + ')'
 
-
-__romanNumeralMap = (('M',  1000),
+__romanNumeralMap = (
+                   ('M', 1000),
                    ('CM', 900),
-                   ('D',  500),
+                   ('D', 500),
                    ('CD', 400),
-                   ('C',  100),
+                   ('C', 100),
                    ('XC', 90),
-                   ('L',  50),
+                   ('L', 50),
                    ('XL', 40),
-                   ('X',  10),
+                   ('X', 10),
                    ('IX', 9),
-                   ('V',  5),
+                   ('V', 5),
                    ('IV', 4),
-                   ('I',  1))
+                   ('I', 1)
+                   )
 
 __romanNumeralPattern = re.compile('^' + roman_numeral + '$')
+
 
 def __parse_roman(value):
     """convert Roman numeral to integer"""
     if not __romanNumeralPattern.search(value):
         raise ValueError('Invalid Roman numeral: %s' % value)
-    
+
     result = 0
     index = 0
     for numeral, integer in __romanNumeralMap:
@@ -97,14 +100,15 @@ def __parse_word(value):
             pass
     raise ValueError
 
+
 def parse_numeral(value):
     """
     Parse a numeric value into integer. 
-    
+
     input can be an integer as a string, a roman numeral or a word
-    
+
     @return: numeric value as an int
-    
+
     @raise ValueError: if value can't be parsed
     """
     try:

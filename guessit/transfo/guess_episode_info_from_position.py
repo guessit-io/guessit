@@ -31,24 +31,24 @@ def match_from_epnum_position(mtree, node):
 
     # a few helper functions to be able to filter using high-level semantics
     def before_epnum_in_same_pathgroup():
-        return [ leaf for leaf in mtree.unidentified_leaves()
+        return [leaf for leaf in mtree.unidentified_leaves()
                  if (leaf.node_idx[0] == epnum_idx[0] and
                      leaf.node_idx[1:] < epnum_idx[1:]) ]
 
     def after_epnum_in_same_pathgroup():
-        return [ leaf for leaf in mtree.unidentified_leaves()
+        return [leaf for leaf in mtree.unidentified_leaves()
                  if (leaf.node_idx[0] == epnum_idx[0] and
                      leaf.node_idx[1:] > epnum_idx[1:]) ]
 
     def after_epnum_in_same_explicitgroup():
-        return [ leaf for leaf in mtree.unidentified_leaves()
+        return [leaf for leaf in mtree.unidentified_leaves()
                  if (leaf.node_idx[:2] == epnum_idx[:2] and
                      leaf.node_idx[2:] > epnum_idx[2:]) ]
 
     # epnumber is the first group and there are only 2 after it in same
     # path group
     # -> series title - episode title
-    title_candidates = [ n for n in after_epnum_in_same_pathgroup()
+    title_candidates = [n for n in after_epnum_in_same_pathgroup()
                          if n.clean_value.lower() not in non_episode_title ]
     if ('title' not in mtree.info and                # no title
         before_epnum_in_same_pathgroup() == [] and   # no groups before
@@ -66,17 +66,16 @@ def match_from_epnum_position(mtree, node):
 
     # only 1 group after (in the same path group) and it's probably the
     # episode title
-    title_candidates = [ n for n in after_epnum_in_same_pathgroup()
-                         if n.clean_value.lower() not in non_episode_title ]
+    title_candidates = [n for n in after_epnum_in_same_pathgroup()
+                         if n.clean_value.lower() not in non_episode_title]
 
     if len(title_candidates) == 1:
         found_property(title_candidates[0], 'title', confidence=0.5)
         return
     else:
         # try in the same explicit group, with lower confidence
-        title_candidates = [ n for n in after_epnum_in_same_explicitgroup()
-                             if n.clean_value.lower() not in non_episode_title
-                             ]
+        title_candidates = [n for n in after_epnum_in_same_explicitgroup()
+                            if n.clean_value.lower() not in non_episode_title]
         if len(title_candidates) == 1:
             found_property(title_candidates[0], 'title', confidence=0.4)
             return
@@ -85,8 +84,8 @@ def match_from_epnum_position(mtree, node):
             return
 
     # get the one with the longest value
-    title_candidates = [ n for n in after_epnum_in_same_pathgroup()
-                         if n.clean_value.lower() not in non_episode_title ]
+    title_candidates = [n for n in after_epnum_in_same_pathgroup()
+                        if n.clean_value.lower() not in non_episode_title]
     if title_candidates:
         maxidx = -1
         maxv = -1
@@ -106,9 +105,8 @@ def process(mtree):
         # if we don't have the episode number, but at least 2 groups in the
         # basename, then it's probably series - eptitle
         basename = mtree.node_at((-2,))
-        title_candidates = [ n for n in basename.unidentified_leaves()
-                             if n.clean_value.lower() not in non_episode_title
-                             ]
+        title_candidates = [n for n in basename.unidentified_leaves()
+                             if n.clean_value.lower() not in non_episode_title]
 
         if len(title_candidates) >= 2:
             found_property(title_candidates[0], 'series', 0.4)
@@ -129,12 +127,12 @@ def process(mtree):
 
     # if there's a path group that only contains the season info, then the
     # previous one is most likely the series title (ie: ../series/season X/..)
-    eps = [ node for node in mtree.nodes()
-            if 'season' in node.guess and 'episodeNumber' not in node.guess ]
+    eps = [node for node in mtree.nodes()
+           if 'season' in node.guess and 'episodeNumber' not in node.guess]
 
     if eps:
-        previous = [ node for node in mtree.unidentified_leaves()
-                     if node.node_idx[0] == eps[0].node_idx[0] - 1 ]
+        previous = [node for node in mtree.unidentified_leaves()
+                    if node.node_idx[0] == eps[0].node_idx[0] - 1]
         if len(previous) == 1:
             found_property(previous[0], 'series', 0.5)
 

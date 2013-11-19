@@ -21,6 +21,7 @@
 
 from guessittest import *
 
+
 class TestAutoDetect(TestGuessit):
     def testEmpty(self):
         result = guessit.guess_file_info('', 'autodetect')
@@ -31,7 +32,6 @@ class TestAutoDetect(TestGuessit):
 
         result = guessit.guess_file_info('__-.avc', 'autodetect')
         self.assertEqual(result, {'type': 'unknown', 'extension': 'avc'})
-
 
     def testAutoDetect(self):
         self.checkMinimumFieldsCorrect(filetype='autodetect',

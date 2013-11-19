@@ -21,10 +21,11 @@
 
 from __future__ import unicode_literals
 
-property_synonyms = { 'Special Edition': [ 'Special' ],
-                      'Collector Edition': [ 'Collector' ],
-                      'Criterion Edition': [ 'Criterion' ]
-                      }
+property_synonyms = {'Special Edition': ['Special'],
+                     'Collector Edition': ['Collector'],
+                     'Criterion Edition': ['Criterion']
+                     }
+
 
 def __revert_synonyms():
     reverse = {}
@@ -35,8 +36,8 @@ def __revert_synonyms():
 
     return reverse
 
-
 reverse_synonyms = __revert_synonyms()
+
 
 def get_synonym(string):
     return reverse_synonyms.get(string.lower(), string)

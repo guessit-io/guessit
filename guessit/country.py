@@ -23,7 +23,7 @@ from guessit import UnicodeMixin, base_text_type, u
 from guessit.fileutils import load_file_in_same_dir
 import logging
 
-__all__ = [ 'Country' ]
+__all__ = ['Country']
 
 log = logging.getLogger(__name__)
 
@@ -36,12 +36,12 @@ log = logging.getLogger(__name__)
 # are all separated by pipe (|) characters."
 _iso3166_contents = load_file_in_same_dir(__file__, 'ISO-3166-1_utf8.txt')
 
-country_matrix = [ l.strip().split('|')
-                   for l in _iso3166_contents.strip().split('\n') ]
+country_matrix = [l.strip().split('|')
+                   for l in _iso3166_contents.strip().split('\n')]
 
-country_matrix += [ [ 'Unknown', 'un', 'unk', '', '' ],
-                    [ 'Latin America', '', 'lat', '', '' ]
-                    ]
+country_matrix += [['Unknown', 'un', 'unk', '', ''],
+                   ['Latin America', '', 'lat', '', '']
+                   ]
 
 country_to_alpha3 = dict((c[0].lower(), c[2].lower()) for c in country_matrix)
 country_to_alpha3.update(dict((c[1].lower(), c[2].lower()) for c in country_matrix))
@@ -49,15 +49,14 @@ country_to_alpha3.update(dict((c[2].lower(), c[2].lower()) for c in country_matr
 
 # add here exceptions / non ISO representations
 # Note: remember to put those exceptions in lower-case, they won't work otherwise
-country_to_alpha3.update({ 'latinoamérica': 'lat',
-                           'brazilian': 'bra',
-                           'españa': 'esp',
-                           'uk': 'gbr'
-                           })
+country_to_alpha3.update({'latinoamérica': 'lat',
+                          'brazilian': 'bra',
+                          'españa': 'esp',
+                          'uk': 'gbr'
+                          })
 
 country_alpha3_to_en_name = dict((c[2].lower(), c[0]) for c in country_matrix)
 country_alpha3_to_alpha2 = dict((c[2].lower(), c[1].lower()) for c in country_matrix)
-
 
 
 class Country(UnicodeMixin):
@@ -77,7 +76,6 @@ class Country(UnicodeMixin):
 
         if self.alpha3 is None:
             self.alpha3 = 'unk'
-
 
     @property
     def alpha2(self):

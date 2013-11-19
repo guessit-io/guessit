@@ -52,7 +52,7 @@ def format_guess(guess):
 
 
 def find_and_split_node(node, strategy, logger):
-    string = ' %s ' % node.value # add sentinels
+    string = ' %s ' % node.value  # add sentinels
     for matcher, confidence, args, kwargs in strategy:
         all_args = [string]
         if getattr(matcher, 'use_node', False):
@@ -104,7 +104,7 @@ class SingleNodeGuesser(object):
         #   it will override it, otherwise it will leave the guess confidence
         # - if the guesser returns a simple dict as a guess and confidence is
         #   specified, it will use it, or 1.0 otherwise
-        strategy = [ (self.guess_func, self.confidence, self.args, self.kwargs) ]
+        strategy = [(self.guess_func, self.confidence, self.args, self.kwargs)]
 
         for node in mtree.unidentified_leaves():
             find_and_split_node(node, strategy, self.logger)

@@ -20,7 +20,6 @@
 
 from __future__ import unicode_literals
 from guessit import Guess, u
-import unicodedata
 import logging
 
 log = logging.getLogger(__name__)
@@ -28,7 +27,7 @@ log = logging.getLogger(__name__)
 
 def process(mtree):
     def found_property(node, name, value, confidence):
-        node.guess = Guess({ name: value },
+        node.guess = Guess({name: value},
                            confidence=confidence,
                            raw=value)
         log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
@@ -117,8 +116,8 @@ def process(mtree):
     # there rather than in the basename
     try:
         props = mtree.previous_leaves_containing(mtree.children[-2],
-                                                 [ 'videoCodec', 'format',
-                                                   'language' ])
+                                                 ['videoCodec', 'format',
+                                                   'language'])
     except IndexError:
         props = []
 

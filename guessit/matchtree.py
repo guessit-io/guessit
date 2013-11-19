@@ -153,23 +153,23 @@ class BaseMatchTree(UnicodeMixin):
             return x
 
         def meaning(result):
-            mmap = { 'episodeNumber': 'E',
-                     'season': 'S',
-                     'extension': 'e',
-                     'format': 'f',
-                     'language': 'l',
-                     'country': 'C',
-                     'videoCodec': 'v',
-                     'audioCodec': 'a',
-                     'website': 'w',
-                     'container': 'c',
-                     'series': 'T',
-                     'title': 't',
-                     'date': 'd',
-                     'year': 'y',
-                     'releaseGroup': 'r',
-                     'screenSize': 's'
-                     }
+            mmap = {'episodeNumber': 'E',
+                    'season': 'S',
+                    'extension': 'e',
+                    'format': 'f',
+                    'language': 'l',
+                    'country': 'C',
+                    'videoCodec': 'v',
+                    'audioCodec': 'a',
+                    'website': 'w',
+                    'container': 'c',
+                    'series': 'T',
+                    'title': 't',
+                    'date': 'd',
+                    'year': 'y',
+                    'releaseGroup': 'r',
+                    'screenSize': 's'
+                    }
 
             if result is None:
                 return ' '
@@ -180,7 +180,7 @@ class BaseMatchTree(UnicodeMixin):
 
             return 'x'
 
-        lines = [ empty_line ] * (self.depth + 2) # +2: remaining, meaning
+        lines = [empty_line] * (self.depth + 2)  # +2: remaining, meaning
         lines[-2] = self.string
 
         for node in self.nodes():
@@ -206,6 +206,7 @@ class BaseMatchTree(UnicodeMixin):
     def __repr__(self):
         return '<MatchTree: root=%s>' % self.value
 
+
 class MatchTree(BaseMatchTree):
     """The MatchTree contains a few "utility" methods which are not necessary
     for the BaseMatchTree, but add a lot of convenience for writing
@@ -223,7 +224,7 @@ class MatchTree(BaseMatchTree):
 
     def _leaves_containing(self, property_name):
         if isinstance(property_name, base_text_type):
-            property_name = [ property_name ]
+            property_name = [property_name]
 
         for leaf in self._leaves():
             for prop in property_name:

@@ -21,9 +21,9 @@
 
 from __future__ import unicode_literals
 
-subtitle_exts = [ 'srt', 'idx', 'sub', 'ssa' ]
+subtitle_exts = ['srt', 'idx', 'sub', 'ssa']
 
-info_exts = [ 'nfo' ]
+info_exts = ['nfo']
 
 video_exts = ['3g2', '3gp', '3gp2', 'asf', 'avi', 'divx', 'flv', 'm4v', 'mk2',
               'mka', 'mkv', 'mov', 'mp4', 'mp4a', 'mpeg', 'mpg', 'ogg', 'ogm',

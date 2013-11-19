@@ -35,40 +35,48 @@ if sys.version_info[0] >= 3:
     unicode_text_type = str
     native_text_type = str
     base_text_type = str
+
     def u(x):
         return str(x)
+
     def s(x):
         return x
+
     class UnicodeMixin(object):
         __str__ = lambda x: x.__unicode__()
     import binascii
+
     def to_hex(x):
         return binascii.hexlify(x).decode('utf-8')
 
 else:
     PY2, PY3 = True, False
-    __all__ = [ str(s) for s in __all__ ] # fix imports for python2
+    __all__ = [str(s) for s in __all__]  # fix imports for python2
     unicode_text_type = unicode
     native_text_type = str
     base_text_type = basestring
+
     def u(x):
         if isinstance(x, str):
             return x.decode('utf-8')
         if isinstance(x, list):
-            return [ u(s) for s in x ]
+            return [u(s) for s in x]
         return unicode(x)
+
     def s(x):
         if isinstance(x, unicode):
             return x.encode('utf-8')
         if isinstance(x, list):
-            return [ s(y) for y in x ]
+            return [s(y) for y in x]
         if isinstance(x, tuple):
             return tuple(s(y) for y in x)
         if isinstance(x, dict):
             return dict((s(key), s(value)) for key, value in x.items())
         return x
+
     class UnicodeMixin(object):
         __str__ = lambda x: unicode(x).encode('utf-8')
+
     def to_hex(x):
         return x.encode('hex')
 
@@ -81,7 +89,6 @@ import logging
 import json
 
 log = logging.getLogger(__name__)
-
 
 
 class NullHandler(logging.Handler):
@@ -158,12 +165,11 @@ def _guess_filename(filename, filetype):
                     to_skip = existing_lang_node
                 to_skip_language_nodes.append(to_skip)
 
-
     if to_skip_language_nodes:
         second_pass_transfo_opts['guess_language'] = (
-            ((), { 'skip': [ { 'node_idx': node.parent.node_idx,
-                               'span': node.span }
-                             for node in to_skip_language_nodes ] }))
+            ((), {'skip': [{'node_idx': node.parent.node_idx,
+                               'span': node.span}
+                             for node in to_skip_language_nodes]}))
 
     if second_pass_opts or second_pass_transfo_opts:
         # 2nd pass is needed
@@ -274,7 +280,6 @@ def guess_file_info(filename, filetype, info=None):
     # if country is in the guessed properties, make it part of the filename
     if 'series' in result and 'country' in result:
         result['series'] += ' (%s)' % result['country'].alpha2.upper()
-
 
     return result
 

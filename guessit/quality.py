@@ -19,27 +19,27 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-qualities = {
-                       'screenSize': { '360p': -300,
-                                   '368p': -200,
-                                   '480p': -100,
-                                   '576p': 0,
-                                   '720p': 100,
-                                   '1080i': 180,
-                                   '1080p': 200,
-                                   '4K': 400
-                                   }
-                      }
+qualities = {'screenSize':
+                {'360p': -300,
+                 '368p': -200,
+                 '480p': -100,
+                 '576p': 0,
+                 '720p': 100,
+                 '1080i': 180,
+                 '1080p': 200,
+                 '4K': 400
+                }
+             }
 
 
 def rate_quality(guess, *props):
     """
     Rate the quality of a guess.
-    
+
     @param guess: Guess object to rate
     @param props: properties to include in the rating.
                  if empty, rating will be performed for all guess properties.
-                 
+
     @return: int value representing the quality of the guess. The higher, the better.
     """
     rate = 0
@@ -52,13 +52,14 @@ def rate_quality(guess, *props):
             rate += prop_qualities.get(prop_value, 0)
     return rate
 
+
 def best_quality_properties(props, *guesses):
     """
     Retrieves the best quality guess from all passed guesses, based on given properties
-    
+
     @param props: list of properties to include in the rating
     @param guesses: guesses to rate
-    
+
     @return: best quality guess from all passed guesses
     """
     best_guess = None
@@ -70,12 +71,13 @@ def best_quality_properties(props, *guesses):
             best_guess = guess
     return best_guess
 
+
 def best_quality(*guesses):
     """
     Retrieves the best quality guess from all passed guesses
-    
+
     @param guesses: guesses to rate
-    
+
     @return: best quality guess from all passed guesses
     """
     best_guess = None

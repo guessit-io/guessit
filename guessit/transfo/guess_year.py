@@ -29,16 +29,17 @@ log = logging.getLogger(__name__)
 def guess_year(string):
     year, span = search_year(string)
     if year:
-        return { 'year': year }, span
+        return {'year': year}, span
     else:
         return None, None
+
 
 def guess_year_skip_first(string):
     year, span = search_year(string)
     if year:
         year2, span2 = guess_year(string[span[1]:])
         if year2:
-            return year2, (span2[0]+span[1], span2[1]+span[1])
+            return year2, (span2[0] + span[1], span2[1] + span[1])
 
     return None, None
 

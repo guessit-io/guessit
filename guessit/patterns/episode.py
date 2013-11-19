@@ -22,40 +22,40 @@
 from __future__ import unicode_literals
 
 from . import sep
-from .numeral import numeral, digital_numeral 
+from .numeral import numeral, digital_numeral
 
 # format: [ (regexp, confidence, span_adjust) ]
-episode_rexps = [ # ... Season 2 ...
+episode_rexps = [  # ... Season 2 ...
                   (r'(?:season|saison)\s+(?P<season>%s)' % (numeral,), 1.0, (0, 0)),
 
                   # ... s02e13 ...
-                  (r's(?P<season>'+digital_numeral+')[^0-9]?(?P<episodeNumber>(?:-?[e-]'+digital_numeral+')+)[^0-9]', 1.0, (0, -1)),
+                  (r's(?P<season>' + digital_numeral + ')[^0-9]?(?P<episodeNumber>(?:-?[e-]' + digital_numeral + ')+)[^0-9]', 1.0, (0, -1)),
 
                   # ... s03-x02 ... # FIXME: redundant? remove it?
                   #(r'[Ss](?P<season>[0-9]{1,3})[^0-9]?(?P<bonusNumber>(?:-?[xX-][0-9]{1,3})+)[^0-9]', 1.0, (0, -1)),
 
                   # ... 2x13 ...
-                  (r'[^0-9](?P<season>'+digital_numeral+')[^0-9 .-]?(?P<episodeNumber>(?:-?x'+digital_numeral+')+)[^0-9]', 1.0, (1, -1)),
+                  (r'[^0-9](?P<season>' + digital_numeral + ')[^0-9 .-]?(?P<episodeNumber>(?:-?x' + digital_numeral + ')+)[^0-9]', 1.0, (1, -1)),
 
                   # ... s02 ...
                   #(sep + r's(?P<season>[0-9]{1,2})' + sep, 0.6, (1, -1)),
-                  (r's(?P<season>'+digital_numeral+')[^0-9]', 0.6, (0, -1)),
+                  (r's(?P<season>' + digital_numeral + ')[^0-9]', 0.6, (0, -1)),
 
                   # v2 or v3 for some mangas which have multiples rips
-                  (r'(?P<episodeNumber>'+digital_numeral+')v[23]' + sep, 0.6, (0, 0)),
+                  (r'(?P<episodeNumber>' + digital_numeral + ')v[23]' + sep, 0.6, (0, 0)),
 
                   # ... ep 23 ...
-                  ('(?:ep|episode)' + sep + r'(?P<episodeNumber>'+numeral+')[^0-9]', 0.7, (0, -1)),
+                  ('(?:ep|episode)' + sep + r'(?P<episodeNumber>' + numeral + ')[^0-9]', 0.7, (0, -1)),
 
                   # ... e13 ... for a mini-series without a season number
-                  (sep + r'e(?P<episodeNumber>'+digital_numeral+')' + sep, 0.6, (1, -1))
+                  (sep + r'e(?P<episodeNumber>' + digital_numeral + ')' + sep, 0.6, (1, -1))
 
                   ]
 
-weak_episode_rexps = [ # ... 213 or 0106 ...
+weak_episode_rexps = [  # ... 213 or 0106 ...
                        (sep + r'(?P<episodeNumber>[0-9]{2,4})' + sep, (1, -1))
                        ]
 
-non_episode_title = [ 'extras', 'rip' ]
+non_episode_title = ['extras', 'rip']
 
-unlikely_series = [ 'series' ]
+unlikely_series = ['series']

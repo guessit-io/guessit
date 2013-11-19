@@ -34,11 +34,12 @@ log = logging.getLogger(__name__)
 
 # List of well known movies and series, hardcoded because they cannot be
 # guessed appropriately otherwise
-MOVIES = [ 'OSS 117' ]
-SERIES = [ 'Band of Brothers' ]
+MOVIES = ['OSS 117']
+SERIES = ['Band of Brothers']
 
-MOVIES = [ m.lower() for m in MOVIES ]
-SERIES = [ s.lower() for s in SERIES ]
+MOVIES = [m.lower() for m in MOVIES]
+SERIES = [s.lower() for s in SERIES]
+
 
 def guess_filetype(mtree, filetype):
     # put the filetype inside a dummy container to be able to have the
@@ -85,29 +86,27 @@ def guess_filetype(mtree, filetype):
         if filetype_container[0] == 'autodetect':
             filetype_container[0] = type
 
-
     # look at the extension first
     fileext = os.path.splitext(filename)[1][1:].lower()
     if fileext in subtitle_exts:
         upgrade_subtitle()
-        other = { 'container': fileext }
+        other = {'container': fileext}
     elif fileext in info_exts:
         upgrade_info()
-        other = { 'container': fileext }
+        other = {'container': fileext}
     elif fileext in video_exts:
         upgrade(type='video')
-        other = { 'container': fileext }
+        other = {'container': fileext}
     else:
         upgrade(type='unknown')
-        other = { 'extension': fileext }
-
-
+        other = {'extension': fileext}
 
     # check whether we are in a 'Movies', 'Tv Shows', ... folder
-    folder_rexps = [ (r'Movies?', upgrade_movie),
-                     (r'Tv[ _-]?Shows?', upgrade_episode),
-                     (r'Series', upgrade_episode)
-                     ]
+    folder_rexps = [
+                    (r'Movies?', upgrade_movie),
+                    (r'Tv[ _-]?Shows?', upgrade_episode),
+                    (r'Series', upgrade_episode)
+                    ]
     for frexp, upgrade_func in folder_rexps:
         frexp = re.compile(frexp, re.IGNORECASE)
         for pathgroup in mtree.children:

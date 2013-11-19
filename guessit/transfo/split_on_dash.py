@@ -30,12 +30,11 @@ def process(mtree):
     for node in mtree.unidentified_leaves():
         indices = []
 
-        didx = 0
         pattern = re.compile(sep + '-' + sep)
         match = pattern.search(node.value)
         while match:
             span = match.span()
-            indices.extend([ span[0], span[1] ])
+            indices.extend([span[0], span[1]])
             match = pattern.search(node.value, span[1])
 
         if indices:

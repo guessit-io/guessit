@@ -34,11 +34,13 @@ keywords = yaml.load("""
 
 """)
 
+
 def guess_info(string):
     mtree = MatchTree(string)
     guess_release_group.process(mtree)
     guess_properties.process(mtree)
     return mtree.matched()
+
 
 class TestMatchTree(TestGuessit):
 

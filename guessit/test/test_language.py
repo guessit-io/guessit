@@ -22,6 +22,7 @@ from __future__ import unicode_literals
 from guessittest import *
 import io
 
+
 class TestLanguage(TestGuessit):
 
     def check_languages(self, languages, scheme=None):
@@ -82,7 +83,7 @@ class TestLanguage(TestGuessit):
 
     def test_opensubtitles(self):
         opensubtitles_langfile = file_in_same_dir(__file__, 'opensubtitles_languages_2012_05_09.txt')
-        langs = [ u(l).strip().split('\t') for l in io.open(opensubtitles_langfile, encoding='utf-8') ][1:]
+        langs = [u(l).strip().split('\t') for l in io.open(opensubtitles_langfile, encoding='utf-8')][1:]
         for lang in langs:
             # check that we recognize the opensubtitles language code correctly
             # and that we are able to output this code from a language
@@ -95,7 +96,6 @@ class TestLanguage(TestGuessit):
         # examples from http://api.themoviedb.org/2.1/language-tags
         for lang in ['en-US', 'en-CA', 'es-MX', 'fr-PF']:
             self.assertEqual(lang, Language(lang).tmdb)
-
 
     def test_subtitulos(self):
         languages = {'English (US)': 'en', 'English (UK)': 'en', 'English': 'en',
@@ -115,7 +115,7 @@ class TestLanguage(TestGuessit):
 
     def test_language_object(self):
         self.assertEqual(len(list(set([Language('qwerty'), Language('asdf')]))), 1)
-        d = { Language('qwerty'): 7 }
+        d = {Language('qwerty'): 7}
         d[Language('asdf')] = 23
         self.assertEqual(d[Language('qwerty')], 23)
 

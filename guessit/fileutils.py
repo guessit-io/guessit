@@ -47,7 +47,7 @@ def split_path(path):
         headlen = len(head)
 
         # on Unix systems, the root folder is '/'
-        if head and head == '/'*headlen and tail == '':
+        if head and head == '/' * headlen and tail == '':
             return ['/'] + result
 
         # on Windows, the root folder is a drive letter (eg: 'C:\') or for shares \\

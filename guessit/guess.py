@@ -154,7 +154,7 @@ class Guess(UnicodeMixin, dict):
 def choose_int(g1, g2):
     """Function used by merge_similar_guesses to choose between 2 possible
     properties when they are integers."""
-    v1, c1 = g1 # value, confidence
+    v1, c1 = g1  # value, confidence
     v2, c2 = g2
     if (v1 == v2):
         return (v1, 1 - (1 - c1) * (1 - c2))
@@ -192,7 +192,7 @@ def choose_string(g1, g2):
     ('The Simpsons', 0.75)
 
     """
-    v1, c1 = g1 # value, confidence
+    v1, c1 = g1  # value, confidence
     v2, c2 = g2
 
     if not v1:
@@ -335,7 +335,7 @@ def merge_all(guesses, append=None):
         # then merge the remaining ones
         dups = set(result) & set(g)
         if dups:
-            log.warning('duplicate properties %s in merged result...' % [ (result[p], g[p]) for p in dups] )
+            log.warning('duplicate properties %s in merged result...' % [(result[p], g[p]) for p in dups])
 
         result.update_highest_confidence(g)
 
@@ -351,7 +351,7 @@ def merge_all(guesses, append=None):
             if isinstance(value, list):
                 result[prop] = list(set(value))
             else:
-                result[prop] = [ value ]
+                result[prop] = [value]
         except KeyError:
             pass
 

@@ -19,7 +19,7 @@
 #
 
 from __future__ import unicode_literals
-from guessit import PY3, u, base_text_type
+from guessit import PY3, u
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
 import logging
@@ -91,7 +91,7 @@ class IterativeMatcher(object):
         if transfo_opts is None:
             transfo_opts = {}
         if not isinstance(transfo_opts, dict):
-            raise ValueError('transfo_opts must be a dict of { transfo_name: (args, kwargs) }. '+
+            raise ValueError('transfo_opts must be a dict of { transfo_name: (args, kwargs) }. ' +
                              'Received: type=%s val=%s', type(transfo_opts), transfo_opts)
 
         self.match_tree = MatchTree(filename)
@@ -110,7 +110,7 @@ class IterativeMatcher(object):
             default_args, default_kwargs = transfo_opts.get(transfo_name, ((), {}))
             all_args = args or default_args
             all_kwargs = dict(default_kwargs)
-            all_kwargs.update(kwargs) # keep all kwargs merged together
+            all_kwargs.update(kwargs)  # keep all kwargs merged together
             transfo.process(mtree, *all_args, **all_kwargs)
 
         # 1- first split our path into dirs + basename + ext
@@ -132,18 +132,17 @@ class IterativeMatcher(object):
         #       - properties before language (eg: he-aac vs hebrew)
         #       - release_group before properties (eg: XviD-?? vs xvid)
         if mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo'):
-            strategy = [ 'guess_date', 'guess_website', 'guess_release_group',
-                         'guess_properties', 'guess_language',
-                         'guess_video_rexps',
-                         'guess_episodes_rexps', 'guess_weak_episodes_rexps' ]
+            strategy = ['guess_date', 'guess_website', 'guess_release_group',
+                        'guess_properties', 'guess_language',
+                        'guess_video_rexps',
+                        'guess_episodes_rexps', 'guess_weak_episodes_rexps']
         else:
-            strategy = [ 'guess_date', 'guess_website', 'guess_release_group',
-                         'guess_properties', 'guess_language',
-                         'guess_video_rexps' ]
+            strategy = ['guess_date', 'guess_website', 'guess_release_group',
+                        'guess_properties', 'guess_language',
+                        'guess_video_rexps']
 
         if 'nolanguage' in opts:
             strategy.remove('guess_language')
-
 
         for name in strategy:
             apply_transfo(name)
@@ -156,7 +155,6 @@ class IterativeMatcher(object):
             apply_transfo('guess_country')
 
         apply_transfo('guess_idnumber')
-
 
         # split into '-' separated subgroups (with required separator chars
         # around the dash)

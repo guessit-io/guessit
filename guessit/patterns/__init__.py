@@ -21,7 +21,7 @@
 
 from __future__ import unicode_literals
 
-group_delimiters = [ '()', '[]', '{}' ]
+group_delimiters = ['()', '[]', '{}']
 
 # separator character regexp
-sep = r'[][,)(}{+ /\._-]' # regexp art, hehe :D
+sep = r'[][,)(}{+ /\._-]'  # regexp art, hehe :D

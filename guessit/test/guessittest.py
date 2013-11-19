@@ -33,12 +33,12 @@ def currentPath():
     '''Returns the path in which the calling file is located.'''
     return dirname(join(os.getcwd(), sys._getframe(1).f_globals['__file__']))
 
+
 def addImportPath(path):
     '''Function that adds the specified path to the import path. The path can be
     absolute or relative to the calling file.'''
     importPath = abspath(join(currentPath(), path))
-    sys.path = [ importPath ] + sys.path
-
+    sys.path = [importPath] + sys.path
 
 
 setupLogging()
@@ -46,11 +46,11 @@ logging.getLogger().setLevel(MAIN_LOGGING_LEVEL)
 
 log = logging.getLogger(__name__)
 
-
 import guessit
 from guessit import *
 from guessit.matcher import *
 from guessit.fileutils import *
+
 
 def allTests(testClass):
     return TestLoader().loadTestsFromTestCase(testClass)
@@ -61,11 +61,11 @@ class TestGuessit(TestCase):
     def checkMinimumFieldsCorrect(self, filetype, filename, remove_type=True,
                                   exclude_files=None):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
+
         def guess_func(string):
             return guess_file_info(string, filetype=filetype)
 
         return self.checkFields(groundTruth, guess_func, remove_type, exclude_files)
-
 
     def checkFields(self, groundTruth, guess_func, remove_type=True,
                     exclude_files=None):

@@ -29,7 +29,7 @@ log = logging.getLogger(__name__)
 def guess_date(string):
     date, span = search_date(string)
     if date:
-        return { 'date': date }, span
+        return {'date': date}, span
     else:
         return None, None
 

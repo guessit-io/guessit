@@ -26,26 +26,27 @@ import babelfish
 import re
 import logging
 
-__all__ = [ 'Language','UNDETERMINED',
-            'search_language', 'guess_language' ]
+__all__ = ['Language', 'UNDETERMINED',
+           'search_language', 'guess_language']
 
 log = logging.getLogger(__name__)
 
 UNDETERMINED = babelfish.Language('und')
 
-SYN = { ('und', None): [ 'unknown', 'inconnu', 'unk', 'un' ],
-        ('ell', None): [ 'gr', 'greek' ],
-        ('spa', None): [ 'esp', 'español' ],
-        ('fra', None): [ 'français' ],
-        ('swe', None): [ 'se' ],
-        ('por', 'BR'): [ 'po', 'pb', 'pob', 'br', 'brazilian' ],
-        ('cat', None): [ 'català' ],
-        ('ces', None): [ 'cz' ],
-        ('ukr', None): [ 'ua' ],
-        ('zho', None): [ 'cn' ],
-        ('jpn', None): [ 'jp' ],
-        ('hrv', None): [ 'scr' ]
-        }
+SYN = {('und', None): ['unknown', 'inconnu', 'unk', 'un'],
+       ('ell', None): ['gr', 'greek'],
+       ('spa', None): ['esp', 'español'],
+       ('fra', None): ['français'],
+       ('swe', None): ['se'],
+       ('por', 'BR'): ['po', 'pb', 'pob', 'br', 'brazilian'],
+       ('cat', None): ['català'],
+       ('ces', None): ['cz'],
+       ('ukr', None): ['ua'],
+       ('zho', None): ['cn'],
+       ('jpn', None): ['jp'],
+       ('hrv', None): ['scr']
+       }
+
 
 class GuessitConverter(babelfish.LanguageReverseConverter):
 
@@ -86,10 +87,10 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
         except KeyError:
             pass
 
-        for conv in [ babelfish.Language,
-                      babelfish.Language.fromalpha3b,
-                      babelfish.Language.fromalpha2,
-                      babelfish.Language.fromname ]:
+        for conv in [babelfish.Language,
+                     babelfish.Language.fromalpha3b,
+                     babelfish.Language.fromalpha2,
+                     babelfish.Language.fromname]:
             try:
                 c = conv(name)
                 return c.alpha3, c.country, c.script
@@ -103,13 +104,14 @@ ALL_NAMES = frozenset(c.lower() for c in GuessitConverter().codes)
 
 babelfish.register_language_converter('guessit', GuessitConverter)
 
-COUNTRIES_SYN = { 'ES': [ 'españa' ],
-                  'GB': [ 'UK' ],
-                  'BR': [ 'brazilian', 'bra' ],
-                  # FIXME: this one is a bit of a stretch, not sure how to do
-                  #        it properly, though...
-                  'MX': [ 'Latinoamérica', 'latin america' ]
-                  }
+COUNTRIES_SYN = {'ES': ['españa'],
+                 'GB': ['UK'],
+                 'BR': ['brazilian', 'bra'],
+                 # FIXME: this one is a bit of a stretch, not sure how to do
+                 #        it properly, though...
+                 'MX': ['Latinoamérica', 'latin america']
+                 }
+
 
 class GuessitCountryConverter(babelfish.CountryReverseConverter):
     def __init__(self):
@@ -131,13 +133,17 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):
     def reverse(self, name):
         # exceptions come first, as they need to override a potential match
         # with any of the other guessers
-        try:             return self.guessit_exceptions[name.lower()]
-        except KeyError: pass
+        try:
+            return self.guessit_exceptions[name.lower()]
+        except KeyError:
+            pass
 
-        try:               return babelfish.Country(name.upper()).alpha2
-        except ValueError: pass
+        try:
+            return babelfish.Country(name.upper()).alpha2
+        except ValueError:
+            pass
 
-        for conv in [ babelfish.Country.fromname ]:
+        for conv in [babelfish.Country.fromname]:
             try:
                 return conv(name).alpha2
             except babelfish.CountryReverseError:
@@ -147,6 +153,7 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):
 
 
 babelfish.register_country_converter('guessit', GuessitCountryConverter)
+
 
 class Language(UnicodeMixin):
     """This class represents a human language.
@@ -272,7 +279,6 @@ class Language(UnicodeMixin):
             return 'Language(%s)' % self.english_name
 
 
-
 # list of common words which could be interpreted as languages, but which
 # are far too common to be able to say they represent a language in the
 # middle of a string (where they most likely carry their commmon meaning)
@@ -297,6 +303,7 @@ LNG_COMMON_WORDS = frozenset([
     'fer', 'fun', 'two', 'big', 'psy', 'air'
     ])
 
+
 def search_language(string, lang_filter=None, skip=None):
     """Looks for language patterns, and if found return the language object,
     its group span and an associated confidence.
@@ -317,7 +324,7 @@ def search_language(string, lang_filter=None, skip=None):
         lang_filter = set(babelfish.Language.fromguessit(lang) for lang in lang_filter)
 
     slow = ' %s ' % string.lower()
-    confidence = 1.0 # for all of them
+    confidence = 1.0  # for all of them
 
     for lang in (set(find_words(slow)) & ALL_NAMES) - LNG_COMMON_WORDS:
         pos = slow.find(lang)
@@ -356,7 +363,7 @@ def search_language(string, lang_filter=None, skip=None):
                 # Note: we could either be really confident that we found a
                 #       language or assume that full language names are too
                 #       common words and lower their confidence accordingly
-                confidence = 0.3 # going with the low-confidence route here
+                confidence = 0.3  # going with the low-confidence route here
 
             return language, (pos - 1, end - 1), confidence
 

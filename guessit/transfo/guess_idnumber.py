@@ -30,11 +30,12 @@ log = logging.getLogger(__name__)
 def guess_properties(string):
     try:
         prop, value, pos, end = find_properties(string)[0]
-        return { prop: value }, (pos, end)
+        return {prop: value}, (pos, end)
     except IndexError:
         return None, None
 
 _idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})') # 1.0, (0, 0))
+
 
 def guess_idnumber(string):
     match = _idnum.search(string)
@@ -66,6 +67,7 @@ def guess_idnumber(string):
             return result, match.span()
 
     return None, None
+
 
 def process(mtree):
     SingleNodeGuesser(guess_idnumber, 0.4, log).process(mtree)

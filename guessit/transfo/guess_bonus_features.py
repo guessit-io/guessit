@@ -39,13 +39,13 @@ def process(mtree):
     def same_group(g1, g2):
         return g1.node_idx[:2] == g2.node_idx[:2]
 
-    bonus = [ node for node in mtree.leaves() if 'bonusNumber' in node.guess ]
+    bonus = [node for node in mtree.leaves() if 'bonusNumber' in node.guess]
     if bonus:
         bonusTitle = next_group(bonus[0])
         if bonusTitle and same_group(bonusTitle, bonus[0]):
             found_property(bonusTitle, 'bonusTitle', 0.8)
 
-    filmNumber = [ node for node in mtree.leaves()
+    filmNumber = [node for node in mtree.leaves()
                    if 'filmNumber' in node.guess ]
     if filmNumber:
         filmSeries = previous_group(filmNumber[0])
@@ -54,7 +54,7 @@ def process(mtree):
         title = next_group(filmNumber[0])
         found_property(title, 'title', 0.9)
 
-    season = [ node for node in mtree.leaves() if 'season' in node.guess ]
+    season = [node for node in mtree.leaves() if 'season' in node.guess]
     if season and 'bonusNumber' in mtree.info:
         series = previous_group(season[0])
         if same_group(series, season[0]):

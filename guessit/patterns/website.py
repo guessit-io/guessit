@@ -21,5 +21,5 @@
 
 from __future__ import unicode_literals
 
-websites = [ 'tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com',
-            'sharethefiles.com' ]
+websites = ['tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com',
+            'sharethefiles.com']

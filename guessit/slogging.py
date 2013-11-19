@@ -21,8 +21,7 @@
 from __future__ import unicode_literals
 import logging
 import sys
-import os, os.path
-
+import os
 
 GREEN_FONT = "\x1B[0;32m"
 YELLOW_FONT = "\x1B[0;33m"

@@ -21,13 +21,14 @@
 from guessittest import *
 from guessit import quality
 
+
 class TestQuality(TestGuessit):
     def test_screenSize(self):
         guess_720p = guessit.guess_file_info("2012.2009.720p.BluRay.x264.DTS WiKi.mkv", 'autodetect')
         guess_1080p = guessit.guess_file_info("2012.2009.1080p.BluRay.x264.DTS WiKi.mkv", 'autodetect')
-        
+
         best_quality_guess = quality.best_quality(guess_720p, guess_1080p)
-        
+
         self.assertTrue(guess_1080p == best_quality_guess, "1080p release is not the best quality")
 
 suite = allTests(TestQuality)

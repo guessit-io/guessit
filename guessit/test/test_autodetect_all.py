@@ -21,8 +21,9 @@
 from __future__ import unicode_literals
 from guessittest import *
 
-IGNORE_EPISODES = [ 'finale ' ]
+IGNORE_EPISODES = ['finale ']
 IGNORE_MOVIES = []
+
 
 class TestAutoDetectAll(TestGuessit):
     def testAutoMatcher(self):

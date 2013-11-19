@@ -31,6 +31,6 @@ def process(mtree):
     components = fileutils.split_path(mtree.value)
     basename = components.pop(-1)
     components += list(os.path.splitext(basename))
-    components[-1] = components[-1][1:] # remove the '.' from the extension
+    components[-1] = components[-1][1:]  # remove the '.' from the extension
 
     mtree.split_on_components(components)
