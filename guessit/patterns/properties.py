@@ -242,7 +242,7 @@ register_properties('releaseGroup', 'ESiR', 'WAF', 'SEPTiC', r'\[XCT\]', 'iNT', 
                                   '2HD', 'CTU', 'HALCYON', 'EbP', 'SiTV',
                                   'HDBRiSe', 'AlFleNi-TeaM', 'EVOLVE', '0TV',
                                   'TLA', 'NTB', 'ASAP', 'MOMENTUM', 'FoV', 'D-Z0N3',
-                                  'TrollHD', 'ECI'
+                                  'TrollHD', 'ECI', 'MARINE-FORD'
                                   )
 
 register_properties('weakReleaseGroup', 'DEiTY', 'FiNaLe', 'UnSeeN', 'KiNGS', 'CLUE', 'DIMENSION',
