@@ -117,6 +117,14 @@ def unregister_quality(property_name, *property_canonical_forms):
         if not property_qualities:
             del _qualities[property_name]
 
+
+def clear_qualities():
+    """
+    Unregister all defined quality ratings
+    """
+    _qualities.clear()
+
+
 register_quality('screenSize', '360p', -300)
 register_quality('screenSize', '368p', -200)
 register_quality('screenSize', '480p', -100)

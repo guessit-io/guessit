@@ -133,6 +133,14 @@ def register_properties(name, *canonical_forms):
         register_property(name, canonical_form, canonical_form)
 
 
+def clear_properties():
+    """
+    Unregister all defined properties
+    """
+    _properties.clear()
+    _properties_compiled.clear()
+
+
 def find_properties(string):
     """
     Find properties for given string.
