@@ -58,25 +58,38 @@ def enhance_property_patterns(name):
     return [enhance_pattern(p) for patterns in _properties[name].values() for p in patterns]
 
 
-def unregister_property(name, canonical_form):
+def unregister_property(name, *property_canonical_forms):
     """
-    Unregister a property pattern canonical_form
+    Unregister a property canonical forms
+
+    If property_canonical_forms are specified, only those values will be unregistered
+
+    @param name: property name to unregister
+    @param property_canonical_forms: canonical_forms to unregister
     """
     prop_canonical_forms = _properties.get(name)
 
     if not prop_canonical_forms is None:
-        if canonical_form in prop_canonical_forms:
-            del prop_canonical_forms[canonical_form]
+        if property_canonical_forms:
+            for canonical_form in property_canonical_forms:
+                if canonical_form in prop_canonical_forms:
+                    del prop_canonical_forms[canonical_form]
 
-        if not prop_canonical_forms:
+                if not prop_canonical_forms:
+                    del _properties[name]
+        else:
             del _properties[name]
 
     rexps = _properties_compiled.get(name)
     if not rexps is None:
-        if canonical_form in rexps:
-            del rexps[canonical_form]
+        if property_canonical_forms:
+            for canonical_form in property_canonical_forms:
+                if canonical_form in rexps:
+                    del rexps[canonical_form]
 
-        if not rexps:
+                if not rexps:
+                    del _properties_compiled[name]
+        else:
             del _properties_compiled[name]
 
 
