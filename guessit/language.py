@@ -57,9 +57,9 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
         self.codes = set()
         self.guessit_exceptions = {}
 
-        self.alpha3b = babelfish.converters.alpha3b.Alpha3BConverter()
-        self.alpha2 = babelfish.converters.alpha2.Alpha2Converter()
-        self.name = babelfish.converters.name.NameConverter()
+        self.alpha3b = babelfish.language.get_language_converter('alpha3b')
+        self.alpha2 = babelfish.language.get_language_converter('alpha2')
+        self.name = babelfish.language.get_language_converter('name')
 
         self.codes |= LANGUAGES | self.alpha3b.codes | self.alpha2.codes | self.name.codes
 
@@ -118,7 +118,7 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):
         self.codes = set()
         self.guessit_exceptions = {}
 
-        self.name = babelfish.converters.countryname.CountryNameConverter()
+        self.name = babelfish.country.get_country_converter('name')
 
         self.codes |= set(COUNTRIES.keys()) | self.name.codes
 
