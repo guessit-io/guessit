@@ -21,7 +21,7 @@
 from __future__ import unicode_literals
 from guessit import UnicodeMixin, base_text_type, u, s
 from guessit.textutils import find_words
-from babelfish import Language, LANGUAGES, LANGUAGE_MATRIX, COUNTRIES, COUNTRY_CONVERTERS
+from babelfish import Language, LANGUAGES, COUNTRIES
 import babelfish
 import re
 import logging
