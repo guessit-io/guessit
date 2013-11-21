@@ -22,14 +22,15 @@ _qualities = {}
 
 
 def rate_quality(guess, *props):
-    """
-    Rate the quality of a guess.
+    """Rate the quality of guess.
 
-    @param guess: Guess object to rate
-    @param props: properties to include in the rating.
-                 if empty, rating will be performed for all guess properties.
+    :param guess: Guess to rate
+    :type guess: :class:`guessit.guess.Guess`
+    :param props: Properties to include in the rating. if empty, rating will be performed for all guess properties.
+    :type props: varargs of string
 
-    @return: int value representing the quality of the guess. The higher, the better.
+    :return: Quality of the guess. The higher, the better.
+    :rtype: int
     """
     rate = 0
     if not props:
@@ -43,13 +44,15 @@ def rate_quality(guess, *props):
 
 
 def best_quality_properties(props, *guesses):
-    """
-    Retrieves the best quality guess from all passed guesses, based on given properties
+    """Retrieve the best quality guess, based on given properties
 
-    @param props: list of properties to include in the rating
-    @param guesses: guesses to rate
+    :param props: Properties to include in the rating
+    :type props: list of strings
+    :param guesses: Guesses to rate
+    :type guesses: :class:`guessit.guess.Guess`
 
-    @return: best quality guess from all passed guesses
+    :return: Best quality guess from all passed guesses
+    :rtype: :class:`guessit.guess.Guess`
     """
     best_guess = None
     best_rate = None
@@ -62,12 +65,13 @@ def best_quality_properties(props, *guesses):
 
 
 def best_quality(*guesses):
-    """
-    Retrieves the best quality guess from all passed guesses
+    """Retrieve the best quality guess.
 
-    @param guesses: guesses to rate
+    :param guesses: Guesses to rate
+    :type guesses: :class:`guessit.guess.Guess`
 
-    @return: best quality guess from all passed guesses
+    :return: Best quality guess from all passed guesses
+    :rtype: :class:`guessit.guess.Guess`
     """
     best_guess = None
     best_rate = None
@@ -79,48 +83,50 @@ def best_quality(*guesses):
     return best_guess
 
 
-def register_quality(property_name, property_canonical_form, rating):
-    """
-    Register a quality rating for given property name and canonical_form
+def register_quality(name, canonical_form, rating):
+    """Register a quality rating.
 
-    @param property_name: name of the property
-    @param property_canonical_form: canonical form of the property
-    @param rating: estimated quality rating for the property
+    :param name: Name of the property
+    :type name: string
+    :param canonical_form: Value of the property
+    :type canonical_form: string
+    :param rating: Estimated quality rating for the property
+    :type rating: int
     """
-    property_qualities = _qualities.get(property_name)
+    property_qualities = _qualities.get(name)
 
     if property_qualities is None:
         property_qualities = {}
-        _qualities[property_name] = property_qualities
+        _qualities[name] = property_qualities
 
-    property_qualities[property_canonical_form] = rating
+    property_qualities[canonical_form] = rating
 
 
-def unregister_quality(property_name, *property_canonical_forms):
+def unregister_quality(name, *canonical_forms):
+    """Unregister quality ratings for given property name.
+
+    If canonical_forms are specified, only those values will be unregistered
+
+    :param name: Name of the property
+    :type name: string
+    :param canonical_forms: Value of the property
+    :type canonical_forms: string
     """
-    Unregister quality ratings for given property name.
-
-    If property_canonical_forms are specified, only those values will be unregistered
-
-    @param property_name: name of the property
-    @param property_canonical_form: canonical form of the property
-    """
-    if not property_canonical_forms:
-        if property_name in _qualities:
-            del _qualities[property_name]
+    if not canonical_forms:
+        if name in _qualities:
+            del _qualities[name]
     else:
-        property_qualities = _qualities.get(property_name)
+        property_qualities = _qualities.get(name)
         if not property_qualities is None:
-            for property_canonical_form in property_canonical_forms:
+            for property_canonical_form in canonical_forms:
                 if property_canonical_form in property_qualities:
                     del property_qualities[property_canonical_form]
         if not property_qualities:
-            del _qualities[property_name]
+            del _qualities[name]
 
 
 def clear_qualities():
-    """
-    Unregister all defined quality ratings
+    """Unregister all defined quality ratings.
     """
     _qualities.clear()
 

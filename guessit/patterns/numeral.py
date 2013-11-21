@@ -86,13 +86,14 @@ def __parse_roman(value):
     result = 0
     index = 0
     for numeral, integer in __romanNumeralMap:
-        while value[index:index+len(numeral)] == numeral:
+        while value[index:index + len(numeral)] == numeral:
             result += integer
             index += len(numeral)
     return result
 
+
 def __parse_word(value):
-    """convert Word numeral to integer"""
+    """Convert Word numeral to integer"""
     for word_list in [english_word_numeral_list, french_word_numeral_list, french_alt_word_numeral_list]:
         try:
             return word_list.index(value)
@@ -102,14 +103,17 @@ def __parse_word(value):
 
 
 def parse_numeral(value):
-    """
-    Parse a numeric value into integer. 
+    """Parse a numeric value into integer.
 
     input can be an integer as a string, a roman numeral or a word
 
-    @return: numeric value as an int
+    :param value: Value to parse. Can be an integer, roman numeral or word.
+    :type value: string
 
-    @raise ValueError: if value can't be parsed
+    :return: Numeric value
+    :rtype: int
+
+    :raise ValueError: If value can't be parsed
     """
     try:
         return int(value)

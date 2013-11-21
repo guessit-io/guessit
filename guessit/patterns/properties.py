@@ -37,41 +37,51 @@ def compile_pattern(pattern):
 
 
 def enhance_pattern(pattern):
-    """
-    Enhance pattern to match more equivalent values.
-
-    @param pattern: string considered as a regexp.
+    """Enhance pattern to match more equivalent values.
 
     '-' are replaced by ([ \.-_]), which matches more types of separators (or none)
+
+    :param pattern: Pattern to enhance (regexp).
+    :type pattern: string
+
+    :return: The enhanced pattern
+    :rtype: string
+
+
     """
     return pattern.replace(_dash, _psep)
 
 
 def enhance_property_patterns(name):
-    """
-    Get the enhanced patterns of given property.
+    """Retrieve enhanced patterns of given property.
 
-    @param name: property name of patterns to enhance.
+    :param name: Property name of patterns to enhance.
+    :type name: string
 
-    @see enhance_pattern(pattern)
+    :return: Enhanced patterns
+    :rtype: list of strings
+
+    :see: :func:`enhance_pattern`
     """
     return [enhance_pattern(p) for patterns in _properties[name].values() for p in patterns]
 
 
-def unregister_property(name, *property_canonical_forms):
+def unregister_property(name, *canonical_forms):
     """
     Unregister a property canonical forms
 
-    If property_canonical_forms are specified, only those values will be unregistered
+    If canonical_forms are specified, only those values will be unregistered
 
-    @param name: property name to unregister
-    @param property_canonical_forms: canonical_forms to unregister
+    :param name: Property name to unregister
+    :type name: string
+    :param canonical_forms: Values to unregister
+    :type canonical_forms: varargs of string
     """
     prop_canonical_forms = _properties.get(name)
 
     if not prop_canonical_forms is None:
-        if property_canonical_forms:
-            for canonical_form in property_canonical_forms:
+        if canonical_forms:
+            for canonical_form in canonical_forms:
                 if canonical_form in prop_canonical_forms:
                     del prop_canonical_forms[canonical_form]
 
@@ -82,8 +92,8 @@ def unregister_property(name, *property_canonical_forms):
 
     rexps = _properties_compiled.get(name)
     if not rexps is None:
-        if property_canonical_forms:
-            for canonical_form in property_canonical_forms:
+        if canonical_forms:
+            for canonical_form in canonical_forms:
                 if canonical_form in rexps:
                     del rexps[canonical_form]
 
@@ -94,14 +104,16 @@ def unregister_property(name, *property_canonical_forms):
 
 
 def register_property(name, canonical_form, *patterns):
-    """
-    Register property with defined canonical form and multiple patterns.
+    """Register property with defined canonical form and multiple patterns.
 
-    @param name: name of the property (format, screenSize, ...)
-    @param canonical_form: value of the property (DVD, 720p, ...)
-    @param patterns: regular expression patterns to register for the property canonical_form
+    :param name: name of the property (format, screenSize, ...)
+    :type name: string
+    :param canonical_form: value of the property (DVD, 720p, ...)
+    :type canonical_form: string
+    :param patterns: regular expression patterns to register for the property canonical_form
+    :type patterns: varargs of string
 
-    @note: simpler patterns need to be at the end of the list to not shadow more
+    :note: simpler patterns need to be at the end of the list to not shadow more
     complete ones, eg: 'AAC' needs to come after 'He-AAC'
     ie: from most specific to less specific
     """
@@ -136,11 +148,12 @@ def register_property(name, canonical_form, *patterns):
 
 
 def register_properties(name, *canonical_forms):
-    """
-    Registry properties.
+    """Registry properties.
 
-    @param name: name of the property (releaseGroup, ...)
-    @param canonical_forms: values of the property ('ESiR', 'WAF', 'SEPTiC', ...)
+    :param name: name of the property (releaseGroup, ...)
+    :type name: string
+    :param canonical_forms: values of the property ('ESiR', 'WAF', 'SEPTiC', ...)
+    :type canonical_forms: varargs of strings
     """
     for canonical_form in canonical_forms:
         register_property(name, canonical_form, canonical_form)
@@ -155,12 +168,15 @@ def clear_properties():
 
 
 def find_properties(string):
-    """
-    Find properties for given string.
+    """Find properties for given string.
 
     A property must always be surrounded by separators to be returned.
 
-    @return: list of tuple (property_name, canonical_form, start, end)
+    :param string: input string
+    :type string: string
+
+    :return: found properties
+    :rtype: list of tuples (name, canonical_form, start, end)
     """
     result = []
     for property_name, props in _properties_compiled.items():
@@ -184,12 +200,19 @@ def find_properties(string):
     return result
 
 
-def compute_canonical_form(property_name, value):
-    """
-    @return: Canonical form of a property given its name if it is a valid one, None otherwise.
+def compute_canonical_form(name, value):
+    """Retrieves canonical form of a property given its name and found value.
+
+    :param name: name of the property
+    :type name: string
+    :param value: found value of the property
+    :type value: string
+
+    :return: Canonical form of a property, None otherwise.
+    :rtype: string
     """
     if isinstance(value, base_text_type):
-        for canonical_form, rexps in _properties_compiled[property_name].items():
+        for canonical_form, rexps in _properties_compiled[name].items():
             for rexp in rexps:
                 if rexp.match(value):
                     return canonical_form
