@@ -25,11 +25,39 @@ from . import sep
 from guessit import base_text_type
 import re
 
-_properties = {}
-_properties_compiled = {}
+_properties = []
 
 _dash = '-'
 _psep = '[\W_]?'
+
+
+class _Property:
+    """Represents a property configuration."""
+    def __init__(self, name, canonical_form, pattern=None, confidence=1.0, span_adjust=(0, 0)):
+        """
+        :param name: Name of the property (format, screenSize, ...)
+        :type name: string
+        :param canonical_form: Unique value of the property (DVD, 720p, ...)
+        :type canonical_form: string
+        :param pattern: Regexp pattern
+        :type pattern: string
+        :param confidence: confidence
+        :type confidence: float
+        :param span_adjust: offset to apply to found span
+        :type span_adjust: tuple (int start, int end)
+        """
+        self.name = name
+        self.canonical_form = canonical_form
+        if not pattern is None:
+            self.pattern = pattern
+        else:
+            self.pattern = canonical_form
+        self.compiled = compile_pattern(self.pattern)
+        self.confidence = confidence
+        self.span_adjust = span_adjust
+
+    def __repr__(self):
+        return "%s: %s" % (self.name, self.canonical_form)
 
 
 def compile_pattern(pattern):
@@ -67,14 +95,15 @@ def enhance_property_patterns(name):
     :return: Enhanced patterns
     :rtype: list of strings
 
+    :deprecated: All property configuration should be done in this module
+
     :see: :func:`enhance_pattern`
     """
-    return [enhance_pattern(p) for patterns in _properties[name].values() for p in patterns]
+    return [enhance_pattern(prop.pattern) for prop in get_properties(name)]
 
 
 def unregister_property(name, *canonical_forms):
-    """
-    Unregister a property canonical forms
+    """Unregister a property canonical forms
 
     If canonical_forms are specified, only those values will be unregistered
 
@@ -83,34 +112,11 @@ def unregister_property(name, *canonical_forms):
     :param canonical_forms: Values to unregister
     :type canonical_forms: varargs of string
     """
-    prop_canonical_forms = _properties.get(name)
-
-    if not prop_canonical_forms is None:
-        if canonical_forms:
-            for canonical_form in canonical_forms:
-                if canonical_form in prop_canonical_forms:
-                    del prop_canonical_forms[canonical_form]
-
-                if not prop_canonical_forms:
-                    del _properties[name]
-        else:
-            del _properties[name]
-
-    rexps = _properties_compiled.get(name)
-    if not rexps is None:
-        if canonical_forms:
-            for canonical_form in canonical_forms:
-                if canonical_form in rexps:
-                    del rexps[canonical_form]
-
-                if not rexps:
-                    del _properties_compiled[name]
-        else:
-            del _properties_compiled[name]
+    _properties = [prop for prop in _properties if prop.name == name and (not canonical_forms or prop.canonical_form in canonical_forms)]
 
 
 def register_property(name, canonical_form, *patterns):
-    """Register property with defined canonical form and multiple patterns.
+    """Register property with defined canonical form and patterns.
 
     :param name: name of the property (format, screenSize, ...)
     :type name: string
@@ -118,39 +124,15 @@ def register_property(name, canonical_form, *patterns):
     :type canonical_form: string
     :param patterns: regular expression patterns to register for the property canonical_form
     :type patterns: varargs of string
-
-    :note: simpler patterns need to be at the end of the list to not shadow more
-    complete ones, eg: 'AAC' needs to come after 'He-AAC'
-    ie: from most specific to less specific
     """
-    global _properties
-    prop_canonical_forms = _properties.get(name)
-
-    if prop_canonical_forms is None:
-        prop_canonical_forms = {}
-        _properties[name] = prop_canonical_forms
-    prop_patterns = prop_canonical_forms.get(canonical_form)
-
-    if prop_patterns is None:
-        prop_patterns = []
-        prop_canonical_forms[canonical_form] = prop_patterns
-
     for pattern in patterns:
-        prop_patterns.append(pattern)
-
-    rexps = _properties_compiled.get(name)
-    if rexps is None:
-        rexps = {}
-        _properties_compiled[name] = rexps
-
-    property_patterns = None
-    if not canonical_form in rexps:
-        property_patterns = []
-        rexps[canonical_form] = property_patterns
-    else:
-        property_patterns = rexps[canonical_form]
-    for pattern in patterns:
-        property_patterns.append(compile_pattern(pattern))
+        if isinstance(pattern, dict):
+            prop = _Property(name, canonical_form, **pattern)
+        elif hasattr(pattern, "__iter__"):
+            prop = _Property(name, canonical_form, *pattern)
+        else:
+            prop = _Property(name, canonical_form, pattern)
+        _properties.append(prop)
 
 
 def register_properties(name, *canonical_forms):
@@ -165,45 +147,148 @@ def register_properties(name, *canonical_forms):
         register_property(name, canonical_form, canonical_form)
 
 
-def clear_properties():
-    """
-    Unregister all defined properties
-    """
+def unregister_all_properties():
+    """Unregister all defined properties"""
     _properties.clear()
-    _properties_compiled.clear()
+
+
+def _is_valid(string, match, entry_start, entry_end):
+    """Make sure our entry is surrounded by separators, or by another entry"""
+    span = _get_span(match)
+    start = span[0]
+    end = span[1]
+    # note: sep is a regexp, but in this case using it as
+    #a char sequence achieves the same goal
+    sep_start = start <= 0 or string[start - 1] in sep
+    sep_end = end >= len(string) or string[end] in sep
+    start_by_other = start in entry_end
+    end_by_other = end in entry_start
+    if (sep_start or start_by_other) and (sep_end or end_by_other):
+        return True
+    return False
+
+
+def _get_span(match):
+    if match.groups():
+        # if groups are defined, take only first group as a result
+        return match.start(1), match.end(1)
+    else:
+        return match.span()
 
 
 def find_properties(string):
-    """Find properties for given string.
+    """Find all distinct properties for given string, sorted from longer match to shorter match.
 
-    A property must always be surrounded by separators to be returned.
+    If no capturing group is defined in the property, value will be grabbed from the entire match.
+
+    If one ore more capturing group is defined in the property, first capturing group will be used.
+
+    A found property must be surrounded by separators or another found property to be returned.
+
+    If multiple values are found for the same property, the more confident one will be returned.
+
+    If multiple values are found for the same property and the same confidence, the longer will be returned.
 
     :param string: input string
     :type string: string
 
     :return: found properties
-    :rtype: list of tuples (name, canonical_form, start, end)
+    :rtype: list of tuples (:class:`_Property`, tuple(start, end))
+
+    :see: `_Property`
+    :see: `register_property`
+    :see: `register_properties`
     """
-    result = []
-    for property_name, props in _properties_compiled.items():
+    result = {}
+
+    entry_start = {}
+    entry_end = {}
+
+    entries = []
+    entries_dict = {}
+
+    for prop in get_properties():
         # FIXME: this should be done in a more flexible way...
-        if property_name in ['weakReleaseGroup']:
+        if prop.name in ['weakReleaseGroup']:
             continue
 
-        for canonical_form, rexps in props.items():
-            for value_rexp in rexps:
-                match = value_rexp.search(string)
-                if match:
-                    start, end = match.span()
-                    # make sure our word is always surrounded by separators
-                    # note: sep is a regexp, but in this case using it as
-                    #       a char sequence achieves the same goal
-                    if ((start > 0 and string[start - 1] not in sep) or
-                        (end < len(string) and string[end] not in sep)):
-                        continue
+        match = prop.compiled.search(string)
+        if match:
+            entry = prop, match
+            entries.append(entry)
+            if not prop.name in entries_dict:
+                entries_dict[prop.name] = []
+            entries_dict[prop.name].append(entry)
 
-                    result.append((property_name, canonical_form, start, end))
-    return result
+    if entries_dict:
+        for entries in entries_dict.values():
+            best_prop, best_match = None, None
+            if len(entries) == 1:
+                best_prop, best_match = entries[0]
+            else:
+                for prop, match in entries:
+                    if match.groups():
+                        # if groups are defined, take only first group as a result
+                        start, end = match.start(1), match.end(1)
+                    else:
+                        start, end = match.span()
+                    if not best_prop or \
+                    best_prop.confidence < best_prop.confidence or \
+                    best_prop.confidence == best_prop.confidence and \
+                    best_match.span()[1] - best_match.span()[0] < match.span()[1] - match.span()[0]:
+                        best_prop, best_match = prop, match
+
+            result[best_prop] = best_match
+
+            best_span = _get_span(best_match)
+
+            start = best_span[0]
+            end = best_span[1]
+
+            if start not in entry_start:
+                entry_start[start] = [best_prop]
+            else:
+                entry_start[start].append(best_prop)
+
+            if end not in entry_end:
+                entry_end[end] = [best_prop]
+            else:
+                entry_end[end].append(best_prop)
+
+    while True:
+        invalid_values = []
+        for prop, match in result.items():
+            if not _is_valid(string, match, entry_start, entry_end):
+                invalid_values.append((prop, match))
+        if not invalid_values:
+            break
+        for prop, match in invalid_values:
+            result.pop(prop)
+            invalid_span = _get_span(match)
+            start = invalid_span[0]
+            end = invalid_span[1]
+            entry_start[start].remove(prop)
+            if not entry_start.get(start):
+                del entry_start[start]
+            entry_end[end].remove(prop)
+            if not entry_end.get(end):
+                del entry_end[end]
+
+    ret = []
+    for prop, match in result.items():
+        ret.append((prop, match))
+
+    def _sorting(x):
+        _, x_match = x
+        x_start, x_end = x_match.span()
+        return (x_start - x_end)
+
+    ret.sort(key=_sorting)
+
+    ret2 = []
+    for prop, match in ret:
+        ret2.append((prop, _get_span(match)))
+    return ret2
 
 
 def compute_canonical_form(name, value):
@@ -218,11 +303,22 @@ def compute_canonical_form(name, value):
     :rtype: string
     """
     if isinstance(value, base_text_type):
-        for canonical_form, rexps in _properties_compiled[name].items():
-            for rexp in rexps:
-                if rexp.match(value):
-                    return canonical_form
+        for prop in get_properties(name):
+            if prop.compiled.match(value):
+                return prop.canonical_form
     return None
+
+
+def get_properties(name=None, canonical_form=None):
+    """Retrieve properties
+
+    :return: Properties
+    :rtype: generator
+    """
+    for prop in _properties:
+        if name is None or prop.name == name and canonical_form is None or prop.canonical_form is None:
+            yield prop
+
 
 register_property('format', 'DVD', 'DVD', 'DVD-Rip', 'VIDEO-TS', 'DVDivX')
 register_property('format', 'HD-DVD', 'HD-(?:DVD)?-Rip', 'HD-DVD')
@@ -230,9 +326,12 @@ register_property('format', 'BluRay', 'Blu-ray', 'B[DR]Rip')
 register_property('format', 'HDTV', 'HD-TV')
 register_property('format', 'DVB', 'DVB-Rip', 'DVB', 'PD-TV')
 register_property('format', 'WEBRip', 'WEB-Rip')
-register_property('format', 'Screener', 'DVD-SCR', 'Screener')
 register_property('format', 'VHS', 'VHS')
 register_property('format', 'WEB-DL', 'WEB-DL')
+
+for prop in get_properties('format'):
+    register_property('isScreener', True, prop.pattern + '(-?Scr(?:eener)?)')
+register_property('isScreener', True, 'Screener')
 
 register_property('is3D', True, '3D')
 

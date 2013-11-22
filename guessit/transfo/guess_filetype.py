@@ -155,21 +155,21 @@ def guess_filetype(mtree, filetype):
                 upgrade_episode()
 
         # if we have certain properties characteristic of episodes, it is an ep
-        for prop, value, _, _ in find_properties(filename):
-            log.debug('prop: %s = %s' % (prop, value))
-            if prop == 'episodeFormat':
-                log.debug('Found characteristic property of episodes: %s = "%s"', prop, value)
+        for prop, _ in find_properties(filename):
+            log.debug('prop: %s' % prop)
+            if prop.name == 'episodeFormat':
+                log.debug('Found characteristic property of episodes: %s"', prop)
                 upgrade_episode()
                 break
 
-            elif compute_canonical_form('format', value) == 'DVB':
-                log.debug('Found characteristic property of episodes: %s = "%s"', prop, value)
+            elif compute_canonical_form('format', prop.canonical_form) == 'DVB':
+                log.debug('Found characteristic property of episodes: %s', prop)
                 upgrade_episode()
                 break
 
         # origin-specific type
         if 'tvu.org.ru' in filename:
-            log.debug('Found characteristic property of episodes: %s = "%s"', prop, value)
+            log.debug('Found characteristic property of episodes: %s', prop)
             upgrade_episode()
 
         # if no episode info found, assume it's a movie

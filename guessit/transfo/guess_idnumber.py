@@ -21,6 +21,7 @@
 from __future__ import unicode_literals
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.properties import find_properties
+from guessit import Guess
 import re
 import logging
 
@@ -28,11 +29,13 @@ log = logging.getLogger(__name__)
 
 
 def guess_properties(string):
-    try:
-        prop, value, pos, end = find_properties(string)[0]
-        return {prop: value}, (pos, end)
-    except IndexError:
-        return None, None
+    found = find_properties(string)
+    if found:
+        prop, span = found[0]
+        guess = Guess(confidence=prop.confidence)
+        guess[prop.name] = prop.canonical_form
+        return guess, span
+    return None, None
 
 _idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})') # 1.0, (0, 0))
 

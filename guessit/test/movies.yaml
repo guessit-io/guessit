@@ -457,3 +457,18 @@
   language: French
   videoCodec: h264
   title: Pirates de langkasuka
+  
+? Masala (2013) Telugu Movie HD DVDScr XviD - Exclusive.avi
+: year: 2013
+  videoCodec: XviD
+  title: Masala
+  format: HD-DVD
+  isScreener: True
+
+? Django Unchained 2012 DVDSCR X264 AAC-P2P.nfo
+: year: 2012
+  isScreener: True
+  videoCodec: h264
+  title: Django Unchained
+  audioCodec: AAC
+  format: DVD
