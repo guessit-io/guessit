@@ -29,25 +29,31 @@ _properties = {}
 _properties_compiled = {}
 
 _dash = '-'
-_psep = '[-. _]?'
+_psep = '[\W_]?'
 
 
 def compile_pattern(pattern):
+    """Compile and enhance a pattern
+
+    :param pattern: Pattern to compile (regexp).
+    :type pattern: string
+
+    :return: The compiled pattern
+    :rtype: regular expression object
+    """
     return re.compile(enhance_pattern(pattern), re.IGNORECASE)
 
 
 def enhance_pattern(pattern):
     """Enhance pattern to match more equivalent values.
 
-    '-' are replaced by ([ \.-_]), which matches more types of separators (or none)
+    '-' are replaced by '[\W_]?', which matches more types of separators (or none)
 
     :param pattern: Pattern to enhance (regexp).
     :type pattern: string
 
     :return: The enhanced pattern
     :rtype: string
-
-
     """
     return pattern.replace(_dash, _psep)
 
