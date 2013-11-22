@@ -44,7 +44,8 @@ property types::
       date, year,                        # 'date' instance of datetime.date
       language, subtitleLanguage,        # instances of guessit.Language
       country,                           # instances of guessit.Country
-      container, format, is3D,
+      container, format,
+      is3D, isScreener,
       videoCodec, audioCodec,
       audioChannels, screenSize,
       releaseGroup, website,
