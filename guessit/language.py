@@ -19,6 +19,7 @@
 #
 
 from __future__ import unicode_literals
+from guessit.patterns import sep
 from guessit import UnicodeMixin, base_text_type, u, s
 from guessit.textutils import find_words
 from babelfish import Language, LANGUAGES, COUNTRIES
@@ -317,8 +318,6 @@ def search_language(string, lang_filter=None, skip=None):
     >>> search_language('the zen fat cat and the gay mad men got a new fan', lang_filter = ['en', 'fr', 'es'])
     (None, None, None)
     """
-
-    sep = r'[](){} \._-+'
 
     if lang_filter:
         lang_filter = set(babelfish.Language.fromguessit(lang) for lang in lang_filter)
