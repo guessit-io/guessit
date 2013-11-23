@@ -267,8 +267,7 @@ class MatchTree(BaseMatchTree):
     def matched(self):
         # we need to make a copy here, as the merge functions work in place and
         # calling them on the match tree would modify it
-        parts = [node.guess for node in self.nodes() if node.guess]
-        parts = copy.deepcopy(parts)
+        parts = [copy.copy(node.guess) for node in self.nodes() if node.guess]
 
         # 1- try to merge similar information together and give it a higher
         #    confidence
