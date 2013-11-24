@@ -369,6 +369,50 @@ def search_language(string, lang_filter=None, skip=None):
     return None, None, None
 
 
+def skip_language_on_second_pass(match_tree, node):
+    """Check if found node is a valid language node, or if it's a false positive.
+
+    :param match_tree: Tree detected on first pass.
+    :type match_tree: :class:`guessit.matchtree.MatchTree`
+    :param node: Node that contains a language Guess
+    :type node: :class:`guessit.matchtree.MatchTree`
+
+    :return: True if a second pass skipping this node is required
+    :rtype: bool
+    """
+    def find_nodes(tree, props):
+        """Yields all nodes containing any of the given props."""
+        if isinstance(props, base_text_type):
+            props = [props]
+        for node in tree.nodes():
+            if any(prop in node.guess for prop in props):
+                yield node
+
+    unidentified_starts = {}
+    unidentified_ends = {}
+
+    property_starts = {}
+    property_ends = {}
+
+    title_starts = {}
+    title_ends = {}
+
+    for unidentified_node in match_tree.unidentified_leaves():
+        unidentified_starts[unidentified_node.span[0]] = unidentified_node
+        unidentified_ends[unidentified_node.span[1]] = unidentified_node
+
+    for property_node in find_nodes(match_tree, ['year']):
+        property_starts[property_node.span[0]] = property_node
+        property_ends[property_node.span[1]] = property_node
+
+    for title_node in find_nodes(match_tree, ['title', 'series']):
+        title_starts[title_node.span[0]] = title_node
+        title_ends[title_node.span[1]] = title_node
+
+    return node.span[0] in title_ends.keys() and (node.span[1] in unidentified_starts.keys() or node.span[1] + 1 in property_starts.keys()) or\
+            node.span[1] in title_starts.keys() and (node.span[0] == 0 or node.span[0] in unidentified_ends.keys() or node.span[0] in property_ends.keys())
+
+
 def guess_language(text):
     """Guess the language in which a body of text is written.
 
