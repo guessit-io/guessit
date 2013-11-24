@@ -109,10 +109,6 @@ def _guess_filename(filename, filetype):
             if any(prop in node.guess for prop in props):
                 yield node
 
-    def warning(title):
-        log.warning('%s, guesses: %s - %s' % (title, m.nice_string(), m2.nice_string()))
-        return m
-
     mtree = IterativeMatcher(filename, filetype=filetype)
 
     m = mtree.matched()
@@ -174,25 +170,6 @@ def _guess_filename(filename, filetype):
                                  transfo_opts=second_pass_transfo_opts)
 
         m = mtree.matched()
-
-    if 'language' not in m and 'subtitleLanguage' not in m or 'title' not in m:
-        return m
-
-    # if we found some language, make sure we didn't cut a title or sth...
-    mtree2 = IterativeMatcher(filename, filetype=filetype,
-                              opts=['nolanguage', 'nocountry'])
-    m2 = mtree2.matched()
-
-    if m.get('title') != m2.get('title'):
-        title = next(find_nodes(mtree.match_tree, 'title'))
-        title2 = next(find_nodes(mtree2.match_tree, 'title'))
-
-        # if a node is in an explicit group, then the correct title is probably
-        # the other one
-        if title.root.node_at(title.node_idx[:2]).is_explicit():
-            return m2
-        elif title2.root.node_at(title2.node_idx[:2]).is_explicit():
-            return m
 
     return m
 
