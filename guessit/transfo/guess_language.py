@@ -30,9 +30,9 @@ log = logging.getLogger(__name__)
 def guess_language(string, node, skip=None):
     if skip:
         relative_skip = []
-        for entry in skip:
-            node_idx = entry['node_idx']
-            span = entry['span']
+        for node in skip:
+            node_idx = node.parent.node_idx
+            span = node.span
             if node_idx == node.node_idx[:len(node_idx)]:
                 relative_span = (span[0] - node.offset + 1, span[1] - node.offset + 1)
                 relative_skip.append(relative_span)

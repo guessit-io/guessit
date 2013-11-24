@@ -149,9 +149,7 @@ def _guess_filename(filename, filetype):
 
     if to_skip_language_nodes:
         second_pass_transfo_opts['guess_language'] = (
-            ((), {'skip': [{'node_idx': node.parent.node_idx,
-                               'span': node.span}
-                             for node in to_skip_language_nodes]}))
+            ((), {'skip': to_skip_language_nodes}))
 
     if second_pass_opts or second_pass_transfo_opts:
         # 2nd pass is needed
