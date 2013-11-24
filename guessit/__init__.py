@@ -101,14 +101,6 @@ log.addHandler(h)
 
 
 def _guess_filename(filename, filetype):
-    def find_nodes(tree, props):
-        """Yields all nodes containing any of the given props."""
-        if isinstance(props, base_text_type):
-            props = [props]
-        for node in tree.nodes():
-            if any(prop in node.guess for prop in props):
-                yield node
-
     mtree = IterativeMatcher(filename, filetype=filetype)
 
     m = mtree.matched()
@@ -118,7 +110,7 @@ def _guess_filename(filename, filetype):
 
     # if there are multiple possible years found, we assume the first one is
     # part of the title, reparse the tree taking this into account
-    years = set(n.value for n in find_nodes(mtree.match_tree, 'year'))
+    years = set(n.value for n in mtree.match_tree.leaves_containing('year'))
     if len(years) >= 2:
         second_pass_opts.append('skip_first_year')
 
@@ -126,7 +118,7 @@ def _guess_filename(filename, filetype):
 
     for lang_key in ('language', 'subtitleLanguage'):
         langs = {}
-        lang_nodes = set(n for n in find_nodes(mtree.match_tree, lang_key))
+        lang_nodes = set(n for n in mtree.match_tree.leaves_containing(lang_key))
 
         for lang_node in lang_nodes:
             lang = lang_node.guess.get(lang_key, None)

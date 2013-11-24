@@ -380,14 +380,6 @@ def skip_language_on_second_pass(match_tree, node):
     :return: True if a second pass skipping this node is required
     :rtype: bool
     """
-    def find_nodes(tree, props):
-        """Yields all nodes containing any of the given props."""
-        if isinstance(props, base_text_type):
-            props = [props]
-        for node in tree.nodes():
-            if any(prop in node.guess for prop in props):
-                yield node
-
     unidentified_starts = {}
     unidentified_ends = {}
 
@@ -401,11 +393,11 @@ def skip_language_on_second_pass(match_tree, node):
         unidentified_starts[unidentified_node.span[0]] = unidentified_node
         unidentified_ends[unidentified_node.span[1]] = unidentified_node
 
-    for property_node in find_nodes(match_tree, ['year']):
+    for property_node in match_tree.leaves_containing('year'):
         property_starts[property_node.span[0]] = property_node
         property_ends[property_node.span[1]] = property_node
 
-    for title_node in find_nodes(match_tree, ['title', 'series']):
+    for title_node in match_tree.leaves_containing(['title', 'series']):
         title_starts[title_node.span[0]] = title_node
         title_ends[title_node.span[1]] = title_node
 
