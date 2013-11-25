@@ -83,16 +83,22 @@ class BaseMatchTree(UnicodeMixin):
         child = MatchTree(self.string, span=span, parent=self)
         self.children.append(child)
 
-    def partition(self, indices):
+    def get_partition_spans(self, indices):
         indices = sorted(indices)
         if indices[0] != 0:
             indices.insert(0, 0)
         if indices[-1] != len(self.value):
             indices.append(len(self.value))
 
+        spans = []
         for start, end in zip(indices[:-1], indices[1:]):
-            self.add_child(span=(self.offset + start,
-                                 self.offset + end))
+            spans.append((self.offset + start,
+                     self.offset + end))
+        return spans
+
+    def partition(self, indices):
+        for partition_span in self.get_partition_spans(indices):
+            self.add_child(span=partition_span)
 
     def split_on_components(self, components):
         offset = 0

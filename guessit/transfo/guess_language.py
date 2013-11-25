@@ -27,18 +27,8 @@ import logging
 log = logging.getLogger(__name__)
 
 
-def guess_language(string, node, skip=None):
-    if skip:
-        relative_skip = []
-        for node in skip:
-            node_idx = node.parent.node_idx
-            span = node.span
-            if node_idx == node.node_idx[:len(node_idx)]:
-                relative_span = (span[0] - node.offset + 1, span[1] - node.offset + 1)
-                relative_skip.append(relative_span)
-        skip = relative_skip
-
-    language, span, confidence = search_language(string, skip=skip)
+def guess_language(string):
+    language, span, confidence = search_language(string)
     if language:
         return (Guess({'language': language},
                       confidence=confidence,
@@ -46,8 +36,6 @@ def guess_language(string, node, skip=None):
                 span)
 
     return None, None
-
-guess_language.use_node = True
 
 
 def process(mtree, *args, **kwargs):

@@ -149,12 +149,11 @@ def _guess_filename(filename, filetype):
 
     if to_skip_language_nodes:
         second_pass_transfo_opts['guess_language'] = (
-            ((), {'skip': to_skip_language_nodes}))
+            ((), {'skip_nodes': to_skip_language_nodes}))
 
     if second_pass_opts or second_pass_transfo_opts:
         # 2nd pass is needed
-        log.info("Running 2nd pass with options: %s" % second_pass_opts)
-        log.info("Transfo options: %s" % second_pass_transfo_opts)
+        log.info("Running 2nd pass")
         mtree = IterativeMatcher(filename, filetype=filetype,
                                  opts=second_pass_opts,
                                  transfo_opts=second_pass_transfo_opts)

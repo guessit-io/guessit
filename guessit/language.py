@@ -305,7 +305,7 @@ LNG_COMMON_WORDS = frozenset([
     ])
 
 
-def search_language(string, lang_filter=None, skip=None):
+def search_language(string, lang_filter=None):
     """Looks for language patterns, and if found return the language object,
     its group span and an associated confidence.
 
@@ -331,12 +331,6 @@ def search_language(string, lang_filter=None, skip=None):
         if pos != -1:
             end = pos + len(lang)
 
-            # skip if span in in skip list
-            while skip and (pos - 1, end - 1) in skip:
-                pos = slow.find(lang, end)
-                if pos == -1:
-                    continue
-                end = pos + len(lang)
             if pos == -1:
                 continue
 

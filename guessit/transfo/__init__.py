@@ -51,8 +51,13 @@ def format_guess(guess):
     return guess
 
 
-def find_and_split_node(node, strategy, logger):
-    string = ' %s ' % node.value  # add sentinels
+def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
+    value = None
+    if partial_span:
+        value = node.value[partial_span[0]:partial_span[1]]
+    else:
+        value = node.value
+    string = ' %s ' % value  # add sentinels
     for matcher, confidence, args, kwargs in strategy:
         all_args = [string]
         if getattr(matcher, 'use_node', False):
@@ -69,25 +74,40 @@ def find_and_split_node(node, strategy, logger):
             # readjust span to compensate for sentinels
             span = (span[0] - 1, span[1] - 1)
 
-            if isinstance(result, Guess):
-                if confidence is None:
-                    confidence = result.confidence(list(result.keys())[0])
-            else:
-                if confidence is None:
-                    confidence = 1.0
+            # readjust span to compensate for partial_span
+            if partial_span:
+                span = (span[0] + partial_span[0], span[1] + partial_span[0])
 
-            guess = format_guess(Guess(result, confidence=confidence, raw=string[span[0] + 1:span[1] + 1]))
-            msg = 'Found with confidence %.2f: %s' % (confidence, guess)
-            (logger or log).debug(msg)
+            partition_spans = None
+            for skip_node in skip_nodes:
+                if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
+                    skip_node.span == span:
+                    partition_spans = node.get_partition_spans(skip_node.span)
+                    partition_spans.remove(skip_node.span)
+                    break
 
-            node.partition(span)
-            absolute_span = (span[0] + node.offset, span[1] + node.offset)
-            for child in node.children:
-                if child.span == absolute_span:
-                    child.guess = guess
+            if not partition_spans:
+                if isinstance(result, Guess):
+                    if confidence is None:
+                        confidence = result.confidence(list(result.keys())[0])
                 else:
-                    find_and_split_node(child, strategy, logger)
-            return
+                    if confidence is None:
+                        confidence = 1.0
+
+                guess = format_guess(Guess(result, confidence=confidence, raw=string[span[0] + 1:span[1] + 1]))
+                msg = 'Found with confidence %.2f: %s' % (confidence, guess)
+                (logger or log).debug(msg)
+
+                node.partition(span)
+                absolute_span = (span[0] + node.offset, span[1] + node.offset)
+                for child in node.children:
+                    if child.span == absolute_span:
+                        child.guess = guess
+                    else:
+                        find_and_split_node(child, strategy, skip_nodes, logger)
+            else:
+                for partition_span in partition_spans:
+                    find_and_split_node(node, strategy, skip_nodes, logger, partition_span)
 
 
 class SingleNodeGuesser(object):
@@ -95,6 +115,7 @@ class SingleNodeGuesser(object):
         self.guess_func = guess_func
         self.confidence = confidence
         self.logger = logger
+        self.skip_nodes = kwargs.pop('skip_nodes', [])
         self.args = args
         self.kwargs = kwargs
 
@@ -107,4 +128,4 @@ class SingleNodeGuesser(object):
         strategy = [(self.guess_func, self.confidence, self.args, self.kwargs)]
 
         for node in mtree.unidentified_leaves():
-            find_and_split_node(node, strategy, self.logger)
+            find_and_split_node(node, strategy, self.skip_nodes, self.logger)
