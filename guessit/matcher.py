@@ -19,10 +19,13 @@
 #
 
 from __future__ import unicode_literals
+
+import logging
+
 from guessit import PY3, u
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
-import logging
+
 
 log = logging.getLogger(__name__)
 
@@ -71,17 +74,6 @@ class IterativeMatcher(object):
     resolution when they arise.
     """
     def __init__(self, filename, filetype='autodetect', opts=None, transfo_opts=None):
-        valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
-                           'movie', 'moviesubtitle', 'movieinfo',
-                           'episode', 'episodesubtitle', 'episodeinfo')
-        if filetype not in valid_filetypes:
-            raise ValueError("filetype needs to be one of %s" % valid_filetypes)
-        if not PY3 and not isinstance(filename, unicode):
-            log.warning('Given filename to matcher is not unicode...')
-            filename = filename.decode('utf-8')
-
-        filename = normalize_unicode(filename)
-
         if opts is None:
             opts = []
         if not isinstance(opts, list):
@@ -94,7 +86,23 @@ class IterativeMatcher(object):
             raise ValueError('transfo_opts must be a dict of { transfo_name: (args, kwargs) }. ' +
                              'Received: type=%s val=%s', type(transfo_opts), transfo_opts)
 
+        valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
+                           'movie', 'moviesubtitle', 'movieinfo',
+                           'episode', 'episodesubtitle', 'episodeinfo')
+        if filetype not in valid_filetypes:
+            raise ValueError("filetype needs to be one of %s" % valid_filetypes)
+        if not PY3 and not isinstance(filename, unicode):
+            log.warning('Given filename to matcher is not unicode...')
+            filename = filename.decode('utf-8')
+
+        filename = normalize_unicode(filename)
+
+        self.filename = filename
         self.match_tree = MatchTree(filename)
+        self.filetype = filetype
+        self.opts = opts
+        self.transfo_opts = transfo_opts
+        self._transfo_calls = []
 
         # sanity check: make sure we don't process a (mostly) empty string
         if clean_string(filename) == '':
@@ -103,27 +111,17 @@ class IterativeMatcher(object):
         mtree = self.match_tree
         mtree.guess.set('type', filetype, confidence=1.0)
 
-        def apply_transfo(transfo_name, *args, **kwargs):
-            transfo = __import__('guessit.transfo.' + transfo_name,
-                                 globals=globals(), locals=locals(),
-                                 fromlist=['process'], level=0)
-            default_args, default_kwargs = transfo_opts.get(transfo_name, ((), {}))
-            all_args = args or default_args
-            all_kwargs = dict(default_kwargs)
-            all_kwargs.update(kwargs)  # keep all kwargs merged together
-            transfo.process(mtree, *all_args, **all_kwargs)
-
         # 1- first split our path into dirs + basename + ext
-        apply_transfo('split_path_components')
+        self._apply_transfo('split_path_components')
 
         # 2- guess the file type now (will be useful later)
-        apply_transfo('guess_filetype', filetype)
+        self._apply_transfo('guess_filetype', filetype)
         if mtree.guess['type'] == 'unknown':
             return
 
         # 3- split each of those into explicit groups (separated by parentheses
         #    or square brackets)
-        apply_transfo('split_explicit_groups')
+        self._apply_transfo('split_explicit_groups')
 
         # 4- try to match information for specific patterns
         # NOTE: order needs to comply to the following:
@@ -145,32 +143,55 @@ class IterativeMatcher(object):
             strategy.remove('guess_language')
 
         for name in strategy:
-            apply_transfo(name)
+            self._apply_transfo(name)
 
         # more guessers for both movies and episodes
-        apply_transfo('guess_bonus_features')
-        apply_transfo('guess_year', skip_first_year=('skip_first_year' in opts))
+        self._apply_transfo('guess_bonus_features')
+        self._apply_transfo('guess_year')
 
         if 'nocountry' not in opts:
-            apply_transfo('guess_country')
+            self._apply_transfo('guess_country')
 
-        apply_transfo('guess_idnumber')
+        self._apply_transfo('guess_idnumber')
 
         # split into '-' separated subgroups (with required separator chars
         # around the dash)
-        apply_transfo('split_on_dash')
+        self._apply_transfo('split_on_dash')
 
         # 5- try to identify the remaining unknown groups by looking at their
         #    position relative to other known elements
         if mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo'):
-            apply_transfo('guess_episode_info_from_position')
+            self._apply_transfo('guess_episode_info_from_position')
         else:
-            apply_transfo('guess_movie_title_from_position')
+            self._apply_transfo('guess_movie_title_from_position')
 
         # 6- perform some post-processing steps
-        apply_transfo('post_process')
+        self._apply_transfo('post_process')
 
         log.debug('Found match tree:\n%s' % u(mtree))
+
+    def _apply_transfo(self, transfo_name, *args, **kwargs):
+        transfo = __import__('guessit.transfo.' + transfo_name,
+                             globals=globals(), locals=locals(),
+                             fromlist=['process', 'second_pass_options'], level=0)
+        default_args, default_kwargs = self.transfo_opts.get(transfo_name, ((), {}))
+        all_args = args or default_args or ()
+        all_kwargs = dict(default_kwargs) if default_kwargs else {}
+        all_kwargs.update(kwargs)  # keep all kwargs merged together
+        transfo.process(self.match_tree, *all_args, **all_kwargs)
+        self._transfo_calls.append((transfo_name, transfo, all_args, all_kwargs))
+
+    @property
+    def second_pass_options(self):
+        opts = list(self.opts)
+        transfo_opts = dict(self.transfo_opts.items())
+        for transfo_name, transfo, _, _ in self._transfo_calls:
+            if hasattr(transfo, 'second_pass_options'):
+                c_opts, c_transfo_opts = transfo.second_pass_options(self.match_tree)
+                if c_opts or c_transfo_opts:
+                    transfo_opts[transfo_name] = c_opts, c_transfo_opts
+
+        return opts, transfo_opts
 
     def matched(self):
         return self.match_tree.matched()

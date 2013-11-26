@@ -82,7 +82,7 @@ else:
 
 
 from guessit.guess import Guess, merge_all
-from guessit.language import Language, skip_language_on_second_pass
+from guessit.language import Language
 from guessit.matcher import IterativeMatcher
 from guessit.textutils import clean_string
 import logging
@@ -102,65 +102,11 @@ log.addHandler(h)
 
 def _guess_filename(filename, filetype):
     mtree = IterativeMatcher(filename, filetype=filetype)
-
-    m = mtree.matched()
-
-    second_pass_opts = []
-    second_pass_transfo_opts = {}
-
-    # if there are multiple possible years found, we assume the first one is
-    # part of the title, reparse the tree taking this into account
-    years = set(n.value for n in mtree.match_tree.leaves_containing('year'))
-    if len(years) >= 2:
-        second_pass_opts.append('skip_first_year')
-
-    to_skip_language_nodes = []
-
-    for lang_key in ('language', 'subtitleLanguage'):
-        langs = {}
-        lang_nodes = set(n for n in mtree.match_tree.leaves_containing(lang_key))
-
-        for lang_node in lang_nodes:
-            lang = lang_node.guess.get(lang_key, None)
-            if skip_language_on_second_pass(mtree.match_tree, lang_node):
-                # Language probably split the title. Add to skip for 2nd pass.
-
-                # if filetype is subtitle and the language appears last, just before
-                # the extension, then it is likely a subtitle language
-                parts = clean_string(lang_node.root.value).split()
-                if m['type'] in ['moviesubtitle', 'episodesubtitle'] and (parts.index(lang_node.value) == len(parts) - 2):
-                    continue
-
-                to_skip_language_nodes.append(lang_node)
-            elif not lang in langs:
-                langs[lang] = lang_node
-            else:
-                # The same language was found. Keep the more confident one, and add others to skip for 2nd pass.
-                existing_lang_node = langs[lang]
-                to_skip = None
-                if existing_lang_node.guess.confidence('language') >= lang_node.guess.confidence('language'):
-                    # lang_node is to remove
-                    to_skip = lang_node
-                else:
-                    # existing_lang_node is to remove
-                    langs[lang] = lang_node
-                    to_skip = existing_lang_node
-                to_skip_language_nodes.append(to_skip)
-
-    if to_skip_language_nodes:
-        second_pass_transfo_opts['guess_language'] = (
-            ((), {'skip_nodes': to_skip_language_nodes}))
-
-    if second_pass_opts or second_pass_transfo_opts:
-        # 2nd pass is needed
+    opts, transfo_opts = mtree.second_pass_options
+    if opts or transfo_opts:
         log.info("Running 2nd pass")
-        mtree = IterativeMatcher(filename, filetype=filetype,
-                                 opts=second_pass_opts,
-                                 transfo_opts=second_pass_transfo_opts)
-
-        m = mtree.matched()
-
-    return m
+        mtree = IterativeMatcher(filename, filetype=filetype, opts=opts, transfo_opts=transfo_opts)
+    return mtree.matched()
 
 
 def guess_file_info(filename, filetype, info=None):

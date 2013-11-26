@@ -218,6 +218,8 @@ class MatchTree(BaseMatchTree):
     for the BaseMatchTree, but add a lot of convenience for writing
     higher-level rules."""
 
+    _matched_result = None
+
     def _unidentified_leaves(self,
                              valid=lambda leaf: len(leaf.clean_value) >= 2):
         for leaf in self._leaves():
@@ -271,25 +273,27 @@ class MatchTree(BaseMatchTree):
         return (self.value[0] + self.value[-1]) in group_delimiters
 
     def matched(self):
-        # we need to make a copy here, as the merge functions work in place and
-        # calling them on the match tree would modify it
-        parts = [copy.copy(node.guess) for node in self.nodes() if node.guess]
+        if not self._matched_result:
+            # we need to make a copy here, as the merge functions work in place and
+            # calling them on the match tree would modify it
+            parts = [copy.copy(node.guess) for node in self.nodes() if node.guess]
 
-        # 1- try to merge similar information together and give it a higher
-        #    confidence
-        for int_part in ('year', 'season', 'episodeNumber'):
-            merge_similar_guesses(parts, int_part, choose_int)
+            # 1- try to merge similar information together and give it a higher
+            #    confidence
+            for int_part in ('year', 'season', 'episodeNumber'):
+                merge_similar_guesses(parts, int_part, choose_int)
 
-        for string_part in ('title', 'series', 'container', 'format',
-                            'releaseGroup', 'website', 'audioCodec',
-                            'videoCodec', 'screenSize', 'episodeFormat',
-                            'audioChannels', 'idNumber'):
-            merge_similar_guesses(parts, string_part, choose_string)
+            for string_part in ('title', 'series', 'container', 'format',
+                                'releaseGroup', 'website', 'audioCodec',
+                                'videoCodec', 'screenSize', 'episodeFormat',
+                                'audioChannels', 'idNumber'):
+                merge_similar_guesses(parts, string_part, choose_string)
 
-        # 2- merge the rest, potentially discarding information not properly
-        #    merged before
-        result = merge_all(parts,
-                           append=['language', 'subtitleLanguage', 'other'])
+            # 2- merge the rest, potentially discarding information not properly
+            #    merged before
+            result = merge_all(parts,
+                               append=['language', 'subtitleLanguage', 'other'])
 
-        log.debug('Final result: ' + result.nice_string())
-        return result
+            log.debug('Final result: ' + result.nice_string())
+            self._matched_result = result
+        return self._matched_result

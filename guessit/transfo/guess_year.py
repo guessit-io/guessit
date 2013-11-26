@@ -34,18 +34,12 @@ def guess_year(string):
         return None, None
 
 
-def guess_year_skip_first(string):
-    year, span = search_year(string)
-    if year:
-        year2, span2 = guess_year(string[span[1]:])
-        if year2:
-            return year2, (span2[0] + span[1], span2[1] + span[1])
-
+def second_pass_options(mtree):
+    year_nodes = mtree.leaves_containing('year')
+    if len(year_nodes) > 1:
+        return None, {'skip_nodes': year_nodes[:len(year_nodes) - 1]}
     return None, None
 
 
-def process(mtree, skip_first_year=False):
-    if skip_first_year:
-        SingleNodeGuesser(guess_year_skip_first, 1.0, log).process(mtree)
-    else:
-        SingleNodeGuesser(guess_year, 1.0, log).process(mtree)
+def process(mtree, *args, **kwargs):
+    SingleNodeGuesser(guess_year, 1.0, log, *args, **kwargs).process(mtree)
