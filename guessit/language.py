@@ -45,7 +45,8 @@ SYN = {('und', None): ['unknown', 'inconnu', 'unk', 'un'],
        ('ukr', None): ['ua'],
        ('zho', None): ['cn'],
        ('jpn', None): ['jp'],
-       ('hrv', None): ['scr']
+       ('hrv', None): ['scr'],
+       ('mul', None): ['multi'],
        }
 
 
