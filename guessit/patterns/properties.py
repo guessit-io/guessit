@@ -335,6 +335,8 @@ register_property('isScreener', True, 'Screener')
 
 register_property('is3D', True, '3D')
 
+register_property('isFinalEpisode', True, 'final')
+
 register_property('screenSize', '360p', '(?:\d{3,}(?:\\|\/|x|\*))?360(?:i|p?x?)')
 register_property('screenSize', '368p', '(?:\d{3,}(?:\\|\/|x|\*))?368(?:i|p?x?)')
 register_property('screenSize', '480p', '(?:\d{3,}(?:\\|\/|x|\*))?480(?:i|p?x?)')
