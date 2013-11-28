@@ -115,6 +115,13 @@ def second_pass_options(mtree):
     return None, None
 
 
+supported_properties = {'language': ['<guessit.language.Language object>']}
+
+
+def should_process(matcher):
+    return not 'nolanguage' in matcher.opts
+
+
 def process(mtree, *args, **kwargs):
     SingleNodeGuesser(guess_language, None, log, *args, **kwargs).process(mtree)
     # Note: 'language' is promoted to 'subtitleLanguage' in the post_process transfo

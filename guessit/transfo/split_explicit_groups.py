@@ -26,9 +26,13 @@ import logging
 
 log = logging.getLogger(__name__)
 
+priority = -245
+
 
 def process(mtree):
-    """return the string split into explicit groups, that is, those either
+    """split each of those into explicit groups (separated by parentheses or square brackets)
+
+    :return: return the string split into explicit groups, that is, those either
     between parenthese, square brackets or curly braces, and those separated
     by a dash."""
     for c in mtree.children:

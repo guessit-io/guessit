@@ -25,9 +25,14 @@ import logging
 
 log = logging.getLogger(__name__)
 
+priority = -255
+
 
 def process(mtree):
-    """Returns the filename split into [ dir*, basename, ext ]."""
+    """first split our path into dirs + basename + ext
+
+    :return: the filename split into [ dir*, basename, ext ]
+    """
     components = fileutils.split_path(mtree.value)
     basename = components.pop(-1)
     components += list(os.path.splitext(basename))

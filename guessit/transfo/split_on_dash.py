@@ -26,7 +26,13 @@ import logging
 log = logging.getLogger(__name__)
 
 
+priority = -190
+
+
 def process(mtree):
+    """split into '-' separated subgroups (with required separator chars
+    around the dash)
+    """
     for node in mtree.unidentified_leaves():
         indices = []
 

@@ -33,6 +33,8 @@ def guess_date(string):
     else:
         return None, None
 
+priority = -50
+
 
 def process(mtree):
     SingleNodeGuesser(guess_date, 1.0, log).process(mtree)

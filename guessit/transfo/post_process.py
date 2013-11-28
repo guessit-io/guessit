@@ -26,7 +26,13 @@ import logging
 log = logging.getLogger(__name__)
 
 
+priority = 255
+
+
 def process(mtree):
+    """perform some post-processing steps
+    """
+
     # 1- try to promote language to subtitle language where it makes sense
     for node in mtree.nodes():
         if 'language' not in node.guess:

@@ -72,5 +72,8 @@ def guess_idnumber(string):
     return None, None
 
 
+priority = 180
+
+
 def process(mtree):
     SingleNodeGuesser(guess_idnumber, 0.4, log).process(mtree)

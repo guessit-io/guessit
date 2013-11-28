@@ -41,5 +41,8 @@ def second_pass_options(mtree):
     return None, None
 
 
+priority = 160
+
+
 def process(mtree, *args, **kwargs):
     SingleNodeGuesser(guess_year, 1.0, log, *args, **kwargs).process(mtree)

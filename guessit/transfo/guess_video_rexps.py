@@ -46,6 +46,8 @@ def guess_video_rexps(string):
 
     return None, None
 
+priority = -25
+
 
 def process(mtree):
     SingleNodeGuesser(guess_video_rexps, None, log).process(mtree)

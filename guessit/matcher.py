@@ -26,7 +26,7 @@ from guessit import PY3, u
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
 
-from guessit.transfo import TransfoException
+from guessit.transfo import TransfoException, transfo_manager
 
 
 log = logging.getLogger(__name__)
@@ -114,85 +114,31 @@ class IterativeMatcher(object):
             mtree = self.match_tree
             mtree.guess.set('type', filetype, confidence=1.0)
 
-            # 1- first split our path into dirs + basename + ext
-            self._apply_transfo('split_path_components')
-
-            # 2- guess the file type now (will be useful later)
-            self._apply_transfo('guess_filetype', filetype)
-
-            # 3- split each of those into explicit groups (separated by parentheses
-            #    or square brackets)
-            self._apply_transfo('split_explicit_groups')
-
-            # 4- try to match information for specific patterns
-            # NOTE: order needs to comply to the following:
-            #       - website before language (eg: tvu.org.ru vs russian)
-            #       - language before episodes_rexps
-            #       - properties before language (eg: he-aac vs hebrew)
-            #       - release_group before properties (eg: XviD-?? vs xvid)
-            if mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo'):
-                strategy = ['guess_date', 'guess_website', 'guess_release_group',
-                            'guess_properties', 'guess_language',
-                            'guess_video_rexps',
-                            'guess_episodes_rexps', 'guess_weak_episodes_rexps']
-            else:
-                strategy = ['guess_date', 'guess_website', 'guess_release_group',
-                            'guess_properties', 'guess_language',
-                            'guess_video_rexps']
-
-            if 'nolanguage' in opts:
-                strategy.remove('guess_language')
-
-            for name in strategy:
-                self._apply_transfo(name)
-
-            # more guessers for both movies and episodes
-            self._apply_transfo('guess_bonus_features')
-            self._apply_transfo('guess_year')
-
-            if 'nocountry' not in opts:
-                self._apply_transfo('guess_country')
-
-            self._apply_transfo('guess_idnumber')
-
-            # split into '-' separated subgroups (with required separator chars
-            # around the dash)
-            self._apply_transfo('split_on_dash')
-
-            # 5- try to identify the remaining unknown groups by looking at their
-            #    position relative to other known elements
-            if mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo'):
-                self._apply_transfo('guess_episode_info_from_position')
-            else:
-                self._apply_transfo('guess_movie_title_from_position')
-
-            # 6- perform some post-processing steps
-            self._apply_transfo('post_process')
+            for transformer in transfo_manager.get_transformers():
+                self._apply_transfo(transformer)
 
             log.debug('Found match tree:\n%s' % u(mtree))
         except TransfoException as e:
             log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e.message))
 
-    def _apply_transfo(self, transfo_name, *args, **kwargs):
-        transfo = __import__('guessit.transfo.' + transfo_name,
-                             globals=globals(), locals=locals(),
-                             fromlist=['process', 'second_pass_options'], level=0)
-        default_args, default_kwargs = self.transfo_opts.get(transfo_name, ((), {}))
+    def _apply_transfo(self, transformer, *args, **kwargs):
+        default_args, default_kwargs = self.transfo_opts.get(transformer.__name__, ((), {}))
         all_args = args or default_args or ()
         all_kwargs = dict(default_kwargs) if default_kwargs else {}
         all_kwargs.update(kwargs)  # keep all kwargs merged together
-        transfo.process(self.match_tree, *all_args, **all_kwargs)
-        self._transfo_calls.append((transfo_name, transfo, all_args, all_kwargs))
+        if not hasattr(transformer, 'should_process') or transformer.should_process(self):
+            transformer.process(self.match_tree, *all_args, **all_kwargs)
+            self._transfo_calls.append((transformer, all_args, all_kwargs))
 
     @property
     def second_pass_options(self):
         opts = list(self.opts)
         transfo_opts = dict(self.transfo_opts.items())
-        for transfo_name, transfo, _, _ in self._transfo_calls:
-            if hasattr(transfo, 'second_pass_options'):
-                c_opts, c_transfo_opts = transfo.second_pass_options(self.match_tree)
+        for transformer, _, _ in self._transfo_calls:
+            if hasattr(transformer, 'second_pass_options'):
+                c_opts, c_transfo_opts = transformer.second_pass_options(self.match_tree)
                 if c_opts or c_transfo_opts:
-                    transfo_opts[transfo_name] = c_opts, c_transfo_opts
+                    transfo_opts[transformer.__name__] = c_opts, c_transfo_opts
 
         return opts, transfo_opts
 

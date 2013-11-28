@@ -95,8 +95,18 @@ def match_from_epnum_position(mtree, node):
                 maxv = len(c.clean_value)
         found_property(title_candidates[maxidx], 'title', confidence=0.3)
 
+priority = 200
+
+
+def should_process(matcher):
+    return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
+
 
 def process(mtree):
+    """
+    try to identify the remaining unknown groups by looking at their
+    position relative to other known elements
+    """
     eps = [node for node in mtree.leaves() if 'episodeNumber' in node.guess]
     if eps:
         match_from_epnum_position(mtree, eps[0])

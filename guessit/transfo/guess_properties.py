@@ -21,7 +21,7 @@
 from __future__ import unicode_literals
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns.properties import find_properties
+from guessit.patterns.properties import find_properties, get_properties
 import logging
 
 log = logging.getLogger(__name__)
@@ -35,6 +35,18 @@ def guess_properties(string):
         guess[prop.name] = prop.canonical_form
         return guess, span
     return None, None
+
+
+supported_properties = {}
+for prop in get_properties():
+    values = supported_properties.get(prop.name)
+    if not values:
+        values = set()
+        supported_properties[prop.name] = values
+    values.add(prop.canonical_form)
+
+
+priority = -35
 
 
 def process(mtree):

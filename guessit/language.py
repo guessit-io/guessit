@@ -363,6 +363,8 @@ def search_language(string, lang_filter=None):
 
     return None, None, None
 
+priority = -30
+
 
 def guess_language(text):
     """Guess the language in which a body of text is written.

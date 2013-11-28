@@ -29,6 +29,7 @@ import os.path
 import re
 import mimetypes
 import logging
+from guessit.transfo import TransfoException
 
 log = logging.getLogger(__name__)
 
@@ -179,8 +180,12 @@ def guess_filetype(mtree, filetype):
     filetype = filetype_container[0]
     return filetype, other
 
+priority = -250
+
 
 def process(mtree, filetype='autodetect'):
+    """guess the file type now (will be useful later)
+    """
     filetype, other = guess_filetype(mtree, filetype)
 
     mtree.guess.set('type', filetype, confidence=1.0)
@@ -197,3 +202,6 @@ def process(mtree, filetype='autodetect'):
     node_ext = mtree.node_at((-1,))
     node_ext.guess = filetype_info
     log.debug('Found with confidence %.2f: %s' % (1.0, node_ext.guess))
+
+    if mtree.guess.get('type') in [None, 'unknown']:
+        raise TransfoException(__name__, 'Unknown file type')

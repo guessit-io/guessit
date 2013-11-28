@@ -25,7 +25,18 @@ import logging
 log = logging.getLogger(__name__)
 
 
+priority = 200
+
+
+def should_process(matcher):
+    return matcher.match_tree.guess['type'] not in ('episode', 'episodesubtitle', 'episodeinfo')
+
+
 def process(mtree):
+    """
+    try to identify the remaining unknown groups by looking at their
+    position relative to other known elements
+    """
     def found_property(node, name, value, confidence):
         node.guess = Guess({name: value},
                            confidence=confidence,

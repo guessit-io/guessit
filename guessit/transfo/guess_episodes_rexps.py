@@ -64,5 +64,12 @@ def guess_episodes_rexps(string):
     return None, None
 
 
+priority = -20
+
+
+def should_process(matcher):
+    return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
+
+
 def process(mtree):
     SingleNodeGuesser(guess_episodes_rexps, None, log).process(mtree)

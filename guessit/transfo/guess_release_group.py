@@ -79,5 +79,8 @@ def guess_release_group(string):
     return None, None
 
 
+priority = -40
+
+
 def process(mtree):
     SingleNodeGuesser(guess_release_group, 0.8, log).process(mtree)

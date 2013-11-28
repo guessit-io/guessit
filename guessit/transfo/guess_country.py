@@ -30,6 +30,13 @@ log = logging.getLogger(__name__)
 country_common_words = frozenset(['bt', 'bb'])
 
 
+def should_process(matcher):
+    return not 'nocountry' in matcher.opts
+
+
+priority = 170
+
+
 def process(mtree):
     for node in mtree.unidentified_leaves():
         if len(node.node_idx) == 2:

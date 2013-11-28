@@ -58,5 +58,12 @@ def guess_weak_episodes_rexps(string, node):
 guess_weak_episodes_rexps.use_node = True
 
 
+priority = -15
+
+
+def should_process(matcher):
+    return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
+
+
 def process(mtree):
     SingleNodeGuesser(guess_weak_episodes_rexps, 0.6, log).process(mtree)

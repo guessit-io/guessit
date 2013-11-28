@@ -35,5 +35,8 @@ def guess_website(string):
     return None, None
 
 
+priority = -45
+
+
 def process(mtree):
     SingleNodeGuesser(guess_website, 1.0, log).process(mtree)

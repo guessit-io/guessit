@@ -25,6 +25,9 @@ import logging
 log = logging.getLogger(__name__)
 
 
+priority = 150
+
+
 def process(mtree):
     def previous_group(g):
         for leaf in mtree.unidentified_leaves()[::-1]:
