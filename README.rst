@@ -45,7 +45,6 @@ property types::
       language, subtitleLanguage,        # instances of guessit.Language
       country,                           # instances of guessit.Country
       container, format,
-      is3D, isScreener,
       videoCodec, audioCodec,
       audioChannels, screenSize,
       releaseGroup, website,

@@ -329,14 +329,6 @@ register_property('format', 'WEBRip', 'WEB-Rip')
 register_property('format', 'VHS', 'VHS')
 register_property('format', 'WEB-DL', 'WEB-DL')
 
-for prop in get_properties('format'):
-    register_property('isScreener', True, prop.pattern + '(-?Scr(?:eener)?)')
-register_property('isScreener', True, 'Screener')
-
-register_property('is3D', True, '3D')
-
-register_property('isFinalEpisode', True, 'final')
-
 register_property('screenSize', '360p', '(?:\d{3,}(?:\\|\/|x|\*))?360(?:i|p?x?)')
 register_property('screenSize', '368p', '(?:\d{3,}(?:\\|\/|x|\*))?368(?:i|p?x?)')
 register_property('screenSize', '480p', '(?:\d{3,}(?:\\|\/|x|\*))?480(?:i|p?x?)')
@@ -380,6 +372,13 @@ register_properties('weakReleaseGroup', 'DEiTY', 'FiNaLe', 'UnSeeN', 'KiNGS', 'C
                                       'REPTiLE',
                                       )
 
-register_properties('other', 'PROPER', 'REPACK', 'LIMITED', 'DualAudio', 'Audiofixed', 'R5',
-                           'complete', 'classic',  # not so sure about these ones, could appear in a title
-                           'ws')
+register_property('other', 'AudioFix', 'Audio-Fix', 'Audio-Fixed')
+register_property('other', 'SyncFix', 'Sync-Fix', 'Sync-Fixed')
+register_property('other', 'DualAudio', 'Dual-Audio')
+
+register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'ws', 'Fix',
+                           'Limited', 'Complete', 'Classic', 'Final',  # not so sure about these ones, could appear in a title
+                           )
+
+for prop in get_properties('format'):
+    register_property('other', 'Screener', prop.pattern + '(-?Scr(?:eener)?)')

@@ -418,9 +418,10 @@
 : title: Pacific Rim
   year: 2013
   format: BluRay
-  is3D: True
+  other:
+   - complete 
+   - 3D
   releaseGroup: PCH
-  other: complete
 
 ? Immersion.French.2011.STV.READNFO.QC.FRENCH.ENGLISH.NTSC.DVDR.nfo
 : title: Immersion French
@@ -463,11 +464,11 @@
   videoCodec: XviD
   title: Masala
   format: HD-DVD
-  isScreener: True
+  other: screener
 
 ? Django Unchained 2012 DVDSCR X264 AAC-P2P.nfo
 : year: 2012
-  isScreener: True
+  other: screener
   videoCodec: h264
   title: Django Unchained
   audioCodec: AAC
@@ -475,7 +476,7 @@
 
 ? Ejecutiva.En.Apuros(2009).BLURAY.SCR.Xvid.Spanish.LanzamientosD.nfo
 : year: 2009
-  isScreener: True
+  other: screener
   format: BluRay
   videoCodec: XviD
   title: Ejecutiva En Apuros
