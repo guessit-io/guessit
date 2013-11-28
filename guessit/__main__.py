@@ -25,6 +25,7 @@ from guessit import slogging, guess_file_info
 from optparse import OptionParser
 import logging
 import os
+from guessit.transfo import transfo_manager
 
 
 def detect_filename(filename, filetype, info=['filename'], advanced=False):
@@ -32,6 +33,23 @@ def detect_filename(filename, filetype, info=['filename'], advanced=False):
 
     print('For:', filename)
     print('GuessIt found:', guess_file_info(filename, filetype, info).nice_string(advanced))
+
+
+def display_properties():
+    print("Available transformers:")
+    for transformer in transfo_manager.get_transformers():
+        print("\t" + transformer.__name__)
+        if hasattr(transformer, 'supported_properties'):
+            for property_name, possible_values in transformer.supported_properties.items():
+                order_values = sorted(list(set(possible_values)), key=unicode.lower)
+                values_str = u''
+                for v in order_values:
+                    if values_str:
+                        values_str += ', '
+                    values_str += v
+                print("\t\t%s: [%s]" % (property_name, values_str))
+    print("Available properties:")
+    pass
 
 
 def run_demo(episodes=True, movies=True, advanced=False):
@@ -101,6 +119,8 @@ def main():
     parser = OptionParser(usage='usage: %prog [options] file1 [file2...]')
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
                       help='display debug output')
+    parser.add_option('-p', '--properties', dest='properties', action='store_true', default=False,
+                  help='Display properties that can be guessed by the filename matcher.')
     parser.add_option('-i', '--info', dest='info', default='filename',
                       help='the desired information type: filename, hash_mpc or a hash from python\'s '
                            'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
@@ -116,7 +136,9 @@ def main():
     if options.verbose:
         logging.getLogger('guessit').setLevel(logging.DEBUG)
 
-    if options.demo:
+    if options.properties:
+        display_properties()
+    elif options.demo:
         run_demo(episodes=True, movies=True, advanced=options.advanced)
     else:
         if args:
