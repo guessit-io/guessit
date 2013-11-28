@@ -356,7 +356,7 @@ register_property('audioChannels', '5.1', r'5\.1', 'DD5[._ ]1', '5ch')
 
 register_property('episodeFormat', 'Minisode', r'Minisodes?')
 
-register_properties('releaseGroup', 'ESiR', 'WAF', 'SEPTiC', r'\[XCT\]', 'iNT', 'PUKKA',
+register_properties('releaseGroup', 'ESiR', 'WAF', 'SEPTiC', 'iNT', 'PUKKA',
                                   'CHD', 'ViTE', 'TLF', 'FLAiTE',
                                   'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS',
                                   'aXXo', 'KLAXXON', 'NoTV', 'ZeaL', 'LOL',
@@ -366,6 +366,7 @@ register_properties('releaseGroup', 'ESiR', 'WAF', 'SEPTiC', r'\[XCT\]', 'iNT', 
                                   'TLA', 'NTB', 'ASAP', 'MOMENTUM', 'FoV', 'D-Z0N3',
                                   'TrollHD', 'ECI', 'MARINE-FORD'
                                   )
+register_property('releaseGroup', r'[XCT]', r'\[XCT\]')
 
 register_properties('weakReleaseGroup', 'DEiTY', 'FiNaLe', 'UnSeeN', 'KiNGS', 'CLUE', 'DIMENSION',
                                       'SAiNTS', 'ARROW', 'EuReKA', 'SiNNERS', 'DiRTY', 'REWARD',
@@ -376,9 +377,11 @@ register_property('other', 'AudioFix', 'Audio-Fix', 'Audio-Fixed')
 register_property('other', 'SyncFix', 'Sync-Fix', 'Sync-Fixed')
 register_property('other', 'DualAudio', 'Dual-Audio')
 
-register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'ws', 'Fix',
+register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'Fix',
                            'Limited', 'Complete', 'Classic', 'Final',  # not so sure about these ones, could appear in a title
                            )
+
+register_property('other', 'WideScreen', 'ws', 'wide-screen')
 
 for prop in get_properties('format'):
     register_property('other', 'Screener', prop.pattern + '(-?Scr(?:eener)?)')
