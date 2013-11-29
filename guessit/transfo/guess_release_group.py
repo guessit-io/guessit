@@ -20,21 +20,21 @@
 
 from __future__ import unicode_literals
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns.properties import compute_canonical_form, enhance_property_patterns
+from guessit.patterns.properties import container
 import re
 import logging
 
 log = logging.getLogger(__name__)
 
-CODECS = enhance_property_patterns('videoCodec')
-FORMATS = enhance_property_patterns('format')
-VAPIS = enhance_property_patterns('videoApi')
+CODECS = container.enhance_property_patterns('videoCodec')
+FORMATS = container.enhance_property_patterns('format')
+VAPIS = container.enhance_property_patterns('videoApi')
 
 # RG names following a codec or format, with a potential space or dash inside the name
 GROUP_NAMES = [r'(?P<videoCodec>' + codec + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
-                for codec in CODECS ]
+                for codec in CODECS]
 GROUP_NAMES += [r'(?P<format>' + fmt + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
-                 for fmt in FORMATS ]
+                 for fmt in FORMATS]
 GROUP_NAMES += [r'(?P<videoApi>' + api + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
                  for api in VAPIS]
 
@@ -46,9 +46,11 @@ GROUP_NAMES2 += [r'\.(?P<videoApi>' + vapi + r')-(?P<releaseGroup>.*?)(-(.*?))?[
                   for vapi in VAPIS]
 
 GROUP_NAMES = [re.compile(r, re.IGNORECASE) for r in GROUP_NAMES]
-GROUP_NAMES2 = [ re.compile(r, re.IGNORECASE) for r in GROUP_NAMES2]
+GROUP_NAMES2 = [re.compile(r, re.IGNORECASE) for r in GROUP_NAMES2]
+
+
 def adjust_metadata(md):
-    return dict((property_name, compute_canonical_form(property_name, value) or value)
+    return dict((property_name, container.compute_canonical_form(property_name, value) or value)
                 for property_name, value in md.items())
 
 
@@ -59,8 +61,8 @@ def guess_release_group(string):
         while match:
             metadata = match.groupdict()
             # make sure this is an actual release group we caught
-            release_group = (compute_canonical_form('releaseGroup', metadata['releaseGroup']) or
-                             compute_canonical_form('weakReleaseGroup', metadata['releaseGroup']))
+            release_group = (container.compute_canonical_form('releaseGroup', metadata['releaseGroup']) or
+                             container.compute_canonical_form('weakReleaseGroup', metadata['releaseGroup']))
             if release_group:
                 return adjust_metadata(metadata), (match.start(1), match.end(2))
 

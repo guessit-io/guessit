@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns.properties import find_properties
+from guessit.patterns.properties import container
 from guessit import Guess
 import re
 import logging
@@ -29,7 +29,7 @@ log = logging.getLogger(__name__)
 
 
 def guess_properties(string):
-    found = find_properties(string)
+    found = container.find_properties(string)
     if found:
         prop, span = found[0]
         guess = Guess(confidence=prop.confidence)

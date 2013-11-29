@@ -21,7 +21,7 @@
 from __future__ import unicode_literals
 from guessit import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
-from guessit.patterns.properties import find_properties, compute_canonical_form
+from guessit.patterns.properties import container
 from guessit.patterns.episode import episode_rexps
 from guessit.date import valid_year
 from guessit.textutils import clean_string
@@ -156,21 +156,20 @@ def guess_filetype(mtree, filetype):
                 upgrade_episode()
 
         # if we have certain properties characteristic of episodes, it is an ep
-        for prop, _ in find_properties(filename):
+        for prop, _ in container.find_properties(filename, 'episodeFormat'):
             log.debug('prop: %s' % prop)
-            if prop.name == 'episodeFormat':
-                log.debug('Found characteristic property of episodes: %s"', prop)
-                upgrade_episode()
-                break
+            log.debug('Found characteristic property of episodes: %s"', prop)
+            upgrade_episode()
 
-            elif compute_canonical_form('format', prop.canonical_form) == 'DVB':
+        for prop, _ in container.find_properties(filename, 'format'):
+            if container.compute_canonical_form('format', prop.canonical_form) == 'DVB':
                 log.debug('Found characteristic property of episodes: %s', prop)
                 upgrade_episode()
                 break
 
         # origin-specific type
         if 'tvu.org.ru' in filename:
-            log.debug('Found characteristic property of episodes: %s', prop)
+            log.debug('Found characteristic property of episodes: %s', 'tvu.org.ru')
             upgrade_episode()
 
         # if no episode info found, assume it's a movie
