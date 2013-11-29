@@ -19,20 +19,18 @@
 #
 
 from __future__ import unicode_literals
-from guessit.transfo import SingleNodeGuesser
-from guessit.patterns.website import websites
+
 import logging
+
+from guessit.patterns.website import container
+from guessit.transfo import SingleNodeGuesser
 
 log = logging.getLogger(__name__)
 
 
 def guess_website(string):
-    low = string.lower()
-    for site in websites:
-        pos = low.find(site.lower())
-        if pos != -1:
-            return {'website': site}, (pos, pos + len(site))
-    return None, None
+    found = container.find_properties(string, 'website')
+    return container.as_guess(found, string)
 
 
 priority = 45

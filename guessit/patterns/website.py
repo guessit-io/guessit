@@ -21,5 +21,32 @@
 
 from __future__ import unicode_literals
 
-websites = ['tvu.org.ru', 'emule-island.com', 'UsaBit.com', 'www.divx-overnet.com',
-            'sharethefiles.com']
+from .containers import PropertiesContainer
+from . import build_or_pattern
+from pkg_resources import resource_stream
+
+
+container = PropertiesContainer(enhance_patterns=False, canonical_from_pattern=False)
+
+tlds = []
+
+f = resource_stream('guessit', 'tlds-alpha-by-domain.txt')
+f.readline()
+next(f)
+for tld in f:
+    tld = tld.strip()
+    if '--' in tld:
+        continue
+    tlds.append(tld)
+f.close()
+
+tlds_pattern = build_or_pattern(tlds)  # All registered domain extension
+safe_tlds_pattern = build_or_pattern(['com', 'org', 'net'])  # For sure a website extension
+safe_subdomains_pattern = build_or_pattern(['www'])  # For sure a website subdomain
+safe_prefix_tlds_pattern = build_or_pattern(['co', 'com', 'org', 'net'])  # Those words before a tlds are sure
+
+container.register_property('website', None, '((?:' + safe_subdomains_pattern + '\.)+' + r'[a-z-]+\.' + r'(?:' + tlds_pattern + r')+)')
+
+container.register_property('website', None, '((?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_tlds_pattern + r')+)')
+
+container.register_property('website', None, '((?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_prefix_tlds_pattern + r'\.)+' + r'(?:' + tlds_pattern + r')+)')

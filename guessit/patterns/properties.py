@@ -21,7 +21,7 @@
 
 from __future__ import unicode_literals
 
-from . import PropertiesContainer
+from containers import PropertiesContainer
 
 container = PropertiesContainer()
 

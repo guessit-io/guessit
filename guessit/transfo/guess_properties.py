@@ -19,7 +19,6 @@
 #
 
 from __future__ import unicode_literals
-from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.properties import container
 import logging
@@ -29,13 +28,7 @@ log = logging.getLogger(__name__)
 
 def guess_properties(string):
     found = container.find_properties(string)
-    if found:
-        prop, span = found[0]
-        guess = Guess(confidence=prop.confidence)
-        guess[prop.name] = prop.canonical_form
-        return guess, span
-    return None, None
-
+    return container.as_guess(found, string)
 
 supported_properties = container.get_supported_properties()
 
