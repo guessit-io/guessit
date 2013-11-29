@@ -36,9 +36,12 @@ def detect_filename(filename, filetype, info=['filename'], advanced=False):
 
 
 def display_properties():
-    print("Available transformers:")
+    print('Available transformers:')
     for transformer in transfo_manager.get_transformers():
-        print("\t" + transformer.__name__)
+        priority = 0
+        if hasattr(transformer, 'priority'):
+            priority = transformer.priority
+        print('\t%s [%i]' % (transformer.__name__, priority))
         if hasattr(transformer, 'supported_properties'):
             for property_name, possible_values in transformer.supported_properties.items():
                 order_values = sorted(list(set(possible_values)), key=unicode.lower)
@@ -47,8 +50,8 @@ def display_properties():
                     if values_str:
                         values_str += ', '
                     values_str += v
-                print("\t\t%s: [%s]" % (property_name, values_str))
-    print("Available properties:")
+                print('\t\t%s: [%s]' % (property_name, values_str))
+    print('Available properties:')
     pass
 
 

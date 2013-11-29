@@ -95,7 +95,7 @@ def match_from_epnum_position(mtree, node):
                 maxv = len(c.clean_value)
         found_property(title_candidates[maxidx], 'title', confidence=0.3)
 
-priority = 200
+priority = -200
 
 
 def should_process(matcher):

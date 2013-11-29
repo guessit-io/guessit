@@ -25,7 +25,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-priority = 200
+priority = -200
 
 
 def should_process(matcher):

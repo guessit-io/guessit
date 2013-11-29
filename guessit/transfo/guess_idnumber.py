@@ -72,7 +72,7 @@ def guess_idnumber(string):
     return None, None
 
 
-priority = 180
+priority = -180
 
 
 def process(mtree):

@@ -31,23 +31,22 @@ FORMATS = enhance_property_patterns('format')
 VAPIS = enhance_property_patterns('videoApi')
 
 # RG names following a codec or format, with a potential space or dash inside the name
-GROUP_NAMES = [ r'(?P<videoCodec>' + codec + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
+GROUP_NAMES = [r'(?P<videoCodec>' + codec + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
                 for codec in CODECS ]
-GROUP_NAMES += [ r'(?P<format>'    + fmt   + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
+GROUP_NAMES += [r'(?P<format>' + fmt + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
                  for fmt in FORMATS ]
-GROUP_NAMES += [ r'(?P<videoApi>'  + api   + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
-                 for api in VAPIS ]
+GROUP_NAMES += [r'(?P<videoApi>' + api + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
+                 for api in VAPIS]
 
-GROUP_NAMES2 = [ r'\.(?P<videoCodec>' + codec + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
-                 for codec in CODECS ]
-GROUP_NAMES2 += [ r'\.(?P<format>'    + fmt   + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
-                  for fmt in FORMATS ]
-GROUP_NAMES2 += [ r'\.(?P<videoApi>'  + vapi  + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
-                  for vapi in VAPIS ]
+GROUP_NAMES2 = [r'\.(?P<videoCodec>' + codec + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
+                 for codec in CODECS]
+GROUP_NAMES2 += [r'\.(?P<format>' + fmt + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
+                  for fmt in FORMATS]
+GROUP_NAMES2 += [r'\.(?P<videoApi>' + vapi + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
+                  for vapi in VAPIS]
 
-GROUP_NAMES = [ re.compile(r, re.IGNORECASE) for r in GROUP_NAMES ]
-GROUP_NAMES2 = [ re.compile(r, re.IGNORECASE) for r in GROUP_NAMES2 ]
-
+GROUP_NAMES = [re.compile(r, re.IGNORECASE) for r in GROUP_NAMES]
+GROUP_NAMES2 = [ re.compile(r, re.IGNORECASE) for r in GROUP_NAMES2]
 def adjust_metadata(md):
     return dict((property_name, compute_canonical_form(property_name, value) or value)
                 for property_name, value in md.items())
@@ -66,7 +65,7 @@ def guess_release_group(string):
                 return adjust_metadata(metadata), (match.start(1), match.end(2))
 
             # we didn't find anything conclusive, keep searching
-            match = rexp.search(string, match.span()[0]+1)
+            match = rexp.search(string, match.span()[0] + 1)
 
     # pick anything as releaseGroup as long as we have a codec in front
     # this doesn't include a potential dash ('-') ending the release group
@@ -79,7 +78,7 @@ def guess_release_group(string):
     return None, None
 
 
-priority = -40
+priority = 40
 
 
 def process(mtree):

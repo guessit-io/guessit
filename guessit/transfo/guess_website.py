@@ -35,7 +35,7 @@ def guess_website(string):
     return None, None
 
 
-priority = -45
+priority = 45
 
 
 def process(mtree):

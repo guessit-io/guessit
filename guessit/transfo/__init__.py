@@ -99,7 +99,7 @@ class _TransfoManager(object):
            - properties before language (eg: he-aac vs hebrew)
            - release_group before properties (eg: XviD-?? vs xvid)
         """
-        pass
+        transformers.sort(key=lambda transfo: -transfo.priority)
 
 transfo_manager = _TransfoManager()
 

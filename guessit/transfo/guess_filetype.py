@@ -180,7 +180,7 @@ def guess_filetype(mtree, filetype):
     filetype = filetype_container[0]
     return filetype, other
 
-priority = -250
+priority = 250
 
 
 def process(mtree, filetype='autodetect'):

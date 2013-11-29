@@ -33,7 +33,7 @@ def guess_date(string):
     else:
         return None, None
 
-priority = -50
+priority = 50
 
 
 def process(mtree):

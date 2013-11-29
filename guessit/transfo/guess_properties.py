@@ -46,7 +46,7 @@ for prop in get_properties():
     values.add(prop.canonical_form)
 
 
-priority = -35
+priority = 35
 
 
 def process(mtree):

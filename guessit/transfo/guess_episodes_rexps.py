@@ -64,7 +64,7 @@ def guess_episodes_rexps(string):
     return None, None
 
 
-priority = -20
+priority = 20
 
 
 def should_process(matcher):

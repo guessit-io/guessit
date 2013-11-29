@@ -34,7 +34,7 @@ def should_process(matcher):
     return not 'nocountry' in matcher.opts
 
 
-priority = 170
+priority = -170
 
 
 def process(mtree):

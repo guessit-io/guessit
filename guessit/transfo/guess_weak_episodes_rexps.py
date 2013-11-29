@@ -58,7 +58,7 @@ def guess_weak_episodes_rexps(string, node):
 guess_weak_episodes_rexps.use_node = True
 
 
-priority = -15
+priority = 15
 
 
 def should_process(matcher):

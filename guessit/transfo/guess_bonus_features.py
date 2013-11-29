@@ -25,7 +25,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-priority = 150
+priority = -150
 
 
 def process(mtree):

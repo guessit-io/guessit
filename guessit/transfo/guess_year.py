@@ -41,7 +41,7 @@ def second_pass_options(mtree):
     return None, None
 
 
-priority = 160
+priority = -160
 
 
 def process(mtree, *args, **kwargs):

@@ -117,6 +117,8 @@ def second_pass_options(mtree):
 
 supported_properties = {'language': ['<guessit.language.Language object>']}
 
+priority = 30
+
 
 def should_process(matcher):
     return not 'nolanguage' in matcher.opts
