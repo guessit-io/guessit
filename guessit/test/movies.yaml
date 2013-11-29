@@ -481,3 +481,13 @@
   videoCodec: XviD
   title: Ejecutiva En Apuros
 
+? Die.Schluempfe.2.German.DL.1080p.BluRay.x264-EXQUiSiTE.mkv
+: title: Die Schluempfe 2
+  format: BluRay
+  language:
+    - Multiple languages
+    - German
+  videoCodec: h264
+  releaseGroup: EXQUiSiTE
+  screenSize: 1080p
+

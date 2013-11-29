@@ -46,7 +46,7 @@ SYN = {('und', None): ['unknown', 'inconnu', 'unk', 'un'],
        ('zho', None): ['cn'],
        ('jpn', None): ['jp'],
        ('hrv', None): ['scr'],
-       ('mul', None): ['multi'],
+       ('mul', None): ['multi', 'dl'],  # http://scenelingo.wordpress.com/2009/03/24/what-does-dl-mean/
        }
 
 
