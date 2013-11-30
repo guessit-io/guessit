@@ -29,6 +29,29 @@ import logging
 log = logging.getLogger(__name__)
 
 
+class GuessMetadata(object):
+    def __init__(self, confidence=0, input=None, span=None, property=None, *args, **kwargs):
+        self.confidence = confidence
+        self.input = input
+        self.span = span
+        self.property=property
+
+    def raw(self, prop):
+        """Return the raw information (original match from the string,
+        not the cleaned version) associated with the given property name."""
+        if self.input and self.span:
+            return self.input[self.span[0]:self.span[1]]
+
+    def clean_args(self, kwargs):
+        ret = {}
+        for k, v in kwargs.items():
+            if not hasattr(self, k):
+                ret[k] = v
+        return ret
+
+_no_metadata = GuessMetadata()
+
+
 class Guess(UnicodeMixin, dict):
     """A Guess is a dictionary which has an associated confidence for each of
     its values.
@@ -37,23 +60,13 @@ class Guess(UnicodeMixin, dict):
     simple dict."""
 
     def __init__(self, *args, **kwargs):
-        try:
-            confidence = kwargs.pop('confidence')
-        except KeyError:
-            confidence = 0
+        metadata = GuessMetadata(**kwargs)
+        clean_kwargs = metadata.clean_args(kwargs)
+        dict.__init__(self, *args, **clean_kwargs)
 
-        try:
-            raw = kwargs.pop('raw')
-        except KeyError:
-            raw = None
-
-        dict.__init__(self, *args, **kwargs)
-
-        self._confidence = {}
-        self._raw = {}
+        self._metadata = {}
         for prop in self:
-            self._confidence[prop] = confidence
-            self._raw[prop] = raw
+            self._metadata[prop] = metadata
 
     def to_dict(self, advanced=False):
         """Return the guess as a dict containing only base types, ie:
@@ -70,7 +83,8 @@ class Guess(UnicodeMixin, dict):
             elif isinstance(value, list):
                 data[prop] = [u(x) for x in value]
             if advanced:
-                data[prop] = {"value": data[prop], "raw": self.raw(prop), "confidence": self.confidence(prop)}
+                metadata = self.metadata(prop)
+                data[prop] = {"value": data[prop], "raw": metadata.raw, "confidence": metadata.confidence}
 
         return data
 
@@ -98,43 +112,39 @@ class Guess(UnicodeMixin, dict):
     def __unicode__(self):
         return u(self.to_dict())
 
+    def metadata(self, prop):
+        """Return the metadata associated with the given property name"""
+        return self._metadata.get(prop, _no_metadata)
+
     def confidence(self, prop):
-        """Return the confidence associated with the given property name,
-        -1 if not found."""
-        return self._confidence.get(prop, -1)
+        return self.metadata(prop).confidence
+
+    def set_confidence(self, prop, confidence):
+        metadata = None
+        if prop not in self._metadata:
+            metadata = GuessMetadata()
+        else:
+            metadata = self._metadata[prop]
+        metadata.confidence = confidence
 
     def raw(self, prop):
-        """Return the raw information (original match from the string,
-        not the cleaned version) associated with the given property name."""
-        return self._raw.get(prop, None)
+        return self.metadata(prop).raw
 
-    def set(self, prop, value, confidence=None, raw=None):
+    def set(self, prop, value, *args, **kwargs):
         self[prop] = value
-        if confidence is not None:
-            self._confidence[prop] = confidence
-        if raw is not None:
-            self._raw[prop] = raw
+        self._metadata[prop] = GuessMetadata(*args, **kwargs)
 
-    def set_confidence(self, prop, value):
-        self._confidence[prop] = value
-
-    def set_raw(self, prop, value):
-        self._raw[prop] = value
-
-    def update(self, other, confidence=None, raw=None):
+    def update(self, other, confidence=None):
         dict.update(self, other)
         if isinstance(other, Guess):
             for prop in other:
-                self._confidence[prop] = other.confidence(prop)
-                self._raw[prop] = other.raw(prop)
-
-        if confidence is not None:
+                try:
+                    self._metadata[prop] = other._metadata[prop]
+                except KeyError:
+                    pass
+        if not confidence is None:
             for prop in other:
-                self._confidence[prop] = confidence
-
-        if raw is not None:
-            for prop in other:
-                self._raw[prop] = raw
+                self.set_confidence(prop, confidence)
 
     def update_highest_confidence(self, other):
         """Update this guess with the values from the given one. In case
@@ -144,11 +154,13 @@ class Guess(UnicodeMixin, dict):
             raise ValueError('Can only call this function on Guess instances')
 
         for prop in other:
-            if prop in self and self.confidence(prop) >= other.confidence(prop):
+            if prop in self and self.metadata(prop).confidence >= other.metadata(prop).confidence:
                 continue
             self[prop] = other[prop]
-            self._confidence[prop] = other.confidence(prop)
-            self._raw[prop] = other.raw(prop)
+            try:
+                self._metadata[prop] = other._metadata[prop]
+            except KeyError:
+                pass
 
 
 def choose_int(g1, g2):
