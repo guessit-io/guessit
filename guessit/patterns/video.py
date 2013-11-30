@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 # GuessIt - A library for guessing information from filenames
-# Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
+# Copyright (c) 2013 Nicolas Wack <wackou@gmail.com>
+# Copyright (c) 2013 Rémi Alvergnat <toilal.dev@gmail.com>
 # Copyright (c) 2011 Ricard Marxer <ricardmp@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
@@ -23,7 +24,7 @@ from __future__ import unicode_literals
 
 from . import sep
 
-video_rexps = [ # cd number
+video_rexps = [  # cd number
                 (r'cd ?(?P<cdNumber>[0-9])( ?of ?(?P<cdNumberTotal>[0-9]))?', 1.0, (0, 0)),
                 (r'(?P<cdNumberTotal>[1-9]) cds?', 0.9, (0, 0)),
 

@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 #
 # GuessIt - A library for guessing information from filenames
-# Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
+# Copyright (c) 2013 Nicolas Wack <wackou@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
 # the terms of the Lesser GNU General Public License as published by
@@ -33,40 +33,41 @@ requires = []
 
 
 entry_points = {
-    'console_scripts' : [
+    'console_scripts': [
         'guessit = guessit.__main__:main'
     ]
 }
 
 
-args = dict(name = 'guessit',
-            version = guessit.__version__,
-            description = 'GuessIt - a library for guessing information from video files.',
-            long_description = README + '\n\n' + HISTORY,
+args = dict(name='guessit',
+            version=guessit.__version__,
+            description='GuessIt - a library for guessing information from video files.',
+            long_description=README + '\n\n' + HISTORY,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-            classifiers = [ 'Development Status :: 5 - Production/Stable',
-                            'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
-                            'Operating System :: OS Independent',
-                            'Intended Audience :: Developers',
-                            'Programming Language :: Python :: 2',
-                            'Programming Language :: Python :: 2.6',
-                            'Programming Language :: Python :: 2.7',
-                            'Programming Language :: Python :: 3',
-                            'Programming Language :: Python :: 3.2',
-                            'Topic :: Multimedia',
-                            'Topic :: Software Development :: Libraries :: Python Modules'
-                            ],
-            keywords = 'smewt media video metadata python library',
-            author = 'Nicolas Wack',
-            author_email = 'wackou@gmail.com',
-            url = 'http://guessit.readthedocs.org/',
-            license = 'LGPLv3',
-            packages = [ 'guessit', 'guessit.transfo', 'guessit.test' ],
-            include_package_data = True,
-            install_requires = requires,
+            classifiers=['Development Status :: 5 - Production/Stable',
+                         'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
+                         'Operating System :: OS Independent',
+                         'Intended Audience :: Developers',
+                         'Programming Language :: Python :: 2',
+                         'Programming Language :: Python :: 2.6',
+                         'Programming Language :: Python :: 2.7',
+                         'Programming Language :: Python :: 3',
+                         'Programming Language :: Python :: 3.2',
+                         'Programming Language :: Python :: 3.3'
+                         'Topic :: Multimedia',
+                         'Topic :: Software Development :: Libraries :: Python Modules'
+                         ],
+            keywords='smewt media video metadata python library',
+            author='Nicolas Wack',
+            author_email='wackou@gmail.com',
+            url='http://guessit.readthedocs.org/',
+            license='LGPLv3',
+            packages=['guessit', 'guessit.transfo', 'guessit.test'],
+            include_package_data=True,
+            install_requires=requires,
             entry_points=entry_points,
-            extras_require = { 'language_detection':  ['guess-language>=0.2'] },
-            test_suite = 'guessit.test'
+            extras_require={'language_detection': ['guess-language>=0.2']},
+            test_suite='guessit.test'
             )
 
 

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 # GuessIt - A library for guessing information from filenames
-# Copyright (c) 2011 Nicolas Wack <wackou@gmail.com>
-# Copyright (c) 2011 Ricard Marxer <ricardmp@gmail.com>
+# Copyright (c) 2013 Nicolas Wack <wackou@gmail.com>
+# Copyright (c) 2013 Rémi Alvergnat <toilal.dev@gmail.com>
 #
 # GuessIt is free software; you can redistribute it and/or modify it under
 # the terms of the Lesser GNU General Public License as published by
