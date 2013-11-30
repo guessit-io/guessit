@@ -142,7 +142,7 @@ def main():
 
     if options.properties:
         display_properties()
-    elif options.demo:
+    if options.demo:
         run_demo(episodes=True, movies=True, advanced=options.advanced)
     else:
         if args:
