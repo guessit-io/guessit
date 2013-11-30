@@ -36,11 +36,13 @@ class GuessMetadata(object):
         self.span = span
         self.property=property
 
-    def raw(self, prop):
+    @property
+    def raw(self):
         """Return the raw information (original match from the string,
         not the cleaned version) associated with the given property name."""
         if self.input and self.span:
             return self.input[self.span[0]:self.span[1]]
+        return None
 
     def clean_args(self, kwargs):
         ret = {}
@@ -48,6 +50,9 @@ class GuessMetadata(object):
             if not hasattr(self, k):
                 ret[k] = v
         return ret
+
+    def __repr__(self, *args, **kwargs):
+        return object.__repr__(self, *args, **kwargs)
 
 _no_metadata = GuessMetadata()
 
@@ -60,13 +65,13 @@ class Guess(UnicodeMixin, dict):
     simple dict."""
 
     def __init__(self, *args, **kwargs):
-        metadata = GuessMetadata(**kwargs)
-        clean_kwargs = metadata.clean_args(kwargs)
+        self._global_metadata = GuessMetadata(**kwargs)
+        clean_kwargs = self._global_metadata.clean_args(kwargs)
         dict.__init__(self, *args, **clean_kwargs)
 
         self._metadata = {}
         for prop in self:
-            self._metadata[prop] = metadata
+            self._metadata[prop] = GuessMetadata(**kwargs)
 
     def to_dict(self, advanced=False):
         """Return the guess as a dict containing only base types, ie:
@@ -84,7 +89,12 @@ class Guess(UnicodeMixin, dict):
                 data[prop] = [u(x) for x in value]
             if advanced:
                 metadata = self.metadata(prop)
-                data[prop] = {"value": data[prop], "raw": metadata.raw, "confidence": metadata.confidence}
+                prop_data = {"value": data[prop]}
+                if metadata.raw:
+                    prop_data["raw"] = metadata.raw
+                if metadata.confidence:
+                    prop_data["confidence"] = metadata.confidence
+                data[prop] = prop_data
 
         return data
 
@@ -112,11 +122,16 @@ class Guess(UnicodeMixin, dict):
     def __unicode__(self):
         return u(self.to_dict())
 
-    def metadata(self, prop):
-        """Return the metadata associated with the given property name"""
+    def metadata(self, prop=None):
+        """Return the metadata associated with the given property name
+
+        If no property name is given, get the global_metadata
+        """
+        if prop is None:
+            return self._global_metadata
         return self._metadata.get(prop, _no_metadata)
 
-    def confidence(self, prop):
+    def confidence(self, prop=None):
         return self.metadata(prop).confidence
 
     def set_confidence(self, prop, confidence):
