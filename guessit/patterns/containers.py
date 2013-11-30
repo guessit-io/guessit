@@ -19,6 +19,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import unicode_literals
+
 from . import compile_pattern, enhance_pattern, sep
 
 from .. import base_text_type
@@ -291,7 +293,7 @@ class PropertiesContainer(object):
             if not values:
                 values = set()
                 supported_properties[prop.name] = values
-            values.add(prop.canonical_form)
+            values.add(prop.canonical_form if prop.canonical_form else "<any>")
         return supported_properties
 
     def enhance_property_patterns(self, name):
