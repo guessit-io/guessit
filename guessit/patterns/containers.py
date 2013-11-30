@@ -59,6 +59,7 @@ class _Property:
 class PropertiesContainer(object):
     def __init__(self, enhance_patterns=True, canonical_from_pattern=True):
         self._properties = []
+        self._eqs = {}
         self.enhance_patterns = enhance_patterns
         self.canonical_from_pattern = canonical_from_pattern
 
@@ -166,20 +167,64 @@ class PropertiesContainer(object):
         entry_end = {}
 
         entries = []
-        entries_dict = {}
 
+        ret = []
+
+        if not string.strip():
+            return ret
+
+        # search all properties
         for prop in self.get_properties(name):
-            # FIXME: this should be done in a more flexible way...
-            if prop.name in ['weakReleaseGroup']:
-                continue
-
             match = prop.compiled.search(string)
             if match:
                 entry = prop, match
                 entries.append(entry)
-                if not prop.name in entries_dict:
-                    entries_dict[prop.name] = []
-                entries_dict[prop.name].append(entry)
+
+        # compute entries start and ends
+        for prop, match in entries:
+            best_span = self._get_span(match)
+
+            start = best_span[0]
+            end = best_span[1]
+
+            if start not in entry_start:
+                entry_start[start] = [prop]
+            else:
+                entry_start[start].append(prop)
+
+            if end not in entry_end:
+                entry_end[end] = [prop]
+            else:
+                entry_end[end].append(prop)
+
+        # remove invalid values
+        while True:
+            invalid_entries = []
+            for entry in entries:
+                prop, match = entry
+                if not self._is_valid(string, match, entry_start, entry_end):
+                    invalid_entries.append(entry)
+            if not invalid_entries:
+                break
+            for entry in invalid_entries:
+                prop, match = entry
+                entries.remove(entry)
+                invalid_span = self._get_span(match)
+                start = invalid_span[0]
+                end = invalid_span[1]
+                entry_start[start].remove(prop)
+                if not entry_start.get(start):
+                    del entry_start[start]
+                entry_end[end].remove(prop)
+                if not entry_end.get(end):
+                    del entry_end[end]
+
+        # keep only best match if multiple values where found
+        entries_dict = {}
+        for entry in entries:
+            if not prop.name in entries_dict:
+                entries_dict[prop.name] = []
+            entries_dict[prop.name].append(entry)
 
         if entries_dict:
             for entries in entries_dict.values():
@@ -201,41 +246,6 @@ class PropertiesContainer(object):
 
                 result[best_prop] = best_match
 
-                best_span = self._get_span(best_match)
-
-                start = best_span[0]
-                end = best_span[1]
-
-                if start not in entry_start:
-                    entry_start[start] = [best_prop]
-                else:
-                    entry_start[start].append(best_prop)
-
-                if end not in entry_end:
-                    entry_end[end] = [best_prop]
-                else:
-                    entry_end[end].append(best_prop)
-
-        while True:
-            invalid_values = []
-            for prop, match in result.items():
-                if not self._is_valid(string, match, entry_start, entry_end):
-                    invalid_values.append((prop, match))
-            if not invalid_values:
-                break
-            for prop, match in invalid_values:
-                result.pop(prop)
-                invalid_span = self._get_span(match)
-                start = invalid_span[0]
-                end = invalid_span[1]
-                entry_start[start].remove(prop)
-                if not entry_start.get(start):
-                    del entry_start[start]
-                entry_end[end].remove(prop)
-                if not entry_end.get(end):
-                    del entry_end[end]
-
-        ret = []
         for prop, match in result.items():
             ret.append((prop, match))
 
@@ -251,13 +261,37 @@ class PropertiesContainer(object):
             ret2.append((prop, self._get_span(match)))
         return ret2
 
-    def as_guess(self, found_property, input=None, index=0):
-        if found_property:
-            prop, span = found_property[index]
-            value = prop.canonical_form if prop.canonical_form else input[span[0]:span[1]] if input else None
-            guess = Guess({prop.name: value}, confidence=prop.confidence, input=input, span=span, property=prop)
-            return guess
+    def as_guess(self, found_properties, input=None, filter=None, sep_replacement=None, *args, **kwargs):
+        if filter is None:
+            filter = lambda property, *args, **kwargs: True
+        for property in found_properties:
+            prop, span = property
+            value = self._effective_prop_value(prop, input, span, sep_replacement)
+            name = self._effective_prop_name(prop.name)
+            guess = Guess({name: value}, confidence=prop.confidence, input=input, span=span, prop=prop)
+            if filter(guess):
+                return guess
         return None
+
+    def _effective_prop_value(self, prop, input=None, span=None, sep_replacement=None):
+        if prop.canonical_form:
+            return prop.canonical_form
+        if input is None:
+            return None
+        value = input
+        if not span is None:
+            value = value[span[0]:span[1]]
+        value = input[span[0]:span[1]] if input else None
+        if sep_replacement:
+            for sep_char in sep:
+                value = value.replace(sep_char, sep_replacement)
+        return value
+
+    def _effective_prop_name(self, name):
+        return name if not name in self._eqs else self._eqs[name]
+
+    def register_equivalent(self, name, equivalent_name):
+        self._eqs[equivalent_name] = name
 
     def compute_canonical_form(self, name, value):
         """Retrieves canonical form of a property given its name and found value.
@@ -283,16 +317,17 @@ class PropertiesContainer(object):
         :rtype: generator
         """
         for prop in self._properties:
-            if name is None or prop.name == name and canonical_form is None or prop.canonical_form is None:
+            if (name is None or prop.name == name) and (canonical_form is None or prop.canonical_form == canonical_form):
                 yield prop
 
     def get_supported_properties(self):
         supported_properties = {}
         for prop in self.get_properties():
-            values = supported_properties.get(prop.name)
+            name = self._effective_prop_name(prop.name)
+            values = supported_properties.get(name)
             if not values:
                 values = set()
-                supported_properties[prop.name] = values
+                supported_properties[name] = values
             values.add(prop.canonical_form if prop.canonical_form else "<any>")
         return supported_properties
 

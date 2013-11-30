@@ -24,12 +24,12 @@ from guessit.transfo import guess_release_group, guess_properties
 
 keywords = yaml.load("""
 
-? PROPER 2HD
-: releaseGroup: 2HD
+? Xvid PROPER
+: videoCodec: Xvid
   other: PROPER
 
-? 2HD-PROPER
-: releaseGroup: 2HD
+? PROPER-Xvid
+: videoCodec: Xvid
   other: PROPER
 
 """)

@@ -39,8 +39,7 @@ def process(mtree):
     """
     def found_property(node, name, value, confidence):
         node.guess = Guess({name: value},
-                           confidence=confidence,
-                           raw=value)
+                           confidence=confidence)
         log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
 
     def found_title(node, confidence):
@@ -158,12 +157,14 @@ def process(mtree):
             found_title(folder_leftover[0], confidence=0.7)
             return
 
-        # if there are only 2 unidentified groups, the first of which is inside
-        # brackets or parentheses, we take the second one for the title:
+        # if there are only many unidentified groups, take the first of which is
+        # not inside brackets or parentheses.
         # ex: Movies/[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi
-        if len(basename_leftover) == 2 and basename_leftover[0].is_explicit():
-            found_title(basename_leftover[1], confidence=0.8)
-            return
+        if basename_leftover[0].is_explicit():
+            for basename_leftover_elt in basename_leftover:
+                if not basename_leftover_elt.is_explicit():
+                    found_title(basename_leftover_elt, confidence=0.8)
+                    return
 
         # if all else fails, take the first remaining unidentified group in the
         # basename as title

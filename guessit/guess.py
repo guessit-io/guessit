@@ -30,11 +30,67 @@ log = logging.getLogger(__name__)
 
 
 class GuessMetadata(object):
-    def __init__(self, confidence=0, input=None, span=None, property=None, *args, **kwargs):
-        self.confidence = confidence
-        self.input = input
-        self.span = span
-        self.property=property
+    """GuessMetadata contains confidence, an input string, span and related property.
+
+    If defined on a property of Guess object, it overrides the object defined as global.
+
+    :param parent: The parent metadata, used for undefined properties in self object
+    :type parent: :class: `GuessMedata`
+    :param confidence: The confidence (from 0.0 to 1.0)
+    :type confidence: number
+    :param input: The input string
+    :type input: string
+    :param span: The input string
+    :type span: tuple (int, int)
+    :param prop: The found property definition
+    :type prop: :class `guessit.patterns.containers._Property`
+    """
+    def __init__(self, parent=None, confidence=None, input=None, span=None, prop=None, *args, **kwargs):
+        self.parent = parent
+        self._confidence = confidence
+        self._input = input
+        self._span = span
+        self._prop = prop
+
+    @property
+    def confidence(self):
+        return self._confidence if not self._confidence is None else self.parent.confidence if self.parent else None
+
+    @confidence.setter
+    def confidence(self, confidence):
+        """The input
+
+        :rtype: string
+        :return: String used to find this guess value
+        """
+        self._confidence = confidence
+
+    @property
+    def input(self):
+        """The input
+
+        :rtype: string
+        :return: String used to find this guess value
+        """
+        return self._input if not self._input is None else self.parent.input if self.parent else None
+
+    @property
+    def span(self):
+        """The span
+
+        :rtype: tuple (int, int)
+        :return: span of input string used to find this guess value
+        """
+        return self._span if not self._span is None else self.parent.span if self.parent else None
+
+    @property
+    def prop(self):
+        """The property
+
+        :rtype: :class:`_Property`
+        :return: The property
+        """
+        return self._prop if not self._prop is None else self.parent.prop if self.parent else None
 
     @property
     def raw(self):
@@ -44,17 +100,18 @@ class GuessMetadata(object):
             return self.input[self.span[0]:self.span[1]]
         return None
 
-    def clean_args(self, kwargs):
-        ret = {}
-        for k, v in kwargs.items():
-            if not hasattr(self, k):
-                ret[k] = v
-        return ret
-
     def __repr__(self, *args, **kwargs):
         return object.__repr__(self, *args, **kwargs)
 
-_no_metadata = GuessMetadata()
+
+def _split_kwargs(**kwargs):
+    metadata_args = {}
+    for prop in dir(GuessMetadata):
+        try:
+            metadata_args[prop] = kwargs.pop(prop)
+        except KeyError:
+            pass
+    return metadata_args, kwargs
 
 
 class Guess(UnicodeMixin, dict):
@@ -65,13 +122,13 @@ class Guess(UnicodeMixin, dict):
     simple dict."""
 
     def __init__(self, *args, **kwargs):
-        self._global_metadata = GuessMetadata(**kwargs)
-        clean_kwargs = self._global_metadata.clean_args(kwargs)
-        dict.__init__(self, *args, **clean_kwargs)
+        metadata_kwargs, kwargs = _split_kwargs(**kwargs)
+        self._global_metadata = GuessMetadata(**metadata_kwargs)
+        dict.__init__(self, *args, **kwargs)
 
         self._metadata = {}
         for prop in self:
-            self._metadata[prop] = GuessMetadata(**kwargs)
+            self._metadata[prop] = GuessMetadata(parent=self._global_metadata)
 
     def to_dict(self, advanced=False):
         """Return the guess as a dict containing only base types, ie:
@@ -89,11 +146,11 @@ class Guess(UnicodeMixin, dict):
                 data[prop] = [u(x) for x in value]
             if advanced:
                 metadata = self.metadata(prop)
-                prop_data = {"value": data[prop]}
+                prop_data = {'value': data[prop]}
                 if metadata.raw:
-                    prop_data["raw"] = metadata.raw
+                    prop_data['raw'] = metadata.raw
                 if metadata.confidence:
-                    prop_data["confidence"] = metadata.confidence
+                    prop_data['confidence'] = metadata.confidence
                 data[prop] = prop_data
 
         return data
@@ -127,27 +184,22 @@ class Guess(UnicodeMixin, dict):
 
         If no property name is given, get the global_metadata
         """
-        if prop is None:
+        if prop is None or prop not in self._metadata:
             return self._global_metadata
-        return self._metadata.get(prop, _no_metadata)
+        return self._metadata[prop]
 
     def confidence(self, prop=None):
         return self.metadata(prop).confidence
 
     def set_confidence(self, prop, confidence):
-        metadata = None
-        if prop not in self._metadata:
-            metadata = GuessMetadata()
-        else:
-            metadata = self._metadata[prop]
-        metadata.confidence = confidence
+        self.metadata(prop).confidence = confidence
 
     def raw(self, prop):
         return self.metadata(prop).raw
 
-    def set(self, prop, value, *args, **kwargs):
-        self[prop] = value
-        self._metadata[prop] = GuessMetadata(*args, **kwargs)
+    def set(self, prop_name, value, *args, **kwargs):
+        self[prop_name] = value
+        self._metadata[prop_name] = GuessMetadata(parent=self._global_metadata, *args, **kwargs)
 
     def update(self, other, confidence=None):
         dict.update(self, other)
@@ -354,8 +406,10 @@ def merge_all(guesses, append=None):
                 result.set(prop, result.get(prop, []) + [g[prop]],
                            # TODO: what to do with confidence here? maybe an
                            # arithmetic mean...
-                           confidence=g.confidence(prop),
-                           raw=g.raw(prop))
+                           confidence=g.metadata(prop).confidence,
+                           input=g.metadata(prop).input,
+                           span=g.metadata(prop).span,
+                           prop=g.metadata(prop).prop)
 
                 del g[prop]
 

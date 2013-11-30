@@ -37,7 +37,7 @@ UNDETERMINED = babelfish.Language('und')
 SYN = {('und', None): ['unknown', 'inconnu', 'unk', 'un'],
        ('ell', None): ['gr', 'greek'],
        ('spa', None): ['esp', 'español'],
-       ('fra', None): ['français'],
+       ('fra', None): ['français', 'vf'],
        ('swe', None): ['se'],
        ('por', 'BR'): ['po', 'pb', 'pob', 'br', 'brazilian'],
        ('cat', None): ['català'],
@@ -291,7 +291,7 @@ LNG_COMMON_WORDS = frozenset([
     'fry', 'cop', 'zen', 'gay', 'fat', 'one', 'cherokee', 'got', 'an', 'as',
     'cat', 'her', 'be', 'hat', 'sun', 'may', 'my', 'mr', 'rum', 'pi',
     # french words
-    'bas', 'de', 'le', 'son', 'vo', 'vf', 'ne', 'ca', 'ce', 'et', 'que',
+    'bas', 'de', 'le', 'son', 'ne', 'ca', 'ce', 'et', 'que',
     'mal', 'est', 'vol', 'or', 'mon', 'se',
     # spanish words
     'la', 'el', 'del', 'por', 'mar',

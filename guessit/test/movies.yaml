@@ -51,7 +51,6 @@
   audioCodec: AAC
   language: [ french, english ]
   subtitleLanguage: [ french, english ]
-  releaseGroup: '[XCT]'
 
 ? Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi
 : title: Battle Royale
@@ -70,8 +69,7 @@
   cdNumber: 2
 
 ? Movies/Persepolis (2007)/[XCT] Persepolis [H264+Aac-128(Fr-Eng)+ST(Fr-Eng)+Ind].mkv
-: releaseGroup: "[XCT]"
-  title: Persepolis
+: title: Persepolis
   year: 2007
   videoCodec: h264
   audioCodec: AAC
@@ -344,7 +342,7 @@
   year: 2006
   format: DVD
   videoCodec: XviD
-  releaseGroup: MP
+  releaseGroup: AceBot
   language: French
 
 ? The_Italian_Job.mkv

@@ -41,7 +41,7 @@ def guess_video_rexps(string):
                 del metadata['cdNumberTotal']
             span = (match.start() + span_adjust[0],
                     match.end() + span_adjust[1] - 2)
-            return (Guess(metadata, confidence=confidence, raw=string[span[0]:span[1]]),
+            return (Guess(metadata, confidence=confidence, input=string, span=span),
                     span)
 
     return None, None

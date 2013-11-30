@@ -22,10 +22,11 @@
 from __future__ import unicode_literals
 
 from containers import PropertiesContainer
+from guessit.patterns import build_or_pattern
 
 container = PropertiesContainer()
 
-container.register_property('format', 'DVD', 'DVD', 'DVD-Rip', 'VIDEO-TS', 'DVDivX')
+container.register_property('format', 'DVD', 'DVD', 'DVD-Rip', 'VIDEO-TS')
 container.register_property('format', 'HD-DVD', 'HD-(?:DVD)?-Rip', 'HD-DVD')
 container.register_property('format', 'BluRay', 'Blu-ray', 'B[DR]Rip')
 container.register_property('format', 'HDTV', 'HD-TV')
@@ -43,9 +44,12 @@ container.register_property('screenSize', '1080i', '(?:\d{3,}(?:\\|\/|x|\*))?108
 container.register_property('screenSize', '1080p', '(?:\d{3,}(?:\\|\/|x|\*))?1080(?:i|p?x?)')
 container.register_property('screenSize', '4K', '(?:\d{3,}(?:\\|\/|x|\*))?2160(?:i|p?x?)')
 
-container.register_property('videoCodec', 'XviD', 'Xvid')
-container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX')
-container.register_property('videoCodec', 'h264', '[hx]-264')
+profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP"])
+
+container.register_property('videoCodec', 'XviD', 'XviD', 'XviD-' + profile_pattern)
+container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX', 'DivX-' + profile_pattern)
+container.register_property('videoCodec', 'h264', '[hx]-264', '[hx]-264-' + profile_pattern)
+
 container.register_property('videoCodec', 'Rv10', 'Rv10')
 container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
 
@@ -54,29 +58,12 @@ container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
 container.register_property('videoApi', 'DXVA', 'DXVA')
 
 container.register_property('audioCodec', 'AC3', 'AC3')
-container.register_property('audioCodec', 'DTS', 'DTS')
-container.register_property('audioCodec', 'AAC', 'He-AAC', 'AAC-He', 'AAC')
+container.register_property('audioCodec', 'DTS', 'DTS', 'DTS-HD')
+container.register_property('audioCodec', 'AAC', 'HE-AAC', 'AAC-HE', 'LC-AAC', 'AAC-LC', 'AAC')
 
 container.register_property('audioChannels', '5.1', r'5\.1', 'DD5[._ ]1', '5ch')
 
 container.register_property('episodeFormat', 'Minisode', r'Minisodes?')
-
-container.register_properties('releaseGroup', 'ESiR', 'WAF', 'SEPTiC', 'iNT', 'PUKKA',
-                                  'CHD', 'ViTE', 'TLF', 'FLAiTE',
-                                  'MDX', 'GM4F', 'DVL', 'SVD', 'iLUMiNADOS',
-                                  'aXXo', 'KLAXXON', 'NoTV', 'ZeaL', 'LOL',
-                                  'CtrlHD', 'POD', 'WiKi', 'IMMERSE', 'FQM',
-                                  '2HD', 'CTU', 'HALCYON', 'EbP', 'SiTV',
-                                  'HDBRiSe', 'AlFleNi-TeaM', 'EVOLVE', '0TV',
-                                  'TLA', 'NTB', 'ASAP', 'MOMENTUM', 'FoV', 'D-Z0N3',
-                                  'TrollHD', 'ECI', 'MARINE-FORD'
-                                  )
-container.register_property('releaseGroup', r'[XCT]', r'\[XCT\]')
-
-container.register_properties('weakReleaseGroup', 'DEiTY', 'FiNaLe', 'UnSeeN', 'KiNGS', 'CLUE', 'DIMENSION',
-                                      'SAiNTS', 'ARROW', 'EuReKA', 'SiNNERS', 'DiRTY', 'REWARD',
-                                      'REPTiLE',
-                                      )
 
 container.register_property('other', 'AudioFix', 'Audio-Fix', 'Audio-Fixed')
 container.register_property('other', 'SyncFix', 'Sync-Fix', 'Sync-Fixed')

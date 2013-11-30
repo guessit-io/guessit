@@ -23,30 +23,34 @@ from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.properties import container
 import re
 import logging
+from guessit.patterns.containers import PropertiesContainer
+from guessit.patterns import sep
 
 log = logging.getLogger(__name__)
 
-CODECS = container.enhance_property_patterns('videoCodec')
-FORMATS = container.enhance_property_patterns('format')
-VAPIS = container.enhance_property_patterns('videoApi')
+groups_container = PropertiesContainer()
 
-# RG names following a codec or format, with a potential space or dash inside the name
-GROUP_NAMES = [r'(?P<videoCodec>' + codec + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
-                for codec in CODECS]
-GROUP_NAMES += [r'(?P<format>' + fmt + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
-                 for fmt in FORMATS]
-GROUP_NAMES += [r'(?P<videoApi>' + api + r')[ \.-](?P<releaseGroup>.+?([- \.].*?)??)[ \.]'
-                 for api in VAPIS]
+_allowed_groupname_pattern = r'[\w@#€£$&]'
 
-GROUP_NAMES2 = [r'\.(?P<videoCodec>' + codec + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
-                 for codec in CODECS]
-GROUP_NAMES2 += [r'\.(?P<format>' + fmt + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
-                  for fmt in FORMATS]
-GROUP_NAMES2 += [r'\.(?P<videoApi>' + vapi + r')-(?P<releaseGroup>.*?)(-(.*?))?[ \.]'
-                  for vapi in VAPIS]
 
-GROUP_NAMES = [re.compile(r, re.IGNORECASE) for r in GROUP_NAMES]
-GROUP_NAMES2 = [re.compile(r, re.IGNORECASE) for r in GROUP_NAMES2]
+def _is_number(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+_forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour'],
+                               lambda elt: _is_number(elt),
+                               ]
+
+groups_container.sep_replace_char = '-'
+groups_container.canonical_from_pattern = False
+groups_container.enhance_patterns = True
+groups_container.register_property('defaultGroup', None, _allowed_groupname_pattern + '+')
+groups_container.register_property('defaultGroup', None, _allowed_groupname_pattern + '+-' + _allowed_groupname_pattern + '+')
+
+groups_container.register_equivalent('releaseGroup', 'defaultGroup')
 
 
 def adjust_metadata(md):
@@ -54,34 +58,73 @@ def adjust_metadata(md):
                 for property_name, value in md.items())
 
 
-def guess_release_group(string):
-    # first try to see whether we have both a known codec and a known release group
-    for rexp in GROUP_NAMES:
-        match = rexp.search(string)
-        while match:
-            metadata = match.groupdict()
-            # make sure this is an actual release group we caught
-            release_group = (container.compute_canonical_form('releaseGroup', metadata['releaseGroup']) or
-                             container.compute_canonical_form('weakReleaseGroup', metadata['releaseGroup']))
-            if release_group:
-                return adjust_metadata(metadata), (match.start(1), match.end(2))
+def validate_group_name(guess):
+    if guess.metadata().span[1] - guess.metadata().span[0] >= 2:
+        val = guess['releaseGroup']
 
-            # we didn't find anything conclusive, keep searching
-            match = rexp.search(string, match.span()[0] + 1)
+        if '-' in guess['releaseGroup']:
+            checked_val = ""
+            for elt in val.split('-'):
+                forbidden = False
+                for forbidden_lambda in _forbidden_groupname_lambda:
+                    forbidden = forbidden_lambda(elt.lower())
+                    if forbidden:
+                        break
+                if not forbidden:
+                    if checked_val:
+                        checked_val += '-'
+                    checked_val += elt
+                else:
+                    break
+            val = checked_val
+            guess['releaseGroup'] = val
 
-    # pick anything as releaseGroup as long as we have a codec in front
-    # this doesn't include a potential dash ('-') ending the release group
-    # eg: [...].X264-HiS@SiLUHD-English.[...]
-    for rexp in GROUP_NAMES2:
-        match = rexp.search(string)
-        if match:
-            return adjust_metadata(match.groupdict()), (match.start(1), match.end(2))
+        forbidden = False
+        for forbidden_lambda in _forbidden_groupname_lambda:
+            forbidden = forbidden_lambda(val.lower())
+            if forbidden:
+                break
+        if not forbidden:
+            return True
+    return False
 
-    return None, None
+
+def is_leaf_previous(leaf, node):
+    if leaf.span[1] <= node.span[0]:
+        for idx in xrange(leaf.span[1], node.span[0]):
+            if not leaf.root.value[idx] in sep:
+                return False
+        return True
+    return False
 
 
-priority = 40
+def guess_release_group(string, node):
+    found = groups_container.find_properties(string, 'releaseGroup')
+    guess = groups_container.as_guess(found, string)
+    if guess:
+        guess.metadata('releaseGroup').confidence = 1
+        return guess
+
+    found = groups_container.find_properties(string, 'defaultGroup')
+    guess = groups_container.as_guess(found, string, validate_group_name, sep_replacement='-')
+    if guess:
+        for leaf in node.root.leaves_containing(['videoCodec', 'format', 'videoApi', 'audioCodec']):
+            if is_leaf_previous(leaf, node):
+                if leaf.root.value[leaf.span[1]] == '-':
+                    guess.metadata().confidence = 1
+                else:
+                    guess.metadata().confidence = 0.3
+                return guess
+
+    return None
+
+guess_release_group.use_node = True
+
+supported_properties = groups_container.get_supported_properties()
+
+
+priority = -190
 
 
 def process(mtree):
-    SingleNodeGuesser(guess_release_group, 0.8, log).process(mtree)
+    SingleNodeGuesser(guess_release_group, None, log).process(mtree)

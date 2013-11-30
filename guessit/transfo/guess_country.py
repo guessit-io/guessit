@@ -45,7 +45,7 @@ def process(mtree):
                 continue
 
             # only keep explicit groups (enclosed in parentheses/brackets)
-            if node.value[0] + node.value[-1] not in ['()', '[]', '{}']:
+            if not node.is_explicit():
                 continue
 
             try:
@@ -53,4 +53,4 @@ def process(mtree):
             except ValueError:
                 continue
 
-            node.guess = Guess(country=country, confidence=1.0, raw=c)
+            node.guess = Guess(country=country, confidence=1.0, input=node.value, span=node.span)

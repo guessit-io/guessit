@@ -49,7 +49,7 @@ def process(mtree):
             found_property(bonusTitle, 'bonusTitle', 0.8)
 
     filmNumber = [node for node in mtree.leaves()
-                   if 'filmNumber' in node.guess ]
+                   if 'filmNumber' in node.guess]
     if filmNumber:
         filmSeries = previous_group(filmNumber[0])
         found_property(filmSeries, 'filmSeries', 0.9)

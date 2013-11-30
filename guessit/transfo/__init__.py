@@ -105,7 +105,7 @@ transfo_manager = _TransfoManager()
 
 
 def found_property(node, name, confidence):
-    node.guess = Guess({name: node.clean_value}, confidence=confidence, raw=node.value)
+    node.guess = Guess({name: node.clean_value}, confidence=confidence)
     log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
 
 

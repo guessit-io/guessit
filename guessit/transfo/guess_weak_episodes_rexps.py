@@ -46,11 +46,9 @@ def guess_weak_episodes_rexps(string, node):
                 # (Simpson is at 25!)
                 if season > 50:
                     continue
-                return Guess({'season': season,
-                              'episodeNumber': epnum},
-                             confidence=0.6, raw=string[span[0]:span[1]]), span
+                return Guess({'season': season, 'episodeNumber': epnum}, confidence=0.6, input=string, span=span)
             else:
-                return Guess(metadata, confidence=0.3, raw=string[span[0]:span[1]]), span
+                return Guess(metadata, confidence=0.3, input=string, span=span)
 
     return None, None
 

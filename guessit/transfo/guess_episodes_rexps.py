@@ -44,20 +44,20 @@ def guess_episodes_rexps(string):
         if match:
             span = (match.start() + span_adjust[0],
                     match.end() + span_adjust[1])
-            guess = Guess(match.groupdict(), confidence=confidence, raw=string[span[0]:span[1]])
+            guess = Guess(match.groupdict(), confidence=confidence, input=string, span=span)
 
             # decide whether we have only a single episode number or an
             # episode list
             if guess.get('episodeNumber'):
                 eplist = number_list(guess['episodeNumber'])
-                guess.set('episodeNumber', eplist[0], confidence=confidence, raw=string[span[0]:span[1]])
+                guess.set('episodeNumber', eplist[0], confidence=confidence, input=string, span=span)
 
                 if len(eplist) > 1:
-                    guess.set('episodeList', eplist, confidence=confidence, raw=string[span[0]:span[1]])
+                    guess.set('episodeList', eplist, confidence=confidence, input=string, span=span)
 
             if guess.get('bonusNumber'):
                 eplist = number_list(guess['bonusNumber'])
-                guess.set('bonusNumber', eplist[0], confidence=confidence, raw=string[span[0]:span[1]])
+                guess.set('bonusNumber', eplist[0], confidence=confidence, input=string, span=span)
 
             return guess, span
 
