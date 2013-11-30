@@ -343,6 +343,10 @@ def search_language(string, lang_filter=None):
             if lang_filter and language not in lang_filter:
                 continue
 
+            if language != 'mul' and not hasattr(language, 'alpha2'):
+                # Found language has no alpha2 equilavent. It's probably an uncommon language.
+                continue
+
             # only allow those languages that have a 2-letter code, those that
             # don't are too esoteric and probably false matches
             #if language.lang not in lng3_to_lng2:
