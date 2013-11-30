@@ -142,48 +142,59 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
             all_args.append(args)
 
         if kwargs:
-            result, span = matcher(*all_args, **kwargs)
+            match = matcher(*all_args, **kwargs)
         else:
-            result, span = matcher(*all_args)
+            match = matcher(*all_args)
 
-        if result:
-            # readjust span to compensate for sentinels
-            span = (span[0] - 1, span[1] - 1)
-
-            # readjust span to compensate for partial_span
-            if partial_span:
-                span = (span[0] + partial_span[0], span[1] + partial_span[0])
-
-            partition_spans = None
-            for skip_node in skip_nodes:
-                if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
-                    skip_node.span == span:
-                    partition_spans = node.get_partition_spans(skip_node.span)
-                    partition_spans.remove(skip_node.span)
-                    break
-
-            if not partition_spans:
-                if isinstance(result, Guess):
-                    if confidence is None:
-                        confidence = result.confidence(list(result.keys())[0])
-                else:
-                    if confidence is None:
-                        confidence = 1.0
-
-                guess = format_guess(Guess(result, confidence=confidence, raw=string[span[0] + 1:span[1] + 1]))
-                msg = 'Found with confidence %.2f: %s' % (confidence, guess)
-                (logger or log).debug(msg)
-
-                node.partition(span)
-                absolute_span = (span[0] + node.offset, span[1] + node.offset)
-                for child in node.children:
-                    if child.span == absolute_span:
-                        child.guess = guess
-                    else:
-                        find_and_split_node(child, strategy, skip_nodes, logger)
+        if match:
+            if not isinstance(match, Guess):
+                result, span = match
             else:
-                for partition_span in partition_spans:
-                    find_and_split_node(node, strategy, skip_nodes, logger, partition_span)
+                result, span = match, match.metadata().span
+
+            if result:
+                # readjust span to compensate for sentinels
+                span = (span[0] - 1, span[1] - 1)
+
+                # readjust span to compensate for partial_span
+                if partial_span:
+                    span = (span[0] + partial_span[0], span[1] + partial_span[0])
+
+                partition_spans = None
+                for skip_node in skip_nodes:
+                    if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
+                        skip_node.span == span:
+                        partition_spans = node.get_partition_spans(skip_node.span)
+                        partition_spans.remove(skip_node.span)
+                        break
+
+                if not partition_spans:
+                    # restore sentinels compensation
+
+                    guess = None
+                    if isinstance(result, Guess):
+                        if confidence is None:
+                            confidence = result.confidence()
+                        guess = result
+                    else:
+                        if confidence is None:
+                            confidence = 1.0
+                        guess = Guess(result, confidence=confidence, input=string, span=span)
+
+                    guess = format_guess(guess)
+                    msg = 'Found with confidence %.2f: %s' % (confidence, guess)
+                    (logger or log).debug(msg)
+
+                    node.partition(span)
+                    absolute_span = (span[0] + node.offset, span[1] + node.offset)
+                    for child in node.children:
+                        if child.span == absolute_span:
+                            child.guess = guess
+                        else:
+                            find_and_split_node(child, strategy, skip_nodes, logger)
+                else:
+                    for partition_span in partition_spans:
+                        find_and_split_node(node, strategy, skip_nodes, logger, partition_span)
 
 
 class SingleNodeGuesser(object):

@@ -251,13 +251,13 @@ class PropertiesContainer(object):
             ret2.append((prop, self._get_span(match)))
         return ret2
 
-    def as_guess(self, found_property, string=None, index=0):
+    def as_guess(self, found_property, input=None, index=0):
         if found_property:
             prop, span = found_property[index]
-            guess = Guess(confidence=prop.confidence)
-            guess[prop.name] = prop.canonical_form if prop.canonical_form else string[span[0]:span[1]] if string else None
-            return guess, span
-        return None, None
+            value = prop.canonical_form if prop.canonical_form else input[span[0]:span[1]] if input else None
+            guess = Guess({prop.name: value}, confidence=prop.confidence, input=input, span=span, property=prop)
+            return guess
+        return None
 
     def compute_canonical_form(self, name, value):
         """Retrieves canonical form of a property given its name and found value.
