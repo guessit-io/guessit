@@ -21,7 +21,6 @@
 from __future__ import unicode_literals
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.properties import container
-import re
 import logging
 from guessit.patterns.containers import PropertiesContainer
 from guessit.patterns import sep
@@ -44,13 +43,16 @@ _forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'p
                                lambda elt: _is_number(elt),
                                ]
 
+# If the previous property in this list, the match will be considered as safe
+# and group name can contain a separator.
+previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec']
+
+
 groups_container.sep_replace_char = '-'
 groups_container.canonical_from_pattern = False
 groups_container.enhance_patterns = True
-groups_container.register_property('defaultGroup', None, _allowed_groupname_pattern + '+')
-groups_container.register_property('defaultGroup', None, _allowed_groupname_pattern + '+-' + _allowed_groupname_pattern + '+')
-
-groups_container.register_equivalent('releaseGroup', 'defaultGroup')
+groups_container.register_property('releaseGroup', None, _allowed_groupname_pattern + '+')
+groups_container.register_property('releaseGroup', None, _allowed_groupname_pattern + '+-' + _allowed_groupname_pattern + '+')
 
 
 def adjust_metadata(md):
@@ -100,20 +102,14 @@ def is_leaf_previous(leaf, node):
 
 def guess_release_group(string, node):
     found = groups_container.find_properties(string, 'releaseGroup')
-    guess = groups_container.as_guess(found, string)
-    if guess:
-        guess.metadata('releaseGroup').confidence = 1
-        return guess
-
-    found = groups_container.find_properties(string, 'defaultGroup')
     guess = groups_container.as_guess(found, string, validate_group_name, sep_replacement='-')
     if guess:
-        for leaf in node.root.leaves_containing(['videoCodec', 'format', 'videoApi', 'audioCodec']):
+        for leaf in node.root.leaves_containing(previous_safe_properties):
             if is_leaf_previous(leaf, node):
                 if leaf.root.value[leaf.span[1]] == '-':
                     guess.metadata().confidence = 1
                 else:
-                    guess.metadata().confidence = 0.3
+                    guess.metadata().confidence = 0.7
                 return guess
 
     return None
