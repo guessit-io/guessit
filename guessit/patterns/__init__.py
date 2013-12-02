@@ -75,4 +75,3 @@ def enhance_pattern(pattern):
     :rtype: string
     """
     return pattern.replace(_dash, _psep)
-

@@ -45,7 +45,10 @@ class GuessMetadata(object):
     """
     def __init__(self, parent=None, confidence=None, input=None, span=None, prop=None, *args, **kwargs):
         self.parent = parent
-        self._confidence = confidence
+        if confidence is None and self.parent is None:
+            self._confidence = 1.0
+        else:
+            self._confidence = confidence
         self._input = input
         self._span = span
         self._prop = prop
@@ -80,6 +83,15 @@ class GuessMetadata(object):
         :return: span of input string used to find this guess value
         """
         return self._span if not self._span is None else self.parent.span if self.parent else None
+
+    @span.setter
+    def span(self, span):
+        """The span
+
+        :rtype: tuple (int, int)
+        :return: span of input string used to find this guess value
+        """
+        self._span = span
 
     @property
     def prop(self):
@@ -182,8 +194,10 @@ class Guess(UnicodeMixin, dict):
 
         If no property name is given, get the global_metadata
         """
-        if prop is None or prop not in self._metadata:
+        if prop is None:
             return self._global_metadata
+        if not prop in self._metadata:
+            self._metadata[prop] = GuessMetadata(parent=self._global_metadata)
         return self._metadata[prop]
 
     def confidence(self, prop=None):

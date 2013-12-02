@@ -142,15 +142,15 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
             all_args.append(args)
 
         if kwargs:
-            match = matcher(*all_args, **kwargs)
+            matcher_result = matcher(*all_args, **kwargs)
         else:
-            match = matcher(*all_args)
+            matcher_result = matcher(*all_args)
 
-        if match:
-            if not isinstance(match, Guess):
-                result, span = match
+        if matcher_result:
+            if not isinstance(matcher_result, Guess):
+                result, span = matcher_result
             else:
-                result, span = match, match.metadata().span
+                result, span = matcher_result, matcher_result.metadata().span
 
             if result:
                 # readjust span to compensate for sentinels

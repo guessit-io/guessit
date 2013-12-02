@@ -29,7 +29,7 @@ from ..guess import Guess
 
 class _Property:
     """Represents a property configuration."""
-    def __init__(self, name, canonical_form, pattern=None, confidence=1.0, span_adjust=(0, 0), enhance=True):
+    def __init__(self, name, canonical_form, pattern=None, confidence=1.0, enhance=True, global_span=False):
         """
         :param name: Name of the property (format, screenSize, ...)
         :type name: string
@@ -39,8 +39,11 @@ class _Property:
         :type pattern: string
         :param confidence: confidence
         :type confidence: float
-        :param span_adjust: offset to apply to found span
-        :type span_adjust: tuple (int start, int end)
+        :param enhance: enhance the pattern
+        :type enhance: boolean
+        :param global_span: if True, the whole match span will used to create the Guess.
+                            Else, the span from the capturing groups will be used.
+        :type global_span: boolean
         """
         self.name = name
         self.canonical_form = canonical_form
@@ -50,7 +53,7 @@ class _Property:
             self.pattern = canonical_form
         self.compiled = compile_pattern(self.pattern, enhance=enhance)
         self.confidence = confidence
-        self.span_adjust = span_adjust
+        self.global_span = global_span
 
     def __repr__(self):
         return "%s: %s" % (self.name, self.canonical_form)
@@ -75,7 +78,7 @@ class PropertiesContainer(object):
         """
         _properties = [prop for prop in self._properties if prop.name == name and (not canonical_forms or prop.canonical_form in canonical_forms)]
 
-    def register_property(self, name, canonical_form, *patterns):
+    def register_property(self, name, canonical_form, *patterns, **property_params):
         """Register property with defined canonical form and patterns.
 
         :param name: name of the property (format, screenSize, ...)
@@ -85,10 +88,12 @@ class PropertiesContainer(object):
         :param patterns: regular expression patterns to register for the property canonical_form
         :type patterns: varargs of string
         """
+        properties = []
         for pattern in patterns:
             if not canonical_form and self.canonical_from_pattern:
                 canonical_form = pattern
             params = {'enhance': self.enhance_patterns}
+            params.update(property_params)
             if isinstance(pattern, dict):
                 params.update(pattern)
                 prop = _Property(name, canonical_form, **params)
@@ -97,8 +102,10 @@ class PropertiesContainer(object):
             else:
                 prop = _Property(name, canonical_form, pattern, **params)
             self._properties.append(prop)
+            properties.append(prop)
+        return properties
 
-    def register_properties(self, name, *canonical_forms):
+    def register_properties(self, name, *canonical_forms, **property_params):
         """Register properties.
 
         :param name: name of the property (releaseGroup, ...)
@@ -106,8 +113,10 @@ class PropertiesContainer(object):
         :param canonical_forms: values of the property ('ESiR', 'WAF', 'SEPTiC', ...)
         :type canonical_forms: varargs of strings
         """
+        properties = []
         for canonical_form in canonical_forms:
-            self.register_property(name, None, canonical_form)
+            properties.extend(self.register_property(name, None, canonical_form, **property_params))
+        return properties
 
     def unregister_all_properties(self):
         """Unregister all defined properties"""
@@ -115,7 +124,7 @@ class PropertiesContainer(object):
 
     def _is_valid(self, string, match, entry_start, entry_end):
         """Make sure our entry is surrounded by separators, or by another entry"""
-        span = self._get_span(match)
+        span = match.span()
         start = span[0]
         end = span[1]
         # note: sep is a regexp, but in this case using it as
@@ -128,12 +137,25 @@ class PropertiesContainer(object):
             return True
         return False
 
-    def _get_span(self, match):
-        if match.groups():
+    def _get_match_groups(self, prop, match):
+        """
+        Retrieves groups from match
+
+        :return: list of group names
+        """
+        if match.groupdict():
             # if groups are defined, take only first group as a result
-            return match.start(1), match.end(1)
+            results = []
+            for k in match.groupdict().keys():
+                span = match.span(k)
+                if span[0] > -1:
+                    results.append(k)
+            return results
         else:
-            return match.span()
+            if match.groups():
+                return [1]
+            else:
+                return [None]
 
     def find_properties(self, string, name=None):
         """Find all distinct properties for given string, sorted from longer match to shorter match.
@@ -155,7 +177,7 @@ class PropertiesContainer(object):
         :type string: string
 
         :return: found properties
-        :rtype: list of tuples (:class:`_Property`, tuple(start, end))
+        :rtype: list of tuples (:class:`_Property`, match, list of tuples (property_name, tuple(value_start, value_end)))
 
         :see: `_Property`
         :see: `register_property`
@@ -182,10 +204,9 @@ class PropertiesContainer(object):
 
         # compute entries start and ends
         for prop, match in entries:
-            best_span = self._get_span(match)
-
-            start = best_span[0]
-            end = best_span[1]
+            span = match.span()
+            start = span[0]
+            end = span[1]
 
             if start not in entry_start:
                 entry_start[start] = [prop]
@@ -209,7 +230,7 @@ class PropertiesContainer(object):
             for entry in invalid_entries:
                 prop, match = entry
                 entries.remove(entry)
-                invalid_span = self._get_span(match)
+                invalid_span = match.span()
                 start = invalid_span[0]
                 end = invalid_span[1]
                 entry_start[start].remove(prop)
@@ -258,17 +279,29 @@ class PropertiesContainer(object):
 
         ret2 = []
         for prop, match in ret:
-            ret2.append((prop, self._get_span(match)))
+            groups = self._get_match_groups(prop, match)
+            ret2.append((prop, match, groups))
         return ret2
 
     def as_guess(self, found_properties, input=None, filter=None, sep_replacement=None, *args, **kwargs):
         if filter is None:
             filter = lambda property, *args, **kwargs: True
         for property in found_properties:
-            prop, span = property
-            value = self._effective_prop_value(prop, input, span, sep_replacement)
-            name = self._effective_prop_name(prop.name)
-            guess = Guess({name: value}, confidence=prop.confidence, input=input, span=span, prop=prop)
+            prop, match, property_results = property
+            property_name = self._effective_prop_name(prop.name)
+            guess = Guess(confidence=prop.confidence, input=input, span=match.span(), prop=property_name)
+            span_start, span_end = match.span()
+            for group_name in property_results:
+                if isinstance(group_name, int):
+                    if group_name == 1:
+                        span_start = match.span(group_name)[0]
+                    span_end = match.span(group_name)[1]
+                value = self._effective_prop_value(prop, input, match.span(group_name) if group_name else match.span(), sep_replacement)
+                name = self._effective_prop_name(group_name if isinstance(group_name, basestring) else property_name)
+                guess[name] = value
+                if group_name:
+                    guess.metadata(prop).span = match.span(group_name)
+            guess.metadata().span = match.span() if prop.global_span else (span_start, span_end)
             if filter(guess):
                 return guess
         return None
