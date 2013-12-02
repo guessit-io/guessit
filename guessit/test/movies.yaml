@@ -179,6 +179,7 @@
   format: DVD
   videoCodec: h264
   audioCodec: AC3
+  releaseGroup: FtS
   website: sharethefiles.com
 
 ? Movies/9 (2009)/9.2009.Blu-ray.DTS.720p.x264.HDBRiSe.[sharethefiles.com].mkv
@@ -449,6 +450,7 @@
   screenSize: 720p
   year: 2004
   audioCodec: DTS
+  releaseGroup: FlexGet
 
 ? Pirates de langkasuka.2008.FRENCH.1920X1080.h264.AVC.AsiaRa.mkv
 : screenSize: 1080p
@@ -456,6 +458,7 @@
   language: French
   videoCodec: h264
   title: Pirates de langkasuka
+  releaseGroup: AsiaRa
   
 ? Masala (2013) Telugu Movie HD DVDScr XviD - Exclusive.avi
 : year: 2013
@@ -463,6 +466,8 @@
   title: Masala
   format: HD-DVD
   other: screener
+  language: Telugu
+  releaseGroup: Exclusive
 
 ? Django Unchained 2012 DVDSCR X264 AAC-P2P.nfo
 : year: 2012
@@ -471,12 +476,14 @@
   title: Django Unchained
   audioCodec: AAC
   format: DVD
+  releaseGroup: P2P
 
 ? Ejecutiva.En.Apuros(2009).BLURAY.SCR.Xvid.Spanish.LanzamientosD.nfo
 : year: 2009
   other: screener
   format: BluRay
   videoCodec: XviD
+  language: Spanish
   title: Ejecutiva En Apuros
 
 ? Die.Schluempfe.2.German.DL.1080p.BluRay.x264-EXQUiSiTE.mkv

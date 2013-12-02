@@ -476,6 +476,8 @@
   format: HDTV
   series: One Piece
   releaseGroup: MARINE-FORD
+  subtitleLanguage: French
+  screenSize: 720p
   
 ? Dexter.S08E12.FINAL.MULTi.1080p.BluRay.x264-MiND.mkv
 : videoCodec: h264
@@ -485,8 +487,11 @@
   series: Dexter
   other: final
   language: Multiple languages
+  releaseGroup: MiND
+  screenSize: 1080p
   
 ? One Piece - E623 VOSTFR HD [www.manga-ddl-free.com].mkv
 : website: www.manga-ddl-free.com
   episodeNumber: 623
   subtitleLanguage: French
+  series: One Piece

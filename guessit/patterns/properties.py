@@ -44,7 +44,7 @@ container.register_property('screenSize', '1080i', '(?:\d{3,}(?:\\|\/|x|\*))?108
 container.register_property('screenSize', '1080p', '(?:\d{3,}(?:\\|\/|x|\*))?1080(?:i|p?x?)')
 container.register_property('screenSize', '4K', '(?:\d{3,}(?:\\|\/|x|\*))?2160(?:i|p?x?)')
 
-profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP"])
+profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC"])
 
 container.register_property('videoCodec', 'XviD', 'XviD', 'XviD-' + profile_pattern)
 container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX', 'DivX-' + profile_pattern)
@@ -70,7 +70,7 @@ container.register_property('other', 'SyncFix', 'Sync-Fix', 'Sync-Fixed')
 container.register_property('other', 'DualAudio', 'Dual-Audio')
 
 container.register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'Fix',
-                           'Limited', 'Complete', 'Classic', 'Final',  # not so sure about these ones, could appear in a title
+                           'Limited', 'Complete', 'Classic', 'Final', 'HD', 'HQ',  # not so sure about these ones, could appear in a title
                            )
 
 container.register_property('other', 'WideScreen', 'ws', 'wide-screen')
