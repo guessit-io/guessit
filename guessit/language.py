@@ -26,6 +26,7 @@ from babelfish import Language, LANGUAGES, COUNTRIES
 import babelfish
 import re
 import logging
+from guessit.guess import Guess
 
 __all__ = ['Language', 'UNDETERMINED',
            'search_language', 'guess_language']
@@ -306,6 +307,35 @@ LNG_COMMON_WORDS = frozenset([
     ])
 
 
+subtitle_prefixes = ['sub', 'subs', 'st', 'vost', 'subforced', 'fansub']
+subtitle_suffixes = ['subforced', 'fansub']
+
+_possible_languages_hashed = {}
+for valid_name in set(ALL_NAMES) - LNG_COMMON_WORDS:
+    _possible_languages_hashed[valid_name] = ('language', valid_name)
+    for subtitle_prefix in subtitle_prefixes:
+        _possible_languages_hashed[subtitle_prefix + valid_name] = ('subtitleLanguage', valid_name)
+    for subtitle_suffix in subtitle_suffixes:
+        _possible_languages_hashed[valid_name + subtitle_suffix] = ('subtitleLanguage', valid_name)
+
+
+def find_possible_languages(string):
+    """Find possible languages in the string
+
+    :return: list of tuple (property, language, word)
+    """
+    found_words = set(find_words(string))
+
+    valid_words = []
+    for word in found_words:
+        lword = word.lower()
+        result = _possible_languages_hashed.get(lword)
+        if result:
+            valid_words.append((result[0], result[1], word))
+
+    return valid_words
+
+
 def search_language(string, lang_filter=None):
     """Looks for language patterns, and if found return the language object,
     its group span and an associated confidence.
@@ -323,49 +353,41 @@ def search_language(string, lang_filter=None):
     if lang_filter:
         lang_filter = set(babelfish.Language.fromguessit(lang) for lang in lang_filter)
 
-    slow = ' %s ' % string.lower()
     confidence = 1.0  # for all of them
 
-    for lang in (set(find_words(slow)) & ALL_NAMES) - LNG_COMMON_WORDS:
-        pos = slow.find(lang)
+    for prop, lang, word in find_possible_languages(string):
+        pos = string.find(word)
+        end = pos + len(word)
 
-        if pos != -1:
-            end = pos + len(lang)
+        language = Language(lang)
+        if lang_filter and language not in lang_filter:
+            continue
 
-            if pos == -1:
-                continue
+        if language != 'mul' and not hasattr(language, 'alpha2'):
+            # Found language has no alpha2 equilavent. It's probably an uncommon language.
+            continue
 
-            # make sure our word is always surrounded by separators
-            if slow[pos - 1] not in sep or slow[end] not in sep:
-                continue
+        # only allow those languages that have a 2-letter code, those that
+        # don't are too esoteric and probably false matches
+        #if language.lang not in lng3_to_lng2:
+        #    continue
 
-            language = Language(slow[pos:end])
-            if lang_filter and language not in lang_filter:
-                continue
+        # confidence depends on alpha2, alpha3, english name, ...
+        if len(lang) == 2:
+            confidence = 0.8
+        elif len(lang) == 3:
+            confidence = 0.9
+        elif prop == 'subtitleLanguage':
+            confidence = 0.6  # Subtitle prefix found with language
+        else:
+            # Note: we could either be really confident that we found a
+            #       language or assume that full language names are too
+            #       common words and lower their confidence accordingly
+            confidence = 0.3  # going with the low-confidence route here
 
-            if language != 'mul' and not hasattr(language, 'alpha2'):
-                # Found language has no alpha2 equilavent. It's probably an uncommon language.
-                continue
+        return Guess({prop: language}, confidence=confidence, input=string, span=(pos, end))
 
-            # only allow those languages that have a 2-letter code, those that
-            # don't are too esoteric and probably false matches
-            #if language.lang not in lng3_to_lng2:
-            #    continue
-
-            # confidence depends on alpha2, alpha3, english name, ...
-            if len(lang) == 2:
-                confidence = 0.8
-            elif len(lang) == 3:
-                confidence = 0.9
-            else:
-                # Note: we could either be really confident that we found a
-                #       language or assume that full language names are too
-                #       common words and lower their confidence accordingly
-                confidence = 0.3  # going with the low-confidence route here
-
-            return language, (pos - 1, end - 1), confidence
-
-    return None, None, None
+    return None
 
 priority = -30
 

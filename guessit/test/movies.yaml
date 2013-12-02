@@ -488,4 +488,12 @@
   videoCodec: h264
   releaseGroup: EXQUiSiTE
   screenSize: 1080p
-
+  
+? Rocky 1976 French SubForced BRRip x264 AC3-FUNKY.mkv
+: title: Rocky
+  year: 1976
+  subtitleLanguage: French
+  format: BluRay
+  videoCodec: h264
+  audioCodec: AC3
+  releaseGroup: FUNKY

@@ -29,15 +29,8 @@ log = logging.getLogger(__name__)
 
 
 def guess_language(string):
-    language, span, confidence = search_language(string)
-    if language:
-        return (Guess({'language': language},
-                      confidence=confidence,
-                      input=string,
-                      span=span),
-                span)
-
-    return None, None
+    guess = search_language(string)
+    return guess
 
 
 def _skip_language_on_second_pass(mtree, node):
