@@ -19,11 +19,12 @@
 #
 
 from __future__ import unicode_literals
-from guessit.transfo import SingleNodeGuesser
+from guessit.transfo import SingleNodeGuesser, format_guess
 from guessit.patterns.properties import container
 import logging
 from guessit.patterns.containers import PropertiesContainer
 from guessit.patterns import sep
+from guessit.guess import Guess
 
 log = logging.getLogger(__name__)
 
@@ -39,7 +40,7 @@ def _is_number(s):
     except ValueError:
         return False
 
-_forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour'],
+_forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour', 'bonus'],
                                lambda elt: _is_number(elt),
                                ]
 
@@ -79,6 +80,8 @@ def validate_group_name(guess):
                 else:
                     break
             val = checked_val
+            if not val:
+                return False
             guess['releaseGroup'] = val
 
         forbidden = False
@@ -104,13 +107,28 @@ def guess_release_group(string, node):
     found = groups_container.find_properties(string, 'releaseGroup')
     guess = groups_container.as_guess(found, string, validate_group_name, sep_replacement='-')
     if guess:
-        for leaf in node.root.leaves_containing(previous_safe_properties):
+        explicit_group_idx = node.node_idx[:2]
+        explicit_group = node.root.node_at(explicit_group_idx)
+        for leaf in explicit_group.leaves_containing(previous_safe_properties):
             if is_leaf_previous(leaf, node):
                 if leaf.root.value[leaf.span[1]] == '-':
                     guess.metadata().confidence = 1
                 else:
                     guess.metadata().confidence = 0.7
                 return guess
+
+        # If previous group last leaf is identified as a safe property,
+        # consider the raw value as a groupname
+        if len(explicit_group_idx) > 0 and explicit_group_idx[-1] > 0:
+            previous_group = explicit_group_idx[:-1] + (explicit_group_idx[-1]-1,)
+            previous_node = node.root.node_at(previous_group)
+            for leaf in previous_node.leaves_containing(previous_safe_properties):
+                if is_leaf_previous(leaf, node):
+                    guess = Guess({'releaseGroup': node.clean_value}, confidence=1, input=node.value, span=node.span)
+                    if validate_group_name(guess):
+                        guess = format_guess(guess)
+                        node.guess = guess
+                        break
 
     return None
 
