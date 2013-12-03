@@ -38,7 +38,7 @@ UNDETERMINED = babelfish.Language('und')
 SYN = {('und', None): ['unknown', 'inconnu', 'unk', 'un'],
        ('ell', None): ['gr', 'greek'],
        ('spa', None): ['esp', 'español'],
-       ('fra', None): ['français', 'vf'],
+       ('fra', None): ['français', 'vf', 'vff', 'vfi'],
        ('swe', None): ['se'],
        ('por', 'BR'): ['po', 'pb', 'pob', 'br', 'brazilian'],
        ('cat', None): ['català'],
