@@ -46,8 +46,8 @@ safe_tlds_pattern = build_or_pattern(['com', 'org', 'net'])  # For sure a websit
 safe_subdomains_pattern = build_or_pattern(['www'])  # For sure a website subdomain
 safe_prefix_tlds_pattern = build_or_pattern(['co', 'com', 'org', 'net'])  # Those words before a tlds are sure
 
-container.register_property('website', None, '((?:' + safe_subdomains_pattern + '\.)+' + r'[a-z-]+\.' + r'(?:' + tlds_pattern + r')+)')
+container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)+' + r'(?:[a-z-]+\.)+' + r'(?:' + tlds_pattern + r')+')
 
-container.register_property('website', None, '((?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_tlds_pattern + r')+)')
+container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_tlds_pattern + r')+')
 
-container.register_property('website', None, '((?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_prefix_tlds_pattern + r'\.)+' + r'(?:' + tlds_pattern + r')+)')
+container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_prefix_tlds_pattern + r'\.)+' + r'(?:' + tlds_pattern + r')+')
