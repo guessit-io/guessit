@@ -307,8 +307,8 @@ LNG_COMMON_WORDS = frozenset([
     ])
 
 
-subtitle_prefixes = ['sub', 'subs', 'st', 'vost', 'subforced', 'fansub']
-subtitle_suffixes = ['subforced', 'fansub']
+subtitle_prefixes = ['sub', 'subs', 'st', 'vost', 'subforced', 'fansub', 'hardsub']
+subtitle_suffixes = ['subforced', 'fansub', 'hardsub']
 
 _possible_languages_hashed = {}
 for valid_name in set(ALL_NAMES) - LNG_COMMON_WORDS:
