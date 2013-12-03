@@ -69,11 +69,9 @@ container.register_property('other', 'AudioFix', 'Audio-Fix', 'Audio-Fixed')
 container.register_property('other', 'SyncFix', 'Sync-Fix', 'Sync-Fixed')
 container.register_property('other', 'DualAudio', 'Dual-Audio')
 
-container.register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'Fix',
-                           'Limited', 'Complete', 'Classic', 'Final', 'HD', 'HQ',  # not so sure about these ones, could appear in a title
-                           )
-
+container.register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ')
 container.register_property('other', 'WideScreen', 'ws', 'wide-screen')
+container.register_properties('other', 'Limited', 'Complete', 'Classic', 'Final', 'Unrated', weak=True)
 
 for prop in container.get_properties('format'):
     container.register_property('other', 'Screener', prop.pattern + '(-?Scr(?:eener)?)')

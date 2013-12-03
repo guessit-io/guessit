@@ -29,7 +29,7 @@ from ..guess import Guess
 
 class _Property:
     """Represents a property configuration."""
-    def __init__(self, name, canonical_form, pattern=None, confidence=1.0, enhance=True, global_span=False):
+    def __init__(self, name, canonical_form, pattern=None, confidence=1.0, enhance=True, global_span=False, weak=False):
         """
         :param name: Name of the property (format, screenSize, ...)
         :type name: string
@@ -44,6 +44,8 @@ class _Property:
         :param global_span: if True, the whole match span will used to create the Guess.
                             Else, the span from the capturing groups will be used.
         :type global_span: boolean
+        :param weak: if True, the match property is weak and could be part of the title
+        :type weak: boolean
         """
         self.name = name
         self.canonical_form = canonical_form
@@ -54,6 +56,7 @@ class _Property:
         self.compiled = compile_pattern(self.pattern, enhance=enhance)
         self.confidence = confidence
         self.global_span = global_span
+        self.weak = weak
 
     def __repr__(self):
         return "%s: %s" % (self.name, self.canonical_form)
@@ -289,7 +292,7 @@ class PropertiesContainer(object):
         for property in found_properties:
             prop, match, property_results = property
             property_name = self._effective_prop_name(prop.name)
-            guess = Guess(confidence=prop.confidence, input=input, span=match.span(), prop=property_name)
+            guess = Guess(confidence=prop.confidence, input=input, span=match.span(), prop=property_name, weak=prop.weak)
             span_start, span_end = match.span()
             for group_name in property_results:
                 if isinstance(group_name, int):
