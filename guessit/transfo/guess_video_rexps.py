@@ -19,32 +19,17 @@
 #
 
 from __future__ import unicode_literals
-from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns import sep
-from guessit.patterns.video import video_rexps
-import re
+from guessit.patterns.video import container
 import logging
 
 log = logging.getLogger(__name__)
 
 
 def guess_video_rexps(string):
-    string = '-' + string + '-'
-    for rexp, confidence, span_adjust in video_rexps:
-        match = re.search(sep + rexp + sep, string, re.IGNORECASE)
-        if match:
-            metadata = match.groupdict()
-            # is this the better place to put it? (maybe, as it is at least
-            # the soonest that we can catch it)
-            if metadata.get('cdNumberTotal', -1) is None:
-                del metadata['cdNumberTotal']
-            span = (match.start() + span_adjust[0],
-                    match.end() + span_adjust[1] - 2)
-            return (Guess(metadata, confidence=confidence, input=string, span=span),
-                    span)
+    found = container.find_properties(string)
+    return container.as_guess(found, string)
 
-    return None, None
 
 priority = 25
 

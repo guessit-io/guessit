@@ -21,31 +21,23 @@
 #
 
 from __future__ import unicode_literals
+from .containers import PropertiesContainer
 
-from . import sep
+from . import _psep
 
-video_rexps = [  # cd number
-                (r'cd ?(?P<cdNumber>[0-9])( ?of ?(?P<cdNumberTotal>[0-9]))?', 1.0, (0, 0)),
-                (r'(?P<cdNumberTotal>[1-9]) cds?', 0.9, (0, 0)),
+container = PropertiesContainer(canonical_from_pattern=False)
 
-                # special editions
-                (r'edition' + sep + r'(?P<edition>collector)', 1.0, (0, 0)),
-                (r'(?P<edition>collector)' + sep + 'edition', 1.0, (0, 0)),
-                (r'(?P<edition>special)' + sep + 'edition', 1.0, (0, 0)),
-                (r'(?P<edition>criterion)' + sep + 'edition', 1.0, (0, 0)),
+container.register_property('cdNumber', None, 'cd' + _psep + '(?P<cdNumber>[0-9])(?:' + _psep + 'of' + _psep + '(?P<cdNumberTotal>[0-9]))?', confidence=1.0, enhance=False, global_span=True)
+container.register_property('cdNumberTotal', None, '([1-9])' + _psep + 'cds?', confidence=0.9, enhance=False)
 
-                # director's cut
-                (r"(?P<edition>director'?s?" + sep + "cut)", 1.0, (0, 0)),
+container.register_property('edition', 'collector edition', 'collector', 'collector-edition', 'edition-collector')
 
-                # video size
-                (r'(?P<width>[0-9]{3,4})x(?P<height>[0-9]{3,4})', 0.9, (0, 0)),
+container.register_property('edition', 'special edition', 'special-edition', 'edition-special')
 
-                # website
-                (r'(?P<website>www(\.[a-zA-Z0-9]+){2,3})', 0.8, (0, 0)),
+container.register_property('edition', 'criterion edition', 'criterion-edition', 'edition-criterion')
 
-                # bonusNumber: ... x01 ...
-                (r'x(?P<bonusNumber>[0-9]{1,2})', 1.0, (0, 0)),
+container.register_property('edition', 'director\'s cut', 'director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut')
 
-                # filmNumber: ... f01 ...
-                (r'f(?P<filmNumber>[0-9]{1,2})', 1.0, (0, 0))
-                ]
+container.register_property('bonusNumber', None, 'x([0-9]{1,2})', enhance=False, global_span=True)
+
+container.register_property('filmNumber', None, 'f([0-9]{1,2})', enhance=False, global_span=True)
