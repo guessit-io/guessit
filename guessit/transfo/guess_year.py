@@ -19,30 +19,28 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit.transfo import SingleNodeGuesser
 from guessit.date import search_year
-import logging
-
-log = logging.getLogger(__name__)
 
 
-def guess_year(string):
-    year, span = search_year(string)
-    if year:
-        return {'year': year}, span
-    else:
+class GuessYear(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, -160)
+
+    def guess_year(self, string):
+        year, span = search_year(string)
+        if year:
+            return {'year': year}, span
+        else:
+            return None, None
+
+    def second_pass_options(self, mtree):
+        year_nodes = mtree.leaves_containing('year')
+        if len(year_nodes) > 1:
+            return None, {'skip_nodes': year_nodes[:len(year_nodes) - 1]}
         return None, None
 
-
-def second_pass_options(mtree):
-    year_nodes = mtree.leaves_containing('year')
-    if len(year_nodes) > 1:
-        return None, {'skip_nodes': year_nodes[:len(year_nodes) - 1]}
-    return None, None
-
-
-priority = -160
-
-
-def process(mtree, *args, **kwargs):
-    SingleNodeGuesser(guess_year, 1.0, log, *args, **kwargs).process(mtree)
+    def process(self, mtree, *args, **kwargs):
+        SingleNodeGuesser(self.guess_year, 1.0, self.log, *args, **kwargs).process(mtree)

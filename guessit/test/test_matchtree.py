@@ -20,7 +20,8 @@
 
 
 from guessittest import *
-from guessit.transfo import guess_release_group, guess_properties
+from guessit.transfo.guess_release_group import GuessReleaseGroup
+from guessit.transfo.guess_properties import GuessProperties
 
 keywords = yaml.load("""
 
@@ -37,8 +38,8 @@ keywords = yaml.load("""
 
 def guess_info(string):
     mtree = MatchTree(string)
-    guess_release_group.process(mtree)
-    guess_properties.process(mtree)
+    GuessReleaseGroup().process(mtree)
+    GuessProperties().process(mtree)
     return mtree.matched()
 
 

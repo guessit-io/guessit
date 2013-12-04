@@ -19,38 +19,36 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit.country import Country
 from guessit import Guess
-import logging
-
-log = logging.getLogger(__name__)
-
-# list of common words which could be interpreted as countries, but which
-# are far too common to be able to say they represent a country
-country_common_words = frozenset(['bt', 'bb'])
 
 
-def should_process(matcher):
-    return not 'nocountry' in matcher.opts
+class GuessCountry(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, -170)
+        # list of common words which could be interpreted as countries, but which
+        # are far too common to be able to say they represent a country
+        self.country_common_words = frozenset(['bt', 'bb'])
 
+    def should_process(self, matcher):
+        return not 'nocountry' in matcher.opts
 
-priority = -170
+    def process(self, mtree):
+        for node in mtree.unidentified_leaves():
+            if len(node.node_idx) == 2:
+                c = node.value[1:-1].lower()
+                if c in self.country_common_words:
+                    continue
 
+                # only keep explicit groups (enclosed in parentheses/brackets)
+                if not node.is_explicit():
+                    continue
 
-def process(mtree):
-    for node in mtree.unidentified_leaves():
-        if len(node.node_idx) == 2:
-            c = node.value[1:-1].lower()
-            if c in country_common_words:
-                continue
+                try:
+                    country = Country(c, strict=True)
+                except ValueError:
+                    continue
 
-            # only keep explicit groups (enclosed in parentheses/brackets)
-            if not node.is_explicit():
-                continue
-
-            try:
-                country = Country(c, strict=True)
-            except ValueError:
-                continue
-
-            node.guess = Guess(country=country, confidence=1.0, input=node.value, span=node.span)
+                node.guess = Guess(country=country, confidence=1.0, input=node.value, span=node.span)

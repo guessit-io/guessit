@@ -27,7 +27,8 @@ from guessit import PY3, u
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
 
-from guessit.transfo import TransfoException, transfo_manager
+from guessit.transfo import TransfoException
+from guessit.plugins.transformers import extensions
 
 
 log = logging.getLogger(__name__)
@@ -115,7 +116,7 @@ class IterativeMatcher(object):
             mtree = self.match_tree
             mtree.guess.set('type', filetype, confidence=1.0)
 
-            for transformer in transfo_manager.get_transformers():
+            for transformer in extensions.objects():
                 self._apply_transfo(transformer)
 
             log.debug('Found match tree:\n%s' % u(mtree))
@@ -123,7 +124,7 @@ class IterativeMatcher(object):
             log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e.message))
 
     def _apply_transfo(self, transformer, *args, **kwargs):
-        default_args, default_kwargs = self.transfo_opts.get(transformer.__name__, ((), {}))
+        default_args, default_kwargs = self.transfo_opts.get(transformer.fullname, ((), {}))
         all_args = args or default_args or ()
         all_kwargs = dict(default_kwargs) if default_kwargs else {}
         all_kwargs.update(kwargs)  # keep all kwargs merged together
@@ -139,7 +140,7 @@ class IterativeMatcher(object):
             if hasattr(transformer, 'second_pass_options'):
                 c_opts, c_transfo_opts = transformer.second_pass_options(self.match_tree)
                 if c_opts or c_transfo_opts:
-                    transfo_opts[transformer.__name__] = c_opts, c_transfo_opts
+                    transfo_opts[transformer.fullname] = c_opts, c_transfo_opts
 
         return opts, transfo_opts
 

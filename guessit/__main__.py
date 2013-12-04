@@ -26,7 +26,8 @@ from guessit import slogging, guess_file_info
 from optparse import OptionParser
 import logging
 import os
-from guessit.transfo import transfo_manager
+
+from plugins.transformers import extensions
 
 
 def detect_filename(filename, filetype, info=['filename'], advanced=False):
@@ -38,20 +39,20 @@ def detect_filename(filename, filetype, info=['filename'], advanced=False):
 
 def display_properties():
     print('Available transformers:')
-    for transformer in transfo_manager.get_transformers():
+
+    for transformer in extensions.objects():
         priority = 0
         if hasattr(transformer, 'priority'):
             priority = transformer.priority
-        print('\t%s [%i]' % (transformer.__name__, priority))
-        if hasattr(transformer, 'supported_properties'):
-            for property_name, possible_values in transformer.supported_properties.items():
-                order_values = sorted(list(set(possible_values)), key=unicode.lower)
-                values_str = u''
-                for v in order_values:
-                    if values_str:
-                        values_str += ', '
-                    values_str += v
-                print('\t\t%s: [%s]' % (property_name, values_str))
+        print('\t%s [%i]' % (transformer.name, priority))
+        for property_name, possible_values in transformer.supported_properties().items():
+            order_values = sorted(list(set(possible_values)), key=unicode.lower)
+            values_str = u''
+            for v in order_values:
+                if values_str:
+                    values_str += ', '
+                values_str += v
+            print('\t\t%s: [%s]' % (property_name, values_str))
     print('Available properties:')
     pass
 
@@ -82,7 +83,7 @@ def run_demo(episodes=True, movies=True, advanced=False):
                       'Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv',
                       'Movies/Sin City (BluRay) (2005)/Sin.City.2005.BDRip.720p.x264.AC3-SEPTiC.mkv',
                       'Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi',  # FIXME: PROPER and R5 get overwritten
-                      '[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv', # FIXME: title gets overwritten
+                      '[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv',  # FIXME: title gets overwritten
                       'Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi',
                       'Movies/Brazil (1985)/Brazil_Criterion_Edition_(1985).CD2.English.srt',
                       'Movies/Persepolis (2007)/[XCT] Persepolis [H264+Aac-128(Fr-Eng)+ST(Fr-Eng)+Ind].mkv',

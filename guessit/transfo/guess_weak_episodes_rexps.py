@@ -19,49 +19,46 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.episode import weak_episode_rexps
 import re
-import logging
-
-log = logging.getLogger(__name__)
 
 
-def guess_weak_episodes_rexps(string, node):
-    if 'episodeNumber' in node.root.info:
+class GuessWeakEpisodesRexps(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, 15)
+
+    def guess_weak_episodes_rexps(self, string, node):
+        if 'episodeNumber' in node.root.info:
+            return None, None
+
+        for rexp, span_adjust in weak_episode_rexps:
+            match = re.search(rexp, string, re.IGNORECASE)
+            if match:
+                metadata = match.groupdict()
+                span = (match.start() + span_adjust[0],
+                        match.end() + span_adjust[1])
+
+                epnum = int(metadata['episodeNumber'])
+                if epnum > 100:
+                    season, epnum = epnum // 100, epnum % 100
+                    # episodes which have a season > 50 are most likely errors
+                    # (Simpson is at 25!)
+                    if season > 50:
+                        continue
+                    return Guess({'season': season, 'episodeNumber': epnum}, confidence=0.6, input=string, span=span)
+                else:
+                    return Guess(metadata, confidence=0.3, input=string, span=span)
+
         return None, None
 
-    for rexp, span_adjust in weak_episode_rexps:
-        match = re.search(rexp, string, re.IGNORECASE)
-        if match:
-            metadata = match.groupdict()
-            span = (match.start() + span_adjust[0],
-                    match.end() + span_adjust[1])
+    guess_weak_episodes_rexps.use_node = True
 
-            epnum = int(metadata['episodeNumber'])
-            if epnum > 100:
-                season, epnum = epnum // 100, epnum % 100
-                # episodes which have a season > 50 are most likely errors
-                # (Simpson is at 25!)
-                if season > 50:
-                    continue
-                return Guess({'season': season, 'episodeNumber': epnum}, confidence=0.6, input=string, span=span)
-            else:
-                return Guess(metadata, confidence=0.3, input=string, span=span)
+    def should_process(self, matcher):
+        return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
 
-    return None, None
-
-
-guess_weak_episodes_rexps.use_node = True
-
-
-priority = 15
-
-
-def should_process(matcher):
-    return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
-
-
-def process(mtree):
-    SingleNodeGuesser(guess_weak_episodes_rexps, 0.6, log).process(mtree)
+    def process(self, mtree):
+        SingleNodeGuesser(self.guess_weak_episodes_rexps, 0.6, self.log).process(mtree)
