@@ -21,7 +21,6 @@
 
 from setuptools import setup, find_packages
 import os
-import guessit
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -29,8 +28,9 @@ README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
-requires = []
+install_requires = ['babelfish', 'stevedore']
 
+tests_require = ['PyYAML', 'nose']  # Fabric not available (yet!) for python3
 
 entry_points = {
     'console_scripts': [
@@ -59,9 +59,10 @@ entry_points = {
     ],
 }
 
+version = '0.7.dev0'
 
 args = dict(name='guessit',
-            version=guessit.__version__,
+            version=version,
             description='GuessIt - a library for guessing information from video files.',
             long_description=README + '\n\n' + HISTORY,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -82,11 +83,12 @@ args = dict(name='guessit',
             author='Nicolas Wack',
             author_email='wackou@gmail.com',
             url='http://guessit.readthedocs.org/',
-            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % guessit.__version__,
+            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % version,
             license='LGPLv3',
             packages=find_packages(),
             include_package_data=True,
-            install_requires=requires,
+            install_requires=install_requires,
+            tests_require=tests_require,
             entry_points=entry_points,
             extras_require={'language_detection': ['guess-language>=0.2']},
             test_suite='guessit.test',

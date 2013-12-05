@@ -1,5 +1,2 @@
-# the following are only needed to run the unittests
-babelfish
-PyYAML
-#Fabric # not available (yet!) for python3
-nose
+# see https://caremad.io/blog/setup-vs-requirement/
+-e .
