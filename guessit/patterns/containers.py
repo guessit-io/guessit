@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from . import compile_pattern, enhance_pattern, sep
 
@@ -100,8 +100,6 @@ class PropertiesContainer(object):
             if isinstance(pattern, dict):
                 params.update(pattern)
                 prop = _Property(name, canonical_form, **params)
-            elif hasattr(pattern, "__iter__"):
-                prop = _Property(name, canonical_form, *pattern, **params)
             else:
                 prop = _Property(name, canonical_form, pattern, **params)
             self._properties.append(prop)
@@ -300,7 +298,7 @@ class PropertiesContainer(object):
                         span_start = match.span(group_name)[0]
                     span_end = match.span(group_name)[1]
                 value = self._effective_prop_value(prop, input, match.span(group_name) if group_name else match.span(), sep_replacement)
-                name = self._effective_prop_name(group_name if isinstance(group_name, basestring) else property_name)
+                name = self._effective_prop_name(group_name if isinstance(group_name, base_text_type) else property_name)
                 guess[name] = value
                 if group_name:
                     guess.metadata(prop).span = match.span(group_name)

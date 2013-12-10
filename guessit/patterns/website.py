@@ -20,7 +20,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from .containers import PropertiesContainer
 from . import build_or_pattern
@@ -36,7 +36,7 @@ f.readline()
 next(f)
 for tld in f:
     tld = tld.strip()
-    if '--' in tld:
+    if b'--' in tld:
         continue
     tlds.append(tld)
 f.close()

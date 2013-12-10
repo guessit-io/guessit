@@ -19,16 +19,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from guessit import PY2, u
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+from guessit import PY2, u, unicode_text_type
 from guessit import slogging, guess_file_info
 from optparse import OptionParser
 import logging
 import os
 
-from plugins.transformers import extensions
-
+from guessit.plugins import transformers
 
 def detect_filename(filename, filetype, info=['filename'], advanced=False):
     filename = u(filename)
@@ -40,13 +39,13 @@ def detect_filename(filename, filetype, info=['filename'], advanced=False):
 def display_properties():
     print('Available transformers:')
 
-    for transformer in extensions.objects():
+    for transformer in transformers.extensions.objects():
         priority = 0
         if hasattr(transformer, 'priority'):
             priority = transformer.priority
         print('\t%s [%i]' % (transformer.name, priority))
         for property_name, possible_values in transformer.supported_properties().items():
-            order_values = sorted(list(set(possible_values)), key=unicode.lower)
+            order_values = sorted(list(set(possible_values)), key=unicode_text_type.lower)
             values_str = u''
             for v in order_values:
                 if values_str:
@@ -139,7 +138,9 @@ def main():
 
     options, args = parser.parse_args()
     if options.verbose:
-        logging.getLogger('guessit').setLevel(logging.DEBUG)
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    transformers.load()
 
     if options.properties:
         display_properties()

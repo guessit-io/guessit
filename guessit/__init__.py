@@ -18,7 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import pkg_resources
 
 __version__ = pkg_resources.require("guessit")[0].version
@@ -80,6 +81,8 @@ else:
 
     def to_hex(x):
         return x.encode('hex')
+
+    range = xrange
 
 
 from guessit.guess import Guess, merge_all

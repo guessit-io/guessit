@@ -18,9 +18,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 from guessit import base_text_type, u
 from guessit.slogging import setupLogging
+from guessit.plugins import transformers
 from unittest import TestCase, TestLoader, TextTestRunner
 
 import yaml, logging, sys, os
@@ -42,6 +44,7 @@ def addImportPath(path):
 
 
 setupLogging()
+transformers.load()
 logging.getLogger().setLevel(MAIN_LOGGING_LEVEL)
 
 log = logging.getLogger(__name__)

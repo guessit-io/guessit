@@ -18,7 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from guessittest import *
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+from guessit.test.guessittest import *
 from guessit import quality
 
 

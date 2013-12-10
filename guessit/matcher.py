@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
 
@@ -28,7 +28,7 @@ from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
 
 from guessit.transfo import TransfoException
-from guessit.plugins.transformers import extensions
+from guessit.plugins import transformers
 
 
 log = logging.getLogger(__name__)
@@ -116,7 +116,7 @@ class IterativeMatcher(object):
             mtree = self.match_tree
             mtree.guess.set('type', filetype, confidence=1.0)
 
-            for transformer in extensions.objects():
+            for transformer in transformers.extensions.objects():
                 self._apply_transfo(transformer)
 
             log.debug('Found match tree:\n%s' % u(mtree))

@@ -18,10 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessittest import *
+from guessit.test.guessittest import *
 from guessit.fileutils import split_path
 
+from guessit import PY2
 
 class TestUtils(TestGuessit):
 
@@ -33,11 +35,12 @@ class TestUtils(TestGuessit):
                                            '///some////path': ['/', 'some', 'path']
 
                                              },
-                     ('win32',): {r'C:\Program Files\Smewt\smewt.exe': ['C:\\', 'Program Files', 'Smewt', 'smewt.exe'],
-                                  r'Documents and Settings\User\config\\': ['Documents and Settings', 'User', 'config'],
-                                  r'C:\Documents and Settings\User\config\\': ['C:\\', 'Documents and Settings', 'User', 'config'],
-                                  r'\\netdrive\share': [r'\\', 'netdrive', 'share'],
-                                  r'\\netdrive\share\folder': [r'\\', 'netdrive', 'share', 'folder']
+                     ('win32',): {'C:\\Program Files\\Smewt\\smewt.exe': ['C:\\', 'Program Files', 'Smewt', 'smewt.exe'],
+                                  'Documents and Settings\\User\\config': ['Documents and Settings', 'User', 'config'],
+                                  'C:\\Documents and Settings\\User\\config': ['C:\\', 'Documents and Settings', 'User', 'config'],
+                                  # http://bugs.python.org/issue19945
+                                  '\\\\netdrive\\share': ['\\\\', 'netdrive', 'share'] if PY2 else ['\\\\netdrive\\share'],
+                                  '\\\\netdrive\\share\\folder': ['\\\\', 'netdrive', 'share', 'folder'] if PY2 else ['\\\\netdrive\\share\\', 'folder'],
                                   }
                      }
         for platforms, tests in alltests.items():

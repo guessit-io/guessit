@@ -18,7 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 from guessit.plugins import Transformer
 
 from guessit.transfo import SingleNodeGuesser, format_guess
@@ -94,7 +95,7 @@ class GuessReleaseGroup(Transformer):
 
     def is_leaf_previous(self, leaf, node):
         if leaf.span[1] <= node.span[0]:
-            for idx in xrange(leaf.span[1], node.span[0]):
+            for idx in range(leaf.span[1], node.span[0]):
                 if not leaf.root.value[idx] in sep:
                     return False
             return True

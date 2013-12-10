@@ -18,7 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 from guessit import s, u
 import os.path
 import zipfile
@@ -44,17 +45,13 @@ def split_path(path):
     result = []
     while True:
         head, tail = os.path.split(path)
-        headlen = len(head)
 
-        # on Unix systems, the root folder is '/'
-        if head and head == '/' * headlen and tail == '':
-            return ['/'] + result
+        if not head and not tail:
+            return result
 
-        # on Windows, the root folder is a drive letter (eg: 'C:\') or for shares \\
-        if ((headlen == 3 and head[1:] == ':\\') or (headlen == 2 and head == '\\\\')) and tail == '':
-            return [head] + result
-
-        if head == '' and tail == '':
+        if not tail and head == path:
+            # Make sure we won't have an infinite loop.
+            result = [head] + result
             return result
 
         # we just split a directory ending with '/', so tail is empty

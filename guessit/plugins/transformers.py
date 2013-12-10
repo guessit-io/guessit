@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from stevedore import EnabledExtensionManager
 
@@ -61,5 +61,7 @@ class TransformerExtensionManager(EnabledExtensionManager):
     def _get_obj(self, ext):
         return ext.obj
 
-
-extensions = TransformerExtensionManager()
+extensions = None
+def load():
+    global extensions
+    extensions = TransformerExtensionManager()
