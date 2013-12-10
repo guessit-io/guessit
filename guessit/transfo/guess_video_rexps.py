@@ -19,20 +19,19 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.video import container
-import logging
-
-log = logging.getLogger(__name__)
 
 
-def guess_video_rexps(string):
-    found = container.find_properties(string)
-    return container.as_guess(found, string)
+class GuessVideoRexps(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, 25)
 
+    def guess_video_rexps(self, string):
+        found = container.find_properties(string)
+        return container.as_guess(found, string)
 
-priority = 25
-
-
-def process(mtree):
-    SingleNodeGuesser(guess_video_rexps, None, log).process(mtree)
+    def process(self, mtree):
+        SingleNodeGuesser(self.guess_video_rexps, None, self.log).process(mtree)

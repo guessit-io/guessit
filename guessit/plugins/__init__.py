@@ -18,25 +18,38 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import unicode_literals
-from guessit.plugins import Transformer
-
-from guessit import fileutils
-import os.path
+import abc
+import logging
+from abc import ABCMeta, abstractmethod
 
 
-class SplitPathComponents(Transformer):
-    def __init__(self):
-        Transformer.__init__(self, 255)
+class Transformer(object):
+    __metaclass__ = ABCMeta
 
-    def process(self, mtree):
-        """first split our path into dirs + basename + ext
+    def __init__(self, priority=0):
+        self.priority = priority
+        self.log = logging.getLogger(self.name)
 
-        :return: the filename split into [ dir*, basename, ext ]
-        """
-        components = fileutils.split_path(mtree.value)
-        basename = components.pop(-1)
-        components += list(os.path.splitext(basename))
-        components[-1] = components[-1][1:]  # remove the '.' from the extension
+    @property
+    def name(self):
+        return self.__class__.__name__
 
-        mtree.split_on_components(components)
+    @property
+    def fullname(self):
+        return self.__module__ + "." + self.__class__.__name__
+
+    def supported_properties(self):
+        return {}
+
+    def enabled(self):
+        return True
+
+    def second_pass_options(self, mtree):
+        return (None, None)
+
+    def should_process(self, matcher):
+        return True
+
+    @abstractmethod
+    def process(self, mtree, *args, **kwargs):
+        pass

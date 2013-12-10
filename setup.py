@@ -19,9 +19,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
-import guessit
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -29,18 +28,41 @@ README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
-requires = []
+install_requires = ['babelfish', 'stevedore']
 
+tests_require = ['PyYAML', 'nose']  # Fabric not available (yet!) for python3
 
 entry_points = {
     'console_scripts': [
         'guessit = guessit.__main__:main'
-    ]
+    ],
+    'guessit.transformer': [
+        'split_path_components = guessit.transfo.split_path_components:SplitPathComponents',
+        'guess_filetype = guessit.transfo.guess_filetype:GuessFiletype',
+        'split_explicit_groups = guessit.transfo.split_explicit_groups:SplitExplicitGroups',
+        'guess_date = guessit.transfo.guess_date:GuessDate',
+        'guess_website = guessit.transfo.guess_website:GuessWebsite',
+        'guess_release_group = guessit.transfo.guess_release_group:GuessReleaseGroup',
+        'guess_properties = guessit.transfo.guess_properties:GuessProperties',
+        'guess_language = guessit.transfo.guess_language:GuessLanguage',
+        'guess_video_rexps = guessit.transfo.guess_video_rexps:GuessVideoRexps',
+        'guess_episodes_rexps = guessit.transfo.guess_episodes_rexps:GuessEpisodesRexps',
+        'guess_weak_episodes_rexps = guessit.transfo.guess_weak_episodes_rexps:GuessWeakEpisodesRexps',
+        'guess_bonus_features = guessit.transfo.guess_bonus_features:GuessBonusFeatures',
+        'guess_year = guessit.transfo.guess_year:GuessYear',
+        'guess_country = guessit.transfo.guess_country:GuessCountry',
+        'guess_idnumber = guessit.transfo.guess_idnumber:GuessIdnumber',
+        'split_on_dash = guessit.transfo.split_on_dash:SplitOnDash',
+        'guess_episode_info_from_position = guessit.transfo.guess_episode_info_from_position:GuessEpisodeInfoFromPosition',
+        'guess_movie_title_from_position = guessit.transfo.guess_movie_title_from_position:GuessMovieTitleFromPosition',
+        'post_process = guessit.transfo.post_process:PostProcess',
+    ],
 }
 
+version = '0.7.dev0'
 
 args = dict(name='guessit',
-            version=guessit.__version__,
+            version=version,
             description='GuessIt - a library for guessing information from video files.',
             long_description=README + '\n\n' + HISTORY,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -61,14 +83,15 @@ args = dict(name='guessit',
             author='Nicolas Wack',
             author_email='wackou@gmail.com',
             url='http://guessit.readthedocs.org/',
+            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % version,
             license='LGPLv3',
-            packages=['guessit', 'guessit.transfo', 'guessit.test'],
+            packages=find_packages(),
             include_package_data=True,
-            install_requires=requires,
+            install_requires=install_requires,
+            tests_require=tests_require,
             entry_points=entry_points,
             extras_require={'language_detection': ['guess-language>=0.2']},
-            test_suite='guessit.test'
+            test_suite='guessit.test',
             )
-
 
 setup(**args)

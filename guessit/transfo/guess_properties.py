@@ -19,22 +19,22 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.properties import container
-import logging
-
-log = logging.getLogger(__name__)
 
 
-def guess_properties(string):
-    found = container.find_properties(string)
-    return container.as_guess(found, string)
+class GuessProperties(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, 35)
 
-supported_properties = container.get_supported_properties()
+    def guess_properties(self, string):
+        found = container.find_properties(string)
+        return container.as_guess(found, string)
 
+    def supported_properties(self):
+        return container.get_supported_properties()
 
-priority = 35
-
-
-def process(mtree):
-    SingleNodeGuesser(guess_properties, 1.0, log).process(mtree)
+    def process(self, mtree):
+        SingleNodeGuesser(self.guess_properties, 1.0, self.log).process(mtree)

@@ -19,46 +19,46 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit.transfo import found_property
-import logging
-
-log = logging.getLogger(__name__)
 
 
-priority = -150
+class GuessBonusFeatures(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, -150)
 
+    def process(self, mtree):
+        def previous_group(g):
+            for leaf in mtree.unidentified_leaves()[::-1]:
+                if leaf.node_idx < g.node_idx:
+                    return leaf
 
-def process(mtree):
-    def previous_group(g):
-        for leaf in mtree.unidentified_leaves()[::-1]:
-            if leaf.node_idx < g.node_idx:
-                return leaf
+        def next_group(g):
+            for leaf in mtree.unidentified_leaves():
+                if leaf.node_idx > g.node_idx:
+                    return leaf
 
-    def next_group(g):
-        for leaf in mtree.unidentified_leaves():
-            if leaf.node_idx > g.node_idx:
-                return leaf
+        def same_group(g1, g2):
+            return g1.node_idx[:2] == g2.node_idx[:2]
 
-    def same_group(g1, g2):
-        return g1.node_idx[:2] == g2.node_idx[:2]
+        bonus = [node for node in mtree.leaves() if 'bonusNumber' in node.guess]
+        if bonus:
+            bonusTitle = next_group(bonus[0])
+            if bonusTitle and same_group(bonusTitle, bonus[0]):
+                found_property(bonusTitle, 'bonusTitle', 0.8)
 
-    bonus = [node for node in mtree.leaves() if 'bonusNumber' in node.guess]
-    if bonus:
-        bonusTitle = next_group(bonus[0])
-        if bonusTitle and same_group(bonusTitle, bonus[0]):
-            found_property(bonusTitle, 'bonusTitle', 0.8)
+        filmNumber = [node for node in mtree.leaves()
+                       if 'filmNumber' in node.guess]
+        if filmNumber:
+            filmSeries = previous_group(filmNumber[0])
+            found_property(filmSeries, 'filmSeries', 0.9)
 
-    filmNumber = [node for node in mtree.leaves()
-                   if 'filmNumber' in node.guess]
-    if filmNumber:
-        filmSeries = previous_group(filmNumber[0])
-        found_property(filmSeries, 'filmSeries', 0.9)
+            title = next_group(filmNumber[0])
+            found_property(title, 'title', 0.9)
 
-        title = next_group(filmNumber[0])
-        found_property(title, 'title', 0.9)
-
-    season = [node for node in mtree.leaves() if 'season' in node.guess]
-    if season and 'bonusNumber' in mtree.info:
-        series = previous_group(season[0])
-        if same_group(series, season[0]):
-            found_property(series, 'series', 0.9)
+        season = [node for node in mtree.leaves() if 'season' in node.guess]
+        if season and 'bonusNumber' in mtree.info:
+            series = previous_group(season[0])
+            if same_group(series, season[0]):
+                found_property(series, 'series', 0.9)

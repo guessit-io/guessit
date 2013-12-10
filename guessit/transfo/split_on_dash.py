@@ -19,29 +19,29 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit.patterns import sep
 import re
-import logging
-
-log = logging.getLogger(__name__)
 
 
-priority = 190
+class SplitOnDash(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, 190)
 
+    def process(self, mtree):
+        """split into '-' separated subgroups (with required separator chars
+        around the dash)
+        """
+        for node in mtree.unidentified_leaves():
+            indices = []
 
-def process(mtree):
-    """split into '-' separated subgroups (with required separator chars
-    around the dash)
-    """
-    for node in mtree.unidentified_leaves():
-        indices = []
+            pattern = re.compile(sep + '-' + sep)
+            match = pattern.search(node.value)
+            while match:
+                span = match.span()
+                indices.extend([span[0], span[1]])
+                match = pattern.search(node.value, span[1])
 
-        pattern = re.compile(sep + '-' + sep)
-        match = pattern.search(node.value)
-        while match:
-            span = match.span()
-            indices.extend([span[0], span[1]])
-            match = pattern.search(node.value, span[1])
-
-        if indices:
-            node.partition(indices)
+            if indices:
+                node.partition(indices)

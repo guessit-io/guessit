@@ -19,8 +19,9 @@
 #
 
 from __future__ import unicode_literals
+import pkg_resources
 
-__version__ = '0.7.dev0'
+__version__ = pkg_resources.require("guessit")[0].version
 __all__ = ['Guess', 'Language',
            'guess_file_info', 'guess_video_info',
            'guess_movie_info', 'guess_episode_info']

@@ -19,57 +19,54 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.episode import episode_rexps
 import re
-import logging
-
-log = logging.getLogger(__name__)
 
 
-def number_list(s):
-    l = [int(n) for n in re.sub('[^0-9]+', ' ', s).split()]
+class GuessEpisodesRexps(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, 20)
 
-    if len(l) == 2:
-        # it is an episode interval, return all numbers in between
-        return list(range(l[0], l[1] + 1))
+    def number_list(self, s):
+        l = [int(n) for n in re.sub('[^0-9]+', ' ', s).split()]
 
-    return l
+        if len(l) == 2:
+            # it is an episode interval, return all numbers in between
+            return list(range(l[0], l[1] + 1))
 
+        return l
 
-def guess_episodes_rexps(string):
-    for rexp, confidence, span_adjust in episode_rexps:
-        match = re.search(rexp, string, re.IGNORECASE)
-        if match:
-            span = (match.start() + span_adjust[0],
-                    match.end() + span_adjust[1])
-            guess = Guess(match.groupdict(), confidence=confidence, input=string, span=span)
+    def guess_episodes_rexps(self, string):
+        for rexp, confidence, span_adjust in episode_rexps:
+            match = re.search(rexp, string, re.IGNORECASE)
+            if match:
+                span = (match.start() + span_adjust[0],
+                        match.end() + span_adjust[1])
+                guess = Guess(match.groupdict(), confidence=confidence, input=string, span=span)
 
-            # decide whether we have only a single episode number or an
-            # episode list
-            if guess.get('episodeNumber'):
-                eplist = number_list(guess['episodeNumber'])
-                guess.set('episodeNumber', eplist[0], confidence=confidence, input=string, span=span)
+                # decide whether we have only a single episode number or an
+                # episode list
+                if guess.get('episodeNumber'):
+                    eplist = self.number_list(guess['episodeNumber'])
+                    guess.set('episodeNumber', eplist[0], confidence=confidence, input=string, span=span)
 
-                if len(eplist) > 1:
-                    guess.set('episodeList', eplist, confidence=confidence, input=string, span=span)
+                    if len(eplist) > 1:
+                        guess.set('episodeList', eplist, confidence=confidence, input=string, span=span)
 
-            if guess.get('bonusNumber'):
-                eplist = number_list(guess['bonusNumber'])
-                guess.set('bonusNumber', eplist[0], confidence=confidence, input=string, span=span)
+                if guess.get('bonusNumber'):
+                    eplist = self.number_list(guess['bonusNumber'])
+                    guess.set('bonusNumber', eplist[0], confidence=confidence, input=string, span=span)
 
-            return guess, span
+                return guess, span
 
-    return None, None
+        return None, None
 
+    def should_process(self, matcher):
+        return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
 
-priority = 20
-
-
-def should_process(matcher):
-    return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
-
-
-def process(mtree):
-    SingleNodeGuesser(guess_episodes_rexps, None, log).process(mtree)
+    def process(self, mtree):
+        SingleNodeGuesser(self.guess_episodes_rexps, None, self.log).process(mtree)

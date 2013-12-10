@@ -19,22 +19,19 @@
 #
 
 from __future__ import unicode_literals
-
-import logging
+from guessit.plugins import Transformer
 
 from guessit.patterns.website import container
 from guessit.transfo import SingleNodeGuesser
 
-log = logging.getLogger(__name__)
 
+class GuessWebsite(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, 45)
 
-def guess_website(string):
-    found = container.find_properties(string, 'website')
-    return container.as_guess(found, string)
+    def guess_website(self, string):
+        found = container.find_properties(string, 'website')
+        return container.as_guess(found, string)
 
-
-priority = 45
-
-
-def process(mtree):
-    SingleNodeGuesser(guess_website, 1.0, log).process(mtree)
+    def process(self, mtree):
+        SingleNodeGuesser(self.guess_website, 1.0, self.log).process(mtree)

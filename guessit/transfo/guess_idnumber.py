@@ -19,50 +19,48 @@
 #
 
 from __future__ import unicode_literals
+from guessit.plugins import Transformer
+
 from guessit.transfo import SingleNodeGuesser
-from guessit import Guess
 import re
-import logging
-
-log = logging.getLogger(__name__)
-
-_idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})') # 1.0, (0, 0))
 
 
-def guess_idnumber(string):
-    match = _idnum.search(string)
-    if match is not None:
-        result = match.groupdict()
-        switch_count = 0
-        DIGIT = 0
-        LETTER = 1
-        OTHER = 2
-        last = LETTER
-        for c in result['idNumber']:
-            if c in '0123456789':
-                ci = DIGIT
-            elif c in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':
-                ci = LETTER
-            else:
-                ci = OTHER
+class GuessIdnumber(Transformer):
+    def __init__(self):
+        Transformer.__init__(self, -180)
 
-            if ci != last:
-                switch_count += 1
+    _idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})')  # 1.0, (0, 0))
 
-            last = ci
+    def guess_idnumber(self, string):
+        match = self._idnum.search(string)
+        if match is not None:
+            result = match.groupdict()
+            switch_count = 0
+            DIGIT = 0
+            LETTER = 1
+            OTHER = 2
+            last = LETTER
+            for c in result['idNumber']:
+                if c in '0123456789':
+                    ci = DIGIT
+                elif c in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                    ci = LETTER
+                else:
+                    ci = OTHER
 
-        switch_ratio = float(switch_count) / len(result['idNumber'])
+                if ci != last:
+                    switch_count += 1
 
-        # only return the result as probable if we alternate often between
-        # char type (more likely for hash values than for common words)
-        if switch_ratio > 0.4:
-            return result, match.span()
+                last = ci
 
-    return None, None
+            switch_ratio = float(switch_count) / len(result['idNumber'])
 
+            # only return the result as probable if we alternate often between
+            # char type (more likely for hash values than for common words)
+            if switch_ratio > 0.4:
+                return result, match.span()
 
-priority = -180
+        return None, None
 
-
-def process(mtree):
-    SingleNodeGuesser(guess_idnumber, 0.4, log).process(mtree)
+    def process(self, mtree):
+        SingleNodeGuesser(self.guess_idnumber, 0.4, self.log).process(mtree)
