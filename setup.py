@@ -20,6 +20,7 @@
 #
 
 from setuptools import setup, find_packages
+
 import os
 
 
@@ -31,6 +32,8 @@ HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 install_requires = ['babelfish', 'stevedore']
 
 tests_require = ['PyYAML', 'nose']  # Fabric not available (yet!) for python3
+
+setup_requires=['nose']
 
 entry_points = {
     'console_scripts': [
@@ -88,6 +91,7 @@ args = dict(name='guessit',
             packages=find_packages(),
             include_package_data=True,
             install_requires=install_requires,
+            setup_requires=setup_requires,
             tests_require=tests_require,
             entry_points=entry_points,
             extras_require={'language_detection': ['guess-language>=0.2']},
