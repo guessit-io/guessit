@@ -94,7 +94,8 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
         for conv in [babelfish.Language,
                      babelfish.Language.fromalpha3b,
                      babelfish.Language.fromalpha2,
-                     babelfish.Language.fromname]:
+                     babelfish.Language.fromname,
+                     babelfish.Language.fromopensubtitles]:
             try:
                 c = conv(name)
                 return c.alpha3, c.country, c.script
@@ -195,7 +196,7 @@ class Language(UnicodeMixin):
     'pob'
     """
 
-    def __init__(self, language, country=None, strict=False, scheme=None):
+    def __init__(self, language, country=None, strict=False):
         language = u(language.strip().lower())
         country = babelfish.Country(country.upper()) if country else None
 
@@ -235,11 +236,7 @@ class Language(UnicodeMixin):
 
     @property
     def opensubtitles(self):
-        if self.alpha3 == 'por' and self.country and self.country.alpha2 == 'BR':
-            return 'pob'
-        elif self.alpha3 in ['gre', 'srp']:
-            return self.alpha3term
-        return self.alpha3
+        return self.lang.opensubtitles
 
     @property
     def tmdb(self):

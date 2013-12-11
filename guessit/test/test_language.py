@@ -27,10 +27,10 @@ import io
 
 class TestLanguage(TestGuessit):
 
-    def check_languages(self, languages, scheme=None):
+    def check_languages(self, languages):
         for lang1, lang2 in languages.items():
-            self.assertEqual(Language(lang1, scheme=scheme),
-                             Language(lang2, scheme=scheme))
+            self.assertEqual(Language(lang1),
+                             Language(lang2))
 
     def test_addic7ed(self):
         languages = {'English': 'en',
@@ -85,14 +85,16 @@ class TestLanguage(TestGuessit):
 
     def test_opensubtitles(self):
         opensubtitles_langfile = file_in_same_dir(__file__, 'opensubtitles_languages_2012_05_09.txt')
-        langs = [u(l).strip().split('\t') for l in io.open(opensubtitles_langfile, encoding='utf-8')][1:]
-        for lang in langs:
-            # check that we recognize the opensubtitles language code correctly
-            # and that we are able to output this code from a language
-            self.assertEqual(lang[0], Language(lang[0], scheme='opensubtitles').opensubtitles)
-            if lang[1]:
-                # check we recognize the opensubtitles 2-letter code correctly
-                self.check_languages({lang[0]: lang[1]}, scheme='opensubtitles')
+        for l in [u(l).strip() for l in io.open(opensubtitles_langfile, encoding='utf-8')][1:]:
+            idlang, alpha2, _, upload_enabled, web_enabled = l.strip().split('\t')
+            # do not test languages that are too esoteric / not widely available
+            if int(upload_enabled) and int(web_enabled):
+                # check that we recognize the opensubtitles language code correctly
+                # and that we are able to output this code from a language
+                self.assertEqual(idlang, Language(idlang).opensubtitles)
+                if alpha2:
+                    # check we recognize the opensubtitles 2-letter code correctly
+                    self.check_languages({idlang: alpha2})
 
     def test_tmdb(self):
         # examples from http://api.themoviedb.org/2.1/language-tags
