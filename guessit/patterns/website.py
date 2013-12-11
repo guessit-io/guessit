@@ -38,7 +38,7 @@ for tld in f:
     tld = tld.strip()
     if b'--' in tld:
         continue
-    tlds.append(tld)
+    tlds.append(tld.decode("utf-8"))
 f.close()
 
 tlds_pattern = build_or_pattern(tlds)  # All registered domain extension
