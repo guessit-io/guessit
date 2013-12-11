@@ -121,7 +121,7 @@ class IterativeMatcher(object):
 
             log.debug('Found match tree:\n%s' % u(mtree))
         except TransfoException as e:
-            log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e.message))
+            log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e))
 
     def _apply_transfo(self, transformer, *args, **kwargs):
         default_args, default_kwargs = self.transfo_opts.get(transformer.fullname, ((), {}))
