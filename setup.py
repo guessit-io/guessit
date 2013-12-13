@@ -29,7 +29,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
-install_requires = ['babelfish', 'stevedore']
+install_requires = ['babelfish==0.4.1-dev', 'stevedore']
 
 tests_require = ['PyYAML', 'nose']  # Fabric not available (yet!) for python3
 
@@ -42,6 +42,10 @@ entry_points = {
         'guessit = guessit.__main__:main'
     ],
 }
+
+dependency_links = [
+        'https://github.com/Toilal/babelfish/tarball/c2a1dfea9516cfd5ea13482252edd036337ad055#egg=babelfish-0.4.1-dev',
+    ]
 
 version = '0.7.dev0'
 
@@ -76,6 +80,7 @@ args = dict(name='guessit',
             tests_require=tests_require,
             entry_points=entry_points,
             extras_require=extras_require,
+            dependency_links=dependency_links,
             test_suite='guessit.test',
             )
 
