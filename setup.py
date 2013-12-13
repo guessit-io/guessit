@@ -33,32 +33,13 @@ install_requires = ['babelfish', 'stevedore']
 
 tests_require = ['PyYAML', 'nose']  # Fabric not available (yet!) for python3
 
-setup_requires=['nose']
+setup_requires = ['nose']
+
+extras_require = {'language_detection': ['guess-language>=0.2']}
 
 entry_points = {
     'console_scripts': [
         'guessit = guessit.__main__:main'
-    ],
-    'guessit.transformer': [
-        'split_path_components = guessit.transfo.split_path_components:SplitPathComponents',
-        'guess_filetype = guessit.transfo.guess_filetype:GuessFiletype',
-        'split_explicit_groups = guessit.transfo.split_explicit_groups:SplitExplicitGroups',
-        'guess_date = guessit.transfo.guess_date:GuessDate',
-        'guess_website = guessit.transfo.guess_website:GuessWebsite',
-        'guess_release_group = guessit.transfo.guess_release_group:GuessReleaseGroup',
-        'guess_properties = guessit.transfo.guess_properties:GuessProperties',
-        'guess_language = guessit.transfo.guess_language:GuessLanguage',
-        'guess_video_rexps = guessit.transfo.guess_video_rexps:GuessVideoRexps',
-        'guess_episodes_rexps = guessit.transfo.guess_episodes_rexps:GuessEpisodesRexps',
-        'guess_weak_episodes_rexps = guessit.transfo.guess_weak_episodes_rexps:GuessWeakEpisodesRexps',
-        'guess_bonus_features = guessit.transfo.guess_bonus_features:GuessBonusFeatures',
-        'guess_year = guessit.transfo.guess_year:GuessYear',
-        'guess_country = guessit.transfo.guess_country:GuessCountry',
-        'guess_idnumber = guessit.transfo.guess_idnumber:GuessIdnumber',
-        'split_on_dash = guessit.transfo.split_on_dash:SplitOnDash',
-        'guess_episode_info_from_position = guessit.transfo.guess_episode_info_from_position:GuessEpisodeInfoFromPosition',
-        'guess_movie_title_from_position = guessit.transfo.guess_movie_title_from_position:GuessMovieTitleFromPosition',
-        'post_process = guessit.transfo.post_process:PostProcess',
     ],
 }
 
@@ -94,7 +75,7 @@ args = dict(name='guessit',
             setup_requires=setup_requires,
             tests_require=tests_require,
             entry_points=entry_points,
-            extras_require={'language_detection': ['guess-language>=0.2']},
+            extras_require=extras_require,
             test_suite='guessit.test',
             )
 
