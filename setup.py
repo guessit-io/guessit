@@ -44,7 +44,7 @@ entry_points = {
 }
 
 dependency_links = [
-        'https://github.com/Toilal/babelfish/tarball/c2a1dfea9516cfd5ea13482252edd036337ad055#egg=babelfish-0.4.1-dev',
+        'https://github.com/Diaoul/babelfish/tarbal/aa8e93e5330ce86fad278d5d053edacbc97ff758#egg=babelfish-0.4.1-dev',
     ]
 
 version = '0.7.dev0'
