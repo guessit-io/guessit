@@ -23,6 +23,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from .containers import PropertiesContainer
 from guessit.patterns import build_or_pattern
+from guessit.quality import register_quality
 
 container = PropertiesContainer()
 
@@ -43,6 +44,15 @@ container.register_property('screenSize', '720p', '(?:\d{3,}(?:\\|\/|x|\*))?720(
 container.register_property('screenSize', '1080i', '(?:\d{3,}(?:\\|\/|x|\*))?1080i(?:i|p?x?)')
 container.register_property('screenSize', '1080p', '(?:\d{3,}(?:\\|\/|x|\*))?1080(?:i|p?x?)')
 container.register_property('screenSize', '4K', '(?:\d{3,}(?:\\|\/|x|\*))?2160(?:i|p?x?)')
+
+register_quality('screenSize', '360p', -300)
+register_quality('screenSize', '368p', -200)
+register_quality('screenSize', '480p', -100)
+register_quality('screenSize', '576p', 0)
+register_quality('screenSize', '720p', 100)
+register_quality('screenSize', '1080i', 180)
+register_quality('screenSize', '1080p', 200)
+register_quality('screenSize', '4K', 400)
 
 profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC"])
 

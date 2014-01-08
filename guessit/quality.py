@@ -131,13 +131,3 @@ def clear_qualities():
     """Unregister all defined quality ratings.
     """
     _qualities.clear()
-
-
-register_quality('screenSize', '360p', -300)
-register_quality('screenSize', '368p', -200)
-register_quality('screenSize', '480p', -100)
-register_quality('screenSize', '576p', 0)
-register_quality('screenSize', '720p', 100)
-register_quality('screenSize', '1080i', 180)
-register_quality('screenSize', '1080p', 200)
-register_quality('screenSize', '4K', 400)
