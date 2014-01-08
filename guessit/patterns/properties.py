@@ -27,13 +27,21 @@ from guessit.quality import register_quality
 
 container = PropertiesContainer()
 
+# http://en.wikipedia.org/wiki/Pirated_movie_release_types
+container.register_property('format', 'Cam', 'CAM', 'CAMRip')
+container.register_property('format', 'Telesync', 'TELESYNC', 'PDVD')
+container.register_property('format', 'Telesync', 'TS', confidence=0.2)
+container.register_property('format', 'Workprint', 'WORKPRINT', 'WP')
+container.register_property('format', 'Telecine', 'TELECINE', 'TC')
+container.register_property('format', 'Pay-Per-View', 'PPV', 'PPV-Rip')
+container.register_property('format', 'VHS', 'VHS')
 container.register_property('format', 'DVD', 'DVD', 'DVD-Rip', 'VIDEO-TS')
 container.register_property('format', 'HD-DVD', 'HD-(?:DVD)?-Rip', 'HD-DVD')
-container.register_property('format', 'BluRay', 'Blu-ray', 'B[DR]Rip')
+container.register_property('format', 'BluRay', 'Blu-ray', 'B[DR]', 'B[DR]-Rip', 'BD[59]', 'BD25', 'BD50')
 container.register_property('format', 'HDTV', 'HD-TV')
 container.register_property('format', 'DVB', 'DVB-Rip', 'DVB', 'PD-TV')
+container.register_property('format', 'VOD', 'VOD', 'VOD-Rip')
 container.register_property('format', 'WEBRip', 'WEB-Rip')
-container.register_property('format', 'VHS', 'VHS')
 container.register_property('format', 'WEB-DL', 'WEB-DL')
 
 container.register_property('screenSize', '360p', '(?:\d{3,}(?:\\|\/|x|\*))?360(?:i|p?x?)')
@@ -79,7 +87,7 @@ container.register_property('other', 'AudioFix', 'Audio-Fix', 'Audio-Fixed')
 container.register_property('other', 'SyncFix', 'Sync-Fix', 'Sync-Fixed')
 container.register_property('other', 'DualAudio', 'Dual-Audio')
 
-container.register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ')
+container.register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ', 'DDC')
 container.register_property('other', 'WideScreen', 'ws', 'wide-screen')
 container.register_properties('other', 'Limited', 'Complete', 'Classic', 'Final', 'Unrated', weak=True)
 
