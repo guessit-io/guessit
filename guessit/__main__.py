@@ -52,7 +52,6 @@ def display_properties():
                     values_str += ', '
                 values_str += v
             print('\t\t%s: [%s]' % (property_name, values_str))
-    print('Available properties:')
     pass
 
 
@@ -142,20 +141,24 @@ def main():
 
     transformers.load()
 
+    help_required = True
     if options.properties:
         display_properties()
+        help_required = False
     if options.demo:
         run_demo(episodes=True, movies=True, advanced=options.advanced)
+        help_required = False
     else:
         if args:
+            help_required = False
             for filename in args:
                 detect_filename(filename,
                                 filetype=options.filetype,
                                 info=options.info.split(','),
                                 advanced=options.advanced)
 
-        else:
-            parser.print_help()
+    if help_required:
+        parser.print_help()
 
 if __name__ == '__main__':
     main()
