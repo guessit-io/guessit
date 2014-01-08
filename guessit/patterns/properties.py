@@ -83,7 +83,7 @@ container.register_property('videoCodec', 'XviD', 'XviD', 'XviD-' + profile_patt
 container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX', 'DivX-' + profile_pattern)
 container.register_property('videoCodec', 'h264', '[hx]-264', '[hx]-264-' + profile_pattern)
 
-container.register_property('videoCodec', 'Rv10', 'Rv10')
+container.register_property('videoCodec', 'Real', 'Rv\d{2}') # http://en.wikipedia.org/wiki/RealVideo
 container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
 
 # has nothing to do here (or on filenames for that matter), but some
