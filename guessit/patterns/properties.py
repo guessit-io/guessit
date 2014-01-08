@@ -100,10 +100,25 @@ container.register_property('audioCodec', 'DTS-HD', 'DTS-HD')
 container.register_property('audioCodec', 'TrueHD', 'True-HD')
 container.register_property('audioCodec', 'DTS-HDMA', 'DTS-HD-MA')
 
+register_quality('audioCodec', 'MP3', 10)
+register_quality('audioCodec', 'DolbyDigital', 30)
+register_quality('audioCodec', 'AAC', 35)
+register_quality('audioCodec', 'AC3', 40)
+register_quality('audioCodec', 'Flac', 45)
+register_quality('audioCodec', 'DTS', 100)
+register_quality('audioCodec', 'DTS-HD', 150)
+register_quality('audioCodec', 'TrueHD', 150)
+register_quality('audioCodec', 'DTS-HDMA', 200)
+
 container.register_property('audioChannels', '7.1', '7[\W_]1', '7ch')
 container.register_property('audioChannels', '5.1', '5[\W_]1', '5ch')
 container.register_property('audioChannels', '2.0', '2[\W_]0', '2ch', 'stereo')
 container.register_property('audioChannels', '1.0', '1[\W_]0', '1ch', 'mono')
+
+register_quality('audioChannels', '1.0', -100)
+register_quality('audioChannels', '2.0', 0)
+register_quality('audioChannels', '5.1', 100)
+register_quality('audioChannels', '7.1', 200)
 
 container.register_property('episodeFormat', 'Minisode', r'Minisodes?')
 
