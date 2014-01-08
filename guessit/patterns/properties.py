@@ -106,14 +106,14 @@ register_quality('videoCodec', 'Mpeg2', -30)
 register_quality('videoCodec', 'DivX', -10)
 register_quality('videoCodec', 'XviD', 0)
 register_quality('videoCodec', 'h264', 100)
-register_quality('videoCodec', '10bit', 150)
 
 register_quality('videoProfile', 'BS', -20)
 register_quality('videoProfile', 'EP', -10)
 register_quality('videoProfile', 'MP', 0)
 register_quality('videoProfile', 'HP', 10)
-register_quality('videoProfile', 'AVC', 0)
 register_quality('videoProfile', '10bit', 15)
+register_quality('videoProfile', 'Hi422P', 25)
+register_quality('videoProfile', 'Hi444PP', 35)
 
 # has nothing to do here (or on filenames for that matter), but some
 # releases use it and it helps to identify release groups, so we adapt
@@ -148,9 +148,7 @@ register_quality('audioCodec', 'AAC', 35)
 register_quality('audioCodec', 'AC3', 40)
 register_quality('audioCodec', 'Flac', 45)
 register_quality('audioCodec', 'DTS', 100)
-register_quality('audioCodec', 'DTS-HD', 150)
 register_quality('audioCodec', 'TrueHD', 150)
-register_quality('audioCodec', 'DTS-HDMA', 200)
 
 container.register_property('audioChannels', '7.1', '7[\W_]1', '7ch')
 container.register_property('audioChannels', '5.1', '5[\W_]1', '5ch')
