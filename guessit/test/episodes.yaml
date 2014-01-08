@@ -306,7 +306,8 @@
   episodeNumber: 6
   screenSize: 720p
   format: WEB-DL
-  audioChannels: '5.1'
+  audioChannels: "5.1"
+  audioCodec: DolbyDigital
   videoCodec: h264
   releaseGroup: CtrlHD
 
@@ -332,6 +333,7 @@
   screenSize: 720p
   format: WEB-DL
   audioChannels: "5.1"
+  audioCodec: DolbyDigital
   videoCodec: h264
   releaseGroup: CtrlHD
 
@@ -361,6 +363,7 @@
   screenSize: 720p
   format: WEB-DL
   audioChannels: "5.1"
+  audioCodec: DolbyDigital
   videoCodec: h264
 
 ? Game of Thrones S03E06 1080i HDTV DD5.1 MPEG2-TrollHD.ts
@@ -370,6 +373,7 @@
   screenSize: 1080i
   format: HDTV
   audioChannels: "5.1"
+  audioCodec: DolbyDigital
   videoCodec: MPEG2
   releaseGroup: TrollHD
 

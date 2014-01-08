@@ -411,6 +411,7 @@
   format: BluRay
   videoCodec: XviD
   audioChannels: "5.1"
+  audioCodec: DolbyDigital
   idNumber: XD607ebb-BRc59935-5155473f-1c5f49
 
 ? Pacific.Rim.3D.2013.COMPLETE.BLURAY-PCH.avi
@@ -509,3 +510,5 @@
 : title: REDLINE
   format: BluRay
   videoCodec: 10bit
+  audioCodec: Flac
+  screenSize: 1080p
