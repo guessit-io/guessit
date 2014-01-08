@@ -77,14 +77,27 @@ register_quality('screenSize', '1080i', 180)
 register_quality('screenSize', '1080p', 200)
 register_quality('screenSize', '4K', 400)
 
-profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC"])
+profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC", "10bit"])
+
+_profiles = {"BS":("BS",), 
+             "EP":("EP",),
+             "MP":("MP",),
+             "HP":("HP",),
+             "AVC":("AVC",),
+             "10bit":("10.?bit", "hi10p"),
+             }
 
 container.register_property('videoCodec', 'Real', 'Rv\d{2}') # http://en.wikipedia.org/wiki/RealVideo
 container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
-container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX', 'DivX-' + profile_pattern)
-container.register_property('videoCodec', 'XviD', 'XviD', 'XviD-' + profile_pattern)
-container.register_property('videoCodec', 'h264', '[hx]-264', '[hx]-264-' + profile_pattern)
-container.register_property('videoCodec', '10bit', '(?:[hx]-264)?-10.?bit', '(?:[hx]-264)?-hi10p')
+container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX')
+container.register_property('videoCodec', 'XviD', 'XviD')
+container.register_property('videoCodec', 'h264', '[hx]-264')
+
+for profile, profile_regexps in _profiles.iteritems():
+    for profile_regexp in profile_regexps:
+        #container.register_property('videoProfile', profile, profile_regexp)
+        for prop in container.get_properties('videoCodec'):
+            container.register_property('videoProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
 
 register_quality('videoCodec', 'Real', -50)
 register_quality('videoCodec', 'Mpeg2', -30)

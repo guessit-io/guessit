@@ -48,6 +48,7 @@
 : title: Le Prestige
   format: DVD
   videoCodec: h264
+  videoProfile: HP
   audioCodec: AAC
   language: [ french, english ]
   subtitleLanguage: [ french, english ]
@@ -343,6 +344,7 @@
   year: 2006
   format: DVD
   videoCodec: XviD
+  videoProfile: MP
   releaseGroup: AceBot
   language: French
 
@@ -458,6 +460,7 @@
   year: 2008
   language: French
   videoCodec: h264
+  videoProfile: AVC
   title: Pirates de langkasuka
   releaseGroup: AsiaRa
   
@@ -509,6 +512,7 @@
 ? REDLINE (BD 1080p H264 10bit FLAC) [3xR].mkv
 : title: REDLINE
   format: BluRay
-  videoCodec: 10bit
+  videoCodec: h264
+  videoProfile: 10bit
   audioCodec: Flac
   screenSize: 1080p

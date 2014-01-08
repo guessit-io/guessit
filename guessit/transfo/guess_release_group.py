@@ -39,7 +39,7 @@ class GuessReleaseGroup(Transformer):
                                ]
         # If the previous property in this list, the match will be considered as safe
         # and group name can contain a separator.
-        self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec']
+        self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'videoProfile']
 
         self.groups_container.sep_replace_char = '-'
         self.groups_container.canonical_from_pattern = False
