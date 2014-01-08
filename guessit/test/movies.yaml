@@ -523,3 +523,10 @@
   year: 2003
   screenSize: 480p
   format: DVD
+  
+? Hua.Mulan.BRRIP.MP4.x264.720p-HR.avi
+: "title": Hua Mulan
+  "videoCodec": h264
+  "format": BluRay
+  "screenSize": 720p
+  
