@@ -79,8 +79,6 @@ register_quality('screenSize', '1080i', 180)
 register_quality('screenSize', '1080p', 200)
 register_quality('screenSize', '4K', 400)
 
-profile_pattern = build_or_pattern(['BS', 'EP', 'MP', 'HP', 'AVC', '10bit'])
-
 # http://blog.mediacoderhq.com/h264-profiles-and-levels/
 _videoProfiles = {'BS':('BS',), 
              'EP':('EP', 'XP'),
