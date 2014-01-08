@@ -158,7 +158,8 @@
   year: 2013
   screenSize: 1080p
   format: BluRay
-  audioCodec: DTS-HDMA
+  audioCodec: DTS
+  audioProfile: HDMA
   videoCodec: h264
   releaseGroup: PublicHD
   audioChannels: "5.1"

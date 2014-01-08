@@ -80,7 +80,7 @@ register_quality('screenSize', '4K', 400)
 profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC", "10bit"])
 
 # http://blog.mediacoderhq.com/h264-profiles-and-levels/
-_profiles = {"BS":("BS",), 
+_videoProfiles = {"BS":("BS",), 
              "EP":("EP", "XP"),
              "MP":("MP",),
              "HP":("HP", "HiP"),
@@ -95,7 +95,7 @@ container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX')
 container.register_property('videoCodec', 'XviD', 'XviD')
 container.register_property('videoCodec', 'h264', '[hx]-264(?:-AVC)?')
 
-for profile, profile_regexps in _profiles.iteritems():
+for profile, profile_regexps in _videoProfiles.iteritems():
     for profile_regexp in profile_regexps:
         #container.register_property('videoProfile', profile, profile_regexp)
         for prop in container.get_properties('videoCodec'):
@@ -121,13 +121,26 @@ container.register_property('videoApi', 'DXVA', 'DXVA')
 
 container.register_property('audioCodec', 'MP3', 'MP3')
 container.register_property('audioCodec', 'DolbyDigital', 'DD')
-container.register_property('audioCodec', 'AAC', 'HE-AAC', 'AAC-HE', 'LC-AAC', 'AAC-LC', 'AAC')
+container.register_property('audioCodec', 'AAC', 'AAC')
 container.register_property('audioCodec', 'AC3', 'AC3')
 container.register_property('audioCodec', 'Flac', 'FLAC')
 container.register_property('audioCodec', 'DTS', 'DTS')
-container.register_property('audioCodec', 'DTS-HD', 'DTS-HD')
 container.register_property('audioCodec', 'TrueHD', 'True-HD')
-container.register_property('audioCodec', 'DTS-HDMA', 'DTS-HD-MA')
+
+_audioProfiles =  {"DTS": {"HD":("HD",),
+                          "HDMA":("HD-MA",),
+                          },
+                    "AAC": {"HE":("HE",),
+                            "LC":("LC",),
+                            }
+                   }
+
+for audioCodec, codecProfiles in _audioProfiles.iteritems():
+    for profile, profile_regexps in codecProfiles.iteritems():
+        for profile_regexp in profile_regexps:
+            for prop in container.get_properties('audioCodec', audioCodec):
+                container.register_property('audioProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
+                container.register_property('audioProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
 
 register_quality('audioCodec', 'MP3', 10)
 register_quality('audioCodec', 'DolbyDigital', 30)

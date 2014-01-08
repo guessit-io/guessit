@@ -50,6 +50,7 @@
   videoCodec: h264
   videoProfile: HP
   audioCodec: AAC
+  audioProfile: HE
   language: [ french, english ]
   subtitleLanguage: [ french, english ]
 
@@ -241,6 +242,7 @@
   format: DVD
   videoCodec: h264
   audioCodec: AAC
+  audioProfile: LC
   audioChannels: "5.1"
   language: [ french, english ]
   subtitleLanguage: [ french, english ]
