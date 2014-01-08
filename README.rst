@@ -46,7 +46,7 @@ property types::
       country,                           # instances of guessit.Country
       container, format,
       videoCodec, audioCodec,
-	  videoProfile, audioProfile,
+      videoProfile, audioProfile,
       audioChannels, screenSize,
       releaseGroup, website,
       cdNumber, cdNumberTotal,
