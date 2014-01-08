@@ -82,6 +82,7 @@ profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC"])
 container.register_property('videoCodec', 'XviD', 'XviD', 'XviD-' + profile_pattern)
 container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX', 'DivX-' + profile_pattern)
 container.register_property('videoCodec', 'h264', '[hx]-264', '[hx]-264-' + profile_pattern)
+container.register_property('videoCodec', '10bit', '(?:[hx]-264)?-10.?bit', '(?:[hx]-264)?-hi10p')
 
 container.register_property('videoCodec', 'Real', 'Rv\d{2}') # http://en.wikipedia.org/wiki/RealVideo
 container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')

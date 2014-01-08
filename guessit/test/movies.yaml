@@ -504,3 +504,8 @@
   videoCodec: h264
   audioCodec: AC3
   releaseGroup: FUNKY
+  
+? REDLINE (BD 1080p H264 10bit FLAC) [3xR].mkv
+: title: REDLINE
+  format: BluRay
+  videoCodec: 10bit
