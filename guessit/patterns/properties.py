@@ -79,13 +79,19 @@ register_quality('screenSize', '4K', 400)
 
 profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC"])
 
-container.register_property('videoCodec', 'XviD', 'XviD', 'XviD-' + profile_pattern)
+container.register_property('videoCodec', 'Real', 'Rv\d{2}') # http://en.wikipedia.org/wiki/RealVideo
+container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
 container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX', 'DivX-' + profile_pattern)
+container.register_property('videoCodec', 'XviD', 'XviD', 'XviD-' + profile_pattern)
 container.register_property('videoCodec', 'h264', '[hx]-264', '[hx]-264-' + profile_pattern)
 container.register_property('videoCodec', '10bit', '(?:[hx]-264)?-10.?bit', '(?:[hx]-264)?-hi10p')
 
-container.register_property('videoCodec', 'Real', 'Rv\d{2}') # http://en.wikipedia.org/wiki/RealVideo
-container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
+register_quality('videoCodec', 'Real', -50)
+register_quality('videoCodec', 'Mpeg2', -30)
+register_quality('videoCodec', 'DivX', -10)
+register_quality('videoCodec', 'XviD', 0)
+register_quality('videoCodec', 'h264', 100)
+register_quality('videoCodec', '10bit', 150)
 
 # has nothing to do here (or on filenames for that matter), but some
 # releases use it and it helps to identify release groups, so we adapt
