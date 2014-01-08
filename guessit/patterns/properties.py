@@ -79,19 +79,21 @@ register_quality('screenSize', '4K', 400)
 
 profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC", "10bit"])
 
+# http://blog.mediacoderhq.com/h264-profiles-and-levels/
 _profiles = {"BS":("BS",), 
-             "EP":("EP",),
+             "EP":("EP", "XP"),
              "MP":("MP",),
-             "HP":("HP",),
-             "AVC":("AVC",),
-             "10bit":("10.?bit", "hi10p"),
+             "HP":("HP", "HiP"),
+             "10bit":("10.?bit", "Hi10P"),
+             "Hi422P":("Hi422P",),
+             "Hi444PP":("Hi444PP"),
              }
 
 container.register_property('videoCodec', 'Real', 'Rv\d{2}') # http://en.wikipedia.org/wiki/RealVideo
 container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
 container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX')
 container.register_property('videoCodec', 'XviD', 'XviD')
-container.register_property('videoCodec', 'h264', '[hx]-264')
+container.register_property('videoCodec', 'h264', '[hx]-264(?:-AVC)?')
 
 for profile, profile_regexps in _profiles.iteritems():
     for profile_regexp in profile_regexps:
@@ -105,6 +107,13 @@ register_quality('videoCodec', 'DivX', -10)
 register_quality('videoCodec', 'XviD', 0)
 register_quality('videoCodec', 'h264', 100)
 register_quality('videoCodec', '10bit', 150)
+
+register_quality('videoProfile', 'BS', -20)
+register_quality('videoProfile', 'EP', -10)
+register_quality('videoProfile', 'MP', 0)
+register_quality('videoProfile', 'HP', 10)
+register_quality('videoProfile', 'AVC', 0)
+register_quality('videoProfile', '10bit', 15)
 
 # has nothing to do here (or on filenames for that matter), but some
 # releases use it and it helps to identify release groups, so we adapt
