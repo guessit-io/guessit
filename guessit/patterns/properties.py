@@ -100,6 +100,7 @@ for profile, profile_regexps in _videoProfiles.iteritems():
         #container.register_property('videoProfile', profile, profile_regexp)
         for prop in container.get_properties('videoCodec'):
             container.register_property('videoProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
+            container.register_property('videoProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
 
 register_quality('videoCodec', 'Real', -50)
 register_quality('videoCodec', 'Mpeg2', -30)
