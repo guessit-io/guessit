@@ -90,11 +90,20 @@ container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
 # releases use it and it helps to identify release groups, so we adapt
 container.register_property('videoApi', 'DXVA', 'DXVA')
 
-container.register_property('audioCodec', 'AC3', 'AC3')
-container.register_property('audioCodec', 'DTS', 'DTS', 'DTS-HD')
+container.register_property('audioCodec', 'MP3', 'MP3')
+container.register_property('audioCodec', 'DolbyDigital', 'DD')
 container.register_property('audioCodec', 'AAC', 'HE-AAC', 'AAC-HE', 'LC-AAC', 'AAC-LC', 'AAC')
+container.register_property('audioCodec', 'AC3', 'AC3')
+container.register_property('audioCodec', 'Flac', 'FLAC')
+container.register_property('audioCodec', 'DTS', 'DTS')
+container.register_property('audioCodec', 'DTS-HD', 'DTS-HD')
+container.register_property('audioCodec', 'TrueHD', 'True-HD')
+container.register_property('audioCodec', 'DTS-HDMA', 'DTS-HD-MA')
 
-container.register_property('audioChannels', '5.1', r'5\.1', 'DD5[._ ]1', '5ch')
+container.register_property('audioChannels', '7.1', '7[\W_]1', '7ch')
+container.register_property('audioChannels', '5.1', '5[\W_]1', '5ch')
+container.register_property('audioChannels', '2.0', '2[\W_]0', '2ch', 'stereo')
+container.register_property('audioChannels', '1.0', '1[\W_]0', '1ch', 'mono')
 
 container.register_property('episodeFormat', 'Minisode', r'Minisodes?')
 
