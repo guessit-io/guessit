@@ -77,16 +77,16 @@ register_quality('screenSize', '1080i', 180)
 register_quality('screenSize', '1080p', 200)
 register_quality('screenSize', '4K', 400)
 
-profile_pattern = build_or_pattern(["BS", "EP", "MP", "HP", "AVC", "10bit"])
+profile_pattern = build_or_pattern(['BS', 'EP', 'MP', 'HP', 'AVC', '10bit'])
 
 # http://blog.mediacoderhq.com/h264-profiles-and-levels/
-_videoProfiles = {"BS":("BS",), 
-             "EP":("EP", "XP"),
-             "MP":("MP",),
-             "HP":("HP", "HiP"),
-             "10bit":("10.?bit", "Hi10P"),
-             "Hi422P":("Hi422P",),
-             "Hi444PP":("Hi444PP"),
+_videoProfiles = {'BS':('BS',), 
+             'EP':('EP', 'XP'),
+             'MP':('MP',),
+             'HP':('HP', 'HiP'),
+             '10bit':('10.?bit', 'Hi10P'),
+             'Hi422P':('Hi422P',),
+             'Hi444PP':('Hi444PP'),
              }
 
 container.register_property('videoCodec', 'Real', 'Rv\d{2}') # http://en.wikipedia.org/wiki/RealVideo
@@ -95,7 +95,7 @@ container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX')
 container.register_property('videoCodec', 'XviD', 'XviD')
 container.register_property('videoCodec', 'h264', '[hx]-264(?:-AVC)?')
 
-for profile, profile_regexps in _videoProfiles.iteritems():
+for profile, profile_regexps in _videoProfiles.items():
     for profile_regexp in profile_regexps:
         #container.register_property('videoProfile', profile, profile_regexp)
         for prop in container.get_properties('videoCodec'):
@@ -128,16 +128,16 @@ container.register_property('audioCodec', 'Flac', 'FLAC')
 container.register_property('audioCodec', 'DTS', 'DTS')
 container.register_property('audioCodec', 'TrueHD', 'True-HD')
 
-_audioProfiles =  {"DTS": {"HD":("HD",),
-                          "HDMA":("HD-MA",),
+_audioProfiles =  {'DTS': {'HD':('HD',),
+                          'HDMA':('HD-MA',),
                           },
-                    "AAC": {"HE":("HE",),
-                            "LC":("LC",),
+                    'AAC': {'HE':('HE',),
+                            'LC':('LC',),
                             }
                    }
 
-for audioCodec, codecProfiles in _audioProfiles.iteritems():
-    for profile, profile_regexps in codecProfiles.iteritems():
+for audioCodec, codecProfiles in _audioProfiles.items():
+    for profile, profile_regexps in codecProfiles.items():
         for profile_regexp in profile_regexps:
             for prop in container.get_properties('audioCodec', audioCodec):
                 container.register_property('audioProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
