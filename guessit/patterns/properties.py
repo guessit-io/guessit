@@ -148,7 +148,12 @@ register_quality('audioCodec', 'AAC', 35)
 register_quality('audioCodec', 'AC3', 40)
 register_quality('audioCodec', 'Flac', 45)
 register_quality('audioCodec', 'DTS', 100)
-register_quality('audioCodec', 'TrueHD', 150)
+register_quality('audioCodec', 'TrueHD', 120)
+
+register_quality('audioProfile', 'HD', 20)
+register_quality('audioProfile', 'HDMA', 50)
+register_quality('audioProfile', 'LC', 0)
+register_quality('audioProfile', 'HE', 20)
 
 container.register_property('audioChannels', '7.1', '7[\W_]1', '7ch')
 container.register_property('audioChannels', '5.1', '5[\W_]1', '5ch')
