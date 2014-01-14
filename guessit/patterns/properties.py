@@ -34,7 +34,7 @@ container.register_property('format', 'Telesync', 'TELESYNC', 'PDVD')
 container.register_property('format', 'Telesync', 'TS', confidence=0.2)
 container.register_property('format', 'Workprint', 'WORKPRINT', 'WP')
 container.register_property('format', 'Telecine', 'TELECINE', 'TC')
-container.register_property('format', 'Pay-Per-View', 'PPV', 'PPV-Rip')
+container.register_property('format', 'PPV', 'PPV', 'PPV-Rip') # Pay Per View
 container.register_property('format', 'DVD', 'DVD', 'DVD-Rip', 'VIDEO-TS')
 container.register_property('format', 'DVB', 'DVB-Rip', 'DVB', 'PD-TV')
 container.register_property('format', 'HDTV', 'HD-TV')
