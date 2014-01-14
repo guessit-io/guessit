@@ -31,6 +31,9 @@ import re
 class GuessEpisodesRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 20)
+        
+    def supported_properties(self):
+        return ['episodeNumber', 'episodeList', 'bonusNumber', 'season']
 
     def number_list(self, s):
         l = [int(n) for n in re.sub('[^0-9]+', ' ', s).split()]

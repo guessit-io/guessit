@@ -31,6 +31,9 @@ import re
 class GuessWeakEpisodesRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 15)
+        
+    def supported_properties(self):
+        return ['episodeNumber', 'season']
 
     def guess_weak_episodes_rexps(self, string, node):
         if 'episodeNumber' in node.root.info:

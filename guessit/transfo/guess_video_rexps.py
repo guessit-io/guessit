@@ -29,7 +29,10 @@ from guessit.patterns.video import container
 class GuessVideoRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 25)
-
+        
+    def supported_properties(self):
+        return container.get_supported_properties()
+    
     def guess_video_rexps(self, string):
         found = container.find_properties(string)
         return container.as_guess(found, string)

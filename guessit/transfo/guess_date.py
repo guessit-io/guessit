@@ -29,6 +29,9 @@ from guessit.date import search_date
 class GuessDate(Transformer):
     def __init__(self):
         Transformer.__init__(self, 50)
+        
+    def supported_properties(self):
+        return ['date']
 
     def guess_date(self, string):
         date, span = search_date(string)

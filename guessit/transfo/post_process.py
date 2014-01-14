@@ -31,6 +31,9 @@ from guessit.language import subtitle_prefixes, subtitle_suffixes
 class PostProcess(Transformer):
     def __init__(self):
         Transformer.__init__(self, -255)
+        
+    def supported_properties(self):
+        return ['subtitleLanguage']
 
     def promote_subtitle(self, node):
         node.guess.set('subtitleLanguage', node.guess['language'],

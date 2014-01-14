@@ -29,6 +29,9 @@ from guessit.patterns.episode import non_episode_title, unlikely_series
 class GuessEpisodeInfoFromPosition(Transformer):
     def __init__(self):
         Transformer.__init__(self, -200)
+        
+    def supported_properties(self):
+        return ['title', 'series']
 
     def match_from_epnum_position(self, mtree, node):
         epnum_idx = node.node_idx

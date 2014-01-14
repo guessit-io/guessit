@@ -30,6 +30,9 @@ class GuessYear(Transformer):
     def __init__(self):
         Transformer.__init__(self, -160)
 
+    def supported_properties(self):
+        return ['year']
+
     def guess_year(self, string):
         year, span = search_year(string)
         if year:

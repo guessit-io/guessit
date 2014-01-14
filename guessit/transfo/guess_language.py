@@ -32,7 +32,7 @@ class GuessLanguage(Transformer):
         Transformer.__init__(self, 30)
 
     def supported_properties(self):
-        return {'language': ['<guessit.language.Language object>']}
+        return ['language']
 
     def guess_language(self, string):
         guess = search_language(string)

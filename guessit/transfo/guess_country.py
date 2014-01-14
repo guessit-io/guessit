@@ -33,6 +33,9 @@ class GuessCountry(Transformer):
         # are far too common to be able to say they represent a country
         self.country_common_words = frozenset(['bt', 'bb'])
 
+    def supported_properties(self):
+        return ['country']
+
     def should_process(self, matcher):
         return not 'nocountry' in matcher.opts
 

@@ -29,6 +29,9 @@ import re
 class GuessIdnumber(Transformer):
     def __init__(self):
         Transformer.__init__(self, -180)
+        
+    def supported_properties(self):
+        return ['idNumber']
 
     _idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})')  # 1.0, (0, 0))
 

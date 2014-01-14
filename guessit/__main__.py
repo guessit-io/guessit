@@ -19,15 +19,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, \
+    unicode_literals
 
-from guessit import PY2, u, unicode_text_type
-from guessit import slogging, guess_file_info
-from optparse import OptionParser
 import logging
+from optparse import OptionParser
 import os
 
+from guessit import PY2, u, unicode_text_type, slogging, guess_file_info
 from guessit.plugins import transformers
+
 
 def detect_filename(filename, filetype, info=['filename'], advanced=False):
     filename = u(filename)
@@ -35,24 +36,45 @@ def detect_filename(filename, filetype, info=['filename'], advanced=False):
     print('For:', filename)
     print('GuessIt found:', guess_file_info(filename, filetype, info).nice_string(advanced))
 
-
-def display_properties():
-    print('Available transformers:')
-
+def _supported_properties():
+    all_properties = {}
     for transformer in transformers.extensions.objects():
-        priority = 0
-        if hasattr(transformer, 'priority'):
-            priority = transformer.priority
-        print('\t%s [%i]' % (transformer.name, priority))
-        for property_name, possible_values in transformer.supported_properties().items():
-            order_values = sorted(list(set(possible_values)), key=unicode_text_type.lower)
-            values_str = u''
-            for v in order_values:
-                if values_str:
-                    values_str += ', '
-                values_str += v
-            print('\t\t%s: [%s]' % (property_name, values_str))
-    pass
+        supported_properties = transformer.supported_properties()
+        
+        if isinstance(supported_properties, dict):
+            for property_name, possible_values in supported_properties.items():
+                current_possible_values = all_properties.get(property_name)
+                if current_possible_values is None:
+                    current_possible_values = []
+                    all_properties[property_name] = current_possible_values
+                if possible_values:
+                    current_possible_values.extend(possible_values)
+        else:
+            for property_name in supported_properties:
+                current_possible_values = all_properties.get(property_name)
+                if current_possible_values is None:
+                    current_possible_values = []
+                    all_properties[property_name] = current_possible_values
+                    
+    return all_properties
+
+def display_properties(values):
+    print('GuessIt properties:')
+    all_properties = _supported_properties()
+    properties_list = []
+    properties_list.extend(all_properties.keys())
+    properties_list.sort()
+    for property_name in properties_list:
+        property_values = all_properties.get(property_name)
+        print('[+] %s' % (property_name,))
+        if property_values and values:
+            _display_property_values(property_name)
+        
+def _display_property_values(property_name):
+    all_properties = _supported_properties()
+    property_values = all_properties.get(property_name)
+    for property_value in property_values:
+        print('  [!] %s' % (property_value,))
 
 
 def run_demo(episodes=True, movies=True, advanced=False):
@@ -123,7 +145,9 @@ def main():
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
                       help='display debug output')
     parser.add_option('-p', '--properties', dest='properties', action='store_true', default=False,
-                  help='Display properties that can be guessed by the filename matcher.')
+                  help='Display properties that can be guessed.')
+    parser.add_option('-l', '--values', dest='values', action='store_true', default=False,
+              help='Display property values that can be guessed.')
     parser.add_option('-i', '--info', dest='info', default='filename',
                       help='the desired information type: filename, hash_mpc or a hash from python\'s '
                            'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
@@ -142,8 +166,8 @@ def main():
     transformers.load()
 
     help_required = True
-    if options.properties:
-        display_properties()
+    if options.properties or options.values:
+        display_properties(options.values)
         help_required = False
     if options.demo:
         run_demo(episodes=True, movies=True, advanced=options.advanced)

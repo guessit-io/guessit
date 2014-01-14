@@ -28,6 +28,9 @@ from guessit.transfo import found_property
 class GuessBonusFeatures(Transformer):
     def __init__(self):
         Transformer.__init__(self, -150)
+        
+    def supported_properties(self):
+        return ['bonusNumber', 'bonusTitle', 'filmNumber', 'filmSeries', 'title', 'series']
 
     def process(self, mtree):
         def previous_group(g):

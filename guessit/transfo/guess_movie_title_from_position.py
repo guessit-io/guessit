@@ -28,6 +28,9 @@ from guessit import Guess, u
 class GuessMovieTitleFromPosition(Transformer):
     def __init__(self):
         Transformer.__init__(self, -200)
+        
+    def supported_properties(self):
+        return ['title']
 
     def should_process(self, matcher):
         return matcher.match_tree.guess['type'] not in ('episode', 'episodesubtitle', 'episodeinfo')

@@ -29,6 +29,9 @@ from guessit.transfo import SingleNodeGuesser
 class GuessWebsite(Transformer):
     def __init__(self):
         Transformer.__init__(self, 45)
+        
+    def supported_properties(self):
+        return container.get_supported_properties()
 
     def guess_website(self, string):
         found = container.find_properties(string, 'website')

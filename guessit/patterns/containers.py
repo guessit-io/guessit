@@ -362,7 +362,8 @@ class PropertiesContainer(object):
             if not values:
                 values = set()
                 supported_properties[name] = values
-            values.add(prop.canonical_form if prop.canonical_form else "<any>")
+            if prop.canonical_form:
+                values.add(prop.canonical_form)
         return supported_properties
 
     def enhance_property_patterns(self, name):
