@@ -173,7 +173,7 @@ container.register_property('other', 'AudioFix', 'Audio-Fix', 'Audio-Fixed')
 container.register_property('other', 'SyncFix', 'Sync-Fix', 'Sync-Fixed')
 container.register_property('other', 'DualAudio', 'Dual-Audio')
 
-container.register_properties('other', 'Proper', 'Repack', 'Dual-Audio', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ', 'DDC')
+container.register_properties('other', 'Proper', 'Repack', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ', 'DDC')
 container.register_property('other', 'WideScreen', 'ws', 'wide-screen')
 container.register_properties('other', 'Limited', 'Complete', 'Classic', 'Final', 'Unrated', weak=True)
 
