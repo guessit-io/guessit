@@ -22,13 +22,17 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit import base_text_type, u
 from guessit.slogging import setupLogging
-from guessit.plugins import transformers
+
 from unittest import TestCase, TestLoader, TextTestRunner
 
 import yaml, logging, sys, os
 from os.path import *
 
 MAIN_LOGGING_LEVEL = logging.INFO
+
+setupLogging()
+logging.getLogger().setLevel(MAIN_LOGGING_LEVEL)
+from guessit.plugins import transformers
 
 
 def currentPath():
@@ -43,9 +47,7 @@ def addImportPath(path):
     sys.path = [importPath] + sys.path
 
 
-setupLogging()
-transformers.load()
-logging.getLogger().setLevel(MAIN_LOGGING_LEVEL)
+
 
 log = logging.getLogger(__name__)
 

@@ -26,8 +26,7 @@ import logging
 from optparse import OptionParser
 import os
 
-from guessit import PY2, u, unicode_text_type, slogging, guess_file_info
-from guessit.plugins import transformers
+from guessit import PY2, u, slogging, guess_file_info
 
 
 def detect_filename(filename, filetype, info=['filename'], advanced=False):
@@ -36,11 +35,14 @@ def detect_filename(filename, filetype, info=['filename'], advanced=False):
     print('For:', filename)
     print('GuessIt found:', guess_file_info(filename, filetype, info).nice_string(advanced))
 
+
 def _supported_properties():
+    from guessit.plugins import transformers
+
     all_properties = {}
     for transformer in transformers.extensions.objects():
         supported_properties = transformer.supported_properties()
-        
+
         if isinstance(supported_properties, dict):
             for property_name, possible_values in supported_properties.items():
                 current_possible_values = all_properties.get(property_name)
@@ -55,8 +57,9 @@ def _supported_properties():
                 if current_possible_values is None:
                     current_possible_values = []
                     all_properties[property_name] = current_possible_values
-                    
+
     return all_properties
+
 
 def display_properties(values):
     print('GuessIt properties:')
@@ -69,7 +72,8 @@ def display_properties(values):
         print('[+] %s' % (property_name,))
         if property_values and values:
             _display_property_values(property_name)
-        
+
+
 def _display_property_values(property_name):
     all_properties = _supported_properties()
     property_values = all_properties.get(property_name)
@@ -162,8 +166,6 @@ def main():
     options, args = parser.parse_args()
     if options.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
-
-    transformers.load()
 
     help_required = True
     if options.properties or options.values:

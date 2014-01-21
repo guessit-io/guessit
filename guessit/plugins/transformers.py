@@ -109,7 +109,4 @@ class TransformerExtensionManager(EnabledExtensionManager):
     def _get_obj(self, ext):
         return ext.obj
 
-extensions = None
-def load():
-    global extensions
-    extensions = TransformerExtensionManager()
+extensions = TransformerExtensionManager()
