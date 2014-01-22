@@ -16,7 +16,7 @@ History
 * Added Quality API to rate file quality from guessed property values
 * Better and more accurate overall detection
 * Added roman and word numeral detection
-* Added 'videoProfile' property
+* Added 'videoProfile' and 'audioProfile' property
 * Moved boolean properties to 'other' property value ('is3D' became 'other' = '3D')
 * Added more possible values for various properties.
 * Added command line option to list available properties and values
