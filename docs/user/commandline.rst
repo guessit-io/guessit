@@ -5,7 +5,7 @@ Command-line usage
 
 To have GuessIt try to guess some information from a filename, just run it as a command::
 
-    $ python guessit.py "Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv"
+    $ guessit "Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv"
     For: Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
     GuessIt found: {
         [1.00] "videoCodec": "h264",
@@ -40,7 +40,7 @@ guess, movie or episode. If you want to force one of those, use the ``-t movie``
 Guessit also allows you to specify the type of information you want
 using the ``-i`` or ``--info`` flag::
 
-    $ python -m guessit -i hash_md5,hash_sha1,hash_ed2k tests/dummy.srt
+    $ guessit -i hash_md5,hash_sha1,hash_ed2k tests/dummy.srt
     For: tests/dummy.srt
     GuessIt found: {
         [1.00] "hash_ed2k": "ed2k://|file|dummy.srt|44|1CA0B9DED3473B926AA93A0A546138BB|/",
@@ -51,7 +51,7 @@ using the ``-i`` or ``--info`` flag::
 
 You can see the list of options that guessit.py accepts like that::
 
-    $ python -m guessit -h
+    $ guessit -h
     Usage: guessit.py [options] file1 [file2...]
 
     Options:
