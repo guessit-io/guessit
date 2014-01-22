@@ -11,7 +11,11 @@ History
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+* New plugin API that allows to register custom patterns / transformers
+* Uses Babelfish for language and country detection
+* New 'quality' property rating the video quality in function of screen size
+* added roman and word numeral detection
+* better and more accurate detection overall
 
 
 0.6.2 (2013-11-08)
