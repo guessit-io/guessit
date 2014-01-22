@@ -13,9 +13,14 @@ History
 
 * New plugin API that allows to register custom patterns / transformers
 * Uses Babelfish for language and country detection
-* New 'quality' property rating the video quality in function of screen size
-* added roman and word numeral detection
-* better and more accurate detection overall
+* Added Quality API to rate file quality from guessed property values
+* Better and more accurate overall detection
+* Added roman and word numeral detection
+* Added 'videoProfile' property
+* Moved boolean properties to 'other' property value ('is3D' became 'other' = '3D')
+* Added more possible values for various properties.
+* Added command line option to list available properties and values
+* Fixes for Python3 support
 
 
 0.6.2 (2013-11-08)
