@@ -27,6 +27,9 @@ the videoCodec is h264, but only 60% confident that the title is
 
 You can use the ``-v`` or ``--verbose`` flag to have it display debug information.
 
+You can use the ``-p`` or ``-v`` flags to display the properties names or the
+multiple values they can take.
+
 You can also run a ``--demo`` mode which will run a few tests and
 display the results.
 
@@ -37,7 +40,7 @@ guess, movie or episode. If you want to force one of those, use the ``-t movie``
 Guessit also allows you to specify the type of information you want
 using the ``-i`` or ``--info`` flag::
 
-    $ python guessit.py -i hash_md5,hash_sha1,hash_ed2k tests/dummy.srt
+    $ python -m guessit -i hash_md5,hash_sha1,hash_ed2k tests/dummy.srt
     For: tests/dummy.srt
     GuessIt found: {
         [1.00] "hash_ed2k": "ed2k://|file|dummy.srt|44|1CA0B9DED3473B926AA93A0A546138BB|/",
@@ -48,16 +51,20 @@ using the ``-i`` or ``--info`` flag::
 
 You can see the list of options that guessit.py accepts like that::
 
-    $ python guessit.py -h
+    $ python -m guessit -h
     Usage: guessit.py [options] file1 [file2...]
 
     Options:
       -h, --help            show this help message and exit
       -v, --verbose         display debug output
+      -p, --properties      Display properties that can be guessed.
+      -l, --values          Display property values that can be guessed.
       -i INFO, --info=INFO  the desired information type: filename, hash_mpc or a
                             hash from python's hashlib module, such as hash_md5,
                             hash_sha1, ...; or a list of any of them, comma-
                             separated
       -t FILETYPE, --type=FILETYPE
                             the suggested file type: movie, episode or autodetect
+      -a, --advanced        display advanced information for filename guesses, as
+                            json output
       -d, --demo            run a few builtin tests instead of analyzing a file
