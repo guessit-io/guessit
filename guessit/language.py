@@ -23,7 +23,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.patterns import sep
 from guessit import UnicodeMixin, base_text_type, u, s
 from guessit.textutils import find_words
-from babelfish import Language, LANGUAGES, COUNTRIES
+from babelfish import Language, languages, countries
 import babelfish
 import re
 import logging
@@ -61,11 +61,11 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
         self.codes = set()
         self.guessit_exceptions = {}
 
-        self.alpha3b = babelfish.get_language_converter('alpha3b')
-        self.alpha2 = babelfish.get_language_converter('alpha2')
-        self.name = babelfish.get_language_converter('name')
+        self.alpha3b = babelfish.language_converters['alpha3b']
+        self.alpha2 = babelfish.language_converters['alpha2']
+        self.name = babelfish.language_converters['name']
 
-        self.codes |= LANGUAGES | self.alpha3b.codes | self.alpha2.codes | self.name.codes
+        self.codes |= languages | self.alpha3b.codes | self.alpha2.codes | self.name.codes
 
         for (alpha3, country), synlist in SYN.items():
             for syn in synlist:
@@ -107,7 +107,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
 
 ALL_NAMES = frozenset(c.lower() for c in GuessitConverter().codes)
 
-babelfish.register_language_converter('guessit', GuessitConverter)
+babelfish.language_converters['guessit'] = GuessitConverter()
 
 COUNTRIES_SYN = {'ES': ['españa'],
                  'GB': ['UK'],
@@ -123,9 +123,9 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):
         self.codes = set()
         self.guessit_exceptions = {}
 
-        self.name = babelfish.get_country_converter('name')
+        self.name = babelfish.country_converters['name']
 
-        self.codes |= set(COUNTRIES.keys()) | self.name.codes
+        self.codes |= set(countries.keys()) | self.name.codes
 
         for alpha2, synlist in COUNTRIES_SYN.items():
             for syn in synlist:
@@ -157,7 +157,7 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):
         raise babelfish.CountryReverseError(name)
 
 
-babelfish.register_country_converter('guessit', GuessitCountryConverter)
+babelfish.country_converters['guessit'] = GuessitCountryConverter()
 
 
 class Language(UnicodeMixin):
