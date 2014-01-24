@@ -23,7 +23,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.patterns import sep
 from guessit import UnicodeMixin, base_text_type, u, s
 from guessit.textutils import find_words
-from babelfish import Language, languages, countries
+from babelfish import Language, LANGUAGES, COUNTRIES
 import babelfish
 import re
 import logging
@@ -65,7 +65,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
         self.alpha2 = babelfish.language_converters['alpha2']
         self.name = babelfish.language_converters['name']
 
-        self.codes |= languages | self.alpha3b.codes | self.alpha2.codes | self.name.codes
+        self.codes |= LANGUAGES | self.alpha3b.codes | self.alpha2.codes | self.name.codes
 
         for (alpha3, country), synlist in SYN.items():
             for syn in synlist:
@@ -125,7 +125,7 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):
 
         self.name = babelfish.country_converters['name']
 
-        self.codes |= set(countries.keys()) | self.name.codes
+        self.codes |= set(COUNTRIES.keys()) | self.name.codes
 
         for alpha2, synlist in COUNTRIES_SYN.items():
             for syn in synlist:
