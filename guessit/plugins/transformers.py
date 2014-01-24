@@ -20,34 +20,24 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from stevedore import EnabledExtensionManager
+from stevedore import ExtensionManager
 from pkg_resources import EntryPoint
 
 from stevedore.extension import Extension
 
 
-def _is_enabled(extension):
-    return extension.obj.enabled()
-
-
-class CustomTransformerExtensionManager(EnabledExtensionManager):
-    def __init__(self, namespace='guessit.transformer', check_func=_is_enabled, invoke_on_load=True,
+class CustomTransformerExtensionManager(ExtensionManager):
+    def __init__(self, namespace='guessit.transformer', invoke_on_load=True,
         invoke_args=(), invoke_kwds={},
         propagate_map_exceptions=True):
-        EnabledExtensionManager.__init__(self, namespace, check_func, invoke_on_load=invoke_on_load,
+        super(CustomTransformerExtensionManager, self).__init__(namespace, invoke_on_load=invoke_on_load,
                                          invoke_args=invoke_args, invoke_kwds=invoke_kwds,
                                          propagate_map_exceptions=propagate_map_exceptions)
-
-    def __iter__(self):
-        return super(EnabledExtensionManager, self).__iter__(self)
-
-    def objects(self):
-        return self.map(self._get_obj)
 
     def _find_entry_points(self, namespace):
         entry_points = {}
         # Package entry points
-        setuptools_entrypoints = super(EnabledExtensionManager, self)._find_entry_points(namespace)
+        setuptools_entrypoints = super(CustomTransformerExtensionManager, self)._find_entry_points(namespace)
         for setuptools_entrypoint in setuptools_entrypoints:
             entry_points[setuptools_entrypoint.name] = setuptools_entrypoint
 
@@ -79,18 +69,22 @@ class CustomTransformerExtensionManager(EnabledExtensionManager):
         return Extension(ep.name, ep, plugin, obj)
 
     def _load_plugins(self, invoke_on_load, invoke_args, invoke_kwds):
-        return self.order_extensions(EnabledExtensionManager._load_plugins(self, invoke_on_load, invoke_args, invoke_kwds))
+        return self.order_extensions(super(CustomTransformerExtensionManager, self)._load_plugins(invoke_on_load, invoke_args, invoke_kwds))
+
+    def __iter__(self):
+        return super(CustomTransformerExtensionManager, self).__iter__()
+
+    def objects(self):
+        return self.map(self._get_obj)
 
     def _get_obj(self, ext):
         return ext.obj
 
 
 class DefaultTransformerExtensionManager(CustomTransformerExtensionManager):
-    def _find_entry_points(self, namespace):
-        entry_points = {}
-        # Internal entry points
-        if namespace == 'guessit.transformer':
-            internal_entry_points_str = ['split_path_components = guessit.transfo.split_path_components:SplitPathComponents',
+    @property
+    def _internal_entry_points(self):
+        return ['split_path_components = guessit.transfo.split_path_components:SplitPathComponents',
                                     'guess_filetype = guessit.transfo.guess_filetype:GuessFiletype',
                                     'split_explicit_groups = guessit.transfo.split_explicit_groups:SplitExplicitGroups',
                                     'guess_date = guessit.transfo.guess_date:GuessDate',
@@ -109,12 +103,17 @@ class DefaultTransformerExtensionManager(CustomTransformerExtensionManager):
                                     'guess_episode_info_from_position = guessit.transfo.guess_episode_info_from_position:GuessEpisodeInfoFromPosition',
                                     'guess_movie_title_from_position = guessit.transfo.guess_movie_title_from_position:GuessMovieTitleFromPosition',
                                     'post_process = guessit.transfo.post_process:PostProcess']
-            for internal_entry_point_str in internal_entry_points_str:
+
+    def _find_entry_points(self, namespace):
+        entry_points = {}
+        # Internal entry points
+        if namespace == self.namespace:
+            for internal_entry_point_str in self._internal_entry_points:
                 internal_entry_point = EntryPoint.parse(internal_entry_point_str)
                 entry_points[internal_entry_point.name] = internal_entry_point
 
         # Package entry points
-        setuptools_entrypoints = super(EnabledExtensionManager, self)._find_entry_points(namespace)
+        setuptools_entrypoints = super(DefaultTransformerExtensionManager, self)._find_entry_points(namespace)
         for setuptools_entrypoint in setuptools_entrypoints:
             entry_points[setuptools_entrypoint.name] = setuptools_entrypoint
 
