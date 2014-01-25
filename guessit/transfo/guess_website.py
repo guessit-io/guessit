@@ -22,20 +22,47 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins import Transformer
 
-from guessit.patterns.website import container
+from guessit.patterns.containers import PropertiesContainer
+from guessit.patterns import build_or_pattern
 from guessit.transfo import SingleNodeGuesser
+from pkg_resources import resource_stream
 
 
 class GuessWebsite(Transformer):
     def __init__(self):
         Transformer.__init__(self, 45)
-        
+
+        self.container = PropertiesContainer(enhance_patterns=False, canonical_from_pattern=False)
+
+        tlds = []
+
+        f = resource_stream('guessit', 'tlds-alpha-by-domain.txt')
+        f.readline()
+        next(f)
+        for tld in f:
+            tld = tld.strip()
+            if b'--' in tld:
+                continue
+            tlds.append(tld.decode("utf-8"))
+        f.close()
+
+        tlds_pattern = build_or_pattern(tlds)  # All registered domain extension
+        safe_tlds_pattern = build_or_pattern(['com', 'org', 'net'])  # For sure a website extension
+        safe_subdomains_pattern = build_or_pattern(['www'])  # For sure a website subdomain
+        safe_prefix_tlds_pattern = build_or_pattern(['co', 'com', 'org', 'net'])  # Those words before a tlds are sure
+
+        self.container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)+' + r'(?:[a-z-]+\.)+' + r'(?:' + tlds_pattern + r')+')
+
+        self.container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_tlds_pattern + r')+')
+
+        self.container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_prefix_tlds_pattern + r'\.)+' + r'(?:' + tlds_pattern + r')+')
+
     def supported_properties(self):
-        return container.get_supported_properties()
+        return self.container.get_supported_properties()
 
     def guess_website(self, string):
-        found = container.find_properties(string, 'website')
-        return container.as_guess(found, string)
+        found = self.container.find_properties(string, 'website')
+        return self.container.as_guess(found, string)
 
     def process(self, mtree):
         SingleNodeGuesser(self.guess_website, 1.0, self.log).process(mtree)
