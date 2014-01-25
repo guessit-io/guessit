@@ -29,7 +29,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
-install_requires = ['babelfish==0.4.1-dev', 'stevedore']
+install_requires = ['babelfish>=0.5', 'stevedore']
 
 tests_require = ['PyYAML', 'nose']  # Fabric not available (yet!) for python3
 
@@ -43,9 +43,7 @@ entry_points = {
     ],
 }
 
-dependency_links = [
-        'https://github.com/Diaoul/babelfish/tarball/converter_manager#egg=babelfish-0.4.1-dev',
-    ]
+dependency_links = []
 
 version = '0.7.dev0'
 
