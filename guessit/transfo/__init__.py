@@ -21,7 +21,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit import base_text_type, Guess
-from guessit.patterns.synonyms import get_synonym
 from guessit.patterns.numeral import parse_numeral
 from guessit.textutils import clean_string
 import logging
@@ -53,10 +52,6 @@ def format_guess(guess):
         if prop in ('season', 'episodeNumber', 'year', 'cdNumber',
                     'cdNumberTotal', 'bonusNumber', 'filmNumber'):
             guess[prop] = parse_numeral(guess[prop])
-        elif isinstance(value, base_text_type):
-            if prop in ('edition',):
-                value = clean_string(value)
-            guess[prop] = get_synonym(value).replace('\\', '')
 
     return guess
 

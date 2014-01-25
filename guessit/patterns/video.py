@@ -31,13 +31,13 @@ container = PropertiesContainer(canonical_from_pattern=False)
 container.register_property('cdNumber', None, 'cd' + _psep + '(?P<cdNumber>[0-9])(?:' + _psep + 'of' + _psep + '(?P<cdNumberTotal>[0-9]))?', confidence=1.0, enhance=False, global_span=True)
 container.register_property('cdNumberTotal', None, '([1-9])' + _psep + 'cds?', confidence=0.9, enhance=False)
 
-container.register_property('edition', 'collector edition', 'collector', 'collector-edition', 'edition-collector')
+container.register_property('edition', 'Collector Edition', 'collector', 'collector-edition', 'edition-collector')
 
-container.register_property('edition', 'special edition', 'special-edition', 'edition-special')
+container.register_property('edition', 'Special Edition', 'special', 'special-edition', 'edition-special')
 
-container.register_property('edition', 'criterion edition', 'criterion-edition', 'edition-criterion')
+container.register_property('edition', 'Criterion Edition', 'criterion', 'criterion-edition', 'edition-criterion')
 
-container.register_property('edition', 'director\'s cut', 'director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut')
+container.register_property('edition', 'Director\'s cut', 'director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut')
 
 container.register_property('bonusNumber', None, 'x([0-9]{1,2})', enhance=False, global_span=True)
 
