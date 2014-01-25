@@ -40,7 +40,7 @@ def _supported_properties():
     from guessit.plugins import transformers
 
     all_properties = {}
-    for transformer in transformers.extensions.objects():
+    for transformer in transformers.all():
         supported_properties = transformer.supported_properties()
 
         if isinstance(supported_properties, dict):

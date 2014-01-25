@@ -116,7 +116,7 @@ class IterativeMatcher(object):
             mtree = self.match_tree
             mtree.guess.set('type', filetype, confidence=1.0)
 
-            for transformer in transformers.extensions.objects():
+            for transformer in transformers.all():
                 self._apply_transfo(transformer)
 
             log.debug('Found match tree:\n%s' % u(mtree))

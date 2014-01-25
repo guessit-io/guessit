@@ -134,13 +134,14 @@ class GuessFiletype(Transformer):
             # if we have an episode_rexp (eg: s02e13), it is an episode
             from guessit.plugins import transformers
 
-            episode_transformer = transformers.extensions['guess_episodes_rexps'].obj
-            for rexp, _, _ in episode_transformer.episode_rexps:
-                match = re.search(rexp, filename, re.IGNORECASE)
-                if match:
-                    self.log.debug('Found matching regexp: "%s" (string = "%s") -> type = episode', rexp, match.group())
-                    upgrade_episode()
-                    break
+            episode_transformer = transformers.get('guess_episodes_rexps')
+            if episode_transformer:
+                for rexp, _, _ in episode_transformer.episode_rexps:
+                    match = re.search(rexp, filename, re.IGNORECASE)
+                    if match:
+                        self.log.debug('Found matching regexp: "%s" (string = "%s") -> type = episode', rexp, match.group())
+                        upgrade_episode()
+                        break
 
             # if we have a 3-4 digit number that's not a year, maybe an episode
             match = re.search(r'[^0-9]([0-9]{3,4})[^0-9]', filename)
@@ -160,21 +161,21 @@ class GuessFiletype(Transformer):
                     self.log.debug('Found possible episode number: %s (from string "%s") -> type = episode', epnumber, match.group())
                     upgrade_episode()
 
-            from guessit.plugins import transformers
-            properties_container = transformers.extensions['guess_properties'].obj.container
+            properties_transformer = transformers.get('guess_properties')
 
-            # if we have certain properties characteristic of episodes, it is an ep
-            found = properties_container.find_properties(filename, 'episodeFormat')
-            guess = properties_container.as_guess(found, filename)
-            if guess:
-                self.log.debug('Found characteristic property of episodes: %s"', guess)
-                upgrade_episode()
+            if properties_transformer:
+                # if we have certain properties characteristic of episodes, it is an ep
+                found = properties_transformer.container.find_properties(filename, 'episodeFormat')
+                guess = properties_transformer.container.as_guess(found, filename)
+                if guess:
+                    self.log.debug('Found characteristic property of episodes: %s"', guess)
+                    upgrade_episode()
 
-            found = properties_container.find_properties(filename, 'format')
-            guess = properties_container.as_guess(found, filename, lambda g: g['format'] == 'DVB')
-            if guess:
-                self.log.debug('Found characteristic property of episodes: %s', guess)
-                upgrade_episode()
+                found = properties_transformer.container.find_properties(filename, 'format')
+                guess = properties_transformer.container.as_guess(found, filename, lambda g: g['format'] == 'DVB')
+                if guess:
+                    self.log.debug('Found characteristic property of episodes: %s', guess)
+                    upgrade_episode()
 
             # origin-specific type
             if 'tvu.org.ru' in filename:

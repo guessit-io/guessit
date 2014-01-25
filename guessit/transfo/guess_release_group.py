@@ -59,7 +59,7 @@ class GuessReleaseGroup(Transformer):
     def adjust_metadata(self, md):
         from guessit.plugins import transformers
 
-        properties_container = transformers.extensions['guess_properties'].obj.container
+        properties_container = transformers.extensions.object('guess_properties').obj.container
 
         return dict((property_name, properties_container.compute_canonical_form(property_name, value) or value)
                     for property_name, value in md.items())

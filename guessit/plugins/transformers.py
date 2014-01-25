@@ -34,15 +34,6 @@ class CustomTransformerExtensionManager(ExtensionManager):
                                          invoke_args=invoke_args, invoke_kwds=invoke_kwds,
                                          propagate_map_exceptions=propagate_map_exceptions)
 
-    def _find_entry_points(self, namespace):
-        entry_points = {}
-        # Package entry points
-        setuptools_entrypoints = super(CustomTransformerExtensionManager, self)._find_entry_points(namespace)
-        for setuptools_entrypoint in setuptools_entrypoints:
-            entry_points[setuptools_entrypoint.name] = setuptools_entrypoint
-
-        return list(entry_points.values())
-
     def order_extensions(self, extensions):
         """Order the loaded transformers
 
@@ -71,14 +62,25 @@ class CustomTransformerExtensionManager(ExtensionManager):
     def _load_plugins(self, invoke_on_load, invoke_args, invoke_kwds):
         return self.order_extensions(super(CustomTransformerExtensionManager, self)._load_plugins(invoke_on_load, invoke_args, invoke_kwds))
 
-    def __iter__(self):
-        return super(CustomTransformerExtensionManager, self).__iter__()
-
     def objects(self):
         return self.map(self._get_obj)
 
     def _get_obj(self, ext):
         return ext.obj
+
+    def object(self, name):
+        try:
+            return self[name].obj
+        except KeyError:
+            return None
+
+    def register_module(self, name, module_name):
+        ep = EntryPoint(name, module_name)
+        loaded = self._load_one_plugin(ep, invoke_on_load=True, invoke_args=(), invoke_kwds={})
+        if loaded:
+            self.extensions.append(loaded)
+            self.extensions = self.order_extensions(self.extensions)
+            self._extensions_by_name = None
 
 
 class DefaultTransformerExtensionManager(CustomTransformerExtensionManager):
@@ -119,10 +121,22 @@ class DefaultTransformerExtensionManager(CustomTransformerExtensionManager):
 
         return list(entry_points.values())
 
-extensions = None
+_extensions = None
 
 
-def reload_manager(custom=False):
+def all():
+    return _extensions.objects()
+
+
+def get(name):
+    return _extensions.object(name)
+
+
+def register(name, module_name):
+    _extensions.register_module(name, module_name)
+
+
+def reload(custom=False):
     """
     Reload extension manager with default or custom one.
     :param custom: if True, custom manager will be used, else default one.
@@ -130,10 +144,10 @@ def reload_manager(custom=False):
     Custom manager will not load default extensions from guessit, using only setuptools packaging extensions.
     :type custom: boolean
     """
-    global extensions
+    global _extensions
     if custom:
-        extensions = CustomTransformerExtensionManager()
+        _extensions = CustomTransformerExtensionManager()
     else:
-        extensions = DefaultTransformerExtensionManager()
+        _extensions = DefaultTransformerExtensionManager()
 
-reload_manager()
+reload()
