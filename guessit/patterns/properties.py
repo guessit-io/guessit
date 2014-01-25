@@ -94,6 +94,7 @@ container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
 container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX')
 container.register_property('videoCodec', 'XviD', 'XviD')
 container.register_property('videoCodec', 'h264', '[hx]-264(?:-AVC)?', 'MPEG-4(?:-AVC)')
+container.register_property('videoCodec', 'h265', '[hx]-265(?:-HEVC)?', 'HEVC')
 
 for profile, profile_regexps in _videoProfiles.items():
     for profile_regexp in profile_regexps:
@@ -107,6 +108,7 @@ register_quality('videoCodec', 'Mpeg2', -30)
 register_quality('videoCodec', 'DivX', -10)
 register_quality('videoCodec', 'XviD', 0)
 register_quality('videoCodec', 'h264', 100)
+register_quality('videoCodec', 'h265', 150)
 
 register_quality('videoProfile', 'BS', -20)
 register_quality('videoProfile', 'EP', -10)
