@@ -22,7 +22,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from .containers import PropertiesContainer
-from guessit.patterns import build_or_pattern
 from guessit.quality import register_quality
 
 container = PropertiesContainer()
@@ -94,7 +93,7 @@ container.register_property('videoCodec', 'Real', 'Rv\d{2}') # http://en.wikiped
 container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
 container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX')
 container.register_property('videoCodec', 'XviD', 'XviD')
-container.register_property('videoCodec', 'h264', '[hx]-264(?:-AVC)?')
+container.register_property('videoCodec', 'h264', '[hx]-264(?:-AVC)?', 'MPEG-4(?:-AVC)')
 
 for profile, profile_regexps in _videoProfiles.items():
     for profile_regexp in profile_regexps:
