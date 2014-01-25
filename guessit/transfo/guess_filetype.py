@@ -21,6 +21,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.plugins import Transformer
+from guessit.plugins.transformers import get_transformer
 
 from guessit import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
@@ -132,9 +133,7 @@ class GuessFiletype(Transformer):
         # now look whether there are some specific hints for episode vs movie
         if filetype_container[0] in ('video', 'subtitle', 'info'):
             # if we have an episode_rexp (eg: s02e13), it is an episode
-            from guessit.plugins import transformers
-
-            episode_transformer = transformers.get('guess_episodes_rexps')
+            episode_transformer = get_transformer('guess_episodes_rexps')
             if episode_transformer:
                 for rexp, _, _ in episode_transformer.episode_rexps:
                     match = re.search(rexp, filename, re.IGNORECASE)
@@ -161,7 +160,7 @@ class GuessFiletype(Transformer):
                     self.log.debug('Found possible episode number: %s (from string "%s") -> type = episode', epnumber, match.group())
                     upgrade_episode()
 
-            properties_transformer = transformers.get('guess_properties')
+            properties_transformer = get_transformer('guess_properties')
 
             if properties_transformer:
                 # if we have certain properties characteristic of episodes, it is an ep

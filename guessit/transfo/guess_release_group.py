@@ -56,14 +56,6 @@ class GuessReleaseGroup(Transformer):
         except ValueError:
             return False
 
-    def adjust_metadata(self, md):
-        from guessit.plugins import transformers
-
-        properties_container = transformers.extensions.object('guess_properties').obj.container
-
-        return dict((property_name, properties_container.compute_canonical_form(property_name, value) or value)
-                    for property_name, value in md.items())
-
     def validate_group_name(self, guess):
         if guess.metadata().span[1] - guess.metadata().span[0] >= 2:
             val = guess['releaseGroup']

@@ -124,15 +124,15 @@ class DefaultTransformerExtensionManager(CustomTransformerExtensionManager):
 _extensions = None
 
 
-def all():
+def all_transformers():
     return _extensions.objects()
 
 
-def get(name):
+def get_transformer(name):
     return _extensions.object(name)
 
 
-def register(name, module_name):
+def add_transformer(name, module_name):
     _extensions.register_module(name, module_name)
 
 
