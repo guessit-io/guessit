@@ -23,7 +23,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.plugins import Transformer
 
 from guessit.transfo import SingleNodeGuesser, format_guess
-from guessit.patterns.properties import container
 from guessit.patterns.containers import PropertiesContainer
 from guessit.patterns import sep
 from guessit.guess import Guess
@@ -32,7 +31,7 @@ from guessit.guess import Guess
 class GuessReleaseGroup(Transformer):
     def __init__(self):
         Transformer.__init__(self, -190)
-        self.groups_container = PropertiesContainer()
+        self.container = PropertiesContainer()
         self._allowed_groupname_pattern = r'[\w@#€£$&]'
         self._forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour', 'bonus'],
                                lambda elt: self._is_number(elt),
@@ -41,14 +40,14 @@ class GuessReleaseGroup(Transformer):
         # and group name can contain a separator.
         self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'videoProfile']
 
-        self.groups_container.sep_replace_char = '-'
-        self.groups_container.canonical_from_pattern = False
-        self.groups_container.enhance_patterns = True
-        self.groups_container.register_property('releaseGroup', None, self._allowed_groupname_pattern + '+')
-        self.groups_container.register_property('releaseGroup', None, self._allowed_groupname_pattern + '+-' + self._allowed_groupname_pattern + '+')
+        self.container.sep_replace_char = '-'
+        self.container.canonical_from_pattern = False
+        self.container.enhance_patterns = True
+        self.container.register_property('releaseGroup', None, self._allowed_groupname_pattern + '+')
+        self.container.register_property('releaseGroup', None, self._allowed_groupname_pattern + '+-' + self._allowed_groupname_pattern + '+')
 
     def supported_properties(self):
-        return self.groups_container.get_supported_properties()
+        return self.container.get_supported_properties()
 
     def _is_number(self, s):
         try:
@@ -58,7 +57,11 @@ class GuessReleaseGroup(Transformer):
             return False
 
     def adjust_metadata(self, md):
-        return dict((property_name, container.compute_canonical_form(property_name, value) or value)
+        from guessit.plugins import transformers
+
+        properties_container = transformers.extensions['guess_properties'].obj.container
+
+        return dict((property_name, properties_container.compute_canonical_form(property_name, value) or value)
                     for property_name, value in md.items())
 
     def validate_group_name(self, guess):
@@ -102,8 +105,8 @@ class GuessReleaseGroup(Transformer):
         return False
 
     def guess_release_group(self, string, node):
-        found = self.groups_container.find_properties(string, 'releaseGroup')
-        guess = self.groups_container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
+        found = self.container.find_properties(string, 'releaseGroup')
+        guess = self.container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
         if guess:
             explicit_group_idx = node.node_idx[:2]
             explicit_group = node.root.node_at(explicit_group_idx)

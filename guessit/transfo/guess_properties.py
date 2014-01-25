@@ -21,21 +21,178 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.plugins import Transformer
-
+from guessit.patterns.containers import PropertiesContainer
+from guessit.quality import register_quality
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns.properties import container
 
 
 class GuessProperties(Transformer):
     def __init__(self):
         Transformer.__init__(self, 35)
 
+        self.container = PropertiesContainer()
+
+        # http://en.wikipedia.org/wiki/Pirated_movie_release_types
+        self.container.register_property('format', 'VHS', 'VHS')
+        self.container.register_property('format', 'Cam', 'CAM', 'CAMRip')
+        self.container.register_property('format', 'Telesync', 'TELESYNC', 'PDVD')
+        self.container.register_property('format', 'Telesync', 'TS', confidence=0.2)
+        self.container.register_property('format', 'Workprint', 'WORKPRINT', 'WP')
+        self.container.register_property('format', 'Telecine', 'TELECINE', 'TC')
+        self.container.register_property('format', 'PPV', 'PPV', 'PPV-Rip')  # Pay Per View
+        self.container.register_property('format', 'DVD', 'DVD', 'DVD-Rip', 'VIDEO-TS')
+        self.container.register_property('format', 'DVB', 'DVB-Rip', 'DVB', 'PD-TV')
+        self.container.register_property('format', 'HDTV', 'HD-TV')
+        self.container.register_property('format', 'VOD', 'VOD', 'VOD-Rip')
+        self.container.register_property('format', 'WEBRip', 'WEB-Rip')
+        self.container.register_property('format', 'WEB-DL', 'WEB-DL')
+        self.container.register_property('format', 'HD-DVD', 'HD-(?:DVD)?-Rip', 'HD-DVD')
+        self.container.register_property('format', 'BluRay', 'Blu-ray', 'B[DR]', 'B[DR]-Rip', 'BD[59]', 'BD25', 'BD50')
+
+        register_quality('format', 'VHS', -100)
+        register_quality('format', 'Cam', -90)
+        register_quality('format', 'Telesync', -80)
+        register_quality('format', 'Workprint', -70)
+        register_quality('format', 'Telecine', -60)
+        register_quality('format', 'Pay-Per-View', -50)
+        register_quality('format', 'DVB', -20)
+        register_quality('format', 'DVD', 0)
+        register_quality('format', 'HDTV', 20)
+        register_quality('format', 'VOD', 40)
+        register_quality('format', 'WEBRip', 50)
+        register_quality('format', 'WEB-DL', 60)
+        register_quality('format', 'HD-DVD', 80)
+        register_quality('format', 'BluRay', 100)
+
+        self.container.register_property('screenSize', '360p', '(?:\d{3,}(?:\\|\/|x|\*))?360(?:i|p?x?)')
+        self.container.register_property('screenSize', '368p', '(?:\d{3,}(?:\\|\/|x|\*))?368(?:i|p?x?)')
+        self.container.register_property('screenSize', '480p', '(?:\d{3,}(?:\\|\/|x|\*))?480(?:i|p?x?)')
+        self.container.register_property('screenSize', '480p', 'hr', confidence=0.2)
+        self.container.register_property('screenSize', '576p', '(?:\d{3,}(?:\\|\/|x|\*))?576(?:i|p?x?)')
+        self.container.register_property('screenSize', '720p', '(?:\d{3,}(?:\\|\/|x|\*))?720(?:i|p?x?)')
+        self.container.register_property('screenSize', '900p', '(?:\d{3,}(?:\\|\/|x|\*))?900(?:i|p?x?)')
+        self.container.register_property('screenSize', '1080i', '(?:\d{3,}(?:\\|\/|x|\*))?1080i(?:i|p?x?)')
+        self.container.register_property('screenSize', '1080p', '(?:\d{3,}(?:\\|\/|x|\*))?1080(?:i|p?x?)')
+        self.container.register_property('screenSize', '4K', '(?:\d{3,}(?:\\|\/|x|\*))?2160(?:i|p?x?)')
+
+        register_quality('screenSize', '360p', -300)
+        register_quality('screenSize', '368p', -200)
+        register_quality('screenSize', '480p', -100)
+        register_quality('screenSize', '576p', 0)
+        register_quality('screenSize', '720p', 100)
+        register_quality('screenSize', '900p', 130)
+        register_quality('screenSize', '1080i', 180)
+        register_quality('screenSize', '1080p', 200)
+        register_quality('screenSize', '4K', 400)
+
+        # http://blog.mediacoderhq.com/h264-profiles-and-levels/
+        _videoProfiles = {'BS':('BS',),
+                     'EP':('EP', 'XP'),
+                     'MP':('MP',),
+                     'HP':('HP', 'HiP'),
+                     '10bit':('10.?bit', 'Hi10P'),
+                     'Hi422P':('Hi422P',),
+                     'Hi444PP':('Hi444PP'),
+                     }
+
+        self.container.register_property('videoCodec', 'Real', 'Rv\d{2}')  # http://en.wikipedia.org/wiki/RealVideo
+        self.container.register_property('videoCodec', 'Mpeg2', 'Mpeg2')
+        self.container.register_property('videoCodec', 'DivX', 'DVDivX', 'DivX')
+        self.container.register_property('videoCodec', 'XviD', 'XviD')
+        self.container.register_property('videoCodec', 'h264', '[hx]-264(?:-AVC)?', 'MPEG-4(?:-AVC)')
+        self.container.register_property('videoCodec', 'h265', '[hx]-265(?:-HEVC)?', 'HEVC')
+
+        for profile, profile_regexps in _videoProfiles.items():
+            for profile_regexp in profile_regexps:
+                # container.register_property('videoProfile', profile, profile_regexp)
+                for prop in self.container.get_properties('videoCodec'):
+                    self.container.register_property('videoProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
+                    self.container.register_property('videoProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
+
+        register_quality('videoCodec', 'Real', -50)
+        register_quality('videoCodec', 'Mpeg2', -30)
+        register_quality('videoCodec', 'DivX', -10)
+        register_quality('videoCodec', 'XviD', 0)
+        register_quality('videoCodec', 'h264', 100)
+        register_quality('videoCodec', 'h265', 150)
+
+        register_quality('videoProfile', 'BS', -20)
+        register_quality('videoProfile', 'EP', -10)
+        register_quality('videoProfile', 'MP', 0)
+        register_quality('videoProfile', 'HP', 10)
+        register_quality('videoProfile', '10bit', 15)
+        register_quality('videoProfile', 'Hi422P', 25)
+        register_quality('videoProfile', 'Hi444PP', 35)
+
+        # has nothing to do here (or on filenames for that matter), but some
+        # releases use it and it helps to identify release groups, so we adapt
+        self.container.register_property('videoApi', 'DXVA', 'DXVA')
+
+        self.container.register_property('audioCodec', 'MP3', 'MP3')
+        self.container.register_property('audioCodec', 'DolbyDigital', 'DD')
+        self.container.register_property('audioCodec', 'AAC', 'AAC')
+        self.container.register_property('audioCodec', 'AC3', 'AC3')
+        self.container.register_property('audioCodec', 'Flac', 'FLAC')
+        self.container.register_property('audioCodec', 'DTS', 'DTS')
+        self.container.register_property('audioCodec', 'TrueHD', 'True-HD')
+
+        _audioProfiles = {'DTS': {'HD':('HD',),
+                                  'HDMA':('HD-MA',),
+                                  },
+                            'AAC': {'HE':('HE',),
+                                    'LC':('LC',),
+                                    }
+                           }
+
+        for audioCodec, codecProfiles in _audioProfiles.items():
+            for profile, profile_regexps in codecProfiles.items():
+                for profile_regexp in profile_regexps:
+                    for prop in self.container.get_properties('audioCodec', audioCodec):
+                        self.container.register_property('audioProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
+                        self.container.register_property('audioProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
+
+        register_quality('audioCodec', 'MP3', 10)
+        register_quality('audioCodec', 'DolbyDigital', 30)
+        register_quality('audioCodec', 'AAC', 35)
+        register_quality('audioCodec', 'AC3', 40)
+        register_quality('audioCodec', 'Flac', 45)
+        register_quality('audioCodec', 'DTS', 100)
+        register_quality('audioCodec', 'TrueHD', 120)
+
+        register_quality('audioProfile', 'HD', 20)
+        register_quality('audioProfile', 'HDMA', 50)
+        register_quality('audioProfile', 'LC', 0)
+        register_quality('audioProfile', 'HE', 20)
+
+        self.container.register_property('audioChannels', '7.1', '7[\W_]1', '7ch')
+        self.container.register_property('audioChannels', '5.1', '5[\W_]1', '5ch')
+        self.container.register_property('audioChannels', '2.0', '2[\W_]0', '2ch', 'stereo')
+        self.container.register_property('audioChannels', '1.0', '1[\W_]0', '1ch', 'mono')
+
+        register_quality('audioChannels', '1.0', -100)
+        register_quality('audioChannels', '2.0', 0)
+        register_quality('audioChannels', '5.1', 100)
+        register_quality('audioChannels', '7.1', 200)
+
+        self.container.register_property('episodeFormat', 'Minisode', r'Minisodes?')
+
+        self.container.register_property('other', 'AudioFix', 'Audio-Fix', 'Audio-Fixed')
+        self.container.register_property('other', 'SyncFix', 'Sync-Fix', 'Sync-Fixed')
+        self.container.register_property('other', 'DualAudio', 'Dual-Audio')
+
+        self.container.register_properties('other', 'Proper', 'Repack', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ', 'DDC')
+        self.container.register_property('other', 'WideScreen', 'ws', 'wide-screen')
+        self.container.register_properties('other', 'Limited', 'Complete', 'Classic', 'Final', 'Unrated', weak=True)
+
+        for prop in self.container.get_properties('format'):
+            self.container.register_property('other', 'Screener', prop.pattern + '(-?Scr(?:eener)?)')
+
     def guess_properties(self, string):
-        found = container.find_properties(string)
-        return container.as_guess(found, string)
+        found = self.container.find_properties(string)
+        return self.container.as_guess(found, string)
 
     def supported_properties(self):
-        return container.get_supported_properties()
+        return self.container.get_supported_properties()
 
     def process(self, mtree):
         SingleNodeGuesser(self.guess_properties, 1.0, self.log).process(mtree)
