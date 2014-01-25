@@ -23,19 +23,37 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.plugins import Transformer
 
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns.video import container
+from guessit.patterns import _psep
+from guessit.patterns.containers import PropertiesContainer
 
 
 class GuessVideoRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 25)
-        
+
+        self.container = PropertiesContainer(canonical_from_pattern=False)
+
+        self.container.register_property('cdNumber', None, 'cd' + _psep + '(?P<cdNumber>[0-9])(?:' + _psep + 'of' + _psep + '(?P<cdNumberTotal>[0-9]))?', confidence=1.0, enhance=False, global_span=True)
+        self.container.register_property('cdNumberTotal', None, '([1-9])' + _psep + 'cds?', confidence=0.9, enhance=False)
+
+        self.container.register_property('edition', 'Collector Edition', 'collector', 'collector-edition', 'edition-collector')
+
+        self.container.register_property('edition', 'Special Edition', 'special', 'special-edition', 'edition-special')
+
+        self.container.register_property('edition', 'Criterion Edition', 'criterion', 'criterion-edition', 'edition-criterion')
+
+        self.container.register_property('edition', 'Director\'s cut', 'director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut')
+
+        self.container.register_property('bonusNumber', None, 'x([0-9]{1,2})', enhance=False, global_span=True)
+
+        self.container.register_property('filmNumber', None, 'f([0-9]{1,2})', enhance=False, global_span=True)
+
     def supported_properties(self):
-        return container.get_supported_properties()
-    
+        return self.container.get_supported_properties()
+
     def guess_video_rexps(self, string):
-        found = container.find_properties(string)
-        return container.as_guess(found, string)
+        found = self.container.find_properties(string)
+        return self.container.as_guess(found, string)
 
     def process(self, mtree):
         SingleNodeGuesser(self.guess_video_rexps, None, self.log).process(mtree)
