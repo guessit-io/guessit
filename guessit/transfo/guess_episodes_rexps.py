@@ -24,14 +24,43 @@ from guessit.plugins import Transformer
 
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns.episode import episode_rexps
+from guessit.patterns import sep
+from guessit.patterns.numeral import numeral, digital_numeral
 import re
 
 
 class GuessEpisodesRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 20)
-        
+
+        # format: [ (regexp, confidence, span_adjust) ]
+        self.episode_rexps = [  # ... Season 2 ...
+                          (r'(?:season|saison)\s+(?P<season>%s)' % (numeral,), 1.0, (0, 0)),
+
+                          # ... s02e13 ...
+                          (r's(?P<season>' + digital_numeral + ')[^0-9]?(?P<episodeNumber>(?:-?[e-]' + digital_numeral + ')+)[^0-9]', 1.0, (0, -1)),
+
+                          # ... s03-x02 ... # FIXME: redundant? remove it?
+                          # (r'[Ss](?P<season>[0-9]{1,3})[^0-9]?(?P<bonusNumber>(?:-?[xX-][0-9]{1,3})+)[^0-9]', 1.0, (0, -1)),
+
+                          # ... 2x13 ...
+                          (r'[^0-9](?P<season>' + digital_numeral + ')[^0-9 .-]?(?P<episodeNumber>(?:-?x' + digital_numeral + ')+)[^0-9]', 1.0, (1, -1)),
+
+                          # ... s02 ...
+                          # (sep + r's(?P<season>[0-9]{1,2})' + sep, 0.6, (1, -1)),
+                          (r's(?P<season>' + digital_numeral + ')[^0-9]', 0.6, (0, -1)),
+
+                          # v2 or v3 for some mangas which have multiples rips
+                          (r'(?P<episodeNumber>' + digital_numeral + ')v[23]' + sep, 0.6, (0, 0)),
+
+                          # ... ep 23 ...
+                          ('(?:ep|episode)' + sep + r'(?P<episodeNumber>' + numeral + ')[^0-9]', 0.7, (0, -1)),
+
+                          # ... e13 ... for a mini-series without a season number
+                          (sep + r'e(?P<episodeNumber>' + digital_numeral + ')' + sep, 0.6, (1, -1))
+
+                  ]
+
     def supported_properties(self):
         return ['episodeNumber', 'episodeList', 'bonusNumber', 'season']
 
@@ -45,7 +74,7 @@ class GuessEpisodesRexps(Transformer):
         return l
 
     def guess_episodes_rexps(self, string):
-        for rexp, confidence, span_adjust in episode_rexps:
+        for rexp, confidence, span_adjust in self.episode_rexps:
             match = re.search(rexp, string, re.IGNORECASE)
             if match:
                 span = (match.start() + span_adjust[0],

@@ -24,14 +24,18 @@ from guessit.plugins import Transformer
 
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
-from guessit.patterns.episode import weak_episode_rexps
+from guessit.patterns import sep
 import re
 
 
 class GuessWeakEpisodesRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 15)
-        
+
+        self.weak_episode_rexps = [  # ... 213 or 0106 ...
+                       (sep + r'(?P<episodeNumber>[0-9]{2,4})' + sep, (1, -1))
+                       ]
+
     def supported_properties(self):
         return ['episodeNumber', 'season']
 
@@ -39,7 +43,7 @@ class GuessWeakEpisodesRexps(Transformer):
         if 'episodeNumber' in node.root.info:
             return None, None
 
-        for rexp, span_adjust in weak_episode_rexps:
+        for rexp, span_adjust in self.weak_episode_rexps:
             match = re.search(rexp, string, re.IGNORECASE)
             if match:
                 metadata = match.groupdict()
