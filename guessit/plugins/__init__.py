@@ -55,3 +55,6 @@ class Transformer(object):
     @abstractmethod
     def process(self, mtree, *args, **kwargs):
         pass
+
+    def rate_quality(self, guess, *props):
+        return 0

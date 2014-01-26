@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins import Transformer
 from guessit.patterns.containers import PropertiesContainer
-from guessit.quality import register_quality
+from guessit.quality import QualitiesContainer
 from guessit.transfo import SingleNodeGuesser
 
 
@@ -31,6 +31,7 @@ class GuessProperties(Transformer):
         Transformer.__init__(self, 35)
 
         self.container = PropertiesContainer()
+        self.qualities = QualitiesContainer()
 
         # http://en.wikipedia.org/wiki/Pirated_movie_release_types
         self.container.register_property('format', 'VHS', 'VHS')
@@ -49,20 +50,20 @@ class GuessProperties(Transformer):
         self.container.register_property('format', 'HD-DVD', 'HD-(?:DVD)?-Rip', 'HD-DVD')
         self.container.register_property('format', 'BluRay', 'Blu-ray', 'B[DR]', 'B[DR]-Rip', 'BD[59]', 'BD25', 'BD50')
 
-        register_quality('format', 'VHS', -100)
-        register_quality('format', 'Cam', -90)
-        register_quality('format', 'Telesync', -80)
-        register_quality('format', 'Workprint', -70)
-        register_quality('format', 'Telecine', -60)
-        register_quality('format', 'Pay-Per-View', -50)
-        register_quality('format', 'DVB', -20)
-        register_quality('format', 'DVD', 0)
-        register_quality('format', 'HDTV', 20)
-        register_quality('format', 'VOD', 40)
-        register_quality('format', 'WEBRip', 50)
-        register_quality('format', 'WEB-DL', 60)
-        register_quality('format', 'HD-DVD', 80)
-        register_quality('format', 'BluRay', 100)
+        self.qualities.register_quality('format', 'VHS', -100)
+        self.qualities.register_quality('format', 'Cam', -90)
+        self.qualities.register_quality('format', 'Telesync', -80)
+        self.qualities.register_quality('format', 'Workprint', -70)
+        self.qualities.register_quality('format', 'Telecine', -60)
+        self.qualities.register_quality('format', 'Pay-Per-View', -50)
+        self.qualities.register_quality('format', 'DVB', -20)
+        self.qualities.register_quality('format', 'DVD', 0)
+        self.qualities.register_quality('format', 'HDTV', 20)
+        self.qualities.register_quality('format', 'VOD', 40)
+        self.qualities.register_quality('format', 'WEBRip', 50)
+        self.qualities.register_quality('format', 'WEB-DL', 60)
+        self.qualities.register_quality('format', 'HD-DVD', 80)
+        self.qualities.register_quality('format', 'BluRay', 100)
 
         self.container.register_property('screenSize', '360p', '(?:\d{3,}(?:\\|\/|x|\*))?360(?:i|p?x?)')
         self.container.register_property('screenSize', '368p', '(?:\d{3,}(?:\\|\/|x|\*))?368(?:i|p?x?)')
@@ -75,15 +76,15 @@ class GuessProperties(Transformer):
         self.container.register_property('screenSize', '1080p', '(?:\d{3,}(?:\\|\/|x|\*))?1080(?:i|p?x?)')
         self.container.register_property('screenSize', '4K', '(?:\d{3,}(?:\\|\/|x|\*))?2160(?:i|p?x?)')
 
-        register_quality('screenSize', '360p', -300)
-        register_quality('screenSize', '368p', -200)
-        register_quality('screenSize', '480p', -100)
-        register_quality('screenSize', '576p', 0)
-        register_quality('screenSize', '720p', 100)
-        register_quality('screenSize', '900p', 130)
-        register_quality('screenSize', '1080i', 180)
-        register_quality('screenSize', '1080p', 200)
-        register_quality('screenSize', '4K', 400)
+        self.qualities.register_quality('screenSize', '360p', -300)
+        self.qualities.register_quality('screenSize', '368p', -200)
+        self.qualities.register_quality('screenSize', '480p', -100)
+        self.qualities.register_quality('screenSize', '576p', 0)
+        self.qualities.register_quality('screenSize', '720p', 100)
+        self.qualities.register_quality('screenSize', '900p', 130)
+        self.qualities.register_quality('screenSize', '1080i', 180)
+        self.qualities.register_quality('screenSize', '1080p', 200)
+        self.qualities.register_quality('screenSize', '4K', 400)
 
         # http://blog.mediacoderhq.com/h264-profiles-and-levels/
         _videoProfiles = {'BS':('BS',),
@@ -109,20 +110,20 @@ class GuessProperties(Transformer):
                     self.container.register_property('videoProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
                     self.container.register_property('videoProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
 
-        register_quality('videoCodec', 'Real', -50)
-        register_quality('videoCodec', 'Mpeg2', -30)
-        register_quality('videoCodec', 'DivX', -10)
-        register_quality('videoCodec', 'XviD', 0)
-        register_quality('videoCodec', 'h264', 100)
-        register_quality('videoCodec', 'h265', 150)
+        self.qualities.register_quality('videoCodec', 'Real', -50)
+        self.qualities.register_quality('videoCodec', 'Mpeg2', -30)
+        self.qualities.register_quality('videoCodec', 'DivX', -10)
+        self.qualities.register_quality('videoCodec', 'XviD', 0)
+        self.qualities.register_quality('videoCodec', 'h264', 100)
+        self.qualities.register_quality('videoCodec', 'h265', 150)
 
-        register_quality('videoProfile', 'BS', -20)
-        register_quality('videoProfile', 'EP', -10)
-        register_quality('videoProfile', 'MP', 0)
-        register_quality('videoProfile', 'HP', 10)
-        register_quality('videoProfile', '10bit', 15)
-        register_quality('videoProfile', 'Hi422P', 25)
-        register_quality('videoProfile', 'Hi444PP', 35)
+        self.qualities.register_quality('videoProfile', 'BS', -20)
+        self.qualities.register_quality('videoProfile', 'EP', -10)
+        self.qualities.register_quality('videoProfile', 'MP', 0)
+        self.qualities.register_quality('videoProfile', 'HP', 10)
+        self.qualities.register_quality('videoProfile', '10bit', 15)
+        self.qualities.register_quality('videoProfile', 'Hi422P', 25)
+        self.qualities.register_quality('videoProfile', 'Hi444PP', 35)
 
         # has nothing to do here (or on filenames for that matter), but some
         # releases use it and it helps to identify release groups, so we adapt
@@ -151,28 +152,28 @@ class GuessProperties(Transformer):
                         self.container.register_property('audioProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
                         self.container.register_property('audioProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
 
-        register_quality('audioCodec', 'MP3', 10)
-        register_quality('audioCodec', 'DolbyDigital', 30)
-        register_quality('audioCodec', 'AAC', 35)
-        register_quality('audioCodec', 'AC3', 40)
-        register_quality('audioCodec', 'Flac', 45)
-        register_quality('audioCodec', 'DTS', 100)
-        register_quality('audioCodec', 'TrueHD', 120)
+        self.qualities.register_quality('audioCodec', 'MP3', 10)
+        self.qualities.register_quality('audioCodec', 'DolbyDigital', 30)
+        self.qualities.register_quality('audioCodec', 'AAC', 35)
+        self.qualities.register_quality('audioCodec', 'AC3', 40)
+        self.qualities.register_quality('audioCodec', 'Flac', 45)
+        self.qualities.register_quality('audioCodec', 'DTS', 100)
+        self.qualities.register_quality('audioCodec', 'TrueHD', 120)
 
-        register_quality('audioProfile', 'HD', 20)
-        register_quality('audioProfile', 'HDMA', 50)
-        register_quality('audioProfile', 'LC', 0)
-        register_quality('audioProfile', 'HE', 20)
+        self.qualities.register_quality('audioProfile', 'HD', 20)
+        self.qualities.register_quality('audioProfile', 'HDMA', 50)
+        self.qualities.register_quality('audioProfile', 'LC', 0)
+        self.qualities.register_quality('audioProfile', 'HE', 20)
 
         self.container.register_property('audioChannels', '7.1', '7[\W_]1', '7ch')
         self.container.register_property('audioChannels', '5.1', '5[\W_]1', '5ch')
         self.container.register_property('audioChannels', '2.0', '2[\W_]0', '2ch', 'stereo')
         self.container.register_property('audioChannels', '1.0', '1[\W_]0', '1ch', 'mono')
 
-        register_quality('audioChannels', '1.0', -100)
-        register_quality('audioChannels', '2.0', 0)
-        register_quality('audioChannels', '5.1', 100)
-        register_quality('audioChannels', '7.1', 200)
+        self.qualities.register_quality('audioChannels', '1.0', -100)
+        self.qualities.register_quality('audioChannels', '2.0', 0)
+        self.qualities.register_quality('audioChannels', '5.1', 100)
+        self.qualities.register_quality('audioChannels', '7.1', 200)
 
         self.container.register_property('episodeFormat', 'Minisode', r'Minisodes?')
 
@@ -196,3 +197,6 @@ class GuessProperties(Transformer):
 
     def process(self, mtree):
         SingleNodeGuesser(self.guess_properties, 1.0, self.log).process(mtree)
+
+    def rate_quality(self, guess, *props):
+        return self.qualities.rate_quality(guess)

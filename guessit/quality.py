@@ -20,29 +20,78 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-_qualities = {}
+from guessit.plugins.transformers import all_transformers
 
 
-def rate_quality(guess, *props):
-    """Rate the quality of guess.
+class QualitiesContainer():
+    def __init__(self):
+        self._qualities = {}
 
-    :param guess: Guess to rate
-    :type guess: :class:`guessit.guess.Guess`
-    :param props: Properties to include in the rating. if empty, rating will be performed for all guess properties.
-    :type props: varargs of string
+    def register_quality(self, name, canonical_form, rating):
+        """Register a quality rating.
 
-    :return: Quality of the guess. The higher, the better.
-    :rtype: int
-    """
-    rate = 0
-    if not props:
-        props = guess.keys()
-    for prop in props:
-        prop_value = guess.get(prop)
-        prop_qualities = _qualities.get(prop)
-        if not prop_value is None and not prop_qualities is None:
-            rate += prop_qualities.get(prop_value, 0)
-    return rate
+        :param name: Name of the property
+        :type name: string
+        :param canonical_form: Value of the property
+        :type canonical_form: string
+        :param rating: Estimated quality rating for the property
+        :type rating: int
+        """
+        property_qualities = self._qualities.get(name)
+
+        if property_qualities is None:
+            property_qualities = {}
+            self._qualities[name] = property_qualities
+
+        property_qualities[canonical_form] = rating
+
+    def unregister_quality(self, name, *canonical_forms):
+        """Unregister quality ratings for given property name.
+
+        If canonical_forms are specified, only those values will be unregistered
+
+        :param name: Name of the property
+        :type name: string
+        :param canonical_forms: Value of the property
+        :type canonical_forms: string
+        """
+        if not canonical_forms:
+            if name in self._qualities:
+                del self._qualities[name]
+        else:
+            property_qualities = self._qualities.get(name)
+            if not property_qualities is None:
+                for property_canonical_form in canonical_forms:
+                    if property_canonical_form in property_qualities:
+                        del property_qualities[property_canonical_form]
+            if not property_qualities:
+                del self._qualities[name]
+
+    def clear_qualities(self,):
+        """Unregister all defined quality ratings.
+        """
+        self._qualities.clear()
+
+    def rate_quality(self, guess, *props):
+        """Rate the quality of guess.
+
+        :param guess: Guess to rate
+        :type guess: :class:`guessit.guess.Guess`
+        :param props: Properties to include in the rating. if empty, rating will be performed for all guess properties.
+        :type props: varargs of string
+
+        :return: Quality of the guess. The higher, the better.
+        :rtype: int
+        """
+        rate = 0
+        if not props:
+            props = guess.keys()
+        for prop in props:
+            prop_value = guess.get(prop)
+            prop_qualities = self._qualities.get(prop)
+            if not prop_value is None and not prop_qualities is None:
+                rate += prop_qualities.get(prop_value, 0)
+        return rate
 
 
 def best_quality_properties(props, *guesses):
@@ -59,10 +108,11 @@ def best_quality_properties(props, *guesses):
     best_guess = None
     best_rate = None
     for guess in guesses:
-        rate = rate_quality(guess, *props)
-        if best_rate is None or best_rate < rate:
-            best_rate = rate
-            best_guess = guess
+        for transformer in all_transformers():
+            rate = transformer.rate_quality(guess, *props)
+            if best_rate is None or best_rate < rate:
+                best_rate = rate
+                best_guess = guess
     return best_guess
 
 
@@ -78,56 +128,9 @@ def best_quality(*guesses):
     best_guess = None
     best_rate = None
     for guess in guesses:
-        rate = rate_quality(guess)
-        if best_rate is None or best_rate < rate:
-            best_rate = rate
-            best_guess = guess
+        for transformer in all_transformers():
+            rate = transformer.rate_quality(guess)
+            if best_rate is None or best_rate < rate:
+                best_rate = rate
+                best_guess = guess
     return best_guess
-
-
-def register_quality(name, canonical_form, rating):
-    """Register a quality rating.
-
-    :param name: Name of the property
-    :type name: string
-    :param canonical_form: Value of the property
-    :type canonical_form: string
-    :param rating: Estimated quality rating for the property
-    :type rating: int
-    """
-    property_qualities = _qualities.get(name)
-
-    if property_qualities is None:
-        property_qualities = {}
-        _qualities[name] = property_qualities
-
-    property_qualities[canonical_form] = rating
-
-
-def unregister_quality(name, *canonical_forms):
-    """Unregister quality ratings for given property name.
-
-    If canonical_forms are specified, only those values will be unregistered
-
-    :param name: Name of the property
-    :type name: string
-    :param canonical_forms: Value of the property
-    :type canonical_forms: string
-    """
-    if not canonical_forms:
-        if name in _qualities:
-            del _qualities[name]
-    else:
-        property_qualities = _qualities.get(name)
-        if not property_qualities is None:
-            for property_canonical_form in canonical_forms:
-                if property_canonical_form in property_qualities:
-                    del property_qualities[property_canonical_form]
-        if not property_qualities:
-            del _qualities[name]
-
-
-def clear_qualities():
-    """Unregister all defined quality ratings.
-    """
-    _qualities.clear()
