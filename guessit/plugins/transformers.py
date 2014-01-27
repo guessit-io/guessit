@@ -28,11 +28,15 @@ from stevedore.extension import Extension
 
 class CustomTransformerExtensionManager(ExtensionManager):
     def __init__(self, namespace='guessit.transformer', invoke_on_load=True,
-        invoke_args=(), invoke_kwds={},
-        propagate_map_exceptions=True):
-        super(CustomTransformerExtensionManager, self).__init__(namespace, invoke_on_load=invoke_on_load,
-                                         invoke_args=invoke_args, invoke_kwds=invoke_kwds,
-                                         propagate_map_exceptions=propagate_map_exceptions)
+        invoke_args=(), invoke_kwds={}, propagate_map_exceptions=True, on_load_failure_callback=None,
+                 verify_requirements=False):
+        super(CustomTransformerExtensionManager, self).__init__(namespace=namespace,
+                 invoke_on_load=invoke_on_load,
+                 invoke_args=invoke_args,
+                 invoke_kwds=invoke_kwds,
+                 propagate_map_exceptions=propagate_map_exceptions,
+                 on_load_failure_callback=on_load_failure_callback,
+                 verify_requirements=verify_requirements)
 
     def order_extensions(self, extensions):
         """Order the loaded transformers
@@ -48,19 +52,19 @@ class CustomTransformerExtensionManager(ExtensionManager):
         extensions.sort(key=lambda ext: -ext.obj.priority)
         return extensions
 
-    def _load_one_plugin(self, ep, invoke_on_load, invoke_args, invoke_kwds):
+    def _load_one_plugin(self, ep, invoke_on_load, invoke_args, invoke_kwds, verify_requirements):
         if not ep.dist:
             plugin = ep.load(require=False)
         else:
-            plugin = ep.load()
+            plugin = ep.load(require=verify_requirements)
         if invoke_on_load:
             obj = plugin(*invoke_args, **invoke_kwds)
         else:
             obj = None
         return Extension(ep.name, ep, plugin, obj)
 
-    def _load_plugins(self, invoke_on_load, invoke_args, invoke_kwds):
-        return self.order_extensions(super(CustomTransformerExtensionManager, self)._load_plugins(invoke_on_load, invoke_args, invoke_kwds))
+    def _load_plugins(self, invoke_on_load, invoke_args, invoke_kwds, verify_requirements):
+        return self.order_extensions(super(CustomTransformerExtensionManager, self)._load_plugins(invoke_on_load, invoke_args, invoke_kwds, verify_requirements))
 
     def objects(self):
         return self.map(self._get_obj)
