@@ -530,3 +530,12 @@
   "format": BluRay
   "screenSize": 720p
   
+? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
+: "videoCodec": "XviD"
+  "title": "Dr Seuss The Lorax"
+  "format": "DVD"
+  "other": 
+      - LiNE
+      - HQ
+  "year": 2012
+  "audioCodec": "AC3"

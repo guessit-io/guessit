@@ -183,7 +183,7 @@ class GuessProperties(Transformer):
 
         self.container.register_properties('other', 'Proper', 'Repack', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ', 'DDC')
         self.container.register_property('other', 'WideScreen', 'ws', 'wide-screen')
-        self.container.register_properties('other', 'Limited', 'Complete', 'Classic', 'Final', 'Unrated', weak=True)
+        self.container.register_properties('other', 'Limited', 'Complete', 'Classic', 'Final', 'Unrated', 'LiNE', weak=True)
 
         for prop in self.container.get_properties('format'):
             self.container.register_property('other', 'Screener', prop.pattern + '(-?Scr(?:eener)?)')
