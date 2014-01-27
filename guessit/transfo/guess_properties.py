@@ -137,11 +137,13 @@ class GuessProperties(Transformer):
         self.container.register_property('audioCodec', 'DTS', 'DTS')
         self.container.register_property('audioCodec', 'TrueHD', 'True-HD')
 
-        _audioProfiles = {'DTS': {'HD':('HD',),
-                                  'HDMA':('HD-MA',),
+        _audioProfiles = {'DTS': {'HD': ('HD',),
+                                  'HDMA': ('HD-MA',),
                                   },
-                            'AAC': {'HE':('HE',),
-                                    'LC':('LC',),
+                            'AAC': {'HE': ('HE',),
+                                    'LC': ('LC',),
+                                    },
+                             'AC3': {'HQ': ('HQ',),
                                     }
                            }
 
@@ -163,6 +165,7 @@ class GuessProperties(Transformer):
         self.qualities.register_quality('audioProfile', 'HD', 20)
         self.qualities.register_quality('audioProfile', 'HDMA', 50)
         self.qualities.register_quality('audioProfile', 'LC', 0)
+        self.qualities.register_quality('audioProfile', 'HQ', 0)
         self.qualities.register_quality('audioProfile', 'HE', 20)
 
         self.container.register_property('audioChannels', '7.1', '7[\W_]1', '7ch')

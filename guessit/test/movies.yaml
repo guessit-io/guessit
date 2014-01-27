@@ -534,8 +534,8 @@
 : "videoCodec": "XviD"
   "title": "Dr Seuss The Lorax"
   "format": "DVD"
-  "other": 
-      - LiNE
-      - HQ
+  "other": LiNE
   "year": 2012
   "audioCodec": "AC3"
+  "audioProfile": "HQ"
+  
