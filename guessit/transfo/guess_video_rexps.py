@@ -42,6 +42,8 @@ class GuessVideoRexps(Transformer):
 
         self.container.register_property('edition', 'Criterion Edition', 'criterion', 'criterion-edition', 'edition-criterion')
 
+        self.container.register_property('edition', 'Deluxe Edition', 'deluxe', 'cdeluxe-edition', 'edition-deluxe')
+
         self.container.register_property('edition', 'Director\'s cut', 'director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut')
 
         self.container.register_property('bonusNumber', None, 'x([0-9]{1,2})', enhance=False, global_span=True)
