@@ -28,7 +28,7 @@ from guessit import base_text_type
 group_delimiters = ['()', '[]', '{}']
 
 # separator character regexp
-sep = r'[][,)(}{+ /\._-]'  # regexp art, hehe :D
+sep = r'[][,)(}:{+ /\._-]'  # regexp art, hehe :D
 
 _dash = '-'
 _psep = '[\W_]?'

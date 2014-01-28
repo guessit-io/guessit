@@ -322,6 +322,7 @@
   videoCodec: h264
   audioCodec: AC3
   audioChannels: "5.1"
+  releaseGroup: REDµX
 
 ? The.Director’s.Notebook.2006.Blu-Ray.x264.DXVA.720p.AC3-de[42].mkv
 : title: The Director’s Notebook
@@ -423,7 +424,7 @@
   year: 2013
   format: BluRay
   other:
-   - complete 
+   - complete
    - 3D
   releaseGroup: PCH
 
@@ -464,7 +465,7 @@
   videoCodec: h264
   title: Pirates de langkasuka
   releaseGroup: AsiaRa
-  
+
 ? Masala (2013) Telugu Movie HD DVDScr XviD - Exclusive.avi
 : year: 2013
   videoCodec: XviD
@@ -500,7 +501,7 @@
   videoCodec: h264
   releaseGroup: EXQUiSiTE
   screenSize: 1080p
-  
+
 ? Rocky 1976 French SubForced BRRip x264 AC3-FUNKY.mkv
 : title: Rocky
   year: 1976
@@ -509,7 +510,7 @@
   videoCodec: h264
   audioCodec: AC3
   releaseGroup: FUNKY
-  
+
 ? REDLINE (BD 1080p H264 10bit FLAC) [3xR].mkv
 : title: REDLINE
   format: BluRay
@@ -517,19 +518,19 @@
   videoProfile: 10bit
   audioCodec: Flac
   screenSize: 1080p
-  
+
 ? The.Lizzie.McGuire.Movie.(2003).HR.DVDRiP.avi
 : title: The Lizzie McGuire Movie
   year: 2003
   screenSize: 480p
   format: DVD
-  
+
 ? Hua.Mulan.BRRIP.MP4.x264.720p-HR.avi
 : "title": Hua Mulan
   "videoCodec": h264
   "format": BluRay
   "screenSize": 720p
-  
+
 ? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : "videoCodec": "XviD"
   "title": "Dr Seuss The Lorax"
@@ -538,4 +539,4 @@
   "year": 2012
   "audioCodec": "AC3"
   "audioProfile": "HQ"
-  
+  releaseGroup: Hive-CM8

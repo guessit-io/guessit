@@ -144,7 +144,7 @@ class GuessMovieTitleFromPosition(Transformer):
                     found_title(leftover[0], confidence=0.7)
                     return
 
-        # look for title in basename if there are some remaining undidentified
+        # look for title in basename if there are some remaining unidentified
         # groups there
         if basename_leftover:
             title_candidate = basename_leftover[0]

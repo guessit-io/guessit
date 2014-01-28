@@ -25,7 +25,7 @@ from guessit.plugins import Transformer
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser, format_guess
 from guessit.patterns import sep
-from guessit.patterns.numeral import numeral, digital_numeral
+from guessit.patterns.numeral import numeral, digital_numeral, parse_numeral
 import re
 
 
@@ -39,9 +39,6 @@ class GuessEpisodesRexps(Transformer):
 
                           # ... s02e13 ...
                           (r's(?P<season>' + digital_numeral + ')[^0-9]?(?P<episodeNumber>(?:-?[e-]' + digital_numeral + ')+)[^0-9]', 1.0, (0, -1)),
-
-                          # ... s03-x02 ... # FIXME: redundant? remove it?
-                          # (r'[Ss](?P<season>[0-9]{1,3})[^0-9]?(?P<bonusNumber>(?:-?[xX-][0-9]{1,3})+)[^0-9]', 1.0, (0, -1)),
 
                           # ... 2x13 ...
                           (r'[^0-9](?P<season>' + digital_numeral + ')[^0-9 .-]?(?P<episodeNumber>(?:-?x' + digital_numeral + ')+)[^0-9]', 1.0, (1, -1)),
@@ -64,6 +61,15 @@ class GuessEpisodesRexps(Transformer):
     def supported_properties(self):
         return ['episodeNumber', 'bonusNumber', 'season']
 
+    def number_list(self, s):
+        l = [ parse_numeral(n) for n in re.findall(numeral, s) ]
+
+        if len(l) == 2:
+            # it is an episode interval, return all numbers in between
+            return list(range(l[0], l[1] + 1))
+
+        return l
+
     def guess_episodes_rexps(self, string):
         for rexp, confidence, span_adjust in self.episode_rexps:
             match = re.search(rexp, string, re.IGNORECASE)
@@ -71,6 +77,22 @@ class GuessEpisodesRexps(Transformer):
                 span = (match.start() + span_adjust[0],
                         match.end() + span_adjust[1])
                 guess = Guess(match.groupdict(), confidence=confidence, input=string, span=span)
+
+
+                # decide whether we have only a single episode number or an
+                # episode list
+                if guess.get('episodeNumber'):
+                    eplist = self.number_list(guess['episodeNumber'])
+                    guess.set('episodeNumber', eplist[0], confidence=confidence, input=string, span=span)
+
+                    if len(eplist) > 1:
+                        guess.set('episodeList', eplist, confidence=confidence, input=string, span=span)
+
+                if guess.get('bonusNumber'):
+                    eplist = self.number_list(guess['bonusNumber'])
+                    guess.set('bonusNumber', eplist[0], confidence=confidence, input=string, span=span)
+
+
                 guess = format_guess(guess)
                 return guess, span
 

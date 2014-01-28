@@ -499,3 +499,11 @@
   episodeNumber: 623
   subtitleLanguage: French
   series: One Piece
+  other: HD
+
+? "Star Wars: Episode IV - A New Hope (2004) Special Edition.MKV"
+: series: Star Wars
+  episodeNumber: 4
+  title: A New Hope
+  year: 2004
+  edition: special edition
