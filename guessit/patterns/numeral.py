@@ -126,4 +126,4 @@ def parse_numeral(value):
         return __parse_word(value)
     except ValueError:
         pass
-    raise ValueError
+    raise ValueError(value)
