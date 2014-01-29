@@ -8,7 +8,7 @@ History
 
 
 
-0.7 (unreleased)
+0.7 (2014-01-29)
 ----------------
 
 * New plugin API that allows to register custom patterns / transformers
