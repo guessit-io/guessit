@@ -1,9 +1,6 @@
 GuessIt
 =======
 
-.. image:: https://pypip.in/v/guessit/badge.png
-   :target: https://crate.io/packages/guessit
-
 .. image:: https://secure.travis-ci.org/wackou/guessit.png?branch=master
    :target: http://travis-ci.org/wackou/guessit
 
