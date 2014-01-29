@@ -44,7 +44,7 @@ entry_points = {
 
 dependency_links = []
 
-version = '0.7'
+version = '0.8.dev0'
 
 args = dict(name='guessit',
             version=version,
