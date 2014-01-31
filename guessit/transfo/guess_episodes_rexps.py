@@ -59,10 +59,10 @@ class GuessEpisodesRexps(Transformer):
                   ]
 
     def supported_properties(self):
-        return ['episodeNumber', 'bonusNumber', 'season']
+        return ['episodeNumber', 'season']
 
     def number_list(self, s):
-        l = [ parse_numeral(n) for n in re.findall(numeral, s) ]
+        l = [parse_numeral(n) for n in re.findall(numeral, s)]
 
         if len(l) == 2:
             # it is an episode interval, return all numbers in between
@@ -78,7 +78,6 @@ class GuessEpisodesRexps(Transformer):
                         match.end() + span_adjust[1])
                 guess = Guess(match.groupdict(), confidence=confidence, input=string, span=span)
 
-
                 # decide whether we have only a single episode number or an
                 # episode list
                 if guess.get('episodeNumber'):
@@ -87,11 +86,6 @@ class GuessEpisodesRexps(Transformer):
 
                     if len(eplist) > 1:
                         guess.set('episodeList', eplist, confidence=confidence, input=string, span=span)
-
-                if guess.get('bonusNumber'):
-                    eplist = self.number_list(guess['bonusNumber'])
-                    guess.set('bonusNumber', eplist[0], confidence=confidence, input=string, span=span)
-
 
                 guess = format_guess(guess)
                 return guess, span
