@@ -116,21 +116,29 @@ class IterativeMatcher(object):
             mtree = self.match_tree
             mtree.guess.set('type', filetype, confidence=1.0)
 
+            # Process
             for transformer in transformers.all_transformers():
-                self._apply_transfo(transformer)
+                self._process(transformer, False)
+
+            # Post-process
+            for transformer in transformers.all_transformers():
+                self._process(transformer, True)
 
             log.debug('Found match tree:\n%s' % u(mtree))
         except TransfoException as e:
             log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e))
 
-    def _apply_transfo(self, transformer, *args, **kwargs):
+    def _process(self, transformer, post=False, *args, **kwargs):
         default_args, default_kwargs = self.transfo_opts.get(transformer.fullname, ((), {}))
         all_args = args or default_args or ()
         all_kwargs = dict(default_kwargs) if default_kwargs else {}
         all_kwargs.update(kwargs)  # keep all kwargs merged together
         if not hasattr(transformer, 'should_process') or transformer.should_process(self):
-            transformer.process(self.match_tree, *all_args, **all_kwargs)
-            self._transfo_calls.append((transformer, all_args, all_kwargs))
+            if post:
+                transformer.post_process(self.match_tree, *all_args, **all_kwargs)
+            else:
+                transformer.process(self.match_tree, *all_args, **all_kwargs)
+                self._transfo_calls.append((transformer, all_args, all_kwargs))
 
     @property
     def second_pass_options(self):

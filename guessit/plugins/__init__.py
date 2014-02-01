@@ -56,5 +56,8 @@ class Transformer(object):
     def process(self, mtree, *args, **kwargs):
         pass
 
+    def post_process(self, mtree, *args, **kwargs):
+        pass
+
     def rate_quality(self, guess, *props):
         return 0

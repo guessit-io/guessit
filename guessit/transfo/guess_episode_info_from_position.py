@@ -22,6 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins import Transformer
 from guessit.transfo import found_property
+from guessit.textutils import reorder_title
 
 
 class GuessEpisodeInfoFromPosition(Transformer):
@@ -156,3 +157,10 @@ class GuessEpisodeInfoFromPosition(Transformer):
                 if node.guess['series'].lower() in self.unlikely_series:
                     new_confidence = node.guess.confidence('series') * 0.5
                     node.guess.set_confidence('series', new_confidence)
+
+    def post_process(self, mtree):
+        for node in mtree.nodes():
+            if 'series' not in node.guess:
+                continue
+
+            node.guess['series'] = reorder_title(node.guess['series'])

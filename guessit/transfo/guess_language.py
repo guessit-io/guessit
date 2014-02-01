@@ -23,8 +23,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.plugins import Transformer
 
 from guessit.transfo import SingleNodeGuesser
-from guessit.language import search_language
-from guessit.textutils import clean_string
+from guessit.language import search_language, subtitle_prefixes, subtitle_suffixes
+from guessit.textutils import clean_string, find_words
+from guessit.patterns.extension import subtitle_exts
 
 
 class GuessLanguage(Transformer):
@@ -32,7 +33,7 @@ class GuessLanguage(Transformer):
         Transformer.__init__(self, 30)
 
     def supported_properties(self):
-        return ['language']
+        return ['language', 'subtitleLanguage']
 
     def guess_language(self, string):
         guess = search_language(string)
@@ -118,3 +119,49 @@ class GuessLanguage(Transformer):
     def process(self, mtree, *args, **kwargs):
         SingleNodeGuesser(self.guess_language, None, self.log, *args, **kwargs).process(mtree)
         # Note: 'language' is promoted to 'subtitleLanguage' in the post_process transfo
+
+    def promote_subtitle(self, node):
+        node.guess.set('subtitleLanguage', node.guess['language'],
+                       confidence=node.guess.confidence('language'))
+        del node.guess['language']
+
+    def post_process(self, mtree, *args, **kwargs):
+                # 1- try to promote language to subtitle language where it makes sense
+        for node in mtree.nodes():
+            if 'language' not in node.guess:
+                continue
+
+            # - if we matched a language in a file with a sub extension and that
+            #   the group is the last group of the filename, it is probably the
+            #   language of the subtitle
+            #   (eg: 'xxx.english.srt')
+            if (mtree.node_at((-1,)).value.lower() in subtitle_exts and
+                node == mtree.leaves()[-2]):
+                self.promote_subtitle(node)
+
+            # - if we find in the same explicit group
+            # a subtitle prefix before the language,
+            # or a subtitle suffix after the language,
+            # then upgrade the language
+            explicit_group = mtree.node_at(node.node_idx[:2])
+            group_str = explicit_group.value.lower()
+
+            for sub_prefix in subtitle_prefixes:
+                if (sub_prefix in find_words(group_str) and
+                    0 <= group_str.find(sub_prefix) < (node.span[0] - explicit_group.span[0])):
+                    self.promote_subtitle(node)
+
+            for sub_suffix in subtitle_suffixes:
+                if (sub_suffix in find_words(group_str) and
+                    (node.span[0] - explicit_group.span[0]) < group_str.find(sub_suffix)):
+                    self.promote_subtitle(node)
+
+            # - if a language is in an explicit group just preceded by "st",
+            #   it is a subtitle language (eg: '...st[fr-eng]...')
+            try:
+                idx = node.node_idx
+                previous = mtree.node_at((idx[0], idx[1] - 1)).leaves()[-1]
+                if previous.value.lower()[-2:] == 'st':
+                    self.promote_subtitle(node)
+            except IndexError:
+                pass

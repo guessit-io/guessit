@@ -56,3 +56,14 @@ class GuessCountry(Transformer):
                     continue
 
                 node.guess = Guess(country=country, confidence=1.0, input=node.value, span=node.span)
+
+    def post_process(self, mtree, *args, **kwargs):
+        # if country is in the guessed properties, make it part of the series name
+        series_leaves = mtree.leaves_containing('series')
+        country_leaves = mtree.leaves_containing('country')
+
+        if series_leaves and country_leaves:
+            country_leaf = country_leaves[0]
+            for serie_leaf in series_leaves:
+                serie_leaf.guess['series'] += ' (%s)' % country_leaf.guess['country'].alpha2.upper()
+            #result['series'] += ' (%s)' % result['country'].alpha2.upper()
