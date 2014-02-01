@@ -28,7 +28,6 @@ from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
 
 from guessit.transfo import TransfoException
-from guessit.plugins import transformers
 
 
 log = logging.getLogger(__name__)
@@ -111,6 +110,8 @@ class IterativeMatcher(object):
         # sanity check: make sure we don't process a (mostly) empty string
         if clean_string(filename) == '':
             return
+
+        from guessit.plugins import transformers
 
         try:
             mtree = self.match_tree
