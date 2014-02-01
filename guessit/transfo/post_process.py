@@ -31,7 +31,7 @@ from guessit.language import subtitle_prefixes, subtitle_suffixes
 class PostProcess(Transformer):
     def __init__(self):
         Transformer.__init__(self, -255)
-        
+
     def supported_properties(self):
         return ['subtitleLanguage']
 
@@ -109,3 +109,13 @@ class PostProcess(Transformer):
                 continue
 
             node.guess['series'] = reorder_title(node.guess['series'])
+
+        # 3- if country is in the guessed properties, make it part of the series name
+        series_leaves = mtree.leaves_containing('series')
+        country_leaves = mtree.leaves_containing('country')
+
+        if series_leaves and country_leaves:
+            country_leaf = country_leaves[0]
+            for serie_leaf in series_leaves:
+                serie_leaf.guess['series'] += ' (%s)' % country_leaf.guess['country'].alpha2.upper()
+            #result['series'] += ' (%s)' % result['country'].alpha2.upper()
