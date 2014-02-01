@@ -135,29 +135,16 @@ class GuessFiletype(Transformer):
             # if we have an episode_rexp (eg: s02e13), it is an episode
             episode_transformer = get_transformer('guess_episodes_rexps')
             if episode_transformer:
-                for rexp, _, _ in episode_transformer.episode_rexps:
-                    match = re.search(rexp, filename, re.IGNORECASE)
-                    if match:
-                        self.log.debug('Found matching regexp: "%s" (string = "%s") -> type = episode', rexp, match.group())
-                        upgrade_episode()
-                        break
+                guess = episode_transformer.guess_episodes_rexps(filename)
+                if guess:
+                    self.log.debug('Found guess_episodes_rexps: %s -> type = episode', guess)
+                    upgrade_episode()
 
-            # if we have a 3-4 digit number that's not a year, maybe an episode
-            match = re.search(r'[^0-9]([0-9]{3,4})[^0-9]', filename)
-            if match:
-                fullnumber = int(match.group()[1:-1])
-                # season = fullnumber // 100
-                epnumber = fullnumber % 100
-                possible = True
-
-                # check for validity
-                if epnumber > 40:
-                    possible = False
-                if valid_year(fullnumber):
-                    possible = False
-
-                if possible:
-                    self.log.debug('Found possible episode number: %s (from string "%s") -> type = episode', epnumber, match.group())
+            weak_episode_transformer = get_transformer('guess_weak_episodes_rexps')
+            if weak_episode_transformer:
+                guess = weak_episode_transformer.guess_weak_episodes_rexps(filename)
+                if guess:
+                    self.log.debug('Found guess_weak_episodes_rexps: %s -> type = episode', guess)
                     upgrade_episode()
 
             properties_transformer = get_transformer('guess_properties')

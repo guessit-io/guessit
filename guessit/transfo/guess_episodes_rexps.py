@@ -88,9 +88,9 @@ class GuessEpisodesRexps(Transformer):
                         guess.set('episodeList', eplist, confidence=confidence, input=string, span=span)
 
                 guess = format_guess(guess)
-                return guess, span
+                return guess
 
-        return None, None
+        return None
 
     def should_process(self, matcher):
         return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')

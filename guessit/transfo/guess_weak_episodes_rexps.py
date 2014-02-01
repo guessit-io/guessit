@@ -25,6 +25,7 @@ from guessit.plugins import Transformer
 from guessit import Guess
 from guessit.transfo import SingleNodeGuesser
 from guessit.patterns import sep
+from guessit.date import valid_year
 import re
 
 
@@ -39,9 +40,9 @@ class GuessWeakEpisodesRexps(Transformer):
     def supported_properties(self):
         return ['episodeNumber', 'season']
 
-    def guess_weak_episodes_rexps(self, string, node):
-        if 'episodeNumber' in node.root.info:
-            return None, None
+    def guess_weak_episodes_rexps(self, string, node=None):
+        if node and 'episodeNumber' in node.root.info:
+            return None
 
         for rexp, span_adjust in self.weak_episode_rexps:
             match = re.search(rexp, string, re.IGNORECASE)
@@ -51,17 +52,18 @@ class GuessWeakEpisodesRexps(Transformer):
                         match.end() + span_adjust[1])
 
                 epnum = int(metadata['episodeNumber'])
-                if epnum > 100:
-                    season, epnum = epnum // 100, epnum % 100
-                    # episodes which have a season > 50 are most likely errors
-                    # (Simpson is at 25!)
-                    if season > 50:
-                        continue
-                    return Guess({'season': season, 'episodeNumber': epnum}, confidence=0.6, input=string, span=span)
-                else:
-                    return Guess(metadata, confidence=0.3, input=string, span=span)
+                if not valid_year(epnum):
+                    if epnum > 100:
+                        season, epnum = epnum // 100, epnum % 100
+                        # episodes which have a season > 50 are most likely errors
+                        # (Simpson is at 25!)
+                        if season > 50:
+                            continue
+                        return Guess({'season': season, 'episodeNumber': epnum}, confidence=0.6, input=string, span=span)
+                    else:
+                        return Guess(metadata, confidence=0.3, input=string, span=span)
 
-        return None, None
+        return None
 
     guess_weak_episodes_rexps.use_node = True
 
