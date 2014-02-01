@@ -84,11 +84,10 @@ class GuessProperties(Transformer):
                                     'BluRay': 100
                                     })
 
-
         register_property('screenSize', {'360p': ['(?:\d{3,}(?:\\|\/|x|\*))?360(?:i|p?x?)'],
                                          '368p': ['(?:\d{3,}(?:\\|\/|x|\*))?368(?:i|p?x?)'],
                                          '480p': ['(?:\d{3,}(?:\\|\/|x|\*))?480(?:i|p?x?)'],
-                                         '480p': (['hr'], {'confidence':0.2}),
+                                         '480p': (['hr'], {'confidence': 0.2}),
                                          '576p': ['(?:\d{3,}(?:\\|\/|x|\*))?576(?:i|p?x?)'],
                                          '720p': ['(?:\d{3,}(?:\\|\/|x|\*))?720(?:i|p?x?)'],
                                          '900p': ['(?:\d{3,}(?:\\|\/|x|\*))?900(?:i|p?x?)'],
@@ -127,13 +126,13 @@ class GuessProperties(Transformer):
                                         })
 
         # http://blog.mediacoderhq.com/h264-profiles-and-levels/
-        _videoProfiles = {'BS':('BS',),
-                          'EP':('EP', 'XP'),
-                          'MP':('MP',),
-                          'HP':('HP', 'HiP'),
-                          '10bit':('10.?bit', 'Hi10P'),
-                          'Hi422P':('Hi422P',),
-                          'Hi444PP':('Hi444PP'),
+        _videoProfiles = {'BS': ('BS',),
+                          'EP': ('EP', 'XP'),
+                          'MP': ('MP',),
+                          'HP': ('HP', 'HiP'),
+                          '10bit': ('10.?bit', 'Hi10P'),
+                          'Hi422P': ('Hi422P',),
+                          'Hi444PP': ('Hi444PP'),
                           }
 
         for profile, profile_regexps in _videoProfiles.items():
@@ -143,7 +142,6 @@ class GuessProperties(Transformer):
                     self.container.register_property('videoProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
                     self.container.register_property('videoProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
 
-
         register_quality('videoProfile', {'BS': -20,
                                           'EP': -10,
                                           'MP': 0,
@@ -152,7 +150,6 @@ class GuessProperties(Transformer):
                                           'Hi422P': 25,
                                           'Hi444PP': 35
                                           })
-
 
         # has nothing to do here (or on filenames for that matter), but some
         # releases use it and it helps to identify release groups, so we adapt
