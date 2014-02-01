@@ -25,6 +25,7 @@ import re
 
 
 def valid_year(year):
+    """Check if number is a valid year"""
     return 1920 < year < datetime.date.today().year + 5
 
 
@@ -124,7 +125,7 @@ def search_date(string):
                 continue
 
             # check date plausibility
-            if not 1900 < date.year < datetime.date.today().year + 5:
+            if not valid_year(date.year):
                 continue
 
             # looks like we have a valid date
