@@ -73,7 +73,7 @@ class GuessProperties(Transformer):
                                     'Telesync': -80,
                                     'Workprint': -70,
                                     'Telecine': -60,
-                                    'Pay-Per-View': -50,
+                                    'PPV': -50,
                                     'DVB': -20,
                                     'DVD': 0,
                                     'HDTV': 20,
