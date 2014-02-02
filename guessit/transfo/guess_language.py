@@ -35,7 +35,7 @@ class GuessLanguage(Transformer):
     def supported_properties(self):
         return ['language', 'subtitleLanguage']
 
-    def guess_language(self, string):
+    def guess_language(self, string, node):
         guess = search_language(string)
         return guess
 

@@ -25,7 +25,6 @@ from guessit.plugins.transformers import get_transformer
 
 from guessit import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
-from guessit.date import valid_year
 from guessit.textutils import clean_string
 import os.path
 import re

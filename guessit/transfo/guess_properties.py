@@ -223,7 +223,7 @@ class GuessProperties(Transformer):
         for prop in self.container.get_properties('format'):
             self.container.register_property('other', 'Screener', prop.pattern + '(-?Scr(?:eener)?)')
 
-    def guess_properties(self, string):
+    def guess_properties(self, string, node):
         found = self.container.find_properties(string)
         return self.container.as_guess(found, string)
 

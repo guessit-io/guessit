@@ -70,7 +70,7 @@ class GuessEpisodesRexps(Transformer):
 
         return l
 
-    def guess_episodes_rexps(self, string):
+    def guess_episodes_rexps(self, string, node=None):
         for rexp, confidence, span_adjust in self.episode_rexps:
             match = re.search(rexp, string, re.IGNORECASE)
             if match:

@@ -72,8 +72,6 @@ class GuessWeakEpisodesRexps(Transformer):
 
         return None
 
-    guess_weak_episodes_rexps.use_node = True
-
     def should_process(self, matcher):
         return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
 

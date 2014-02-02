@@ -64,9 +64,7 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
         value = node.value
     string = ' %s ' % value  # add sentinels
     for matcher, confidence, args, kwargs in strategy:
-        all_args = [string]
-        if getattr(matcher, 'use_node', False):
-            all_args.append(node)
+        all_args = [string, node]
         if args:
             all_args.append(args)
 

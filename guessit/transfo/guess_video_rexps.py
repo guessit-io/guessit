@@ -18,13 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, \
+    unicode_literals
 
-from guessit.plugins import Transformer
-
-from guessit.transfo import SingleNodeGuesser
 from guessit.patterns import _psep
 from guessit.patterns.containers import PropertiesContainer
+from guessit.plugins import Transformer
+from guessit.transfo import SingleNodeGuesser
 
 
 class GuessVideoRexps(Transformer):
@@ -53,7 +53,7 @@ class GuessVideoRexps(Transformer):
     def supported_properties(self):
         return self.container.get_supported_properties()
 
-    def guess_video_rexps(self, string):
+    def guess_video_rexps(self, string, node):
         found = self.container.find_properties(string)
         return self.container.as_guess(found, string)
 
