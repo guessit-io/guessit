@@ -101,7 +101,7 @@ def __parse_word(value):
     raise ValueError
 
 
-def parse_numeral(value):
+def parse_numeral(value, int_enabled=True, roman_enabled=True, word_enabled=True):
     """Parse a numeric value into integer.
 
     input can be an integer as a string, a roman numeral or a word
@@ -109,21 +109,22 @@ def parse_numeral(value):
     :param value: Value to parse. Can be an integer, roman numeral or word.
     :type value: string
 
-    :return: Numeric value
+    :return: Numeric value, or None if value can't be parsed
     :rtype: int
-
-    :raise ValueError: If value can't be parsed
     """
-    try:
-        return int(value)
-    except ValueError:
-        pass
-    try:
-        return __parse_roman(value)
-    except ValueError:
-        pass
-    try:
-        return __parse_word(value)
-    except ValueError:
-        pass
-    raise ValueError(value)
+    if int_enabled:
+        try:
+            return int(value)
+        except ValueError:
+            pass
+    if roman_enabled:
+        try:
+            return __parse_roman(value)
+        except ValueError:
+            pass
+    if word_enabled:
+        try:
+            return __parse_word(value)
+        except ValueError:
+            pass
+    return None

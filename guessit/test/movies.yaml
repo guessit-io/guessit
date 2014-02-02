@@ -526,17 +526,23 @@
   format: DVD
 
 ? Hua.Mulan.BRRIP.MP4.x264.720p-HR.avi
-: "title": Hua Mulan
-  "videoCodec": h264
-  "format": BluRay
-  "screenSize": 720p
+: title: Hua Mulan
+  videoCodec: h264
+  format: BluRay
+  screenSize: 720p
 
 ? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
-: "videoCodec": "XviD"
-  "title": "Dr Seuss The Lorax"
-  "format": "DVD"
-  "other": LiNE
-  "year": 2012
-  "audioCodec": "AC3"
-  "audioProfile": "HQ"
+: videoCodec: "XviD"
+  title: "Dr Seuss The Lorax"
+  format: "DVD"
+  other: LiNE
+  year: 2012
+  audioCodec: "AC3"
+  audioProfile: "HQ"
   releaseGroup: Hive-CM8
+  
+
+? "Star Wars: Episode IV - A New Hope (2004) Special Edition.MKV"
+: title: Star Wars Episode IV
+  year: 2004
+  edition: Special Edition
