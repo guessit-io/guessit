@@ -32,7 +32,7 @@ install_requires = ['babelfish>=0.5', 'stevedore>=0.14']
 
 tests_require = ['PyYAML', 'nose']  # Fabric not available (yet!) for python3
 
-setup_requires = ['nose']
+setup_requires = []
 
 extras_require = {'language_detection': ['guess-language>=0.2']}
 

@@ -28,8 +28,9 @@ import os.path
 def hash_file(filename):
     """Returns the ed2k hash of a given file.
 
-    >>> s(hash_file('tests/dummy.srt'))
-    'ed2k://|file|dummy.srt|44|1CA0B9DED3473B926AA93A0A546138BB|/'
+    >>> testfile = os.path.join(os.path.dirname(__file__), 'test/dummy.srt')
+    >>> s(hash_file(testfile))
+    'ed2k://|file|dummy.srt|59|41F58B913AB3973F593BEBA8B8DF6510|/'
     """
     return 'ed2k://|file|%s|%d|%s|/' % (os.path.basename(filename),
                                         os.path.getsize(filename),

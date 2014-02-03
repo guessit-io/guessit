@@ -20,6 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import guessit
 from guessit import UnicodeMixin, base_text_type, Guess
 from guessit.textutils import clean_string, str_fill
 from guessit.patterns import group_delimiters
@@ -48,7 +49,7 @@ class BaseMatchTree(UnicodeMixin):
     BaseMatchTrees are displayed in the following way:
 
         >>> path = 'Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv'
-        >>> print guessit.IterativeMatcher(path).match_tree
+        >>> print(guessit.IterativeMatcher(path).match_tree)
         000000 1111111111111111 2222222222222222222222222222222222222222222 333
         000000 0000000000111111 0000000000111111222222222222222222222222222 000
                          011112           011112000000000000000000000000111

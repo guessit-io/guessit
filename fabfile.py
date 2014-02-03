@@ -9,7 +9,7 @@ from fabric.tasks import Task
 @task
 def doctests():
     """Run the doctests found in GuessIt classes"""
-    local('nosetests --with-doctest -vv guessit')
+    local('PYTHONPATH=.:$PYTHONPATH python guessit/test/test_doctests.py')
 
 
 class TestTask(Task):
@@ -125,4 +125,5 @@ def test_pypi_sdist():
             local('python -m guessit.test.test_language')
             local('python -m guessit.test.test_matchtree')
             local('python -m guessit.test.test_utils')
+            local('python -m guessit.test.test_doctests')
     local('rm -fr %s' % d)

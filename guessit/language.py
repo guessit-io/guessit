@@ -178,16 +178,10 @@ class Language(UnicodeMixin):
     Language(French)
 
     >>> s(Language('eng').english_name)
-    'english'
+    'English'
 
-    >>> s(Language('pt(br)').country.english_name)
-    'Brazil'
-
-    >>> s(Language('Español (Latinoamérica)').country.english_name)
-    'Latin America'
-
-    >>> Language('Spanish (Latin America)') == Language('Español (Latinoamérica)')
-    True
+    >>> s(Language('pt(br)').country.name)
+    'BRAZIL'
 
     >>> s(Language('zz', strict=False).english_name)
     'Undetermined'
@@ -341,11 +335,11 @@ def search_language(string, lang_filter=None):
     you can specify a list of allowed languages using the lang_filter argument,
     as in lang_filter = [ 'fr', 'eng', 'spanish' ]
 
-    >>> search_language('movie [en].avi')
-    (Language(English), (7, 9), 0.8)
+    >>> search_language('movie [en].avi')['language']
+    Language(English)
 
     >>> search_language('the zen fat cat and the gay mad men got a new fan', lang_filter = ['en', 'fr', 'es'])
-    (None, None, None)
+
     """
 
     if lang_filter:

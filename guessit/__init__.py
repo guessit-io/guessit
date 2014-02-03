@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import pkg_resources
 
-__version__ = pkg_resources.require("guessit")[0].version
+__version__ = pkg_resources.get_distribution("guessit").version
 __all__ = ['Guess', 'Language',
            'guess_file_info', 'guess_video_info',
            'guess_movie_info', 'guess_episode_info']
@@ -89,6 +89,7 @@ from guessit.guess import Guess, merge_all
 from guessit.language import Language
 from guessit.matcher import IterativeMatcher
 from guessit.textutils import clean_string
+import os.path
 import logging
 import json
 
@@ -117,8 +118,9 @@ def guess_file_info(filename, filetype, info=None):
     """info can contain the names of the various plugins, such as 'filename' to
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
-    >>> guess_file_info('tests/dummy.srt', 'autodetect', info = ['hash_md5', 'hash_sha1'])
-    {'hash_md5': 'e781de9b94ba2753a8e2945b2c0a123d', 'hash_sha1': 'bfd18e2f4e5d59775c2bc14d80f56971891ed620'}
+    >>> testfile = os.path.join(os.path.dirname(__file__), 'test/dummy.srt')
+    >>> s(guess_file_info(testfile, 'autodetect', info = ['hash_md5', 'hash_sha1']))
+    {'hash_md5': '64de6b5893cac24456c46a935ef9c359', 'hash_sha1': 'a703fc0fa4518080505809bf562c6fc6f7b3c98c'}
     """
     result = []
     hashers = []

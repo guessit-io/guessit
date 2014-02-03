@@ -20,7 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit import UnicodeMixin, u, base_text_type
+from guessit import UnicodeMixin, s, u, base_text_type
 import json
 import datetime
 import logging
