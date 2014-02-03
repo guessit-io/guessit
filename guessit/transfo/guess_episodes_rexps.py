@@ -36,7 +36,7 @@ class GuessEpisodesRexps(Transformer):
         self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False)
 
         def episode_parser(value):
-            values = re.split('[a-z]', value, flags=re.IGNORECASE)  # That's not about sex ...
+            values = re.split('[a-zA-Z]', value)
             values = [x for x in values if x]
             ret = []
             for letters_elt in values:
