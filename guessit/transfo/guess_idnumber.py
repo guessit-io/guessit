@@ -29,13 +29,13 @@ import re
 class GuessIdnumber(Transformer):
     def __init__(self):
         Transformer.__init__(self, -180)
-        
+
     def supported_properties(self):
         return ['idNumber']
 
     _idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})')  # 1.0, (0, 0))
 
-    def guess_idnumber(self, string):
+    def guess_idnumber(self, string, node):
         match = self._idnum.search(string)
         if match is not None:
             result = match.groupdict()

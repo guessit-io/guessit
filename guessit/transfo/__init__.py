@@ -42,20 +42,6 @@ def found_property(node, name, confidence):
     log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
 
 
-def format_guess(guess):
-    """Format all the found values to their natural type.
-    For instance, a year would be stored as an int value, etc...
-
-    Note that this modifies the dictionary given as input.
-    """
-    for prop, value in guess.items():
-        if prop in ('season', 'episodeNumber', 'year', 'cdNumber',
-                    'cdNumberTotal', 'bonusNumber', 'filmNumber'):
-            guess[prop] = parse_numeral(guess[prop])
-
-    return guess
-
-
 def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
     value = None
     if partial_span:
@@ -64,9 +50,7 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
         value = node.value
     string = ' %s ' % value  # add sentinels
     for matcher, confidence, args, kwargs in strategy:
-        all_args = [string]
-        if getattr(matcher, 'use_node', False):
-            all_args.append(node)
+        all_args = [string, node]
         if args:
             all_args.append(args)
 
@@ -110,7 +94,6 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
                             confidence = 1.0
                         guess = Guess(result, confidence=confidence, input=string, span=span)
 
-                    guess = format_guess(guess)
                     msg = 'Found with confidence %.2f: %s' % (confidence, guess)
                     (logger or log).debug(msg)
 

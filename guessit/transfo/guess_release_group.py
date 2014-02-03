@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins import Transformer
 
-from guessit.transfo import SingleNodeGuesser, format_guess
+from guessit.transfo import SingleNodeGuesser
 from guessit.patterns.containers import PropertiesContainer
 from guessit.patterns import sep
 from guessit.guess import Guess
@@ -31,7 +31,7 @@ from guessit.guess import Guess
 class GuessReleaseGroup(Transformer):
     def __init__(self):
         Transformer.__init__(self, -190)
-        self.container = PropertiesContainer()
+        self.container = PropertiesContainer(canonical_from_pattern=False)
         self._allowed_groupname_pattern = r'[\w@#€£$&]'
         self._forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour', 'bonus'],
                                lambda elt: self._is_number(elt),
@@ -42,9 +42,9 @@ class GuessReleaseGroup(Transformer):
 
         self.container.sep_replace_char = '-'
         self.container.canonical_from_pattern = False
-        self.container.enhance_patterns = True
-        self.container.register_property('releaseGroup', None, self._allowed_groupname_pattern + '+')
-        self.container.register_property('releaseGroup', None, self._allowed_groupname_pattern + '+-' + self._allowed_groupname_pattern + '+')
+        self.container.enhance = True
+        self.container.register_property('releaseGroup', self._allowed_groupname_pattern + '+')
+        self.container.register_property('releaseGroup', self._allowed_groupname_pattern + '+-' + self._allowed_groupname_pattern + '+')
 
     def supported_properties(self):
         return self.container.get_supported_properties()
@@ -97,7 +97,7 @@ class GuessReleaseGroup(Transformer):
         return False
 
     def guess_release_group(self, string, node):
-        found = self.container.find_properties(string, 'releaseGroup')
+        found = self.container.find_properties(string, node, 'releaseGroup')
         guess = self.container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
         if guess:
             explicit_group_idx = node.node_idx[:2]
@@ -119,13 +119,10 @@ class GuessReleaseGroup(Transformer):
                     if self.is_leaf_previous(leaf, node):
                         guess = Guess({'releaseGroup': node.clean_value}, confidence=1, input=node.value, span=node.span)
                         if self.validate_group_name(guess):
-                            guess = format_guess(guess)
                             node.guess = guess
                             break
 
         return None
-
-    guess_release_group.use_node = True
 
     def process(self, mtree):
         SingleNodeGuesser(self.guess_release_group, None, self.log).process(mtree)

@@ -22,9 +22,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins import Transformer
 
-from guessit import Guess
-from guessit.transfo import SingleNodeGuesser, format_guess
+from guessit.transfo import SingleNodeGuesser
 from guessit.patterns import sep
+from guessit.patterns.containers import PropertiesContainer, WeakValidator
 from guessit.patterns.numeral import numeral, digital_numeral, parse_numeral
 import re
 
@@ -33,30 +33,40 @@ class GuessEpisodesRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 20)
 
-        # format: [ (regexp, confidence, span_adjust) ]
-        self.episode_rexps = [  # ... Season 2 ...
-                          (r'(?:season|saison)\s+(?P<season>%s)' % (numeral,), 1.0, (0, 0)),
+        self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False)
 
-                          # ... s02e13 ...
-                          (r's(?P<season>' + digital_numeral + ')[^0-9]?(?P<episodeNumber>(?:-?[e-]' + digital_numeral + ')+)[^0-9]', 1.0, (0, -1)),
+        def episode_parser(value):
+            values = re.split('[a-zA-Z]', value)
+            values = [x for x in values if x]
+            ret = []
+            for letters_elt in values:
+                dashed_values = letters_elt.split('-')
+                dashed_values = [x for x in dashed_values if x]
+                if len(dashed_values) > 1:
+                    for i in range(0, len(dashed_values) - 1):
+                        start_dash_ep = parse_numeral(dashed_values[0])
+                        end_dash_ep = parse_numeral(dashed_values[1])
+                        for dash_ep in range(start_dash_ep, end_dash_ep + 1):
+                            ret.append(dash_ep)
+                else:
+                    ret.append(parse_numeral(letters_elt))
+            if len(ret) > 1:
+                return {None: ret[0], 'episodeList': ret}  # TODO: Should support seasonList also
+            elif len(ret) > 0:
+                return ret[0]
+            else:
+                return None
 
-                          # ... 2x13 ...
-                          (r'[^0-9](?P<season>' + digital_numeral + ')[^0-9 .-]?(?P<episodeNumber>(?:-?x' + digital_numeral + ')+)[^0-9]', 1.0, (1, -1)),
+        self.container.register_property(None, r'((?:season|saison)' + sep + '?(?P<season>' + numeral + '))', confidence=1.0, formatter=parse_numeral)
+        self.container.register_property(None, r'(s(?P<season>' + digital_numeral + ')[^0-9]?' + sep + '?(?P<episodeNumber>(?:e' + digital_numeral + '(?:' + sep + '?[e-]' + digital_numeral + ')*)))[^0-9]', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser})
+        self.container.register_property(None, r'[^0-9]((?P<season>' + digital_numeral + ')[^0-9 .-]?-?(?P<episodeNumber>(?:x' + digital_numeral + '(?:' + sep + '?[x-]' + digital_numeral + ')*)))[^0-9]', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser})
+        self.container.register_property(None, r'(s(?P<season>' + digital_numeral + '))[^0-9]', confidence=0.6, formatter=parse_numeral)
+        self.container.register_property(None, r'((?P<episodeNumber>' + digital_numeral + ')v[23])', confidence=0.6, formatter=parse_numeral)
+        self.container.register_property(None, r'((?:ep)' + sep + r'(?P<episodeNumber>' + numeral + '))[^0-9]', confidence=0.7, formatter=parse_numeral)
+        self.container.register_property(None, r'(e(?P<episodeNumber>' + digital_numeral + '))', confidence=0.6, formatter=parse_numeral)
 
-                          # ... s02 ...
-                          # (sep + r's(?P<season>[0-9]{1,2})' + sep, 0.6, (1, -1)),
-                          (r's(?P<season>' + digital_numeral + ')[^0-9]', 0.6, (0, -1)),
-
-                          # v2 or v3 for some mangas which have multiples rips
-                          (r'(?P<episodeNumber>' + digital_numeral + ')v[23]' + sep, 0.6, (0, 0)),
-
-                          # ... ep 23 ...
-                          ('(?:ep)' + sep + r'(?P<episodeNumber>' + numeral + ')[^0-9]', 0.7, (0, -1)),
-
-                          # ... e13 ... for a mini-series without a season number
-                          (sep + r'e(?P<episodeNumber>' + digital_numeral + ')' + sep, 0.6, (1, -1))
-
-                  ]
+        self.container.register_canonical_properties('other', 'FiNAL', 'Complete', validator=WeakValidator())
+        self.container.register_property('other', 'Extras?', canonical_form='Extra')
 
     def supported_properties(self):
         return ['episodeNumber', 'season']
@@ -70,27 +80,9 @@ class GuessEpisodesRexps(Transformer):
 
         return l
 
-    def guess_episodes_rexps(self, string):
-        for rexp, confidence, span_adjust in self.episode_rexps:
-            match = re.search(rexp, string, re.IGNORECASE)
-            if match:
-                span = (match.start() + span_adjust[0],
-                        match.end() + span_adjust[1])
-                guess = Guess(match.groupdict(), confidence=confidence, input=string, span=span)
-
-                # decide whether we have only a single episode number or an
-                # episode list
-                if guess.get('episodeNumber'):
-                    eplist = self.number_list(guess['episodeNumber'])
-                    guess.set('episodeNumber', eplist[0], confidence=confidence, input=string, span=span)
-
-                    if len(eplist) > 1:
-                        guess.set('episodeList', eplist, confidence=confidence, input=string, span=span)
-
-                guess = format_guess(guess)
-                return guess
-
-        return None
+    def guess_episodes_rexps(self, string, node=None):
+        found = self.container.find_properties(string, node)
+        return self.container.as_guess(found, string)
 
     def should_process(self, matcher):
         return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')

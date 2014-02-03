@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.test.guessittest import *
 
-IGNORE_EPISODES = ['finale ']
+IGNORE_EPISODES = []
 IGNORE_MOVIES = []
 
 

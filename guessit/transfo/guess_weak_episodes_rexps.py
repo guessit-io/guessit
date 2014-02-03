@@ -59,6 +59,7 @@ class GuessWeakEpisodesRexps(Transformer):
                             match.end() + span_adjust[1])
 
                     epnum = parse_numeral(metadata['episodeNumber'])
+                    metadata['episodeNumber'] = epnum
                     if not valid_year(epnum):
                         if epnum > 100:
                             season, epnum = epnum // 100, epnum % 100
@@ -71,8 +72,6 @@ class GuessWeakEpisodesRexps(Transformer):
                             return Guess(metadata, confidence=0.3, input=string, span=span)
 
         return None
-
-    guess_weak_episodes_rexps.use_node = True
 
     def should_process(self, matcher):
         return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')

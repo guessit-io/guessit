@@ -28,7 +28,7 @@ from guessit import Guess, u
 class GuessMovieTitleFromPosition(Transformer):
     def __init__(self):
         Transformer.__init__(self, -200)
-        
+
     def supported_properties(self):
         return ['title']
 

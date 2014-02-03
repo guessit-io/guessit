@@ -25,7 +25,6 @@ from guessit.plugins.transformers import get_transformer
 
 from guessit import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
-from guessit.date import valid_year
 from guessit.textutils import clean_string
 import os.path
 import re
@@ -151,13 +150,13 @@ class GuessFiletype(Transformer):
 
             if properties_transformer:
                 # if we have certain properties characteristic of episodes, it is an ep
-                found = properties_transformer.container.find_properties(filename, 'episodeFormat')
+                found = properties_transformer.container.find_properties(filename, mtree, 'episodeFormat')
                 guess = properties_transformer.container.as_guess(found, filename)
                 if guess:
                     self.log.debug('Found characteristic property of episodes: %s"', guess)
                     upgrade_episode()
 
-                found = properties_transformer.container.find_properties(filename, 'format')
+                found = properties_transformer.container.find_properties(filename, mtree, 'format')
                 guess = properties_transformer.container.as_guess(found, filename, lambda g: g['format'] == 'DVB')
                 if guess:
                     self.log.debug('Found characteristic property of episodes: %s', guess)
