@@ -32,7 +32,7 @@ class GuessWebsite(Transformer):
     def __init__(self):
         Transformer.__init__(self, 45)
 
-        self.container = PropertiesContainer(enhance_patterns=False, canonical_from_pattern=False)
+        self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False)
 
         tlds = []
 
@@ -51,17 +51,15 @@ class GuessWebsite(Transformer):
         safe_subdomains_pattern = build_or_pattern(['www'])  # For sure a website subdomain
         safe_prefix_tlds_pattern = build_or_pattern(['co', 'com', 'org', 'net'])  # Those words before a tlds are sure
 
-        self.container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)+' + r'(?:[a-z-]+\.)+' + r'(?:' + tlds_pattern + r')+')
-
-        self.container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_tlds_pattern + r')+')
-
-        self.container.register_property('website', None, '(?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_prefix_tlds_pattern + r'\.)+' + r'(?:' + tlds_pattern + r')+')
+        self.container.register_property('website', '(?:' + safe_subdomains_pattern + '\.)+' + r'(?:[a-z-]+\.)+' + r'(?:' + tlds_pattern + r')+')
+        self.container.register_property('website', '(?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_tlds_pattern + r')+')
+        self.container.register_property('website', '(?:' + safe_subdomains_pattern + '\.)*' + r'[a-z-]+\.' + r'(?:' + safe_prefix_tlds_pattern + r'\.)+' + r'(?:' + tlds_pattern + r')+')
 
     def supported_properties(self):
         return self.container.get_supported_properties()
 
     def guess_website(self, string, node):
-        found = self.container.find_properties(string, 'website')
+        found = self.container.find_properties(string, node, 'website')
         return self.container.as_guess(found, string)
 
     def process(self, mtree):

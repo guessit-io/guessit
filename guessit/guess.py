@@ -44,13 +44,12 @@ class GuessMetadata(object):
     :param prop: The found property definition
     :type prop: :class `guessit.patterns.containers._Property`
     """
-    def __init__(self, parent=None, confidence=None, input=None, span=None, prop=None, weak=None, *args, **kwargs):
+    def __init__(self, parent=None, confidence=None, input=None, span=None, prop=None, *args, **kwargs):
         self.parent = parent
         if confidence is None and self.parent is None:
             self._confidence = 1.0
         else:
             self._confidence = confidence
-        self._weak = weak
         self._input = input
         self._span = span
         self._prop = prop
@@ -67,19 +66,6 @@ class GuessMetadata(object):
     @confidence.setter
     def confidence(self, confidence):
         self._confidence = confidence
-
-    @property
-    def weak(self):
-        """If weak, a property value is a common name that could belong to a title
-
-        :rtype: boolean
-        :return: String used to find this guess value
-        """
-        return self._weak if not self._weak is None else self.parent.weak if self.parent else None
-
-    @weak.setter
-    def weak(self, weak):
-        self._weak = weak
 
     @property
     def input(self):
@@ -436,8 +422,7 @@ def merge_all(guesses, append=None):
                            confidence=g.metadata(prop).confidence,
                            input=g.metadata(prop).input,
                            span=g.metadata(prop).span,
-                           prop=g.metadata(prop).prop,
-                           weak=g.metadata(prop).weak)
+                           prop=g.metadata(prop).prop)
 
                 del g[prop]
 

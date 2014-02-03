@@ -21,9 +21,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.plugins import Transformer
-from guessit.patterns.containers import PropertiesContainer
+from guessit.patterns.containers import PropertiesContainer, WeakValidator
 from guessit.quality import QualitiesContainer
 from guessit.transfo import SingleNodeGuesser
+from wsgiref.validate import validator
 
 
 class GuessProperties(Transformer):
@@ -35,13 +36,15 @@ class GuessProperties(Transformer):
 
         def register_property(propname, props):
             """props a dict of {value: [patterns]}"""
-            for value, patterns in props.items():
+            for canonical_form, patterns in props.items():
                 if isinstance(patterns, tuple):
                     patterns2, kwargs = patterns
-                    self.container.register_property(propname, value, *patterns2, **kwargs)
+                    kwargs = dict(kwargs)
+                    kwargs['canonical_form'] = canonical_form
+                    self.container.register_property(propname, *patterns2, **kwargs)
 
                 else:
-                    self.container.register_property(propname, value, *patterns)
+                    self.container.register_property(propname, *patterns, canonical_form=canonical_form)
 
         def register_quality(propname, quality_dict):
             """props a dict of {canonical_form: quality}"""
@@ -137,10 +140,10 @@ class GuessProperties(Transformer):
 
         for profile, profile_regexps in _videoProfiles.items():
             for profile_regexp in profile_regexps:
-                # container.register_property('videoProfile', profile, profile_regexp)
+                # container.register_property('videoProfile', profile_regexp, canonical_form=profile)
                 for prop in self.container.get_properties('videoCodec'):
-                    self.container.register_property('videoProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
-                    self.container.register_property('videoProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
+                    self.container.register_property('videoProfile', prop.pattern + '(-' + profile_regexp + ')', canonical_form=profile)
+                    self.container.register_property('videoProfile', '(' + profile_regexp + '-)' + prop.pattern, canonical_form=profile)
 
         register_quality('videoProfile', {'BS': -20,
                                           'EP': -10,
@@ -187,8 +190,8 @@ class GuessProperties(Transformer):
             for profile, profile_regexps in codecProfiles.items():
                 for profile_regexp in profile_regexps:
                     for prop in self.container.get_properties('audioCodec', audioCodec):
-                        self.container.register_property('audioProfile', profile, prop.pattern + '(-' + profile_regexp + ')')
-                        self.container.register_property('audioProfile', profile, '(' + profile_regexp + '-)' + prop.pattern)
+                        self.container.register_property('audioProfile', prop.pattern + '(-' + profile_regexp + ')', canonical_form=profile)
+                        self.container.register_property('audioProfile', '(' + profile_regexp + '-)' + prop.pattern, canonical_form=profile)
 
         register_quality('audioProfile', {'HD': 20,
                                           'HDMA': 50,
@@ -209,7 +212,7 @@ class GuessProperties(Transformer):
                                            '1.0': -100
                                            })
 
-        self.container.register_property('episodeFormat', 'Minisode', r'Minisodes?')
+        self.container.register_property('episodeFormat', r'Minisodes?', canonical_form='Minisode')
 
         register_property('other', {'AudioFix': ['Audio-Fix', 'Audio-Fixed'],
                                     'SyncFix': ['Sync-Fix', 'Sync-Fixed'],
@@ -217,14 +220,16 @@ class GuessProperties(Transformer):
                                     'WideScreen': ['ws', 'wide-screen'],
                                     })
 
-        self.container.register_properties('other', 'Proper', 'Repack', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ', 'DDC')
-        self.container.register_properties('other', 'Limited', 'Complete', 'Classic', 'Final', 'Unrated', 'LiNE', weak=True)
+        self.container.register_canonical_properties('other', 'Proper', 'Repack', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ', 'DDC')
+        self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', validator=WeakValidator())
+
+        self.container.register_property('other', 'Extras?', canonical_form='Extra')
 
         for prop in self.container.get_properties('format'):
-            self.container.register_property('other', 'Screener', prop.pattern + '(-?Scr(?:eener)?)')
+            self.container.register_property('other', prop.pattern + '(-?Scr(?:eener)?)', canonical_form='Screener')
 
     def guess_properties(self, string, node):
-        found = self.container.find_properties(string)
+        found = self.container.find_properties(string, node)
         return self.container.as_guess(found, string)
 
     def supported_properties(self):

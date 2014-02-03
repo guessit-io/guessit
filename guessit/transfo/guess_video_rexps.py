@@ -25,6 +25,7 @@ from guessit.patterns import _psep
 from guessit.patterns.containers import PropertiesContainer
 from guessit.plugins import Transformer
 from guessit.transfo import SingleNodeGuesser
+from guessit.patterns.numeral import parse_numeral
 
 
 class GuessVideoRexps(Transformer):
@@ -33,28 +34,24 @@ class GuessVideoRexps(Transformer):
 
         self.container = PropertiesContainer(canonical_from_pattern=False)
 
-        self.container.register_property('cdNumber', None, 'cd' + _psep + '(?P<cdNumber>[0-9])(?:' + _psep + 'of' + _psep + '(?P<cdNumberTotal>[0-9]))?', confidence=1.0, enhance=False, global_span=True)
-        self.container.register_property('cdNumberTotal', None, '([1-9])' + _psep + 'cds?', confidence=0.9, enhance=False)
+        self.container.register_property(None, 'cd' + _psep + '(?P<cdNumber>[0-9])(?:' + _psep + 'of' + _psep + '(?P<cdNumberTotal>[0-9]))?', confidence=1.0, enhance=False, global_span=True, formatter=parse_numeral)
+        self.container.register_property('cdNumberTotal', '([1-9])' + _psep + 'cds?', confidence=0.9, enhance=False, formatter=parse_numeral)
 
-        self.container.register_property('edition', 'Collector Edition', 'collector', 'collector-edition', 'edition-collector')
+        self.container.register_property('bonusNumber', 'x([0-9]{1,2})', enhance=False, global_span=True, formatter=parse_numeral)
 
-        self.container.register_property('edition', 'Special Edition', 'special', 'special-edition', 'edition-special')
+        self.container.register_property('filmNumber', 'f([0-9]{1,2})', enhance=False, global_span=True, formatter=parse_numeral)
 
-        self.container.register_property('edition', 'Criterion Edition', 'criterion', 'criterion-edition', 'edition-criterion')
-
-        self.container.register_property('edition', 'Deluxe Edition', 'deluxe', 'cdeluxe-edition', 'edition-deluxe')
-
-        self.container.register_property('edition', 'Director\'s cut', 'director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut')
-
-        self.container.register_property('bonusNumber', None, 'x([0-9]{1,2})', enhance=False, global_span=True)
-
-        self.container.register_property('filmNumber', None, 'f([0-9]{1,2})', enhance=False, global_span=True)
+        self.container.register_property('edition', 'collector', 'collector-edition', 'edition-collector', canonical_form='Collector Edition')
+        self.container.register_property('edition', 'special', 'special-edition', 'edition-special', canonical_form='Special Edition')
+        self.container.register_property('edition', 'criterion', 'criterion-edition', 'edition-criterion', canonical_form='Criterion Edition')
+        self.container.register_property('edition', 'deluxe', 'cdeluxe-edition', 'edition-deluxe', canonical_form='Deluxe Edition')
+        self.container.register_property('edition', 'director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut', canonical_form='Director\'s cut')
 
     def supported_properties(self):
         return self.container.get_supported_properties()
 
     def guess_video_rexps(self, string, node):
-        found = self.container.find_properties(string)
+        found = self.container.find_properties(string, node)
         return self.container.as_guess(found, string)
 
     def process(self, mtree):

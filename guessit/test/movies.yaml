@@ -532,13 +532,13 @@
   screenSize: 720p
 
 ? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
-: videoCodec: "XviD"
-  title: "Dr Seuss The Lorax"
-  format: "DVD"
+: videoCodec: XviD
+  title: Dr Seuss The Lorax
+  format: DVD
   other: LiNE
   year: 2012
-  audioCodec: "AC3"
-  audioProfile: "HQ"
+  audioCodec: AC3
+  audioProfile: HQ
   releaseGroup: Hive-CM8
   
 
@@ -546,3 +546,13 @@
 : title: Star Wars Episode IV
   year: 2004
   edition: Special Edition
+  
+? Dr.LiNE.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
+: videoCodec: XviD
+  title: Dr LiNE The Lorax
+  format: DVD
+  other: LiNE
+  year: 2012
+  audioCodec: AC3
+  audioProfile: HQ
+  releaseGroup: Hive-CM8

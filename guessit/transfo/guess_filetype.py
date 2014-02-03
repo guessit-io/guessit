@@ -150,13 +150,13 @@ class GuessFiletype(Transformer):
 
             if properties_transformer:
                 # if we have certain properties characteristic of episodes, it is an ep
-                found = properties_transformer.container.find_properties(filename, 'episodeFormat')
+                found = properties_transformer.container.find_properties(filename, mtree, 'episodeFormat')
                 guess = properties_transformer.container.as_guess(found, filename)
                 if guess:
                     self.log.debug('Found characteristic property of episodes: %s"', guess)
                     upgrade_episode()
 
-                found = properties_transformer.container.find_properties(filename, 'format')
+                found = properties_transformer.container.find_properties(filename, mtree, 'format')
                 guess = properties_transformer.container.as_guess(found, filename, lambda g: g['format'] == 'DVB')
                 if guess:
                     self.log.debug('Found characteristic property of episodes: %s', guess)
