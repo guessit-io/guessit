@@ -29,11 +29,28 @@ import os
 from guessit import PY2, u, slogging, guess_file_info
 
 
-def detect_filename(filename, filetype, info=['filename'], advanced=False):
+def detect_filename(filename, filetype, info=['filename'], advanced=False, yaml=False):
     filename = u(filename)
 
     print('For:', filename)
-    print('GuessIt found:', guess_file_info(filename, filetype, info).nice_string(advanced))
+    guess = guess_file_info(filename, filetype, info)
+    if yaml:
+        try:
+            import yaml
+            ystr = yaml.safe_dump({filename: dict(guess)}, default_flow_style=False)
+            i = 0
+            for yline in ystr.splitlines():
+                if i == 0:
+                    print("? " + yline[:-1])
+                elif i == 1:
+                    print(":" + yline[1:])
+                else:
+                    print(yline)
+                i = i + 1
+            return
+        except ImportError:
+            print('PyYAML not found. Using default output.')
+    print('GuessIt found:', guess.nice_string(advanced))
 
 
 def _supported_properties():
@@ -160,6 +177,8 @@ def main():
                       help='the suggested file type: movie, episode or autodetect')
     parser.add_option('-a', '--advanced', dest='advanced', action='store_true', default=False,
                       help='display advanced information for filename guesses, as json output')
+    parser.add_option('-y', '--yaml', dest='yaml', action='store_true', default=False,
+                  help='display information for filename guesses as yaml output (like unit-test)')
     parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
                       help='run a few builtin tests instead of analyzing a file')
 
@@ -181,7 +200,8 @@ def main():
                 detect_filename(filename,
                                 filetype=options.filetype,
                                 info=options.info.split(','),
-                                advanced=options.advanced)
+                                advanced=options.advanced,
+                                yaml=options.yaml)
 
     if help_required:
         parser.print_help()
