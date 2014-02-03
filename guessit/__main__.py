@@ -37,6 +37,14 @@ def detect_filename(filename, filetype, info=['filename'], advanced=False, yaml=
     if yaml:
         try:
             import yaml
+            from yaml.dumper import SafeDumper
+            from guessit.language import Language
+            def language_representer(dumper, data):
+                return dumper.represent_scalar(u'tag:yaml.org,2002:str', str(data))
+            yaml.add_representer(Language, language_representer, SafeDumper)
+            for k, v in guess.items():
+                if isinstance(v, list) and len(v) == 1:
+                    guess[k] = v[0]
             ystr = yaml.safe_dump({filename: dict(guess)}, default_flow_style=False)
             i = 0
             for yline in ystr.splitlines():
