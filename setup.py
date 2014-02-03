@@ -30,7 +30,7 @@ HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 install_requires = ['babelfish>=0.5', 'stevedore>=0.14']
 
-tests_require = ['PyYAML', 'nose']  # Fabric not available (yet!) for python3
+tests_require = ['PyYAML']  # Fabric not available (yet!) for python3
 
 setup_requires = []
 
