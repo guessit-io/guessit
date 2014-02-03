@@ -562,3 +562,28 @@
   title: Perfect Child
   videoCodec: XviD
   year: 2007
+  
+? entre.ciel.et.terre.(1994).dvdrip.h264.aac-psypeon.avi
+: audioCodec: AAC
+  format: DVD
+  releaseGroup: psypeon
+  title: entre ciel et terre
+  videoCodec: h264
+  year: 1994
+  
+? Yves.Saint.Laurent.2013.FRENCH.DVDSCR.MD.XviD-ViVARiUM.avi
+: format: DVD
+  language: French
+  other: Screener
+  releaseGroup: ViVARiUM
+  title: Yves Saint Laurent
+  videoCodec: XviD
+  year: 2013
+  
+? Echec et Mort - Hard to Kill - Steven Seagal Multi 1080p BluRay x264 CCATS.avi
+: format: BluRay
+  language: Multiple languages
+  releaseGroup: CCATS
+  screenSize: 1080p
+  title: Echec et Mort
+  videoCodec: h264
