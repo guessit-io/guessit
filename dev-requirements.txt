@@ -1,0 +1,7 @@
+# Travis-ci pre-installed packages
+# http://docs.travis-ci.com/user/languages/python/#Pre-installed-packages=
+pytest
+nose
+mock
+# see https://caremad.io/blog/setup-vs-requirement/
+-e .
