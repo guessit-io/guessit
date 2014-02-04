@@ -187,7 +187,8 @@
   releaseGroup: VeDeTT
 
 ? Le Cinquieme Commando 1971 SUBFORCED FRENCH DVDRiP XViD AC3 Bandix.mkv
-: audioCodec: AC3
+: type: movie
+  audioCodec: AC3
   format: DVD
   releaseGroup: Bandix
   subtitleLanguage: French
@@ -196,18 +197,21 @@
   year: 1971
 
 ? Le Seigneur des Anneaux - La Communauté de l'Anneau - Version Longue - BDRip.mkv
-: format: BluRay
+: type: movie
+  format: BluRay
   title: Le Seigneur des Anneaux
 
 ? La petite bande (Michel Deville - 1983) VF PAL MP4 x264 AAC.mkv
-: audioCodec: AAC
+: type: movie
+  audioCodec: AAC
   language: French
   title: La petite bande
   videoCodec: h264
   year: 1983
 
 ? Retour de Flammes (Gregor Schnitzler 2003) FULL DVD.iso
-: format: DVD
+: type: movie
+  format: DVD
   title: Retour de Flammes
   type: movie
   year: 2003

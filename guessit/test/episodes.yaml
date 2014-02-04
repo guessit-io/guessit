@@ -191,6 +191,7 @@
   season: 1
   title: Bad Karma
   format: DVD
+  other: Extra
   videoCodec: XviD
 
 ? /mnt/series/The Big Bang Theory/S01/The.Big.Bang.Theory.S01E01.mkv
@@ -283,6 +284,8 @@
 ? /Volumes/data-1/Series/Futurama/Season 3/Futurama_-_S03_DVD_Bonus_-_Deleted_Scenes_Part_3.ogm
 : series: Futurama
   season: 3
+  other: Bonus
+  title: Deleted Scenes Part 3
   format: DVD
 
 ? Ben.and.Kate.S01E02.720p.HDTV.X264-DIMENSION.mkv
