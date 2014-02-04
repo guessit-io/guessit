@@ -221,7 +221,7 @@ class GuessProperties(Transformer):
                                     })
 
         self.container.register_canonical_properties('other', 'Proper', 'Repack', 'R5', 'Screener', '3D', 'Fix', 'HD', 'HQ', 'DDC')
-        self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', validator=WeakValidator())
+        self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', validator=WeakValidator())
 
         self.container.register_property('other', 'Extras?', canonical_form='Extra')
 
