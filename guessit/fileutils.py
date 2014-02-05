@@ -67,7 +67,7 @@ def split_path(path):
 def file_in_same_dir(ref_file, desired_file):
     """Return the path for a file in the same dir as a given reference file.
 
-    >>> s(file_in_same_dir('~/smewt/smewt.db', 'smewt.settings')) == os.path.join('~', 'smewt', 'smewt.settings')
+    >>> s(file_in_same_dir('~/smewt/smewt.db', 'smewt.settings')) == os.path.normpath('~/smewt/smewt.settings')
     True
 
     """
