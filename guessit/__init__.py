@@ -119,8 +119,9 @@ def guess_file_info(filename, filetype, info=None):
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
     >>> testfile = os.path.join(os.path.dirname(__file__), 'test/dummy.srt')
-    >>> s(guess_file_info(testfile, 'autodetect', info = ['hash_md5', 'hash_sha1']))
-    {'hash_md5': '64de6b5893cac24456c46a935ef9c359', 'hash_sha1': 'a703fc0fa4518080505809bf562c6fc6f7b3c98c'}
+    >>> g = guess_file_info(testfile, 'autodetect', info = ['hash_md5', 'hash_sha1'])
+    >>> g['hash_md5'], g['hash_sha1']
+    ('64de6b5893cac24456c46a935ef9c359', 'a703fc0fa4518080505809bf562c6fc6f7b3c98c')
     """
     result = []
     hashers = []
