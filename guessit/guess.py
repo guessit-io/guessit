@@ -391,18 +391,21 @@ def merge_all(guesses, append=None):
     instead of being merged.
 
     >>> s(merge_all([ Guess({'season': 2}, confidence=0.6),
-    ...               Guess({'episodeNumber': 13}, confidence=0.8) ]))
-    {'season': 2, 'episodeNumber': 13}
+    ...               Guess({'episodeNumber': 13}, confidence=0.8) ])
+    ... ) == {'season': 2, 'episodeNumber': 13}
+    True
+
 
     >>> s(merge_all([ Guess({'episodeNumber': 27}, confidence=0.02),
-    ...               Guess({'season': 1}, confidence=0.2) ]))
-    {'season': 1}
+    ...               Guess({'season': 1}, confidence=0.2) ])
+    ... ) == {'season': 1}
+    True
 
     >>> s(merge_all([ Guess({'other': 'PROPER'}, confidence=0.8),
     ...               Guess({'releaseGroup': '2HD'}, confidence=0.8) ],
-    ...             append=['other']))
-    {'releaseGroup': '2HD', 'other': ['PROPER']}
-
+    ...             append=['other'])
+    ... ) == {'releaseGroup': '2HD', 'other': ['PROPER']}
+    True
 
     """
     result = Guess()
