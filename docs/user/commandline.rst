@@ -67,4 +67,6 @@ You can see the list of options that guessit.py accepts like that::
                             the suggested file type: movie, episode or autodetect
       -a, --advanced        display advanced information for filename guesses, as
                             json output
+      -y, --yaml            display information for filename guesses as yaml
+                            output (like unit-test)
       -d, --demo            run a few builtin tests instead of analyzing a file
