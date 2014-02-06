@@ -44,12 +44,12 @@ class GuessFiletype(Transformer):
     MOVIES = [m.lower() for m in MOVIES]
     SERIES = [s.lower() for s in SERIES]
 
-    def guess_filetype(self, mtree, filetype):
+    def guess_filetype(self, mtree):
         # put the filetype inside a dummy container to be able to have the
         # following functions work correctly as closures
         # this is a workaround for python 2 which doesn't have the
         # 'nonlocal' keyword (python 3 does have it)
-        filetype_container = [filetype]
+        filetype_container = [mtree.guess.get('type', 'autodetect')]
         other = {}
         filename = mtree.string
 
@@ -70,17 +70,17 @@ class GuessFiletype(Transformer):
                 filetype_container[0] = 'movieinfo'
 
         def upgrade_subtitle():
-            if 'movie' in filetype_container[0]:
+            if filetype_container[0] == 'movie':
                 filetype_container[0] = 'moviesubtitle'
-            elif 'episode' in filetype_container[0]:
+            elif filetype_container[0] == 'episode':
                 filetype_container[0] = 'episodesubtitle'
             else:
                 filetype_container[0] = 'subtitle'
 
         def upgrade_info():
-            if 'movie' in filetype_container[0]:
+            if filetype_container[0] == 'movie':
                 filetype_container[0] = 'movieinfo'
-            elif 'episode' in filetype_container[0]:
+            elif filetype_container[0] == 'episode':
                 filetype_container[0] = 'episodeinfo'
             else:
                 filetype_container[0] = 'info'
@@ -102,7 +102,8 @@ class GuessFiletype(Transformer):
             other = {'container': fileext}
         else:
             upgrade(type='unknown')
-            other = {'extension': fileext}
+            if fileext:
+                other = {'extension': fileext}
 
         # check whether we are in a 'Movies', 'Tv Shows', ... folder
         folder_rexps = [
@@ -174,10 +175,10 @@ class GuessFiletype(Transformer):
         filetype = filetype_container[0]
         return filetype, other
 
-    def process(self, mtree, filetype='autodetect'):
+    def process(self, mtree):
         """guess the file type now (will be useful later)
         """
-        filetype, other = self.guess_filetype(mtree, filetype)
+        filetype, other = self.guess_filetype(mtree)
 
         mtree.guess.set('type', filetype, confidence=1.0)
         self.log.debug('Found with confidence %.2f: %s' % (1.0, mtree.guess))
