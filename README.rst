@@ -13,6 +13,8 @@ GuessIt
     :target: http://travis-ci.org/wackou/guessit
     :alt: Build Status
 
+[![Coverage Status](https://coveralls.io/repos/wackou/guessit/badge.png)](https://coveralls.io/r/wackou/guessit)
+
 
 GuessIt is a python library that tries to extract as much information as
 possible from a video file.
