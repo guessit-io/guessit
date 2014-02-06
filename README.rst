@@ -1,8 +1,18 @@
 GuessIt
 =======
 
+.. image:: https://pypip.in/v/guessit/badge.png
+    :target: https://pypi.python.org/pypi/guessit
+    :alt: Latest Version
+
+.. image:: https://pypip.in/license/guessit/badge.png
+    :target: https://pypi.python.org/pypi/guessit
+    :alt: License
+
 .. image:: https://secure.travis-ci.org/wackou/guessit.png?branch=master
-   :target: http://travis-ci.org/wackou/guessit
+    :target: http://travis-ci.org/wackou/guessit
+    :alt: Build Status
+
 
 GuessIt is a python library that tries to extract as much information as
 possible from a video file.

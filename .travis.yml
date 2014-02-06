@@ -2,9 +2,7 @@ language: python
 python:
   - 2.6
   - 2.7
-  - 3.2
   - 3.3
-install: 
+install:
   - pip install -r requirements.txt
-# command to run tests, e.g. python setup.py test
-script: python setup.py nosetests
+script: python setup.py test
