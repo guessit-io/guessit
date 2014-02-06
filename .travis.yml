@@ -5,4 +5,7 @@ python:
   - 3.3
 install:
   - pip install -r requirements.txt
-script: python setup.py test
+  - pip install coverage
+script: coverage run setup.py test
+after_success:
+  - coveralls
