@@ -27,7 +27,7 @@ the videoCodec is h264, but only 60% confident that the title is
 
 You can use the ``-v`` or ``--verbose`` flag to have it display debug information.
 
-You can use the ``-p`` or ``-v`` flags to display the properties names or the
+You can use the ``-p`` or ``-l`` flags to display the properties names or the
 multiple values they can take.
 
 You can also run a ``--demo`` mode which will run a few tests and

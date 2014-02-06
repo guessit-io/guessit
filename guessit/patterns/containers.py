@@ -438,13 +438,14 @@ class PropertiesContainer(object):
     def get_supported_properties(self):
         supported_properties = {}
         for prop in self.get_properties():
-            name = self._effective_prop_name(prop.name)
-            values = supported_properties.get(name)
-            if not values:
-                values = set()
-                supported_properties[name] = values
-            if prop.canonical_form:
-                values.add(prop.canonical_form)
+            for k in prop.keys:
+                name = self._effective_prop_name(k)
+                values = supported_properties.get(name)
+                if not values:
+                    values = set()
+                    supported_properties[name] = values
+                if prop.canonical_form:
+                    values.add(prop.canonical_form)
         return supported_properties
 
     def enhance_property_patterns(self, name):
