@@ -32,7 +32,7 @@ __all__ = ['Guess', 'Language',
 # it will then always be available
 # with code from http://lucumr.pocoo.org/2011/1/22/forwards-compatible-python/
 import sys
-if sys.version_info[0] >= 3:
+if sys.version_info[0] >= 3:   # pragma: no cover
     PY2, PY3 = False, True
     unicode_text_type = str
     native_text_type = str
@@ -51,7 +51,7 @@ if sys.version_info[0] >= 3:
     def to_hex(x):
         return binascii.hexlify(x).decode('utf-8')
 
-else:
+else:   # pragma: no cover
     PY2, PY3 = True, False
     __all__ = [str(s) for s in __all__]  # fix imports for python2
     unicode_text_type = unicode
