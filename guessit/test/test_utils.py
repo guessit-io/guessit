@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.test.guessittest import *
 from guessit.fileutils import split_path
-from guessit.textutils import strip_brackets
+from guessit.textutils import strip_brackets, str_replace, str_fill
 from guessit import PY2
 
 
@@ -58,6 +58,10 @@ class TestUtils(TestGuessit):
 
         for i, e in allTests:
             self.assertEqual(e, strip_brackets(i))
+
+    def test_str_utils(self):
+        self.assertEqual("Hello world", str_replace("Hello World", 6, 'w'))
+        self.assertEqual("Hello *****", str_fill("Hello World", (6, 11), '*'))
 
 
 suite = allTests(TestUtils)
