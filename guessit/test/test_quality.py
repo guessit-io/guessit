@@ -21,12 +21,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.test.guessittest import *
-from guessit import quality
+
+from guessit.quality import QualitiesContainer, best_quality, best_quality_properties
 
 
 class TestQuality(TestGuessit):
     def test_container(self):
-        container = quality.QualitiesContainer()
+        container = QualitiesContainer()
+
         container.register_quality('color', 'red', 10)
         container.register_quality('color', 'orange', 20)
         container.register_quality('color', 'green', 30)
@@ -66,13 +68,26 @@ class TestQuality(TestGuessit):
 
         self.assertTrue(q1 == q2 == 0, "Empty quality container should rate each guess to 0")
 
-    def test_screenSize(self):
+    def test_quality_transformers(self):
         guess_720p = guessit.guess_file_info("2012.2009.720p.BluRay.x264.DTS WiKi.mkv", 'autodetect')
-        guess_1080p = guessit.guess_file_info("2012.2009.1080p.BluRay.x264.DTS WiKi.mkv", 'autodetect')
+        guess_1080p = guessit.guess_file_info("2012.2009.1080p.BluRay.x264.MP3 WiKi.mkv", 'autodetect')
 
-        best_quality_guess = quality.best_quality(guess_720p, guess_1080p)
+        self.assertIn('audioCodec', guess_720p, "audioCodec should be present")
+        self.assertIn('audioCodec', guess_1080p, "audioCodec should be present")
+        self.assertIn('screenSize', guess_720p, "screenSize should be present")
+        self.assertIn('screenSize', guess_1080p, "screenSize should be present")
 
-        self.assertTrue(guess_1080p == best_quality_guess, "1080p release is not the best quality")
+        best_quality_guess = best_quality(guess_720p, guess_1080p)
+
+        self.assertTrue(guess_1080p == best_quality_guess, "1080p+MP3 is not the best global quality")
+
+        best_quality_guess = best_quality_properties(['screenSize'], guess_720p, guess_1080p)
+
+        self.assertTrue(guess_1080p == best_quality_guess, "1080p is not the best screenSize")
+
+        best_quality_guess = best_quality_properties(['audioCodec'], guess_720p, guess_1080p)
+
+        self.assertTrue(guess_720p == best_quality_guess, "DTS is not the best audioCodec")
 
 suite = allTests(TestQuality)
 

@@ -172,8 +172,8 @@ class GuessProperties(Transformer):
                                         'AAC': 35,
                                         'AC3': 40,
                                         'Flac': 45,
-                                        'DTS': 100,
-                                        'TrueHD': 120
+                                        'DTS': 60,
+                                        'TrueHD': 70
                                         })
 
         _audioProfiles = {'DTS': {'HD': ('HD',),
