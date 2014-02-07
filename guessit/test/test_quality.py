@@ -43,6 +43,12 @@ class TestQuality(TestGuessit):
         g2 = Guess()
         g2['color'] = 'green'
 
+        g3 = Guess()
+        g3['color'] = 'orange'
+
+        q3 = container.rate_quality(g3)
+        self.assertEqual(q3, 20, "ORANGE should be rated 20. Don't ask why!")
+
         q1 = container.rate_quality(g1)
         q2 = container.rate_quality(g2)
 
@@ -60,6 +66,25 @@ class TestQuality(TestGuessit):
         q2 = container.rate_quality(g2, 'color')
 
         self.assertTrue(q2 > q1, "GREEN should be greater than RED. Don't ask why!")
+
+        container.unregister_quality('context', 'sex')
+        container.unregister_quality('context', 'sun')
+
+        q1 = container.rate_quality(g1)
+        q2 = container.rate_quality(g2)
+
+        self.assertTrue(q2 > q1, "GREEN&SUN should be greater than RED&SEX. Don't ask why!")
+
+        self.assertEquals(container.best_quality(g1, g2), g2, "RED&SEX should be better than GREEN&SUN. Don't ask why!")
+
+        self.assertEquals(container.best_quality_properties(['color'], g1, g2), g2, "GREEN should be better than RED. Don't ask why!")
+
+        self.assertEquals(container.best_quality_properties(['context'], g1, g2), g1, "SEX should be better than SUN. Don't ask why!")
+
+        container.unregister_quality('color')
+        q3 = container.rate_quality(g3, 'color')
+
+        self.assertEquals(q3, 0, "Color should be unregistered.")
 
         container.clear_qualities()
 
