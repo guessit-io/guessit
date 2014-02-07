@@ -239,4 +239,4 @@ class GuessProperties(Transformer):
         SingleNodeGuesser(self.guess_properties, 1.0, self.log).process(mtree)
 
     def rate_quality(self, guess, *props):
-        return self.qualities.rate_quality(guess)
+        return self.qualities.rate_quality(guess, *props)

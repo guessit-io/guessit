@@ -93,6 +93,44 @@ class QualitiesContainer():
                 rate += prop_qualities.get(prop_value, 0)
         return rate
 
+    def best_quality_properties(self, props, *guesses):
+        """Retrieve the best quality guess, based on given properties
+
+        :param props: Properties to include in the rating
+        :type props: list of strings
+        :param guesses: Guesses to rate
+        :type guesses: :class:`guessit.guess.Guess`
+
+        :return: Best quality guess from all passed guesses
+        :rtype: :class:`guessit.guess.Guess`
+        """
+        best_guess = None
+        best_rate = None
+        for guess in guesses:
+            rate = self.rate_quality(guess, *props)
+            if best_rate is None or best_rate < rate:
+                best_rate = rate
+                best_guess = guess
+        return best_guess
+
+    def best_quality(self, *guesses):
+        """Retrieve the best quality guess.
+
+        :param guesses: Guesses to rate
+        :type guesses: :class:`guessit.guess.Guess`
+
+        :return: Best quality guess from all passed guesses
+        :rtype: :class:`guessit.guess.Guess`
+        """
+        best_guess = None
+        best_rate = None
+        for guess in guesses:
+            rate = self.rate_quality(guess)
+            if best_rate is None or best_rate < rate:
+                best_rate = rate
+                best_guess = guess
+        return best_guess
+
 
 def best_quality_properties(props, *guesses):
     """Retrieve the best quality guess, based on given properties
