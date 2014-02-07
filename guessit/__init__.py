@@ -114,7 +114,7 @@ def _guess_filename(filename, filetype):
     return mtree.matched()
 
 
-def guess_file_info(filename, filetype, info=None):
+def guess_file_info(filename, filetype, info='filename'):
     """info can contain the names of the various plugins, such as 'filename' to
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
@@ -129,9 +129,6 @@ def guess_file_info(filename, filetype, info=None):
     # Force unicode as soon as possible
     filename = u(filename)
 
-    if info is None:
-        info = ['filename']
-
     if isinstance(info, base_text_type):
         info = [info]
 
@@ -142,7 +139,7 @@ def guess_file_info(filename, filetype, info=None):
         elif infotype == 'hash_mpc':
             from guessit.hash_mpc import hash_file
             try:
-                result.append(Guess({'hash_mpc': hash_file(filename)},
+                result.append(Guess({infotype: hash_file(filename)},
                                     confidence=1.0))
             except Exception as e:
                 log.warning('Could not compute MPC-style hash because: %s' % e)
@@ -150,7 +147,7 @@ def guess_file_info(filename, filetype, info=None):
         elif infotype == 'hash_ed2k':
             from guessit.hash_ed2k import hash_file
             try:
-                result.append(Guess({'hash_ed2k': hash_file(filename)},
+                result.append(Guess({infotype: hash_file(filename)},
                                     confidence=1.0))
             except Exception as e:
                 log.warning('Could not compute ed2k hash because: %s' % e)

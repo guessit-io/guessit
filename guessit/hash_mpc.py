@@ -29,7 +29,7 @@ def hash_file(filename):
     http://trac.opensubtitles.org/projects/opensubtitles/wiki/HashSourceCodes
     and is licensed under the GPL."""
 
-    longlongformat = 'q'  # long long
+    longlongformat = b'q'  # long long
     bytesize = struct.calcsize(longlongformat)
 
     f = open(filename, "rb")
@@ -40,14 +40,14 @@ def hash_file(filename):
     if filesize < 65536 * 2:
         raise Exception("SizeError: size is %d, should be > 132K..." % filesize)
 
-    for x in range(65536 / bytesize):
+    for x in range(int(65536 / bytesize)):
         buf = f.read(bytesize)
         (l_value,) = struct.unpack(longlongformat, buf)
         hash_value += l_value
         hash_value = hash_value & 0xFFFFFFFFFFFFFFFF  # to remain as 64bit number
 
     f.seek(max(0, filesize - 65536), 0)
-    for x in range(65536 / bytesize):
+    for x in range(int(65536 / bytesize)):
         buf = f.read(bytesize)
         (l_value,) = struct.unpack(longlongformat, buf)
         hash_value += l_value
