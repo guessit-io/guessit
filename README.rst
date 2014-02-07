@@ -13,9 +13,9 @@ GuessIt
     :target: http://travis-ci.org/wackou/guessit
     :alt: Build Status
 
-.. image:: https://coveralls.io/repos/wackou/guessit/badge.png
-  :target: https://coveralls.io/r/wackou/guessit
-  :alt: Code Coverage
+.. image:: https://coveralls.io/repos/wackou/guessit/badge.png?branch=master
+    :target: https://coveralls.io/r/wackou/guessit?branch=master
+    :alt: Coveralls
 
 
 GuessIt is a python library that tries to extract as much information as
