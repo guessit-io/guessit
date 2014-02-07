@@ -20,9 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.test.guessittest import *
-
 from guessit.quality import QualitiesContainer, best_quality, best_quality_properties
+from guessit.test.guessittest import *
 
 
 class TestQuality(TestGuessit):
@@ -62,6 +61,12 @@ class TestQuality(TestGuessit):
 
         self.assertTrue(q1 > q2, "SEX should be greater than SUN. Don't ask why!")
 
+        self.assertEquals(container.best_quality(g1, g2), g1, "RED&SEX should be better than GREEN&SUN. Don't ask why!")
+
+        self.assertEquals(container.best_quality_properties(['color'], g1, g2), g2, "GREEN should be better than RED. Don't ask why!")
+
+        self.assertEquals(container.best_quality_properties(['context'], g1, g2), g1, "SEX should be better than SUN. Don't ask why!")
+
         q1 = container.rate_quality(g1, 'color')
         q2 = container.rate_quality(g2, 'color')
 
@@ -75,11 +80,11 @@ class TestQuality(TestGuessit):
 
         self.assertTrue(q2 > q1, "GREEN&SUN should be greater than RED&SEX. Don't ask why!")
 
-        self.assertEquals(container.best_quality(g1, g2), g2, "RED&SEX should be better than GREEN&SUN. Don't ask why!")
+        g3['context'] = 'sea'
+        container.unregister_quality('context', 'sea')
 
-        self.assertEquals(container.best_quality_properties(['color'], g1, g2), g2, "GREEN should be better than RED. Don't ask why!")
-
-        self.assertEquals(container.best_quality_properties(['context'], g1, g2), g1, "SEX should be better than SUN. Don't ask why!")
+        q3 = container.rate_quality(g3, 'context')
+        self.assertEquals(q3, 0, "Context should be unregistered.")
 
         container.unregister_quality('color')
         q3 = container.rate_quality(g3, 'color')
