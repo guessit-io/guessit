@@ -22,11 +22,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.test.guessittest import *
 from guessit.fileutils import split_path
-
+from guessit.textutils import strip_brackets
 from guessit import PY2
 
-class TestUtils(TestGuessit):
 
+class TestUtils(TestGuessit):
     def test_splitpath(self):
         alltests = {('linux2', 'darwin'): {'/usr/bin/smewt': ['/', 'usr', 'bin', 'smewt'],
                                            'relative_path/to/my_folder/': ['relative_path', 'to', 'my_folder'],
@@ -47,6 +47,17 @@ class TestUtils(TestGuessit):
             if sys.platform in platforms:
                 for path, split in tests.items():
                     self.assertEqual(split, split_path(path))
+
+    def test_strip_brackets(self):
+        allTests = (
+                    ('[test]', 'test'),
+                    ('{test2}', 'test2'),
+                    ('(test3)', 'test3'),
+                    ('(test4]', '(test4]'),
+                    )
+
+        for i, e in allTests:
+            self.assertEqual(e, strip_brackets(i))
 
 
 suite = allTests(TestUtils)
