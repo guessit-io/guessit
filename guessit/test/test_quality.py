@@ -46,7 +46,7 @@ class TestQuality(TestGuessit):
         q1 = container.rate_quality(g1)
         q2 = container.rate_quality(g2)
 
-        self.assertGreater(q2, q1, "GREEN should be greater than RED. Don't ask why!")
+        self.assertTrue(q2 > q1, "GREEN should be greater than RED. Don't ask why!")
 
         g1['context'] = 'sex'
         g2['context'] = 'sun'
@@ -54,12 +54,12 @@ class TestQuality(TestGuessit):
         q1 = container.rate_quality(g1)
         q2 = container.rate_quality(g2)
 
-        self.assertGreater(q1, q2, "SEX should be greater than SUN. Don't ask why!")
+        self.assertTrue(q1 > q2, "SEX should be greater than SUN. Don't ask why!")
 
         q1 = container.rate_quality(g1, 'color')
         q2 = container.rate_quality(g2, 'color')
 
-        self.assertGreater(q2, q1, "GREEN should be greater than RED. Don't ask why!")
+        self.assertTrue(q2 > q1, "GREEN should be greater than RED. Don't ask why!")
 
         container.clear_qualities()
 
