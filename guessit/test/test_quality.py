@@ -72,10 +72,10 @@ class TestQuality(TestGuessit):
         guess_720p = guessit.guess_file_info("2012.2009.720p.BluRay.x264.DTS WiKi.mkv", 'autodetect')
         guess_1080p = guessit.guess_file_info("2012.2009.1080p.BluRay.x264.MP3 WiKi.mkv", 'autodetect')
 
-        self.assertIn('audioCodec', guess_720p, "audioCodec should be present")
-        self.assertIn('audioCodec', guess_1080p, "audioCodec should be present")
-        self.assertIn('screenSize', guess_720p, "screenSize should be present")
-        self.assertIn('screenSize', guess_1080p, "screenSize should be present")
+        self.assertTrue('audioCodec' in guess_720p, "audioCodec should be present")
+        self.assertTrue('audioCodec' in guess_1080p, "audioCodec should be present")
+        self.assertTrue('screenSize' in guess_720p, "screenSize should be present")
+        self.assertTrue('screenSize' in guess_1080p, "screenSize should be present")
 
         best_quality_guess = best_quality(guess_720p, guess_1080p)
 
