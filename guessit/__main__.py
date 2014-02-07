@@ -152,7 +152,7 @@ def run_demo(episodes=True, movies=True, advanced=False):
             detect_filename(f, filetype='movie', advanced=advanced)
 
 
-def main():
+def main(args=None):
     slogging.setupLogging()
 
     if PY2:
@@ -190,7 +190,10 @@ def main():
     parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
                       help='run a few builtin tests instead of analyzing a file')
 
-    options, args = parser.parse_args()
+    if args:
+        options, args = parser.parse_args(args)
+    else:
+        options, args = parser.parse_args()
     if options.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
