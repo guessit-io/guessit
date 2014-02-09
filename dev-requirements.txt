@@ -3,5 +3,7 @@
 pytest
 nose
 mock
+# Test dependencies
+PyYAML
 # see https://caremad.io/blog/setup-vs-requirement/
 -e .
