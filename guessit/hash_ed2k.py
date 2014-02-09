@@ -30,7 +30,7 @@ def hash_file(filename):
 
     >>> testfile = os.path.join(os.path.dirname(__file__), 'test/dummy.srt')
     >>> s(hash_file(testfile))
-    'ed2k://|file|dummy.srt|60|F75AD4CDC7ABC99582FFB0900A4F3287|/'
+    'ed2k://|file|dummy.srt|59|41F58B913AB3973F593BEBA8B8DF6510|/'
     """
     return 'ed2k://|file|%s|%d|%s|/' % (os.path.basename(filename),
                                         os.path.getsize(filename),
