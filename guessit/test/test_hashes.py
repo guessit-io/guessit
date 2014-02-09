@@ -21,21 +21,20 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.test.guessittest import *
-from guessit.fileutils import split_path
-
-from guessit import PY2
 
 
 class TestHashes(TestGuessit):
     def test_hashes(self):
         hashes = (
-                  ('hash_mpc', u'8542ad406c15c8bd'),  # TODO: Check if this value is valid
-                  ('hash_ed2k', u'ed2k://|file|1MB|1048576|AA3CC5552A9931A76B61A41D306735F7|/'),  # TODO: Check if this value is valid
-                  ('hash_md5', u'5d8dcbca8d8ac21766f28797d6c3954c'),
+                  ('hash_mpc', '1MB', u'8542ad406c15c8bd'),  # TODO: Check if this value is valid
+                  ('hash_ed2k', '1MB', u'ed2k://|file|1MB|1048576|AA3CC5552A9931A76B61A41D306735F7|/'),  # TODO: Check if this value is valid
+                  ('hash_md5', '1MB', u'5d8dcbca8d8ac21766f28797d6c3954c'),
+                  ('hash_sha1', '1MB', u'51d2b8f3248d7ee495b7750c8da5aa3b3819de9d'),
+                  ('hash_md5', 'dummy.srt', u'f4f0b3604a9e9b3f71ec9822860fb590'),
+                  ('hash_sha1', 'dummy.srt', u'7607f246fbc37338ff86316e806627af4b089edc')
                   )
-        filename = '1MB'
 
-        for hash_type, expected_value in hashes:
+        for hash_type, filename, expected_value in hashes:
             guess = guess_file_info(file_in_same_dir(__file__, filename), None, hash_type)
             self.assertEquals(expected_value, guess.get(hash_type))
 
