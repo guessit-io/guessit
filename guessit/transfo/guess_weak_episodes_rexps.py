@@ -73,8 +73,8 @@ class GuessWeakEpisodesRexps(Transformer):
 
         return None
 
-    def should_process(self, matcher):
-        return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
+    def should_process(self, mtree, options={}):
+        return mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
 
-    def process(self, mtree):
+    def process(self, mtree, options={}):
         SingleNodeGuesser(self.guess_weak_episodes_rexps, 0.6, self.log).process(mtree)

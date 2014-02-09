@@ -19,16 +19,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, \
+    unicode_literals
 
 import logging
 
 from guessit import PY3, u
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
-
 from guessit.transfo import TransfoException
-
 
 log = logging.getLogger(__name__)
 
@@ -76,15 +75,10 @@ class IterativeMatcher(object):
     containing all the found properties, and does some (basic) conflict
     resolution when they arise.
     """
-    def __init__(self, filename, filetype='autodetect', opts=None, transfo_opts=None):
-        if opts is None:
-            opts = []
+    def __init__(self, filename, filetype='autodetect', options={}, opts=[], transfo_opts={}):
         if not isinstance(opts, list):
             raise ValueError('opts must be a list of option names! Received: type=%s val=%s',
                              type(opts), opts)
-
-        if transfo_opts is None:
-            transfo_opts = {}
         if not isinstance(transfo_opts, dict):
             raise ValueError('transfo_opts must be a dict of { transfo_name: (args, kwargs) }. ' +
                              'Received: type=%s val=%s', type(transfo_opts), transfo_opts)
@@ -103,6 +97,7 @@ class IterativeMatcher(object):
         self.filename = filename
         self.match_tree = MatchTree(filename)
         self.filetype = filetype
+        self.options = options
         self.opts = opts
         self.transfo_opts = transfo_opts
         self._transfo_calls = []
@@ -119,35 +114,35 @@ class IterativeMatcher(object):
 
             # Process
             for transformer in transformers.all_transformers():
-                self._process(transformer, False)
+                self._process(transformer, options, False)
 
             # Post-process
             for transformer in transformers.all_transformers():
-                self._process(transformer, True)
+                self._process(transformer, options, True)
 
             log.debug('Found match tree:\n%s' % u(mtree))
         except TransfoException as e:
             log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e))
 
-    def _process(self, transformer, post=False, *args, **kwargs):
+    def _process(self, transformer, options={}, post=False, *args, **kwargs):
         default_args, default_kwargs = self.transfo_opts.get(transformer.fullname, ((), {}))
         all_args = args or default_args or ()
         all_kwargs = dict(default_kwargs) if default_kwargs else {}
         all_kwargs.update(kwargs)  # keep all kwargs merged together
-        if not hasattr(transformer, 'should_process') or transformer.should_process(self):
+        if not hasattr(transformer, 'should_process') or transformer.should_process(self.match_tree, self.options):
             if post:
-                transformer.post_process(self.match_tree, *all_args, **all_kwargs)
+                transformer.post_process(self.match_tree, self.options, *all_args, **all_kwargs)
             else:
-                transformer.process(self.match_tree, *all_args, **all_kwargs)
-                self._transfo_calls.append((transformer, all_args, all_kwargs))
+                transformer.process(self.match_tree, self.options, *all_args, **all_kwargs)
+                self._transfo_calls.append((transformer, self.options, all_args, all_kwargs))
 
     @property
     def second_pass_options(self):
         opts = list(self.opts)
         transfo_opts = dict(self.transfo_opts.items())
-        for transformer, _, _ in self._transfo_calls:
+        for transformer, _, _, _ in self._transfo_calls:
             if hasattr(transformer, 'second_pass_options'):
-                c_opts, c_transfo_opts = transformer.second_pass_options(self.match_tree)
+                c_opts, c_transfo_opts = transformer.second_pass_options(self.match_tree, self.options)
                 if c_opts or c_transfo_opts:
                     transfo_opts[transformer.fullname] = c_opts, c_transfo_opts
 

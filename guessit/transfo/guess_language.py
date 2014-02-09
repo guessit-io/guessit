@@ -18,14 +18,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, \
+    unicode_literals
 
-from guessit.plugins import Transformer
-
-from guessit.transfo import SingleNodeGuesser
-from guessit.language import search_language, subtitle_prefixes, subtitle_suffixes
-from guessit.textutils import clean_string, find_words
+from guessit.language import search_language, subtitle_prefixes, \
+    subtitle_suffixes
 from guessit.patterns.extension import subtitle_exts
+from guessit.plugins import Transformer
+from guessit.textutils import clean_string, find_words
+from guessit.transfo import SingleNodeGuesser
 
 
 class GuessLanguage(Transformer):
@@ -74,7 +75,7 @@ class GuessLanguage(Transformer):
         return node.span[0] in title_ends.keys() and (node.span[1] in unidentified_starts.keys() or node.span[1] + 1 in property_starts.keys()) or\
                 node.span[1] in title_starts.keys() and (node.span[0] == 0 or node.span[0] in unidentified_ends.keys() or node.span[0] in property_ends.keys())
 
-    def second_pass_options(self, mtree):
+    def second_pass_options(self, mtree, options={}):
         m = mtree.matched()
         to_skip_language_nodes = []
 
@@ -113,10 +114,10 @@ class GuessLanguage(Transformer):
             return None, {'skip_nodes': to_skip_language_nodes}
         return None, None
 
-    def should_process(self, matcher):
-        return not 'nolanguage' in matcher.opts
+    def should_process(self, mtree, options={}):
+        return not 'nolanguage' in options.keys()
 
-    def process(self, mtree, *args, **kwargs):
+    def process(self, mtree, options={}, *args, **kwargs):
         SingleNodeGuesser(self.guess_language, None, self.log, *args, **kwargs).process(mtree)
         # Note: 'language' is promoted to 'subtitleLanguage' in the post_process transfo
 
@@ -125,8 +126,8 @@ class GuessLanguage(Transformer):
                        confidence=node.guess.confidence('language'))
         del node.guess['language']
 
-    def post_process(self, mtree, *args, **kwargs):
-                # 1- try to promote language to subtitle language where it makes sense
+    def post_process(self, mtree, options={}, *args, **kwargs):
+        # 1- try to promote language to subtitle language where it makes sense
         for node in mtree.nodes():
             if 'language' not in node.guess:
                 continue

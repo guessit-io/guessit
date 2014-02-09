@@ -105,16 +105,16 @@ h = NullHandler()
 log.addHandler(h)
 
 
-def _guess_filename(filename, filetype):
-    mtree = IterativeMatcher(filename, filetype=filetype)
+def _guess_filename(filename, filetype, options={}):
+    mtree = IterativeMatcher(filename, filetype=filetype, options=options)
     opts, transfo_opts = mtree.second_pass_options
     if opts or transfo_opts:
         log.info("Running 2nd pass")
-        mtree = IterativeMatcher(filename, filetype=filetype, opts=opts, transfo_opts=transfo_opts)
+        mtree = IterativeMatcher(filename, filetype=filetype, options=options, opts=opts, transfo_opts=transfo_opts)
     return mtree.matched()
 
 
-def guess_file_info(filename, filetype, info='filename'):
+def guess_file_info(filename, filetype, info='filename', options={}):
     """info can contain the names of the various plugins, such as 'filename' to
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
@@ -134,7 +134,7 @@ def guess_file_info(filename, filetype, info='filename'):
 
     for infotype in info:
         if infotype == 'filename':
-            result.append(_guess_filename(filename, filetype))
+            result.append(_guess_filename(filename, filetype, options))
 
         elif infotype == 'hash_mpc':
             from guessit.hash_mpc import hash_file

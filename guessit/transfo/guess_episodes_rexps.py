@@ -84,8 +84,8 @@ class GuessEpisodesRexps(Transformer):
         found = self.container.find_properties(string, node)
         return self.container.as_guess(found, string)
 
-    def should_process(self, matcher):
-        return matcher.match_tree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
+    def should_process(self, mtree, options={}):
+        return mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
 
-    def process(self, mtree):
+    def process(self, mtree, options={}):
         SingleNodeGuesser(self.guess_episodes_rexps, None, self.log).process(mtree)

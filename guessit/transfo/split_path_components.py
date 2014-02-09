@@ -30,7 +30,7 @@ class SplitPathComponents(Transformer):
     def __init__(self):
         Transformer.__init__(self, 255)
 
-    def process(self, mtree):
+    def process(self, mtree, options={}):
         """first split our path into dirs + basename + ext
 
         :return: the filename split into [ dir*, basename, ext ]

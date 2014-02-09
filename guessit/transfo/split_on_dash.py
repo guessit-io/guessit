@@ -30,7 +30,7 @@ class SplitOnDash(Transformer):
     def __init__(self):
         Transformer.__init__(self, 190)
 
-    def process(self, mtree):
+    def process(self, mtree, options={}):
         """split into '-' separated subgroups (with required separator chars
         around the dash)
         """

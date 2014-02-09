@@ -29,12 +29,12 @@ import os
 from guessit import PY2, u, slogging, guess_file_info
 
 
-def detect_filename(filename, filetype, info=['filename'], advanced=False, yaml=False):
+def detect_filename(filename, filetype, info=['filename'], options={}):
     filename = u(filename)
 
     print('For:', filename)
-    guess = guess_file_info(filename, filetype, info)
-    if yaml:
+    guess = guess_file_info(filename, filetype, info, options)
+    if options.get('yaml'):
         try:
             import yaml
             from yaml.dumper import SafeDumper
@@ -58,7 +58,7 @@ def detect_filename(filename, filetype, info=['filename'], advanced=False, yaml=
             return
         except ImportError:
             print('PyYAML not found. Using default output.')
-    print('GuessIt found:', guess.nice_string(advanced))
+    print('GuessIt found:', guess.nice_string(options.get('advanced')))
 
 
 def _supported_properties():
@@ -106,7 +106,7 @@ def _display_property_values(property_name):
         print('  [!] %s' % (property_value,))
 
 
-def run_demo(episodes=True, movies=True, advanced=False):
+def run_demo(episodes=True, movies=True, options={}):
     # NOTE: tests should not be added here but rather in the tests/ folder
     #       this is just intended as a quick example
     if episodes:
@@ -123,7 +123,7 @@ def run_demo(episodes=True, movies=True, advanced=False):
 
         for f in testeps:
             print('-' * 80)
-            detect_filename(f, filetype='episode', advanced=advanced)
+            detect_filename(f, filetype='episode', options=options)
 
     if movies:
         testmovies = ['Movies/Fear and Loathing in Las Vegas (1998)/Fear.and.Loathing.in.Las.Vegas.720p.HDDVD.DTS.x264-ESiR.mkv',
@@ -149,7 +149,7 @@ def run_demo(episodes=True, movies=True, advanced=False):
 
         for f in testmovies:
             print('-' * 80)
-            detect_filename(f, filetype='movie', advanced=advanced)
+            detect_filename(f, filetype='movie', options=options)
 
 
 def main(args=None):
@@ -202,7 +202,7 @@ def main(args=None):
         display_properties(options.values)
         help_required = False
     if options.demo:
-        run_demo(episodes=True, movies=True, advanced=options.advanced)
+        run_demo(episodes=True, movies=True, options=vars(options))
         help_required = False
     else:
         if args:
@@ -211,8 +211,8 @@ def main(args=None):
                 detect_filename(filename,
                                 filetype=options.filetype,
                                 info=options.info.split(','),
-                                advanced=options.advanced,
-                                yaml=options.yaml)
+                                options=vars(options)
+                                )
 
     if help_required:
         parser.print_help()
