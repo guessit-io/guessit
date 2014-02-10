@@ -20,10 +20,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins import Transformer
-
+from guessit.plugins.transformers import Transformer
 from guessit import fileutils
-import os.path
+from os.path import splitext
 
 
 class SplitPathComponents(Transformer):
@@ -37,7 +36,7 @@ class SplitPathComponents(Transformer):
         """
         components = fileutils.split_path(mtree.value)
         basename = components.pop(-1)
-        components += list(os.path.splitext(basename))
+        components += list(splitext(basename))
         components[-1] = components[-1][1:]  # remove the '.' from the extension
 
         mtree.split_on_components(components)

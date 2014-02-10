@@ -20,8 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins import Transformer
-from guessit.transfo import found_property
+from guessit.plugins.transformers import Transformer, found_property
 from guessit.textutils import reorder_title
 
 

@@ -20,13 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins import Transformer
-
-from guessit.transfo import SingleNodeGuesser
+from guessit.plugins.transformers import Transformer, SingleNodeGuesser
 from guessit.patterns import sep
 from guessit.patterns.containers import PropertiesContainer, WeakValidator
 from guessit.patterns.numeral import numeral, digital_numeral, parse_numeral
-import re
+from re import split as re_split
 
 
 class GuessEpisodesRexps(Transformer):
@@ -36,7 +34,7 @@ class GuessEpisodesRexps(Transformer):
         self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False)
 
         def episode_parser(value):
-            values = re.split('[a-zA-Z]', value)
+            values = re_split('[a-zA-Z]', value)
             values = [x for x in values if x]
             ret = []
             for letters_elt in values:

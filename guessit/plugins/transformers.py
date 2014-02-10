@@ -24,6 +24,147 @@ from stevedore import ExtensionManager
 from pkg_resources import EntryPoint
 
 from stevedore.extension import Extension
+from guessit.guess import Guess
+from logging import getLogger
+
+log = getLogger(__name__)
+
+
+class Transformer(object):
+    def __init__(self, priority=0):
+        self.priority = priority
+        self.log = getLogger(self.name)
+
+    @property
+    def name(self):
+        return self.__class__.__name__
+
+    @property
+    def fullname(self):
+        return self.__module__ + "." + self.__class__.__name__
+
+    def supported_properties(self):
+        return {}
+
+    def enabled(self):
+        return True
+
+    def second_pass_options(self, mtree, options={}):
+        return (None, None)
+
+    def should_process(self, mtree, options={}):
+        return True
+
+    def process(self, mtree, options={}, *args, **kwargs):
+        pass
+
+    def post_process(self, mtree, options={}, *args, **kwargs):
+        pass
+
+    def rate_quality(self, guess, *props):
+        return 0
+
+
+class TransfoException(Exception):
+    def __init__(self, transformer, message):
+
+        # Call the base class constructor with the parameters it needs
+        Exception.__init__(self, message)
+
+        self.transformer = transformer
+
+
+def found_property(node, name, confidence):
+    node.guess = Guess({name: node.clean_value}, confidence=confidence)
+    log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
+
+
+def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
+    value = None
+    if partial_span:
+        value = node.value[partial_span[0]:partial_span[1]]
+    else:
+        value = node.value
+    string = ' %s ' % value  # add sentinels
+    for matcher, confidence, args, kwargs in strategy:
+        all_args = [string, node]
+        if args:
+            all_args.append(args)
+
+        if kwargs:
+            matcher_result = matcher(*all_args, **kwargs)
+        else:
+            matcher_result = matcher(*all_args)
+
+        if matcher_result:
+            if not isinstance(matcher_result, Guess):
+                result, span = matcher_result
+            else:
+                result, span = matcher_result, matcher_result.metadata().span
+
+            if result:
+                # readjust span to compensate for sentinels
+                span = (span[0] - 1, span[1] - 1)
+
+                # readjust span to compensate for partial_span
+                if partial_span:
+                    span = (span[0] + partial_span[0], span[1] + partial_span[0])
+
+                partition_spans = None
+                for skip_node in skip_nodes:
+                    if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
+                        skip_node.span == span:
+                        partition_spans = node.get_partition_spans(skip_node.span)
+                        partition_spans.remove(skip_node.span)
+                        break
+
+                if not partition_spans:
+                    # restore sentinels compensation
+
+                    guess = None
+                    if isinstance(result, Guess):
+                        if confidence is None:
+                            confidence = result.confidence()
+                        guess = result
+                    else:
+                        if confidence is None:
+                            confidence = 1.0
+                        guess = Guess(result, confidence=confidence, input=string, span=span)
+
+                    msg = 'Found with confidence %.2f: %s' % (confidence, guess)
+                    (logger or log).debug(msg)
+
+                    node.partition(span)
+                    absolute_span = (span[0] + node.offset, span[1] + node.offset)
+                    for child in node.children:
+                        if child.span == absolute_span:
+                            child.guess = guess
+                        else:
+                            find_and_split_node(child, strategy, skip_nodes, logger)
+                else:
+                    for partition_span in partition_spans:
+                        find_and_split_node(node, strategy, skip_nodes, logger, partition_span)
+
+
+class SingleNodeGuesser(object):
+    def __init__(self, guess_func, confidence, logger, *args, **kwargs):
+        self.guess_func = guess_func
+        self.confidence = confidence
+        self.logger = logger
+        self.skip_nodes = kwargs.pop('skip_nodes', [])
+        self.args = args
+        self.kwargs = kwargs
+
+    def process(self, mtree):
+        # strategy is a list of pairs (guesser, confidence)
+        # - if the guesser returns a guessit.Guess and confidence is specified,
+        #   it will override it, otherwise it will leave the guess confidence
+        # - if the guesser returns a simple dict as a guess and confidence is
+        #   specified, it will use it, or 1.0 otherwise
+        strategy = [(self.guess_func, self.confidence, self.args, self.kwargs)]
+
+        for node in mtree.unidentified_leaves():
+            find_and_split_node(node, strategy, self.skip_nodes, self.logger)
 
 
 class CustomTransformerExtensionManager(ExtensionManager):

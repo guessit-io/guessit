@@ -20,9 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins import Transformer
-
-from guessit.transfo import SingleNodeGuesser
+from guessit.plugins.transformers import Transformer, SingleNodeGuesser
 from guessit.date import search_year
 
 

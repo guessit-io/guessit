@@ -20,16 +20,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins import Transformer
-from guessit.plugins.transformers import get_transformer
-
-from guessit import Guess
+from guessit.plugins.transformers import Transformer, get_transformer, TransfoException
+from guessit.guess import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
 from guessit.textutils import clean_string
 import os.path
 import re
 import mimetypes
-from guessit.transfo import TransfoException
 
 
 class GuessFiletype(Transformer):

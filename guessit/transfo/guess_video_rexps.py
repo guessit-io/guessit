@@ -23,8 +23,7 @@ from __future__ import absolute_import, division, print_function, \
 
 from guessit.patterns import _psep
 from guessit.patterns.containers import PropertiesContainer
-from guessit.plugins import Transformer
-from guessit.transfo import SingleNodeGuesser
+from guessit.plugins.transformers import Transformer, SingleNodeGuesser
 from guessit.patterns.numeral import parse_numeral
 
 

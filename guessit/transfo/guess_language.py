@@ -18,15 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function, \
-    unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.language import search_language, subtitle_prefixes, \
-    subtitle_suffixes
+from guessit.language import search_language, subtitle_prefixes, subtitle_suffixes
 from guessit.patterns.extension import subtitle_exts
-from guessit.plugins import Transformer
 from guessit.textutils import clean_string, find_words
-from guessit.transfo import SingleNodeGuesser
+from guessit.plugins.transformers import Transformer, SingleNodeGuesser
 
 
 class GuessLanguage(Transformer):

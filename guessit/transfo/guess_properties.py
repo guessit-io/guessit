@@ -20,10 +20,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins import Transformer
+from guessit.plugins.transformers import Transformer, SingleNodeGuesser
 from guessit.patterns.containers import PropertiesContainer, WeakValidator
 from guessit.quality import QualitiesContainer
-from guessit.transfo import SingleNodeGuesser
 from wsgiref.validate import validator
 
 

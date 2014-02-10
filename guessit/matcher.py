@@ -27,7 +27,7 @@ import logging
 from guessit import PY3, u
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
-from guessit.transfo import TransfoException
+from guessit.plugins.transformers import TransfoException
 
 log = logging.getLogger(__name__)
 

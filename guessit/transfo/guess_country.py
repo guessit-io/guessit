@@ -20,8 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins import Transformer
-
+from guessit.plugins.transformers import Transformer
 from guessit.country import Country
 from guessit import Guess
 

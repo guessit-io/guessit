@@ -20,10 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins import Transformer
-
-from guessit import Guess
-from guessit.transfo import SingleNodeGuesser
+from guessit.plugins.transformers import Transformer, SingleNodeGuesser
+from guessit.guess import Guess
 from guessit.patterns import sep
 from guessit.patterns.numeral import numeral, parse_numeral
 from guessit.date import valid_year
