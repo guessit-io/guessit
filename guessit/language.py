@@ -20,7 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit import UnicodeMixin, base_text_type, u, s
+from guessit import UnicodeMixin, base_text_type, u
 from guessit.textutils import find_words
 from babelfish import Language
 import babelfish
@@ -57,22 +57,22 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
     _with_country_regexp2 = re.compile('(.*)-(.*)')
 
     def __init__(self):
-        self.codes = set()
         self.guessit_exceptions = {}
-
-        self.alpha3b = babelfish.language_converters['alpha3b']
-        self.alpha2 = babelfish.language_converters['alpha2']
-        self.name = babelfish.language_converters['name']
-
-        self.codes |= babelfish.LANGUAGES | self.alpha3b.codes | self.alpha2.codes | self.name.codes
-
         for (alpha3, country), synlist in SYN.items():
             for syn in synlist:
                 self.guessit_exceptions[syn.lower()] = (alpha3, country, None)
-                self.codes.add(syn)
 
-    def convert(self, alpha3, country=None):
-        return str(babelfish.Language(alpha3, country))
+    @property
+    def codes(self):
+        return (babelfish.language_converters['alpha3b'].codes |
+                babelfish.language_converters['alpha2'].codes |
+                babelfish.language_converters['name'].codes |
+                babelfish.language_converters['opensubtitles'].codes |
+                babelfish.country_converters['name'].codes |
+                frozenset(self.guessit_exceptions.keys()))
+
+    def convert(self, alpha3, country=None, script=None):
+        return str(babelfish.Language(alpha3, country, script))
 
     def reverse(self, name):
         with_country = (GuessitConverter._with_country_regexp.match(name) or
@@ -117,17 +117,17 @@ COUNTRIES_SYN = {'ES': ['españa'],
 
 class GuessitCountryConverter(babelfish.CountryReverseConverter):
     def __init__(self):
-        self.codes = set()
         self.guessit_exceptions = {}
-
-        self.name = babelfish.country_converters['name']
-
-        self.codes |= set(babelfish.COUNTRIES.keys()) | self.name.codes
 
         for alpha2, synlist in COUNTRIES_SYN.items():
             for syn in synlist:
                 self.guessit_exceptions[syn.lower()] = alpha2
-                self.codes.add(syn)
+
+    @property
+    def codes(self):
+        return (babelfish.country_converters['name'].codes |
+                frozenset(babelfish.COUNTRIES.values()) |
+                frozenset(self.guessit_exceptions.keys()))
 
     def convert(self, alpha2):
         return str(babelfish.Country(alpha2))
@@ -174,17 +174,17 @@ class Language(UnicodeMixin):
     >>> Language('fr')
     Language(French)
 
-    >>> s(Language('eng').english_name)
-    'English'
+    >>> (Language('eng').english_name)
+    u'English'
 
-    >>> s(Language('pt(br)').country.name)
-    'BRAZIL'
+    >>> (Language('pt(br)').country.name)
+    u'BRAZIL'
 
-    >>> s(Language('zz', strict=False).english_name)
-    'Undetermined'
+    >>> (Language('zz', strict=False).english_name)
+    u'Undetermined'
 
-    >>> s(Language('pt(br)').opensubtitles)
-    'pob'
+    >>> (Language('pt(br)').opensubtitles)
+    u'pob'
     """
 
     def __init__(self, language, country=None, strict=False):
