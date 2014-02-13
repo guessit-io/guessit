@@ -75,7 +75,13 @@ class IterativeMatcher(object):
     containing all the found properties, and does some (basic) conflict
     resolution when they arise.
     """
-    def __init__(self, filename, filetype='autodetect', options={}, opts=[], transfo_opts={}):
+    def __init__(self, filename, filetype='autodetect', options=None, opts=None, transfo_opts=None):
+        if options is None:
+            options = {}
+        if opts is None:
+            opts = []
+        if transfo_opts is None:
+            transfo_opts = {}
         if not isinstance(opts, list):
             raise ValueError('opts must be a list of option names! Received: type=%s val=%s',
                              type(opts), opts)

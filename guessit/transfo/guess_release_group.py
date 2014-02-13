@@ -122,5 +122,5 @@ class GuessReleaseGroup(Transformer):
 
         return None
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         SingleNodeGuesser(self.guess_release_group, None, self.log).process(mtree)

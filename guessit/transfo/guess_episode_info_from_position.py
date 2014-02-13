@@ -103,10 +103,10 @@ class GuessEpisodeInfoFromPosition(Transformer):
                     maxv = len(c.clean_value)
             found_property(title_candidates[maxidx], 'title', confidence=0.3)
 
-    def should_process(self, mtree, options={}):
+    def should_process(self, mtree, options=None):
         return mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         """
         try to identify the remaining unknown groups by looking at their
         position relative to other known elements
@@ -157,7 +157,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
                     new_confidence = node.guess.confidence('series') * 0.5
                     node.guess.set_confidence('series', new_confidence)
 
-    def post_process(self, mtree, options={}):
+    def post_process(self, mtree, options=None):
         for node in mtree.nodes():
             if 'series' not in node.guess:
                 continue

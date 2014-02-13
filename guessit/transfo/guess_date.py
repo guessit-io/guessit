@@ -38,5 +38,5 @@ class GuessDate(Transformer):
         else:
             return None, None
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         SingleNodeGuesser(self.guess_date, 1.0, self.log).process(mtree)

@@ -64,5 +64,5 @@ class GuessIdnumber(Transformer):
 
         return None, None
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         SingleNodeGuesser(self.guess_idnumber, 0.4, self.log).process(mtree)

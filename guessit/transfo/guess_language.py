@@ -72,7 +72,7 @@ class GuessLanguage(Transformer):
         return node.span[0] in title_ends.keys() and (node.span[1] in unidentified_starts.keys() or node.span[1] + 1 in property_starts.keys()) or\
                 node.span[1] in title_starts.keys() and (node.span[0] == 0 or node.span[0] in unidentified_ends.keys() or node.span[0] in property_ends.keys())
 
-    def second_pass_options(self, mtree, options={}):
+    def second_pass_options(self, mtree, options=None):
         m = mtree.matched()
         to_skip_language_nodes = []
 
@@ -111,10 +111,12 @@ class GuessLanguage(Transformer):
             return None, {'skip_nodes': to_skip_language_nodes}
         return None, None
 
-    def should_process(self, mtree, options={}):
+    def should_process(self, mtree, options=None):
+        if options is None:
+            options = {}
         return not 'nolanguage' in options.keys()
 
-    def process(self, mtree, options={}, *args, **kwargs):
+    def process(self, mtree, options=None, *args, **kwargs):
         SingleNodeGuesser(self.guess_language, None, self.log, *args, **kwargs).process(mtree)
         # Note: 'language' is promoted to 'subtitleLanguage' in the post_process transfo
 
@@ -123,7 +125,7 @@ class GuessLanguage(Transformer):
                        confidence=node.guess.confidence('language'))
         del node.guess['language']
 
-    def post_process(self, mtree, options={}, *args, **kwargs):
+    def post_process(self, mtree, options=None, *args, **kwargs):
         # 1- try to promote language to subtitle language where it makes sense
         for node in mtree.nodes():
             if 'language' not in node.guess:

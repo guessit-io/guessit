@@ -31,10 +31,10 @@ class GuessMovieTitleFromPosition(Transformer):
     def supported_properties(self):
         return ['title']
 
-    def should_process(self, mtree, options={}):
+    def should_process(self, mtree, options=None):
         return mtree.guess['type'] not in ('episode', 'episodesubtitle', 'episodeinfo')
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         """
         try to identify the remaining unknown groups by looking at their
         position relative to other known elements

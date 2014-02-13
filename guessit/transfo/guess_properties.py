@@ -234,7 +234,7 @@ class GuessProperties(Transformer):
     def supported_properties(self):
         return self.container.get_supported_properties()
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         SingleNodeGuesser(self.guess_properties, 1.0, self.log).process(mtree)
 
     def rate_quality(self, guess, *props):

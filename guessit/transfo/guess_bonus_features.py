@@ -30,7 +30,7 @@ class GuessBonusFeatures(Transformer):
     def supported_properties(self):
         return ['bonusNumber', 'bonusTitle', 'filmNumber', 'filmSeries', 'title', 'series']
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         def previous_group(g):
             for leaf in mtree.unidentified_leaves()[::-1]:
                 if leaf.node_idx < g.node_idx:

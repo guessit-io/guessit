@@ -38,11 +38,11 @@ class GuessYear(Transformer):
         else:
             return None, None
 
-    def second_pass_options(self, mtree, options={}):
+    def second_pass_options(self, mtree, options=None):
         year_nodes = mtree.leaves_containing('year')
         if len(year_nodes) > 1:
             return None, {'skip_nodes': year_nodes[:len(year_nodes) - 1]}
         return None, None
 
-    def process(self, mtree, options={}, *args, **kwargs):
+    def process(self, mtree, options=None, *args, **kwargs):
         SingleNodeGuesser(self.guess_year, 1.0, self.log, *args, **kwargs).process(mtree)

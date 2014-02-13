@@ -172,7 +172,7 @@ class GuessFiletype(Transformer):
         filetype = filetype_container[0]
         return filetype, other
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         """guess the file type now (will be useful later)
         """
         filetype, other = self.guess_filetype(mtree)

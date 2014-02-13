@@ -105,7 +105,9 @@ h = NullHandler()
 log.addHandler(h)
 
 
-def _guess_filename(filename, filetype, options={}):
+def _guess_filename(filename, filetype, options=None):
+    if options is None:
+        options = {}
     mtree = IterativeMatcher(filename, filetype=filetype, options=options)
     opts, transfo_opts = mtree.second_pass_options
     if opts or transfo_opts:
@@ -114,7 +116,7 @@ def _guess_filename(filename, filetype, options={}):
     return mtree.matched()
 
 
-def guess_file_info(filename, filetype, info='filename', options={}):
+def guess_file_info(filename, filetype, info='filename', options=None):
     """info can contain the names of the various plugins, such as 'filename' to
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
@@ -123,6 +125,9 @@ def guess_file_info(filename, filetype, info='filename', options={}):
     >>> g['hash_md5'], g['hash_sha1']
     ('64de6b5893cac24456c46a935ef9c359', 'a703fc0fa4518080505809bf562c6fc6f7b3c98c')
     """
+    if options is None:
+        options = {}
+    
     result = []
     hashers = []
 

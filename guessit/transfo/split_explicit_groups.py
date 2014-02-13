@@ -30,7 +30,7 @@ class SplitExplicitGroups(Transformer):
     def __init__(self):
         Transformer.__init__(self, 245)
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         """split each of those into explicit groups (separated by parentheses or square brackets)
 
         :return: return the string split into explicit groups, that is, those either

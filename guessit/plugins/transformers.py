@@ -49,16 +49,16 @@ class Transformer(object):
     def enabled(self):
         return True
 
-    def second_pass_options(self, mtree, options={}):
+    def second_pass_options(self, mtree, options=None):
         return (None, None)
 
-    def should_process(self, mtree, options={}):
+    def should_process(self, mtree, options=None):
         return True
 
-    def process(self, mtree, options={}, *args, **kwargs):
+    def process(self, mtree, options=None, *args, **kwargs):
         pass
 
-    def post_process(self, mtree, options={}, *args, **kwargs):
+    def post_process(self, mtree, options=None, *args, **kwargs):
         pass
 
     def rate_quality(self, guess, *props):

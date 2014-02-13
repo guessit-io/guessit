@@ -35,10 +35,12 @@ class GuessCountry(Transformer):
     def supported_properties(self):
         return ['country']
 
-    def should_process(self, mtree, options={}):
+    def should_process(self, mtree, options=None):
+        if options is None:
+            options = {}
         return not 'nocountry' in options.keys()
 
-    def process(self, mtree, options={}):
+    def process(self, mtree, options=None):
         for node in mtree.unidentified_leaves():
             if len(node.node_idx) == 2:
                 c = node.value[1:-1].lower()
@@ -56,7 +58,7 @@ class GuessCountry(Transformer):
 
                 node.guess = Guess(country=country, confidence=1.0, input=node.value, span=node.span)
 
-    def post_process(self, mtree, options={}, *args, **kwargs):
+    def post_process(self, mtree, options=None, *args, **kwargs):
         # if country is in the guessed properties, make it part of the series name
         series_leaves = mtree.leaves_containing('series')
         country_leaves = mtree.leaves_containing('country')

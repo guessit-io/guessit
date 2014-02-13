@@ -29,7 +29,10 @@ import os
 from guessit import PY2, u, slogging, guess_file_info
 
 
-def detect_filename(filename, filetype, info=['filename'], options={}):
+def detect_filename(filename, filetype, info=['filename'], options=None):
+    if options is None:
+        options = {}
+
     filename = u(filename)
 
     print('For:', filename)
@@ -106,7 +109,7 @@ def _display_property_values(property_name):
         print('  [!] %s' % (property_value,))
 
 
-def run_demo(episodes=True, movies=True, options={}):
+def run_demo(episodes=True, movies=True, options=None):
     # NOTE: tests should not be added here but rather in the tests/ folder
     #       this is just intended as a quick example
     if episodes:
