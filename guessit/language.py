@@ -174,17 +174,17 @@ class Language(UnicodeMixin):
     >>> Language('fr')
     Language(French)
 
-    >>> (Language('eng').english_name)
-    u'English'
+    >>> (Language('eng').english_name) == 'English'
+    True
 
-    >>> (Language('pt(br)').country.name)
-    u'BRAZIL'
+    >>> (Language('pt(br)').country.name) == 'BRAZIL'
+    True
 
-    >>> (Language('zz', strict=False).english_name)
-    u'Undetermined'
+    >>> (Language('zz', strict=False).english_name) == 'Undetermined'
+    True
 
-    >>> (Language('pt(br)').opensubtitles)
-    u'pob'
+    >>> (Language('pt(br)').opensubtitles) == 'pob'
+    True
     """
 
     def __init__(self, language, country=None, strict=False):
