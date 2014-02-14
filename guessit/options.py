@@ -11,7 +11,7 @@ option_parser.add_option('-i', '--info', dest='info', default='filename',
                   help='the desired information type: filename, hash_mpc or a hash from python\'s '
                        'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
                        'them, comma-separated')
-option_parser.add_option('-n', '--name-only', dest='name_only', default=False,
+option_parser.add_option('-n', '--name-only', dest='name_only', action='store_true', default=False,
               help='Parse files as name only, with no folders, no extension and no file content analysis.')
 option_parser.add_option('-t', '--type', dest='filetype', default='autodetect',
                   help='the suggested file type: movie, episode or autodetect')

@@ -162,12 +162,12 @@ class TestGuessit(TestCase):
 
         correct = total - len(fails)
         log.info('SUMMARY: Guessed correctly %d out of %d filenames' % (correct, total))
-        
+
         for failed_entry, failed_properties in fails.items():
             log.error('---- ' + failed_entry + ' ----')
             for failed_property in failed_properties:
                 log.error("FAILED: " + failed_property)
-                
+
         for additional_entry, additional_properties in additionals.items():
             log.warn('---- ' + additional_entry + ' ----')
             for additional_property in additional_properties:
