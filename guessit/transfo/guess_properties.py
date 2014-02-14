@@ -20,10 +20,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins.transformers import Transformer, SingleNodeGuesser
 from guessit.patterns.containers import PropertiesContainer, WeakValidator
+from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
+from guessit.plugins.transformers import Transformer, SingleNodeGuesser
 from guessit.quality import QualitiesContainer
-from wsgiref.validate import validator
 
 
 class GuessProperties(Transformer):
@@ -226,6 +226,10 @@ class GuessProperties(Transformer):
 
         for prop in self.container.get_properties('format'):
             self.container.register_property('other', prop.pattern + '(-?Scr(?:eener)?)', canonical_form='Screener')
+
+        for exts in (subtitle_exts, info_exts, video_exts):
+            for container in exts:
+                self.container.register_property('container', container, confidence=0.3)
 
     def guess_properties(self, string, node):
         found = self.container.find_properties(string, node)
