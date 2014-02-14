@@ -116,7 +116,7 @@ class IterativeMatcher(object):
 
         try:
             mtree = self.match_tree
-            mtree.guess.set('type', filetype, confidence=1.0)
+            mtree.guess.set('type', filetype, confidence=0.0)
 
             # Process
             for transformer in transformers.all_transformers():

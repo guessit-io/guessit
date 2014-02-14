@@ -83,7 +83,7 @@ class GuessEpisodesRexps(Transformer):
         return self.container.as_guess(found, string)
 
     def should_process(self, mtree, options=None):
-        return mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
+        return mtree.guess['type'].startswith('episode')
 
     def process(self, mtree, options=None):
         SingleNodeGuesser(self.guess_episodes_rexps, None, self.log).process(mtree)

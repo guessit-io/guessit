@@ -24,6 +24,7 @@ from guessit import base_text_type, u
 from guessit.slogging import setupLogging
 
 from unittest import TestCase, TestLoader, TextTestRunner
+import shlex
 
 import yaml, logging, sys, os
 from os.path import *
@@ -48,13 +49,14 @@ def addImportPath(path):
 
 
 
-
 log = logging.getLogger(__name__)
 
 import guessit
+from guessit.options import option_parser
 from guessit import *
 from guessit.matcher import *
 from guessit.fileutils import *
+
 
 
 def allTests(testClass):
@@ -67,8 +69,8 @@ class TestGuessit(TestCase):
                                   exclude_files=None):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
 
-        def guess_func(string):
-            return guess_file_info(string, filetype=filetype)
+        def guess_func(string, options=None):
+            return guess_file_info(string, filetype=filetype, options=options)
 
         return self.checkFields(groundTruth, guess_func, remove_type, exclude_files)
 
@@ -76,7 +78,7 @@ class TestGuessit(TestCase):
                     exclude_files=None):
         total = 0
         exclude_files = exclude_files or []
-        
+
         fails = {}
         additionals = {}
 
@@ -88,7 +90,13 @@ class TestGuessit(TestCase):
             log.debug('\n' + '-' * 120)
             log.info('Guessing information for file: %s' % filename)
 
-            found = guess_func(filename)
+            options = required_fields.pop('options') if 'options' in required_fields else None
+
+            if options:
+                args = shlex.split(options + u(' "') + filename + u('"'))
+                options, args = option_parser.parse_args(args)
+                options = vars(options)
+            found = guess_func(filename, options)
 
             total = total + 1
 

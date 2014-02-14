@@ -104,7 +104,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
             found_property(title_candidates[maxidx], 'title', confidence=0.3)
 
     def should_process(self, mtree, options=None):
-        return mtree.guess['type'] in ('episode', 'episodesubtitle', 'episodeinfo')
+        return mtree.guess['type'].startswith('episode')
 
     def process(self, mtree, options=None):
         """

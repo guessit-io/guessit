@@ -38,10 +38,10 @@ keywords = yaml.load("""
 """)
 
 
-def guess_info(string):
+def guess_info(string, options=None):
     mtree = MatchTree(string)
-    GuessReleaseGroup().process(mtree)
-    GuessProperties().process(mtree)
+    GuessReleaseGroup().process(mtree, options)
+    GuessProperties().process(mtree, options)
     return mtree.matched()
 
 

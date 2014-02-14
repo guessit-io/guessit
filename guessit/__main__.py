@@ -23,10 +23,10 @@ from __future__ import absolute_import, division, print_function, \
     unicode_literals
 
 import logging
-from optparse import OptionParser
 import os
 
 from guessit import PY2, u, slogging, guess_file_info
+from guessit.options import option_parser
 
 
 def detect_filename(filename, filetype, info=['filename'], options=None):
@@ -173,30 +173,10 @@ def main(args=None):
         # Wrap sys.stdout into a StreamWriter to allow writing unicode.
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
-    parser = OptionParser(usage='usage: %prog [options] file1 [file2...]')
-    parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
-                      help='display debug output')
-    parser.add_option('-p', '--properties', dest='properties', action='store_true', default=False,
-                  help='Display properties that can be guessed.')
-    parser.add_option('-l', '--values', dest='values', action='store_true', default=False,
-              help='Display property values that can be guessed.')
-    parser.add_option('-i', '--info', dest='info', default='filename',
-                      help='the desired information type: filename, hash_mpc or a hash from python\'s '
-                           'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
-                           'them, comma-separated')
-    parser.add_option('-t', '--type', dest='filetype', default='autodetect',
-                      help='the suggested file type: movie, episode or autodetect')
-    parser.add_option('-a', '--advanced', dest='advanced', action='store_true', default=False,
-                      help='display advanced information for filename guesses, as json output')
-    parser.add_option('-y', '--yaml', dest='yaml', action='store_true', default=False,
-                  help='display information for filename guesses as yaml output (like unit-test)')
-    parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
-                      help='run a few builtin tests instead of analyzing a file')
-
     if args:
-        options, args = parser.parse_args(args)
+        options, args = option_parser.parse_args(args)
     else:
-        options, args = parser.parse_args()
+        options, args = option_parser.parse_args()
     if options.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
@@ -218,7 +198,7 @@ def main(args=None):
                                 )
 
     if help_required:
-        parser.print_help()
+        option_parser.print_help()
 
 if __name__ == '__main__':
     main()

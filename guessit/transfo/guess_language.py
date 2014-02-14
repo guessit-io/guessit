@@ -114,7 +114,7 @@ class GuessLanguage(Transformer):
     def should_process(self, mtree, options=None):
         if options is None:
             options = {}
-        return not 'nolanguage' in options.keys()
+        return not 'nolanguage' in options
 
     def process(self, mtree, options=None, *args, **kwargs):
         SingleNodeGuesser(self.guess_language, None, self.log, *args, **kwargs).process(mtree)

@@ -32,7 +32,7 @@ class GuessMovieTitleFromPosition(Transformer):
         return ['title']
 
     def should_process(self, mtree, options=None):
-        return mtree.guess['type'] not in ('episode', 'episodesubtitle', 'episodeinfo')
+        return not mtree.guess['type'].startswith('episode')
 
     def process(self, mtree, options=None):
         """

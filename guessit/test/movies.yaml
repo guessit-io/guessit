@@ -587,3 +587,8 @@
   screenSize: 1080p
   title: Echec et Mort
   videoCodec: h264
+
+? Paparazzi - Timsit/Lindon (MKV 1080p tvripHD)
+: options: -n
+  title: Paparazzi
+  screenSize: 1080p

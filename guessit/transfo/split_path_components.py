@@ -34,9 +34,12 @@ class SplitPathComponents(Transformer):
 
         :return: the filename split into [ dir*, basename, ext ]
         """
-        components = fileutils.split_path(mtree.value)
-        basename = components.pop(-1)
-        components += list(splitext(basename))
-        components[-1] = components[-1][1:]  # remove the '.' from the extension
+        if not options.get('name_only'):
+            components = fileutils.split_path(mtree.value)
+            basename = components.pop(-1)
+            components += list(splitext(basename))
+            components[-1] = components[-1][1:]  # remove the '.' from the extension
 
-        mtree.split_on_components(components)
+            mtree.split_on_components(components)
+        else:
+            mtree.split_on_components([mtree.value, ''])
