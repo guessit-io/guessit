@@ -42,11 +42,14 @@ class GuessFiletype(Transformer):
     MOVIES = [m.lower() for m in MOVIES]
     SERIES = [s.lower() for s in SERIES]
 
-    def guess_filetype(self, mtree):
+    def guess_filetype(self, mtree, options=None):
         # put the filetype inside a dummy container to be able to have the
         # following functions work correctly as closures
         # this is a workaround for python 2 which doesn't have the
         # 'nonlocal' keyword (python 3 does have it)
+        if options is None:
+            options = {}
+
         filetype_container = [mtree.guess['type']]
         other = {}
         filename = mtree.string
@@ -100,7 +103,7 @@ class GuessFiletype(Transformer):
             other = {'container': fileext}
         else:
             upgrade(type='unknown')
-            if fileext:
+            if fileext and not options.get('name_only'):
                 other = {'extension': fileext}
 
         # check whether we are in a 'Movies', 'Tv Shows', ... folder
@@ -182,7 +185,7 @@ class GuessFiletype(Transformer):
     def process(self, mtree, options=None):
         """guess the file type now (will be useful later)
         """
-        filetype, other = self.guess_filetype(mtree)
+        filetype, other = self.guess_filetype(mtree, options)
 
         mtree.guess.set('type', filetype, confidence=1.0)
         self.log.debug('Found with confidence %.2f: %s' % (1.0, mtree.guess))

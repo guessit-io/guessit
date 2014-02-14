@@ -593,3 +593,11 @@
   title: Paparazzi
   screenSize: 1080p
   format: HDTV
+  
+? some.movie.720p.bluray.x264-mind
+: options: -n
+  title: some movie
+  screenSize: 720p
+  videoCodec: h264
+  releaseGroup: mind
+  format: BluRay
