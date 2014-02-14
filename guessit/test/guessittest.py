@@ -93,8 +93,8 @@ class TestGuessit(TestCase):
             options = required_fields.pop('options') if 'options' in required_fields else None
 
             if options:
-                args = shlex.split(options + u(' "') + filename + u('"'))
-                options, args = option_parser.parse_args(args)
+                args = shlex.split(options)
+                options, _ = option_parser.parse_args(args)
                 options = vars(options)
             found = guess_func(filename, options)
 
