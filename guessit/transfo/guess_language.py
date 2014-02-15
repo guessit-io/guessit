@@ -88,7 +88,7 @@ class GuessLanguage(Transformer):
                     # if filetype is subtitle and the language appears last, just before
                     # the extension, then it is likely a subtitle language
                     parts = clean_string(lang_node.root.value).split()
-                    if m['type'] in ['moviesubtitle', 'episodesubtitle'] and (parts.index(lang_node.value) == len(parts) - 2):
+                    if m.get('type') in ['moviesubtitle', 'episodesubtitle'] and (parts.index(lang_node.value) == len(parts) - 2):
                         continue
 
                     to_skip_language_nodes.append(lang_node)
