@@ -42,7 +42,7 @@ entry_points = {
     ],
 }
 
-dependency_links = ["https://github.com/Diaoul/babelfish/zipball/087b63ade9077b08cc609d83360a7c86ef0545b2#egg=babelfish-0.5.1.memory0"]
+dependency_links = ["https://github.com/Diaoul/babelfish/zipball/0.5.1.memory0#egg=babelfish-0.5.1.memory0"]
 
 version = '0.8.dev0'
 
