@@ -4,8 +4,9 @@ python:
   - 2.7
   - 3.3
 install:
-  - pip install --allow-all-external --allow-unverified babelfish babelfish -r requirements.txt
   - pip install coveralls
-script: coverage run --source=guessit setup.py test
+script: 
+  - coverage run --source=guessit setup.py test
+  - setup.py build
 after_success:
   - coveralls
