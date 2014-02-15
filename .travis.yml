@@ -4,9 +4,10 @@ python:
   - 2.7
   - 3.3
 install:
+  - pip install distribute --upgrade
   - pip install coveralls
 script: 
   - coverage run --source=guessit setup.py test
-  - setup.py build
+  - python setup.py build
 after_success:
   - coveralls
