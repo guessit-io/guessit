@@ -241,3 +241,55 @@ def find_first_level_groups(string, enclosing, blank_sep=None):
             string = str_replace(string, end - 1, blank_sep)
 
     return split_on_groups(string, groups)
+
+
+def _camel_split_and_lower(string, i):
+        char_upper = string[i].isupper()
+        previous_char_lower = (string[i - 1].isalpha() and not string[i - 1].isupper()) if i > 0 else False
+        next_char_upper = string[i + 1].isupper() if i + 1 < len(string) else False
+
+        need_split = char_upper and previous_char_lower
+        upercase_word = char_upper and next_char_upper
+        if not need_split:
+            previous_char_upper = string[i - 1].isupper() if i > 0 else False
+            next_char_lower = (string[i + 1].isalpha() and not string[i + 1].isupper()) if i + 1 < len(string) else False
+            need_split = char_upper and previous_char_upper and next_char_lower
+            upercase_word = previous_char_upper and not next_char_lower
+
+        need_lower = not upercase_word and need_split
+
+        return (need_split, need_lower)
+
+
+def is_camel(string):
+    for i in range(0, len(string)):
+        need_split, _ = _camel_split_and_lower(string, i)
+        if need_split:
+            return True
+    return False
+
+
+def from_camel(string):
+    """
+    >>> _word_from_camel('dogEATDog') == 'dog EAT dog'
+    True
+    >>> _word_from_camel('DeathToCamelCase') == 'Death to camel case'
+    True
+    >>> _word_from_camel('TheBest') == 'The best'
+    True
+    """
+    if not string:
+        return
+    pieces = []
+
+    for i in range(0, len(string)):
+        char = string[i]
+        need_split, need_lower = _camel_split_and_lower(string, i)
+        if need_split:
+            pieces.append(' ')
+
+        if need_lower:
+            pieces.append(char.lower())
+        else:
+            pieces.append(char)
+    return ''.join(pieces)

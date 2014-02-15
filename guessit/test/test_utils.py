@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.test.guessittest import *
 from guessit.fileutils import split_path
-from guessit.textutils import strip_brackets, str_replace, str_fill
+from guessit.textutils import strip_brackets, str_replace, str_fill, from_camel, is_camel
 from guessit import PY2
 
 
@@ -62,6 +62,19 @@ class TestUtils(TestGuessit):
     def test_str_utils(self):
         self.assertEqual("Hello world", str_replace("Hello World", 6, 'w'))
         self.assertEqual("Hello *****", str_fill("Hello World", (6, 11), '*'))
+
+        #self.assertEqual("This is camel cased title", from_camel("ThisIsCamelCasedTitle"))
+        self.assertEqual("This is camel CASED title", from_camel("ThisIsCamelCASEDTitle"))
+        self.assertEqual("Death TO camel case", from_camel("DeathTOCamelCase"))
+        self.assertEqual("But I like java too:)", from_camel("ButILikeJavaToo:)"))
+
+        self.assertEqual("Beatdown french DVD rip.mkv", from_camel("BeatdownFrenchDVDRip.mkv"))
+        self.assertEqual("DO NOTHING ON UPPER CASE", from_camel("DO NOTHING ON UPPER CASE"))
+        self.assertFalse(is_camel("this_is_not_camel"))
+        self.assertTrue(is_camel("ThisIsCamel"))
+
+        self.assertEqual("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv", from_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv"))
+        self.assertFalse(is_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv"))
 
 
 suite = allTests(TestUtils)
