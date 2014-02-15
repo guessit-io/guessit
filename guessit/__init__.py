@@ -88,7 +88,7 @@ else:   # pragma: no cover
 from guessit.guess import Guess, merge_all
 from guessit.language import Language
 from guessit.matcher import IterativeMatcher
-from guessit.textutils import clean_string
+from guessit.textutils import clean_string, is_camel, from_camel
 import os.path
 import logging
 import json
@@ -108,12 +108,43 @@ log.addHandler(h)
 def _guess_filename(filename, filetype, options=None):
     if options is None:
         options = {}
+    mtree = _build_filename_mtree(filename, filetype=filetype, options=options)
+    _add_camel_properties(mtree, filetype=filetype, options=options)
+    return mtree.matched()
+
+
+def _build_filename_mtree(filename, filetype, options=None):
     mtree = IterativeMatcher(filename, filetype=filetype, options=options)
     opts, transfo_opts = mtree.second_pass_options
     if opts or transfo_opts:
         log.info("Running 2nd pass")
         mtree = IterativeMatcher(filename, filetype=filetype, options=options, opts=opts, transfo_opts=transfo_opts)
-    return mtree.matched()
+    return mtree
+
+
+def _add_camel_properties(mtree, filetype, options=None):
+    prop = 'title' if mtree.matched().get('type') != 'episode' else 'series'
+    value = mtree.matched().get(prop)
+    _guess_camel_string(mtree, value, filetype=filetype, skip_title=False, options=options)
+
+    for leaf in mtree.match_tree.unidentified_leaves():
+        value = leaf.value
+        _guess_camel_string(mtree, value, filetype=filetype, skip_title=True, options=options)
+
+
+def _guess_camel_string(mtree, string, filetype, skip_title=False, options=None):
+    if string and is_camel(string):
+        log.info('"%s" is camel cased. Try to detect more properties.' % (string,))
+        uncameled_value = from_camel(string)
+        camel_options = dict(options)
+        camel_options["name_only"] = True
+        camel_options["skip_title"] = skip_title
+        camel_tree = _build_filename_mtree(uncameled_value, filetype=filetype, options=camel_options)
+        if len(camel_tree.matched()) > 0:
+            # Title has changed.
+            mtree.matched().update(camel_tree.matched())
+            return True
+    return False
 
 
 def guess_file_info(filename, filetype, info='filename', options=None):
@@ -127,7 +158,7 @@ def guess_file_info(filename, filetype, info='filename', options=None):
     """
     if options is None:
         options = {}
-    
+
     result = []
     hashers = []
 

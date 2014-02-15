@@ -602,6 +602,22 @@
   releaseGroup: mind
   format: BluRay
   
-? Dr LiNE The Lorax
+? Dr LiNE The Lorax 720p h264 BluRay
 : options: -n
   title: Dr LiNE The Lorax
+  screenSize: 720p
+  videoCodec: h264
+  format: BluRay
+
+? BeatdownFrenchDVDRip.mkv
+: title: Beatdown
+  language: French
+  format: DVD
+
+? YvesSaintLaurent2013FrenchDVDScrXvid.avi
+: format: DVD
+  language: French
+  other: Screener
+  title: Yves saint laurent
+  videoCodec: XviD
+  year: 2013
