@@ -63,18 +63,32 @@ class TestUtils(TestGuessit):
         self.assertEqual("Hello world", str_replace("Hello World", 6, 'w'))
         self.assertEqual("Hello *****", str_fill("Hello World", (6, 11), '*'))
 
-        #self.assertEqual("This is camel cased title", from_camel("ThisIsCamelCasedTitle"))
+        self.assertTrue("This is camel", from_camel("ThisIsCamel"))
+
+        self.assertEqual('camel case', from_camel('camelCase'))
+        self.assertEqual('A case', from_camel('ACase'))
+        self.assertEqual('MiXedCaSe is not camel case', from_camel('MiXedCaSe is not camelCase'))
+
+        self.assertEqual("This is camel cased title", from_camel("ThisIsCamelCasedTitle"))
         self.assertEqual("This is camel CASED title", from_camel("ThisIsCamelCASEDTitle"))
+
+        self.assertEqual("These are camel CASED title", from_camel("TheseAreCamelCASEDTitle"))
+
+        self.assertEqual("Give a camel case string", from_camel("GiveACamelCaseString"))
+
         self.assertEqual("Death TO camel case", from_camel("DeathTOCamelCase"))
-        self.assertEqual("But I like java too:)", from_camel("ButILikeJavaToo:)"))
+        self.assertEqual("But i like java too:)", from_camel("ButILikeJavaToo:)"))
 
         self.assertEqual("Beatdown french DVD rip.mkv", from_camel("BeatdownFrenchDVDRip.mkv"))
         self.assertEqual("DO NOTHING ON UPPER CASE", from_camel("DO NOTHING ON UPPER CASE"))
+
         self.assertFalse(is_camel("this_is_not_camel"))
         self.assertTrue(is_camel("ThisIsCamel"))
 
         self.assertEqual("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv", from_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv"))
         self.assertFalse(is_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv"))
+
+        self.assertEqual("A2LiNE", from_camel("A2LiNE"))
 
 
 suite = allTests(TestUtils)

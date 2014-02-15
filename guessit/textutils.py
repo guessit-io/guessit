@@ -130,8 +130,8 @@ def levenshtein(a, b):
             else:
                 cost = 1
 
-            d[i][j] = min(d[i - 1][j] + 1,        # deletion
-                          d[i][j - 1] + 1,        # insertion
+            d[i][j] = min(d[i - 1][j] + 1,  # deletion
+                          d[i][j - 1] + 1,  # insertion
                           d[i - 1][j - 1] + cost  # substitution
                           )
 
@@ -243,20 +243,62 @@ def find_first_level_groups(string, enclosing, blank_sep=None):
     return split_on_groups(string, groups)
 
 
-def _camel_split_and_lower(string, i):
-        char_upper = string[i].isupper()
-        previous_char_lower = (string[i - 1].isalpha() and not string[i - 1].isupper()) if i > 0 else False
-        next_char_upper = string[i + 1].isupper() if i + 1 < len(string) else False
+_camel_word2_set = set(('is', 'to',))
+_camel_word3_set = set(('the',))
 
-        need_split = char_upper and previous_char_lower
-        upercase_word = char_upper and next_char_upper
+
+def _camel_split_and_lower(string, i):
+        """Retrieves a tuple (need_split, need_lower)
+
+        need_split is True if this char is a first letter in a camelCasedString.
+        need_lower is True if this char should be lowercased.
+        """
+
+        def islower(c):
+            return c.isalpha() and not c.isupper()
+
+        previous_char2 = string[i - 2] if i > 1 else None
+        previous_char = string[i - 1] if i > 0 else None
+        char = string[i]
+        next_char = string[i + 1] if i + 1 < len(string) else None
+        next_char2 = string[i + 2] if i + 2 < len(string) else None
+
+        char_upper = char.isupper()
+        char_lower = islower(char)
+
+        # previous_char2_lower = islower(previous_char2) if previous_char2 else False
+        previous_char2_upper = previous_char2.isupper() if previous_char2 else False
+
+        previous_char_lower = islower(previous_char) if previous_char else False
+        previous_char_upper = previous_char.isupper() if previous_char else False
+
+        next_char_upper = next_char.isupper() if next_char else False
+        next_char_lower = islower(next_char) if next_char else False
+
+        next_char2_upper = next_char2.isupper() if next_char2 else False
+        # next_char2_lower = islower(next_char2) if next_char2 else False
+
+        mixedcase_word = (previous_char_upper and char_lower and next_char_upper) or \
+                        (previous_char_lower and char_upper and next_char_lower and next_char2_upper) or \
+                        (previous_char2_upper and previous_char_lower and char_upper)
+        if mixedcase_word:
+            word2 = (char + next_char).lower() if next_char else None
+            word3 = (char + next_char + next_char2).lower() if next_char and next_char2 else None
+            word2b = (previous_char2 + previous_char).lower() if previous_char2 and previous_char else None
+            if word2 in _camel_word2_set or word2b in _camel_word2_set or word3 in _camel_word3_set:
+                mixedcase_word = False
+
+        uppercase_word = previous_char_upper and char_upper and next_char_upper or (char_upper and next_char_upper and next_char2_upper)
+
+        need_split = char_upper and previous_char_lower and not mixedcase_word
+
         if not need_split:
             previous_char_upper = string[i - 1].isupper() if i > 0 else False
             next_char_lower = (string[i + 1].isalpha() and not string[i + 1].isupper()) if i + 1 < len(string) else False
             need_split = char_upper and previous_char_upper and next_char_lower
-            upercase_word = previous_char_upper and not next_char_lower
+            uppercase_word = previous_char_upper and not next_char_lower
 
-        need_lower = not upercase_word and need_split
+        need_lower = not uppercase_word and not mixedcase_word and need_split
 
         return (need_split, need_lower)
 
@@ -288,6 +330,8 @@ def from_camel(string):
     >>> from_camel('DeathToCamelCase') == 'Death to camel case'
     True
     >>> from_camel('TheBest') == 'The best'
+    True
+    >>> from_camel('MiXedCaSe is not camelCase') == 'MiXedCaSe is not camel case'
     True
     """
     if not string:
