@@ -262,6 +262,18 @@ def _camel_split_and_lower(string, i):
 
 
 def is_camel(string):
+    """
+    >>> is_camel('dogEATDog')
+    True
+    >>> is_camel('DeathToCamelCase')
+    True
+    >>> is_camel('death_to_camel_case')
+    False
+    >>> is_camel('TheBest')
+    True
+    >>> is_camel('The Best')
+    False
+    """
     for i in range(0, len(string)):
         need_split, _ = _camel_split_and_lower(string, i)
         if need_split:
@@ -271,11 +283,11 @@ def is_camel(string):
 
 def from_camel(string):
     """
-    >>> _word_from_camel('dogEATDog') == 'dog EAT dog'
+    >>> from_camel('dogEATDog') == 'dog EAT dog'
     True
-    >>> _word_from_camel('DeathToCamelCase') == 'Death to camel case'
+    >>> from_camel('DeathToCamelCase') == 'Death to camel case'
     True
-    >>> _word_from_camel('TheBest') == 'The best'
+    >>> from_camel('TheBest') == 'The best'
     True
     """
     if not string:
