@@ -4,7 +4,7 @@ python:
   - 2.7
   - 3.3
 install:
-  - pip install distribute --upgrade
+  - pip install https://github.com/Diaoul/babelfish/zipball/0.5.1.memory0
   - pip install coveralls
 script: 
   - coverage run --source=guessit setup.py test
