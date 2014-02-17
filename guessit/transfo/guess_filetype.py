@@ -55,20 +55,20 @@ class GuessFiletype(Transformer):
         filename = mtree.string
 
         def upgrade_episode():
-            if filetype_container[0] == 'video':
-                filetype_container[0] = 'episode'
-            elif filetype_container[0] == 'subtitle':
+            if filetype_container[0] == 'subtitle':
                 filetype_container[0] = 'episodesubtitle'
             elif filetype_container[0] == 'info':
                 filetype_container[0] = 'episodeinfo'
+            else:
+                filetype_container[0] = 'episode'
 
         def upgrade_movie():
-            if filetype_container[0] == 'video':
-                filetype_container[0] = 'movie'
-            elif filetype_container[0] == 'subtitle':
+            if filetype_container[0] == 'subtitle':
                 filetype_container[0] = 'moviesubtitle'
             elif filetype_container[0] == 'info':
                 filetype_container[0] = 'movieinfo'
+            else:
+                filetype_container[0] = 'movie'
 
         def upgrade_subtitle():
             if filetype_container[0] == 'movie':
@@ -87,8 +87,7 @@ class GuessFiletype(Transformer):
                 filetype_container[0] = 'info'
 
         def upgrade(type='unknown'):
-            if filetype_container[0] == 'autodetect':
-                filetype_container[0] = type
+            filetype_container[0] = type
 
         # look at the extension first
         fileext = os.path.splitext(filename)[1][1:].lower()
@@ -135,47 +134,47 @@ class GuessFiletype(Transformer):
                 return filetype_container[0], other
 
         # now look whether there are some specific hints for episode vs movie
-        if filetype_container[0] in ('video', 'subtitle', 'info'):
-            # if we have an episode_rexp (eg: s02e13), it is an episode
-            episode_transformer = get_transformer('guess_episodes_rexps')
-            if episode_transformer:
-                guess = episode_transformer.guess_episodes_rexps(filename)
-                if guess:
-                    self.log.debug('Found guess_episodes_rexps: %s -> type = episode', guess)
-                    upgrade_episode()
-                    return filetype_container[0], other
-
-            weak_episode_transformer = get_transformer('guess_weak_episodes_rexps')
-            if weak_episode_transformer:
-                guess = weak_episode_transformer.guess_weak_episodes_rexps(filename)
-                if guess:
-                    self.log.debug('Found guess_weak_episodes_rexps: %s -> type = episode', guess)
-                    upgrade_episode()
-                    return filetype_container[0], other
-
-            properties_transformer = get_transformer('guess_properties')
-            if properties_transformer:
-                # if we have certain properties characteristic of episodes, it is an ep
-                found = properties_transformer.container.find_properties(filename, mtree, 'episodeFormat')
-                guess = properties_transformer.container.as_guess(found, filename)
-                if guess:
-                    self.log.debug('Found characteristic property of episodes: %s"', guess)
-                    upgrade_episode()
-                    return filetype_container[0], other
-
-                found = properties_transformer.container.find_properties(filename, mtree, 'format')
-                guess = properties_transformer.container.as_guess(found, filename, lambda g: g['format'] == 'DVB')
-                if guess:
-                    self.log.debug('Found characteristic property of episodes: %s', guess)
-                    upgrade_episode()
-                    return filetype_container[0], other
-
-            # origin-specific type
-            if 'tvu.org.ru' in filename:
-                self.log.debug('Found characteristic property of episodes: %s', 'tvu.org.ru')
+        # if we have an episode_rexp (eg: s02e13), it is an episode
+        episode_transformer = get_transformer('guess_episodes_rexps')
+        if episode_transformer:
+            guess = episode_transformer.guess_episodes_rexps(filename)
+            if guess:
+                self.log.debug('Found guess_episodes_rexps: %s -> type = episode', guess)
                 upgrade_episode()
                 return filetype_container[0], other
 
+        weak_episode_transformer = get_transformer('guess_weak_episodes_rexps')
+        if weak_episode_transformer:
+            guess = weak_episode_transformer.guess_weak_episodes_rexps(filename)
+            if guess:
+                self.log.debug('Found guess_weak_episodes_rexps: %s -> type = episode', guess)
+                upgrade_episode()
+                return filetype_container[0], other
+
+        properties_transformer = get_transformer('guess_properties')
+        if properties_transformer:
+            # if we have certain properties characteristic of episodes, it is an ep
+            found = properties_transformer.container.find_properties(filename, mtree, 'episodeFormat')
+            guess = properties_transformer.container.as_guess(found, filename)
+            if guess:
+                self.log.debug('Found characteristic property of episodes: %s"', guess)
+                upgrade_episode()
+                return filetype_container[0], other
+
+            found = properties_transformer.container.find_properties(filename, mtree, 'format')
+            guess = properties_transformer.container.as_guess(found, filename, lambda g: g['format'] == 'DVB')
+            if guess:
+                self.log.debug('Found characteristic property of episodes: %s', guess)
+                upgrade_episode()
+                return filetype_container[0], other
+
+        # origin-specific type
+        if 'tvu.org.ru' in filename:
+            self.log.debug('Found characteristic property of episodes: %s', 'tvu.org.ru')
+            upgrade_episode()
+            return filetype_container[0], other
+
+        if filetype_container[0] in ('video', 'subtitle', 'info'):
             # if no episode info found, assume it's a movie
             self.log.debug('Nothing characteristic found, assuming type = movie')
             upgrade_movie()
