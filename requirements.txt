@@ -1,2 +1,3 @@
+https://github.com/Diaoul/babelfish/zipball/0.5.1.memory0
 # see https://caremad.io/blog/setup-vs-requirement/
 -e .
