@@ -108,8 +108,10 @@ class GuessFiletype(Transformer):
         # check whether we are in a 'Movies', 'Tv Shows', ... folder
         folder_rexps = [
                         (r'Movies?', upgrade_movie),
+                        (r'Films?', upgrade_movie),
                         (r'Tv[ _-]?Shows?', upgrade_episode),
-                        (r'Series', upgrade_episode)
+                        (r'Series?', upgrade_episode),
+                        (r'Episodes?', upgrade_episode),
                         ]
         for frexp, upgrade_func in folder_rexps:
             frexp = re.compile(frexp, re.IGNORECASE)
