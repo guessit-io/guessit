@@ -143,14 +143,6 @@ class GuessFiletype(Transformer):
                 upgrade_episode()
                 return filetype_container[0], other
 
-        weak_episode_transformer = get_transformer('guess_weak_episodes_rexps')
-        if weak_episode_transformer:
-            guess = weak_episode_transformer.guess_weak_episodes_rexps(filename)
-            if guess:
-                self.log.debug('Found guess_weak_episodes_rexps: %s -> type = episode', guess)
-                upgrade_episode()
-                return filetype_container[0], other
-
         properties_transformer = get_transformer('guess_properties')
         if properties_transformer:
             # if we have certain properties characteristic of episodes, it is an ep
@@ -162,11 +154,16 @@ class GuessFiletype(Transformer):
                 return filetype_container[0], other
 
             found = properties_transformer.container.find_properties(filename, mtree, 'format')
-            guess = properties_transformer.container.as_guess(found, filename, lambda g: g['format'] == 'DVB')
-            if guess:
-                self.log.debug('Found characteristic property of episodes: %s', guess)
-                upgrade_episode()
-                return filetype_container[0], other
+            guess = properties_transformer.container.as_guess(found, filename)
+            if guess and guess['format'] in ('HDTV', 'WEBRip', 'WEB-DL', 'DVB'):
+                # Use weak episodes only if TV or WEB source
+                weak_episode_transformer = get_transformer('guess_weak_episodes_rexps')
+                if weak_episode_transformer:
+                    guess = weak_episode_transformer.guess_weak_episodes_rexps(filename)
+                    if guess:
+                        self.log.debug('Found guess_weak_episodes_rexps: %s -> type = episode', guess)
+                        upgrade_episode()
+                        return filetype_container[0], other
 
         # origin-specific type
         if 'tvu.org.ru' in filename:
