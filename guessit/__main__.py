@@ -95,27 +95,36 @@ def display_transformers():
     print('GuessIt transformers:')
     _, transformers_properties = _supported_properties()
     for transformer, _ in transformers_properties:
-        print('[+] %s (%s)' % (transformer.name, transformer.priority))
+        print('[@] %s (%s)' % (transformer.name, transformer.priority))
 
 
-def display_properties(values):
+def display_properties(values, transformers):
     print('GuessIt properties:')
-    all_properties, _ = _supported_properties()
-    properties_list = []
-    properties_list.extend(all_properties.keys())
-    properties_list.sort()
-    for property_name in properties_list:
-        property_values = all_properties.get(property_name)
-        print('[+] %s' % (property_name,))
-        if property_values and values:
-            _display_property_values(property_name)
+    all_properties, transformers_properties = _supported_properties()
+    if transformers:
+        for transformer, properties_list in transformers_properties:
+            print('[@] %s (%s)' % (transformer.name, transformer.priority))
+            for property_name in properties_list:
+                property_values = all_properties.get(property_name)
+                print('  [+] %s' % (property_name,))
+                if property_values and values:
+                    _display_property_values(property_name, indent=4)
+    else:
+        properties_list = []
+        properties_list.extend(all_properties.keys())
+        properties_list.sort()
+        for property_name in properties_list:
+            property_values = all_properties.get(property_name)
+            print('  [+] %s' % (property_name,))
+            if property_values and values:
+                _display_property_values(property_name)
 
 
-def _display_property_values(property_name):
+def _display_property_values(property_name, indent=2):
     all_properties, _ = _supported_properties()
     property_values = all_properties.get(property_name)
     for property_value in property_values:
-        print('  [!] %s' % (property_value,))
+        print(indent * ' ' + '[!] %s' % (property_value,))
 
 
 def run_demo(episodes=True, movies=True, options=None):
@@ -191,9 +200,9 @@ def main(args=None):
 
     help_required = True
     if options.properties or options.values:
-        display_properties(options.values)
+        display_properties(options.values, options.transformers)
         help_required = False
-    if options.transformers:
+    elif options.transformers:
         display_transformers()
         help_required = False
     if options.demo:
