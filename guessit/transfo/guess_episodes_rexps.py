@@ -69,16 +69,7 @@ class GuessEpisodesRexps(Transformer):
     def supported_properties(self):
         return ['episodeNumber', 'season']
 
-    def number_list(self, s):
-        l = [parse_numeral(n) for n in re.findall(numeral, s)]
-
-        if len(l) == 2:
-            # it is an episode interval, return all numbers in between
-            return list(range(l[0], l[1] + 1))
-
-        return l
-
-    def guess_episodes_rexps(self, string, node=None):
+    def guess_episodes_rexps(self, string, node=None, options=None):
         found = self.container.find_properties(string, node)
         return self.container.as_guess(found, string)
 
@@ -86,4 +77,4 @@ class GuessEpisodesRexps(Transformer):
         return mtree.guess['type'].startswith('episode')
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_episodes_rexps, None, self.log).process(mtree)
+        SingleNodeGuesser(self.guess_episodes_rexps, None, self.log, options).process(mtree)

@@ -57,9 +57,9 @@ class GuessWebsite(Transformer):
     def supported_properties(self):
         return self.container.get_supported_properties()
 
-    def guess_website(self, string, node):
+    def guess_website(self, string, node=None, options=None):
         found = self.container.find_properties(string, node, 'website')
         return self.container.as_guess(found, string)
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_website, 1.0, self.log).process(mtree)
+        SingleNodeGuesser(self.guess_website, 1.0, self.log, options).process(mtree)

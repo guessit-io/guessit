@@ -44,7 +44,7 @@ class GuessWeakEpisodesRexps(Transformer):
     def supported_properties(self):
         return ['episodeNumber', 'season']
 
-    def guess_weak_episodes_rexps(self, string, node=None):
+    def guess_weak_episodes_rexps(self, string, node=None, options=None):
         if node and 'episodeNumber' in node.root.info:
             return None
 
@@ -75,4 +75,4 @@ class GuessWeakEpisodesRexps(Transformer):
         return mtree.guess['type'].startswith('episode')
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_weak_episodes_rexps, 0.6, self.log).process(mtree)
+        SingleNodeGuesser(self.guess_weak_episodes_rexps, 0.6, self.log, options).process(mtree)

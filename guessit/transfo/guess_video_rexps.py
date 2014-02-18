@@ -49,9 +49,9 @@ class GuessVideoRexps(Transformer):
     def supported_properties(self):
         return self.container.get_supported_properties()
 
-    def guess_video_rexps(self, string, node):
+    def guess_video_rexps(self, string, node=None, options=None):
         found = self.container.find_properties(string, node)
         return self.container.as_guess(found, string)
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_video_rexps, None, self.log).process(mtree)
+        SingleNodeGuesser(self.guess_video_rexps, None, self.log, options).process(mtree)

@@ -50,15 +50,15 @@ class Transformer(object):
         return True
 
     def second_pass_options(self, mtree, options=None):
-        return (None, None)
+        return None
 
     def should_process(self, mtree, options=None):
         return True
 
-    def process(self, mtree, options=None, *args, **kwargs):
+    def process(self, mtree, options=None):
         pass
 
-    def post_process(self, mtree, options=None, *args, **kwargs):
+    def post_process(self, mtree, options=None):
         pass
 
     def rate_quality(self, guess, *props):
@@ -77,15 +77,8 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
     else:
         value = node.value
     string = ' %s ' % value  # add sentinels
-    for matcher, confidence, args, kwargs in strategy:
-        all_args = [string, node]
-        if args:
-            all_args.append(args)
-
-        if kwargs:
-            matcher_result = matcher(*all_args, **kwargs)
-        else:
-            matcher_result = matcher(*all_args)
+    for matcher, confidence, options in strategy:
+        matcher_result = matcher(string, node, options)
 
         if matcher_result:
             if not isinstance(matcher_result, Guess):
@@ -102,12 +95,13 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
                     span = (span[0] + partial_span[0], span[1] + partial_span[0])
 
                 partition_spans = None
-                for skip_node in skip_nodes:
-                    if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
-                        skip_node.span == span:
-                        partition_spans = node.get_partition_spans(skip_node.span)
-                        partition_spans.remove(skip_node.span)
-                        break
+                if skip_nodes:
+                    for skip_node in skip_nodes:
+                        if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
+                            skip_node.span == span:
+                            partition_spans = node.get_partition_spans(skip_node.span)
+                            partition_spans.remove(skip_node.span)
+                            break
 
                 if not partition_spans:
                     # restore sentinels compensation
@@ -138,13 +132,11 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
 
 
 class SingleNodeGuesser(object):
-    def __init__(self, guess_func, confidence, logger, *args, **kwargs):
+    def __init__(self, guess_func, confidence, logger, options=None):
         self.guess_func = guess_func
         self.confidence = confidence
         self.logger = logger
-        self.skip_nodes = kwargs.pop('skip_nodes', [])
-        self.args = args
-        self.kwargs = kwargs
+        self.options = options if not options is None else {}
 
     def process(self, mtree):
         # strategy is a list of pairs (guesser, confidence)
@@ -152,10 +144,12 @@ class SingleNodeGuesser(object):
         #   it will override it, otherwise it will leave the guess confidence
         # - if the guesser returns a simple dict as a guess and confidence is
         #   specified, it will use it, or 1.0 otherwise
-        strategy = [(self.guess_func, self.confidence, self.args, self.kwargs)]
+        strategy = [(self.guess_func, self.confidence, self.options)]
+
+        skip_nodes = self.options.get('skip_nodes')
 
         for node in mtree.unidentified_leaves():
-            find_and_split_node(node, strategy, self.skip_nodes, self.logger)
+            find_and_split_node(node, strategy, skip_nodes, self.logger)
 
 
 class CustomTransformerExtensionManager(ExtensionManager):

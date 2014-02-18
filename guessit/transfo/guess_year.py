@@ -31,7 +31,7 @@ class GuessYear(Transformer):
     def supported_properties(self):
         return ['year']
 
-    def guess_year(self, string, node=None):
+    def guess_year(self, string, node=None, options=None):
         year, span = search_year(string)
         if year:
             return {'year': year}, span
@@ -41,8 +41,8 @@ class GuessYear(Transformer):
     def second_pass_options(self, mtree, options=None):
         year_nodes = mtree.leaves_containing('year')
         if len(year_nodes) > 1:
-            return None, {'skip_nodes': year_nodes[:len(year_nodes) - 1]}
-        return None, None
+            return {'skip_nodes': year_nodes[:len(year_nodes) - 1]}
+        return None
 
-    def process(self, mtree, options=None, *args, **kwargs):
-        SingleNodeGuesser(self.guess_year, 1.0, self.log, *args, **kwargs).process(mtree)
+    def process(self, mtree, options=None):
+        SingleNodeGuesser(self.guess_year, 1.0, self.log, options).process(mtree)

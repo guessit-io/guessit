@@ -94,7 +94,7 @@ class GuessReleaseGroup(Transformer):
             return True
         return False
 
-    def guess_release_group(self, string, node):
+    def guess_release_group(self, string, node=None, options=None):
         found = self.container.find_properties(string, node, 'releaseGroup')
         guess = self.container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
         if guess:
@@ -123,4 +123,4 @@ class GuessReleaseGroup(Transformer):
         return None
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_release_group, None, self.log).process(mtree)
+        SingleNodeGuesser(self.guess_release_group, None, self.log, options).process(mtree)

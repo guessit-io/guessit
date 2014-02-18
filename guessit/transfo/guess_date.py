@@ -31,7 +31,7 @@ class GuessDate(Transformer):
     def supported_properties(self):
         return ['date']
 
-    def guess_date(self, string, node):
+    def guess_date(self, string, node=None, options=None):
         date, span = search_date(string)
         if date:
             return {'date': date}, span
@@ -39,4 +39,4 @@ class GuessDate(Transformer):
             return None, None
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_date, 1.0, self.log).process(mtree)
+        SingleNodeGuesser(self.guess_date, 1.0, self.log, options).process(mtree)

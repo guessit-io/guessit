@@ -33,7 +33,7 @@ class GuessIdnumber(Transformer):
 
     _idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})')  # 1.0, (0, 0))
 
-    def guess_idnumber(self, string, node):
+    def guess_idnumber(self, string, node=None, options=None):
         match = self._idnum.search(string)
         if match is not None:
             result = match.groupdict()
@@ -65,4 +65,4 @@ class GuessIdnumber(Transformer):
         return None, None
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_idnumber, 0.4, self.log).process(mtree)
+        SingleNodeGuesser(self.guess_idnumber, 0.4, self.log, options).process(mtree)

@@ -47,7 +47,7 @@ class IterativeMatcher(object):
 
     ``opts`` is a list of option names, that act as global flags for the matcher
 
-    ``transfo_opts`` is a dict of args to be passed to the transformations used
+    ``transformers_options`` is a dict of args to be passed to the transformations used
     by the matcher. Its schema is: ``{ transfo_name: (transfo_args, transfo_kwargs) }``
 
 
@@ -75,19 +75,14 @@ class IterativeMatcher(object):
     containing all the found properties, and does some (basic) conflict
     resolution when they arise.
     """
-    def __init__(self, filename, filetype='autodetect', options=None, opts=None, transfo_opts=None):
+    def __init__(self, filename, filetype='autodetect', options=None, transformer_options=None):
         if options is None:
             options = {}
-        if opts is None:
-            opts = []
-        if transfo_opts is None:
-            transfo_opts = {}
-        if not isinstance(opts, list):
-            raise ValueError('opts must be a list of option names! Received: type=%s val=%s',
-                             type(opts), opts)
-        if not isinstance(transfo_opts, dict):
-            raise ValueError('transfo_opts must be a dict of { transfo_name: (args, kwargs) }. ' +
-                             'Received: type=%s val=%s', type(transfo_opts), transfo_opts)
+        if transformer_options is None:
+            transformer_options = {}
+        if not isinstance(transformer_options, dict):
+            raise ValueError('transformers_options must be a dict of { transfo_name: options }. ' +
+                             'Received: type=%s val=%s', type(transformer_options), transformer_options)
 
         valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
                            'movie', 'moviesubtitle', 'movieinfo',
@@ -104,8 +99,7 @@ class IterativeMatcher(object):
         self.match_tree = MatchTree(filename)
         self.filetype = filetype
         self.options = options
-        self.opts = opts
-        self.transfo_opts = transfo_opts
+        self.transformers_options = transformer_options
         self._transfo_calls = []
 
         # sanity check: make sure we don't process a (mostly) empty string
@@ -130,29 +124,28 @@ class IterativeMatcher(object):
         except TransformerException as e:
             log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e))
 
-    def _process(self, transformer, options={}, post=False, *args, **kwargs):
-        default_args, default_kwargs = self.transfo_opts.get(transformer.fullname, ((), {}))
-        all_args = args or default_args or ()
-        all_kwargs = dict(default_kwargs) if default_kwargs else {}
-        all_kwargs.update(kwargs)  # keep all kwargs merged together
-        if not hasattr(transformer, 'should_process') or transformer.should_process(self.match_tree, self.options):
+    def _process(self, transformer, options={}, post=False):
+        transformer_options = self.transformers_options.get(transformer.fullname, None)
+        options = dict(self.options)
+        if transformer_options:
+            options.update(transformer_options)
+        if not hasattr(transformer, 'should_process') or transformer.should_process(self.match_tree, options):
             if post:
-                transformer.post_process(self.match_tree, self.options, *all_args, **all_kwargs)
+                transformer.post_process(self.match_tree, options)
             else:
-                transformer.process(self.match_tree, self.options, *all_args, **all_kwargs)
-                self._transfo_calls.append((transformer, self.options, all_args, all_kwargs))
+                transformer.process(self.match_tree, options)
+                self._transfo_calls.append((transformer, options))
 
     @property
     def second_pass_options(self):
-        opts = list(self.opts)
-        transfo_opts = dict(self.transfo_opts.items())
-        for transformer, _, _, _ in self._transfo_calls:
+        transformers_options = dict(self.transformers_options.items())
+        for transformer, options in self._transfo_calls:
             if hasattr(transformer, 'second_pass_options'):
-                c_opts, c_transfo_opts = transformer.second_pass_options(self.match_tree, self.options)
-                if c_opts or c_transfo_opts:
-                    transfo_opts[transformer.fullname] = c_opts, c_transfo_opts
+                second_pass_options = transformer.second_pass_options(self.match_tree, options)
+                if second_pass_options:
+                    transformers_options[transformer.fullname] = second_pass_options
 
-        return opts, transfo_opts
+        return transformers_options
 
     def matched(self):
         return self.match_tree.matched()

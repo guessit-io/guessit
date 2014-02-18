@@ -232,7 +232,7 @@ class GuessProperties(Transformer):
             for container in exts:
                 self.container.register_property('container', container, confidence=0.3)
 
-    def guess_properties(self, string, node):
+    def guess_properties(self, string, node=None, options=None):
         found = self.container.find_properties(string, node)
         return self.container.as_guess(found, string)
 
@@ -240,7 +240,7 @@ class GuessProperties(Transformer):
         return self.container.get_supported_properties()
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_properties, 1.0, self.log).process(mtree)
+        SingleNodeGuesser(self.guess_properties, 1.0, self.log, options).process(mtree)
 
     def rate_quality(self, guess, *props):
         return self.qualities.rate_quality(guess, *props)
