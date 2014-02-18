@@ -512,3 +512,25 @@
   season: 1
   series: Falling Skies
   videoCodec: h264
+  
+? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BP.mkv
+: episodeNumber: 9
+  videoCodec: h264
+  format: WEB-DL
+  series: Sleepy Hollow
+  audioChannels: "5.1"
+  screenSize: 720p
+  season: 1
+  videoProfile: BP
+  audioCodec: DolbyDigital
+
+? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BS.mkv
+: episodeNumber: 9
+  videoCodec: h264
+  format: WEB-DL
+  series: Sleepy Hollow
+  audioChannels: "5.1"
+  screenSize: 720p
+  season: 1
+  releaseGroup: BS
+  audioCodec: DolbyDigital

@@ -292,7 +292,9 @@ LNG_COMMON_WORDS = frozenset([
     'mkv', 'avi', 'dmd', 'the', 'dis', 'cut', 'stv', 'des', 'dia', 'and',
     'cab', 'sub', 'mia', 'rim', 'las', 'une', 'par', 'srt', 'ano', 'toy',
     'job', 'gag', 'reel', 'www', 'for', 'ayu', 'csi', 'ren', 'moi', 'sur',
-    'fer', 'fun', 'two', 'big', 'psy', 'air'
+    'fer', 'fun', 'two', 'big', 'psy', 'air',
+    # release groups
+    'bs'  # Bosnian
     ])
 
 
