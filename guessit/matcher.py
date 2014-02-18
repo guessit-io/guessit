@@ -75,15 +75,9 @@ class IterativeMatcher(object):
     containing all the found properties, and does some (basic) conflict
     resolution when they arise.
     """
-    def __init__(self, filename, filetype='autodetect', options=None, transformer_options=None):
+    def __init__(self, filename, filetype='autodetect', options=None):
         if options is None:
             options = {}
-        if transformer_options is None:
-            transformer_options = {}
-        if not isinstance(transformer_options, dict):
-            raise ValueError('transformers_options must be a dict of { transfo_name: options }. ' +
-                             'Received: type=%s val=%s', type(transformer_options), transformer_options)
-
         valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
                            'movie', 'moviesubtitle', 'movieinfo',
                            'episode', 'episodesubtitle', 'episodeinfo')
@@ -99,7 +93,6 @@ class IterativeMatcher(object):
         self.match_tree = MatchTree(filename)
         self.filetype = filetype
         self.options = options
-        self.transformers_options = transformer_options
         self._transfo_calls = []
 
         # sanity check: make sure we don't process a (mostly) empty string
@@ -114,38 +107,34 @@ class IterativeMatcher(object):
 
             # Process
             for transformer in transformers.all_transformers():
-                self._process(transformer, options, False)
+                self._process(transformer, False)
 
             # Post-process
             for transformer in transformers.all_transformers():
-                self._process(transformer, options, True)
+                self._process(transformer, True)
 
             log.debug('Found match tree:\n%s' % u(mtree))
         except TransformerException as e:
             log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e))
 
-    def _process(self, transformer, options={}, post=False):
-        transformer_options = self.transformers_options.get(transformer.fullname, None)
-        options = dict(self.options)
-        if transformer_options:
-            options.update(transformer_options)
-        if not hasattr(transformer, 'should_process') or transformer.should_process(self.match_tree, options):
+    def _process(self, transformer, post=False):
+        if not hasattr(transformer, 'should_process') or transformer.should_process(self.match_tree, self.options):
             if post:
-                transformer.post_process(self.match_tree, options)
+                transformer.post_process(self.match_tree, self.options)
             else:
-                transformer.process(self.match_tree, options)
-                self._transfo_calls.append((transformer, options))
+                transformer.process(self.match_tree, self.options)
+                self._transfo_calls.append(transformer)
 
     @property
     def second_pass_options(self):
-        transformers_options = dict(self.transformers_options.items())
-        for transformer, options in self._transfo_calls:
+        second_pass_options = {}
+        for transformer in self._transfo_calls:
             if hasattr(transformer, 'second_pass_options'):
-                second_pass_options = transformer.second_pass_options(self.match_tree, options)
-                if second_pass_options:
-                    transformers_options[transformer.fullname] = second_pass_options
+                transformer_second_pass_options = transformer.second_pass_options(self.match_tree, self.options)
+                if transformer_second_pass_options:
+                    second_pass_options.update(transformer_second_pass_options)
 
-        return transformers_options
+        return second_pass_options
 
     def matched(self):
         return self.match_tree.matched()

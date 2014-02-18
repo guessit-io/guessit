@@ -115,10 +115,12 @@ def _guess_filename(filename, filetype, options=None):
 
 def _build_filename_mtree(filename, filetype, options=None):
     mtree = IterativeMatcher(filename, filetype=filetype, options=options)
-    transformer_options = mtree.second_pass_options
-    if transformer_options:
+    second_pass_options = mtree.second_pass_options
+    if second_pass_options:
         log.info("Running 2nd pass")
-        mtree = IterativeMatcher(filename, filetype=filetype, options=options, transformer_options=transformer_options)
+        merged_options = dict(options)
+        merged_options.update(second_pass_options)
+        mtree = IterativeMatcher(filename, filetype=filetype, options=merged_options)
     return mtree
 
 
