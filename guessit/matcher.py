@@ -25,9 +25,9 @@ from __future__ import absolute_import, division, print_function, \
 import logging
 
 from guessit import PY3, u
+from guessit.transfo import TransformerException
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
-from guessit.plugins.transformers import TransfoException
 
 log = logging.getLogger(__name__)
 
@@ -127,7 +127,7 @@ class IterativeMatcher(object):
                 self._process(transformer, options, True)
 
             log.debug('Found match tree:\n%s' % u(mtree))
-        except TransfoException as e:
+        except TransformerException as e:
             log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e))
 
     def _process(self, transformer, options={}, post=False, *args, **kwargs):

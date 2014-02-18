@@ -26,7 +26,8 @@ import re
 
 from guessit.guess import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
-from guessit.plugins.transformers import Transformer, get_transformer, TransfoException
+from guessit.transfo import TransformerException
+from guessit.plugins.transformers import Transformer, get_transformer
 from guessit.textutils import clean_string
 
 
@@ -210,4 +211,4 @@ class GuessFiletype(Transformer):
             if options.get('name_only'):
                 mtree.guess.set('type', 'movie', confidence=0.0)
             else:
-                raise TransfoException(__name__, 'Unknown file type')
+                raise TransformerException(__name__, 'Unknown file type')

@@ -65,15 +65,6 @@ class Transformer(object):
         return 0
 
 
-class TransfoException(Exception):
-    def __init__(self, transformer, message):
-
-        # Call the base class constructor with the parameters it needs
-        Exception.__init__(self, message)
-
-        self.transformer = transformer
-
-
 def found_property(node, name, confidence):
     node.guess = Guess({name: node.clean_value}, confidence=confidence)
     log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))

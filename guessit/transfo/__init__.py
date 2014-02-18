@@ -19,3 +19,12 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+
+class TransformerException(Exception):
+    def __init__(self, transformer, message):
+
+        # Call the base class constructor with the parameters it needs
+        Exception.__init__(self, message)
+
+        self.transformer = transformer

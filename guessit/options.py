@@ -7,6 +7,8 @@ option_parser.add_option('-p', '--properties', dest='properties', action='store_
               help='Display properties that can be guessed.')
 option_parser.add_option('-l', '--values', dest='values', action='store_true', default=False,
           help='Display property values that can be guessed.')
+option_parser.add_option('-s', '--transformers', dest='transformers', action='store_true', default=False,
+              help='Display transformers that can be used.')
 option_parser.add_option('-i', '--info', dest='info', default='filename',
                   help='the desired information type: filename, hash_mpc or a hash from python\'s '
                        'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '

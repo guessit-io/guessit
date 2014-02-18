@@ -32,6 +32,9 @@ class TestMain(TestGuessit):
         __main__.main(["-p"])
         __main__.main(["-l"])
 
+    def test_list_transformers(self):
+        __main__.main(["--transformers"])
+
     def test_demo(self):
         __main__.main(["-d"])
         __main__.main(["-l"])

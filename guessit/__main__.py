@@ -68,8 +68,10 @@ def _supported_properties():
     from guessit.plugins import transformers
 
     all_properties = {}
+    transformers_properties = []
     for transformer in transformers.all_transformers():
         supported_properties = transformer.supported_properties()
+        transformers_properties.append((transformer, supported_properties))
 
         if isinstance(supported_properties, dict):
             for property_name, possible_values in supported_properties.items():
@@ -86,12 +88,19 @@ def _supported_properties():
                     current_possible_values = []
                     all_properties[property_name] = current_possible_values
 
-    return all_properties
+    return (all_properties, transformers_properties)
+
+
+def display_transformers():
+    print('GuessIt transformers:')
+    _, transformers_properties = _supported_properties()
+    for transformer, _ in transformers_properties:
+        print('[+] %s (%s)' % (transformer.name, transformer.priority))
 
 
 def display_properties(values):
     print('GuessIt properties:')
-    all_properties = _supported_properties()
+    all_properties, _ = _supported_properties()
     properties_list = []
     properties_list.extend(all_properties.keys())
     properties_list.sort()
@@ -103,7 +112,7 @@ def display_properties(values):
 
 
 def _display_property_values(property_name):
-    all_properties = _supported_properties()
+    all_properties, _ = _supported_properties()
     property_values = all_properties.get(property_name)
     for property_value in property_values:
         print('  [!] %s' % (property_value,))
@@ -183,6 +192,9 @@ def main(args=None):
     help_required = True
     if options.properties or options.values:
         display_properties(options.values)
+        help_required = False
+    if options.transformers:
+        display_transformers()
         help_required = False
     if options.demo:
         run_demo(episodes=True, movies=True, options=vars(options))
