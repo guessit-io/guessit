@@ -165,11 +165,17 @@ class GuessFiletype(Transformer):
                         upgrade_episode()
                         return filetype_container[0], other
 
-        # origin-specific type
-        if 'tvu.org.ru' in filename:
-            self.log.debug('Found characteristic property of episodes: %s', 'tvu.org.ru')
-            upgrade_episode()
-            return filetype_container[0], other
+        website_transformer = get_transformer('guess_website')
+        if website_transformer:
+            found = website_transformer.container.find_properties(filename, mtree, 'website')
+            guess = website_transformer.container.as_guess(found, filename)
+            if guess:
+                for namepart in ('tv', 'serie', 'episode'):
+                    if namepart in guess['website']:
+                        # origin-specific type
+                        self.log.debug('Found characteristic property of episodes: %s', guess)
+                        upgrade_episode()
+                        return filetype_container[0], other
 
         if filetype_container[0] in ('video', 'subtitle', 'info'):
             # if no episode info found, assume it's a movie

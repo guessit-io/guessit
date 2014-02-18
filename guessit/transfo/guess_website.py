@@ -24,7 +24,7 @@ from __future__ import absolute_import, division, print_function, \
 from guessit.patterns import build_or_pattern
 from guessit.patterns.containers import PropertiesContainer
 from guessit.plugins.transformers import Transformer, SingleNodeGuesser
-from pkg_resources import resource_stream
+from pkg_resources import resource_stream  # @UnresolvedImport
 
 
 class GuessWebsite(Transformer):
