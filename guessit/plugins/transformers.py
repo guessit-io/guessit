@@ -137,7 +137,8 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
                     for child in node.children:
                         if child.span == absolute_span:
                             child.guess = guess
-                        else:
+                    for child in node.children:
+                        if not child.guess:
                             find_and_split_node(child, strategy, skip_nodes, logger)
                 else:
                     for partition_span in partition_spans:

@@ -24,6 +24,7 @@ from guessit.test.guessittest import *
 
 from guessit.transfo.guess_release_group import GuessReleaseGroup
 from guessit.transfo.guess_properties import GuessProperties
+from guessit.matchtree import BaseMatchTree
 
 keywords = yaml.load("""
 
@@ -46,6 +47,41 @@ def guess_info(string, options=None):
 
 
 class TestMatchTree(TestGuessit):
+    def test_base_tree(self):
+        t = BaseMatchTree('One Two Three(Three) Four')
+        t.partition((3, 7, 20))
+        leaves = t.leaves()
+
+        self.assertEqual(leaves[0].span, (0, 3))
+
+        self.assertEqual('One', leaves[0].value)
+        self.assertEqual(' Two', leaves[1].value)
+        self.assertEqual(' Three(Three)', leaves[2].value)
+        self.assertEqual(' Four', leaves[3].value)
+
+        leaves[2].partition((1, 6, 7, 12))
+        three_leaves = leaves[2].leaves()
+
+        self.assertEqual('Three', three_leaves[1].value)
+        self.assertEqual('Three', three_leaves[3].value)
+
+        leaves = t.leaves()
+
+        self.assertEqual(len(leaves), 8)
+
+        self.assertEqual(leaves[5], three_leaves[3])
+
+        self.assertEqual(t.previous_leaf(leaves[5]), leaves[4])
+        self.assertEqual(t.next_leaf(leaves[5]), leaves[6])
+
+        self.assertEqual(t.next_leaves(leaves[5]), [leaves[6], leaves[7]])
+        self.assertEqual(t.previous_leaves(leaves[5]), [leaves[4], leaves[3], leaves[2], leaves[1], leaves[0]])
+
+        self.assertEqual(t.next_leaf(leaves[7]), None)
+        self.assertEqual(t.previous_leaf(leaves[0]), None)
+
+        self.assertEqual(t.next_leaves(leaves[7]), [])
+        self.assertEqual(t.previous_leaves(leaves[0]), [])
 
     def test_match(self):
         self.checkFields(keywords, guess_info)

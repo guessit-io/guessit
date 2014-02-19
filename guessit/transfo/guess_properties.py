@@ -20,7 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.patterns.containers import PropertiesContainer, WeakValidator
+from guessit.patterns.containers import PropertiesContainer, WeakValidator, LeavesValidator
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.plugins.transformers import Transformer, SingleNodeGuesser
 from guessit.quality import QualitiesContainer
@@ -129,21 +129,13 @@ class GuessProperties(Transformer):
 
         # http://blog.mediacoderhq.com/h264-profiles-and-levels/
         # http://fr.wikipedia.org/wiki/H.264
-        _videoProfiles = {'BP': ('BP',),
-                          'XP': ('XP', 'EP'),
-                          'MP': ('MP',),
-                          'HP': ('HP', 'HiP'),
-                          '10bit': ('10.?bit', 'Hi10P'),
-                          'Hi422P': ('Hi422P',),
-                          'Hi444PP': ('Hi444PP'),
-                          }
-
-        for profile, profile_regexps in _videoProfiles.items():
-            for profile_regexp in profile_regexps:
-                # container.register_property('videoProfile', profile_regexp, canonical_form=profile)
-                for prop in self.container.get_properties('videoCodec'):
-                    self.container.register_property('videoProfile', prop.pattern + '(-' + profile_regexp + ')', canonical_form=profile)
-                    self.container.register_property('videoProfile', '(' + profile_regexp + '-)' + prop.pattern, canonical_form=profile)
+        self.container.register_property('videoProfile', 'BP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
+        self.container.register_property('videoProfile', 'XP', 'EP', canonical_form='XP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
+        self.container.register_property('videoProfile', 'MP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
+        self.container.register_property('videoProfile', 'HP', 'HiP', canonical_form='HP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
+        self.container.register_property('videoProfile', '10.?bit', 'Hi10P', canonical_form='10bit', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
+        self.container.register_property('videoProfile', 'Hi422P', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
+        self.container.register_property('videoProfile', 'Hi444PP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
 
         register_quality('videoProfile', {'BP': -20,
                                           'XP': -10,
@@ -176,22 +168,11 @@ class GuessProperties(Transformer):
                                         'TrueHD': 70
                                         })
 
-        _audioProfiles = {'DTS': {'HD': ('HD',),
-                                  'HDMA': ('HD-MA',),
-                                  },
-                            'AAC': {'HE': ('HE',),
-                                    'LC': ('LC',),
-                                    },
-                             'AC3': {'HQ': ('HQ',),
-                                    }
-                           }
-
-        for audioCodec, codecProfiles in _audioProfiles.items():
-            for profile, profile_regexps in codecProfiles.items():
-                for profile_regexp in profile_regexps:
-                    for prop in self.container.get_properties('audioCodec', audioCodec):
-                        self.container.register_property('audioProfile', prop.pattern + '(-' + profile_regexp + ')', canonical_form=profile)
-                        self.container.register_property('audioProfile', '(' + profile_regexp + '-)' + prop.pattern, canonical_form=profile)
+        self.container.register_property('audioProfile', 'HD', validator=LeavesValidator(lambdas=[lambda node: node.guess.get('audioCodec') == 'DTS']))
+        self.container.register_property('audioProfile', 'HD-MA', canonical_form='HDMA', validator=LeavesValidator(lambdas=[lambda node: node.guess.get('audioCodec') == 'DTS']))
+        self.container.register_property('audioProfile', 'HE', validator=LeavesValidator(lambdas=[lambda node: node.guess.get('audioCodec') == 'AAC']))
+        self.container.register_property('audioProfile', 'LC', validator=LeavesValidator(lambdas=[lambda node: node.guess.get('audioCodec') == 'AAC']))
+        self.container.register_property('audioProfile', 'HQ', validator=LeavesValidator(lambdas=[lambda node: node.guess.get('audioCodec') == 'AC3']))
 
         register_quality('audioProfile', {'HD': 20,
                                           'HDMA': 50,

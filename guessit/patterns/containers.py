@@ -106,6 +106,60 @@ class WeakValidator(DefaultValidator):
         return False
 
 
+class LeavesValidator(DefaultValidator):
+    def __init__(self, lambdas=None, previous_lambdas=None, next_lambdas=None, both_side=False, default_=True):
+        self.previous_lambdas = previous_lambdas if not previous_lambdas is None else []
+        self.next_lambdas = next_lambdas if not next_lambdas is None else []
+        if lambdas:
+            self.previous_lambdas.extend(lambdas)
+            self.next_lambdas.extend(lambdas)
+        self.both_side = both_side
+        self.default_ = default_
+
+    """Make sure our match is surrounded by separators and validates defined lambdas"""
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        if self.default_:
+            super_ret = super(LeavesValidator, self).validate(prop, string, node, match, entry_start, entry_end)
+        else:
+            super_ret = True
+        if not super_ret:
+            return False
+
+        previous_ = self._validate_previous(prop, string, node, match, entry_start, entry_end)
+        if previous_ and self.both_side:
+            return previous_
+        next_ = self._validate_next(prop, string, node, match, entry_start, entry_end)
+
+        if previous_ is None and next_ is None:
+            return super_ret
+
+        if self.both_side:
+            return previous_ and next_
+        else:
+            return previous_ or next_
+
+    def _validate_previous(self, prop, string, node, match, entry_start, entry_end):
+        if self.previous_lambdas:
+            for leaf in node.root.previous_leaves(node):
+                for lambda_ in self.previous_lambdas:
+                    ret = self._check_rule(lambda_, leaf)
+                    if not ret is None:
+                        return ret
+            return False
+
+    def _validate_next(self, prop, string, node, match, entry_start, entry_end):
+        if self.next_lambdas:
+            for leaf in node.root.next_leaves(node):
+                for lambda_ in self.next_lambdas:
+                    ret = self._check_rule(lambda_, leaf)
+                    if not ret is None:
+                        return ret
+            return False
+
+    def _check_rule(self, lambda_, previous_leaf):
+        return lambda_(previous_leaf)
+
+
 class _Property:
     """Represents a property configuration."""
     def __init__(self, keys=None, pattern=None, canonical_form=None, canonical_from_pattern=True, confidence=1.0, enhance=True, global_span=False, validator=DefaultValidator(), formatter=None):

@@ -211,6 +211,39 @@ class BaseMatchTree(UnicodeMixin):
         """Return a list of all the nodes that are leaves."""
         return list(self._leaves())
 
+    def previous_leaf(self, leaf):
+        """Return previous leaf for this node"""
+        return self._other_leaf(leaf, -1)
+
+    def next_leaf(self, leaf):
+        """Return next leaf for this node"""
+        return self._other_leaf(leaf, +1)
+
+    def _other_leaf(self, leaf, offset):
+        leaves = self.leaves()
+        index = leaves.index(leaf) + offset
+        if index > 0 and index < len(leaves):
+            return leaves[index]
+        return None
+
+    def previous_leaves(self, leaf):
+        """Return previous leaves for this node"""
+        leaves = self.leaves()
+        index = leaves.index(leaf)
+        if index > 0 and index < len(leaves):
+            previous_leaves = leaves[:index]
+            previous_leaves.reverse()
+            return previous_leaves
+        return []
+
+    def next_leaves(self, leaf):
+        """Return next leaves for this node"""
+        leaves = self.leaves()
+        index = leaves.index(leaf)
+        if index > 0 and index < len(leaves):
+            return leaves[index + 1:len(leaves)]
+        return []
+
     def to_string(self):
         """Return a readable string representation of this tree.
 
