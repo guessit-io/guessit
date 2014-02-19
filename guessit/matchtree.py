@@ -20,12 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import guessit
-from guessit import UnicodeMixin, base_text_type, Guess
+from guessit import UnicodeMixin, base_text_type
 from guessit.textutils import clean_string, str_fill
 from guessit.patterns import group_delimiters
 from guessit.guess import (merge_similar_guesses, merge_all,
-                           choose_int, choose_string)
+                           choose_int, choose_string, Guess)
 import copy
 import logging
 
@@ -212,7 +211,6 @@ class BaseMatchTree(UnicodeMixin):
         """Return a list of all the nodes that are leaves."""
         return list(self._leaves())
 
-
     def to_string(self):
         """Return a readable string representation of this tree.
 
@@ -237,7 +235,10 @@ class BaseMatchTree(UnicodeMixin):
                     'language': 'l',
                     'country': 'C',
                     'videoCodec': 'v',
+                    'videoProfile': 'v',
                     'audioCodec': 'a',
+                    'audioProfile': 'a',
+                    'audioChannels': 'a',
                     'website': 'w',
                     'container': 'c',
                     'series': 'T',
@@ -245,7 +246,8 @@ class BaseMatchTree(UnicodeMixin):
                     'date': 'd',
                     'year': 'y',
                     'releaseGroup': 'r',
-                    'screenSize': 's'
+                    'screenSize': 's',
+                    'other': 'o'
                     }
 
             if result is None:
