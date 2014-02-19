@@ -246,7 +246,8 @@ class DefaultTransformerExtensionManager(CustomTransformerExtensionManager):
                                     'guess_idnumber = guessit.transfo.guess_idnumber:GuessIdnumber',
                                     'split_on_dash = guessit.transfo.split_on_dash:SplitOnDash',
                                     'guess_episode_info_from_position = guessit.transfo.guess_episode_info_from_position:GuessEpisodeInfoFromPosition',
-                                    'guess_movie_title_from_position = guessit.transfo.guess_movie_title_from_position:GuessMovieTitleFromPosition']
+                                    'guess_movie_title_from_position = guessit.transfo.guess_movie_title_from_position:GuessMovieTitleFromPosition',
+                                    'guess_episode_special = guessit.transfo.guess_episode_special:GuessEpisodeSpecial']
 
     def _find_entry_points(self, namespace):
         entry_points = {}

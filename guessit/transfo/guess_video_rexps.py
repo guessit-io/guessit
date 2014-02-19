@@ -41,7 +41,7 @@ class GuessVideoRexps(Transformer):
         self.container.register_property('filmNumber', 'f([0-9]{1,2})', enhance=False, global_span=True, formatter=parse_numeral)
 
         self.container.register_property('edition', 'collector', 'collector-edition', 'edition-collector', canonical_form='Collector Edition')
-        self.container.register_property('edition', 'special', 'special-edition', 'edition-special', canonical_form='Special Edition')
+        self.container.register_property('edition', 'special-edition', 'edition-special', canonical_form='Special Edition')
         self.container.register_property('edition', 'criterion', 'criterion-edition', 'edition-criterion', canonical_form='Criterion Edition')
         self.container.register_property('edition', 'deluxe', 'cdeluxe-edition', 'edition-deluxe', canonical_form='Deluxe Edition')
         self.container.register_property('edition', 'director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut', canonical_form='Director\'s cut')

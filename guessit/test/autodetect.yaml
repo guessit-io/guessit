@@ -222,3 +222,64 @@
   title: Retour de Flammes
   type: movie
   year: 2003
+
+? A.Common.Title.Special.2014.avi
+: type: movie
+  year: 2014
+  title: A Common Title Special
+  
+? A.Common.Title.2014.Special.avi
+: type: episode
+  year: 2014
+  series: A Common Title
+  title: Special
+  other: Special
+  
+? A.Common.Title.2014.Special.Edition.avi
+: type: movie
+  year: 2014
+  title: A Common Title
+  edition: Special Edition
+  
+? Downton.Abbey.2013.Christmas.Special.HDTV.x264-FoV.mp4
+: type: episode
+  year: 2013
+  series: Downton Abbey
+  title: Christmas Special
+  videoCodec: h264
+  releaseGroup: FoV
+  format: HDTV
+  other: Special
+  
+? Doctor_Who_2013_Christmas_Special.The_Time_of_The_Doctor.HD
+: options: -n
+  type: episode
+  series: Doctor Who
+  other: [ HD, Special ]
+  title: Christmas Special The Time of The Doctor
+  year: 2013
+  
+? Doctor Who 2005 50th Anniversary Special The Day of the Doctor 3.avi
+: type: episode
+  series: Doctor Who
+  other: Special
+  title: 50th Anniversary Special The Day of the Doctor 3
+  year: 2005
+
+? Robot Chicken S06-Born Again Virgin Christmas Special HDTV x264.avi
+: type: episode
+  series: Robot Chicken
+  format: HDTV
+  season: 6
+  title: Born Again Virgin Christmas Special
+  videoCodec: h264
+  other: Special
+
+? Wicked.Tuna.S03E00.Head.To.Tail.Special.HDTV.x264-YesTV
+: type: episode
+  series: Wicked Tuna
+  title: Head To Tail Special
+  releaseGroup: YesTV
+  season: 3
+  videoCodec: h264
+  other: Special
