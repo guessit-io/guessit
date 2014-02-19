@@ -25,13 +25,13 @@ from guessit.test.guessittest import *
 
 class TestAutoDetect(TestGuessit):
     def testEmpty(self):
-        result = guessit.guess_file_info('', 'autodetect')
+        result = guessit.guess_file_info('')
         self.assertEqual(result, {})
 
-        result = guessit.guess_file_info('___-__', 'autodetect')
+        result = guessit.guess_file_info('___-__')
         self.assertEqual(result, {})
 
-        result = guessit.guess_file_info('__-.avc', 'autodetect')
+        result = guessit.guess_file_info('__-.avc')
         self.assertEqual(result, {'type': 'unknown', 'extension': 'avc'})
 
     def testAutoDetect(self):

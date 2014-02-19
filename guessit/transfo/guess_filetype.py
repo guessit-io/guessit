@@ -51,7 +51,7 @@ class GuessFiletype(Transformer):
         if options is None:
             options = {}
 
-        filetype_container = [mtree.guess['type']]
+        filetype_container = [mtree.guess.get('type')]
         other = {}
         filename = mtree.string
 

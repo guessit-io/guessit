@@ -75,23 +75,21 @@ class IterativeMatcher(object):
     containing all the found properties, and does some (basic) conflict
     resolution when they arise.
     """
-    def __init__(self, filename, filetype='autodetect', options=None):
+    def __init__(self, filename, options=None, **kwargs):
         if options is None:
             options = {}
-        valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
-                           'movie', 'moviesubtitle', 'movieinfo',
-                           'episode', 'episodesubtitle', 'episodeinfo')
-        if filetype not in valid_filetypes:
-            raise ValueError("filetype needs to be one of %s" % valid_filetypes)
+        else:
+            options = dict(options)
+        for k, v in kwargs.items():
+            if k not in options:
+                options[k] = v  # options dict has priority over keyword arguments
+        self._validate_options(options)
         if not PY3 and not isinstance(filename, unicode):
             log.warning('Given filename to matcher is not unicode...')
             filename = filename.decode('utf-8')
 
         filename = normalize_unicode(filename)
-
-        self.filename = filename
         self.match_tree = MatchTree(filename)
-        self.filetype = filetype
         self.options = options
         self._transfo_calls = []
 
@@ -103,7 +101,8 @@ class IterativeMatcher(object):
 
         try:
             mtree = self.match_tree
-            mtree.guess.set('type', filetype, confidence=0.0)
+            if 'type' in self.options:
+                mtree.guess.set('type', self.options['type'], confidence=0.0)
 
             # Process
             for transformer in transformers.all_transformers():
@@ -135,6 +134,15 @@ class IterativeMatcher(object):
                     second_pass_options.update(transformer_second_pass_options)
 
         return second_pass_options
+
+    def _validate_options(self, options):
+        valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
+                   'movie', 'moviesubtitle', 'movieinfo',
+                   'episode', 'episodesubtitle', 'episodeinfo')
+
+        type = options.get('type')
+        if type and type not in valid_filetypes:
+            raise ValueError("filetype needs to be one of %s" % valid_filetypes)
 
     def matched(self):
         return self.match_tree.matched()

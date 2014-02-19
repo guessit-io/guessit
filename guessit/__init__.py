@@ -105,43 +105,40 @@ h = NullHandler()
 log.addHandler(h)
 
 
-def _guess_filename(filename, filetype, options=None):
+def _guess_filename(filename, options=None, **kwargs):
     if options is None:
         options = {}
-    mtree = _build_filename_mtree(filename, filetype=filetype, options=options)
-    _add_camel_properties(mtree, filetype=filetype, options=options)
+    mtree = _build_filename_mtree(filename, options=options, **kwargs)
+    _add_camel_properties(mtree, options=options)
     return mtree.matched()
 
 
-def _build_filename_mtree(filename, filetype, options=None):
-    mtree = IterativeMatcher(filename, filetype=filetype, options=options)
+def _build_filename_mtree(filename, options=None, **kwargs):
+    mtree = IterativeMatcher(filename, options=options, **kwargs)
     second_pass_options = mtree.second_pass_options
     if second_pass_options:
         log.info("Running 2nd pass")
         merged_options = dict(options)
         merged_options.update(second_pass_options)
-        mtree = IterativeMatcher(filename, filetype=filetype, options=merged_options)
+        mtree = IterativeMatcher(filename, options=merged_options, **kwargs)
     return mtree
 
 
-def _add_camel_properties(mtree, filetype, options=None):
+def _add_camel_properties(mtree, options=None, **kwargs):
     prop = 'title' if mtree.matched().get('type') != 'episode' else 'series'
     value = mtree.matched().get(prop)
-    _guess_camel_string(mtree, value, filetype=filetype, skip_title=False, options=options)
+    _guess_camel_string(mtree, value, options=options, skip_title=False, **kwargs)
 
     for leaf in mtree.match_tree.unidentified_leaves():
         value = leaf.value
-        _guess_camel_string(mtree, value, filetype=filetype, skip_title=True, options=options)
+        _guess_camel_string(mtree, value, options=options, skip_title=True, **kwargs)
 
 
-def _guess_camel_string(mtree, string, filetype, skip_title=False, options=None):
+def _guess_camel_string(mtree, string, options=None, skip_title=False, **kwargs):
     if string and is_camel(string):
         log.info('"%s" is camel cased. Try to detect more properties.' % (string,))
         uncameled_value = from_camel(string)
-        camel_options = dict(options)
-        camel_options["name_only"] = True
-        camel_options["skip_title"] = skip_title
-        camel_tree = _build_filename_mtree(uncameled_value, filetype=filetype, options=camel_options)
+        camel_tree = _build_filename_mtree(uncameled_value, options=options, name_only=True, skip_title=skip_title, **kwargs)
         if len(camel_tree.matched()) > 0:
             # Title has changed.
             mtree.matched().update(camel_tree.matched())
@@ -149,12 +146,12 @@ def _guess_camel_string(mtree, string, filetype, skip_title=False, options=None)
     return False
 
 
-def guess_file_info(filename, filetype, info='filename', options=None):
+def guess_file_info(filename, info='filename', options=None, **kwargs):
     """info can contain the names of the various plugins, such as 'filename' to
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
     >>> testfile = os.path.join(os.path.dirname(__file__), 'test/dummy.srt')
-    >>> g = guess_file_info(testfile, 'autodetect', info = ['hash_md5', 'hash_sha1'])
+    >>> g = guess_file_info(testfile, info = ['hash_md5', 'hash_sha1'])
     >>> g['hash_md5'], g['hash_sha1']
     ('64de6b5893cac24456c46a935ef9c359', 'a703fc0fa4518080505809bf562c6fc6f7b3c98c')
     """
@@ -172,7 +169,7 @@ def guess_file_info(filename, filetype, info='filename', options=None):
 
     for infotype in info:
         if infotype == 'filename':
-            result.append(_guess_filename(filename, filetype, options))
+            result.append(_guess_filename(filename, options, **kwargs))
 
         elif infotype == 'hash_mpc':
             from guessit.hash_mpc import hash_file
@@ -226,13 +223,13 @@ def guess_file_info(filename, filetype, info='filename', options=None):
     return result
 
 
-def guess_video_info(filename, info=None):
-    return guess_file_info(filename, 'autodetect', info)
+def guess_video_info(filename, info=None, options=None, **kwargs):
+    return guess_file_info(filename, info=info, options=options, type=None, **kwargs)
 
 
-def guess_movie_info(filename, info=None):
-    return guess_file_info(filename, 'movie', info)
+def guess_movie_info(filename, info=None, options=None, **kwargs):
+    return guess_file_info(filename, info=info, options=options, type='movie', **kwargs)
 
 
-def guess_episode_info(filename, info=None):
-    return guess_file_info(filename, 'episode', info)
+def guess_episode_info(filename, info=None, options=None, **kwargs):
+    return guess_file_info(filename, info=info, options=options, type='episode', **kwargs)

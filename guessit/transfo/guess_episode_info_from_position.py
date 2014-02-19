@@ -106,7 +106,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
     def should_process(self, mtree, options=None):
         if options is None:
             options = {}
-        return not options.get('skip_title') and mtree.guess['type'].startswith('episode')
+        return not options.get('skip_title') and mtree.guess.get('type', '').startswith('episode')
 
     def process(self, mtree, options=None):
         """

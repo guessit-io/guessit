@@ -61,11 +61,11 @@ class TestQuality(TestGuessit):
 
         self.assertTrue(q1 > q2, "SEX should be greater than SUN. Don't ask why!")
 
-        self.assertEquals(container.best_quality(g1, g2), g1, "RED&SEX should be better than GREEN&SUN. Don't ask why!")
+        self.assertEqual(container.best_quality(g1, g2), g1, "RED&SEX should be better than GREEN&SUN. Don't ask why!")
 
-        self.assertEquals(container.best_quality_properties(['color'], g1, g2), g2, "GREEN should be better than RED. Don't ask why!")
+        self.assertEqual(container.best_quality_properties(['color'], g1, g2), g2, "GREEN should be better than RED. Don't ask why!")
 
-        self.assertEquals(container.best_quality_properties(['context'], g1, g2), g1, "SEX should be better than SUN. Don't ask why!")
+        self.assertEqual(container.best_quality_properties(['context'], g1, g2), g1, "SEX should be better than SUN. Don't ask why!")
 
         q1 = container.rate_quality(g1, 'color')
         q2 = container.rate_quality(g2, 'color')
@@ -84,12 +84,12 @@ class TestQuality(TestGuessit):
         container.unregister_quality('context', 'sea')
 
         q3 = container.rate_quality(g3, 'context')
-        self.assertEquals(q3, 0, "Context should be unregistered.")
+        self.assertEqual(q3, 0, "Context should be unregistered.")
 
         container.unregister_quality('color')
         q3 = container.rate_quality(g3, 'color')
 
-        self.assertEquals(q3, 0, "Color should be unregistered.")
+        self.assertEqual(q3, 0, "Color should be unregistered.")
 
         container.clear_qualities()
 
@@ -99,8 +99,8 @@ class TestQuality(TestGuessit):
         self.assertTrue(q1 == q2 == 0, "Empty quality container should rate each guess to 0")
 
     def test_quality_transformers(self):
-        guess_720p = guessit.guess_file_info("2012.2009.720p.BluRay.x264.DTS WiKi.mkv", 'autodetect')
-        guess_1080p = guessit.guess_file_info("2012.2009.1080p.BluRay.x264.MP3 WiKi.mkv", 'autodetect')
+        guess_720p = guessit.guess_file_info("2012.2009.720p.BluRay.x264.DTS WiKi.mkv")
+        guess_1080p = guessit.guess_file_info("2012.2009.1080p.BluRay.x264.MP3 WiKi.mkv")
 
         self.assertTrue('audioCodec' in guess_720p, "audioCodec should be present")
         self.assertTrue('audioCodec' in guess_1080p, "audioCodec should be present")

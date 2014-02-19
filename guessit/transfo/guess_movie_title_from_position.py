@@ -34,7 +34,7 @@ class GuessMovieTitleFromPosition(Transformer):
     def should_process(self, mtree, options=None):
         if options is None:
             options = {}
-        return not options.get('skip_title') and not mtree.guess['type'].startswith('episode')
+        return not options.get('skip_title') and not mtree.guess.get('type', '').startswith('episode')
 
     def process(self, mtree, options=None):
         """

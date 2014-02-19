@@ -70,7 +70,7 @@ class TestGuessit(TestCase):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
 
         def guess_func(string, options=None):
-            return guess_file_info(string, filetype=filetype, options=options)
+            return guess_file_info(string, options=options, type=filetype)
 
         return self.checkFields(groundTruth, guess_func, remove_type, exclude_files)
 

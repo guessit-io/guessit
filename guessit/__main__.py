@@ -29,14 +29,14 @@ from guessit import PY2, u, slogging, guess_file_info
 from guessit.options import option_parser
 
 
-def detect_filename(filename, filetype, info=['filename'], options=None):
+def guess_file(filename, info=['filename'], options=None, **kwargs):
     if options is None:
         options = {}
 
     filename = u(filename)
 
     print('For:', filename)
-    guess = guess_file_info(filename, filetype, info, options)
+    guess = guess_file_info(filename, info, options, **kwargs)
     if options.get('yaml'):
         try:
             import yaml
@@ -144,7 +144,7 @@ def run_demo(episodes=True, movies=True, options=None):
 
         for f in testeps:
             print('-' * 80)
-            detect_filename(f, filetype='episode', options=options)
+            guess_file(f, options=options, type='episode')
 
     if movies:
         testmovies = ['Movies/Fear and Loathing in Las Vegas (1998)/Fear.and.Loathing.in.Las.Vegas.720p.HDDVD.DTS.x264-ESiR.mkv',
@@ -170,7 +170,7 @@ def run_demo(episodes=True, movies=True, options=None):
 
         for f in testmovies:
             print('-' * 80)
-            detect_filename(f, filetype='movie', options=options)
+            guess_file(f, options=options, type='movie')
 
 
 def main(args=None):
@@ -212,8 +212,7 @@ def main(args=None):
         if args:
             help_required = False
             for filename in args:
-                detect_filename(filename,
-                                filetype=options.filetype,
+                guess_file(filename,
                                 info=options.info.split(','),
                                 options=vars(options)
                                 )
