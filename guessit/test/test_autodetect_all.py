@@ -28,18 +28,15 @@ IGNORE_MOVIES = []
 
 class TestAutoDetectAll(TestGuessit):
     def testAutoMatcher(self):
-        self.checkMinimumFieldsCorrect(filetype='autodetect',
-                                       filename='autodetect.yaml',
+        self.checkMinimumFieldsCorrect(filename='autodetect.yaml',
                                        remove_type=False)
 
     def testAutoMatcherMovies(self):
-        self.checkMinimumFieldsCorrect(filetype='autodetect',
-                                       filename='movies.yaml',
+        self.checkMinimumFieldsCorrect(filename='movies.yaml',
                                        exclude_files=IGNORE_MOVIES)
 
     def testAutoMatcherEpisodes(self):
-        self.checkMinimumFieldsCorrect(filetype='autodetect',
-                                       filename='episodes.yaml',
+        self.checkMinimumFieldsCorrect(filename='episodes.yaml',
                                        exclude_files=IGNORE_EPISODES)
 
 

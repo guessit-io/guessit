@@ -20,7 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins.transformers import Transformer
+from guessit.plugins.transformers import Transformer, log_found_guess
 from guessit import Guess, u
 
 
@@ -44,7 +44,7 @@ class GuessMovieTitleFromPosition(Transformer):
         def found_property(node, name, value, confidence):
             node.guess = Guess({name: value},
                                confidence=confidence)
-            self.log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
+            log_found_guess(node.guess)
 
         def found_title(node, confidence):
             found_property(node, 'title', node.clean_value, confidence)

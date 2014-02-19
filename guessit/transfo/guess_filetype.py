@@ -27,7 +27,7 @@ import re
 from guessit.guess import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
 from guessit.transfo import TransformerException
-from guessit.plugins.transformers import Transformer, get_transformer
+from guessit.plugins.transformers import Transformer, get_transformer, log_found_guess, found_guess
 from guessit.textutils import clean_string
 
 
@@ -60,7 +60,7 @@ class GuessFiletype(Transformer):
                 filetype_container[0] = 'episodesubtitle'
             elif filetype_container[0] == 'info':
                 filetype_container[0] = 'episodeinfo'
-            else:
+            elif not filetype_container[0]:
                 filetype_container[0] = 'episode'
 
         def upgrade_movie():
@@ -68,7 +68,7 @@ class GuessFiletype(Transformer):
                 filetype_container[0] = 'moviesubtitle'
             elif filetype_container[0] == 'info':
                 filetype_container[0] = 'movieinfo'
-            else:
+            elif not filetype_container[0]:
                 filetype_container[0] = 'movie'
 
         def upgrade_subtitle():
@@ -76,7 +76,7 @@ class GuessFiletype(Transformer):
                 filetype_container[0] = 'moviesubtitle'
             elif filetype_container[0] == 'episode':
                 filetype_container[0] = 'episodesubtitle'
-            else:
+            elif not filetype_container[0]:
                 filetype_container[0] = 'subtitle'
 
         def upgrade_info():
@@ -84,11 +84,8 @@ class GuessFiletype(Transformer):
                 filetype_container[0] = 'movieinfo'
             elif filetype_container[0] == 'episode':
                 filetype_container[0] = 'episodeinfo'
-            else:
+            elif not filetype_container[0]:
                 filetype_container[0] = 'info'
-
-        def upgrade(type='unknown'):
-            filetype_container[0] = type
 
         # look at the extension first
         fileext = os.path.splitext(filename)[1][1:].lower()
@@ -99,10 +96,8 @@ class GuessFiletype(Transformer):
             upgrade_info()
             other = {'container': fileext}
         elif fileext in video_exts:
-            upgrade(type='video')
             other = {'container': fileext}
         else:
-            upgrade(type='unknown')
             if fileext and not options.get('name_only'):
                 other = {'extension': fileext}
 
@@ -180,10 +175,14 @@ class GuessFiletype(Transformer):
                         upgrade_episode()
                         return filetype_container[0], other
 
-        if filetype_container[0] in ('video', 'subtitle', 'info'):
+        if filetype_container[0] in ('subtitle', 'info') or (not filetype_container[0] and fileext in video_exts):
             # if no episode info found, assume it's a movie
             self.log.debug('Nothing characteristic found, assuming type = movie')
             upgrade_movie()
+
+        if not filetype_container[0]:
+            self.log.debug('Nothing characteristic found, assuming type = unknown')
+            filetype_container[0] = 'unknown'
 
         return filetype_container[0], other
 
@@ -193,7 +192,7 @@ class GuessFiletype(Transformer):
         filetype, other = self.guess_filetype(mtree, options)
 
         mtree.guess.set('type', filetype, confidence=1.0)
-        self.log.debug('Found with confidence %.2f: %s' % (1.0, mtree.guess))
+        log_found_guess(mtree.guess)
 
         filetype_info = Guess(other, confidence=1.0)
         # guess the mimetype of the filename
@@ -204,8 +203,7 @@ class GuessFiletype(Transformer):
             filetype_info.update({'mimetype': mime}, confidence=1.0)
 
         node_ext = mtree.node_at((-1,))
-        node_ext.guess = filetype_info
-        self.log.debug('Found with confidence %.2f: %s' % (1.0, node_ext.guess))
+        found_guess(node_ext, filetype_info)
 
         if mtree.guess.get('type') in [None, 'unknown']:
             if options.get('name_only'):

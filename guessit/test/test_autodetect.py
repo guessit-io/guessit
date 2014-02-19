@@ -35,8 +35,7 @@ class TestAutoDetect(TestGuessit):
         self.assertEqual(result, {'type': 'unknown', 'extension': 'avc'})
 
     def testAutoDetect(self):
-        self.checkMinimumFieldsCorrect(filetype='autodetect',
-                                       filename='autodetect.yaml',
+        self.checkMinimumFieldsCorrect(filename='autodetect.yaml',
                                        remove_type=False)
 
 

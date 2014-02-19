@@ -15,8 +15,8 @@ option_parser.add_option('-i', '--info', dest='info', default='filename',
                        'them, comma-separated')
 option_parser.add_option('-n', '--name-only', dest='name_only', action='store_true', default=False,
               help='Parse files as name only, with no folders, no extension and no file content analysis.')
-option_parser.add_option('-t', '--type', dest='type', default='autodetect',
-                  help='the suggested file type: movie, episode or autodetect')
+option_parser.add_option('-t', '--type', dest='type', default=None,
+                  help='the suggested file type: movie, episode. If undefined, type will be guessed.')
 option_parser.add_option('-a', '--advanced', dest='advanced', action='store_true', default=False,
                   help='display advanced information for filename guesses, as json output')
 option_parser.add_option('-y', '--yaml', dest='yaml', action='store_true', default=False,

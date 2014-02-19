@@ -65,7 +65,7 @@ def allTests(testClass):
 
 class TestGuessit(TestCase):
 
-    def checkMinimumFieldsCorrect(self, filetype, filename, remove_type=True,
+    def checkMinimumFieldsCorrect(self, filename, filetype=None, remove_type=True,
                                   exclude_files=None):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
 

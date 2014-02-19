@@ -65,9 +65,22 @@ class Transformer(object):
         return 0
 
 
-def found_property(node, name, confidence):
-    node.guess = Guess({name: node.clean_value}, confidence=confidence)
-    log.debug('Found with confidence %.2f: %s' % (confidence, node.guess))
+def found_property(node, name, confidence=1.0, value=None):
+    guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
+    found_guess(node, guess)
+
+
+def found_guess(node, guess):
+    if node.guess:
+        node.guess.update(guess)
+    else:
+        node.guess = guess
+    log_found_guess(guess)
+
+
+def log_found_guess(guess):
+    for k, v in guess.items():
+        log.debug('Property found: %s=%s (confidence=%.2f)' % (k, v, guess.confidence(k)))
 
 
 def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
@@ -116,7 +129,7 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
                             confidence = 1.0
                         guess = Guess(result, confidence=confidence, input=string, span=span)
 
-                    msg = 'Found with confidence %.2f: %s' % (confidence, guess)
+                    msg = 'Found %.2f: %s' % (confidence, guess)
                     (logger or log).debug(msg)
 
                     node.partition(span)

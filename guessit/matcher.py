@@ -37,19 +37,16 @@ class IterativeMatcher(object):
     in the filename.
 
     The ``filetype`` argument indicates which type of file you want to match.
-    If it is ``'autodetect'``, the matcher will try to see whether it can guess
+    If it is undefined, the matcher will try to see whether it can guess
     that the file corresponds to an episode, or otherwise will assume it is
     a movie.
 
     The recognized ``filetype`` values are:
-    ``['autodetect', 'subtitle', 'info', 'movie', 'moviesubtitle', 'movieinfo', 'episode',
+    ``['subtitle', 'info', 'movie', 'moviesubtitle', 'movieinfo', 'episode',
     'episodesubtitle', 'episodeinfo']``
 
-    ``opts`` is a list of option names, that act as global flags for the matcher
-
-    ``transformers_options`` is a dict of args to be passed to the transformations used
-    by the matcher. Its schema is: ``{ transfo_name: (transfo_args, transfo_kwargs) }``
-
+    ``options`` is a dict of options values to be passed to the transformations used
+    by the matcher.
 
     The IterativeMatcher works mainly in 2 steps:
 
@@ -81,7 +78,7 @@ class IterativeMatcher(object):
         else:
             options = dict(options)
         for k, v in kwargs.items():
-            if k not in options:
+            if k not in options or not options[k]:
                 options[k] = v  # options dict has priority over keyword arguments
         self._validate_options(options)
         if not PY3 and not isinstance(filename, unicode):
@@ -136,7 +133,7 @@ class IterativeMatcher(object):
         return second_pass_options
 
     def _validate_options(self, options):
-        valid_filetypes = ('autodetect', 'subtitle', 'info', 'video',
+        valid_filetypes = ('subtitle', 'info', 'video',
                    'movie', 'moviesubtitle', 'movieinfo',
                    'episode', 'episodesubtitle', 'episodeinfo')
 
