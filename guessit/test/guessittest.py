@@ -21,19 +21,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit import base_text_type, u
-from guessit.slogging import setupLogging
 
 from unittest import TestCase, TestLoader, TextTestRunner
 import shlex
 
 import yaml, logging, sys, os
 from os.path import *
-
-MAIN_LOGGING_LEVEL = logging.INFO
-
-setupLogging()
-logging.getLogger().setLevel(MAIN_LOGGING_LEVEL)
-from guessit.plugins import transformers
 
 
 def currentPath():
@@ -47,16 +40,14 @@ def addImportPath(path):
     importPath = abspath(join(currentPath(), path))
     sys.path = [importPath] + sys.path
 
-
-
 log = logging.getLogger(__name__)
 
+from guessit.plugins import transformers
 import guessit
 from guessit.options import option_parser
 from guessit import *
 from guessit.matcher import *
 from guessit.fileutils import *
-
 
 
 def allTests(testClass):

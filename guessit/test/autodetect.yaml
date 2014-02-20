@@ -276,10 +276,12 @@
   other: Special
 
 ? Wicked.Tuna.S03E00.Head.To.Tail.Special.HDTV.x264-YesTV
-: type: episode
+: options: -n
+  type: episode
   series: Wicked Tuna
   title: Head To Tail Special
   releaseGroup: YesTV
   season: 3
   videoCodec: h264
+  format: HDTV
   other: Special

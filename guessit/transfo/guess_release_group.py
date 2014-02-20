@@ -30,7 +30,7 @@ class GuessReleaseGroup(Transformer):
     def __init__(self):
         Transformer.__init__(self, -190)
         self.container = PropertiesContainer(canonical_from_pattern=False)
-        self._allowed_groupname_pattern = r'[\w@#€£$&]'
+        self._allowed_groupname_pattern = '[\w@#€£$&]'
         self._forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour', 'bonus'],
                                lambda elt: self._is_number(elt),
                                ]

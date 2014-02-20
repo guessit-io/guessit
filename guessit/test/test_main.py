@@ -26,8 +26,21 @@ from guessit.textutils import strip_brackets, str_replace, str_fill
 from guessit import PY2
 from guessit import __main__
 
+if PY2:
+    from StringIO import StringIO
+else:
+    from io import StringIO
+
 
 class TestMain(TestGuessit):
+    def setUp(self):
+        self._stdout = sys.stdout
+        string_out = StringIO()
+        sys.stdout = string_out
+
+    def tearDown(self):
+        sys.stdout = self._stdout
+
     def test_list_properties(self):
         __main__.main(["-p"])
         __main__.main(["-l"])
