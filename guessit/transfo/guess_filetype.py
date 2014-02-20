@@ -207,6 +207,6 @@ class GuessFiletype(Transformer):
 
         if mtree.guess.get('type') in [None, 'unknown']:
             if options.get('name_only'):
-                mtree.guess.set('type', 'movie', confidence=0.0)
+                mtree.guess.set('type', 'movie', confidence=0.6)
             else:
                 raise TransformerException(__name__, 'Unknown file type')
