@@ -62,15 +62,15 @@ class GuessEpisodeInfoFromPosition(Transformer):
             before_epnum_in_same_pathgroup() == [] and  # no groups before
             len(title_candidates) == 2):  # only 2 groups after
 
-            found_property(title_candidates[0], 'series', confidence=0.4)
-            found_property(title_candidates[1], 'title', confidence=0.4)
+            found_property(title_candidates[0], 'series', confidence=0.4, logger=self.log)
+            found_property(title_candidates[1], 'title', confidence=0.4, logger=self.log)
             return
 
         # if we have at least 1 valid group before the episodeNumber, then it's
         # probably the series name
         series_candidates = before_epnum_in_same_pathgroup()
         if len(series_candidates) >= 1:
-            found_property(series_candidates[0], 'series', confidence=0.7)
+            found_property(series_candidates[0], 'series', confidence=0.7, logger=self.log)
 
         # only 1 group after (in the same path group) and it's probably the
         # episode title
@@ -78,17 +78,17 @@ class GuessEpisodeInfoFromPosition(Transformer):
                              if n.clean_value.lower() not in self.non_episode_title]
 
         if len(title_candidates) == 1:
-            found_property(title_candidates[0], 'title', confidence=0.5)
+            found_property(title_candidates[0], 'title', confidence=0.5, logger=self.log)
             return
         else:
             # try in the same explicit group, with lower confidence
             title_candidates = [n for n in after_epnum_in_same_explicitgroup()
                                 if n.clean_value.lower() not in self.non_episode_title]
             if len(title_candidates) == 1:
-                found_property(title_candidates[0], 'title', confidence=0.4)
+                found_property(title_candidates[0], 'title', confidence=0.4, logger=self.log)
                 return
             elif len(title_candidates) > 1:
-                found_property(title_candidates[0], 'title', confidence=0.3)
+                found_property(title_candidates[0], 'title', confidence=0.3, logger=self.log)
                 return
 
         # get the one with the longest value
@@ -101,7 +101,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
                 if len(c.clean_value) > maxv:
                     maxidx = i
                     maxv = len(c.clean_value)
-            found_property(title_candidates[maxidx], 'title', confidence=0.3)
+            found_property(title_candidates[maxidx], 'title', confidence=0.3, logger=self.log)
 
     def should_process(self, mtree, options=None):
         if options is None:
@@ -125,11 +125,11 @@ class GuessEpisodeInfoFromPosition(Transformer):
                                  if n.clean_value.lower() not in self.non_episode_title]
 
             if len(title_candidates) >= 2:
-                found_property(title_candidates[0], 'series', 0.4)
-                found_property(title_candidates[1], 'title', 0.4)
+                found_property(title_candidates[0], 'series', confidence=0.4, logger=self.log)
+                found_property(title_candidates[1], 'title', confidence=0.4, logger=self.log)
             elif len(title_candidates) == 1:
                 # but if there's only one candidate, it's probably the series name
-                found_property(title_candidates[0], 'series', 0.4)
+                found_property(title_candidates[0], 'series', confidence=0.4, logger=self.log)
 
         # if we only have 1 remaining valid group in the folder containing the
         # file, then it's likely that it is the series name
@@ -139,7 +139,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
             series_candidates = []
 
         if len(series_candidates) == 1:
-            found_property(series_candidates[0], 'series', 0.3)
+            found_property(series_candidates[0], 'series', confidence=0.3, logger=self.log)
 
         # if there's a path group that only contains the season info, then the
         # previous one is most likely the series title (ie: ../series/season X/..)
@@ -150,7 +150,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
             previous = [node for node in mtree.unidentified_leaves()
                         if node.node_idx[0] == eps[0].node_idx[0] - 1]
             if len(previous) == 1:
-                found_property(previous[0], 'series', 0.5)
+                found_property(previous[0], 'series', confidence=0.5, logger=self.log)
 
         # reduce the confidence of unlikely series
         for node in mtree.nodes():

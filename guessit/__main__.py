@@ -29,8 +29,8 @@ from guessit import PY2, u, slogging, guess_file_info
 from guessit.options import option_parser
 
 
-def guess_file(filename, info=['filename'], options=None, **kwargs):
-    if options is None:
+def guess_file(filename, info='filename', options=None, **kwargs):
+    if options is None:  # pragma: no cover
         options = {}
 
     filename = u(filename)
@@ -40,11 +40,6 @@ def guess_file(filename, info=['filename'], options=None, **kwargs):
     if options.get('yaml'):
         try:
             import yaml
-            from yaml.dumper import SafeDumper
-            from guessit.language import Language
-            def language_representer(dumper, data):
-                return dumper.represent_scalar(u'tag:yaml.org,2002:str', str(data))
-            yaml.add_representer(Language, language_representer, SafeDumper)
             for k, v in guess.items():
                 if isinstance(v, list) and len(v) == 1:
                     guess[k] = v[0]
@@ -59,7 +54,7 @@ def guess_file(filename, info=['filename'], options=None, **kwargs):
                     print(yline)
                 i = i + 1
             return
-        except ImportError:
+        except ImportError:  # pragma: no cover
             print('PyYAML not found. Using default output.')
     print('GuessIt found:', guess.nice_string(options.get('advanced')))
 
@@ -176,7 +171,7 @@ def run_demo(episodes=True, movies=True, options=None):
 def main(args=None):
     slogging.setupLogging()
 
-    if PY2:
+    if PY2:  # pragma: no cover
         import codecs
         import locale
         import sys
@@ -193,7 +188,7 @@ def main(args=None):
 
     if args:
         options, args = option_parser.parse_args(args)
-    else:
+    else:  # pragma: no cover
         options, args = option_parser.parse_args()
     if options.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
@@ -217,7 +212,7 @@ def main(args=None):
                                 options=vars(options)
                                 )
 
-    if help_required:
+    if help_required:  # pragma: no cover
         option_parser.print_help()
 
 if __name__ == '__main__':

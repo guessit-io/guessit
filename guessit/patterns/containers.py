@@ -19,8 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function, \
-    unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from . import compile_pattern, enhance_pattern, sep
 from .. import base_text_type
@@ -228,7 +227,6 @@ class _Property:
 class PropertiesContainer(object):
     def __init__(self, **kwargs):
         self._properties = []
-        self._eqs = {}
         self.default_property_kwargs = kwargs
 
     def unregister_property(self, name, *canonical_forms):
@@ -418,12 +416,12 @@ class PropertiesContainer(object):
                     if first_key is None:
                         first_key = key
                         break
-            property_name = self._effective_prop_name(first_key) if first_key else None
+            property_name = first_key if first_key else None
             span = _get_span(prop, match)
             guess = Guess(confidence=prop.confidence, input=input, span=span, prop=property_name)
             groups = _get_groups(match.re)
             for group_name in groups:
-                name = self._effective_prop_name(group_name if isinstance(group_name, base_text_type) else property_name if property_name not in groups else None)
+                name = group_name if isinstance(group_name, base_text_type) else property_name if property_name not in groups else None
                 if name:
                     value = self._effective_prop_value(prop, group_name, input, match.span(group_name) if group_name else match.span(), sep_replacement)
                     if value:
@@ -456,29 +454,6 @@ class PropertiesContainer(object):
             value = prop.format(value, group_name)
         return value
 
-    def _effective_prop_name(self, name):
-        return name if not name in self._eqs else self._eqs[name]
-
-    def register_equivalent(self, name, equivalent_name):
-        self._eqs[equivalent_name] = name
-
-    def compute_canonical_form(self, name, value):
-        """Retrieves canonical form of a property given its name and found value.
-
-        :param name: name of the property
-        :type name: string
-        :param value: found value of the property
-        :type value: string
-
-        :return: Canonical form of a property, None otherwise.
-        :rtype: string
-        """
-        if isinstance(value, base_text_type):
-            for prop in self.get_properties(name):
-                if prop.compiled.match(value):
-                    return prop.canonical_form
-        return None
-
     def get_properties(self, name=None, canonical_form=None):
         """Retrieve properties
 
@@ -493,26 +468,11 @@ class PropertiesContainer(object):
         supported_properties = {}
         for prop in self.get_properties():
             for k in prop.keys:
-                name = self._effective_prop_name(k)
-                values = supported_properties.get(name)
+                values = supported_properties.get(k)
                 if not values:
                     values = set()
-                    supported_properties[name] = values
+                    supported_properties[k] = values
                 if prop.canonical_form:
                     values.add(prop.canonical_form)
         return supported_properties
 
-    def enhance_property_patterns(self, name):
-        """Retrieve enhanced patterns of given property.
-
-        :param name: Property name of patterns to enhance.
-        :type name: string
-
-        :return: Enhanced patterns
-        :rtype: list of strings
-
-        :deprecated: All property configuration should be done in this module
-
-        :see: :func:`enhance_pattern`
-        """
-        return [enhance_pattern(prop.pattern) for prop in self.get_properties(name)]

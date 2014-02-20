@@ -87,12 +87,13 @@ def find_words(s):
     return _words_rexp.findall(s.replace('_', ' '))
 
 
-def reorder_title(title):
+def reorder_title(title, articles=('the',), separators=(',', ', ')):
     ltitle = title.lower()
-    if ltitle[-4:] == ',the':
-        return title[-3:] + ' ' + title[:-4]
-    if ltitle[-5:] == ', the':
-        return title[-3:] + ' ' + title[:-5]
+    for article in articles:
+        for separator in separators:
+            suffix = separator + article
+            if ltitle[-len(suffix):] == suffix:
+                return title[-len(suffix) + len(separator):] + ' ' + title[:-len(suffix)]
     return title
 
 
@@ -335,7 +336,7 @@ def from_camel(string):
     True
     """
     if not string:
-        return
+        return string
     pieces = []
 
     for i in range(0, len(string)):

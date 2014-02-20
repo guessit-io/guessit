@@ -22,20 +22,21 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.test.guessittest import *
 from guessit.fileutils import split_path
-from guessit.textutils import strip_brackets, str_replace, str_fill, from_camel, is_camel
+from guessit.textutils import strip_brackets, str_replace, str_fill, from_camel, is_camel,\
+    levenshtein, reorder_title
 from guessit import PY2
 
 
 class TestUtils(TestGuessit):
     def test_splitpath(self):
-        alltests = {('linux2', 'darwin'): {'/usr/bin/smewt': ['/', 'usr', 'bin', 'smewt'],
+        alltests = {False: {'/usr/bin/smewt': ['/', 'usr', 'bin', 'smewt'],
                                            'relative_path/to/my_folder/': ['relative_path', 'to', 'my_folder'],
                                            '//some/path': ['//', 'some', 'path'],
                                            '//some//path': ['//', 'some', 'path'],
                                            '///some////path': ['///', 'some', 'path']
 
                                              },
-                     ('win32',): {'C:\\Program Files\\Smewt\\smewt.exe': ['C:\\', 'Program Files', 'Smewt', 'smewt.exe'],
+                     True: {'C:\\Program Files\\Smewt\\smewt.exe': ['C:\\', 'Program Files', 'Smewt', 'smewt.exe'],
                                   'Documents and Settings\\User\\config': ['Documents and Settings', 'User', 'config'],
                                   'C:\\Documents and Settings\\User\\config': ['C:\\', 'Documents and Settings', 'User', 'config'],
                                   # http://bugs.python.org/issue19945
@@ -43,13 +44,12 @@ class TestUtils(TestGuessit):
                                   '\\\\netdrive\\share\\folder': ['\\\\', 'netdrive', 'share', 'folder'] if PY2 else ['\\\\netdrive\\share\\', 'folder'],
                                   }
                      }
-        for platforms, tests in alltests.items():
-            if sys.platform in platforms:
-                for path, split in tests.items():
-                    self.assertEqual(split, split_path(path))
+        tests = alltests[sys.platform == 'win32']
+        for path, split in tests.items():
+            self.assertEqual(split, split_path(path))
 
     def test_strip_brackets(self):
-        allTests = (
+        allTests = (('', ''),
                     ('[test]', 'test'),
                     ('{test2}', 'test2'),
                     ('(test3)', 'test3'),
@@ -59,7 +59,24 @@ class TestUtils(TestGuessit):
         for i, e in allTests:
             self.assertEqual(e, strip_brackets(i))
 
-    def test_str_utils(self):
+    def test_levenshtein(self):
+        self.assertEqual(levenshtein("abcdef ghijk lmno", "abcdef ghijk lmno"), 0)
+        self.assertEqual(levenshtein("abcdef ghijk lmnop", "abcdef ghijk lmno"), 1)
+        self.assertEqual(levenshtein("abcdef ghijk lmno", "abcdef ghijk lmn"), 1)
+        self.assertEqual(levenshtein("abcdef ghijk lmno", "abcdef ghijk lmnp"), 1)
+        self.assertEqual(levenshtein("abcdef ghijk lmno", "abcdef ghijk lmnq"), 1)
+        self.assertEqual(levenshtein("cbcdef ghijk lmno", "abcdef ghijk lmnq"), 2)
+        self.assertEqual(levenshtein("cbcdef ghihk lmno", "abcdef ghijk lmnq"), 3)
+
+    def test_reorder_title(self):
+        self.assertEqual(reorder_title("Simpsons, The"), "The Simpsons")
+        self.assertEqual(reorder_title("Simpsons,The"), "The Simpsons")
+        self.assertEqual(reorder_title("Simpsons,Les", articles=('the', 'le', 'la', 'les')), "Les Simpsons")
+        self.assertEqual(reorder_title("Simpsons, Les", articles=('the', 'le', 'la', 'les')), "Les Simpsons")
+
+    def test_camel(self):
+        self.assertEqual("", from_camel(""))
+
         self.assertEqual("Hello world", str_replace("Hello World", 6, 'w'))
         self.assertEqual("Hello *****", str_fill("Hello World", (6, 11), '*'))
 

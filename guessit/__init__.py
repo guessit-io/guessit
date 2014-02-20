@@ -32,7 +32,7 @@ __all__ = ['Guess', 'Language',
 # it will then always be available
 # with code from http://lucumr.pocoo.org/2011/1/22/forwards-compatible-python/
 import sys
-if sys.version_info[0] >= 3:   # pragma: no cover
+if sys.version_info[0] >= 3:  # pragma: no cover
     PY2, PY3 = False, True
     unicode_text_type = str
     native_text_type = str
@@ -106,8 +106,6 @@ log.addHandler(h)
 
 
 def _guess_filename(filename, options=None, **kwargs):
-    if options is None:
-        options = {}
     mtree = _build_filename_mtree(filename, options=options, **kwargs)
     _add_camel_properties(mtree, options=options)
     return mtree.matched()

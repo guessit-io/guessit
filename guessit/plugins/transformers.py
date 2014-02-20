@@ -26,11 +26,12 @@ from pkg_resources import EntryPoint
 from stevedore.extension import Extension
 from guessit.guess import Guess
 from logging import getLogger
+from guessit.transfo import TransformerException
 
 log = getLogger(__name__)
 
 
-class Transformer(object):
+class Transformer(object):  # pragma: no cover
     def __init__(self, priority=0):
         self.priority = priority
         self.log = getLogger(self.name)
@@ -39,15 +40,8 @@ class Transformer(object):
     def name(self):
         return self.__class__.__name__
 
-    @property
-    def fullname(self):
-        return self.__module__ + "." + self.__class__.__name__
-
     def supported_properties(self):
         return {}
-
-    def enabled(self):
-        return True
 
     def second_pass_options(self, mtree, options=None):
         return None
@@ -65,22 +59,23 @@ class Transformer(object):
         return 0
 
 
-def found_property(node, name, confidence=1.0, value=None):
+def found_property(node, name, value=None, confidence=1.0, logger=None):
     guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
-    found_guess(node, guess)
+    return found_guess(node, guess, logger)
 
 
-def found_guess(node, guess):
+def found_guess(node, guess, logger=None):
     if node.guess:
         node.guess.update(guess)
     else:
         node.guess = guess
-    log_found_guess(guess)
+    log_found_guess(guess, logger)
+    return node.guess
 
 
-def log_found_guess(guess):
+def log_found_guess(guess, logger=None):
     for k, v in guess.items():
-        log.debug('Property found: %s=%s (confidence=%.2f)' % (k, v, guess.confidence(k)))
+        (logger or log).debug('Property found: %s=%s (confidence=%.2f)' % (k, v, guess.confidence(k)))
 
 
 def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
@@ -125,18 +120,14 @@ def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
                             confidence = result.confidence()
                         guess = result
                     else:
-                        if confidence is None:
-                            confidence = 1.0
                         guess = Guess(result, confidence=confidence, input=string, span=span)
-
-                    msg = 'Found %.2f: %s' % (confidence, guess)
-                    (logger or log).debug(msg)
 
                     node.partition(span)
                     absolute_span = (span[0] + node.offset, span[1] + node.offset)
                     for child in node.children:
                         if child.span == absolute_span:
-                            child.guess = guess
+                            found_guess(child, guess, logger or log)
+                            break
                     for child in node.children:
                         if not child.guess:
                             find_and_split_node(child, strategy, skip_nodes, logger)
