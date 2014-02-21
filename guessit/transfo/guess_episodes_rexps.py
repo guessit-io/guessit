@@ -41,7 +41,7 @@ class GuessEpisodesRexps(Transformer):
                 dashed_values = letters_elt.split('-')
                 dashed_values = [x for x in dashed_values if x]
                 if len(dashed_values) > 1:
-                    for i in range(0, len(dashed_values) - 1):
+                    for _ in range(0, len(dashed_values) - 1):
                         start_dash_ep = parse_numeral(dashed_values[0])
                         end_dash_ep = parse_numeral(dashed_values[1])
                         for dash_ep in range(start_dash_ep, end_dash_ep + 1):

@@ -424,7 +424,7 @@ class PropertiesContainer(object):
                 name = group_name if isinstance(group_name, base_text_type) else property_name if property_name not in groups else None
                 if name:
                     value = self._effective_prop_value(prop, group_name, input, match.span(group_name) if group_name else match.span(), sep_replacement)
-                    if value:
+                    if not value is None:
                         if isinstance(value, dict):
                             for k, v in value.items():
                                 if k is None:
