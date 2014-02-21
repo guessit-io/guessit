@@ -534,3 +534,12 @@
   season: 1
   releaseGroup: BS
   audioCodec: DolbyDigital
+  
+? Battlestar.Galactica.S00.Pilot.FRENCH.DVDRip.XviD-NOTAG.avi
+: series: Battlestar Galactica
+  season: 0
+  other: Pilot
+  language: French
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: NOTAG
