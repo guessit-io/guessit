@@ -20,6 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import guessit  # needed for doctests
 from guessit import UnicodeMixin, base_text_type
 from guessit.textutils import clean_string, str_fill
 from guessit.patterns import group_delimiters
@@ -51,10 +52,10 @@ class BaseMatchTree(UnicodeMixin):
         >>> print(guessit.IterativeMatcher(path).match_tree)
         000000 1111111111111111 2222222222222222222222222222222222222222222 333
         000000 0000000000111111 0000000000111111222222222222222222222222222 000
-                         011112           011112000000000000000000000000111
-                                                000000000000000000011112
-                                                0000000000111122222
-                                                0000111112    01112
+                         011112           011112000011111222222222222222222 000
+                                                         011112222222222222
+                                                              0000011112222
+                                                              01112    0111
         Movies/__________(____)/Dark.City.(____).DC._____.____.___.____-___.___
                tttttttttt yyyy             yyyy     fffff ssss aaa vvvv rrr ccc
         Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
@@ -68,7 +69,7 @@ class BaseMatchTree(UnicodeMixin):
     The lines before that indicate the indices of the groups in the tree.
 
     For instance, the part of the filename 'BDRip' is the leaf with index
-    ``(2, 2, 0, 0, 0, 1)`` (read from top to bottom), and its meaning is 'format'
+    ``(2, 2, 1)`` (read from top to bottom), and its meaning is 'format'
     (as shown by the ``f``'s on the last-but-one line).
     """
 
@@ -310,7 +311,7 @@ class BaseMatchTree(UnicodeMixin):
 
         lines.append(self.string)
 
-        return '\n'.join(lines)
+        return '\n'.join(l.rstrip() for l in lines)
 
     def __unicode__(self):
         return self.to_string()

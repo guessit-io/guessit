@@ -34,12 +34,12 @@ def load_tests(loader, tests, ignore):
     tests.addTests(doctest.DocTestSuite(guessit.guess))
     tests.addTests(doctest.DocTestSuite(guessit.hash_ed2k))
     tests.addTests(doctest.DocTestSuite(guessit.language))
-    #tests.addTests(doctest.DocTestSuite(guessit.matchtree))
+    tests.addTests(doctest.DocTestSuite(guessit.matchtree))
     tests.addTests(doctest.DocTestSuite(guessit.textutils))
     return tests
 
+suite = unittest.TestSuite()
+load_tests(None, suite, None)
 
 if __name__ == '__main__':
-    suite = unittest.TestSuite()
-    load_tests(None, suite, None)
     TextTestRunner(verbosity=2).run(suite)
