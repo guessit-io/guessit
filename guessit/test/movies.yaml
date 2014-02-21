@@ -39,7 +39,7 @@
   year: 2006
   other: PROPER
   format: DVD
-  other: [ R5, PROPER, REPACK ]
+  other: [ R5, Proper ]
   videoCodec: XviD
   releaseGroup: PUKKA
 
@@ -142,7 +142,7 @@
   format: DVD
   videoCodec: XviD
   releaseGroup: ARROW
-  other: ['repack', 'limited']
+  other: ['Proper', 'Limited']
 
 ? Movies/Fr - Paris 2054, Renaissance (2005) - De Christian Volckman - (Film Divx Science Fiction Fantastique Thriller Policier N&B).avi
 : title: Paris 2054, Renaissance

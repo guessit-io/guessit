@@ -352,7 +352,7 @@
   videoCodec: h264
   releaseGroup: Fov
   year: 2008
-  other: repack
+  other: Proper
 
 ? "Da Vinci's Demons - 1x04 - The Magician.mkv"
 : series: "Da Vinci's Demons"
@@ -554,4 +554,15 @@
   videoCodec: XviD
   releaseGroup: VioCs
   other: Pilot
+  title: Unaired Pilot
+  
+? The Big Bang Theory S01E00 PROPER Unaired Pilot TVRip XviD-GIGGITY
+: options: -n
+  series: The Big Bang Theory
+  season: 1
+  episodeNumber: 0
+  format: TV
+  videoCodec: XviD
+  releaseGroup: GIGGITY
+  other: [Proper, Pilot]
   title: Unaired Pilot
