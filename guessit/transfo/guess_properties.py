@@ -60,7 +60,7 @@ class GuessProperties(Transformer):
                                      'Workprint': ['WORKPRINT', 'WP'],
                                      'Telecine': ['TELECINE', 'TC'],
                                      'PPV': ['PPV', 'PPV-Rip'],  # Pay Per View
-                                     'TV': ['TV-RIP', 'RIP-TV'],
+                                     'TV': ['SD-TV', 'SD-TV-Rip', 'Rip-SD-TV', 'TV-Rip', 'Rip-TV'],
                                      'DVB': ['DVB-Rip', 'DVB', 'PD-TV'],
                                      'DVD': ['DVD', 'DVD-Rip', 'VIDEO-TS'],
                                      'HDTV': ['HD-TV', 'TV-RIP-HD', 'HD-TV-RIP'],
