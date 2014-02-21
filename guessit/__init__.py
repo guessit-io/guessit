@@ -144,7 +144,7 @@ def _guess_camel_string(mtree, string, options=None, skip_title=False, **kwargs)
     return False
 
 
-def guess_file_info(filename, info='filename', options=None, **kwargs):
+def guess_file_info(filename, info=None, options=None, **kwargs):
     """info can contain the names of the various plugins, such as 'filename' to
     detect filename info, or 'hash_md5' to get the md5 hash of the file.
 
@@ -155,6 +155,9 @@ def guess_file_info(filename, info='filename', options=None, **kwargs):
     """
     if options is None:
         options = {}
+
+    if info is None:
+        info = 'filename'
 
     result = []
     hashers = []
@@ -222,7 +225,7 @@ def guess_file_info(filename, info='filename', options=None, **kwargs):
 
 
 def guess_video_info(filename, info=None, options=None, **kwargs):
-    return guess_file_info(filename, info=info, options=options, type=None, **kwargs)
+    return guess_file_info(filename, info=info, options=options, type='video', **kwargs)
 
 
 def guess_movie_info(filename, info=None, options=None, **kwargs):

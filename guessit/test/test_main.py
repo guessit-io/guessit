@@ -42,27 +42,27 @@ class TestMain(TestGuessit):
         sys.stdout = self._stdout
 
     def test_list_properties(self):
-        __main__.main(["-p"])
-        __main__.main(["-l"])
+        __main__.main(["-p"], False)
+        __main__.main(["-l"], False)
 
     def test_list_transformers(self):
-        __main__.main(["--transformers"])
-        __main__.main(["-l", "--transformers"])
+        __main__.main(["--transformers"], False)
+        __main__.main(["-l", "--transformers"], False)
 
     def test_demo(self):
-        __main__.main(["-d"])
-        __main__.main(["-l"])
+        __main__.main(["-d"], False)
+        __main__.main(["-l"], False)
 
     def test_filename(self):
-        __main__.main(["A.Movie.2014.avi"])
-        __main__.main(["A.Movie.2014.avi", "A.2nd.Movie.2014.avi"])
-        __main__.main(["-y", "A.Movie.2014.avi"])
-        __main__.main(["-a", "A.Movie.2014.avi"])
-        __main__.main(["-v", "A.Movie.2014.avi"])
-        __main__.main(["-t", "movie", "A.Movie.2014.avi"])
-        __main__.main(["-t", "episode", "A.Serie.S02E06.avi"])
-        __main__.main(["-i", "hash_mpc", file_in_same_dir(__file__, "1MB")])
-        __main__.main(["-i", "hash_md5", file_in_same_dir(__file__, "1MB")])
+        __main__.main(["A.Movie.2014.avi"], False)
+        __main__.main(["A.Movie.2014.avi", "A.2nd.Movie.2014.avi"], False)
+        __main__.main(["-y", "A.Movie.2014.avi"], False)
+        __main__.main(["-a", "A.Movie.2014.avi"], False)
+        __main__.main(["-v", "A.Movie.2014.avi"], False)
+        __main__.main(["-t", "movie", "A.Movie.2014.avi"], False)
+        __main__.main(["-t", "episode", "A.Serie.S02E06.avi"], False)
+        __main__.main(["-i", "hash_mpc", file_in_same_dir(__file__, "1MB")], False)
+        __main__.main(["-i", "hash_md5", file_in_same_dir(__file__, "1MB")], False)
 
 suite = allTests(TestMain)
 

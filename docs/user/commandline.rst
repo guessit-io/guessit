@@ -37,6 +37,10 @@ By default, GuessIt will try to autodetect the type of file you are asking it to
 guess, movie or episode. If you want to force one of those, use the ``-t movie`` or
 ``-t episode`` flags.
 
+If input file is remote file or a release name with no folder and extension,
+you should use the ``-n`` or ``--name-only`` flag. It will disable folder and extension
+parsing, and any concrete file related analysis.
+
 Guessit also allows you to specify the type of information you want
 using the ``-i`` or ``--info`` flag::
 
@@ -59,12 +63,15 @@ You can see the list of options that guessit.py accepts like that::
       -v, --verbose         display debug output
       -p, --properties      Display properties that can be guessed.
       -l, --values          Display property values that can be guessed.
+      -s, --transformers    Display transformers that can be used.
       -i INFO, --info=INFO  the desired information type: filename, hash_mpc or a
                             hash from python's hashlib module, such as hash_md5,
                             hash_sha1, ...; or a list of any of them, comma-
                             separated
-      -t FILETYPE, --type=FILETYPE
-                            the suggested file type: movie, episode or autodetect
+      -n, --name-only       Parse files as name only. Disable folder parsing,
+                            extension parsing, and file content analysis.
+      -t TYPE, --type=TYPE  the suggested file type: movie, episode. If undefined,
+                            type will be guessed.
       -a, --advanced        display advanced information for filename guesses, as
                             json output
       -y, --yaml            display information for filename guesses as yaml
