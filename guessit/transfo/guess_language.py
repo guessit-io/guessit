@@ -88,17 +88,20 @@ class GuessLanguage(Transformer):
                     # if filetype is subtitle and the language appears last, just before
                     # the extension, then it is likely a subtitle language
                     parts = clean_string(lang_node.root.value).split()
-                    if m.get('type') in ['moviesubtitle', 'episodesubtitle'] and (parts.index(lang_node.value) == len(parts) - 2):
+                    if (m.get('type') in ['moviesubtitle', 'episodesubtitle'] and
+                        (parts.index(lang_node.value) == len(parts) - 2)):
                         continue
 
                     to_skip_language_nodes.append(lang_node)
                 elif not lang in langs:
                     langs[lang] = lang_node
                 else:
-                    # The same language was found. Keep the more confident one, and add others to skip for 2nd pass.
+                    # The same language was found. Keep the more confident one,
+                    # and add others to skip for 2nd pass.
                     existing_lang_node = langs[lang]
                     to_skip = None
-                    if existing_lang_node.guess.confidence('language') >= lang_node.guess.confidence('language'):
+                    if (existing_lang_node.guess.confidence('language') >=
+                        lang_node.guess.confidence('language')):
                         # lang_node is to remove
                         to_skip = lang_node
                     else:
@@ -112,9 +115,8 @@ class GuessLanguage(Transformer):
         return None
 
     def should_process(self, mtree, options=None):
-        if options is None:
-            options = {}
-        return not 'nolanguage' in options
+        options = options or {}
+        return 'nolanguage' not in options
 
     def process(self, mtree, options=None):
         SingleNodeGuesser(self.guess_language, None, self.log, options).process(mtree)

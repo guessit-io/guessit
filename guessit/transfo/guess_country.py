@@ -36,9 +36,8 @@ class GuessCountry(Transformer):
         return ['country']
 
     def should_process(self, mtree, options=None):
-        if options is None:
-            options = {}
-        return not 'nocountry' in options.keys()
+        options = options or {}
+        return 'nocountry' not in options.keys()
 
     def process(self, mtree, options=None):
         for node in mtree.unidentified_leaves():

@@ -104,8 +104,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
             found_property(title_candidates[maxidx], 'title', confidence=0.3)
 
     def should_process(self, mtree, options=None):
-        if options is None:
-            options = {}
+        options = options or {}
         return not options.get('skip_title') and mtree.guess.get('type', '').startswith('episode')
 
     def process(self, mtree, options=None):

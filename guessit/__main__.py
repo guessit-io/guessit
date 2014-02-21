@@ -28,9 +28,7 @@ from guessit.options import option_parser
 
 
 def guess_file(filename, info='filename', options=None, **kwargs):
-    if options is None:  # pragma: no cover
-        options = {}
-
+    options = options or {}
     filename = u(filename)
 
     print('For:', filename)

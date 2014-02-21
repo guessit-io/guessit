@@ -44,13 +44,13 @@ class GuessFiletype(Transformer):
     SERIES = [s.lower() for s in SERIES]
 
     def guess_filetype(self, mtree, options=None):
+        options = options or {}
+
         # put the filetype inside a dummy container to be able to have the
         # following functions work correctly as closures
         # this is a workaround for python 2 which doesn't have the
-        # 'nonlocal' keyword (python 3 does have it)
-        if options is None:
-            options = {}
-
+        # 'nonlocal' keyword which we could use here in the upgrade_* functions
+        # (python 3 does have it)
         filetype_container = [mtree.guess.get('type')]
         other = {}
         filename = mtree.string

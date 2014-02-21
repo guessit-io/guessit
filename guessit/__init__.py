@@ -153,11 +153,8 @@ def guess_file_info(filename, info=None, options=None, **kwargs):
     >>> g['hash_md5'], g['hash_sha1']
     ('64de6b5893cac24456c46a935ef9c359', 'a703fc0fa4518080505809bf562c6fc6f7b3c98c')
     """
-    if options is None:
-        options = {}
-
-    if info is None:
-        info = 'filename'
+    info = info or 'filename'
+    options = options or {}
 
     result = []
     hashers = []

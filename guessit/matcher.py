@@ -73,10 +73,7 @@ class IterativeMatcher(object):
     resolution when they arise.
     """
     def __init__(self, filename, options=None, **kwargs):
-        if options is None:
-            options = {}
-        else:
-            options = dict(options)
+        options = dict(options or {})
         for k, v in kwargs.items():
             if k not in options or not options[k]:
                 options[k] = v  # options dict has priority over keyword arguments
