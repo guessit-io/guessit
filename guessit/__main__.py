@@ -19,13 +19,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function, \
-    unicode_literals
-
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import os
 
-from guessit import PY2, u, slogging, guess_file_info
+from guessit import PY2, u, guess_file_info
 from guessit.options import option_parser
 
 
@@ -168,8 +166,10 @@ def run_demo(episodes=True, movies=True, options=None):
             guess_file(f, options=options, type='movie')
 
 
-def main(args=None):
-    slogging.setupLogging()
+def main(args=None, setup_logging=True):
+    if setup_logging:
+        from guessit import slogging
+        slogging.setupLogging()
 
     if PY2:  # pragma: no cover
         import codecs

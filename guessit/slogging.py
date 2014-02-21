@@ -86,6 +86,4 @@ def setupLogging(colored=True, with_time=False, with_thread=False, filename=None
         else:
             ch.setFormatter(SimpleFormatter(with_time, with_thread))
 
-    for existing_handler in logging.getLogger().handlers:
-        logging.getLogger().removeHandler(existing_handler)
     logging.getLogger().addHandler(ch)
