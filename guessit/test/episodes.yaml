@@ -543,3 +543,15 @@
   format: DVD
   videoCodec: XviD
   releaseGroup: NOTAG
+  
+? The Big Bang Theory S00E00 Unaired Pilot VOSTFR TVRip XviD-VioCs
+: options: -n
+  series: The Big Bang Theory
+  season: 0
+  episodeNumber: 0
+  subtitleLanguage: French
+  format: TV
+  videoCodec: XviD
+  releaseGroup: VioCs
+  other: Pilot
+  title: Unaired Pilot

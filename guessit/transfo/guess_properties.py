@@ -60,8 +60,9 @@ class GuessProperties(Transformer):
                                      'Workprint': ['WORKPRINT', 'WP'],
                                      'Telecine': ['TELECINE', 'TC'],
                                      'PPV': ['PPV', 'PPV-Rip'],  # Pay Per View
-                                     'DVD': ['DVD', 'DVD-Rip', 'VIDEO-TS'],
+                                     'TV': ['TV-RIP', 'RIP-TV'],
                                      'DVB': ['DVB-Rip', 'DVB', 'PD-TV'],
+                                     'DVD': ['DVD', 'DVD-Rip', 'VIDEO-TS'],
                                      'HDTV': ['HD-TV', 'TV-RIP-HD', 'HD-TV-RIP'],
                                      'VOD': ['VOD', 'VOD-Rip'],
                                      'WEBRip': ['WEB-Rip'],
@@ -76,6 +77,7 @@ class GuessProperties(Transformer):
                                     'Workprint': -70,
                                     'Telecine': -60,
                                     'PPV': -50,
+                                    'TV': -30,
                                     'DVB': -20,
                                     'DVD': 0,
                                     'HDTV': 20,
