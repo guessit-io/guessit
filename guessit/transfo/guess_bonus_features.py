@@ -48,19 +48,19 @@ class GuessBonusFeatures(Transformer):
         if bonus:
             bonusTitle = next_group(bonus[0])
             if bonusTitle and same_group(bonusTitle, bonus[0]):
-                found_property(bonusTitle, 'bonusTitle', confidence=0.8, logger=self.log)
+                found_property(bonusTitle, 'bonusTitle', confidence=0.8)
 
         filmNumber = [node for node in mtree.leaves()
                        if 'filmNumber' in node.guess]
         if filmNumber:
             filmSeries = previous_group(filmNumber[0])
-            found_property(filmSeries, 'filmSeries', confidence=0.9, logger=self.log)
+            found_property(filmSeries, 'filmSeries', confidence=0.9)
 
             title = next_group(filmNumber[0])
-            found_property(title, 'title', confidence=0.9, logger=self.log)
+            found_property(title, 'title', confidence=0.9)
 
         season = [node for node in mtree.leaves() if 'season' in node.guess]
         if season and 'bonusNumber' in mtree.info:
             series = previous_group(season[0])
             if same_group(series, season[0]):
-                found_property(series, 'series', confidence=0.9, logger=self.log)
+                found_property(series, 'series', confidence=0.9)

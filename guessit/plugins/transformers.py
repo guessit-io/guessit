@@ -27,6 +27,7 @@ from stevedore.extension import Extension
 from guessit.guess import Guess
 from logging import getLogger
 from guessit.transfo import TransformerException
+import inspect
 
 log = getLogger(__name__)
 
@@ -59,7 +60,10 @@ class Transformer(object):  # pragma: no cover
         return 0
 
 
-def found_property(node, name, value=None, confidence=1.0, logger=None):
+def found_property(node, name, value=None, confidence=1.0):
+    # automatically retrieve the log object from the caller frame
+    caller_frame = inspect.stack()[1][0]
+    logger = caller_frame.f_locals['self'].log
     guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
     return found_guess(node, guess, logger)
 
