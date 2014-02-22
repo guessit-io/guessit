@@ -237,10 +237,7 @@ class Guess(UnicodeMixin, dict):
             if prop in self and self.metadata(prop).confidence >= other.metadata(prop).confidence:
                 continue
             self[prop] = other[prop]
-            try:
-                self._metadata[prop] = other._metadata[prop]
-            except KeyError:
-                pass
+            self._metadata[prop] = other.metadata(prop)
 
 
 def choose_int(g1, g2):
