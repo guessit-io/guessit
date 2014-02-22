@@ -286,7 +286,7 @@ class PropertiesContainer(object):
         """Unregister all defined properties"""
         self._properties.clear()
 
-    def find_properties(self, string, node, name=None, validate=True, sort=True, multiple=False):
+    def find_properties(self, string, node, name=None, validate=True, re_match=False, sort=True, multiple=False):
         """Find all distinct properties for given string
 
         If no capturing group is defined in the property, value will be grabbed from the entire match.
@@ -297,7 +297,9 @@ class PropertiesContainer(object):
 
         If validate, found properties will be validated by their defined validator
 
-        if sort is True, found properties will be sorted from longer match to shorter match.
+        If re_match, re.match will be used instead of re.search.
+
+        if sort, found properties will be sorted from longer match to shorter match.
 
         If multiple is False and multiple values are found for the same property, the more confident one will be returned.
 
@@ -311,6 +313,9 @@ class PropertiesContainer(object):
 
         :param name: name of property to find
         :type name: string
+
+        :param re_match: use re.match instead of re.search
+        :type re_match: bool
 
         :param multiple: Allows multiple property values to be returned
         :type multiple: bool
@@ -334,7 +339,7 @@ class PropertiesContainer(object):
 
         # search all properties
         for prop in self.get_properties(name):
-            match = prop.compiled.search(string)
+            match = prop.compiled.match(string) if re_match else prop.compiled.search(string)
             if match:
                 entry = prop, match
                 entries.append(entry)
