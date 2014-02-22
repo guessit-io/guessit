@@ -20,11 +20,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.patterns.containers import PropertiesContainer, WeakValidator, LeavesValidator
+from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
-from guessit.quality import QualitiesContainer
 
 
 class GuessProperties(Transformer):

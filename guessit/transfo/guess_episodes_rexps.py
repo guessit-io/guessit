@@ -23,7 +23,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
 from guessit.patterns import sep
-from guessit.patterns.containers import PropertiesContainer, WeakValidator, NoValidator
+from guessit.containers import PropertiesContainer, WeakValidator, NoValidator
 from guessit.patterns.numeral import numeral, digital_numeral, parse_numeral
 from re import split as re_split
 

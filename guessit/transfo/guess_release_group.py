@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
-from guessit.patterns.containers import PropertiesContainer
+from guessit.containers import PropertiesContainer
 from guessit.patterns import sep
 from guessit.guess import Guess
 

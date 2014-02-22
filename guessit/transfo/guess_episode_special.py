@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import found_guess
-from guessit.patterns.containers import PropertiesContainer
+from guessit.containers import PropertiesContainer
 
 
 class GuessEpisodeSpecial(Transformer):

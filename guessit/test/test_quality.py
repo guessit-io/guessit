@@ -20,7 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.quality import QualitiesContainer, best_quality, best_quality_properties
+from guessit.quality import best_quality, best_quality_properties
+from guessit.containers import QualitiesContainer
 from guessit.test.guessittest import *
 
 

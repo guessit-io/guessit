@@ -42,7 +42,7 @@ class GuessMetadata(object):
     :param span: The input string
     :type span: tuple (int, int)
     :param prop: The found property definition
-    :type prop: :class `guessit.patterns.containers._Property`
+    :type prop: :class `guessit.containers._Property`
     """
     def __init__(self, parent=None, confidence=None, input=None, span=None, prop=None, *args, **kwargs):
         self.parent = parent
