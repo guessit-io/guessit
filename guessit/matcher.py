@@ -144,17 +144,22 @@ class IterativeMatcher(object):
         return self.match_tree.matched()
 
 
-def found_property(node, name, value=None, confidence=1.0):
+def found_property(node, name, value=None, confidence=1.0, update_guess=True, logger=None):
     # automatically retrieve the log object from the caller frame
-    caller_frame = inspect.stack()[1][0]
-    logger = caller_frame.f_locals['self'].log
+    if not logger:
+        caller_frame = inspect.stack()[1][0]
+        logger = caller_frame.f_locals['self'].log
     guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
-    return found_guess(node, guess, logger)
+    return found_guess(node, guess, update_guess=update_guess, logger=logger)
 
 
-def found_guess(node, guess, logger=None):
+def found_guess(node, guess, update_guess=True, logger=None):
     if node.guess:
-        node.guess.update(guess)
+        if update_guess:
+            node.guess.update_highest_confidence(guess)
+        else:
+            child = node.add_child(guess.metadata().span)
+            child.guess = guess
     else:
         node.guess = guess
     log_found_guess(guess, logger)
@@ -171,20 +176,24 @@ class GuessFinder(object):
         self.guess_func = guess_func
         self.confidence = confidence
         self.logger = logger or log
-        self.options = options if not options is None else {}
+        self.options = options
 
-    def process_unidentified_leaves(self, mtree):
-        for node in mtree.unidentified_leaves():
+    def process_nodes(self, nodes):
+        for node in nodes:
             self.process_node(node)
 
-    def process_node(self, node, recursive=True, partial_span=None):
+    def process_node(self, node, iterative=True, partial_span=None):
         value = None
         if partial_span:
             value = node.value[partial_span[0]:partial_span[1]]
         else:
             value = node.value
         string = ' %s ' % value  # add sentinels
-        matcher_result = self.guess_func(string, node, self.options)
+
+        if not self.options:
+            matcher_result = self.guess_func(string, node)
+        else:
+            matcher_result = self.guess_func(string, node, self.options)
 
         if matcher_result:
             if not isinstance(matcher_result, Guess):
@@ -219,15 +228,19 @@ class GuessFinder(object):
                     else:
                         guess = Guess(result, confidence=self.confidence, input=string, span=span)
 
-                    node.partition(span)
-                    absolute_span = (span[0] + node.offset, span[1] + node.offset)
-                    for child in node.children:
-                        if child.span == absolute_span:
-                            found_guess(child, guess, self.logger)
-                            break
-                    if recursive:
+                    if not iterative:
+                        node.guess.update(guess)
+                    else:
+                        absolute_span = (span[0] + node.offset, span[1] + node.offset)
+                        node.partition(span)
+                        found_child = None
                         for child in node.children:
-                            if not child.guess:
+                            if child.span == absolute_span:
+                                found_guess(child, guess, self.logger)
+                                found_child = child
+                                break
+                        for child in node.children:
+                            if not child is found_child:
                                 self.process_node(child)
                 else:
                     for partition_span in partition_spans:

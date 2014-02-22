@@ -66,4 +66,4 @@ class GuessWeakEpisodesRexps(Transformer):
         return mtree.guess.get('type', '').startswith('episode')
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_weak_episodes_rexps, 0.6, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_weak_episodes_rexps, 0.6, self.log, options).process_nodes(mtree.unidentified_leaves())

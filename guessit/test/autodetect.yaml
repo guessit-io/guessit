@@ -233,7 +233,7 @@
   year: 2014
   series: A Common Title
   title: Special
-  other: Special
+  special: Special
   
 ? A.Common.Title.2014.Special.Edition.avi
 : type: movie
@@ -249,20 +249,21 @@
   videoCodec: h264
   releaseGroup: FoV
   format: HDTV
-  other: Special
+  special: Special
   
 ? Doctor_Who_2013_Christmas_Special.The_Time_of_The_Doctor.HD
 : options: -n
   type: episode
   series: Doctor Who
-  other: [ HD, Special ]
+  other: HD
+  special: Special
   title: Christmas Special The Time of The Doctor
   year: 2013
   
 ? Doctor Who 2005 50th Anniversary Special The Day of the Doctor 3.avi
 : type: episode
   series: Doctor Who
-  other: Special
+  special: Special
   title: 50th Anniversary Special The Day of the Doctor 3
   year: 2005
 
@@ -273,7 +274,7 @@
   season: 6
   title: Born Again Virgin Christmas Special
   videoCodec: h264
-  other: Special
+  special: Special
 
 ? Wicked.Tuna.S03E00.Head.To.Tail.Special.HDTV.x264-YesTV
 : options: -n
@@ -282,6 +283,7 @@
   title: Head To Tail Special
   releaseGroup: YesTV
   season: 3
+  episodeNumber: 0
   videoCodec: h264
   format: HDTV
-  other: Special
+  special: Special

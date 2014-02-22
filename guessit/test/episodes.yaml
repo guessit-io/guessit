@@ -538,7 +538,8 @@
 ? Battlestar.Galactica.S00.Pilot.FRENCH.DVDRip.XviD-NOTAG.avi
 : series: Battlestar Galactica
   season: 0
-  other: Pilot
+  title: Pilot
+  special: Pilot
   language: French
   format: DVD
   videoCodec: XviD
@@ -553,7 +554,7 @@
   format: TV
   videoCodec: XviD
   releaseGroup: VioCs
-  other: Pilot
+  special: [Unaired, Pilot]
   title: Unaired Pilot
   
 ? The Big Bang Theory S01E00 PROPER Unaired Pilot TVRip XviD-GIGGITY
@@ -564,5 +565,6 @@
   format: TV
   videoCodec: XviD
   releaseGroup: GIGGITY
-  other: [Proper, Pilot]
+  other: proper
+  special: [Unaired, Pilot]
   title: Unaired Pilot

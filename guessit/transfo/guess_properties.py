@@ -227,7 +227,7 @@ class GuessProperties(Transformer):
         return self.container.get_supported_properties()
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_properties, 1.0, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_properties, 1.0, self.log, options).process_nodes(mtree.unidentified_leaves())
 
     def rate_quality(self, guess, *props):
         return self.qualities.rate_quality(guess, *props)

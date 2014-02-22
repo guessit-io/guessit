@@ -63,4 +63,4 @@ class GuessWebsite(Transformer):
         return self.container.as_guess(found, string)
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_website, 1.0, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_website, 1.0, self.log, options).process_nodes(mtree.unidentified_leaves())

@@ -55,4 +55,4 @@ class GuessVideoRexps(Transformer):
         return self.container.as_guess(found, string)
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_video_rexps, None, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_video_rexps, None, self.log, options).process_nodes(mtree.unidentified_leaves())

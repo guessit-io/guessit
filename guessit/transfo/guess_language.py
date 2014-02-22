@@ -120,8 +120,7 @@ class GuessLanguage(Transformer):
         return 'nolanguage' not in options
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_language, None, self.log, options).process_unidentified_leaves(mtree)
-        # Note: 'language' is promoted to 'subtitleLanguage' in the post_process transfo
+        GuessFinder(self.guess_language, None, self.log, options).process_nodes(mtree.unidentified_leaves())
 
     def promote_subtitle(self, node):
         node.guess.set('subtitleLanguage', node.guess['language'],

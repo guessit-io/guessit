@@ -29,31 +29,30 @@ class GuessEpisodeSpecial(Transformer):
     def __init__(self):
         Transformer.__init__(self, -205)
         self.container = PropertiesContainer()
-        self.container.register_property('other', 'Special')
-        self.container.register_property('other', 'Pilot')
+        self.container.register_property('special', 'Special', 'Bonus', 'Omake', 'Ova', 'Oav', 'Pilot', 'Unaired')
 
     def guess_special(self, string, node=None, options=None):
-        properties = self.container.find_properties(string, node, 'other')
-        guess = self.container.as_guess(properties)
-        return guess
+        properties = self.container.find_properties(string, node, 'special', multiple=True)
+        guesses = self.container.as_guess(properties, multiple=True)
+        return guesses
 
     def second_pass_options(self, mtree, options=None):
         if not mtree.guess.get('type', '').startswith('episode'):
             for unidentified_leaf in mtree.unidentified_leaves():
-                properties = self.container.find_properties(unidentified_leaf.value, unidentified_leaf, 'other')
+                properties = self.container.find_properties(unidentified_leaf.value, unidentified_leaf, 'special')
                 guess = self.container.as_guess(properties)
                 if guess:
                     return {'type': 'episode'}
         return None
 
     def process(self, mtree, options=None):
-        if mtree.guess.get('type', '').startswith('episode'):
+        if mtree.guess.get('type', '').startswith('episode') and (not mtree.info.get('episodeNumber') or mtree.info.get('season') == 0):
             for title_leaf in mtree.leaves_containing('title'):
-                guess = self.guess_special(title_leaf.value, title_leaf, options)
-                if guess:
-                    found_guess(title_leaf, guess)
+                guesses = self.guess_special(title_leaf.value, title_leaf, options)
+                for guess in guesses:
+                    found_guess(title_leaf, guess, update_guess=False)
             for unidentified_leaf in mtree.unidentified_leaves():
-                guess = self.guess_special(unidentified_leaf.value, unidentified_leaf, options)
-                if guess:
-                    found_guess(unidentified_leaf, guess)
+                guesses = self.guess_special(unidentified_leaf.value, unidentified_leaf, options)
+                for guess in guesses:
+                    found_guess(unidentified_leaf, guess, update_guess=False)
         return None

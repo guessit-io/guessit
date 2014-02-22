@@ -300,6 +300,7 @@ LNG_COMMON_WORDS = frozenset([
 
 subtitle_prefixes = ['sub', 'subs', 'st', 'vost', 'subforced', 'fansub', 'hardsub']
 subtitle_suffixes = ['subforced', 'fansub', 'hardsub']
+lang_prefixes = ['true']
 
 
 def find_possible_languages(string):
@@ -321,6 +322,9 @@ def find_possible_languages(string):
             if lang_word.endswith(suffix):
                 lang_word = lang_word[:len(suffix)]
                 key = 'subtitleLanguage'
+        for prefix in lang_prefixes:
+            if lang_word.startswith(prefix):
+                lang_word = lang_word[len(prefix):]
         if not lang_word in LNG_COMMON_WORDS:
             try:
                 lang = Language(lang_word)

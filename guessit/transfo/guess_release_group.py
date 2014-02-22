@@ -124,4 +124,4 @@ class GuessReleaseGroup(Transformer):
         return None
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_release_group, None, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_release_group, None, self.log, options).process_nodes(mtree.unidentified_leaves())

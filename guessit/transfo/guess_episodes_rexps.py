@@ -65,7 +65,7 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_property(None, r'(e(?P<episodeNumber>' + digital_numeral + '))', confidence=0.6, formatter=parse_numeral)
 
         self.container.register_canonical_properties('other', 'FiNAL', 'Complete', validator=WeakValidator())
-        self.container.register_property('other', 'Extras?', canonical_form='Extra')
+        self.container.register_property('other', 'Extras?', canonical_form='Extra', validator=WeakValidator())
 
     def supported_properties(self):
         return ['episodeNumber', 'season']
@@ -78,4 +78,4 @@ class GuessEpisodesRexps(Transformer):
         return mtree.guess.get('type', '').startswith('episode')
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_episodes_rexps, None, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_episodes_rexps, None, self.log, options).process_nodes(mtree.unidentified_leaves())

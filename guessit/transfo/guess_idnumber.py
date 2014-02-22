@@ -66,4 +66,4 @@ class GuessIdnumber(Transformer):
         return None, None
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_idnumber, 0.4, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_idnumber, 0.4, self.log, options).process_nodes(mtree.unidentified_leaves())

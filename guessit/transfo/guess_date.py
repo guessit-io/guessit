@@ -40,4 +40,4 @@ class GuessDate(Transformer):
             return None, None
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_date, 1.0, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_date, 1.0, self.log, options).process_nodes(mtree.unidentified_leaves())

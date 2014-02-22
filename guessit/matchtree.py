@@ -20,7 +20,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import guessit  # needed for doctests
+import guessit  # @UnusedImport needed for doctests
 from guessit import UnicodeMixin, base_text_type
 from guessit.textutils import clean_string, str_fill
 from guessit.patterns import group_delimiters
@@ -131,6 +131,7 @@ class BaseMatchTree(UnicodeMixin):
         """Add a new child node to this node with the given span."""
         child = MatchTree(self.string, span=span, parent=self)
         self.children.append(child)
+        return child
 
     def get_partition_spans(self, indices):
         """Return the list of absolute spans for the regions of the original
@@ -410,7 +411,7 @@ class MatchTree(BaseMatchTree):
             # 2- merge the rest, potentially discarding information not properly
             #    merged before
             result = merge_all(parts,
-                               append=['language', 'subtitleLanguage', 'other'])
+                               append=['language', 'subtitleLanguage', 'other', 'special'])
 
             log.debug('Final result: ' + result.nice_string())
             self._matched_result = result

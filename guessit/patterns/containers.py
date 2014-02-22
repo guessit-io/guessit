@@ -281,18 +281,22 @@ class PropertiesContainer(object):
         """Unregister all defined properties"""
         self._properties.clear()
 
-    def find_properties(self, string, node, name=None):
-        """Find all distinct properties for given string, sorted from longer match to shorter match.
+    def find_properties(self, string, node, name=None, validate=True, sort=True, multiple=False):
+        """Find all distinct properties for given string
 
         If no capturing group is defined in the property, value will be grabbed from the entire match.
 
-        If one ore more capturing group is defined in the property, first capturing group will be used.
+        If one ore more unnamed capturing group is defined in the property, first capturing group will be used.
 
-        A found property must be surrounded by separators or another found property to be returned.
+        If named capturing group are defined in the property, they will be returned as property key.
 
-        If multiple values are found for the same property, the more confident one will be returned.
+        If validate, found properties will be validated by their defined validator
 
-        If multiple values are found for the same property and the same confidence, the longer will be returned.
+        if sort is True, found properties will be sorted from longer match to shorter match.
+
+        If multiple is False and multiple values are found for the same property, the more confident one will be returned.
+
+        If multiple is False and multiple values are found for the same property and the same confidence, the longer will be returned.
 
         :param string: input string
         :type string: string
@@ -303,6 +307,9 @@ class PropertiesContainer(object):
         :param name: name of property to find
         :type name: string
 
+        :param multiple: Allows multiple property values to be returned
+        :type multiple: bool
+
         :return: found properties
         :rtype: list of tuples (:class:`_Property`, match, list of tuples (property_name, tuple(value_start, value_end)))
 
@@ -310,8 +317,6 @@ class PropertiesContainer(object):
         :see: `register_property`
         :see: `register_canonical_properties`
         """
-        result = {}
-
         entry_start = {}
         entry_end = {}
 
@@ -329,84 +334,92 @@ class PropertiesContainer(object):
                 entry = prop, match
                 entries.append(entry)
 
-        # compute entries start and ends
-        for prop, match in entries:
-            start, end = _get_span(prop, match)
+        if validate:
+            # compute entries start and ends
+            for prop, match in entries:
+                start, end = _get_span(prop, match)
 
-            if start not in entry_start:
-                entry_start[start] = [prop]
-            else:
-                entry_start[start].append(prop)
-
-            if end not in entry_end:
-                entry_end[end] = [prop]
-            else:
-                entry_end[end].append(prop)
-
-        # remove invalid values
-        while True:
-            invalid_entries = []
-            for entry in entries:
-                prop, match = entry
-                if not prop.validator.validate(prop, string, node, match, entry_start, entry_end):
-                    invalid_entries.append(entry)
-            if not invalid_entries:
-                break
-            for entry in invalid_entries:
-                prop, match = entry
-                entries.remove(entry)
-                invalid_span = _get_span(prop, match)
-                start = invalid_span[0]
-                end = invalid_span[1]
-                entry_start[start].remove(prop)
-                if not entry_start.get(start):
-                    del entry_start[start]
-                entry_end[end].remove(prop)
-                if not entry_end.get(end):
-                    del entry_end[end]
-
-        # keep only best match if multiple values where found
-        entries_dict = {}
-        for entry in entries:
-            for key in prop.keys:
-                if not key in entries_dict:
-                    entries_dict[key] = []
-                entries_dict[key].append(entry)
-
-        if entries_dict:
-            for entries in entries_dict.values():
-                best_prop, best_match = None, None
-                if len(entries) == 1:
-                    best_prop, best_match = entries[0]
+                if start not in entry_start:
+                    entry_start[start] = [prop]
                 else:
-                    for prop, match in entries:
-                        start, end = _get_span(prop, match)
-                        if not best_prop or \
-                        best_prop.confidence < best_prop.confidence or \
-                        best_prop.confidence == best_prop.confidence and \
-                        best_match.span()[1] - best_match.span()[0] < match.span()[1] - match.span()[0]:
-                            best_prop, best_match = prop, match
+                    entry_start[start].append(prop)
 
-                result[best_prop] = best_match
+                if end not in entry_end:
+                    entry_end[end] = [prop]
+                else:
+                    entry_end[end].append(prop)
 
-        for prop, match in result.items():
-            ret.append((prop, match))
+            # remove invalid values
+            while True:
+                invalid_entries = []
+                for entry in entries:
+                    prop, match = entry
+                    if not prop.validator.validate(prop, string, node, match, entry_start, entry_end):
+                        invalid_entries.append(entry)
+                if not invalid_entries:
+                    break
+                for entry in invalid_entries:
+                    prop, match = entry
+                    entries.remove(entry)
+                    invalid_span = _get_span(prop, match)
+                    start = invalid_span[0]
+                    end = invalid_span[1]
+                    entry_start[start].remove(prop)
+                    if not entry_start.get(start):
+                        del entry_start[start]
+                    entry_end[end].remove(prop)
+                    if not entry_end.get(end):
+                        del entry_end[end]
 
-        def _sorting(x):
-            _, x_match = x
-            x_start, x_end = x_match.span()
-            return (x_start - x_end)
+        if multiple:
+            ret = entries
+        else:
+            # keep only best match if multiple values where found
+            entries_dict = {}
+            for entry in entries:
+                for key in prop.keys:
+                    if not key in entries_dict:
+                        entries_dict[key] = []
+                    entries_dict[key].append(entry)
 
-        ret.sort(key=_sorting)
+            for entries in entries_dict.values():
+                if multiple:
+                    for entry in entries:
+                        ret.append(entry)
+                else:
+                    best_ret = {}
 
-        ret2 = []
-        for prop, match in ret:
-            ret2.append((prop, match))
-        return ret2
+                    best_prop, best_match = None, None
+                    if len(entries) == 1:
+                        best_prop, best_match = entries[0]
+                    else:
+                        for prop, match in entries:
+                            start, end = _get_span(prop, match)
+                            if not best_prop or \
+                            best_prop.confidence < best_prop.confidence or \
+                            best_prop.confidence == best_prop.confidence and \
+                            best_match.span()[1] - best_match.span()[0] < match.span()[1] - match.span()[0]:
+                                best_prop, best_match = prop, match
 
-    def as_guess(self, found_properties, input=None, filter=None, sep_replacement=None, *args, **kwargs):
+                    best_ret[best_prop] = best_match
+
+                    for prop, match in best_ret.items():
+                        ret.append((prop, match))
+
+        if sort:
+            def _sorting(x):
+                _, x_match = x
+                x_start, x_end = x_match.span()
+                return (x_start - x_end)
+
+            ret.sort(key=_sorting)
+
+        return ret
+
+    def as_guess(self, found_properties, input=None, filter=None, sep_replacement=None, multiple=False, *args, **kwargs):
         if filter is None:
             filter = lambda property, *args, **kwargs: True
+        guesses = [] if multiple else None
         for property in found_properties:
             prop, match = property
             first_key = None
@@ -425,18 +438,23 @@ class PropertiesContainer(object):
                 if name:
                     value = self._effective_prop_value(prop, group_name, input, match.span(group_name) if group_name else match.span(), sep_replacement)
                     if not value is None:
-                        if isinstance(value, dict):
-                            for k, v in value.items():
-                                if k is None:
-                                    k = name
-                                guess[k] = v
-                        else:
-                            guess[name] = value
-                        if group_name:
-                            guess.metadata(prop).span = match.span(group_name)
+                        is_string = isinstance(value, base_text_type)
+                        if not is_string or is_string and value:  # Keep non empty strings and other defined objects
+                            if isinstance(value, dict):
+                                for k, v in value.items():
+                                    if k is None:
+                                        k = name
+                                    guess[k] = v
+                            else:
+                                guess[name] = value
+                            if group_name:
+                                guess.metadata(prop).span = match.span(group_name)
             if filter(guess):
-                return guess
-        return None
+                if multiple:
+                    guesses.append(guess)
+                else:
+                    return guess
+        return guesses
 
     def _effective_prop_value(self, prop, group_name, input=None, span=None, sep_replacement=None):
         if prop.canonical_form:

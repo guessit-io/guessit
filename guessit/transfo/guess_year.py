@@ -46,4 +46,4 @@ class GuessYear(Transformer):
         return None
 
     def process(self, mtree, options=None):
-        GuessFinder(self.guess_year, 1.0, self.log, options).process_unidentified_leaves(mtree)
+        GuessFinder(self.guess_year, 1.0, self.log, options).process_nodes(mtree.unidentified_leaves())
