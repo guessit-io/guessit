@@ -221,7 +221,7 @@ class BaseMatchTree(UnicodeMixin):
     def _other_group_node(self, offset):
         if len(self.node_idx) > 1:
             group_idx = self.node_idx[:2]
-            if group_idx[1] + offset > 0:
+            if group_idx[1] + offset >= 0:
                 other_group_idx = (group_idx[0], group_idx[1] + offset)
                 try:
                     other_group_node = self.root.node_at(other_group_idx)
