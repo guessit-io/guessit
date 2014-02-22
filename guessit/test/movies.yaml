@@ -332,13 +332,14 @@
   videoApi: DXVA
   screenSize: 720p
   audioCodec: AC3
+  releaseGroup: de[42]
 
 ? Movies/Cosmopolis.2012.LiMiTED.720p.BluRay.x264-AN0NYM0US[bb]/ano-cosmo.720p.mkv
 : title: Cosmopolis
   year: 2012
   screenSize: 720p
   videoCodec: h264
-  releaseGroup: AN0NYM0US
+  releaseGroup: AN0NYM0US[bb]
   format: BluRay
   other: LIMITED
 

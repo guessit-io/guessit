@@ -21,10 +21,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.plugins.transformers import Transformer
-from guessit.matcher import GuessFinder
+from guessit.matcher import GuessFinder, found_property, found_guess
 from guessit.containers import PropertiesContainer
 from guessit.patterns import sep
 from guessit.guess import Guess
+from guessit.textutils import strip_brackets
 
 
 class GuessReleaseGroup(Transformer):
@@ -56,10 +57,10 @@ class GuessReleaseGroup(Transformer):
             return False
 
     def validate_group_name(self, guess):
-        if guess.metadata().span[1] - guess.metadata().span[0] >= 2:
-            val = guess['releaseGroup']
+        val = guess['releaseGroup']
+        if len(val) >= 2:
 
-            if '-' in guess['releaseGroup']:
+            if '-' in val:
                 checked_val = ""
                 for elt in val.split('-'):
                     forbidden = False
@@ -98,30 +99,51 @@ class GuessReleaseGroup(Transformer):
     def guess_release_group(self, string, node=None, options=None):
         found = self.container.find_properties(string, node, 'releaseGroup')
         guess = self.container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
+        validated_guess = None
         if guess:
-            explicit_group_idx = node.node_idx[:2]
-            explicit_group = node.root.node_at(explicit_group_idx)
-            for leaf in explicit_group.leaves_containing(self.previous_safe_properties):
-                if self.is_leaf_previous(leaf, node):
-                    if leaf.root.value[leaf.span[1]] == '-':
-                        guess.metadata().confidence = 1
-                    else:
-                        guess.metadata().confidence = 0.7
-                    return guess
-
-            # If previous group last leaf is identified as a safe property,
-            # consider the raw value as a groupname
-            if len(explicit_group_idx) > 0 and explicit_group_idx[-1] > 0:
-                previous_group = explicit_group_idx[:-1] + (explicit_group_idx[-1] - 1,)
-                previous_node = node.root.node_at(previous_group)
-                for leaf in previous_node.leaves_containing(self.previous_safe_properties):
+            explicit_group_node = node.group_node()
+            if explicit_group_node:
+                for leaf in explicit_group_node.leaves_containing(self.previous_safe_properties):
                     if self.is_leaf_previous(leaf, node):
-                        guess = Guess({'releaseGroup': node.clean_value}, confidence=1, input=node.value, span=node.span)
-                        if self.validate_group_name(guess):
-                            node.guess = guess
-                            break
+                        if leaf.root.value[leaf.span[1]] == '-':
+                            guess.metadata().confidence = 1
+                        else:
+                            guess.metadata().confidence = 0.7
+                        validated_guess = guess
 
-        return None
+            if not validated_guess:
+                # If previous group last leaf is identified as a safe property,
+                # consider the raw value as a releaseGroup
+                previous_group_node = node.previous_group_node()
+                if previous_group_node:
+                    for leaf in previous_group_node.leaves_containing(self.previous_safe_properties):
+                        if self.is_leaf_previous(leaf, node):
+                            guess = Guess({'releaseGroup': node.value}, confidence=1, input=node.value, span=(0, len(node.value)))
+                            if self.validate_group_name(guess):
+                                node.guess = guess
+                                validated_guess = guess
+
+            if validated_guess:
+                # If following group nodes have only one unidentified leaf, it belongs to the release group
+                next_group_node = node
+
+                while True:
+                    next_group_node = next_group_node.next_group_node()
+                    if next_group_node:
+                        leaves = next_group_node.leaves()
+                        if len(leaves) == 1 and not leaves[0].guess:
+                            validated_guess['releaseGroup'] = validated_guess['releaseGroup'] + leaves[0].value
+                            leaves[0].guess = validated_guess
+                        else:
+                            break
+                    else:
+                        break
+
+        if validated_guess:
+            # Strip brackets
+            validated_guess['releaseGroup'] = strip_brackets(validated_guess['releaseGroup'])
+
+        return validated_guess
 
     def process(self, mtree, options=None):
         GuessFinder(self.guess_release_group, None, self.log, options).process_nodes(mtree.unidentified_leaves())
