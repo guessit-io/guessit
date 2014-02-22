@@ -189,7 +189,7 @@ class BaseMatchTree(UnicodeMixin):
 
         try:
             return self.children[idx[0]].node_at(idx[1:])
-        except:
+        except IndexError:
             raise ValueError('Non-existent node index: %s' % (idx,))
 
     def nodes(self):
@@ -208,6 +208,27 @@ class BaseMatchTree(UnicodeMixin):
                 # pylint: disable=W0212
                 for leaf in child._leaves():
                     yield leaf
+
+    def group_node(self):
+        return self._other_group_node(0)
+
+    def previous_group_node(self):
+        return self._other_group_node(-1)
+
+    def next_group_node(self):
+        return self._other_group_node(+1)
+
+    def _other_group_node(self, offset):
+        if len(self.node_idx) > 1:
+            group_idx = self.node_idx[:2]
+            if group_idx[1] + offset > 0:
+                other_group_idx = (group_idx[0], group_idx[1] + offset)
+                try:
+                    other_group_node = self.root.node_at(other_group_idx)
+                    return other_group_node
+                except ValueError:
+                    pass
+        return None
 
     def leaves(self):
         """Return a list of all the nodes that are leaves."""
