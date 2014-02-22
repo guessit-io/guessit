@@ -108,7 +108,7 @@ def display_properties(values, transformers):
             property_values = all_properties.get(property_name)
             print('  [+] %s' % (property_name,))
             if property_values and values:
-                _display_property_values(property_name)
+                _display_property_values(property_name, indent=4)
 
 
 def _display_property_values(property_name, indent=2):
