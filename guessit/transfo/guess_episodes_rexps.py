@@ -20,7 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins.transformers import Transformer, SingleNodeGuesser
+from guessit.plugins.transformers import Transformer
+from guessit.matcher import GuessFinder
 from guessit.patterns import sep
 from guessit.patterns.containers import PropertiesContainer, WeakValidator
 from guessit.patterns.numeral import numeral, digital_numeral, parse_numeral
@@ -77,4 +78,4 @@ class GuessEpisodesRexps(Transformer):
         return mtree.guess.get('type', '').startswith('episode')
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_episodes_rexps, None, self.log, options).process(mtree)
+        GuessFinder(self.guess_episodes_rexps, None, self.log, options).process_unidentified_leaves(mtree)

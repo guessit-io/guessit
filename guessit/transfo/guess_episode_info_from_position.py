@@ -20,8 +20,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins.transformers import Transformer, found_property
+from guessit.plugins.transformers import Transformer
 from guessit.textutils import reorder_title
+
+from guessit.matcher import found_property
 
 
 class GuessEpisodeInfoFromPosition(Transformer):

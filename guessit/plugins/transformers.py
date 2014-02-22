@@ -24,10 +24,7 @@ from stevedore import ExtensionManager
 from pkg_resources import EntryPoint
 
 from stevedore.extension import Extension
-from guessit.guess import Guess
 from logging import getLogger
-from guessit.transfo import TransformerException
-import inspect
 
 log = getLogger(__name__)
 
@@ -58,107 +55,6 @@ class Transformer(object):  # pragma: no cover
 
     def rate_quality(self, guess, *props):
         return 0
-
-
-def found_property(node, name, value=None, confidence=1.0):
-    # automatically retrieve the log object from the caller frame
-    caller_frame = inspect.stack()[1][0]
-    logger = caller_frame.f_locals['self'].log
-    guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
-    return found_guess(node, guess, logger)
-
-
-def found_guess(node, guess, logger=None):
-    if node.guess:
-        node.guess.update(guess)
-    else:
-        node.guess = guess
-    log_found_guess(guess, logger)
-    return node.guess
-
-
-def log_found_guess(guess, logger=None):
-    for k, v in guess.items():
-        (logger or log).debug('Property found: %s=%s (confidence=%.2f)' % (k, v, guess.confidence(k)))
-
-
-def find_and_split_node(node, strategy, skip_nodes, logger, partial_span=None):
-    value = None
-    if partial_span:
-        value = node.value[partial_span[0]:partial_span[1]]
-    else:
-        value = node.value
-    string = ' %s ' % value  # add sentinels
-    for matcher, confidence, options in strategy:
-        matcher_result = matcher(string, node, options)
-
-        if matcher_result:
-            if not isinstance(matcher_result, Guess):
-                result, span = matcher_result
-            else:
-                result, span = matcher_result, matcher_result.metadata().span
-
-            if result:
-                # readjust span to compensate for sentinels
-                span = (span[0] - 1, span[1] - 1)
-
-                # readjust span to compensate for partial_span
-                if partial_span:
-                    span = (span[0] + partial_span[0], span[1] + partial_span[0])
-
-                partition_spans = None
-                if skip_nodes:
-                    for skip_node in skip_nodes:
-                        if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
-                            skip_node.span == span:
-                            partition_spans = node.get_partition_spans(skip_node.span)
-                            partition_spans.remove(skip_node.span)
-                            break
-
-                if not partition_spans:
-                    # restore sentinels compensation
-
-                    guess = None
-                    if isinstance(result, Guess):
-                        if confidence is None:
-                            confidence = result.confidence()
-                        guess = result
-                    else:
-                        guess = Guess(result, confidence=confidence, input=string, span=span)
-
-                    node.partition(span)
-                    absolute_span = (span[0] + node.offset, span[1] + node.offset)
-                    for child in node.children:
-                        if child.span == absolute_span:
-                            found_guess(child, guess, logger or log)
-                            break
-                    for child in node.children:
-                        if not child.guess:
-                            find_and_split_node(child, strategy, skip_nodes, logger)
-                else:
-                    for partition_span in partition_spans:
-                        find_and_split_node(node, strategy, skip_nodes, logger, partition_span)
-
-
-class SingleNodeGuesser(object):
-    def __init__(self, guess_func, confidence, logger, options=None):
-        self.guess_func = guess_func
-        self.confidence = confidence
-        self.logger = logger
-        self.options = options if not options is None else {}
-
-    def process(self, mtree):
-        # strategy is a list of pairs (guesser, confidence)
-        # - if the guesser returns a guessit.Guess and confidence is specified,
-        #   it will override it, otherwise it will leave the guess confidence
-        # - if the guesser returns a simple dict as a guess and confidence is
-        #   specified, it will use it, or 1.0 otherwise
-        strategy = [(self.guess_func, self.confidence, self.options)]
-
-        skip_nodes = self.options.get('skip_nodes')
-
-        for node in mtree.unidentified_leaves():
-            find_and_split_node(node, strategy, skip_nodes, self.logger)
 
 
 class CustomTransformerExtensionManager(ExtensionManager):

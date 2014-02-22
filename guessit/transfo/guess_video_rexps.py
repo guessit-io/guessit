@@ -23,7 +23,8 @@ from __future__ import absolute_import, division, print_function, \
 
 from guessit.patterns import _psep
 from guessit.patterns.containers import PropertiesContainer
-from guessit.plugins.transformers import Transformer, SingleNodeGuesser
+from guessit.plugins.transformers import Transformer
+from guessit.matcher import GuessFinder
 from guessit.patterns.numeral import parse_numeral
 
 
@@ -54,4 +55,4 @@ class GuessVideoRexps(Transformer):
         return self.container.as_guess(found, string)
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_video_rexps, None, self.log, options).process(mtree)
+        GuessFinder(self.guess_video_rexps, None, self.log, options).process_unidentified_leaves(mtree)

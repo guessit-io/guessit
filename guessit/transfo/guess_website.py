@@ -23,7 +23,8 @@ from __future__ import absolute_import, division, print_function, \
 
 from guessit.patterns import build_or_pattern
 from guessit.patterns.containers import PropertiesContainer
-from guessit.plugins.transformers import Transformer, SingleNodeGuesser
+from guessit.plugins.transformers import Transformer
+from guessit.matcher import GuessFinder
 from pkg_resources import resource_stream  # @UnresolvedImport
 
 
@@ -62,4 +63,4 @@ class GuessWebsite(Transformer):
         return self.container.as_guess(found, string)
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_website, 1.0, self.log, options).process(mtree)
+        GuessFinder(self.guess_website, 1.0, self.log, options).process_unidentified_leaves(mtree)

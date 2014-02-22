@@ -20,7 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins.transformers import Transformer, SingleNodeGuesser
+from guessit.plugins.transformers import Transformer
+from guessit.matcher import GuessFinder
 from guessit.patterns.containers import PropertiesContainer
 from guessit.patterns import sep
 from guessit.guess import Guess
@@ -123,4 +124,4 @@ class GuessReleaseGroup(Transformer):
         return None
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_release_group, None, self.log, options).process(mtree)
+        GuessFinder(self.guess_release_group, None, self.log, options).process_unidentified_leaves(mtree)

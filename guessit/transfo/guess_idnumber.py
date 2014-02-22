@@ -20,7 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins.transformers import Transformer, SingleNodeGuesser
+from guessit.plugins.transformers import Transformer
+from guessit.matcher import GuessFinder
 import re
 
 
@@ -65,4 +66,4 @@ class GuessIdnumber(Transformer):
         return None, None
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_idnumber, 0.4, self.log, options).process(mtree)
+        GuessFinder(self.guess_idnumber, 0.4, self.log, options).process_unidentified_leaves(mtree)

@@ -20,7 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.plugins.transformers import Transformer, SingleNodeGuesser
+from guessit.plugins.transformers import Transformer
+from guessit.matcher import GuessFinder
 from guessit.date import search_date
 
 
@@ -39,4 +40,4 @@ class GuessDate(Transformer):
             return None, None
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_date, 1.0, self.log, options).process(mtree)
+        GuessFinder(self.guess_date, 1.0, self.log, options).process_unidentified_leaves(mtree)

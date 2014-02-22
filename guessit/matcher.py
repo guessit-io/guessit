@@ -28,6 +28,8 @@ from guessit import PY3, u
 from guessit.transfo import TransformerException
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_string
+from guessit.guess import Guess
+import inspect
 
 log = logging.getLogger(__name__)
 
@@ -140,3 +142,93 @@ class IterativeMatcher(object):
 
     def matched(self):
         return self.match_tree.matched()
+
+
+def found_property(node, name, value=None, confidence=1.0):
+    # automatically retrieve the log object from the caller frame
+    caller_frame = inspect.stack()[1][0]
+    logger = caller_frame.f_locals['self'].log
+    guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
+    return found_guess(node, guess, logger)
+
+
+def found_guess(node, guess, logger=None):
+    if node.guess:
+        node.guess.update(guess)
+    else:
+        node.guess = guess
+    log_found_guess(guess, logger)
+    return node.guess
+
+
+def log_found_guess(guess, logger=None):
+    for k, v in guess.items():
+        (logger or log).debug('Property found: %s=%s (confidence=%.2f)' % (k, v, guess.confidence(k)))
+
+
+class GuessFinder(object):
+    def __init__(self, guess_func, confidence=None, logger=None, options=None):
+        self.guess_func = guess_func
+        self.confidence = confidence
+        self.logger = logger or log
+        self.options = options if not options is None else {}
+
+    def process_unidentified_leaves(self, mtree):
+        for node in mtree.unidentified_leaves():
+            self.process_node(node)
+
+    def process_node(self, node, recursive=True, partial_span=None):
+        value = None
+        if partial_span:
+            value = node.value[partial_span[0]:partial_span[1]]
+        else:
+            value = node.value
+        string = ' %s ' % value  # add sentinels
+        matcher_result = self.guess_func(string, node, self.options)
+
+        if matcher_result:
+            if not isinstance(matcher_result, Guess):
+                result, span = matcher_result
+            else:
+                result, span = matcher_result, matcher_result.metadata().span
+
+            if result:
+                # readjust span to compensate for sentinels
+                span = (span[0] - 1, span[1] - 1)
+
+                # readjust span to compensate for partial_span
+                if partial_span:
+                    span = (span[0] + partial_span[0], span[1] + partial_span[0])
+
+                partition_spans = None
+                if self.options and 'skip_nodes' in self.options:
+                    skip_nodes = self.options.get('skip_nodes')
+                    for skip_node in skip_nodes:
+                        if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
+                            skip_node.span == span:
+                            partition_spans = node.get_partition_spans(skip_node.span)
+                            partition_spans.remove(skip_node.span)
+                            break
+
+                if not partition_spans:
+                    # restore sentinels compensation
+
+                    guess = None
+                    if isinstance(result, Guess):
+                        guess = result
+                    else:
+                        guess = Guess(result, confidence=self.confidence, input=string, span=span)
+
+                    node.partition(span)
+                    absolute_span = (span[0] + node.offset, span[1] + node.offset)
+                    for child in node.children:
+                        if child.span == absolute_span:
+                            found_guess(child, guess, self.logger)
+                            break
+                    if recursive:
+                        for child in node.children:
+                            if not child.guess:
+                                self.process_node(child)
+                else:
+                    for partition_span in partition_spans:
+                        self.process_node(node, partial_span=partition_span)

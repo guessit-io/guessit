@@ -23,7 +23,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.language import search_language, subtitle_prefixes, subtitle_suffixes
 from guessit.patterns.extension import subtitle_exts
 from guessit.textutils import clean_string, find_words
-from guessit.plugins.transformers import Transformer, SingleNodeGuesser
+from guessit.plugins.transformers import Transformer
+from guessit.matcher import GuessFinder
 
 
 class GuessLanguage(Transformer):
@@ -119,7 +120,7 @@ class GuessLanguage(Transformer):
         return 'nolanguage' not in options
 
     def process(self, mtree, options=None):
-        SingleNodeGuesser(self.guess_language, None, self.log, options).process(mtree)
+        GuessFinder(self.guess_language, None, self.log, options).process_unidentified_leaves(mtree)
         # Note: 'language' is promoted to 'subtitleLanguage' in the post_process transfo
 
     def promote_subtitle(self, node):
