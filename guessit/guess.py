@@ -214,10 +214,6 @@ class Guess(UnicodeMixin, dict):
         self[prop_name] = value
         self._metadata[prop_name] = GuessMetadata(parent=self._global_metadata, *args, **kwargs)
 
-    def __setitem__(self, key, value):
-        super(Guess, self).__setitem__(key, value)
-        self._metadata[key] = GuessMetadata(parent=self._global_metadata)
-
     def update(self, other, confidence=None):
         dict.update(self, other)
         if isinstance(other, Guess):
