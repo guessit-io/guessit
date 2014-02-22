@@ -30,7 +30,7 @@ class GuessEpisodeSpecial(Transformer):
         Transformer.__init__(self, -205)
         self.container = PropertiesContainer()
         self.container.register_property('special', 'Special', 'Bonus', 'Omake', 'Ova', 'Oav', 'Pilot', 'Unaired')
-        self.container.register_property('special', 'Extras?', canonical_form='Extra')
+        self.container.register_property('special', 'Extras?', canonical_form='Extras')
 
     def guess_special(self, string, node=None, options=None):
         properties = self.container.find_properties(string, node, 'special', multiple=True)
@@ -45,6 +45,9 @@ class GuessEpisodeSpecial(Transformer):
                 if guess:
                     return {'type': 'episode'}
         return None
+
+    def supported_properties(self):
+        return self.container.get_supported_properties()
 
     def process(self, mtree, options=None):
         if mtree.guess.get('type', '').startswith('episode') and (not mtree.info.get('episodeNumber') or mtree.info.get('season') == 0):
