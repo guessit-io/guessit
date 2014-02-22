@@ -30,6 +30,7 @@ class GuessEpisodeSpecial(Transformer):
         Transformer.__init__(self, -205)
         self.container = PropertiesContainer()
         self.container.register_property('special', 'Special', 'Bonus', 'Omake', 'Ova', 'Oav', 'Pilot', 'Unaired')
+        self.container.register_property('special', 'Extras?', canonical_form='Extra')
 
     def guess_special(self, string, node=None, options=None):
         properties = self.container.find_properties(string, node, 'special', multiple=True)

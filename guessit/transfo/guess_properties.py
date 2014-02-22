@@ -210,8 +210,6 @@ class GuessProperties(Transformer):
         self.container.register_canonical_properties('other', 'R5', 'Screener', '3D', 'HD', 'HQ', 'DDC')
         self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', validator=WeakValidator())
 
-        self.container.register_property('other', 'Extras?', canonical_form='Extra')
-
         for prop in self.container.get_properties('format'):
             self.container.register_property('other', prop.pattern + '(-?Scr(?:eener)?)', canonical_form='Screener')
 

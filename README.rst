@@ -51,7 +51,8 @@ At the moment, the filename matcher is able to recognize the following
 property types::
 
     [ title,                             # for movies and episodes
-      series, season, episodeNumber,     # for episodes only
+      series, season,                    # for episodes only
+      episodeNumber, special,            # for episodes only
       date, year,                        # 'date' instance of datetime.date
       language, subtitleLanguage,        # instances of guessit.Language
       country,                           # instances of guessit.Country

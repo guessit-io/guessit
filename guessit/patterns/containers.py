@@ -63,6 +63,11 @@ def _get_groups(compiled_re):
         return [None]
 
 
+class NoValidator(object):
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        return True
+
+
 class DefaultValidator(object):
     """Make sure our match is surrounded by separators, or by another entry"""
     def validate(self, prop, string, node, match, entry_start, entry_end):
