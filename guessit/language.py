@@ -385,7 +385,7 @@ def search_language(string, lang_filter=None):
     return None
 
 
-def guess_language(text):
+def guess_language(text):  # pragma: no cover
     """Guess the language in which a body of text is written.
 
     This uses the external guess-language python module, and will fail and return
