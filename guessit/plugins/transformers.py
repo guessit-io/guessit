@@ -78,8 +78,6 @@ class CustomTransformerExtensionManager(ExtensionManager):
            - properties before language (eg: he-aac vs hebrew)
            - release_group before properties (eg: XviD-?? vs xvid)
         """
-        if extensions is None:
-            extensions = self.extensions
         extensions.sort(key=lambda ext: -ext.obj.priority)
         return extensions
 

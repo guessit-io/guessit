@@ -25,6 +25,8 @@ from guessit.fileutils import split_path
 from guessit.textutils import strip_brackets, str_replace, str_fill, from_camel, is_camel,\
     levenshtein, reorder_title
 from guessit import PY2
+from guessit.date import search_date, search_year
+from datetime import datetime, date, timedelta
 
 
 class TestUtils(TestGuessit):
@@ -106,6 +108,45 @@ class TestUtils(TestGuessit):
         self.assertFalse(is_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv"))
 
         self.assertEqual("A2LiNE", from_camel("A2LiNE"))
+
+    def test_date(self):
+        self.assertEqual(search_year(' in the year 2000... '), (2000, (13, 17)))
+        self.assertEqual(search_year(' they arrived in 1492. '), (None, None))
+
+        today = date.today()
+        today_year_2 = int(str(today.year)[2:])
+
+        future = today + timedelta(days=1000)
+        future_year_2 = int(str(future.year)[2:])
+
+        past = today - timedelta(days=10000)
+        past_year_2 = int(str(past.year)[2:])
+
+        self.assertEqual(search_date(' Something before 2002-04-22 '), (date(2002, 4, 22), (18, 28)))
+        self.assertEqual(search_date(' 2002-04-22 Something after '), (date(2002, 4, 22), (1, 11)))
+
+        self.assertEqual(search_date(' This happened on 2002-04-22. '), (date(2002, 4, 22), (18, 28)))
+        self.assertEqual(search_date(' This happened on 22-04-2002. '), (date(2002, 4, 22), (18, 28)))
+
+        self.assertEqual(search_date(' This happened on 13-04-%s. ' % (today_year_2,)), (date(today.year, 4, 13), (18, 26)))
+        self.assertEqual(search_date(' This happened on 22-04-%s. ' % (future_year_2,)), (date(future.year, 4, 22), (18, 26)))
+        self.assertEqual(search_date(' This happened on 20-04-%s. ' % (past_year_2)), (date(past.year, 4, 20), (18, 26)))
+
+        self.assertEqual(search_date(' This happened on 04-13-%s. ' % (today_year_2,)), (date(today.year, 4, 13), (18, 26)))
+        self.assertEqual(search_date(' This happened on 04-22-%s. ' % (future_year_2,)), (date(future.year, 4, 22), (18, 26)))
+        self.assertEqual(search_date(' This happened on 04-20-%s. ' % (past_year_2)), (date(past.year, 4, 20), (18, 26)))
+
+        self.assertEqual(search_date(' This happened on 35-12-%s. ' % (today_year_2,)), (None, None))
+        self.assertEqual(search_date(' This happened on 37-18-%s. ' % (future_year_2,)), (None, None))
+        self.assertEqual(search_date(' This happened on 44-42-%s. ' % (past_year_2)), (None, None))
+
+        self.assertEqual(search_date(' This happened on %s. ' % (today, )), (today, (18, 28)))
+        self.assertEqual(search_date(' This happened on %s. ' % (future, )), (future, (18, 28)))
+        self.assertEqual(search_date(' This happened on %s. ' % (past, )), (past, (18, 28)))
+
+        self.assertEqual(search_date(' released date: 04-03-1901? '), (None, None))
+
+        self.assertEqual(search_date(' There\'s no date in here. '), (None, None))
 
 
 suite = allTests(TestUtils)
