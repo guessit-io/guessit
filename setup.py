@@ -44,10 +44,10 @@ entry_points = {
 
 dependency_links = ["https://github.com/Diaoul/babelfish/zipball/0.5.1.memory0#egg=babelfish-0.5.1.memory0"]
 
-version = '0.8.dev0'
+execfile('guessit/__version__.py')  # load version without importing guessit
 
 args = dict(name='guessit',
-            version=version,
+            version=__version__,
             description='GuessIt - a library for guessing information from video files.',
             long_description=README + '\n\n' + HISTORY,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -67,7 +67,7 @@ args = dict(name='guessit',
             author='Nicolas Wack',
             author_email='wackou@gmail.com',
             url='http://guessit.readthedocs.org/',
-            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % version,
+            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % __version__,
             license='LGPLv3',
             packages=find_packages(),
             include_package_data=True,

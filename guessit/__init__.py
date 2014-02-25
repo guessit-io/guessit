@@ -21,8 +21,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pkg_resources
+from .__version__ import __version__
 
-__version__ = pkg_resources.get_distribution("guessit").version
 __all__ = ['Guess', 'Language',
            'guess_file_info', 'guess_video_info',
            'guess_movie_info', 'guess_episode_info']
