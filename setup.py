@@ -44,7 +44,7 @@ entry_points = {
 
 dependency_links = ["https://github.com/Diaoul/babelfish/zipball/0.5.1.memory0#egg=babelfish-0.5.1.memory0"]
 
-execfile('guessit/__version__.py')  # load version without importing guessit
+exec(open("guessit/__version__.py").read())  # load version without importing guessit
 
 args = dict(name='guessit',
             version=__version__,
