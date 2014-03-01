@@ -8,10 +8,16 @@ History
 
 
 
-0.8 (unreleased)
-----------------
+0.7.1 (unreleased)
+------------------
 
-- Nothing changed yet.
+* New "special" property: trailer, pilot, unaired
+* New options for the guessit cmdline util: ``-y``, ``--yaml`` outputs the
+  result in yaml format and ``-n``, ``--name-only`` analyzes the input as simple
+  text (instead of filename)
+* Added properties formatters and validators
+* Removed support for python 3.2
+* A healthy amount of code cleanup/refactoring and fixes :)
 
 
 0.7 (2014-01-29)
