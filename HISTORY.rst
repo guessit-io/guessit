@@ -8,7 +8,7 @@ History
 
 
 
-0.7.1 (unreleased)
+0.7.1 (2014-03-03)
 ------------------
 
 * New property "special": values can be trailer, pilot, unaired
