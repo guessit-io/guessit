@@ -477,7 +477,7 @@
   season: 16
   episodeNumber: 29
   screenSize: 720p
-  
+
 ? One.Piece.E576.VOSTFR.720p.HDTV.x264-MARINE-FORD.mkv
 : episodeNumber: 576
   videoCodec: h264
@@ -486,7 +486,7 @@
   releaseGroup: MARINE-FORD
   subtitleLanguage: French
   screenSize: 720p
-  
+
 ? Dexter.S08E12.FINAL.MULTi.1080p.BluRay.x264-MiND.mkv
 : videoCodec: h264
   episodeNumber: 12
@@ -497,7 +497,7 @@
   language: Multiple languages
   releaseGroup: MiND
   screenSize: 1080p
-  
+
 ? One Piece - E623 VOSTFR HD [www.manga-ddl-free.com].mkv
 : website: www.manga-ddl-free.com
   episodeNumber: 623
@@ -511,7 +511,7 @@
   season: 1
   series: Falling Skies
   videoCodec: h264
-  
+
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BP.mkv
 : episodeNumber: 9
   videoCodec: h264
@@ -533,7 +533,7 @@
   season: 1
   releaseGroup: BS
   audioCodec: DolbyDigital
-  
+
 ? Battlestar.Galactica.S00.Pilot.FRENCH.DVDRip.XviD-NOTAG.avi
 : series: Battlestar Galactica
   season: 0
@@ -543,7 +543,7 @@
   format: DVD
   videoCodec: XviD
   releaseGroup: NOTAG
-  
+
 ? The Big Bang Theory S00E00 Unaired Pilot VOSTFR TVRip XviD-VioCs
 : options: -n
   series: The Big Bang Theory
@@ -555,7 +555,7 @@
   releaseGroup: VioCs
   special: [Unaired, Pilot]
   title: Unaired Pilot
-  
+
 ? The Big Bang Theory S01E00 PROPER Unaired Pilot TVRip XviD-GIGGITY
 : options: -n
   series: The Big Bang Theory

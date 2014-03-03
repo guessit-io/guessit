@@ -11,7 +11,7 @@ History
 0.7.1 (unreleased)
 ------------------
 
-* New "special" property: trailer, pilot, unaired
+* New property "special": values can be trailer, pilot, unaired
 * New options for the guessit cmdline util: ``-y``, ``--yaml`` outputs the
   result in yaml format and ``-n``, ``--name-only`` analyzes the input as simple
   text (instead of filename)
