@@ -287,3 +287,14 @@
   videoCodec: h264
   format: HDTV
   special: Special
+
+? The.Voice.UK.S03E12.HDTV.x264-C4TV
+: options: -n
+  episodeNumber: 12
+  videoCodec: h264
+  format: HDTV
+  series: The Voice (UK)
+  releaseGroup: C4TV
+  season: 3
+  country: United Kingdom
+  type: episode

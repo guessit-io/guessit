@@ -44,9 +44,9 @@ country_matrix += [['Unknown', 'un', 'unk', '', ''],
                    ['Latin America', '', 'lat', '', '']
                    ]
 
-country_to_alpha3 = dict((c[0].lower(), c[2].lower()) for c in country_matrix)
-country_to_alpha3.update(dict((c[1].lower(), c[2].lower()) for c in country_matrix))
-country_to_alpha3.update(dict((c[2].lower(), c[2].lower()) for c in country_matrix))
+country_to_alpha3 = dict((c[0].lower(), c[2].lower()) for c in country_matrix if c[0])
+country_to_alpha3.update(dict((c[1].lower(), c[2].lower()) for c in country_matrix if c[1]))
+country_to_alpha3.update(dict((c[2].lower(), c[2].lower()) for c in country_matrix if c[2]))
 
 # add here exceptions / non ISO representations
 # Note: remember to put those exceptions in lower-case, they won't work otherwise
@@ -56,8 +56,13 @@ country_to_alpha3.update({'latinoamérica': 'lat',
                           'uk': 'gbr'
                           })
 
-country_alpha3_to_en_name = dict((c[2].lower(), c[0]) for c in country_matrix)
-country_alpha3_to_alpha2 = dict((c[2].lower(), c[1].lower()) for c in country_matrix)
+country_alpha3_to_en_name = dict((c[2].lower(), c[0]) for c in country_matrix if c[2])
+country_alpha3_to_alpha2 = dict((c[2].lower(), c[1].lower()) for c in country_matrix if c[2])
+
+# add here exceptions / non ISO representations
+# Note: remember to put those exceptions in lower-case, they won't work otherwise
+country_alpha3_to_alpha2.update({'gbr': 'uk',
+                                 })
 
 
 class Country(UnicodeMixin):

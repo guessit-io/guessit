@@ -211,8 +211,18 @@ class Guess(UnicodeMixin, dict):
         return self.metadata(prop).raw
 
     def set(self, prop_name, value, *args, **kwargs):
-        self[prop_name] = value
-        self._metadata[prop_name] = GuessMetadata(parent=self._global_metadata, *args, **kwargs)
+        if value is None:
+            try:
+                del self[prop_name]
+            except KeyError:
+                pass
+            try:
+                del self._metadata[prop_name]
+            except KeyError:
+                pass
+        else:
+            self[prop_name] = value
+            self._metadata[prop_name] = GuessMetadata(parent=self._global_metadata, *args, **kwargs)
 
     def update(self, other, confidence=None):
         dict.update(self, other)
@@ -429,7 +439,7 @@ def merge_all(guesses, append=None):
         # then merge the remaining ones
         dups = set(result) & set(g)
         if dups:
-            log.warning('duplicate properties %s in merged result...' % [(result[p], g[p]) for p in dups])
+            log.debug('duplicate properties %s in merged result...' % [(result[p], g[p]) for p in dups])
 
         result.update_highest_confidence(g)
 

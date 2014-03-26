@@ -87,6 +87,10 @@ def find_words(s):
     return _words_rexp.findall(s.replace('_', ' '))
 
 
+def iter_words(s):
+    return _words_rexp.finditer(s.replace('_', ' '))
+
+
 def reorder_title(title, articles=('the',), separators=(',', ', ')):
     ltitle = title.lower()
     for article in articles:
