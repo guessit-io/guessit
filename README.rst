@@ -1,19 +1,15 @@
 GuessIt
 =======
 
-.. image:: https://pypip.in/v/guessit/badge.png
+.. image:: http://img.shields.io/pypi/v/guessit.svg
     :target: https://pypi.python.org/pypi/guessit
     :alt: Latest Version
 
-.. image:: https://pypip.in/license/guessit/badge.png
-    :target: https://pypi.python.org/pypi/guessit
-    :alt: License
-
-.. image:: https://secure.travis-ci.org/wackou/guessit.png?branch=master
+.. image:: http://img.shields.io/travis/wackou/guessit.svg
     :target: http://travis-ci.org/wackou/guessit
     :alt: Build Status
 
-.. image:: https://coveralls.io/repos/wackou/guessit/badge.png?branch=master
+.. image:: http://img.shields.io/coveralls/wackou/guessit.svg
     :target: https://coveralls.io/r/wackou/guessit?branch=master
     :alt: Coveralls
 
