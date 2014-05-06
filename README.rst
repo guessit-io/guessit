@@ -5,6 +5,10 @@ GuessIt
     :target: https://pypi.python.org/pypi/guessit
     :alt: Latest Version
 
+.. image:: http://img.shields.io/badge/license-LGPLv3-blue.svg
+    :target: https://pypi.python.org/pypi/guessit
+    :alt: License
+
 .. image:: http://img.shields.io/travis/wackou/guessit.svg
     :target: http://travis-ci.org/wackou/guessit
     :alt: Build Status
