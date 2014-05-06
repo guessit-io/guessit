@@ -77,6 +77,14 @@ div.sphinxsidebar a {
     border-bottom: 1px dotted #999;
 }
 
+div.sphinxsidebar a.nodots {
+    border-bottom: 0px;
+}
+
+div.sphinxsidebar a.nodots:hover {
+    border-bottom: 0px;
+}
+
 div.sphinxsidebar a:hover {
     border-bottom: 1px solid #999;
 }
