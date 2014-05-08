@@ -567,3 +567,23 @@
   other: proper
   special: [Unaired, Pilot]
   title: Unaired Pilot
+
+? Pawn.Stars.S2014E18.720p.HDTV.x264-KILLERS
+: options: -n
+  series: Pawn Stars
+  season: 2014
+  year: 2014
+  episodeNumber: 18
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: KILLERS
+
+? 2.Broke.Girls.S03E10.480p.HDTV.x264-mSD.mkv
+: series: 2 Broke Girls
+  season: 3
+  episodeNumber: 10
+  screenSize: 480p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: mSD
