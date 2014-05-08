@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
-from guessit.date import search_year
+from guessit.date import search_year, valid_year
 
 
 class GuessYear(Transformer):
@@ -47,3 +47,11 @@ class GuessYear(Transformer):
 
     def process(self, mtree, options=None):
         GuessFinder(self.guess_year, 1.0, self.log, options).process_nodes(mtree.unidentified_leaves())
+
+        # if we found a season number that is a valid year, it is usually safe to assume
+        # we can also set the year property to that value
+        for n in mtree.leaves_containing('season'):
+            g = n.guess
+            season = g['season']
+            if valid_year(season):
+                g['year'] = season
