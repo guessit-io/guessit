@@ -82,6 +82,6 @@ def load_file_in_same_dir(ref_file, filename):
         if p.endswith('.zip'):
             zfilename = os.path.join(*path[:i + 1])
             zfile = zipfile.ZipFile(zfilename)
-            return zfile.read('/'.join(path[i + 1:]))
+            return u(zfile.read('/'.join(path[i + 1:])))
 
     return u(io.open(os.path.join(*path), encoding='utf-8').read())
