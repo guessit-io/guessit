@@ -68,6 +68,17 @@ class NoValidator(object):
         return True
 
 
+class ChainedValidator(object):
+    def __init__(self, *validators):
+        self._validators = validators
+
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        for validator in self._validators:
+            if not validator.validate(prop, string, node, match, entry_start, entry_end):
+                return False
+        return True
+
+
 class DefaultValidator(object):
     """Make sure our match is surrounded by separators, or by another entry"""
     def validate(self, prop, string, node, match, entry_start, entry_end):

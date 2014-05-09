@@ -23,7 +23,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
 from guessit.patterns import sep
-from guessit.containers import PropertiesContainer, WeakValidator, NoValidator
+from guessit.containers import PropertiesContainer, WeakValidator, NoValidator, ChainedValidator, DefaultValidator
 from guessit.patterns.numeral import numeral, digital_numeral, parse_numeral
 from re import split as re_split
 
@@ -56,9 +56,13 @@ class GuessEpisodesRexps(Transformer):
             else:
                 return None
 
+        class ResolutionCollisionValidator(object):
+            def validate(self, prop, string, node, match, entry_start, entry_end):
+                return len(match.group(2)) < 3
+
         self.container.register_property(None, r'((?:season|saison)' + sep + '?(?P<season>' + numeral + '))', confidence=1.0, formatter=parse_numeral)
         self.container.register_property(None, r'(s(?P<season>' + digital_numeral + ')[^0-9]?' + sep + '?(?P<episodeNumber>(?:e' + digital_numeral + '(?:' + sep + '?[e-]' + digital_numeral + ')*)))[^0-9]', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser}, validator=NoValidator())
-        self.container.register_property(None, r'[^0-9]((?P<season>' + digital_numeral + ')[^0-9 .-]?-?(?P<episodeNumber>(?:x' + digital_numeral + '(?:' + sep + '?[x-]' + digital_numeral + ')*)))[^0-9]', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser})
+        self.container.register_property(None, r'[^0-9]((?P<season>' + digital_numeral + ')[^0-9 .-]?-?(?P<episodeNumber>(?:x' + digital_numeral + '(?:' + sep + '?[x-]' + digital_numeral + ')*)))[^0-9]', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
         self.container.register_property(None, r'(s(?P<season>' + digital_numeral + '))[^0-9]', confidence=0.6, formatter=parse_numeral, validator=NoValidator())
         self.container.register_property(None, r'((?P<episodeNumber>' + digital_numeral + ')v[23])', confidence=0.6, formatter=parse_numeral)
         self.container.register_property(None, r'((?:ep)' + sep + r'(?P<episodeNumber>' + numeral + '))[^0-9]', confidence=0.7, formatter=parse_numeral)
