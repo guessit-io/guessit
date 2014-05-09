@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # GuessIt - A library for guessing information from filenames
@@ -40,6 +40,7 @@ def addImportPath(path):
     importPath = abspath(join(currentPath(), path))
     sys.path = [importPath] + sys.path
 
+
 log = logging.getLogger(__name__)
 
 from guessit.plugins import transformers
@@ -55,7 +56,6 @@ def allTests(testClass):
 
 
 class TestGuessit(TestCase):
-
     def checkMinimumFieldsCorrect(self, filename, filetype=None, remove_type=True,
                                   exclude_files=None):
         groundTruth = yaml.load(load_file_in_same_dir(__file__, filename))
@@ -112,18 +112,20 @@ class TestGuessit(TestCase):
                 if prop not in found:
                     log.debug("Prop '%s' not found in: %s" % (prop, filename))
                     if not filename in fails:
-                        fails[filename] = [] 
+                        fails[filename] = []
                     fails[filename].append("'%s' not found in: %s" % (prop, filename))
                     continue
 
                 # if both properties are strings, do a case-insensitive comparison
                 if (isinstance(value, base_text_type) and
-                    isinstance(found[prop], base_text_type)):
+                        isinstance(found[prop], base_text_type)):
                     if value.lower() != found[prop].lower():
-                        log.debug("Wrong prop value [str] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        log.debug("Wrong prop value [str] for '%s': expected = '%s' - received = '%s'" % (
+                        prop, u(value), u(found[prop])))
                         if not filename in fails:
-                            fails[filename] = [] 
-                        fails[filename].append("'%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                            fails[filename] = []
+                        fails[filename].append(
+                            "'%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
 
                 # if both are lists, we assume list of strings and do a case-insensitive
                 # comparison on their elements
@@ -131,24 +133,28 @@ class TestGuessit(TestCase):
                     s1 = set(u(s).lower() for s in value)
                     s2 = set(u(s).lower() for s in found[prop])
                     if s1 != s2:
-                        log.debug("Wrong prop value [list] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        log.debug("Wrong prop value [list] for '%s': expected = '%s' - received = '%s'" % (
+                        prop, u(value), u(found[prop])))
                         if not filename in fails:
-                            fails[filename] = [] 
-                        fails[filename].append("'%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                            fails[filename] = []
+                        fails[filename].append(
+                            "'%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
                 # otherwise, just compare their values directly
                 else:
                     if found[prop] != value:
-                        log.debug("Wrong prop value for '%s': expected = '%s' [%s] - received = '%s' [%s]" % (prop, u(value), type(value), u(found[prop]), type(found[prop])))
+                        log.debug("Wrong prop value for '%s': expected = '%s' [%s] - received = '%s' [%s]" % (
+                        prop, u(value), type(value), u(found[prop]), type(found[prop])))
                         if not filename in fails:
-                            fails[filename] = [] 
-                        fails[filename].append("'%s': expected = '%s' [%s] - received = '%s' [%s]" % (prop, u(value), type(value), u(found[prop]), type(found[prop])))
+                            fails[filename] = []
+                        fails[filename].append("'%s': expected = '%s' [%s] - received = '%s' [%s]" % (
+                        prop, u(value), type(value), u(found[prop]), type(found[prop])))
 
             # look for additional properties
             for prop, value in found.items():
                 if prop not in required_fields:
                     log.debug("Found additional info for prop = '%s': '%s'" % (prop, u(value)))
                     if not filename in additionals:
-                        additionals[filename] = [] 
+                        additionals[filename] = []
                     additionals[filename].append("'%s': '%s'" % (prop, u(value)))
 
         correct = total - len(fails)

@@ -214,10 +214,14 @@ class GuessFinder(object):
                     skip_nodes = self.options.get('skip_nodes')
                     for skip_node in skip_nodes:
                         if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
-                            skip_node.span == span:
+                            skip_node.span == span or\
+                            skip_node.span == (span[0] + skip_node.offset, span[1] + skip_node.offset):
                             partition_spans = node.get_partition_spans(skip_node.span)
-                            partition_spans.remove(skip_node.span)
-                            break
+                            for to_remove_span in partition_spans:
+                                if to_remove_span[0] == skip_node.span[0] and to_remove_span[1] in [skip_node.span[1], skip_node.span[1] + 1]:
+                                    partition_spans.remove(to_remove_span)
+                                    break
+                            #break
 
                 if not partition_spans:
                     # restore sentinels compensation

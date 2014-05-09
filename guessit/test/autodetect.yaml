@@ -298,3 +298,9 @@
   season: 3
   country: United Kingdom
   type: episode
+
+? /tmp/star.trek.9/star.trek.9.mkv
+: title: star trek 9
+
+? star.trek.9.mkv
+: title: star trek 9

@@ -71,7 +71,7 @@ class GuessLanguage(Transformer):
             title_ends[title_node.span[1]] = title_node
 
         return node.span[0] in title_ends.keys() and (node.span[1] in unidentified_starts.keys() or node.span[1] + 1 in property_starts.keys()) or\
-                node.span[1] in title_starts.keys() and (node.span[0] == 0 or node.span[0] in unidentified_ends.keys() or node.span[0] in property_ends.keys())
+                node.span[1] in title_starts.keys() and (node.span[0] == node.group_node().span[0] or node.span[0] in unidentified_ends.keys() or node.span[0] in property_ends.keys())
 
     def second_pass_options(self, mtree, options=None):
         m = mtree.matched()
@@ -112,6 +112,15 @@ class GuessLanguage(Transformer):
                     to_skip_language_nodes.append(to_skip)
 
         if to_skip_language_nodes:
+            # Also skip same value nodes
+            skipped_values = [skip_node.value for skip_node in to_skip_language_nodes]
+
+            for lang_key in ('language', 'subtitleLanguage'):
+                lang_nodes = set(n for n in mtree.leaves_containing(lang_key))
+
+                for lang_node in lang_nodes:
+                    if lang_node not in to_skip_language_nodes and lang_node.value in skipped_values:
+                        to_skip_language_nodes.append(lang_node)
             return {'skip_nodes': to_skip_language_nodes}
         return None
 
