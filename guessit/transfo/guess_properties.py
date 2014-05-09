@@ -206,7 +206,7 @@ class GuessProperties(Transformer):
         self.container.register_property('other', 'Real', 'Fix', canonical_form="Proper", validator=WeakValidator())
         self.container.register_property('other', 'Proper', 'Repack', 'Rerip', canonical_form="Proper")
 
-        self.container.register_canonical_properties('other', 'R5', 'Screener', '3D', 'HD', 'HQ', 'DDC')
+        self.container.register_canonical_properties('other', 'R5', 'Screener', '3D', 'HD', 'HQ', 'DDC', 'HR')
         self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', validator=WeakValidator())
 
         for prop in self.container.get_properties('format'):

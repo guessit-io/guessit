@@ -298,8 +298,9 @@ LNG_COMMON_WORDS = frozenset([
     # movie title
     'brazil',
     # release groups
-    'bs'  # Bosnian
+    'bs',  # Bosnian
     # countries
+    'gt', 'lt'
     ])
 
 

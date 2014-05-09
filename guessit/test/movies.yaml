@@ -523,14 +523,15 @@
 ? The.Lizzie.McGuire.Movie.(2003).HR.DVDRiP.avi
 : title: The Lizzie McGuire Movie
   year: 2003
-  screenSize: 480p
   format: DVD
+  other: HR
 
 ? Hua.Mulan.BRRIP.MP4.x264.720p-HR.avi
 : title: Hua Mulan
   videoCodec: h264
   format: BluRay
   screenSize: 720p
+  other: HR
 
 ? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : videoCodec: XviD
