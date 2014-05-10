@@ -26,7 +26,7 @@
   episodeNumber: 5
   title: Down Street
   website: tvu.org.ru
-  
+
 ? Neverwhere.05.Down.Street.[tvu.org.ru].avi
 : type: episode
   series: Neverwhere
@@ -227,20 +227,20 @@
 : type: movie
   year: 2014
   title: A Common Title Special
-  
+
 ? A.Common.Title.2014.Special.avi
 : type: episode
   year: 2014
   series: A Common Title
   title: Special
   special: Special
-  
+
 ? A.Common.Title.2014.Special.Edition.avi
 : type: movie
   year: 2014
   title: A Common Title
   edition: Special Edition
-  
+
 ? Downton.Abbey.2013.Christmas.Special.HDTV.x264-FoV.mp4
 : type: episode
   year: 2013
@@ -250,7 +250,7 @@
   releaseGroup: FoV
   format: HDTV
   special: Special
-  
+
 ? Doctor_Who_2013_Christmas_Special.The_Time_of_The_Doctor.HD
 : options: -n
   type: episode
@@ -259,7 +259,7 @@
   special: Special
   title: Christmas Special The Time of The Doctor
   year: 2013
-  
+
 ? Doctor Who 2005 50th Anniversary Special The Day of the Doctor 3.avi
 : type: episode
   series: Doctor Who
@@ -300,7 +300,9 @@
   type: episode
 
 ? /tmp/star.trek.9/star.trek.9.mkv
-: title: star trek 9
+: type: movie
+  title: star trek 9
 
 ? star.trek.9.mkv
-: title: star trek 9
+: type: movie
+  title: star trek 9
