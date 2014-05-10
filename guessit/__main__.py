@@ -20,6 +20,7 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+from collections import defaultdict
 import logging
 import os
 
@@ -58,7 +59,7 @@ def guess_file(filename, info='filename', options=None, **kwargs):
 def _supported_properties():
     from guessit.plugins import transformers
 
-    all_properties = {}
+    all_properties = defaultdict(list)
     transformers_properties = []
     for transformer in transformers.all_transformers():
         supported_properties = transformer.supported_properties()
@@ -66,18 +67,10 @@ def _supported_properties():
 
         if isinstance(supported_properties, dict):
             for property_name, possible_values in supported_properties.items():
-                current_possible_values = all_properties.get(property_name)
-                if current_possible_values is None:
-                    current_possible_values = []
-                    all_properties[property_name] = current_possible_values
-                if possible_values:
-                    current_possible_values.extend(possible_values)
+                all_properties[property_name].extend(possible_values)
         else:
             for property_name in supported_properties:
-                current_possible_values = all_properties.get(property_name)
-                if current_possible_values is None:
-                    current_possible_values = []
-                    all_properties[property_name] = current_possible_values
+                all_properties[property_name] # just make sure it exists
 
     return (all_properties, transformers_properties)
 
@@ -89,9 +82,18 @@ def display_transformers():
         print('[@] %s (%s)' % (transformer.name, transformer.priority))
 
 
-def display_properties(values, transformers):
+def display_properties(options):
+    values = options.values
+    transformers = options.transformers
+    name_only = options.name_only
+
     print('GuessIt properties:')
     all_properties, transformers_properties = _supported_properties()
+    if name_only:
+        # the 'container' property does not apply when using the --name-only
+        # option
+        del all_properties['container']
+
     if transformers:
         for transformer, properties_list in transformers_properties:
             print('[@] %s (%s)' % (transformer.name, transformer.priority))
@@ -101,9 +103,7 @@ def display_properties(values, transformers):
                 if property_values and values:
                     _display_property_values(property_name, indent=4)
     else:
-        properties_list = []
-        properties_list.extend(all_properties.keys())
-        properties_list.sort()
+        properties_list = sorted(all_properties.keys())
         for property_name in properties_list:
             property_values = all_properties.get(property_name)
             print('  [+] %s' % (property_name,))
@@ -193,7 +193,7 @@ def main(args=None, setup_logging=True):
 
     help_required = True
     if options.properties or options.values:
-        display_properties(options.values, options.transformers)
+        display_properties(options)
         help_required = False
     elif options.transformers:
         display_transformers()
@@ -206,9 +206,8 @@ def main(args=None, setup_logging=True):
             help_required = False
             for filename in args:
                 guess_file(filename,
-                                info=options.info.split(','),
-                                options=vars(options)
-                                )
+                           info=options.info.split(','),
+                           options=vars(options))
 
     if help_required:  # pragma: no cover
         option_parser.print_help()
