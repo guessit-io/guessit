@@ -8,7 +8,7 @@ both movies and tv shows episodes.
 
 For example, GuessIt can do the following::
 
-    $ python guessit.py "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
+    $ guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
     For: Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
     GuessIt found: {
         [1.00] "mimetype": "video/x-msvideo",
