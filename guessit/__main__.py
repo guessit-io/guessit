@@ -163,6 +163,21 @@ def run_demo(episodes=True, movies=True, options=None):
             print('-' * 80)
             guess_file(f, options=options, type='movie')
 
+def submit_bug(filename):
+    import requests # only import when needed
+    from requests.exceptions import RequestException
+
+    try:
+        r = requests.post('http://bugs.guessit.io/', {'filename': filename})
+        if r.status_code == 200:
+            print('Successfully submitted file: %s' % r.text)
+        else:
+            print('Could not submit bug at the moment, please try again later.')
+
+    except RequestException as e:
+        print('Could not submit bug at the moment, please try again later.')
+
+
 
 def main(args=None, setup_logging=True):
     if setup_logging:
@@ -198,9 +213,14 @@ def main(args=None, setup_logging=True):
     elif options.transformers:
         display_transformers()
         help_required = False
+
     if options.demo:
         run_demo(episodes=True, movies=True, options=vars(options))
         help_required = False
+    elif options.submit_bug:
+        for filename in args:
+            help_required = False
+            submit_bug(filename)
     else:
         if args:
             help_required = False

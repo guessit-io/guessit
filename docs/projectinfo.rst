@@ -9,6 +9,10 @@ This project is hosted on GitHub: `<https://github.com/wackou/guessit>`_
 
 Please report issues and/or feature requests via the `bug tracker <https://github.com/wackou/guessit/issues>`_.
 
+You can also report issues using the command-line tool::
+
+    $ guessit --bug "filename.that.fails.avi"
+
 
 Contribute
 ----------

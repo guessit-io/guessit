@@ -28,7 +28,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
-install_requires = ['babelfish>=0.5.1', 'stevedore>=0.14']
+install_requires = ['babelfish>=0.5.1', 'stevedore>=0.14', 'requests']
 
 tests_require = ['PyYAML']  # Fabric not available (yet!) for python3
 

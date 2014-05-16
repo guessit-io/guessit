@@ -60,20 +60,22 @@ You can see the list of options that guessit.py accepts like that::
 
     Options:
       -h, --help            show this help message and exit
-      -v, --verbose         display debug output
+      -v, --verbose         Display debug output
       -p, --properties      Display properties that can be guessed.
       -l, --values          Display property values that can be guessed.
       -s, --transformers    Display transformers that can be used.
-      -i INFO, --info=INFO  the desired information type: filename, hash_mpc or a
+      -i INFO, --info=INFO  The desired information type: filename, hash_mpc or a
                             hash from python's hashlib module, such as hash_md5,
                             hash_sha1, ...; or a list of any of them, comma-
                             separated
       -n, --name-only       Parse files as name only. Disable folder parsing,
                             extension parsing, and file content analysis.
-      -t TYPE, --type=TYPE  the suggested file type: movie, episode. If undefined,
+      -t TYPE, --type=TYPE  The suggested file type: movie, episode. If undefined,
                             type will be guessed.
-      -a, --advanced        display advanced information for filename guesses, as
+      -a, --advanced        Display advanced information for filename guesses, as
                             json output
-      -y, --yaml            display information for filename guesses as yaml
+      -y, --yaml            Display information for filename guesses as yaml
                             output (like unit-test)
-      -d, --demo            run a few builtin tests instead of analyzing a file
+      -d, --demo            Run a few builtin tests instead of analyzing a file
+      -b, --bug             Submit a wrong detection to the bugs.guessit.io
+                            service

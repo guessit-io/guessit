@@ -11,7 +11,8 @@ History
 0.7.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+* Command-line util can now report bugs to the http://bugs.guessit.io service
+  by specifying the -b or --bug flag
 
 
 0.7.1 (2014-03-03)
