@@ -24,7 +24,7 @@ import guessit  # @UnusedImport needed for doctests
 from guessit import UnicodeMixin, base_text_type
 from guessit.textutils import clean_string, str_fill
 from guessit.patterns import group_delimiters
-from guessit.guess import (merge_similar_guesses, merge_all,
+from guessit.guess import (merge_similar_guesses, smart_merge,
                            choose_int, choose_string, Guess)
 import copy
 import logging

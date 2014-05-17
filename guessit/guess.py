@@ -338,17 +338,7 @@ def _merge_similar_guesses_nocheck(guesses, prop, choose):
 
     g1, g2 = similar[0], similar[1]
 
-    other_props = set(g1) & set(g2) - set([prop])
-    if other_props:
-        log.debug('guess 1: %s' % g1)
-        log.debug('guess 2: %s' % g2)
-        for prop in other_props:
-            if g1[prop] != g2[prop]:
-                log.warning('both guesses to be merged have more than one '
-                            'different property in common, bailing out...')
-                return
-
-    # merge all props of s2 into s1, updating the confidence for the
+    # merge only this prop of s2 into s1, updating the confidence for the
     # considered property
     v1, v2 = g1[prop], g2[prop]
     c1, c2 = g1.confidence(prop), g2.confidence(prop)
@@ -360,11 +350,12 @@ def _merge_similar_guesses_nocheck(guesses, prop, choose):
         msg = "Updating non-matching property '%s' with confidence %.2f"
     log.debug(msg % (prop, new_confidence))
 
-    g2[prop] = new_value
-    g2.set_confidence(prop, new_confidence)
+    g1.set(prop, new_value, confidence=new_confidence)
+    g2.pop(prop)
 
-    g1.update(g2)
-    guesses.remove(g2)
+    # remove g2 if there are no properties left
+    if not g2.keys():
+        guesses.remove(g2)
 
 
 def merge_similar_guesses(guesses, prop, choose):
@@ -426,7 +417,12 @@ def merge_all(guesses, append=None):
         # first append our appendable properties
         for prop in append:
             if prop in g:
-                result.set(prop, result.get(prop, []) + [g[prop]],
+                if isinstance(g[prop], (list, set)):
+                    new_values = result.get(prop, []) + list(g[prop])
+                else:
+                    new_values = result.get(prop, []) + [g[prop]]
+
+                result.set(prop, new_values,
                            # TODO: what to do with confidence here? maybe an
                            # arithmetic mean...
                            confidence=g.metadata(prop).confidence,
@@ -458,5 +454,34 @@ def merge_all(guesses, append=None):
                 result[prop] = [value]
         except KeyError:
             pass
+
+    return result
+
+
+def smart_merge(guesses):
+    """First tries to merge well-known similar properties, and then merges
+    the rest with a merge_all call.
+
+    Should be the function to call in most cases, unless one wants to have more
+    control.
+
+    Warning: this function is destructive, ie: it will merge the list in-place.
+    """
+
+    # 1- try to merge similar information together and give it a higher
+    #    confidence
+    for int_part in ('year', 'season', 'episodeNumber'):
+        merge_similar_guesses(guesses, int_part, choose_int)
+
+    for string_part in ('title', 'series', 'container', 'format',
+                        'releaseGroup', 'website', 'audioCodec',
+                        'videoCodec', 'screenSize', 'episodeFormat',
+                        'audioChannels', 'idNumber'):
+        merge_similar_guesses(guesses, string_part, choose_string)
+
+    # 2- merge the rest, potentially discarding information not properly
+    #    merged before
+    result = merge_all(guesses,
+                       append=['language', 'subtitleLanguage', 'other', 'special'])
 
     return result

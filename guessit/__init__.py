@@ -85,7 +85,7 @@ else:   # pragma: no cover
     range = xrange
 
 
-from guessit.guess import Guess, merge_all
+from guessit.guess import Guess, smart_merge
 from guessit.language import Language
 from guessit.matcher import IterativeMatcher
 from guessit.textutils import clean_string, is_camel, from_camel
@@ -216,7 +216,7 @@ def guess_file_info(filename, info=None, options=None, **kwargs):
         except Exception as e:
             log.warning('Could not compute hash because: %s' % e)
 
-    result = merge_all(result)
+    result = smart_merge(result)
 
     return result
 
