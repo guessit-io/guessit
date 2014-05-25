@@ -10,7 +10,7 @@ option_parser.add_option('-l', '--values', dest='values', action='store_true', d
 option_parser.add_option('-s', '--transformers', dest='transformers', action='store_true', default=False,
                          help='Display transformers that can be used.')
 option_parser.add_option('-i', '--info', dest='info', default='filename',
-                         help='The desired information type: filename, hash_mpc or a hash from python\'s '
+                         help='The desired information type: filename, video, hash_mpc or a hash from python\'s '
                               'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
                               'them, comma-separated')
 option_parser.add_option('-n', '--name-only', dest='name_only', action='store_true', default=False,

@@ -34,7 +34,8 @@ tests_require = ['PyYAML']  # Fabric not available (yet!) for python3
 
 setup_requires = []
 
-extras_require = {'language_detection': ['guess-language>=0.2']}
+extras_require = {'language_detection': ['guess-language>=0.2'],
+                  'video_metadata': ['enzyme']}
 
 entry_points = {
     'console_scripts': [

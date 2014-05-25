@@ -53,5 +53,8 @@ namely all the ones you can find in the hashlib python module (md5,
 sha1, ...), but also the Media Player Classic hash that is used (amongst
 others) by OpenSubtitles and SMPlayer, as well as the ed2k hash.
 
-If you have the 'guess-language' python module installed, GuessIt can also
+If you have the 'guess-language' python package installed, GuessIt can also
 analyze a subtitle file's contents and detect which language it is written in.
+
+If you have the 'enzyme' python package installed, GuessIt can also detect the
+properties from the actual video file metadata.

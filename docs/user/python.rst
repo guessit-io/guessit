@@ -45,3 +45,6 @@ A ``Guess`` instance is also a python dict instance, so you can use it
 wherever you would use a normal python dict.
 
 
+If you have the Enzyme python package installed, then the
+``guess_video_metadata`` function is also available, which will return a guess
+with the properties from the video file metadata.

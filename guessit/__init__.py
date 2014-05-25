@@ -89,6 +89,7 @@ from guessit.guess import Guess, smart_merge
 from guessit.language import Language
 from guessit.matcher import IterativeMatcher
 from guessit.textutils import clean_string, is_camel, from_camel
+import babelfish
 import os.path
 import logging
 import json
@@ -143,6 +144,101 @@ def _guess_camel_string(mtree, string, options=None, skip_title=False, **kwargs)
             return True
     return False
 
+def guess_video_metadata(filename):
+    """Gets the video metadata properties out of a given file. The file needs to
+    exist on the filesystem to be able to be analyzed. An empty guess is
+    returned otherwise.
+
+    You need to have the Enzyme python package installed for this to work."""
+    try:
+        import enzyme
+    except ImportError:
+        log.error('Cannot get video file metadata, missing dependency: enzyme')
+        log.error('Please install it from PyPI, by doing eg: pip install enzyme')
+        return Guess()
+
+    result = Guess()
+
+    def found(prop, value):
+        result[prop] = value
+        log.debug('Found with enzyme %s: %s' % (prop, value))
+
+    try:
+        with open(filename) as f:
+            mkv = enzyme.MKV(f)
+
+            if mkv.video_tracks:
+                video_track = mkv.video_tracks[0]
+
+                # resolution
+                if video_track.height in (480, 720, 1080):
+                    if video_track.interlaced:
+                        found('screenSize', '%di' % video_track.height)
+                    else:
+                        found('screenSize', '%dp' % video_track.height)
+                else:
+                    # TODO: do we want this?
+                    #found('screenSize', '%dx%d' % (video_track.width, video_track.height))
+                    pass
+
+                # video codec
+                if video_track.codec_id == 'V_MPEG4/ISO/AVC':
+                    found('videoCodec', 'h264')
+                elif video_track.codec_id == 'V_MPEG4/ISO/SP':
+                    found('videoCodec', 'DivX')
+                elif video_track.codec_id == 'V_MPEG4/ISO/ASP':
+                    found('videoCodec', 'XviD')
+
+            else:
+                log.warning('MKV has no video track')
+
+            if mkv.audio_tracks:
+                audio_track = mkv.audio_tracks[0]
+                # audio codec
+                if audio_track.codec_id == 'A_AC3':
+                    found('audioCodec', 'AC3')
+                elif audio_track.codec_id == 'A_DTS':
+                    found('audioCodec', 'DTS')
+                elif audio_track.codec_id == 'A_AAC':
+                    found('audioCodec', 'AAC')
+            else:
+                log.warning('MKV has no audio track')
+
+            if mkv.subtitle_tracks:
+                embedded_subtitle_languages = set()
+                for st in mkv.subtitle_tracks:
+                    try:
+                        if st.language:
+                            lang = babelfish.Language.fromalpha3b(st.language)
+                        elif st.name:
+                            lang = babelfish.Language.fromname(st.name)
+                        else:
+                            lang = babelfish.Language('und')
+
+                    except babelfish.Error:
+                        lang = babelfish.Language('und')
+
+                    embedded_subtitle_languages.add(lang)
+
+                found('subtitleLanguage', embedded_subtitle_languages)
+            else:
+                log.debug('MKV has no subtitle track')
+
+        return result
+
+
+    except IOError as e:
+        log.error('Could not open file: %s' % filename)
+        log.error('Make sure it exists and is available for reading on the filesystem')
+        log.error('Error: %s' % e)
+        return result
+
+    except enzyme.Error as e:
+        log.error('Cannot guess video file metadata')
+        log.error('enzyme.Error while reading file: %s' % filename)
+        log.error('Error: %s' % e)
+        return result
+
 
 def guess_file_info(filename, info=None, options=None, **kwargs):
     """info can contain the names of the various plugins, such as 'filename' to
@@ -193,6 +289,11 @@ def guess_file_info(filename, info=None, options=None, **kwargs):
                 hashers.append((infotype, hasher))
             except AttributeError:
                 log.warning('Could not compute %s hash because it is not available from python\'s hashlib module' % hashname)
+
+        elif infotype == 'video':
+            g = guess_video_metadata(filename)
+            if g:
+                result.append(g)
 
         else:
             log.warning('Invalid infotype: %s' % infotype)

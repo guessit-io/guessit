@@ -64,10 +64,10 @@ You can see the list of options that guessit.py accepts like that::
       -p, --properties      Display properties that can be guessed.
       -l, --values          Display property values that can be guessed.
       -s, --transformers    Display transformers that can be used.
-      -i INFO, --info=INFO  The desired information type: filename, hash_mpc or a
-                            hash from python's hashlib module, such as hash_md5,
-                            hash_sha1, ...; or a list of any of them, comma-
-                            separated
+      -i INFO, --info=INFO  The desired information type: filename, video,
+                            hash_mpc or a hash from python's hashlib module, such
+                            as hash_md5, hash_sha1, ...; or a list of any of them,
+                            comma-separated
       -n, --name-only       Parse files as name only. Disable folder parsing,
                             extension parsing, and file content analysis.
       -t TYPE, --type=TYPE  The suggested file type: movie, episode. If undefined,

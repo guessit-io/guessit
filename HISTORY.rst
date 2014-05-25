@@ -8,11 +8,14 @@ History
 
 
 
-0.7.2 (unreleased)
-------------------
+0.8 (unreleased)
+----------------
 
 * Command-line util can now report bugs to the http://bugs.guessit.io service
   by specifying the -b or --bug flag
+* GuessIt can now use the Enzyme python package to detect metadata out of the
+  actual video file metadata instead of the filename
+* Added support for Python 3.4
 
 
 0.7.1 (2014-03-03)
