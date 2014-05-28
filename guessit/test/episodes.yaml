@@ -587,3 +587,15 @@
   format: HDTV
   videoCodec: h264
   releaseGroup: mSD
+
+? House.of.Cards.2013.S02E03.1080p.NF.WEBRip.DD5.1.x264-NTb.mkv
+: series: House of Cards
+  year: 2013
+  season: 2
+  episodeNumber: 3
+  screenSize: 1080p
+  source: Netflix
+  format: Webrip
+  audioChannels: "5.1"
+  videoCodec: h264
+  releaseGroup: NTb
