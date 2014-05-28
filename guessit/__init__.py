@@ -150,20 +150,26 @@ def guess_video_metadata(filename):
     returned otherwise.
 
     You need to have the Enzyme python package installed for this to work."""
-    try:
-        import enzyme
-    except ImportError:
-        log.error('Cannot get video file metadata, missing dependency: enzyme')
-        log.error('Please install it from PyPI, by doing eg: pip install enzyme')
-        return Guess()
-
     result = Guess()
 
     def found(prop, value):
         result[prop] = value
         log.debug('Found with enzyme %s: %s' % (prop, value))
 
+    # first get the size of the file, in bytes
     try:
+        size = os.stat(filename).st_size
+        found('fileSize', size)
+
+    except Exception as e:
+        log.error('Cannot get video file size: %s' % e)
+        # file probably does not exist, we might as well return now
+        return result
+
+    # then get additional metadata from the file using enzyme, if available
+    try:
+        import enzyme
+
         with open(filename) as f:
             mkv = enzyme.MKV(f)
 
@@ -228,6 +234,10 @@ def guess_video_metadata(filename):
 
         return result
 
+    except ImportError:
+        log.error('Cannot get video file metadata, missing dependency: enzyme')
+        log.error('Please install it from PyPI, by doing eg: pip install enzyme')
+        return result
 
     except IOError as e:
         log.error('Could not open file: %s' % filename)

@@ -17,6 +17,7 @@ History
   actual video file metadata instead of the filename
 * New property: 'duration' which returns the duration of the video in seconds
   This requires the Enzyme package to work
+* New property: 'fileSize' which returns the size of the file in bytes
 * Added support for Python 3.4
 
 
