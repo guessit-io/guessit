@@ -167,6 +167,8 @@ def guess_video_metadata(filename):
         with open(filename) as f:
             mkv = enzyme.MKV(f)
 
+            found('duration', mkv.info.duration.total_seconds())
+
             if mkv.video_tracks:
                 video_track = mkv.video_tracks[0]
 

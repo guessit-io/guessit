@@ -15,6 +15,8 @@ History
   by specifying the -b or --bug flag
 * GuessIt can now use the Enzyme python package to detect metadata out of the
   actual video file metadata instead of the filename
+* New property: 'duration' which returns the duration of the video in seconds
+  This requires the Enzyme package to work
 * Added support for Python 3.4
 
 

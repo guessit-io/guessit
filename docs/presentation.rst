@@ -36,6 +36,7 @@ property types::
       date, year,                        # 'date' instance of datetime.date
       language, subtitleLanguage,        # instances of guessit.Language
       country,                           # instances of guessit.Country
+      duration,                          # when detecting video file metadata
       container, format,
       videoCodec, audioCodec,
       audioChannels, screenSize,
