@@ -18,6 +18,7 @@ History
 * New property: 'duration' which returns the duration of the video in seconds
   This requires the Enzyme package to work
 * New property: 'fileSize' which returns the size of the file in bytes
+* Renamed property 'special' to 'episodeDetails'
 * Added support for Python 3.4
 
 

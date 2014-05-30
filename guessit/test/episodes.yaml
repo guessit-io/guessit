@@ -594,7 +594,7 @@
   season: 2
   episodeNumber: 3
   screenSize: 1080p
-  source: Netflix
+  other: Netflix
   format: Webrip
   audioChannels: "5.1"
   videoCodec: h264

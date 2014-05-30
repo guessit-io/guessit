@@ -52,8 +52,6 @@ class GuessProperties(Transformer):
 
         register_property('container', {'mp4': ['MP4']})
 
-        register_property('source', {'Netflix': ['Netflix', 'NF']})
-
         # http://en.wikipedia.org/wiki/Pirated_movie_release_types
         register_property('format', {'VHS': ['VHS'],
                                      'Cam': ['CAM', 'CAMRip'],
@@ -203,6 +201,7 @@ class GuessProperties(Transformer):
                                     'SyncFix': ['Sync-Fix', 'Sync-Fixed'],
                                     'DualAudio': ['Dual-Audio'],
                                     'WideScreen': ['ws', 'wide-screen'],
+                                    'Netflix': ['Netflix', 'NF']
                                     })
 
         self.container.register_property('other', 'Real', 'Fix', canonical_form="Proper", validator=WeakValidator())
