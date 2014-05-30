@@ -55,7 +55,7 @@ class GuessProperties(Transformer):
         # http://en.wikipedia.org/wiki/Pirated_movie_release_types
         register_property('format', {'VHS': ['VHS'],
                                      'Cam': ['CAM', 'CAMRip'],
-                                     'Telesync': ['TELESYNC', 'PDVD'],
+                                     #'Telesync': ['TELESYNC', 'PDVD'],
                                      'Telesync': (['TS'], {'confidence': 0.2}),
                                      'Workprint': ['WORKPRINT', 'WP'],
                                      'Telecine': ['TELECINE', 'TC'],

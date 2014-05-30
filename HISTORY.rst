@@ -20,6 +20,7 @@ History
 * New property: 'fileSize' which returns the size of the file in bytes
 * Renamed property 'special' to 'episodeDetails'
 * Added support for Python 3.4
+* Optimization and bugfixes
 
 
 0.7.1 (2014-03-03)

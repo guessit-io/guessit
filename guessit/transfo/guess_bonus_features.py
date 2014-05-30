@@ -33,7 +33,7 @@ class GuessBonusFeatures(Transformer):
 
     def process(self, mtree, options=None):
         def previous_group(g):
-            for leaf in mtree.unidentified_leaves()[::-1]:
+            for leaf in reversed(list(mtree.unidentified_leaves())):
                 if leaf.node_idx < g.node_idx:
                     return leaf
 

@@ -43,11 +43,11 @@ class GuessMovieTitleFromPosition(Transformer):
         """
         basename = mtree.node_at((-2,))
         all_valid = lambda leaf: len(leaf.clean_value) > 0
-        basename_leftover = basename.unidentified_leaves(valid=all_valid)
+        basename_leftover = list(basename.unidentified_leaves(valid=all_valid))
 
         try:
             folder = mtree.node_at((-3,))
-            folder_leftover = folder.unidentified_leaves()
+            folder_leftover = list(folder.unidentified_leaves())
         except ValueError:
             folder = None
             folder_leftover = []
@@ -74,7 +74,7 @@ class GuessMovieTitleFromPosition(Transformer):
             filmNumber = basename_leftover[0]
             title = basename_leftover[1]
 
-            basename_leaves = basename.leaves()
+            basename_leaves = list(basename.leaves())
 
             num = int(filmNumber.clean_value)
 
@@ -109,19 +109,20 @@ class GuessMovieTitleFromPosition(Transformer):
                 year_group = folder.first_leaf_containing('year')
                 groups_before = folder.previous_unidentified_leaves(year_group)
 
-                found_property(groups_before[0], 'title', confidence=0.8)
+                found_property(next(groups_before), 'title', confidence=0.8)
                 return
 
         except Exception:
             pass
 
-        # if we have either format or videoCodec in the folder containing the file
-        # or one of its parents, then we should probably look for the title in
-        # there rather than in the basename
+        # if we have either format or videoCodec in the folder containing the
+        # file or one of its parents, then we should probably look for the title
+        # in there rather than in the basename
         try:
-            props = mtree.previous_leaves_containing(mtree.children[-2],
-                                                     ['videoCodec', 'format',
-                                                       'language'])
+            props = list(mtree.previous_leaves_containing(mtree.children[-2],
+                                                          ['videoCodec',
+                                                           'format',
+                                                           'language']))
         except IndexError:
             props = []
 
@@ -130,10 +131,11 @@ class GuessMovieTitleFromPosition(Transformer):
             if all(g.node_idx[0] == group_idx for g in props):
                 # if they're all in the same group, take leftover info from there
                 leftover = mtree.node_at((group_idx,)).unidentified_leaves()
-
-                if leftover:
-                    found_property(leftover[0], 'title', confidence=0.7)
+                try:
+                    found_property(next(leftover), 'title', confidence=0.7)
                     return
+                except StopIteration:
+                    pass
 
         # look for title in basename if there are some remaining unidentified
         # groups there
@@ -172,6 +174,8 @@ class GuessMovieTitleFromPosition(Transformer):
         # of the basename
         basename = mtree.node_at((-2,))
         basename_leftover = basename.unidentified_leaves(valid=lambda leaf: True)
-        if basename_leftover:
-            found_property(basename_leftover[0], 'title', confidence=0.4)
+        try:
+            found_property(next(basename_leftover), 'title', confidence=0.4)
             return
+        except StopIteration:
+            pass

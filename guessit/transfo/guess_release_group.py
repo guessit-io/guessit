@@ -130,7 +130,7 @@ class GuessReleaseGroup(Transformer):
                 while True:
                     next_group_node = next_group_node.next_group_node()
                     if next_group_node:
-                        leaves = next_group_node.leaves()
+                        leaves = list(next_group_node.leaves())
                         if len(leaves) == 1 and not leaves[0].guess:
                             validated_guess['releaseGroup'] = validated_guess['releaseGroup'] + leaves[0].value
                             leaves[0].guess = validated_guess

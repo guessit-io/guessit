@@ -79,7 +79,7 @@ class GuessLanguage(Transformer):
 
         for lang_key in ('language', 'subtitleLanguage'):
             langs = {}
-            lang_nodes = set(n for n in mtree.leaves_containing(lang_key))
+            lang_nodes = set(mtree.leaves_containing(lang_key))
 
             for lang_node in lang_nodes:
                 lang = lang_node.guess.get(lang_key, None)
@@ -116,7 +116,7 @@ class GuessLanguage(Transformer):
             skipped_values = [skip_node.value for skip_node in to_skip_language_nodes]
 
             for lang_key in ('language', 'subtitleLanguage'):
-                lang_nodes = set(n for n in mtree.leaves_containing(lang_key))
+                lang_nodes = set(mtree.leaves_containing(lang_key))
 
                 for lang_node in lang_nodes:
                     if lang_node not in to_skip_language_nodes and lang_node.value in skipped_values:
@@ -147,7 +147,7 @@ class GuessLanguage(Transformer):
             #   language of the subtitle
             #   (eg: 'xxx.english.srt')
             if (mtree.node_at((-1,)).value.lower() in subtitle_exts and
-                node == mtree.leaves()[-2]):
+                node == list(mtree.leaves())[-2]):
                 self.promote_subtitle(node)
 
             # - if we find in the same explicit group
@@ -171,7 +171,7 @@ class GuessLanguage(Transformer):
             #   it is a subtitle language (eg: '...st[fr-eng]...')
             try:
                 idx = node.node_idx
-                previous = mtree.node_at((idx[0], idx[1] - 1)).leaves()[-1]
+                previous = list(mtree.node_at((idx[0], idx[1] - 1)).leaves())[-1]
                 if previous.value.lower()[-2:] == 'st':
                     self.promote_subtitle(node)
             except IndexError:

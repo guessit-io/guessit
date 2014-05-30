@@ -23,6 +23,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import found_guess
 from guessit.containers import PropertiesContainer
+import itertools
 
 
 class GuessEpisodeDetails(Transformer):
@@ -54,19 +55,10 @@ class GuessEpisodeDetails(Transformer):
             (not mtree.info.get('episodeNumber') or
              mtree.info.get('season') == 0)):
 
-            """
             for leaf in itertools.chain(mtree.leaves_containing('title'),
                                         mtree.unidentified_leaves()):
                 guesses = self.guess_details(leaf.value, leaf, options)
                 for guess in guesses:
                     found_guess(leaf, guess, update_guess=False)
-            """
-            for title_leaf in mtree.leaves_containing('title'):
-                guesses = self.guess_details(title_leaf.value, title_leaf, options)
-                for guess in guesses:
-                    found_guess(title_leaf, guess, update_guess=False)
-            for unidentified_leaf in mtree.unidentified_leaves():
-                guesses = self.guess_details(unidentified_leaf.value, unidentified_leaf, options)
-                for guess in guesses:
-                    found_guess(unidentified_leaf, guess, update_guess=False)
+
         return None

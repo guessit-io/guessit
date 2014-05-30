@@ -50,7 +50,7 @@ class TestMatchTree(TestGuessit):
     def test_base_tree(self):
         t = BaseMatchTree('One Two Three(Three) Four')
         t.partition((3, 7, 20))
-        leaves = t.leaves()
+        leaves = list(t.leaves())
 
         self.assertEqual(leaves[0].span, (0, 3))
 
@@ -60,12 +60,12 @@ class TestMatchTree(TestGuessit):
         self.assertEqual(' Four', leaves[3].value)
 
         leaves[2].partition((1, 6, 7, 12))
-        three_leaves = leaves[2].leaves()
+        three_leaves = list(leaves[2].leaves())
 
         self.assertEqual('Three', three_leaves[1].value)
         self.assertEqual('Three', three_leaves[3].value)
 
-        leaves = t.leaves()
+        leaves = list(t.leaves())
 
         self.assertEqual(len(leaves), 8)
 

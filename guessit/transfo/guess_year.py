@@ -40,7 +40,7 @@ class GuessYear(Transformer):
             return None, None
 
     def second_pass_options(self, mtree, options=None):
-        year_nodes = mtree.leaves_containing('year')
+        year_nodes = list(mtree.leaves_containing('year'))
         if len(year_nodes) > 1:
             return {'skip_nodes': year_nodes[:len(year_nodes) - 1]}
         return None

@@ -108,7 +108,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
         if episode_details_transformer:
             return [n for n in candidates if not episode_details_transformer.container.find_properties(n.value, n, re_match=True)]
         else:
-            return candidates
+            return list(candidates)
 
     def process(self, mtree, options=None):
         """
@@ -136,7 +136,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
         # if we only have 1 remaining valid group in the folder containing the
         # file, then it's likely that it is the series name
         try:
-            series_candidates = mtree.node_at((-3,)).unidentified_leaves()
+            series_candidates = list(mtree.node_at((-3,)).unidentified_leaves())
         except ValueError:
             series_candidates = []
 

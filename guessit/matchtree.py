@@ -26,6 +26,7 @@ from guessit.textutils import clean_string, str_fill
 from guessit.patterns import group_delimiters
 from guessit.guess import (merge_similar_guesses, smart_merge,
                            choose_int, choose_string, Guess)
+from itertools import takewhile
 import copy
 import logging
 
@@ -199,14 +200,14 @@ class BaseMatchTree(UnicodeMixin):
             for node in child.nodes():
                 yield node
 
-    def _leaves(self):
+    def leaves(self):
         """Return a generator over all the nodes that are leaves."""
         if self.is_leaf():
             yield self
         else:
             for child in self.children:
                 # pylint: disable=W0212
-                for leaf in child._leaves():
+                for leaf in child.leaves():
                     yield leaf
 
     def group_node(self):
@@ -230,10 +231,6 @@ class BaseMatchTree(UnicodeMixin):
                     pass
         return None
 
-    def leaves(self):
-        """Return a list of all the nodes that are leaves."""
-        return list(self._leaves())
-
     def previous_leaf(self, leaf):
         """Return previous leaf for this node"""
         return self._other_leaf(leaf, -1)
@@ -243,7 +240,7 @@ class BaseMatchTree(UnicodeMixin):
         return self._other_leaf(leaf, +1)
 
     def _other_leaf(self, leaf, offset):
-        leaves = self.leaves()
+        leaves = list(self.leaves())
         index = leaves.index(leaf) + offset
         if index > 0 and index < len(leaves):
             return leaves[index]
@@ -251,7 +248,7 @@ class BaseMatchTree(UnicodeMixin):
 
     def previous_leaves(self, leaf):
         """Return previous leaves for this node"""
-        leaves = self.leaves()
+        leaves = list(self.leaves())
         index = leaves.index(leaf)
         if index > 0 and index < len(leaves):
             previous_leaves = leaves[:index]
@@ -261,7 +258,7 @@ class BaseMatchTree(UnicodeMixin):
 
     def next_leaves(self, leaf):
         """Return next leaves for this node"""
-        leaves = self.leaves()
+        leaves = list(self.leaves())
         index = leaves.index(leaf)
         if index > 0 and index < len(leaves):
             return leaves[index + 1:len(leaves)]
@@ -348,59 +345,46 @@ class MatchTree(BaseMatchTree):
     higher-level rules.
     """
 
-    def _unidentified_leaves(self,
-                             valid=lambda leaf: len(leaf.clean_value) >= 2):
-        for leaf in self._leaves():
+    def unidentified_leaves(self,
+                            valid=lambda leaf: len(leaf.clean_value) >= 2):
+        """Return a generator of leaves that are not empty."""
+        for leaf in self.leaves():
             if not leaf.guess and valid(leaf):
                 yield leaf
 
-    def unidentified_leaves(self,
-                            valid=lambda leaf: len(leaf.clean_value) >= 2):
-        """Return a list of leaves that are not empty."""
-        return list(self._unidentified_leaves(valid))
-
-    def _leaves_containing(self, property_name):
+    def leaves_containing(self, property_name):
+        """Return a generator of leaves that guessed the given property."""
         if isinstance(property_name, base_text_type):
             property_name = [property_name]
 
-        for leaf in self._leaves():
+        for leaf in self.leaves():
             for prop in property_name:
                 if prop in leaf.guess:
                     yield leaf
                     break
 
-    def leaves_containing(self, property_name):
-        """Return a list of leaves that guessed the given property."""
-        return list(self._leaves_containing(property_name))
-
     def first_leaf_containing(self, property_name):
         """Return the first leaf containing the given property."""
         try:
-            return next(self._leaves_containing(property_name))
+            return next(self.leaves_containing(property_name))
         except StopIteration:
             return None
 
-    def _previous_unidentified_leaves(self, node):
-        node_idx = node.node_idx
-        for leaf in self._unidentified_leaves():
-            if leaf.node_idx < node_idx:
-                yield leaf
-
     def previous_unidentified_leaves(self, node):
-        """Return a list of non-empty leaves that are before the given
+        """Return a generator of non-empty leaves that are before the given
         node (in the string)."""
-        return list(self._previous_unidentified_leaves(node))
-
-    def _previous_leaves_containing(self, node, property_name):
         node_idx = node.node_idx
-        for leaf in self._leaves_containing(property_name):
+        for leaf in self.unidentified_leaves():
             if leaf.node_idx < node_idx:
                 yield leaf
 
     def previous_leaves_containing(self, node, property_name):
-        """Return a list of leaves containing the given property that are
+        """Return a generator of leaves containing the given property that are
         before the given node (in the string)."""
-        return list(self._previous_leaves_containing(node, property_name))
+        node_idx = node.node_idx
+        for leaf in self.leaves_containing(property_name):
+            if leaf.node_idx < node_idx:
+                yield leaf
 
     def is_explicit(self):
         """Return whether the group was explicitly enclosed by

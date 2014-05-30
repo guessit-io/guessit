@@ -102,8 +102,8 @@ class GuessCountry(Transformer):
 
     def post_process(self, mtree, options=None, *args, **kwargs):
         # if country is in the guessed properties, make it part of the series name
-        series_leaves = mtree.leaves_containing('series')
-        country_leaves = mtree.leaves_containing('country')
+        series_leaves = list(mtree.leaves_containing('series'))
+        country_leaves = list(mtree.leaves_containing('country'))
 
         if series_leaves and country_leaves:
             country_leaf = country_leaves[0]
