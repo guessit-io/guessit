@@ -191,7 +191,7 @@
   season: 1
   title: Bad Karma
   format: DVD
-  special: Extras
+  episodeDetails: Extras
   videoCodec: XviD
 
 ? /mnt/series/The Big Bang Theory/S01/The.Big.Bang.Theory.S01E01.mkv
@@ -538,7 +538,7 @@
 : series: Battlestar Galactica
   season: 0
   title: Pilot
-  special: Pilot
+  episodeDetails: Pilot
   language: French
   format: DVD
   videoCodec: XviD
@@ -553,7 +553,7 @@
   format: TV
   videoCodec: XviD
   releaseGroup: VioCs
-  special: [Unaired, Pilot]
+  episodeDetails: [Unaired, Pilot]
   title: Unaired Pilot
 
 ? The Big Bang Theory S01E00 PROPER Unaired Pilot TVRip XviD-GIGGITY
@@ -565,7 +565,7 @@
   videoCodec: XviD
   releaseGroup: GIGGITY
   other: proper
-  special: [Unaired, Pilot]
+  episodeDetails: [Unaired, Pilot]
   title: Unaired Pilot
 
 ? Pawn.Stars.S2014E18.720p.HDTV.x264-KILLERS

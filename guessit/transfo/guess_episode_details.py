@@ -25,22 +25,22 @@ from guessit.matcher import found_guess
 from guessit.containers import PropertiesContainer
 
 
-class GuessEpisodeSpecial(Transformer):
+class GuessEpisodeDetails(Transformer):
     def __init__(self):
         Transformer.__init__(self, -205)
         self.container = PropertiesContainer()
-        self.container.register_property('special', 'Special', 'Bonus', 'Omake', 'Ova', 'Oav', 'Pilot', 'Unaired')
-        self.container.register_property('special', 'Extras?', canonical_form='Extras')
+        self.container.register_property('episodeDetails', 'Special', 'Bonus', 'Omake', 'Ova', 'Oav', 'Pilot', 'Unaired')
+        self.container.register_property('episodeDetails', 'Extras?', canonical_form='Extras')
 
-    def guess_special(self, string, node=None, options=None):
-        properties = self.container.find_properties(string, node, 'special', multiple=True)
+    def guess_details(self, string, node=None, options=None):
+        properties = self.container.find_properties(string, node, 'episodeDetails', multiple=True)
         guesses = self.container.as_guess(properties, multiple=True)
         return guesses
 
     def second_pass_options(self, mtree, options=None):
         if not mtree.guess.get('type', '').startswith('episode'):
             for unidentified_leaf in mtree.unidentified_leaves():
-                properties = self.container.find_properties(unidentified_leaf.value, unidentified_leaf, 'special')
+                properties = self.container.find_properties(unidentified_leaf.value, unidentified_leaf, 'episodeDetails')
                 guess = self.container.as_guess(properties)
                 if guess:
                     return {'type': 'episode'}
@@ -50,13 +50,23 @@ class GuessEpisodeSpecial(Transformer):
         return self.container.get_supported_properties()
 
     def process(self, mtree, options=None):
-        if mtree.guess.get('type', '').startswith('episode') and (not mtree.info.get('episodeNumber') or mtree.info.get('season') == 0):
+        if (mtree.guess.get('type', '').startswith('episode') and
+            (not mtree.info.get('episodeNumber') or
+             mtree.info.get('season') == 0)):
+
+            """
+            for leaf in itertools.chain(mtree.leaves_containing('title'),
+                                        mtree.unidentified_leaves()):
+                guesses = self.guess_details(leaf.value, leaf, options)
+                for guess in guesses:
+                    found_guess(leaf, guess, update_guess=False)
+            """
             for title_leaf in mtree.leaves_containing('title'):
-                guesses = self.guess_special(title_leaf.value, title_leaf, options)
+                guesses = self.guess_details(title_leaf.value, title_leaf, options)
                 for guess in guesses:
                     found_guess(title_leaf, guess, update_guess=False)
             for unidentified_leaf in mtree.unidentified_leaves():
-                guesses = self.guess_special(unidentified_leaf.value, unidentified_leaf, options)
+                guesses = self.guess_details(unidentified_leaf.value, unidentified_leaf, options)
                 for guess in guesses:
                     found_guess(unidentified_leaf, guess, update_guess=False)
         return None

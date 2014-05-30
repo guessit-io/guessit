@@ -102,7 +102,7 @@ class TestGuessit(TestCase):
                     del found[prop]
 
             # props which are list of just 1 elem should be opened for easier writing of the tests
-            for prop in ('language', 'subtitleLanguage', 'other', 'special'):
+            for prop in ('language', 'subtitleLanguage', 'other', 'episodeDetails'):
                 value = found.get(prop, None)
                 if isinstance(value, list) and len(value) == 1:
                     found[prop] = value[0]
