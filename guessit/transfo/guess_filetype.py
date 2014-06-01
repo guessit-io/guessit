@@ -61,7 +61,8 @@ class GuessFiletype(Transformer):
                 filetype_container[0] = 'episodesubtitle'
             elif filetype_container[0] == 'info':
                 filetype_container[0] = 'episodeinfo'
-            elif not filetype_container[0]:
+            elif (not filetype_container[0] or
+                  filetype_container[0] == 'video'):
                 filetype_container[0] = 'episode'
 
         def upgrade_movie():
@@ -69,7 +70,8 @@ class GuessFiletype(Transformer):
                 filetype_container[0] = 'moviesubtitle'
             elif filetype_container[0] == 'info':
                 filetype_container[0] = 'movieinfo'
-            elif not filetype_container[0]:
+            elif (not filetype_container[0] or
+                  filetype_container[0] == 'video'):
                 filetype_container[0] = 'movie'
 
         def upgrade_subtitle():

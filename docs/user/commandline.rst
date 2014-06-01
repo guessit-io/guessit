@@ -77,5 +77,4 @@ You can see the list of options that guessit.py accepts like that::
       -y, --yaml            Display information for filename guesses as yaml
                             output (like unit-test)
       -d, --demo            Run a few builtin tests instead of analyzing a file
-      -b, --bug             Submit a wrong detection to the bugs.guessit.io
-                            service
+      -b, --bug             Submit a wrong detection to the guessit.io service

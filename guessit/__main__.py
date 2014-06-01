@@ -168,7 +168,7 @@ def submit_bug(filename):
     from requests.exceptions import RequestException
 
     try:
-        r = requests.post('http://bugs.guessit.io/', {'filename': filename})
+        r = requests.post('http://guessit.io/bugs', {'filename': filename})
         if r.status_code == 200:
             print('Successfully submitted file: %s' % r.text)
         else:

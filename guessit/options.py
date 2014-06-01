@@ -24,4 +24,4 @@ option_parser.add_option('-y', '--yaml', dest='yaml', action='store_true', defau
 option_parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
                          help='Run a few builtin tests instead of analyzing a file')
 option_parser.add_option('-b', '--bug', action='store_true', dest='submit_bug', default=False,
-                         help='Submit a wrong detection to the bugs.guessit.io service')
+                         help='Submit a wrong detection to the guessit.io service')

@@ -110,7 +110,7 @@ class IterativeMatcher(object):
 
             log.debug('Found match tree:\n%s' % u(mtree))
         except TransformerException as e:
-            log.debug('An error has occured in Transformer %s: %s' % (e.transformer, e))
+            log.debug('An error has occurred in Transformer %s: %s' % (e.transformer, e))
 
     def _process(self, transformer, post=False):
         if not hasattr(transformer, 'should_process') or transformer.should_process(self.match_tree, self.options):
@@ -138,7 +138,7 @@ class IterativeMatcher(object):
 
         type = options.get('type')
         if type and type not in valid_filetypes:
-            raise ValueError("filetype needs to be one of %s" % valid_filetypes)
+            raise ValueError("filetype needs to be one of %s" % (valid_filetypes,))
 
     def matched(self):
         return self.match_tree.matched()
