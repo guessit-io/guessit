@@ -71,13 +71,19 @@ div.related {
     display: none;
 }
 
-div.sphinxsidebar a {
+div.sphinxsidebar a.dots {
     color: #444;
     text-decoration: none;
     border-bottom: 1px dotted #999;
 }
 
+div.sphinxsidebar a.dots:hover {
+    border-bottom: 1px solid #999;
+}
+
+
 div.sphinxsidebar a.nodots {
+    text-decoration: none;
     border-bottom: 0px;
 }
 
@@ -85,9 +91,6 @@ div.sphinxsidebar a.nodots:hover {
     border-bottom: 0px;
 }
 
-div.sphinxsidebar a:hover {
-    border-bottom: 1px solid #999;
-}
 
 div.sphinxsidebar {
     font-size: 14px;

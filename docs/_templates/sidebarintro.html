@@ -38,24 +38,27 @@
 
 <h3>Useful Links</h3>
 <ul>
-  <li><a href="https://pypi.python.org/pypi/guessit">Guessit @ PyPI</a></li>
-  <li><a href="https://github.com/wackou/guessit">GuessIt @ GitHub</a></li>
-  <li><a href="https://github.com/wackou/guessit/issues">Issue Tracker</a></li>
+  <li><a class="dots" href="https://pypi.python.org/pypi/guessit">Guessit @ PyPI</a></li>
+  <li><a class="dots" href="https://github.com/wackou/guessit">GuessIt @ GitHub</a></li>
+  <li><a class="dots" href="https://github.com/wackou/guessit/issues">Issue Tracker</a></li>
 </ul>
 
 <h3>Donate</h3>
-If you like GuessIt, please consider making a donation in <a href="http://bitcoin.org/en/">bitcoins</a> or in <a href="https://litecoin.org/">litecoins</a>.
+<p>
+If you like GuessIt, please consider making a donation in
+<a class="dots" href="http://bitcoin.org/">bitcoins</a> or in
+<a class="dots" href="https://litecoin.org/">litecoins</a>.
+</p>
 
-<script src="http://coinwidget.com/widget/coin.js"></script>
+<script src="_static/coinwidget/coin.js"></script>
 
-<br><br>
 <script>
 CoinWidgetCom.go({
 	wallet_address: "13fvWVf5oL28pJJ4uaruZc6f7fnQj4iCNa"
 	, currency: "bitcoin"
 	, counter: "hide"
 	, alignment: "bl"
-	, qrcode: true
+	, qrcode: false
 	, auto_show: false
 	, lbl_button: "Donate Bitcoins"
 	, lbl_address: "GuessIt Bitcoin Donation Address:"
@@ -70,7 +73,7 @@ CoinWidgetCom.go({
 	, currency: "litecoin"
 	, counter: "hide"
 	, alignment: "bl"
-	, qrcode: true
+	, qrcode: false
 	, auto_show: false
 	, lbl_button: "Donate Litecoins"
 	, lbl_address: "GuessIt Litecoin Donation Address:"

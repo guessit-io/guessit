@@ -21,6 +21,16 @@ use in your own projects.
    user/python
 
 
+Web Service API
+---------------
+
+The guessit.io server also provides a free webservice that allows you to perform
+filename detection, even you don't have python installed (eg: you need to use it
+from an Android app, or NodeJS, etc.).
+
+You can look at the documentation for the web API here: `<http://api.guessit.io>`_
+
+
 Developer Guide
 ---------------
 
