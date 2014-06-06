@@ -350,9 +350,20 @@ class PropertiesContainer(object):
 
         # search all properties
         for prop in self.get_properties(name):
-            match = prop.compiled.match(string) if re_match else prop.compiled.search(string)
-            if match:
-                entry = prop, match
+            valid_match = None
+            if re_match:
+                match = prop.compiled.match(string)
+                if match:
+                    valid_match = match
+            else:
+                matches = prop.compiled.finditer(string)
+                for match in matches:
+                    # Keeping the last match, maybe it should be optional ...
+                    # Needed for the.100.109.hdtv-lol.mp4
+                    valid_match = match
+
+            if valid_match:
+                entry = prop, valid_match
                 entries.append(entry)
 
         if validate:
