@@ -222,7 +222,10 @@ class Guess(UnicodeMixin, dict):
                 pass
         else:
             self[prop_name] = value
-            self._metadata[prop_name] = GuessMetadata(parent=self._global_metadata, *args, **kwargs)
+            if 'metadata' in kwargs.keys():
+                self._metadata[prop_name] = kwargs['metadata']
+            else:
+                self._metadata[prop_name] = GuessMetadata(parent=self._global_metadata, *args, **kwargs)
 
     def update(self, other, confidence=None):
         dict.update(self, other)

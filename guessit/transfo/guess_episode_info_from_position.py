@@ -72,9 +72,8 @@ class GuessEpisodeInfoFromPosition(Transformer):
             found_property(series_candidates[0], 'series', confidence=0.7)
 
         # only 1 group after (in the same path group) and it's probably the
-        # episode title
+        # episode title.
         title_candidates = self._filter_candidates(after_epnum_in_same_pathgroup())
-
         if len(title_candidates) == 1:
             found_property(title_candidates[0], 'title', confidence=0.5)
             return
@@ -153,6 +152,14 @@ class GuessEpisodeInfoFromPosition(Transformer):
                         if node.node_idx[0] == eps[0].node_idx[0] - 1]
             if len(previous) == 1:
                 found_property(previous[0], 'series', confidence=0.5)
+
+        # If we have found title without any serie name, replace it by the serie name.
+        if 'series' not in mtree.info and 'title' in mtree.info:
+            title_leaf = mtree.first_leaf_containing('title')
+            metadata = title_leaf.guess.metadata('title')
+            value = title_leaf.guess['title']
+            del title_leaf.guess['title']
+            title_leaf.guess.set('series', value, metadata=metadata)
 
     def post_process(self, mtree, options=None):
         for node in mtree.nodes():
