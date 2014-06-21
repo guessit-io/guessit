@@ -21,6 +21,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit import UnicodeMixin, s, u, base_text_type
+from babelfish import Language, Country
 import json
 import datetime
 import logging
@@ -153,6 +154,8 @@ class Guess(UnicodeMixin, dict):
                 data[prop] = value.isoformat()
             elif isinstance(value, (UnicodeMixin, base_text_type)):
                 data[prop] = u(value)
+            elif isinstance(value, (Language, Country)):
+                data[prop] = value.guessit
             elif isinstance(value, list):
                 data[prop] = [u(x) for x in value]
             if advanced:

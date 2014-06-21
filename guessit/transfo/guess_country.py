@@ -21,11 +21,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.plugins.transformers import Transformer
-from guessit.country import Country
+from babelfish import Country
 from guessit import Guess
 from guessit.textutils import iter_words
 from guessit.matcher import GuessFinder, found_guess
 from guessit.language import LNG_COMMON_WORDS
+import babelfish
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class GuessCountry(Transformer):
@@ -53,8 +57,8 @@ class GuessCountry(Transformer):
                 start = word_match.start(0)
             s += word_match.group(0)
             try:
-                return Country(s, strict=True), (start, word_match.end(0))
-            except ValueError:
+                return Country.fromguessit(s), (start, word_match.end(0))
+            except babelfish.Error:
                 continue
 
         words_match.reverse()
@@ -65,14 +69,15 @@ class GuessCountry(Transformer):
                 end = word_match.end(0)
             s = word_match.group(0) + s
             try:
-                return Country(s, strict=True), (word_match.start(0), end)
-            except ValueError:
+                return Country.fromguessit(s), (word_match.start(0), end)
+            except babelfish.Error:
                 continue
 
-        return Country(country, strict=strict), None
+        return Country.fromguessit(country), None
 
     def is_valid_country(self, country):
-        return country.english_name.lower() not in LNG_COMMON_WORDS and country.alpha2.lower() not in LNG_COMMON_WORDS and country.alpha3.lower() not in LNG_COMMON_WORDS
+        return (country.name.lower() not in LNG_COMMON_WORDS and
+                country.alpha2.lower() not in LNG_COMMON_WORDS)
 
     def guess_country(self, string, node=None, options=None):
         c = string.strip().lower()
@@ -82,7 +87,7 @@ class GuessCountry(Transformer):
                 if self.is_valid_country(country):
                     guess = Guess(country=country, confidence=1.0, input=node.value, span=(country_span[0] + 1, country_span[1] + 1))
                     return guess
-            except ValueError:
+            except babelfish.Error:
                 pass
         return None, None
 
@@ -93,11 +98,11 @@ class GuessCountry(Transformer):
             if c in self.replace_language:
                 node.guess.set('language', None)
                 try:
-                    country = Country(c, strict=True)
+                    country = Country.fromguessit(c)
                     if self.is_valid_country(country):
                         guess = Guess(country=country, confidence=0.9, input=node.value, span=node.span)
-                        found_guess(node, guess)
-                except ValueError:
+                        found_guess(node, guess, logger=log)
+                except babelfish.Error:
                     pass
 
     def post_process(self, mtree, options=None, *args, **kwargs):
@@ -108,4 +113,4 @@ class GuessCountry(Transformer):
         if series_leaves and country_leaves:
             country_leaf = country_leaves[0]
             for serie_leaf in series_leaves:
-                serie_leaf.guess['series'] += ' (%s)' % country_leaf.guess['country'].alpha2.upper()
+                serie_leaf.guess['series'] += ' (%s)' % str(country_leaf.guess['country'].guessit)

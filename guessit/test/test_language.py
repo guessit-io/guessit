@@ -29,23 +29,23 @@ class TestLanguage(TestGuessit):
 
     def check_languages(self, languages):
         for lang1, lang2 in languages.items():
-            self.assertEqual(Language(lang1),
-                             Language(lang2))
+            self.assertEqual(Language.fromguessit(lang1),
+                             Language.fromguessit(lang2))
 
     def test_addic7ed(self):
         languages = {'English': 'en',
-                     'English (US)': 'en',
-                     'English (UK)': 'en',
+                     'English (US)': 'en-US',
+                     'English (UK)': 'en-UK',
                      'Italian': 'it',
                      'Portuguese': 'pt',
-                     'Portuguese (Brazilian)': 'pt',
+                     'Portuguese (Brazilian)': 'pt-BR',
                      'Romanian': 'ro',
-                     'Español (Latinoamérica)': 'es',
-                     'Español (España)': 'es',
-                     'Spanish (Latin America)': 'es',
+                     'Español (Latinoamérica)': 'es-MX',
+                     'Español (España)': 'es-ES',
+                     'Spanish (Latin America)': 'es-MX',
                      'Español': 'es',
                      'Spanish': 'es',
-                     'Spanish (Spain)': 'es',
+                     'Spanish (Spain)': 'es-ES',
                      'French': 'fr',
                      'Greek': 'el',
                      'Arabic': 'ar',
@@ -66,9 +66,9 @@ class TestLanguage(TestGuessit):
         self.check_languages(languages)
 
     def test_subswiki(self):
-        languages = {'English (US)': 'en', 'English (UK)': 'en', 'English': 'en',
+        languages = {'English (US)': 'en-US', 'English (UK)': 'en-UK', 'English': 'en',
                      'French': 'fr', 'Brazilian': 'po', 'Portuguese': 'pt',
-                     'Español (Latinoamérica)': 'es', 'Español (España)': 'es',
+                     'Español (Latinoamérica)': 'es-MX', 'Español (España)': 'es-ES',
                      'Español': 'es', 'Italian': 'it', 'Català': 'ca'}
 
         self.check_languages(languages)
@@ -91,7 +91,7 @@ class TestLanguage(TestGuessit):
             if int(upload_enabled) and int(web_enabled):
                 # check that we recognize the opensubtitles language code correctly
                 # and that we are able to output this code from a language
-                self.assertEqual(idlang, Language(idlang).opensubtitles)
+                self.assertEqual(idlang, Language.fromguessit(idlang).opensubtitles)
                 if alpha2:
                     # check we recognize the opensubtitles 2-letter code correctly
                     self.check_languages({idlang: alpha2})
@@ -99,12 +99,12 @@ class TestLanguage(TestGuessit):
     def test_tmdb(self):
         # examples from http://api.themoviedb.org/2.1/language-tags
         for lang in ['en-US', 'en-CA', 'es-MX', 'fr-PF']:
-            self.assertEqual(lang, Language(lang).tmdb)
+            self.assertEqual(lang, str(Language.fromguessit(lang)))
 
     def test_subtitulos(self):
-        languages = {'English (US)': 'en', 'English (UK)': 'en', 'English': 'en',
+        languages = {'English (US)': 'en-US', 'English (UK)': 'en-UK', 'English': 'en',
                      'French': 'fr', 'Brazilian': 'po', 'Portuguese': 'pt',
-                     'Español (Latinoamérica)': 'es', 'Español (España)': 'es',
+                     'Español (Latinoamérica)': 'es-MX', 'Español (España)': 'es-ES',
                      'Español': 'es', 'Italian': 'it', 'Català': 'ca'}
 
         self.check_languages(languages)
@@ -117,19 +117,11 @@ class TestLanguage(TestGuessit):
 
         self.check_languages(languages)
 
-    def test_language_object(self):
-        self.assertEqual(len(list(set([Language('qwerty'), Language('asdf')]))), 1)
-        d = {Language('qwerty'): 7}
-        d[Language('asdf')] = 23
-        self.assertEqual(d[Language('qwerty')], 23)
-
     def test_exceptions(self):
-        self.assertEqual(Language('br'), Language('pt(br)'))
+        self.assertEqual(Language.fromguessit('br'), Language.fromguessit('pt(br)'))
 
-        # languages should be equal regardless of country
-        self.assertEqual(Language('br'), Language('pt'))
-
-        self.assertEqual(Language('unknown'), Language('und'))
+        self.assertEqual(Language.fromguessit('unknown'),
+                         Language.fromguessit('und'))
 
 
 suite = allTests(TestLanguage)

@@ -168,7 +168,8 @@ def found_guess(node, guess, update_guess=True, logger=None):
 
 def log_found_guess(guess, logger=None):
     for k, v in guess.items():
-        (logger or log).debug('Property found: %s=%s (confidence=%.2f)' % (k, v, guess.confidence(k)))
+        (logger or log).debug('Property found: %s=%s (%s) (confidence=%.2f)' %
+                              (k, v, guess.raw(k), guess.confidence(k)))
 
 
 class GuessFinder(object):

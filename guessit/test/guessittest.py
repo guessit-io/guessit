@@ -21,10 +21,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit import base_text_type, u
-
+from collections import defaultdict
 from unittest import TestCase, TestLoader, TextTestRunner
 import shlex
-
+import babelfish
 import yaml, logging, sys, os
 from os.path import *
 
@@ -70,8 +70,8 @@ class TestGuessit(TestCase):
         total = 0
         exclude_files = exclude_files or []
 
-        fails = {}
-        additionals = {}
+        fails = defaultdict(list)
+        additionals = defaultdict(list)
 
         for filename, required_fields in groundTruth.items():
             filename = u(filename)
@@ -111,8 +111,6 @@ class TestGuessit(TestCase):
             for prop, value in required_fields.items():
                 if prop not in found:
                     log.debug("Prop '%s' not found in: %s" % (prop, filename))
-                    if not filename in fails:
-                        fails[filename] = []
                     fails[filename].append("'%s' not found in: %s" % (prop, filename))
                     continue
 
@@ -121,34 +119,50 @@ class TestGuessit(TestCase):
                     isinstance(found[prop], base_text_type)):
                     if value.lower() != found[prop].lower():
                         log.debug("Wrong prop value [str] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
-                        if not filename in fails:
-                            fails[filename] = []
                         fails[filename].append("'%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
 
-                # if both are lists, we assume list of strings and do a case-insensitive
-                # comparison on their elements
                 elif isinstance(value, list) and isinstance(found[prop], list):
-                    s1 = set(u(s).lower() for s in value)
-                    s2 = set(u(s).lower() for s in found[prop])
+                    if found[prop] and isinstance(found[prop][0], babelfish.Language):
+                        # list of languages
+                        s1 = set(Language.fromguessit(s) for s in value)
+                        s2 = set(found[prop])
+                    else:
+                        # by default we assume list of strings and do a case-insensitive
+                        # comparison on their elements
+                        s1 = set(u(s).lower() for s in value)
+                        s2 = set(u(s).lower() for s in found[prop])
+
                     if s1 != s2:
                         log.debug("Wrong prop value [list] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
-                        if not filename in fails:
-                            fails[filename] = []
                         fails[filename].append("'%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+
+                elif isinstance(found[prop], babelfish.Language):
+                    try:
+                        if babelfish.Language.fromguessit(value) != found[prop]:
+                            raise ValueError
+                    except:
+                        log.debug("Wrong prop value [Language] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        fails[filename].append("'%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+
+                elif isinstance(found[prop], babelfish.Country):
+                    try:
+                        if babelfish.Country.fromguessit(value) != found[prop]:
+                            raise ValueError
+                    except:
+                        log.debug("Wrong prop value [Country] for '%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+                        fails[filename].append("'%s': expected = '%s' - received = '%s'" % (prop, u(value), u(found[prop])))
+
+
                 # otherwise, just compare their values directly
                 else:
                     if found[prop] != value:
                         log.debug("Wrong prop value for '%s': expected = '%s' [%s] - received = '%s' [%s]" % (prop, u(value), type(value), u(found[prop]), type(found[prop])))
-                        if not filename in fails:
-                            fails[filename] = []
                         fails[filename].append("'%s': expected = '%s' [%s] - received = '%s' [%s]" % (prop, u(value), type(value), u(found[prop]), type(found[prop])))
 
             # look for additional properties
             for prop, value in found.items():
                 if prop not in required_fields:
                     log.debug("Found additional info for prop = '%s': '%s'" % (prop, u(value)))
-                    if not filename in additionals:
-                        additionals[filename] = []
                     additionals[filename].append("'%s': '%s'" % (prop, u(value)))
 
         correct = total - len(fails)
