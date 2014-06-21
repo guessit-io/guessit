@@ -4,10 +4,10 @@
 Python module usage
 ===================
 
-The main entry points to the python module are the ``guess_video_info``,
+The main entry points to the python module are the ``guess_file_info``,
 ``guess_movie_info`` and ``guess_episode_info``.
 
-The ``guess_video_info`` function will try to autodetect the type of the
+The ``guess_file_info`` function will try to autodetect the type of the
 file, either movie, moviesubtitle, movieinfo, episode, episodesubtitle or
 episodeinfo.
 
@@ -15,7 +15,7 @@ Pass them the filename and the desired information type:
 
     >>> import guessit
     >>> path = 'Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv'
-    >>> guess = guessit.guess_movie_info(path, info = ['filename'])
+    >>> guess = guessit.guess_movie_info(path, info=['filename'])
 
     >>> print type(guess)
     <class 'guessit.guess.Guess'>
