@@ -18,15 +18,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function, \
-    unicode_literals
-
+from __future__ import absolute_import, division, print_function, unicode_literals
 from guessit.patterns import build_or_pattern
 from guessit.containers import PropertiesContainer
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
 from pkg_resources import resource_stream  # @UnresolvedImport
 
+TLDS = [l.strip().decode('utf-8')
+        for l in resource_stream('guessit', 'tlds-alpha-by-domain.txt').readlines()
+        if b'--' not in l][1:]
 
 class GuessWebsite(Transformer):
     def __init__(self):
@@ -34,19 +35,7 @@ class GuessWebsite(Transformer):
 
         self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False)
 
-        tlds = []
-
-        f = resource_stream('guessit', 'tlds-alpha-by-domain.txt')
-        f.readline()
-        next(f)
-        for tld in f:
-            tld = tld.strip()
-            if b'--' in tld:
-                continue
-            tlds.append(tld.decode("utf-8"))
-        f.close()
-
-        tlds_pattern = build_or_pattern(tlds)  # All registered domain extension
+        tlds_pattern = build_or_pattern(TLDS)  # All registered domain extension
         safe_tlds_pattern = build_or_pattern(['com', 'org', 'net'])  # For sure a website extension
         safe_subdomains_pattern = build_or_pattern(['www'])  # For sure a website subdomain
         safe_prefix_tlds_pattern = build_or_pattern(['co', 'com', 'org', 'net'])  # Those words before a tlds are sure

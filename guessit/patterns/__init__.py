@@ -37,15 +37,15 @@ _psep = '[\W_]?'
 def build_or_pattern(patterns):
     """Build a or pattern string from a list of possible patterns
     """
-    or_pattern = ''
+    or_pattern = []
     for pattern in patterns:
         if not or_pattern:
-            or_pattern += '(?:'
+            or_pattern.append('(?:')
         else:
-            or_pattern += '|'
-        or_pattern += ('(?:%s)' % pattern)
-    or_pattern += ')'
-    return or_pattern
+            or_pattern.append('|')
+        or_pattern.append('(?:%s)' % pattern)
+    or_pattern.append(')')
+    return ''.join(or_pattern)
 
 
 def compile_pattern(pattern, enhance=True):
