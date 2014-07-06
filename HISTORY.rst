@@ -11,14 +11,17 @@ History
 0.8 (unreleased)
 ----------------
 
-* Command-line util can now report bugs to the http://bugs.guessit.io service
-  by specifying the -b or --bug flag
+* New webservice that allows to use GuessIt just by sending a POST request to
+  the http://guessit.io/guess url
+* Command-line util can now report bugs to the http://guessit.io/bugs service
+  by specifying the ``-b`` or ``--bug`` flag
 * GuessIt can now use the Enzyme python package to detect metadata out of the
   actual video file metadata instead of the filename
-* New property: 'duration' which returns the duration of the video in seconds
+* Finished transition to ``babelfish.Language`` and ``babelfish.Country``
+* New property: ``duration`` which returns the duration of the video in seconds
   This requires the Enzyme package to work
-* New property: 'fileSize' which returns the size of the file in bytes
-* Renamed property 'special' to 'episodeDetails'
+* New property: ``fileSize`` which returns the size of the file in bytes
+* Renamed property ``special`` to ``episodeDetails``
 * Added support for Python 3.4
 * Optimization and bugfixes
 
