@@ -8,7 +8,7 @@ History
 
 
 
-0.8 (unreleased)
+0.8 (2014-06-06)
 ----------------
 
 * New webservice that allows to use GuessIt just by sending a POST request to
