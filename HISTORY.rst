@@ -13,7 +13,7 @@ History
 * Nothing changed yet.
 
 
-0.8 (2014-06-06)
+0.8 (2014-07-06)
 ----------------
 
 * New webservice that allows to use GuessIt just by sending a POST request to
