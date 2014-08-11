@@ -5,6 +5,8 @@ option_parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                          help='Display debug output')
 option_parser.add_option('-p', '--properties', dest='properties', action='store_true', default=False,
                          help='Display properties that can be guessed.')
+option_parser.add_option('-P', '--show-property', dest='show_property', default=None,
+                          help='Display the value of a single property, i.e. title, type')
 option_parser.add_option('-l', '--values', dest='values', action='store_true', default=False,
                          help='Display property values that can be guessed.')
 option_parser.add_option('-s', '--transformers', dest='transformers', action='store_true', default=False,

@@ -32,8 +32,14 @@ def guess_file(filename, info='filename', options=None, **kwargs):
     options = options or {}
     filename = u(filename)
 
-    print('For:', filename)
     guess = guess_file_info(filename, info, options, **kwargs)
+
+    if options.get('show_property'):
+        print (guess[options.get('show_property')])
+        return
+
+    print('For:', filename)
+
     if options.get('yaml'):
         try:
             import yaml
