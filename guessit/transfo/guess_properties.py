@@ -204,8 +204,9 @@ class GuessProperties(Transformer):
                                     'Netflix': ['Netflix', 'NF']
                                     })
 
-        self.container.register_property('other', 'Real', 'Fix', canonical_form="Proper", validator=WeakValidator())
-        self.container.register_property('other', 'Proper', 'Repack', 'Rerip', canonical_form="Proper")
+        self.container.register_property('other', 'Real', 'Fix', canonical_form='Proper', validator=WeakValidator())
+        self.container.register_property('other', 'Proper', 'Repack', 'Rerip', canonical_form='Proper')
+        self.container.register_property('other', 'Fansub', canonical_form='Fansub')
 
         self.container.register_canonical_properties('other', 'R5', 'Screener', '3D', 'HD', 'HQ', 'DDC', 'HR')
         self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', validator=WeakValidator())
