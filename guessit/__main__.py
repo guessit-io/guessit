@@ -32,27 +32,25 @@ def guess_file(filename, info='filename', options=None, **kwargs):
     options = options or {}
     filename = u(filename)
 
-    print('For:', filename)
+    if not options.get('yaml'):
+        print('For:', filename)
     guess = guess_file_info(filename, info, options, **kwargs)
     if options.get('yaml'):
-        try:
-            import yaml
-            for k, v in guess.items():
-                if isinstance(v, list) and len(v) == 1:
-                    guess[k] = v[0]
-            ystr = yaml.safe_dump({filename: dict(guess)}, default_flow_style=False)
-            i = 0
-            for yline in ystr.splitlines():
-                if i == 0:
-                    print("? " + yline[:-1])
-                elif i == 1:
-                    print(":" + yline[1:])
-                else:
-                    print(yline)
-                i = i + 1
-            return
-        except ImportError:  # pragma: no cover
-            print('PyYAML not found. Using default output.')
+        import yaml
+        for k, v in guess.items():
+            if isinstance(v, list) and len(v) == 1:
+                guess[k] = v[0]
+        ystr = yaml.safe_dump({filename: dict(guess)}, default_flow_style=False)
+        i = 0
+        for yline in ystr.splitlines():
+            if i == 0:
+                print("? " + yline[:-1])
+            elif i == 1:
+                print(":" + yline[1:])
+            else:
+                print(yline)
+            i = i + 1
+        return
     print('GuessIt found:', guess.nice_string(options.get('advanced')))
 
 
@@ -218,15 +216,27 @@ def main(args=None, setup_logging=True):
         run_demo(episodes=True, movies=True, options=vars(options))
         help_required = False
 
+    if options.yaml:
+        try:
+            import yaml, babelfish
+            def default_representer(dumper, data):
+                return dumper.represent_str(str(data))
+            yaml.SafeDumper.add_representer(babelfish.Language, default_representer)
+            yaml.SafeDumper.add_representer(babelfish.Country, default_representer)
+        except ImportError:  # pragma: no cover
+            print('PyYAML not found. Using default output.')
+
     filenames = []
     if args:
         filenames.extend(args)
     if options.input_file:
         input_file = open(options.input_file, 'r')
         try:
-            filenames.extend(input_file.readlines())
+            filenames.extend([line.strip() for line in input_file.readlines()])
         finally:
             input_file.close()
+
+    filenames = filter(lambda filename: filename, filenames)
 
     if filenames:
         help_required = False
