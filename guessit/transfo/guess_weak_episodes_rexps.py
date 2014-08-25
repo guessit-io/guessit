@@ -32,7 +32,7 @@ class GuessWeakEpisodesRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 15)
 
-        self.properties = PropertiesContainer(enhance=False, canonical_from_pattern=False)
+        self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False)
 
         def _formater(episodeNumber):
             epnum = parse_numeral(episodeNumber)
@@ -47,18 +47,18 @@ class GuessWeakEpisodesRexps(Transformer):
                 else:
                     return epnum
 
-        self.properties.register_property(['episodeNumber', 'season'], '[0-9]{2,4}', confidence=0.6, formatter=_formater)
-        self.properties.register_property('episodeNumber', '(?:episode)' + sep + '(' + numeral + ')[^0-9]', confidence=0.3)
+        self.container.register_property(['episodeNumber', 'season'], '[0-9]{2,4}', confidence=0.6, formatter=_formater)
+        self.container.register_property('episodeNumber', '(?:episode)' + sep + '(' + numeral + ')[^0-9]', confidence=0.4)
 
     def supported_properties(self):
-        return self.properties.get_supported_properties()
+        return self.container.get_supported_properties()
 
     def guess_weak_episodes_rexps(self, string, node=None, options=None):
         if node and 'episodeNumber' in node.root.info:
             return None
 
-        properties = self.properties.find_properties(string, node)
-        guess = self.properties.as_guess(properties, string)
+        properties = self.container.find_properties(string, node)
+        guess = self.container.as_guess(properties, string)
 
         return guess
 

@@ -342,6 +342,7 @@ class PropertiesContainer(object):
         entry_end = {}
 
         entries = []
+        duplicate_matches = {}
 
         ret = []
 
@@ -354,17 +355,12 @@ class PropertiesContainer(object):
             if re_match:
                 match = prop.compiled.match(string)
                 if match:
-                    valid_match = match
+                    entries.append((prop, match))
             else:
-                matches = prop.compiled.finditer(string)
+                matches = list(prop.compiled.finditer(string))
+                duplicate_matches[prop] = matches
                 for match in matches:
-                    # Keeping the last match, maybe it should be optional ...
-                    # Needed for the.100.109.hdtv-lol.mp4
-                    valid_match = match
-
-            if valid_match:
-                entry = prop, valid_match
-                entries.append(entry)
+                    entries.append((prop, match))
 
         if validate:
             # compute entries start and ends
@@ -393,6 +389,9 @@ class PropertiesContainer(object):
                 for entry in invalid_entries:
                     prop, match = entry
                     entries.remove(entry)
+                    prop_duplicate_matches = duplicate_matches.get(prop)
+                    if prop_duplicate_matches:
+                        prop_duplicate_matches.remove(match)
                     invalid_span = _get_span(prop, match)
                     start = invalid_span[0]
                     end = invalid_span[1]
@@ -402,6 +401,12 @@ class PropertiesContainer(object):
                     entry_end[end].remove(prop)
                     if not entry_end.get(end):
                         del entry_end[end]
+
+        for prop, prop_duplicate_matches in duplicate_matches.items():
+            # Keeping the last valid match.
+            # Needed for the.100.109.hdtv-lol.mp4
+            for duplicate_match in prop_duplicate_matches[:-1]:
+                entries.remove((prop, duplicate_match))
 
         if multiple:
             ret = entries
@@ -414,18 +419,18 @@ class PropertiesContainer(object):
                         entries_dict[key] = []
                     entries_dict[key].append(entry)
 
-            for entries in entries_dict.values():
+            for key_entries in entries_dict.values():
                 if multiple:
-                    for entry in entries:
+                    for entry in key_entries:
                         ret.append(entry)
                 else:
                     best_ret = {}
 
                     best_prop, best_match = None, None
-                    if len(entries) == 1:
-                        best_prop, best_match = entries[0]
+                    if len(key_entries) == 1:
+                        best_prop, best_match = key_entries[0]
                     else:
-                        for prop, match in entries:
+                        for prop, match in key_entries:
                             start, end = _get_span(prop, match)
                             if not best_prop or \
                             best_prop.confidence < best_prop.confidence or \

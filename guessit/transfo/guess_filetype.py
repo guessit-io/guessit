@@ -154,6 +154,18 @@ class GuessFiletype(Transformer):
                 upgrade_episode()
                 return filetype_container[0], other
 
+            weak_episode_transformer = get_transformer('guess_weak_episodes_rexps')
+            if weak_episode_transformer:
+                found = properties_transformer.container.find_properties(filename, mtree, 'crc32')
+                guess = properties_transformer.container.as_guess(found, filename)
+                if guess:
+                    found = weak_episode_transformer.container.find_properties(filename, mtree)
+                    guess = weak_episode_transformer.container.as_guess(found, filename)
+                    if guess:
+                        self.log.debug('Found characteristic property of episodes: %s"', guess)
+                        upgrade_episode()
+                        return filetype_container[0], other
+
             found = properties_transformer.container.find_properties(filename, mtree, 'format')
             guess = properties_transformer.container.as_guess(found, filename)
             if guess and guess['format'] in ('HDTV', 'WEBRip', 'WEB-DL', 'DVB'):

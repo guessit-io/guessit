@@ -135,7 +135,8 @@ class GuessProperties(Transformer):
         self.container.register_property('videoProfile', 'XP', 'EP', canonical_form='XP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
         self.container.register_property('videoProfile', 'MP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
         self.container.register_property('videoProfile', 'HP', 'HiP', canonical_form='HP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
-        self.container.register_property('videoProfile', '10.?bit', 'Hi10P', canonical_form='10bit', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
+        self.container.register_property('videoProfile', '10.?bit', 'Hi10P', canonical_form='10bit')
+        self.container.register_property('videoProfile', '8.?bit', canonical_form='8bit')
         self.container.register_property('videoProfile', 'Hi422P', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
         self.container.register_property('videoProfile', 'Hi444PP', validator=LeavesValidator(lambdas=[lambda node: 'videoCodec' in node.guess]))
 

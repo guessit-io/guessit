@@ -132,14 +132,15 @@ def _add_camel_properties(mtree, options=None, **kwargs):
         value = leaf.value
         _guess_camel_string(mtree, value, options=options, skip_title=True, **kwargs)
 
-
 def _guess_camel_string(mtree, string, options=None, skip_title=False, **kwargs):
     if string and is_camel(string):
         log.info('"%s" is camel cased. Try to detect more properties.' % (string,))
         uncameled_value = from_camel(string)
-        camel_tree = _build_filename_mtree(uncameled_value, options=options, name_only=True, skip_title=skip_title, **kwargs)
+        merged_options = dict(options)
+        if 'type' in mtree.match_tree.info:
+            merged_options['type'] = mtree.match_tree.info.get('type')
+        camel_tree = _build_filename_mtree(uncameled_value, options=merged_options, name_only=True, skip_title=skip_title, **kwargs)
         if len(camel_tree.matched()) > 0:
-            # Title has changed.
             mtree.matched().update(camel_tree.matched())
             return True
     return False

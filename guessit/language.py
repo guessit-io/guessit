@@ -174,6 +174,8 @@ LNG_COMMON_WORDS = frozenset([
     'bas', 'de', 'le', 'son', 'ne', 'ca', 'ce', 'et', 'que',
     'mal', 'est', 'vol', 'or', 'mon', 'se', 'je', 'tu', 'me',
     'ne', 'ma', 'va',
+    # japanese words,
+    'wa', 'ga', 'ao',
     # spanish words
     'la', 'el', 'del', 'por', 'mar',
     # other

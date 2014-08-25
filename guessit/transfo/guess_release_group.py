@@ -32,7 +32,7 @@ class GuessReleaseGroup(Transformer):
     def __init__(self):
         Transformer.__init__(self, -190)
         self.container = PropertiesContainer(canonical_from_pattern=False)
-        self._allowed_groupname_pattern = '[\w@#€£$&]'
+        self._allowed_groupname_pattern = '[\w@#€£$&!\?]'
         self._forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour', 'bonus'],
                                lambda elt: self._is_number(elt),
                                ]
@@ -138,6 +138,10 @@ class GuessReleaseGroup(Transformer):
                             break
                     else:
                         break
+
+            if not validated_guess and node.is_explicit():
+                guess.metadata().confidence = 0.4
+                validated_guess = guess
 
         if validated_guess:
             # Strip brackets
