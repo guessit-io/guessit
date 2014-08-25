@@ -217,17 +217,28 @@ def main(args=None, setup_logging=True):
     if options.demo:
         run_demo(episodes=True, movies=True, options=vars(options))
         help_required = False
-    elif options.submit_bug:
-        for filename in args:
-            help_required = False
-            submit_bug(filename)
-    else:
-        if args:
-            help_required = False
-            for filename in args:
+
+    filenames = []
+    if args:
+        filenames.extend(args)
+    if options.input_file:
+        input_file = open(options.input_file, 'r')
+        try:
+            filenames.extend(input_file.readlines())
+        finally:
+            input_file.close()
+
+    if filenames:
+        help_required = False
+        if options.submit_bug:
+            for filename in filenames:
+                submit_bug(filename)
+        else:
+            for filename in filenames:
                 guess_file(filename,
                            info=options.info.split(','),
                            options=vars(options))
+
 
     if help_required:  # pragma: no cover
         option_parser.print_help()

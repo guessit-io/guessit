@@ -21,6 +21,8 @@ option_parser.add_option('-a', '--advanced', dest='advanced', action='store_true
                          help='Display advanced information for filename guesses, as json output')
 option_parser.add_option('-y', '--yaml', dest='yaml', action='store_true', default=False,
                          help='Display information for filename guesses as yaml output (like unit-test)')
+option_parser.add_option('-f', '--input-file', dest='input_file', default=False,
+                         help='Read filenames from an input file.')
 option_parser.add_option('-d', '--demo', action='store_true', dest='demo', default=False,
                          help='Run a few builtin tests instead of analyzing a file')
 option_parser.add_option('-b', '--bug', action='store_true', dest='submit_bug', default=False,
