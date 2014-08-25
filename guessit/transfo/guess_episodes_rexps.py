@@ -67,6 +67,7 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_property(None, r'((?P<episodeNumber>' + digital_numeral + ')v[23])', confidence=0.6, formatter=parse_numeral)
         self.container.register_property(None, r'((?:ep)' + sep + r'(?P<episodeNumber>' + numeral + '))[^0-9]', confidence=0.7, formatter=parse_numeral)
         self.container.register_property(None, r'(e(?P<episodeNumber>' + digital_numeral + '))', confidence=0.6, formatter=parse_numeral)
+        self.container.register_property(None, r'(episode(?P<episodeNumber>' + sep + digital_numeral + '))', confidence=0.6, formatter=parse_numeral)
         self.container.register_property(None, r'\A ?((?P<episodeNumber>' + '\d{2}' + '))' + sep, confidence=0.4, formatter=parse_numeral)
         self.container.register_property(None, r'\A ?(0(?P<episodeNumber>' + '\d+' + '))' + sep, confidence=0.4, formatter=parse_numeral)
 
