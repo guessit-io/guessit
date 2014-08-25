@@ -234,19 +234,22 @@ class GuessFinder(object):
                         guess = Guess(result, confidence=self.confidence, input=string, span=span)
 
                     if not iterative:
-                        node.guess.update(guess)
+                        found_guess(node, guess, logger=self.logger)
                     else:
                         absolute_span = (span[0] + node.offset, span[1] + node.offset)
                         node.partition(span)
-                        found_child = None
-                        for child in node.children:
-                            if child.span == absolute_span:
-                                found_guess(child, guess, self.logger)
-                                found_child = child
-                                break
-                        for child in node.children:
-                            if not child is found_child:
-                                self.process_node(child)
+                        if node.is_leaf():
+                            found_guess(node, guess, logger=self.logger)
+                        else:
+                            found_child = None
+                            for child in node.children:
+                                if child.span == absolute_span:
+                                    found_guess(child, guess, logger=self.logger)
+                                    found_child = child
+                                    break
+                            for child in node.children:
+                                if not child is found_child:
+                                    self.process_node(child)
                 else:
                     for partition_span in partition_spans:
                         self.process_node(node, partial_span=partition_span)

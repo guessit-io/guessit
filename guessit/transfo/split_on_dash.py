@@ -27,7 +27,7 @@ import re
 
 class SplitOnDash(Transformer):
     def __init__(self):
-        Transformer.__init__(self, 190)
+        Transformer.__init__(self, 245)
 
     def process(self, mtree, options=None):
         """split into '-' separated subgroups (with required separator chars

@@ -27,7 +27,7 @@ import re
 
 class GuessIdnumber(Transformer):
     def __init__(self):
-        Transformer.__init__(self, -180)
+        Transformer.__init__(self, 220)
 
     def supported_properties(self):
         return ['idNumber']
@@ -39,6 +39,9 @@ class GuessIdnumber(Transformer):
         if match is not None:
             result = match.groupdict()
             switch_count = 0
+            switch_letter_count = 0;
+            letter_count = 0;
+            last_letter = None
             DIGIT = 0
             LETTER = 1
             OTHER = 2
@@ -48,6 +51,10 @@ class GuessIdnumber(Transformer):
                     ci = DIGIT
                 elif c in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':
                     ci = LETTER
+                    if c != last_letter:
+                        switch_letter_count += 1
+                    last_letter = c
+                    letter_count += 1
                 else:
                     ci = OTHER
 
@@ -57,10 +64,11 @@ class GuessIdnumber(Transformer):
                 last = ci
 
             switch_ratio = float(switch_count) / len(result['idNumber'])
+            letters_ratio = (float(switch_letter_count) / letter_count) if letter_count > 0 else 1
 
             # only return the result as probable if we alternate often between
             # char type (more likely for hash values than for common words)
-            if switch_ratio > 0.4:
+            if switch_ratio > 0.4 and letters_ratio > 0.4:
                 return result, match.span()
 
         return None, None

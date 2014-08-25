@@ -34,7 +34,7 @@ from guessit.textutils import clean_string
 
 class GuessFiletype(Transformer):
     def __init__(self):
-        Transformer.__init__(self, 250)
+        Transformer.__init__(self, 200)
 
     # List of well known movies and series, hardcoded because they cannot be
     # guessed appropriately otherwise

@@ -197,6 +197,8 @@ class GuessProperties(Transformer):
 
         self.container.register_property('episodeFormat', r'Minisodes?', canonical_form='Minisode')
 
+        self.container.register_property('crc32', '(?:[a-fA-F]|[0-9]){8}', enhance=False, canonical_from_pattern=False)
+
         register_property('other', {'AudioFix': ['Audio-Fix', 'Audio-Fixed'],
                                     'SyncFix': ['Sync-Fix', 'Sync-Fixed'],
                                     'DualAudio': ['Dual-Audio'],

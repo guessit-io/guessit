@@ -28,7 +28,7 @@ from functools import reduce
 
 class SplitExplicitGroups(Transformer):
     def __init__(self):
-        Transformer.__init__(self, 245)
+        Transformer.__init__(self, 250)
 
     def process(self, mtree, options=None):
         """split each of those into explicit groups (separated by parentheses or square brackets)
