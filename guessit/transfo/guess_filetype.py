@@ -138,11 +138,14 @@ class GuessFiletype(Transformer):
         # if we have an episode_rexp (eg: s02e13), it is an episode
         episode_transformer = get_transformer('guess_episodes_rexps')
         if episode_transformer:
-            guess = episode_transformer.guess_episodes_rexps(filename)
-            if guess:
-                self.log.debug('Found guess_episodes_rexps: %s -> type = episode', guess)
-                upgrade_episode()
-                return filetype_container[0], other
+            filename_parts = list(x.value for x in mtree.unidentified_leaves());
+            filename_parts.append(filename)
+            for filename_part in filename_parts:
+                guess = episode_transformer.guess_episodes_rexps(filename_part)
+                if guess:
+                    self.log.debug('Found guess_episodes_rexps: %s -> type = episode', guess)
+                    upgrade_episode()
+                    return filetype_container[0], other
 
         properties_transformer = get_transformer('guess_properties')
         if properties_transformer:

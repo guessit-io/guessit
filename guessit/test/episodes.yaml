@@ -708,3 +708,26 @@
   series: Naruto Shippuden
   subtitleLanguage: fr
 
+? '[HorribleSubs] Ao Haru Ride - 06 [480p].mkv'
+: episodeNumber: 6
+  releaseGroup: HorribleSubs
+  screenSize: 480p
+  series: Ao Haru Ride
+
+? '[DeadFish] Tari Tari - 01 [BD][720p][AAC].mp4'
+: audioCodec: AAC
+  episodeNumber: 1
+  format: BluRay
+  releaseGroup: DeadFish
+  screenSize: 720p
+  series: Tari Tari
+
+? '[NoobSubs] Sword Art Online II 06 (720p 8bit AAC).mp4'
+: audioCodec: AAC
+  episodeNumber: 6
+  releaseGroup: NoobSubs
+  screenSize: 720p
+  series: Sword Art Online II
+  videoProfile: 8bit
+
+
