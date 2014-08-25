@@ -730,4 +730,29 @@
   series: Sword Art Online II
   videoProfile: 8bit
 
+? '[DeadFish] 01 - Tari Tari [BD][720p][AAC].mp4'
+: audioCodec: AAC
+  episodeNumber: 1
+  format: BluRay
+  releaseGroup: DeadFish
+  screenSize: 720p
+  series: Tari Tari
+
+? '[NoobSubs] 06 Sword Art Online II (720p 8bit AAC).mp4'
+: audioCodec: AAC
+  episodeNumber: 6
+  releaseGroup: NoobSubs
+  screenSize: 720p
+  series: Sword Art Online II
+  videoProfile: 8bit
+
+? '[DeadFish] 12 - Tari Tari [BD][720p][AAC].mp4'
+: audioCodec: AAC
+  episodeNumber: 12
+  format: BluRay
+  releaseGroup: DeadFish
+  screenSize: 720p
+  series: Tari Tari
+
+
 
