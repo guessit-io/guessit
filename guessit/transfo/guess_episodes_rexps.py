@@ -76,7 +76,7 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_canonical_properties('other', 'FiNAL', 'Complete', validator=WeakValidator())
 
     def supported_properties(self):
-        return ['episodeNumber', 'season']
+        return ['episodeNumber', 'season', 'episodeList']
 
     def guess_episodes_rexps(self, string, node=None, options=None):
         found = self.container.find_properties(string, node)
