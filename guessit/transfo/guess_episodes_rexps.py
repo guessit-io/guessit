@@ -69,6 +69,7 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_property(None, r'(e(?P<episodeNumber>' + digital_numeral + '))', confidence=0.6, formatter=parse_numeral)
         self.container.register_property(None, r'(episode(?P<episodeNumber>' + sep + digital_numeral + '))', confidence=0.6, formatter=parse_numeral)
         self.container.register_property('episodeNumber', r'^ ?(\d{2})' + sep, confidence=0.4, formatter=parse_numeral)
+        self.container.register_property('episodeNumber', r'^ ?(\d{2})' + sep, confidence=0.4, formatter=parse_numeral)
         self.container.register_property('episodeNumber', r'^ ?0(\d{1,2})' + sep, confidence=0.4, formatter=parse_numeral)
         self.container.register_property('episodeNumber', sep + r'(\d{2}) ?$', confidence=0.4, formatter=parse_numeral)
         self.container.register_property('episodeNumber', sep + r'0(\d{1,2}) ?$', confidence=0.4, formatter=parse_numeral)
@@ -76,7 +77,7 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_canonical_properties('other', 'FiNAL', 'Complete', validator=WeakValidator())
 
     def supported_properties(self):
-        return ['episodeNumber', 'season', 'episodeList']
+        return ['episodeNumber', 'season', 'episodeList', 'episodeCount']
 
     def guess_episodes_rexps(self, string, node=None, options=None):
         found = self.container.find_properties(string, node)

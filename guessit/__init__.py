@@ -108,7 +108,8 @@ log.addHandler(h)
 
 def _guess_filename(filename, options=None, **kwargs):
     mtree = _build_filename_mtree(filename, options=options, **kwargs)
-    _add_camel_properties(mtree, options=options)
+    if 'split_camel' in options:
+        _add_camel_properties(mtree, options=options)
     return mtree.matched()
 
 

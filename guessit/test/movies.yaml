@@ -615,12 +615,14 @@
   format: BluRay
 
 ? BeatdownFrenchDVDRip.mkv
-: title: Beatdown
+: options: -c
+  title: Beatdown
   language: French
   format: DVD
 
 ? YvesSaintLaurent2013FrenchDVDScrXvid.avi
-: format: DVD
+: options: -c
+  format: DVD
   language: French
   other: Screener
   title: Yves saint laurent

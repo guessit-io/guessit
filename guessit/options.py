@@ -9,6 +9,8 @@ option_parser.add_option('-l', '--values', dest='values', action='store_true', d
                          help='Display property values that can be guessed.')
 option_parser.add_option('-s', '--transformers', dest='transformers', action='store_true', default=False,
                          help='Display transformers that can be used.')
+option_parser.add_option('-c', '--split-camel', dest='split_camel', action='store_true', default=False,
+                         help='Split camel case part of filename.')
 option_parser.add_option('-i', '--info', dest='info', default='filename',
                          help='The desired information type: filename, video, hash_mpc or a hash from python\'s '
                               'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
