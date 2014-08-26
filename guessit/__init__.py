@@ -138,7 +138,9 @@ def _guess_camel_string(mtree, string, options=None, skip_title=False, **kwargs)
         uncameled_value = from_camel(string)
         merged_options = dict(options)
         if 'type' in mtree.match_tree.info:
-            merged_options['type'] = mtree.match_tree.info.get('type')
+            current_type = mtree.match_tree.info.get('type')
+            if current_type and current_type != 'unknown':
+                merged_options['type'] = current_type
         camel_tree = _build_filename_mtree(uncameled_value, options=merged_options, name_only=True, skip_title=skip_title, **kwargs)
         if len(camel_tree.matched()) > 0:
             mtree.matched().update(camel_tree.matched())
