@@ -754,5 +754,35 @@
   screenSize: 720p
   series: Tari Tari
 
+? Something.Season.2.1of4.Ep.Title.HDTV.torrent
+: episodeCount: 4
+  episodeNumber: 1
+  format: HDTV
+  season: 2
+  series: Something
+  title: Title
+
+? Something.Season.2of5.3of9.Ep.Title.HDTV.torrent
+: episodeCount: 9
+  episodeNumber: 3
+  format: HDTV
+  season: 2
+  seasonCount: 5
+  series: Something
+  title: Title
+
+? Something.Other.Season.3of5.Complete.HDTV.torrent
+: format: HDTV
+  other: Complete
+  season: 3
+  seasonCount: 5
+  series: Something Other
+
+
+
+
+
+
+
 
 

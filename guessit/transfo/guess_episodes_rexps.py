@@ -74,10 +74,16 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_property('episodeNumber', sep + r'(\d{2}) ?$', confidence=0.4, formatter=parse_numeral)
         self.container.register_property('episodeNumber', sep + r'0(\d{1,2}) ?$', confidence=0.4, formatter=parse_numeral)
 
+        of_pattern = '(?:of|sur|\\/|\\\\)'
+        self.container.register_property(None, r'((?P<episodeNumber>' + numeral + ')' + sep + '?' + of_pattern + sep + '?(?P<episodeCount>' + numeral + ')' + sep + '?(?:episodes?|eps?))', confidence=0.7, formatter=parse_numeral)
+        self.container.register_property(None, r'((?:episodes?|eps?)' + sep + '?(?P<episodeNumber>' + numeral + ')' + sep + '?' + of_pattern + sep + '?(?P<episodeCount>' + numeral + '))', confidence=0.7, formatter=parse_numeral)
+        self.container.register_property(None, r'((?:seasons?|saisons?|s)' + sep + '?(?P<season>' + numeral + ')' + sep + '?' + of_pattern + sep + '?(?P<seasonCount>' + numeral + '))', confidence=0.7, formatter=parse_numeral)
+        self.container.register_property(None, r'((?P<season>' + numeral + ')' + sep + '?' + of_pattern + sep + '?(?P<seasonCount>' + numeral + ')' + sep + '?(?:seasons?|saisons?|s))', confidence=0.7, formatter=parse_numeral)
+
         self.container.register_canonical_properties('other', 'FiNAL', 'Complete', validator=WeakValidator())
 
     def supported_properties(self):
-        return ['episodeNumber', 'season', 'episodeList', 'episodeCount']
+        return ['episodeNumber', 'season', 'episodeList', 'episodeCount', 'seasonCount']
 
     def guess_episodes_rexps(self, string, node=None, options=None):
         found = self.container.find_properties(string, node)

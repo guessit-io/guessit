@@ -141,13 +141,10 @@ class LeavesValidator(DefaultValidator):
             return False
 
         previous_ = self._validate_previous(prop, string, node, match, entry_start, entry_end)
-        if previous_ and self.both_side:
-            return previous_
         next_ = self._validate_next(prop, string, node, match, entry_start, entry_end)
 
         if previous_ is None and next_ is None:
             return super_ret
-
         if self.both_side:
             return previous_ and next_
         else:
