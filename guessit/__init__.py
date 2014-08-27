@@ -25,7 +25,8 @@ from .__version__ import __version__
 
 __all__ = ['Guess', 'Language',
            'guess_file_info', 'guess_video_info',
-           'guess_movie_info', 'guess_episode_info']
+           'guess_movie_info', 'guess_episode_info',
+           'default_options']
 
 
 # Do python3 detection before importing any other module, to be sure that
@@ -92,7 +93,7 @@ from guessit.textutils import clean_string, is_camel, from_camel
 import babelfish
 import os.path
 import logging
-import json
+from copy import deepcopy
 
 log = logging.getLogger(__name__)
 
@@ -255,6 +256,7 @@ def guess_video_metadata(filename):
         log.error('Error: %s' % e)
         return result
 
+default_options = {}
 
 def guess_file_info(filename, info=None, options=None, **kwargs):
     """info can contain the names of the various plugins, such as 'filename' to
@@ -267,6 +269,10 @@ def guess_file_info(filename, info=None, options=None, **kwargs):
     """
     info = info or 'filename'
     options = options or {}
+    if default_options:
+        merged_options = deepcopy(default_options)
+        merged_options.update(options)
+        options = merged_options
 
     result = []
     hashers = []
