@@ -221,6 +221,19 @@
   language: english
   website: sharethefiles.com
 
+? Movies/The Doors (1991)/08.03.09.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv
+: options: --date-year-first
+  title: The Doors
+  year: 1991
+  date: 2008-03-09
+  format: BluRay
+  screenSize: 720p
+  audioCodec: AC3
+  videoCodec: h264
+  releaseGroup: HiS@SiLUHD
+  language: english
+  website: sharethefiles.com
+
 ? Movies/Ratatouille/video_ts-ratatouille.srt
 : title: Ratatouille
   format: DVD

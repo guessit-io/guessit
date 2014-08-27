@@ -33,7 +33,7 @@ class GuessDate(Transformer):
         return ['date']
 
     def guess_date(self, string, node=None, options=None):
-        date, span = search_date(string)
+        date, span = search_date(string, options.get('date_year_first') if options else False)
         if date:
             return {'date': date}, span
         else:

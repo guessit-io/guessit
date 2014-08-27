@@ -21,41 +21,73 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
+
 import re
-import math
 
 
 _dsep = r'[-/ \.]'
-_date_rexps = [re.compile(
-        # 20010823
-        r'[^0-9]' +
-        r'(?P<year>[0-9]{4})' +
-        r'(?P<month>[0-9]{2})' +
-        r'(?P<day>[0-9]{2})' +
-        r'[^0-9]'),
 
-        # 2001-08-23
-        re.compile(r'[^0-9]' +
-        r'(?P<year>[0-9]{4})' + _dsep +
-        r'(?P<month>[0-9]{2})' + _dsep +
-        r'(?P<day>[0-9]{2})' +
-        r'[^0-9]'),
+# 20010823
+_date_rexp_yyyymmdd = re.compile(
+    r'[^0-9]' +
+    r'(?P<year>[0-9]{4})' +
+    r'(?P<month>[0-9]{2})' +
+    r'(?P<day>[0-9]{2})' +
+    r'[^0-9]')
 
-        # 23-08-2001
-        re.compile(r'[^0-9]' +
-        r'(?P<day>[0-9]{2})' + _dsep +
-        r'(?P<month>[0-9]{2})' + _dsep +
-        r'(?P<year>[0-9]{4})' +
-        r'[^0-9]'),
+# 2001-08-23
+_date_rexp_yyyy_mm_dd = re.compile(r'[^0-9]' +
+                                   r'(?P<year>[0-9]{4})' + _dsep +
+                                   r'(?P<month>[0-9]{1,2})' + _dsep +
+                                   r'(?P<day>[0-9]{1,2})' +
+                                   r'[^0-9]')
 
-        # 23-08-01
-        re.compile(r'[^0-9]' +
-        r'(?P<day>[0-9]{2})' + _dsep +
-        r'(?P<month>[0-9]{2})' + _dsep +
-        r'(?P<year>[0-9]{2})' +
-        r'[^0-9]'),
-        ]
+# 01-08-23
+_date_rexp_yy_mm_dd = re.compile(
+    re.compile(r'[^0-9]' +
+               r'(?P<year>[0-9]{2})' + _dsep +
+               r'(?P<month>[0-9]{1,2})' + _dsep +
+               r'(?P<day>[0-9]{1,2})' +
+               r'[^0-9]')
+)
 
+_date_rexp_ddmmyyyy = re.compile(
+    r'[^0-9]' +
+    r'(?P<day>[0-9]{2})' +
+    r'(?P<month>[0-9]{2})' +
+    r'(?P<year>[0-9]{4})' +
+    r'[^0-9]')
+
+# 23-08-2001
+_date_rexp_dd_mm_yyyy = re.compile(
+    r'[^0-9]' +
+    r'(?P<day>[0-9]{1,2})' + _dsep +
+    r'(?P<month>[0-9]{1,2})' + _dsep +
+    r'(?P<year>[0-9]{4})' +
+    r'[^0-9]')
+
+# 23-08-01
+_date_rexp_dd_mm_yy = re.compile(
+    re.compile(r'[^0-9]' +
+               r'(?P<day>[0-9]{1,2})' + _dsep +
+               r'(?P<month>[0-9]{1,2})' + _dsep +
+               r'(?P<year>[0-9]{2})' +
+               r'[^0-9]')
+)
+
+_date_rexps_y_first = [_date_rexp_yyyymmdd,
+                       _date_rexp_yyyy_mm_dd,
+                       _date_rexp_ddmmyyyy,
+                       _date_rexp_dd_mm_yyyy,
+                       _date_rexp_yy_mm_dd,
+]
+
+_date_rexps_d_first = [_date_rexp_ddmmyyyy,
+                       _date_rexp_dd_mm_yyyy,
+                       _date_rexp_yyyymmdd,
+                       _date_rexp_yyyy_mm_dd,
+                       _date_rexp_dd_mm_yy,
+]
 
 def valid_year(year, today=None):
     """Check if number is a valid year"""
@@ -89,7 +121,7 @@ def search_year(string):
     return (None, None)
 
 
-def search_date(string):
+def search_date(string, year_first=False):
     """Looks for date patterns, and if found return the date and group span.
 
     Assumes there are sentinels at the beginning and end of the string that
@@ -108,6 +140,7 @@ def search_date(string):
     (None, None)
     """
 
+    _date_rexps = _date_rexps_y_first if year_first else _date_rexps_d_first
     today = datetime.date.today()
     for drexp in _date_rexps:
         match = re.search(drexp, string)

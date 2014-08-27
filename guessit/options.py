@@ -1,6 +1,8 @@
 from optparse import OptionParser
 
 option_parser = OptionParser(usage='usage: %prog [options] file1 [file2...]')
+option_parser.add_option('', '--date-year-first', action='store_true', dest='date_year_first', default=False,
+                         help='If short date is found, consider the first digits as the year.')
 option_parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
                          help='Display debug output')
 option_parser.add_option('-p', '--properties', dest='properties', action='store_true', default=False,
