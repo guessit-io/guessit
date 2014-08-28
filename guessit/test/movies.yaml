@@ -645,3 +645,9 @@
 ? Elle.s.en.va.720p.mkv
 : screenSize: 720p
   title: Elle s en va
+
+? FooBar.7.PDTV-FlexGet
+: options: -n
+  format: DVB
+  releaseGroup: FlexGet
+  title: FooBar 7

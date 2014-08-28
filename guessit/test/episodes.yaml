@@ -827,9 +827,63 @@
   series: W2Test
   videoCodec: XviD
 
+? FooBar.0307.PDTV-FlexGet
+: options: -n --episode-prefer-number
+  episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  season: 3
+  series: FooBar
 
+? FooBar.307.PDTV-FlexGet
+: options: -n --episode-prefer-number
+  episodeNumber: 307
+  format: DVB
+  releaseGroup: FlexGet
+  series: FooBar
 
+? FooBar.07.PDTV-FlexGet
+: options: -n --episode-prefer-number
+  episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  series: FooBar
 
+? FooBar.7.PDTV-FlexGet
+: options: -n -t episode --episode-prefer-number
+  episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  series: FooBar
+
+? FooBar.0307.PDTV-FlexGet
+: options: -n
+  episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  season: 3
+  series: FooBar
+
+? FooBar.307.PDTV-FlexGet
+: options: -n
+  episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  season: 3
+  series: FooBar
+
+? FooBar.07.PDTV-FlexGet
+: options: -n
+  episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  series: FooBar
+
+? FooBar.7.PDTV-FlexGet
+: options: -n -t episode
+  format: DVB
+  releaseGroup: FlexGet
+  series: FooBar 7
 
 
 
