@@ -45,6 +45,25 @@ def _get_span(prop, match):
         end = span[1]
 
 
+def _trim_span(span, value, blanks = sep):
+    start, end = span
+
+    for i in range(0, len(value)):
+        if value[i] in blanks:
+            start = start + 1
+        else:
+            break
+
+    for i in reversed(range(0, len(value))):
+        if value[i] in blanks:
+            end = end - 1
+        else:
+            break
+    if end <= start:
+        return -1, -1
+    return start, end
+
+
 def _get_groups(compiled_re):
     """
     Retrieves groups from re
@@ -82,7 +101,9 @@ class ChainedValidator(object):
 class DefaultValidator(object):
     """Make sure our match is surrounded by separators, or by another entry"""
     def validate(self, prop, string, node, match, entry_start, entry_end):
-        start, end = _get_span(prop, match)
+        span = _get_span(prop, match)
+        span = _trim_span(span, string[span[0]:span[1]])
+        start, end = span
 
         sep_start = start <= 0 or string[start - 1] in sep
         sep_end = end >= len(string) or string[end] in sep
