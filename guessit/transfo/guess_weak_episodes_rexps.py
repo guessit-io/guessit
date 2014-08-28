@@ -22,17 +22,23 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
-from guessit.patterns import sep
+from guessit.patterns import sep, build_or_pattern
 from guessit.containers import PropertiesContainer, LeavesValidator, NoValidator
 from guessit.patterns.numeral import numeral, parse_numeral
 from guessit.date import valid_year
+
+import re
 
 
 class GuessWeakEpisodesRexps(Transformer):
     def __init__(self):
         Transformer.__init__(self, 15)
 
+        of_separators = ['of', 'sur', '/', '\\']
+        of_separators_re = re.compile(build_or_pattern(of_separators, escape=True), re.IGNORECASE)
+
         self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False)
+
 
         def _formater(episodeNumber):
             epnum = parse_numeral(episodeNumber)
@@ -49,9 +55,7 @@ class GuessWeakEpisodesRexps(Transformer):
 
         self.container.register_property(['episodeNumber', 'season'], '[0-9]{2,4}', confidence=0.6, formatter=_formater)
         self.container.register_property('episodeNumber', '(?:episode)' + sep + '(' + numeral + ')[^0-9]', confidence=0.4)
-
-        of_pattern = '(?:of|sur|\\/|\\\\)'
-        self.container.register_property(None, r'(?P<episodeNumber>' + numeral + ')' + sep + '?' + of_pattern + sep + '?(?P<episodeCount>' + numeral +')', confidence=0.6, formatter=parse_numeral)
+        self.container.register_property(None, r'(?P<episodeNumber>' + numeral + ')' + sep + '?' + of_separators_re.pattern + sep + '?(?P<episodeCount>' + numeral +')', confidence=0.6, formatter=parse_numeral)
 
     def supported_properties(self):
         return self.container.get_supported_properties()

@@ -34,7 +34,7 @@ _dash = '-'
 _psep = '[\W_]?'
 
 
-def build_or_pattern(patterns):
+def build_or_pattern(patterns, escape=False):
     """Build a or pattern string from a list of possible patterns
     """
     or_pattern = []
@@ -43,7 +43,7 @@ def build_or_pattern(patterns):
             or_pattern.append('(?:')
         else:
             or_pattern.append('|')
-        or_pattern.append('(?:%s)' % pattern)
+        or_pattern.append('(?:%s)' % re.escape(pattern) if escape else pattern)
     or_pattern.append(')')
     return ''.join(or_pattern)
 

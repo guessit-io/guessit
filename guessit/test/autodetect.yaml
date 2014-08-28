@@ -306,3 +306,130 @@
 ? star.trek.9.mkv
 : type: movie
   title: star trek 9
+
+? FlexGet.S01E02.TheName.HDTV.xvid
+: options: -n
+  episodeNumber: 2
+  format: HDTV
+  season: 1
+  series: FlexGet
+  title: TheName
+  type: episode
+  videoCodec: XviD
+
+? FlexGet.S01E02.TheName.HDTV.xvid
+: options: -n
+  episodeNumber: 2
+  format: HDTV
+  season: 1
+  series: FlexGet
+  title: TheName
+  type: episode
+  videoCodec: XviD
+
+? some.series.S03E14.Title.Here.720p
+: options: -n
+  episodeNumber: 14
+  screenSize: 720p
+  season: 3
+  series: some series
+  title: Title Here
+  type: episode
+
+? '[the.group] Some.Series.S03E15.Title.Two.720p'
+: options: -n
+  episodeNumber: 15
+  releaseGroup: the-group
+  screenSize: 720p
+  season: 3
+  series: Some Series
+  title: Title Two
+  type: episode
+
+? 'HD 720p: Some series.S03E16.Title.Three'
+: options: -n
+  episodeNumber: 16
+  other: HD
+  screenSize: 720p
+  season: 3
+  series: Some series
+  title: Title Three
+  type: episode
+
+? Something.Season.2.1of4.Ep.Title.HDTV.torrent
+: episodeCount: 4
+  episodeNumber: 1
+  format: HDTV
+  season: 2
+  series: Something
+  title: Title
+  type: episode
+
+? Show-A (US) - Episode Title S02E09 hdtv
+: options: -n
+  country: US
+  episodeNumber: 9
+  format: HDTV
+  season: 2
+  series: Show-A (US)
+  type: episode
+
+? Jack's.Show.S03E01.blah.1080p
+: options: -n
+  episodeNumber: 1
+  screenSize: 1080p
+  season: 3
+  series: Jack's Show
+  title: blah
+  type: episode
+
+? FlexGet.epic
+: options: -n
+  title: FlexGet epic
+  type: movie
+
+? FlexGet.Apt.1
+: options: -n
+  title: FlexGet Apt 1
+  type: movie
+
+? FlexGet.aptitude
+: options: -n
+  title: FlexGet aptitude
+  type: movie
+
+? FlexGet.Step1
+: options: -n
+  title: FlexGet Step1
+  type: movie
+
+? Something.1x0.Complete.Season-FlexGet
+: options: -n
+  episodeNumber: 0
+  other: Complete
+  season: 1
+  series: Something
+  title: Season-FlexGet
+  type: episode
+
+? Something.1xAll.Season.Complete-FlexGet
+: options: -n
+  title: Something 1xAll Season Complete-FlexGet
+  type: movie
+
+? Something Seasons 1 & 2 - Complete
+: options: -n
+  other: Complete
+  season: 1
+  seasonList:
+  - 1
+  - 2
+  series: Something
+  type: episode
+
+? Something Seasons 4 Complete
+: options: -n
+  other: Complete
+  season: 4
+  series: Something
+  type: episode
