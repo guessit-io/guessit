@@ -102,17 +102,22 @@ class IterativeMatcher(object):
 
             # Process
             for transformer in transformers.all_transformers():
-                self._process(transformer, False)
+                disabled = options.get('disabled_transformers')
+                if not disabled or not transformer.name in disabled:
+                    self._process(transformer, False)
 
             # Post-process
             for transformer in transformers.all_transformers():
-                self._process(transformer, True)
+                disabled = options.get('disabled_transformers')
+                if not disabled or not transformer.name in disabled:
+                    self._process(transformer, True)
 
             log.debug('Found match tree:\n%s' % u(mtree))
         except TransformerException as e:
             log.debug('An error has occurred in Transformer %s: %s' % (e.transformer, e))
 
     def _process(self, transformer, post=False):
+
         if not hasattr(transformer, 'should_process') or transformer.should_process(self.match_tree, self.options):
             if post:
                 transformer.post_process(self.match_tree, self.options)
