@@ -87,7 +87,12 @@ class TestGuessit(TestCase):
                 args = shlex.split(options)
                 options, _ = option_parser.parse_args(args)
                 options = vars(options)
-            found = guess_func(filename, options)
+            try:
+                found = guess_func(filename, options)
+            except Exception as e:
+                fails[filename].append("An exception has occured in %s: %s" % (filename, e))
+                log.exception("An exception has occured in %s: %s" % (filename, e))
+                continue
 
             total = total + 1
 
