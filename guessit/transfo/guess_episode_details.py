@@ -34,14 +34,14 @@ class GuessEpisodeDetails(Transformer):
         self.container.register_property('episodeDetails', 'Extras?', canonical_form='Extras')
 
     def guess_details(self, string, node=None, options=None):
-        properties = self.container.find_properties(string, node, 'episodeDetails', multiple=True)
+        properties = self.container.find_properties(string, node, options, 'episodeDetails', multiple=True)
         guesses = self.container.as_guess(properties, multiple=True)
         return guesses
 
     def second_pass_options(self, mtree, options=None):
         if not mtree.guess.get('type', '').startswith('episode'):
             for unidentified_leaf in mtree.unidentified_leaves():
-                properties = self.container.find_properties(unidentified_leaf.value, unidentified_leaf, 'episodeDetails')
+                properties = self.container.find_properties(unidentified_leaf.value, unidentified_leaf, options, 'episodeDetails')
                 guess = self.container.as_guess(properties)
                 if guess:
                     return {'type': 'episode'}

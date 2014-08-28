@@ -97,7 +97,7 @@ class GuessReleaseGroup(Transformer):
         return False
 
     def guess_release_group(self, string, node=None, options=None):
-        found = self.container.find_properties(string, node, 'releaseGroup')
+        found = self.container.find_properties(string, node, options, 'releaseGroup')
         guess = self.container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
         validated_guess = None
         if guess:

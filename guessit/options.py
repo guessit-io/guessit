@@ -12,6 +12,9 @@ name_format_group.add_option('-c', '--split-camel', dest='split_camel', action='
                          help='Split camel case part of filename.')
 name_format_group.add_option('', '--date-year-first', action='store_true', dest='date_year_first', default=False,
                          help='If short date is found, consider the first digits as the year.')
+name_format_group.add_option('', '--episode-prefer-number', action='store_true', dest='episode_prefer_number', default=False,
+                             help='Guess "serie.213.avi" as the episodeNumber 213. Without this option, '
+                                  'it will be guessed as season 2, episodeNumber 13')
 
 mode_group = OptionGroup(option_parser, "Mode")
 option_parser.add_option_group(mode_group)

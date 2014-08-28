@@ -195,7 +195,7 @@ class LeavesValidator(DefaultValidator):
 
 class _Property:
     """Represents a property configuration."""
-    def __init__(self, keys=None, pattern=None, canonical_form=None, canonical_from_pattern=True, confidence=1.0, enhance=True, global_span=False, validator=DefaultValidator(), formatter=None):
+    def __init__(self, keys=None, pattern=None, canonical_form=None, canonical_from_pattern=True, confidence=1.0, enhance=True, global_span=False, validator=DefaultValidator(), formatter=None, disabler=None):
         """
         :param keys: Keys of the property (format, screenSize, ...)
         :type keys: string
@@ -238,6 +238,12 @@ class _Property:
         self.global_span = global_span
         self.validator = validator
         self.formatter = formatter
+        self.disabler = disabler
+
+    def disabled(self, options):
+        if self.disabler:
+            return self.disabler(options)
+        return False
 
     def format(self, value, group_name=None):
         """Retrieves the final value from re group match value"""
@@ -315,7 +321,7 @@ class PropertiesContainer(object):
         """Unregister all defined properties"""
         self._properties.clear()
 
-    def find_properties(self, string, node, name=None, validate=True, re_match=False, sort=True, multiple=False):
+    def find_properties(self, string, node, options, name=None, validate=True, re_match=False, sort=True, multiple=False):
         """Find all distinct properties for given string
 
         If no capturing group is defined in the property, value will be grabbed from the entire match.
@@ -369,16 +375,17 @@ class PropertiesContainer(object):
 
         # search all properties
         for prop in self.get_properties(name):
-            valid_match = None
-            if re_match:
-                match = prop.compiled.match(string)
-                if match:
-                    entries.append((prop, match))
-            else:
-                matches = list(prop.compiled.finditer(string))
-                duplicate_matches[prop] = matches
-                for match in matches:
-                    entries.append((prop, match))
+            if not prop.disabled(options):
+                valid_match = None
+                if re_match:
+                    match = prop.compiled.match(string)
+                    if match:
+                        entries.append((prop, match))
+                else:
+                    matches = list(prop.compiled.finditer(string))
+                    duplicate_matches[prop] = matches
+                    for match in matches:
+                        entries.append((prop, match))
 
         if validate:
             # compute entries start and ends

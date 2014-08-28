@@ -33,7 +33,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
     def supported_properties(self):
         return ['title', 'series']
 
-    def match_from_epnum_position(self, mtree, node):
+    def match_from_epnum_position(self, mtree, node, options):
         epnum_idx = node.node_idx
 
         # a few helper functions to be able to filter using high-level semantics
@@ -55,7 +55,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
         # epnumber is the first group and there are only 2 after it in same
         # path group
         # -> series title - episode title
-        title_candidates = self._filter_candidates(after_epnum_in_same_pathgroup())
+        title_candidates = self._filter_candidates(after_epnum_in_same_pathgroup(), options)
 
         if ('title' not in mtree.info and  # no title
             before_epnum_in_same_pathgroup() == [] and  # no groups before
@@ -73,13 +73,13 @@ class GuessEpisodeInfoFromPosition(Transformer):
 
         # only 1 group after (in the same path group) and it's probably the
         # episode title.
-        title_candidates = self._filter_candidates(after_epnum_in_same_pathgroup())
+        title_candidates = self._filter_candidates(after_epnum_in_same_pathgroup(), options)
         if len(title_candidates) == 1:
             found_property(title_candidates[0], 'title', confidence=0.5)
             return
         else:
             # try in the same explicit group, with lower confidence
-            title_candidates = self._filter_candidates(after_epnum_in_same_explicitgroup())
+            title_candidates = self._filter_candidates(after_epnum_in_same_explicitgroup(), options)
             if len(title_candidates) == 1:
                 found_property(title_candidates[0], 'title', confidence=0.4)
                 return
@@ -88,7 +88,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
                 return
 
         # get the one with the longest value
-        title_candidates = self._filter_candidates(after_epnum_in_same_pathgroup())
+        title_candidates = self._filter_candidates(after_epnum_in_same_pathgroup(), options)
         if title_candidates:
             maxidx = -1
             maxv = -1
@@ -102,10 +102,10 @@ class GuessEpisodeInfoFromPosition(Transformer):
         options = options or {}
         return not options.get('skip_title') and mtree.guess.get('type', '').startswith('episode')
 
-    def _filter_candidates(self, candidates):
+    def _filter_candidates(self, candidates, options):
         episode_details_transformer = get_transformer('guess_episode_details')
         if episode_details_transformer:
-            return [n for n in candidates if not episode_details_transformer.container.find_properties(n.value, n, re_match=True)]
+            return [n for n in candidates if not episode_details_transformer.container.find_properties(n.value, n, options, re_match=True)]
         else:
             return list(candidates)
 
@@ -116,14 +116,14 @@ class GuessEpisodeInfoFromPosition(Transformer):
         """
         eps = [node for node in mtree.leaves() if 'episodeNumber' in node.guess]
         if eps:
-            self.match_from_epnum_position(mtree, eps[0])
+            self.match_from_epnum_position(mtree, eps[0], options)
 
         else:
             # if we don't have the episode number, but at least 2 groups in the
             # basename, then it's probably series - eptitle
             basename = mtree.node_at((-2,))
 
-            title_candidates = self._filter_candidates(basename.unidentified_leaves())
+            title_candidates = self._filter_candidates(basename.unidentified_leaves(), options)
 
             if len(title_candidates) >= 2:
                 found_property(title_candidates[0], 'series', confidence=0.4)

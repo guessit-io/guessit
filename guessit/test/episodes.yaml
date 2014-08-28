@@ -811,6 +811,22 @@
   - 7
   series: Something Other
 
+? W2Test.123.HDTV.XViD-FlexGet
+: episodeNumber: 23
+  season: 1
+  format: HDTV
+  releaseGroup: FlexGet
+  series: W2Test
+  videoCodec: XviD
+
+? W2Test.123.HDTV.XViD-FlexGet
+: options: --episode-prefer-number
+  episodeNumber: 123
+  format: HDTV
+  releaseGroup: FlexGet
+  series: W2Test
+  videoCodec: XviD
+
 
 
 

@@ -155,7 +155,7 @@ class GuessEpisodesRexps(Transformer):
         return ['episodeNumber', 'season', 'episodeList', 'seasonList', 'episodeCount', 'seasonCount']
 
     def guess_episodes_rexps(self, string, node=None, options=None):
-        found = self.container.find_properties(string, node)
+        found = self.container.find_properties(string, node, options)
         return self.container.as_guess(found, string)
 
     def should_process(self, mtree, options=None):

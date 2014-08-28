@@ -222,7 +222,7 @@ class GuessProperties(Transformer):
                 self.container.register_property('container', container, confidence=0.3)
 
     def guess_properties(self, string, node=None, options=None):
-        found = self.container.find_properties(string, node)
+        found = self.container.find_properties(string, node, options)
         return self.container.as_guess(found, string)
 
     def supported_properties(self):
