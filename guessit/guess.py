@@ -77,6 +77,14 @@ class GuessMetadata(object):
         """
         return self._input if not self._input is None else self.parent.input if self.parent else None
 
+    @input.setter
+    def input(self, input):
+        """The input
+
+        :rtype: string
+        """
+        self._input = input
+
     @property
     def span(self):
         """The span
