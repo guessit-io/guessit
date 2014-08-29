@@ -907,6 +907,30 @@
   releaseGroup: FlexGet
   series: FooBar
 
+? Test.S02E01.hdtv.real.proper
+: episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 2
+  season: 2
+  series: Test
+
+? Test.S02E01.hdtv.proper
+: episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 1
+  season: 2
+  series: Test
+
+? Test.S02E01.hdtv.real.repack.proper
+: episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 3
+  season: 2
+  series: Test
+
 
 
 

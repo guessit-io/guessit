@@ -23,7 +23,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.plugins.transformers import Transformer
-from guessit.matcher import GuessFinder
+from guessit.matcher import GuessFinder, found_property
 
 
 class GuessProperties(Transformer):
@@ -230,6 +230,12 @@ class GuessProperties(Transformer):
 
     def process(self, mtree, options=None):
         GuessFinder(self.guess_properties, 1.0, self.log, options).process_nodes(mtree.unidentified_leaves())
+        properCount = 0
+        for other_leaf in mtree.leaves_containing('other'):
+            if 'other' in other_leaf.info and 'Proper' in other_leaf.info['other']:
+                properCount += 1
+        if properCount:
+            found_property(mtree, 'properCount', properCount)
 
     def rate_quality(self, guess, *props):
         return self.qualities.rate_quality(guess, *props)
