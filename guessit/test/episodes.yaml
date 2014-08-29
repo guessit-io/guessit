@@ -901,10 +901,11 @@
 
 ? FooBar.7v3.PDTV-FlexGet
 : options: -n -t episode
+  episodeNumber: 7
   version: 3
   format: DVB
   releaseGroup: FlexGet
-  series: FooBar 7
+  series: FooBar
 
 
 
