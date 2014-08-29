@@ -76,7 +76,7 @@ class GuessCountry(Transformer):
         return Country.fromguessit(country), None
 
     def is_valid_country(self, country, options=None):
-        if options and 'allowed_countries' in options:
+        if options and options.get('allowed_countries'):
             allowed_countries = options.get('allowed_countries')
             return country.name.lower() in allowed_countries or country.alpha2.lower() in allowed_countries
         else:
