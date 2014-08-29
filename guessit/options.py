@@ -15,9 +15,15 @@ name_format_group.add_option('', '--date-year-first', action='store_true', dest=
 name_format_group.add_option('', '--episode-prefer-number', action='store_true', dest='episode_prefer_number', default=False,
                              help='Guess "serie.213.avi" as the episodeNumber 213. Without this option, '
                                   'it will be guessed as season 2, episodeNumber 13')
-def disable_transformers_callback(option, opt, value, parser):
-    setattr(parser.values, option.dest, value.split(';'))
-name_format_group.add_option('', '--disabled-transformers', type='string', action='callback', callback=disable_transformers_callback, dest='disabled_transformers', default=None,
+
+def options_list(option, opt, value, parser):
+    setattr(parser.values, option.dest, value.split(';') if value else None)
+
+name_format_group.add_option('', '--allowed-languages',type='string', action='callback', callback=options_list, dest='allowed_languages', default=None,
+                             help='List of allowed languages. Separate languages codes with ";"')
+name_format_group.add_option('', '--allowed-countries',type='string', action='callback', callback=options_list, dest='allowed_countries', default=None,
+                             help='List of allowed countries. Separate country codes with ";"')
+name_format_group.add_option('', '--disabled-transformers', type='string', action='callback', callback=options_list, dest='disabled_transformers', default=None,
                              help='List of transformers to disable. Separate transformers names with ";"')
 
 mode_group = OptionGroup(option_parser, "Mode")

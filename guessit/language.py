@@ -194,17 +194,26 @@ LNG_COMMON_WORDS = frozenset([
     'gt', 'lt'
     ])
 
+LNG_COMMON_WORDS_STRICT = frozenset(['brazil'])
+
 
 subtitle_prefixes = ['sub', 'subs', 'st', 'vost', 'subforced', 'fansub', 'hardsub']
 subtitle_suffixes = ['subforced', 'fansub', 'hardsub']
 lang_prefixes = ['true']
 
 
-def find_possible_languages(string):
+def find_possible_languages(string, allowed_languages=None):
     """Find possible languages in the string
 
     :return: list of tuple (property, Language, lang_word, word)
     """
+
+    common_words = None
+    if allowed_languages:
+        common_words = LNG_COMMON_WORDS_STRICT
+    else:
+        common_words = LNG_COMMON_WORDS
+
     words = find_words(string)
 
     valid_words = []
@@ -222,19 +231,22 @@ def find_possible_languages(string):
         for prefix in lang_prefixes:
             if lang_word.startswith(prefix):
                 lang_word = lang_word[len(prefix):]
-        if not lang_word in LNG_COMMON_WORDS:
+        if not lang_word in common_words:
             try:
                 lang = Language.fromguessit(lang_word)
+                if allowed_languages:
+                    if lang.name.lower() in allowed_languages or lang.alpha2.lower() in allowed_languages or lang.alpha3.lower() in allowed_languages:
+                        valid_words.append((key, lang, lang_word, word))
                 # Keep language with alpha2 equivalent. Others are probably
                 # uncommon languages.
-                if lang == 'mul' or hasattr(lang, 'alpha2'):
+                elif lang == 'mul' or hasattr(lang, 'alpha2'):
                     valid_words.append((key, lang, lang_word, word))
             except babelfish.Error:
                 pass
     return valid_words
 
 
-def search_language(string, lang_filter=None):
+def search_language(string, allowed_languages=None):
     """Looks for language patterns, and if found return the language object,
     its group span and an associated confidence.
 
@@ -244,21 +256,18 @@ def search_language(string, lang_filter=None):
     >>> search_language('movie [en].avi')['language']
     <Language [en]>
 
-    >>> search_language('the zen fat cat and the gay mad men got a new fan', lang_filter = ['en', 'fr', 'es'])
+    >>> search_language('the zen fat cat and the gay mad men got a new fan', allowed_languages = ['en', 'fr', 'es'])
 
     """
 
-    if lang_filter:
-        lang_filter = set(Language.fromguessit(lang) for lang in lang_filter)
+    if allowed_languages:
+        allowed_languages = set(Language.fromguessit(lang) for lang in allowed_languages)
 
     confidence = 1.0  # for all of them
 
-    for prop, language, lang, word in find_possible_languages(string):
+    for prop, language, lang, word in find_possible_languages(string, allowed_languages):
         pos = string.find(word)
         end = pos + len(word)
-
-        if lang_filter and language not in lang_filter:
-            continue
 
         # only allow those languages that have a 2-letter code, those that
         # don't are too esoteric and probably false matches

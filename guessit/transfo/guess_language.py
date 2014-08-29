@@ -35,7 +35,10 @@ class GuessLanguage(Transformer):
         return ['language', 'subtitleLanguage']
 
     def guess_language(self, string, node=None, options=None):
-        guess = search_language(string)
+        allowed_languages = None
+        if options and 'allowed_languages' in options:
+            allowed_languages = options.get('allowed_languages')
+        guess = search_language(string, allowed_languages)
         return guess
 
     def _skip_language_on_second_pass(self, mtree, node):
