@@ -81,7 +81,7 @@ class CustomTransformerExtensionManager(ExtensionManager):
         extensions.sort(key=lambda ext: -ext.obj.priority)
         return extensions
 
-    def _load_one_plugin(self, ep, invoke_on_load, invoke_args, invoke_kwds, verify_requirements):
+    def _load_one_plugin(self, ep, invoke_on_load, invoke_args, invoke_kwds, verify_requirements=True):
         if not ep.dist:
             plugin = ep.load(require=False)
         else:
@@ -107,8 +107,11 @@ class CustomTransformerExtensionManager(ExtensionManager):
         except KeyError:
             return None
 
-    def register_module(self, name, module_name):
-        ep = EntryPoint(name, module_name)
+    def register_module(self, name=None, module_name=None, attrs=(), entry_point=None):
+        if entry_point:
+            ep = EntryPoint.parse(entry_point)
+        else:
+            ep = EntryPoint(name, module_name, attrs)
         loaded = self._load_one_plugin(ep, invoke_on_load=True, invoke_args=(), invoke_kwds={})
         if loaded:
             self.extensions.append(loaded)
@@ -165,8 +168,24 @@ def get_transformer(name):
     return _extensions.object(name)
 
 
-def add_transformer(name, module_name):
-    _extensions.register_module(name, module_name)
+def add_transformer(name, module_name, class_name):
+    """
+    Add a transformer
+
+    :param name: the name of the transformer. ie: 'guess_regexp_id'
+    :param name: the module name. ie: 'flexget.utils.parsers.transformers.guess_regexp_id'
+    :param class_name: the class name. ie: 'GuessRegexpId'
+    """
+
+    _extensions.register_module(name, module_name, (class_name,))
+
+def add_transformer(entry_point):
+    """
+    Add a transformer
+
+    :param entry_point: entry point spec format. ie: 'guess_regexp_id = flexget.utils.parsers.transformers.guess_regexp_id:GuessRegexpId'
+    """
+    _extensions.register_module(entry_point = entry_point)
 
 
 def reload(custom=False):
