@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit.language import search_language, subtitle_prefixes, subtitle_suffixes
 from guessit.patterns.extension import subtitle_exts
-from guessit.textutils import clean_string, find_words
+from guessit.textutils import find_words
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
 
@@ -88,7 +88,7 @@ class GuessLanguage(Transformer):
 
                     # if filetype is subtitle and the language appears last, just before
                     # the extension, then it is likely a subtitle language
-                    parts = clean_string(lang_node.root.value).split()
+                    parts = mtree.clean_string(lang_node.root.value).split()
                     if (m.get('type') in ['moviesubtitle', 'episodesubtitle'] and
                         (parts.index(lang_node.value) == len(parts) - 2)):
                         continue

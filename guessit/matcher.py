@@ -27,7 +27,7 @@ import logging
 from guessit import PY3, u
 from guessit.transfo import TransformerException
 from guessit.matchtree import MatchTree
-from guessit.textutils import normalize_unicode, clean_string
+from guessit.textutils import normalize_unicode, clean_default
 from guessit.guess import Guess
 import inspect
 
@@ -85,12 +85,26 @@ class IterativeMatcher(object):
             filename = filename.decode('utf-8')
 
         filename = normalize_unicode(filename)
-        self.match_tree = MatchTree(filename)
+        clean_function = None
+        if options and options.get('clean_function'):
+            clean_function = options.get('clean_function')
+            if not hasattr(clean_function, '__call__'):
+                module, function = clean_function.rsplit('.')
+                if not module:
+                    module = 'guessit.textutils'
+                clean_function = getattr(__import__(module), function)
+                if not clean_function:
+                    log.error('Can\'t find clean function %s. Default will be used.' % options.get('clean_function'))
+                    clean_function = clean_default
+        else:
+            clean_function = clean_default
+
+        self.match_tree = MatchTree(filename, clean_function=clean_function)
         self.options = options
         self._transfo_calls = []
 
         # sanity check: make sure we don't process a (mostly) empty string
-        if clean_string(filename) == '':
+        if clean_function(filename).strip() == '':
             return
 
         from guessit.plugins import transformers

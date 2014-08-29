@@ -48,7 +48,7 @@ def strip_brackets(s):
 _dotted_rexp = re.compile(r'(?:\W|^)(([A-Za-z]\.){2,}[A-Za-z]\.?)')
 
 
-def clean_string(st):
+def clean_default(st):
     for c in sep:
         # do not remove certain chars
         if c in ['-', ',']:
@@ -78,7 +78,6 @@ def clean_string(st):
         result = result[:-1]
 
     return result
-
 
 _words_rexp = re.compile('\w+', re.UNICODE)
 

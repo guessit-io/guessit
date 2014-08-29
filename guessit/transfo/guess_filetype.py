@@ -29,7 +29,6 @@ from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
 from guessit.transfo import TransformerException
 from guessit.plugins.transformers import Transformer, get_transformer
 from guessit.matcher import log_found_guess, found_guess
-from guessit.textutils import clean_string
 
 
 class GuessFiletype(Transformer):
@@ -122,7 +121,7 @@ class GuessFiletype(Transformer):
         # check for a few specific cases which will unintentionally make the
         # following heuristics confused (eg: OSS 117 will look like an episode,
         # season 1, epnum 17, when it is in fact a movie)
-        fname = clean_string(filename).lower()
+        fname = mtree.clean_string(filename).lower()
         for m in self.MOVIES:
             if m in fname:
                 self.log.debug('Found in exception list of movies -> type = movie')

@@ -89,7 +89,7 @@ else:   # pragma: no cover
 from guessit.guess import Guess, smart_merge
 from guessit.language import Language
 from guessit.matcher import IterativeMatcher
-from guessit.textutils import clean_string, is_camel, from_camel
+from guessit.textutils import clean_default, is_camel, from_camel
 import babelfish
 import os.path
 import logging
