@@ -708,6 +708,12 @@
   series: Naruto Shippuden
   subtitleLanguage: fr
 
+? Naruto Shippuden Episode 366v2 VOSTFR.avi
+: episodeNumber: 366
+  version: 2
+  series: Naruto Shippuden
+  subtitleLanguage: fr
+
 ? '[HorribleSubs] Ao Haru Ride - 06 [480p].mkv'
 : episodeNumber: 6
   releaseGroup: HorribleSubs
@@ -879,8 +885,23 @@
   releaseGroup: FlexGet
   series: FooBar
 
+? FooBar.07v4.PDTV-FlexGet
+: options: -n
+  episodeNumber: 7
+  version: 4
+  format: DVB
+  releaseGroup: FlexGet
+  series: FooBar
+
 ? FooBar.7.PDTV-FlexGet
 : options: -n -t episode
+  format: DVB
+  releaseGroup: FlexGet
+  series: FooBar 7
+
+? FooBar.7v3.PDTV-FlexGet
+: options: -n -t episode
+  version: 3
   format: DVB
   releaseGroup: FlexGet
   series: FooBar 7
