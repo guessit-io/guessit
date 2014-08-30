@@ -931,7 +931,13 @@
   season: 2
   series: Test
 
-
+? Date.Show.03-29-2012.HDTV.XViD-FlexGet
+: options: -n
+  date: 2012-03-29
+  format: HDTV
+  releaseGroup: FlexGet
+  series: Date Show
+  videoCodec: XviD
 
 
 

@@ -150,6 +150,18 @@ class Guess(UnicodeMixin, dict):
         for prop in self:
             self._metadata[prop] = GuessMetadata(parent=self._global_metadata)
 
+    def rename(self, old_name, new_name):
+        if old_name in self._metadata:
+            metadata = self._metadata[old_name]
+            del self._metadata[old_name]
+            self._metadata[new_name] = metadata
+        if old_name in self:
+            value = self[old_name]
+            del self[old_name]
+            self[new_name] = value
+            return True
+        return False
+
     def to_dict(self, advanced=False):
         """Return the guess as a dict containing only base types, ie:
         where dates, languages, countries, etc. are converted to strings.

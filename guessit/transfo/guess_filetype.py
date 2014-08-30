@@ -28,7 +28,7 @@ from guessit.guess import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
 from guessit.transfo import TransformerException
 from guessit.plugins.transformers import Transformer, get_transformer
-from guessit.matcher import log_found_guess, found_guess
+from guessit.matcher import log_found_guess, found_guess, found_property
 
 
 class GuessFiletype(Transformer):
@@ -133,7 +133,6 @@ class GuessFiletype(Transformer):
                 upgrade_episode()
                 return filetype_container[0], other
 
-        # now look whether there are some specific hints for episode vs movie
         # if we have an episode_rexp (eg: s02e13), it is an episode
         episode_transformer = get_transformer('guess_episodes_rexps')
         if episode_transformer:
@@ -227,3 +226,13 @@ class GuessFiletype(Transformer):
                 mtree.guess.set('type', 'movie', confidence=0.6)
             else:
                 raise TransformerException(__name__, 'Unknown file type')
+
+    def post_process(self, mtree, options=None):
+        # now look whether there are some specific hints for episode vs movie
+        # If we have a date and no year, this is a TV Show.
+        if 'date' in mtree.info and 'year' not in mtree.info and mtree.info.get('type') != 'episode':
+            mtree.guess['type'] = 'episode'
+            for type_leaves in mtree.leaves_containing('type'):
+                type_leaves.guess['type'] = 'episode'
+            for title_leaves in mtree.leaves_containing('title'):
+                title_leaves.guess.rename('title', 'series')
