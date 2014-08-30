@@ -38,7 +38,8 @@ class GuessReleaseGroup(Transformer):
                                ]
         # If the previous property in this list, the match will be considered as safe
         # and group name can contain a separator.
-        self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels']
+        self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels', 'other']
+        self.previous_safe_values = {'other': ['Complete']}
 
         self.container.sep_replace_char = '-'
         self.container.canonical_from_pattern = False
@@ -96,6 +97,14 @@ class GuessReleaseGroup(Transformer):
             return True
         return False
 
+    def is_safe(self, leaf, node):
+        if not self.is_leaf_previous(leaf, node):
+            return False
+        for k, v in leaf.guess.items():
+            if k in self.previous_safe_values and not v in self.previous_safe_values[k]:
+                return False
+        return True
+
     def guess_release_group(self, string, node=None, options=None):
         found = self.container.find_properties(string, node, options, 'releaseGroup')
         guess = self.container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
@@ -104,7 +113,7 @@ class GuessReleaseGroup(Transformer):
             explicit_group_node = node.group_node()
             if explicit_group_node:
                 for leaf in explicit_group_node.leaves_containing(self.previous_safe_properties):
-                    if self.is_leaf_previous(leaf, node):
+                    if self.is_safe(leaf, node):
                         if leaf.root.value[leaf.span[1]] == '-':
                             guess.metadata().confidence = 1
                         else:

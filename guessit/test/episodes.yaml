@@ -939,6 +939,39 @@
   series: Date Show
   videoCodec: XviD
 
+? Something.1x5.Season.Complete-FlexGet
+: options: -n
+  episodeNumber: 5
+  other: Complete
+  season: 1
+  series: Something
+  releaseGroup: FlexGet
 
+? Something Seasons 1 & 2 - Complete
+: options: -n
+  other: Complete
+  season: 1
+  seasonList:
+  - 1
+  - 2
+  series: Something
 
+? Something Seasons 4 Complete
+: options: -n
+  other: Complete
+  season: 4
+  series: Something
 
+? Something.1xAll.Season.Complete-FlexGet
+: options: -n
+  other: Complete
+  season: 1
+  series: Something
+  releaseGroup: FlexGet
+
+? Something.1xAll-FlexGet
+: options: -n
+  other: Complete
+  season: 1
+  series: Something
+  releaseGroup: FlexGet

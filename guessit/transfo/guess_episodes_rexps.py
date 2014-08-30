@@ -154,8 +154,10 @@ class GuessEpisodesRexps(Transformer):
 
         self.container.register_canonical_properties('other', 'FiNAL', 'Complete', validator=WeakValidator())
 
+        self.container.register_property(None, r'[^0-9]((?P<season>' + digital_numeral + ')[^0-9 .-]?-?(?P<other>xAll))', confidence=1.0, formatter={None: parse_numeral, 'other': lambda x: 'Complete', 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
+
     def supported_properties(self):
-        return ['episodeNumber', 'season', 'episodeList', 'seasonList', 'episodeCount', 'seasonCount', 'version']
+        return ['episodeNumber', 'season', 'episodeList', 'seasonList', 'episodeCount', 'seasonCount', 'version', 'other']
 
     def guess_episodes_rexps(self, string, node=None, options=None):
         found = self.container.find_properties(string, node, options)

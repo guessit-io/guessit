@@ -402,34 +402,3 @@
 : options: -n
   title: FlexGet Step1
   type: movie
-
-? Something.1x0.Complete.Season-FlexGet
-: options: -n
-  episodeNumber: 0
-  other: Complete
-  season: 1
-  series: Something
-  title: Season-FlexGet
-  type: episode
-
-? Something.1xAll.Season.Complete-FlexGet
-: options: -n
-  title: Something 1xAll Season Complete-FlexGet
-  type: movie
-
-? Something Seasons 1 & 2 - Complete
-: options: -n
-  other: Complete
-  season: 1
-  seasonList:
-  - 1
-  - 2
-  series: Something
-  type: episode
-
-? Something Seasons 4 Complete
-: options: -n
-  other: Complete
-  season: 4
-  series: Something
-  type: episode

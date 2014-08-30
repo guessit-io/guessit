@@ -20,7 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer
+from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer, NoValidator
+from guessit.patterns import sep
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder, found_property
@@ -211,6 +212,7 @@ class GuessProperties(Transformer):
         self.container.register_property('other', 'Proper', 'Repack', 'Rerip', canonical_form='Proper')
         self.container.register_property('other', 'Fansub', canonical_form='Fansub')
         self.container.register_property('other', 'Fastsub', canonical_form='Fastsub')
+        self.container.register_property('other', '(?:Seasons?' + sep + '?)?Complete', canonical_form='Complete')
 
         self.container.register_canonical_properties('other', 'R5', 'Screener', '3D', 'HD', 'HQ', 'DDC', 'HR')
         self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', validator=WeakValidator())
