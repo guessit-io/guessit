@@ -41,6 +41,9 @@ class GuessMovieTitleFromPosition(Transformer):
         try to identify the remaining unknown groups by looking at their
         position relative to other known elements
         """
+        if 'title' in mtree.info:
+            return
+
         basename = mtree.node_at((-2,))
         all_valid = lambda leaf: len(leaf.clean_value) > 0
         basename_leftover = list(basename.unidentified_leaves(valid=all_valid))

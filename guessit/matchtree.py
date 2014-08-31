@@ -353,7 +353,7 @@ class MatchTree(BaseMatchTree):
     """
 
     def unidentified_leaves(self,
-                            valid=lambda leaf: len(leaf.clean_value) >= 2):
+                            valid=lambda leaf: len(leaf.clean_value) > 0):
         """Return a generator of leaves that are not empty."""
         for leaf in self.leaves():
             if not leaf.guess and valid(leaf):

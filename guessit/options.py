@@ -25,6 +25,10 @@ name_format_group.add_option('', '--allowed-countries',type='string', action='ca
                              help='List of allowed countries. Separate country codes with ";"')
 name_format_group.add_option('', '--disabled-transformers', type='string', action='callback', callback=options_list, dest='disabled_transformers', default=None,
                              help='List of transformers to disable. Separate transformers names with ";"')
+name_format_group.add_option('', '--attended-series', type='string', action='callback', callback=options_list, dest='attended_series', default=None,
+                             help='List of attended series to parse. Separate series names with ";"')
+name_format_group.add_option('', '--attended-title', type='string', action='callback', callback=options_list, dest='attended_title', default=None,
+                             help='List of attended titles to parse. Separate title names with ";"')
 
 mode_group = OptionGroup(option_parser, "Mode")
 option_parser.add_option_group(mode_group)
