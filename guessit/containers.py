@@ -114,6 +114,30 @@ class DefaultValidator(object):
         return False
 
 
+class FunctionValidator(object):
+    def __init__(self, function):
+        self.function = function
+
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        return self.function(prop, string, node, match, entry_start, entry_end)
+
+
+class FormatterValidator(object):
+    def __init__(self, group_name=None, formatted_validator=None):
+        self.group_name = group_name
+        self.formatted_validator = formatted_validator
+
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        if self.group_name:
+            formatted = prop.format(match.group(self.group_name), self.group_name)
+        else:
+            formatted = prop.format(match.group())
+        if self.formatted_validator:
+            return self.formatted_validator(formatted)
+        else:
+            return formatted
+
+
 class WeakValidator(DefaultValidator):
     """Make sure our match is surrounded by separators and is the first or last element in the string"""
     def validate(self, prop, string, node, match, entry_start, entry_end):

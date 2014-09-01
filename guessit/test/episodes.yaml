@@ -975,3 +975,46 @@
   season: 1
   series: Something
   releaseGroup: FlexGet
+
+? FlexGet.US.S2013E14.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
+: audioChannels: '5.1'
+  audioCodec: AAC
+  country: US
+  episodeNumber: 14
+  extension: x264-nogrp
+  format: HDTV
+  releaseGroup: NOGRP
+  screenSize: 720p
+  season: 2013
+  series: FlexGet (US)
+  title: Title Here
+  videoCodec: h264
+  year: 2013
+
+? FlexGet.14.of.21.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
+: audioChannels: '5.1'
+  audioCodec: AAC
+  episodeCount: 21
+  episodeNumber: 14
+  extension: x264-nogrp
+  format: HDTV
+  releaseGroup: NOGRP
+  screenSize: 720p
+  series: FlexGet
+  title: Title Here
+  videoCodec: h264
+
+? FlexGet.Series.2013.14.of.21.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
+: audioChannels: '5.1'
+  audioCodec: AAC
+  episodeCount: 21
+  episodeNumber: 14
+  extension: x264-nogrp
+  format: HDTV
+  releaseGroup: NOGRP
+  screenSize: 720p
+  season: 2013
+  series: FlexGet
+  title: Title Here
+  videoCodec: h264
+  year: 2013
