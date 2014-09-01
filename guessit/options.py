@@ -29,6 +29,8 @@ name_format_group.add_option('', '--attended-series', type='string', action='cal
                              help='List of attended series to parse. Separate series names with ";"')
 name_format_group.add_option('', '--attended-title', type='string', action='callback', callback=options_list, dest='attended_title', default=None,
                              help='List of attended titles to parse. Separate title names with ";"')
+name_format_group.add_option('', '--attended-group', type='string', action='callback', callback=options_list, dest='attended_group', default=None,
+                             help='List of attended groups to parse. Separate group names with ";"')
 
 mode_group = OptionGroup(option_parser, "Mode")
 option_parser.add_option_group(mode_group)

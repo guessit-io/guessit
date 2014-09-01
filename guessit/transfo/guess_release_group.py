@@ -26,6 +26,7 @@ from guessit.containers import PropertiesContainer
 from guessit.patterns import sep
 from guessit.guess import Guess
 from guessit.textutils import strip_brackets
+import re
 
 
 class GuessReleaseGroup(Transformer):
@@ -106,6 +107,22 @@ class GuessReleaseGroup(Transformer):
         return True
 
     def guess_release_group(self, string, node=None, options=None):
+        if options and options.get('attended_group'):
+            attended_container = PropertiesContainer(enhance=True, canonical_from_pattern=False)
+            for attended_group in options.get('attended_group'):
+                if attended_group.startswith('re:'):
+                    attended_group = attended_group[3:]
+                    attended_group = attended_group.replace(' ', '-')
+                    attended_container.register_property('releaseGroup', attended_group, enhance=True)
+                else:
+                    attended_group = re.escape(attended_group)
+                    attended_container.register_property('releaseGroup', attended_group, enhance=False)
+
+            found = attended_container.find_properties(string, node, options, 'releaseGroup')
+            guess = attended_container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
+            if guess:
+                return guess
+
         found = self.container.find_properties(string, node, options, 'releaseGroup')
         guess = self.container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
         validated_guess = None
