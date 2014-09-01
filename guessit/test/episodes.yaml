@@ -1032,3 +1032,21 @@
   episodeNumber: 5
   season: 4
   series: Something
+
+? FooBar 360 1080i
+: options: -n -t episode --episode-prefer-number
+  episodeNumber: 360
+  screenSize: 1080i
+  series: FooBar
+
+? FooBar 360 1080i
+: options: -n -t episode
+  episodeNumber: 60
+  season: 3
+  screenSize: 1080i
+  series: FooBar
+
+? FooBar 360
+: options: -n -t episode
+  screenSize: 360p
+  series: FooBar

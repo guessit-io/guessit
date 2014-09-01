@@ -20,7 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer, NoValidator
+from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer, NoValidator, \
+    ChainedValidator, DefaultValidator, OnlyOneValidator
 from guessit.patterns import sep, build_or_pattern
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.patterns.numeral import numeral, parse_numeral
@@ -35,15 +36,22 @@ class GuessProperties(Transformer):
         self.container = PropertiesContainer()
         self.qualities = QualitiesContainer()
 
-        def register_property(propname, props):
+        def register_property(propname, props, **kwargs):
             """props a dict of {value: [patterns]}"""
             for canonical_form, patterns in props.items():
                 if isinstance(patterns, tuple):
-                    patterns2, kwargs = patterns
-                    kwargs = dict(kwargs)
-                    kwargs['canonical_form'] = canonical_form
-                    self.container.register_property(propname, *patterns2, **kwargs)
-
+                    patterns2, pattern_kwarg = patterns
+                    if kwargs:
+                        current_kwarg = dict(kwargs)
+                        current_kwarg.update(pattern_kwarg)
+                    else:
+                        current_kwarg = dict(pattern_kwarg)
+                    current_kwarg['canonical_form'] = canonical_form
+                    self.container.register_property(propname, *patterns2, **current_kwarg)
+                elif kwargs:
+                    current_kwarg = dict(kwargs)
+                    current_kwarg['canonical_form'] = canonical_form
+                    self.container.register_property(propname, *patterns, **current_kwarg)
                 else:
                     self.container.register_property(propname, *patterns, canonical_form=canonical_form)
 
@@ -98,9 +106,10 @@ class GuessProperties(Transformer):
                                          '720p': ['(?:\d{3,}(?:\\|\/|x|\*))?720(?:i|p?x?)'],
                                          '900p': ['(?:\d{3,}(?:\\|\/|x|\*))?900(?:i|p?x?)'],
                                          '1080i': ['(?:\d{3,}(?:\\|\/|x|\*))?1080i'],
-                                         '1080p': ['(?:\d{3,}(?:\\|\/|x|\*))?1080(?:p?x?)'],
+                                         '1080p': ['(?:\d{3,}(?:\\|\/|x|\*))?1080p?x?'],
                                          '4K': ['(?:\d{3,}(?:\\|\/|x|\*))?2160(?:i|p?x?)']
-                                         })
+                                         },
+                          validator=ChainedValidator(DefaultValidator(), OnlyOneValidator()))
 
         register_quality('screenSize', {'360p': -300,
                                         '368p': -200,

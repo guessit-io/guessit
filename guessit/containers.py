@@ -98,6 +98,24 @@ class ChainedValidator(object):
         return True
 
 
+class SameKeyValidator(object):
+    def __init__(self, validator_function):
+        self.validator_function = validator_function
+
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        for key in prop.keys:
+            for same_value_leaf in node.root.leaves_containing(key):
+                ret = self.validator_function(same_value_leaf, key, prop, string, node, match, entry_start, entry_end)
+                if ret is not None:
+                    return ret
+        return True
+
+
+class OnlyOneValidator(SameKeyValidator):
+    def __init__(self):
+        super(OnlyOneValidator, self).__init__(lambda same_value_leaf, key, prop, string, node, match, entry_start, entry_end: False)
+
+
 class DefaultValidator(object):
     """Make sure our match is surrounded by separators, or by another entry"""
     def validate(self, prop, string, node, match, entry_start, entry_end):
@@ -219,7 +237,7 @@ class LeavesValidator(DefaultValidator):
 
 class _Property:
     """Represents a property configuration."""
-    def __init__(self, keys=None, pattern=None, canonical_form=None, canonical_from_pattern=True, confidence=1.0, enhance=True, global_span=False, validator=DefaultValidator(), formatter=None, disabler=None):
+    def __init__(self, keys=None, pattern=None, canonical_form=None, canonical_from_pattern=True, confidence=1.0, enhance=True, global_span=False, validator=DefaultValidator(), formatter=None, disabler=None, confidence_lambda=None):
         """
         :param keys: Keys of the property (format, screenSize, ...)
         :type keys: string
@@ -259,6 +277,7 @@ class _Property:
         if not self.keys:
             raise ValueError("No property key is defined")
         self.confidence = confidence
+        self.confidence_lambda = confidence_lambda
         self.global_span = global_span
         self.validator = validator
         self.formatter = formatter
@@ -410,6 +429,13 @@ class PropertiesContainer(object):
                     duplicate_matches[prop] = matches
                     for match in matches:
                         entries.append((prop, match))
+
+        for prop, match in entries:
+            # compute confidence
+            if prop.confidence_lambda:
+                computed_confidence = prop.confidence_lambda(match)
+                if computed_confidence is not None:
+                    prop.confidence = computed_confidence
 
         if validate:
             # compute entries start and ends
