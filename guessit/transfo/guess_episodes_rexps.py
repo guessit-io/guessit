@@ -107,7 +107,7 @@ class GuessEpisodesRexps(Transformer):
                     valid_ret = []
                     # replace discrete elements by ranges
                     valid_ret.append(ret[0])
-                    for i in xrange(0, len(ret) - 1):
+                    for i in range(0, len(ret) - 1):
                         previous = valid_ret[len(valid_ret) - 1]
                         if ret[i+1] < previous:
                             pass
@@ -115,7 +115,7 @@ class GuessEpisodesRexps(Transformer):
                             valid_ret.append(ret[i+1])
                     ret = valid_ret
                 if fill_gaps:
-                    ret = list(xrange(min(ret), max(ret) + 1))
+                    ret = list(range(min(ret), max(ret) + 1))
                 if len(ret) > 1:
                     return {None: ret[0], propertyListName: ret}
             if len(ret) > 0:
