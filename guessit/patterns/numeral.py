@@ -95,7 +95,7 @@ def __parse_word(value):
     """Convert Word numeral to integer"""
     for word_list in [english_word_numeral_list, french_word_numeral_list, french_alt_word_numeral_list]:
         try:
-            return word_list.index(value)
+            return word_list.index(value.lower())
         except ValueError:
             pass
     raise ValueError

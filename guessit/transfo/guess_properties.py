@@ -21,8 +21,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer, NoValidator
-from guessit.patterns import sep
+from guessit.patterns import sep, build_or_pattern
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
+from guessit.patterns.numeral import numeral, parse_numeral
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder, found_property
 
@@ -200,6 +201,9 @@ class GuessProperties(Transformer):
         self.container.register_property('episodeFormat', r'Minisodes?', canonical_form='Minisode')
 
         self.container.register_property('crc32', '(?:[a-fA-F]|[0-9]){8}', enhance=False, canonical_from_pattern=False)
+
+        weak_episode_words = ['pt', 'part']
+        self.container.register_property(None, '(' + build_or_pattern(weak_episode_words) + sep + '?(?P<part>' + numeral + '))[^0-9]', enhance=False, canonical_from_pattern=False, confidence=0.4, formatter=parse_numeral)
 
         register_property('other', {'AudioFix': ['Audio-Fix', 'Audio-Fixed'],
                                     'SyncFix': ['Sync-Fix', 'Sync-Fixed'],

@@ -285,8 +285,9 @@
 ? /Volumes/data-1/Series/Futurama/Season 3/Futurama_-_S03_DVD_Bonus_-_Deleted_Scenes_Part_3.ogm
 : series: Futurama
   season: 3
+  part: 3
   other: Bonus
-  title: Deleted Scenes Part 3
+  title: Deleted Scenes
   format: DVD
 
 ? Ben.and.Kate.S01E02.720p.HDTV.X264-DIMENSION.mkv
@@ -345,7 +346,8 @@
 : series: Merlin
   season: 5
   episodeNumber: 2
-  title: Arthurs bane part two
+  part: 2
+  title: Arthurs bane
   screenSize: 720p
   format: HDTV
   videoCodec: h264

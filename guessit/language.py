@@ -191,7 +191,9 @@ LNG_COMMON_WORDS = frozenset([
     # release groups
     'bs',  # Bosnian
     # countries
-    'gt', 'lt'
+    'gt', 'lt',
+    # part/pt
+    'pt'
     ])
 
 LNG_COMMON_WORDS_STRICT = frozenset(['brazil'])
