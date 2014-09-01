@@ -56,7 +56,7 @@ class GuessWeakEpisodesRexps(Transformer):
         self.container.register_property(['episodeNumber', 'season'], '[0-9]{2,4}', confidence=0.6, formatter=_formater, disabler=lambda options: options.get('episode_prefer_number') if options else False)
         self.container.register_property(['episodeNumber', 'season'], '[0-9]{4}', confidence=0.6, formatter=_formater)
         self.container.register_property('episodeNumber', '[^0-9](\d{1,3})', confidence=0.6, formatter=parse_numeral, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
-        self.container.register_property('episodeNumber', '(?:episode)' + sep + '(' + numeral + ')[^0-9]', confidence=0.4)
+        self.container.register_property('episodeNumber', '(?:episode)' + sep + '(' + numeral + ')[^0-9]', confidence=0.4, formatter=parse_numeral)
         self.container.register_property(None, r'(?P<episodeNumber>' + numeral + ')' + sep + '?' + of_separators_re.pattern + sep + '?(?P<episodeCount>' + numeral +')', confidence=0.6, formatter=parse_numeral)
         self.container.register_property('episodeNumber', r'^' + sep + '?(\d{1,2})' + sep, confidence=0.4, formatter=parse_numeral, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
         self.container.register_property('episodeNumber', sep + r'(\d{1,2})' + sep + '?$', confidence=0.4, formatter=parse_numeral, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
