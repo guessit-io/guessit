@@ -36,7 +36,7 @@ class GuessEpisodesRexps(Transformer):
         discrete_separators = ['&', 'and', 'et']
         of_separators = ['of', 'sur', '/', '\\']
 
-        season_words = ['seasons?', 'saisons?']
+        season_words = ['seasons?', 'saisons?', 'series?']
         episode_words = ['episodes?']
 
         season_markers = ['s']
