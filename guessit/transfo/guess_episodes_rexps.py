@@ -126,7 +126,7 @@ class GuessEpisodesRexps(Transformer):
             return list_parser(value, 'episodeList', discrete_separators_re=re.compile('x', re.IGNORECASE))
 
         def episode_parser_e(value):
-            return list_parser(value, 'episodeList', discrete_separators_re=re.compile('e',re.IGNORECASE))
+            return list_parser(value, 'episodeList', discrete_separators_re=re.compile('e',re.IGNORECASE), fill_gaps=True)
 
         def episode_parser(value):
             return list_parser(value, 'episodeList')
