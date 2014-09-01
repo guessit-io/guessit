@@ -532,7 +532,12 @@ class PropertiesContainer(object):
                                         k = name
                                     guess[k] = v
                             else:
-                                guess[name] = value
+                                if name in guess:
+                                    if not isinstance(guess[name], list):
+                                        guess[name] = [guess[name]]
+                                    guess[name].append(value)
+                                else:
+                                    guess[name] = value
                             if group_name:
                                 guess.metadata(prop).span = match.span(group_name)
             if filter(guess):

@@ -26,6 +26,7 @@ from guessit.plugins.transformers import Transformer
 from guessit.textutils import find_first_level_groups
 from guessit.patterns import group_delimiters
 from functools import reduce
+import re
 
 
 class AttendedSeries(Transformer):
@@ -39,7 +40,13 @@ class AttendedSeries(Transformer):
         container = PropertiesContainer(enhance=True, canonical_from_pattern=False)
 
         for attended_serie in options.get('attended_series'):
-            container.register_property('series', attended_serie.replace(' ', '-'))
+            if attended_serie.startswith('re:'):
+                attended_serie = attended_serie[3:]
+                attended_serie = attended_serie.replace(' ', '-')
+                container.register_property('series', attended_serie, enhance=True)
+            else:
+                attended_serie = re.escape(attended_serie)
+                container.register_property('series', attended_serie, enhance=False)
 
         found = container.find_properties(string, node, options)
         return container.as_guess(found, string)

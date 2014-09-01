@@ -26,6 +26,7 @@ from guessit.plugins.transformers import Transformer
 from guessit.textutils import find_first_level_groups
 from guessit.patterns import group_delimiters
 from functools import reduce
+import re
 
 
 class AttendedTitle(Transformer):
@@ -39,7 +40,13 @@ class AttendedTitle(Transformer):
         container = PropertiesContainer(enhance=True, canonical_from_pattern=False)
 
         for attended_title in options.get('attended_title'):
-            container.register_property('title', attended_title.replace(' ', '-'))
+            if attended_title.startswith('re:'):
+                attended_title = attended_title[3:]
+                attended_title = attended_title.replace(' ', '-')
+                container.register_property('title', attended_title, enhance=True)
+            else:
+                attended_title = re.escape(attended_title)
+                container.register_property('title', attended_title, enhance=False)
 
         found = container.find_properties(string, node, options)
         return container.as_guess(found, string)
