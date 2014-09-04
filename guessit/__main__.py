@@ -32,9 +32,14 @@ def guess_file(filename, info='filename', options=None, **kwargs):
     options = options or {}
     filename = u(filename)
 
-    if not options.get('yaml'):
+    if not options.get('yaml') and not options.get('show_property'):
         print('For:', filename)
     guess = guess_file_info(filename, info, options, **kwargs)
+
+    if options.get('show_property'):
+        print (guess.get(options.get('show_property'), ''))
+        return
+
     if options.get('yaml'):
         import yaml
         for k, v in guess.items():
