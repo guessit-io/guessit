@@ -135,9 +135,10 @@ class GuessLanguage(Transformer):
         GuessFinder(self.guess_language, None, self.log, options).process_nodes(mtree.unidentified_leaves())
 
     def promote_subtitle(self, node):
-        node.guess.set('subtitleLanguage', node.guess['language'],
-                       confidence=node.guess.confidence('language'))
-        del node.guess['language']
+        if 'language' in node.guess:
+            node.guess.set('subtitleLanguage', node.guess['language'],
+                           confidence=node.guess.confidence('language'))
+            del node.guess['language']
 
     def post_process(self, mtree, options=None):
         # 1- try to promote language to subtitle language where it makes sense
