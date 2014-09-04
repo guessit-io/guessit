@@ -22,7 +22,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-subtitle_exts = ['srt', 'idx', 'sub', 'ssa']
+subtitle_exts = ['srt', 'idx', 'sub', 'ssa', 'ass']
 
 info_exts = ['nfo']
 
