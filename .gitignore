@@ -16,3 +16,8 @@ Include
 Lib
 Scripts
 /.coverage
+*.iml
+/2.7*/
+/3.3*/
+/3.4*/
+.python-version
