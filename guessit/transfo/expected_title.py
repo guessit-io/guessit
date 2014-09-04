@@ -29,30 +29,30 @@ from functools import reduce
 import re
 
 
-class AttendedSeries(Transformer):
+class ExpectedTitle(Transformer):
     def __init__(self):
-        Transformer.__init__(self, 230)
+        Transformer.__init__(self, 225)
 
     def should_process(self, mtree, options=None):
-        return options and options.get('attended_series')
+        return options and options.get('attended_title')
 
-    def attended_series(self, string, node=None, options=None):
+    def expected_titles(self, string, node=None, options=None):
         container = PropertiesContainer(enhance=True, canonical_from_pattern=False)
 
-        for attended_serie in options.get('attended_series'):
-            if attended_serie.startswith('re:'):
-                attended_serie = attended_serie[3:]
-                attended_serie = attended_serie.replace(' ', '-')
-                container.register_property('series', attended_serie, enhance=True)
+        for expected_title in options.get('expected_title'):
+            if expected_title.startswith('re:'):
+                expected_title = expected_title[3:]
+                expected_title = expected_title.replace(' ', '-')
+                container.register_property('title', expected_title, enhance=True)
             else:
-                attended_serie = re.escape(attended_serie)
-                container.register_property('series', attended_serie, enhance=False)
+                expected_title = re.escape(expected_title)
+                container.register_property('title', expected_title, enhance=False)
 
         found = container.find_properties(string, node, options)
         return container.as_guess(found, string)
 
     def supported_properties(self):
-        return ['series']
+        return ['title']
 
     def process(self, mtree, options=None):
-        GuessFinder(self.attended_series, None, self.log, options).process_nodes(mtree.unidentified_leaves())
+        GuessFinder(self.expected_titles, None, self.log, options).process_nodes(mtree.unidentified_leaves())

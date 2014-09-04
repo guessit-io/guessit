@@ -23,14 +23,14 @@ name_format_group.add_option('', '--allowed-languages',type='string', action='ca
                              help='List of allowed languages. Separate languages codes with ";"')
 name_format_group.add_option('', '--allowed-countries',type='string', action='callback', callback=options_list, dest='allowed_countries', default=None,
                              help='List of allowed countries. Separate country codes with ";"')
+name_format_group.add_option('', '--expected-series', type='string', action='callback', callback=options_list, dest='expected_series', default=None,
+                             help='List of expected series to parse. Separate series names with ";"')
+name_format_group.add_option('', '--expected-title', type='string', action='callback', callback=options_list, dest='expected_title', default=None,
+                             help='List of expected titles to parse. Separate title names with ";"')
+name_format_group.add_option('', '--expected-group', type='string', action='callback', callback=options_list, dest='expected_group', default=None,
+                             help='List of expected groups to parse. Separate group names with ";"')
 name_format_group.add_option('', '--disabled-transformers', type='string', action='callback', callback=options_list, dest='disabled_transformers', default=None,
                              help='List of transformers to disable. Separate transformers names with ";"')
-name_format_group.add_option('', '--attended-series', type='string', action='callback', callback=options_list, dest='attended_series', default=None,
-                             help='List of attended series to parse. Separate series names with ";"')
-name_format_group.add_option('', '--attended-title', type='string', action='callback', callback=options_list, dest='attended_title', default=None,
-                             help='List of attended titles to parse. Separate title names with ";"')
-name_format_group.add_option('', '--attended-group', type='string', action='callback', callback=options_list, dest='attended_group', default=None,
-                             help='List of attended groups to parse. Separate group names with ";"')
 
 mode_group = OptionGroup(option_parser, "Mode")
 option_parser.add_option_group(mode_group)

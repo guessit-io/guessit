@@ -107,19 +107,19 @@ class GuessReleaseGroup(Transformer):
         return True
 
     def guess_release_group(self, string, node=None, options=None):
-        if options and options.get('attended_group'):
-            attended_container = PropertiesContainer(enhance=True, canonical_from_pattern=False)
-            for attended_group in options.get('attended_group'):
-                if attended_group.startswith('re:'):
-                    attended_group = attended_group[3:]
-                    attended_group = attended_group.replace(' ', '-')
-                    attended_container.register_property('releaseGroup', attended_group, enhance=True)
+        if options and options.get('expected_group'):
+            expected_container = PropertiesContainer(enhance=True, canonical_from_pattern=False)
+            for expected_group in options.get('expected_group'):
+                if expected_group.startswith('re:'):
+                    expected_group = expected_group[3:]
+                    expected_group = expected_group.replace(' ', '-')
+                    expected_container.register_property('releaseGroup', expected_group, enhance=True)
                 else:
-                    attended_group = re.escape(attended_group)
-                    attended_container.register_property('releaseGroup', attended_group, enhance=False)
+                    expected_group = re.escape(expected_group)
+                    expected_container.register_property('releaseGroup', expected_group, enhance=False)
 
-            found = attended_container.find_properties(string, node, options, 'releaseGroup')
-            guess = attended_container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
+            found = expected_container.find_properties(string, node, options, 'releaseGroup')
+            guess = expected_container.as_guess(found, string, self.validate_group_name, sep_replacement='-')
             if guess:
                 return guess
 

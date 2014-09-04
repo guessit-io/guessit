@@ -141,8 +141,8 @@ class DefaultTransformerExtensionManager(CustomTransformerExtensionManager):
                                     'guess_episode_info_from_position = guessit.transfo.guess_episode_info_from_position:GuessEpisodeInfoFromPosition',
                                     'guess_movie_title_from_position = guessit.transfo.guess_movie_title_from_position:GuessMovieTitleFromPosition',
                                     'guess_episode_details = guessit.transfo.guess_episode_details:GuessEpisodeDetails',
-                                    'attended_series = guessit.transfo.attended_series:AttendedSeries',
-                                    'attended_title = guessit.transfo.attended_title:AttendedTitle',]
+                                    'expected_series = guessit.transfo.expected_series:ExpectedSeries',
+                                    'expected_title = guessit.transfo.expected_title:ExpectedTitle',]
 
     def _find_entry_points(self, namespace):
         entry_points = {}
