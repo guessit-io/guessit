@@ -38,7 +38,7 @@ guess, movie or episode. If you want to force one of those, use the ``-t movie``
 ``-t episode`` flags.
 
 If input file is remote file or a release name with no folder and extension,
-you should use the ``-n`` orS ``--name-only`` flag. It will disable folder and extension
+you should use the ``-n`` or ``--name-only`` flag. It will disable folder and extension
 parsing, and any concrete file related analysis.
 
 Guessit also allows you to specify the type of information you want
