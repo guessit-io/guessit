@@ -402,3 +402,20 @@
 : options: -n
   title: FlexGet Step1
   type: movie
+
+? Movies/El Bosque Animado (1987)/El.Bosque.Animado.[Jose.Luis.Cuerda.1987].[Xvid-Dvdrip-720 * 432].avi
+: format: DVD
+  screenSize: 720x432
+  title: El Bosque Animado
+  videoCodec: XviD
+  year: 1987
+  type: movie
+
+? Movies/El Bosque Animado (1987)/El.Bosque.Animado.[Jose.Luis.Cuerda.1987].[Xvid-Dvdrip-720x432].avi
+: format: DVD
+  screenSize: 720x432
+  title: El Bosque Animado
+  videoCodec: XviD
+  year: 1987
+  type: movie
+

@@ -27,6 +27,7 @@ from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.patterns.numeral import numeral, parse_numeral
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder, found_property
+import re
 
 
 class GuessProperties(Transformer):
@@ -110,6 +111,31 @@ class GuessProperties(Transformer):
                                          '4K': ['(?:\d{3,}(?:\\|\/|x|\*))?2160(?:i|p?x?)']
                                          },
                           validator=ChainedValidator(DefaultValidator(), OnlyOneValidator()))
+
+        class ResolutionValidator(object):
+            """Make sure our match is surrounded by separators, or by another entry"""
+            def validate(self, prop, string, node, match, entry_start, entry_end):
+                """
+                span = _get_span(prop, match)
+                span = _trim_span(span, string[span[0]:span[1]])
+                start, end = span
+
+                sep_start = start <= 0 or string[start - 1] in sep
+                sep_end = end >= len(string) or string[end] in sep
+                start_by_other = start in entry_end
+                end_by_other = end in entry_start
+                if (sep_start or start_by_other) and (sep_end or end_by_other):
+                    return True
+                return False
+                """
+                return True
+
+        _digits_re = re.compile('\d+')
+        def resolutionFormatter(value):
+            digits = _digits_re.findall(value)
+            return 'x'.join(digits)
+
+        self.container.register_property('screenSize', '\d{3,4}-?[x\*]-?\d{3,4}', canonical_from_pattern=False, formatter=resolutionFormatter, validator=ChainedValidator(DefaultValidator(), ResolutionValidator()))
 
         register_quality('screenSize', {'360p': -300,
                                         '368p': -200,
