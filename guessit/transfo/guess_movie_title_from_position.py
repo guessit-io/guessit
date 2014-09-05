@@ -72,7 +72,7 @@ class GuessMovieTitleFromPosition(Transformer):
         # group, and the folder only contains 1 unidentified one, then we have
         # a series
         # ex: Millenium Trilogy (2009)/(1)The Girl With The Dragon Tattoo(2009).mkv
-        try:
+        if len(folder_leftover) > 0 and len(basename_leftover) > 1:
             series = folder_leftover[0]
             filmNumber = basename_leftover[0]
             title = basename_leftover[1]
@@ -92,8 +92,6 @@ class GuessMovieTitleFromPosition(Transformer):
                 found_property(series, 'filmSeries', confidence=0.6)
                 found_property(filmNumber, 'filmNumber', num, confidence=0.6)
             return
-        except Exception:
-            pass
 
         # specific cases:
         #  - movies/tttttt (yyyy)/tttttt.ccc
@@ -115,7 +113,7 @@ class GuessMovieTitleFromPosition(Transformer):
                 found_property(next(groups_before), 'title', confidence=0.8)
                 return
 
-        except Exception:
+        except ValueError:
             pass
 
         # if we have either format or videoCodec in the folder containing the
