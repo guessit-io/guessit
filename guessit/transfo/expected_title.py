@@ -34,7 +34,7 @@ class ExpectedTitle(Transformer):
         Transformer.__init__(self, 225)
 
     def should_process(self, mtree, options=None):
-        return options and options.get('attended_title')
+        return options and options.get('expected_title')
 
     def expected_titles(self, string, node=None, options=None):
         container = PropertiesContainer(enhance=True, canonical_from_pattern=False)

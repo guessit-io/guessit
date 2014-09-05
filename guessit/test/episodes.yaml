@@ -1050,3 +1050,10 @@
 : options: -n -t episode
   screenSize: 360p
   series: FooBar
+
+? BarFood christmas special HDTV
+: options: -n -t episode --expected-series BarFood
+  format: HDTV
+  series: BarFood
+  title: christmas special
+  episodeDetails: Special

@@ -34,7 +34,7 @@ class ExpectedSeries(Transformer):
         Transformer.__init__(self, 230)
 
     def should_process(self, mtree, options=None):
-        return options and options.get('attended_series')
+        return options and options.get('expected_series')
 
     def expected_series(self, string, node=None, options=None):
         container = PropertiesContainer(enhance=True, canonical_from_pattern=False)
