@@ -24,7 +24,7 @@ from collections import defaultdict
 import logging
 import os
 
-from guessit import PY2, u, guess_file_info
+from guessit import PY2, u, guess_file_info, __version__
 from guessit.options import option_parser
 
 
@@ -219,6 +219,15 @@ def main(args=None, setup_logging=True):
 
     if options.demo:
         run_demo(episodes=True, movies=True, options=vars(options))
+        help_required = False
+
+    if options.version:
+        print('+-------------------------------------------------------+')
+        print('+                   GuessIt ' + __version__ +'                       +')
+        print('+-------------------------------------------------------+')
+        print('|      Please report any bug or feature request at      |')
+        print('|       https://github.com/wackou/guessit/issues.       |')
+        print('+-------------------------------------------------------+')
         help_required = False
 
     if options.yaml:

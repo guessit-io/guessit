@@ -57,6 +57,8 @@ information_group.add_option('-V', '--values', dest='values', action='store_true
                          help='Display property values that can be guessed.')
 information_group.add_option('-s', '--transformers', dest='transformers', action='store_true', default=False,
                          help='Display transformers that can be used.')
+information_group.add_option('', '--version', dest='version', action='store_true', default=False,
+                             help='Display the guessit version.')
 
 webservice_group = OptionGroup(option_parser, "guessit.io")
 option_parser.add_option_group(webservice_group)
