@@ -64,7 +64,7 @@ class GuessProperties(Transformer):
         register_property('container', {'mp4': ['MP4']})
 
         # http://en.wikipedia.org/wiki/Pirated_movie_release_types
-        register_property('format', {'VHS': ['VHS'],
+        register_property('format', {'VHS': ['VHS', 'VHS-Rip'],
                                      'Cam': ['CAM', 'CAMRip'],
                                      #'Telesync': ['TELESYNC', 'PDVD'],
                                      'Telesync': (['TS'], {'confidence': 0.2}),
