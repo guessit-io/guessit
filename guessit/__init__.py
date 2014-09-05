@@ -118,7 +118,7 @@ def _build_filename_mtree(filename, options=None, **kwargs):
     mtree = IterativeMatcher(filename, options=options, **kwargs)
     second_pass_options = mtree.second_pass_options
     if second_pass_options:
-        log.info("Running 2nd pass")
+        log.debug("Running 2nd pass")
         merged_options = dict(options)
         merged_options.update(second_pass_options)
         mtree = IterativeMatcher(filename, options=merged_options, **kwargs)
@@ -136,7 +136,7 @@ def _add_camel_properties(mtree, options=None, **kwargs):
 
 def _guess_camel_string(mtree, string, options=None, skip_title=False, **kwargs):
     if string and is_camel(string):
-        log.info('"%s" is camel cased. Try to detect more properties.' % (string,))
+        log.debug('"%s" is camel cased. Try to detect more properties.' % (string,))
         uncameled_value = from_camel(string)
         merged_options = dict(options)
         if 'type' in mtree.match_tree.info:
