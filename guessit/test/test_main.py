@@ -43,15 +43,14 @@ class TestMain(TestGuessit):
 
     def test_list_properties(self):
         __main__.main(["-p"], False)
-        __main__.main(["-l"], False)
+        __main__.main(["-V"], False)
 
     def test_list_transformers(self):
         __main__.main(["--transformers"], False)
-        __main__.main(["-l", "--transformers"], False)
+        __main__.main(["-V", "--transformers"], False)
 
     def test_demo(self):
         __main__.main(["-d"], False)
-        __main__.main(["-l"], False)
 
     def test_filename(self):
         __main__.main(["A.Movie.2014.avi"], False)
