@@ -653,3 +653,19 @@
   format: DVB
   releaseGroup: FlexGet
   title: FooBar 7
+
+? h265 - HEVC Riddick Unrated Director Cut French 1080p DTS.mkv
+: audioCodec: DTS
+  edition: Director's cut
+  language: fr
+  screenSize: 1080p
+  title: Riddick Unrated
+  videoCodec: h265
+
+? "[h265 - HEVC] Riddick Unrated Director Cut French [1080p DTS].mkv"
+: audioCodec: DTS
+  edition: Director's cut
+  language: fr
+  screenSize: 1080p
+  title: Riddick Unrated
+  videoCodec: h265

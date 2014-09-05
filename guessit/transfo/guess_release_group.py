@@ -41,7 +41,8 @@ class GuessReleaseGroup(Transformer):
         # and group name can contain a separator.
         self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels', 'other']
         self.previous_safe_values = {'other': ['Complete']}
-
+        self.next_safe_properties = ['extension', 'website']
+        self.next_safe_values = {'format': ['Telesync']}
         self.container.sep_replace_char = '-'
         self.container.canonical_from_pattern = False
         self.container.enhance = True
@@ -98,12 +99,20 @@ class GuessReleaseGroup(Transformer):
             return True
         return False
 
-    def is_safe(self, leaf, node):
+    def validate_next_leaves(self, node):
+        # Don't override title. Should be more precise.
+        leaves = node.root.unidentified_leaves()
+        return len(list(leaves)) > 1
+
+    def validate_node(self, leaf, node, safe=False):
         if not self.is_leaf_previous(leaf, node):
             return False
-        for k, v in leaf.guess.items():
-            if k in self.previous_safe_values and not v in self.previous_safe_values[k]:
-                return False
+        if not self.validate_next_leaves(node):
+            return False
+        if safe:
+            for k, v in leaf.guess.items():
+                if k in self.previous_safe_values and not v in self.previous_safe_values[k]:
+                    return False
         return True
 
     def guess_release_group(self, string, node=None, options=None):
@@ -130,7 +139,7 @@ class GuessReleaseGroup(Transformer):
             explicit_group_node = node.group_node()
             if explicit_group_node:
                 for leaf in explicit_group_node.leaves_containing(self.previous_safe_properties):
-                    if self.is_safe(leaf, node):
+                    if self.validate_node(leaf, node, True):
                         if leaf.root.value[leaf.span[1]] == '-':
                             guess.metadata().confidence = 1
                         else:
@@ -143,7 +152,7 @@ class GuessReleaseGroup(Transformer):
                 previous_group_node = node.previous_group_node()
                 if previous_group_node:
                     for leaf in previous_group_node.leaves_containing(self.previous_safe_properties):
-                        if self.is_leaf_previous(leaf, node):
+                        if self.validate_node(leaf, node, False):
                             guess = Guess({'releaseGroup': node.value}, confidence=1, input=node.value, span=(0, len(node.value)))
                             if self.validate_group_name(guess):
                                 node.guess = guess
