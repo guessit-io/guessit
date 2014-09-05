@@ -123,6 +123,10 @@ class GuessEpisodeInfoFromPosition(Transformer):
         position relative to other known elements
         """
         eps = [node for node in mtree.leaves() if 'episodeNumber' in node.guess]
+
+        if not eps:
+            eps = [node for node in mtree.leaves() if 'date' in node.guess]
+
         if eps:
             self.match_from_epnum_position(mtree, eps[0], options)
 
