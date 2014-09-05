@@ -6,11 +6,36 @@
 History
 =======
 
-
-0.8.1 (unreleased)
-------------------
+0.9.1 (unreleased)
 
 * Nothing changed yet.
+
+0.9.0 (2014-09-05)
+----------------
+
+* Better auto-detection of anime episodes, containing a ``crc32`` or a digits ``episodeNumber``.
+* Better listing of options on ``guessit -h``
+* Added ``--allowed-countries`` and ``--allowed-languages`` to avoid two or three
+  letters words to be guessed as ``country`` or ``language``
+* Added ``--disabled-transformers`` option to disable transformer plugin at runtime.
+* Added ``--episode-prefer-number`` option, for ``guess -t episode 'serie.123.avi'``
+  to return ``episodeNumber`` = ``123`` instead of ``season`` = ``1`` + ``episodeNumber`` = 23``
+* Added ``--split-camel`` option (now disabled by default)
+* Added ``episodeCount`` and ``seasonCount`` properties (x-of-n notation)
+* Added ``--date-year-first``` and ``--date-day-first`` options
+* Added ``--expected-title``, ``--expected-series`` and ``--expected-groups``
+  to help finding values when those properties are known
+* Added ``10bit`` value to ``videoProfile``
+* Added ``--show-property`` option to only show a single property
+* Added ``--input-file`` option to parse a list of
+* Added ``--version`` option
+* Added ``ass```to subtitle extensions
+* Added ``Fansub`` value for ``other`` property
+* Added more date formats support with ``dateutil`` dependency
+* Added customizable ``clean_function`` (API)
+* Added ``default_options`` (API)
+* Fixed ``--yaml`` option to support ``language`` and ``country``
+* Fixed ``transformers.add_transformer()`` function (API)
 
 
 0.8 (2014-07-06)
