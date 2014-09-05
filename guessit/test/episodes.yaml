@@ -1057,3 +1057,9 @@
   series: BarFood
   title: christmas special
   episodeDetails: Special
+
+? Something.2008x12.13-FlexGet
+: options: -n -t episode
+  series: Something
+  date: 2008-12-13
+  title: FlexGet

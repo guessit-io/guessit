@@ -26,6 +26,7 @@ import re
 
 
 _dsep = r'[-/ \.]'
+_dsep_bis = r'[-/ \.x]'
 
 # 20010823
 _date_rexp_yyyymmdd = re.compile(
@@ -37,7 +38,7 @@ _date_rexp_yyyymmdd = re.compile(
 
 # 2001-08-23
 _date_rexp_yyyy_mm_dd = re.compile(r'[^0-9]' +
-                                   r'(?P<year>[0-9]{4})' + _dsep +
+                                   r'(?P<year>[0-9]{4})' + _dsep_bis +
                                    r'(?P<month>[0-9]{1,2})' + _dsep +
                                    r'(?P<day>[0-9]{1,2})' +
                                    r'[^0-9]')
@@ -62,7 +63,7 @@ _date_rexp_ddmmyyyy = re.compile(
 _date_rexp_dd_mm_yyyy = re.compile(
     r'[^0-9]' +
     r'(?P<day>[0-9]{1,2})' + _dsep +
-    r'(?P<month>[0-9]{1,2})' + _dsep +
+    r'(?P<month>[0-9]{1,2})' + _dsep_bis +
     r'(?P<year>[0-9]{4})' +
     r'[^0-9]')
 
