@@ -114,6 +114,7 @@ You can see the list of options that guessit.py accepts like that::
         -p, --properties    Display properties that can be guessed.
         -V, --values        Display property values that can be guessed.
         -s, --transformers  Display transformers that can be used.
+        --version           Display the guessit version.
 
       guessit.io:
         -b, --bug           Submit a wrong detection to the guessit.io service
@@ -124,3 +125,4 @@ You can see the list of options that guessit.py accepts like that::
                             hash_mpc or a hash from python's hashlib module, such
                             as hash_md5, hash_sha1, ...; or a list of any of them,
                             comma-separated
+
