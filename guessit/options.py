@@ -10,8 +10,10 @@ name_format_group.add_option('-n', '--name-only', dest='name_only', action='stor
                          help='Parse files as name only. Disable folder parsing, extension parsing, and file content analysis.')
 name_format_group.add_option('-c', '--split-camel', dest='split_camel', action='store_true', default=False,
                          help='Split camel case part of filename.')
-name_format_group.add_option('', '--date-year-first', action='store_true', dest='date_year_first', default=False,
+name_format_group.add_option('', '--date-year-first', action='store_true', dest='date_year_first', default=None,
                          help='If short date is found, consider the first digits as the year.')
+name_format_group.add_option('', '--date-day-first', action='store_true', dest='date_day_first', default=None,
+                             help='If short date is found, consider the second digits as the day.')
 name_format_group.add_option('', '--episode-prefer-number', action='store_true', dest='episode_prefer_number', default=False,
                              help='Guess "serie.213.avi" as the episodeNumber 213. Without this option, '
                                   'it will be guessed as season 2, episodeNumber 13')

@@ -151,6 +151,11 @@ class TestUtils(TestGuessit):
 
         self.assertEqual(search_date(' There\'s no date in here. '), (None, None))
 
+        self.assertEqual(search_date(' Something 01-02-03 '), (date(2003, 02, 01), (11, 19)))
+        self.assertEqual(search_date(' Something 01-02-03 ', year_first=False, day_first=True), (date(2003, 02, 01), (11, 19)))
+        self.assertEqual(search_date(' Something 01-02-03 ', year_first=True), (date(2001, 02, 03), (11, 19)))
+        self.assertEqual(search_date(' Something 01-02-03 ', day_first=False), (date(2003, 01, 02), (11, 19)))
+
 
 suite = allTests(TestUtils)
 
