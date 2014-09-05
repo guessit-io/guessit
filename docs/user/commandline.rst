@@ -27,7 +27,7 @@ the videoCodec is h264, but only 60% confident that the title is
 
 You can use the ``-v`` or ``--verbose`` flag to have it display debug information.
 
-You can use the ``-p`` or ``-l`` flags to display the properties names or the
+You can use the ``-p`` or ``-V`` flags to display the properties names or the
 multiple values they can take.
 
 You can also run a ``--demo`` mode which will run a few tests and
@@ -38,7 +38,7 @@ guess, movie or episode. If you want to force one of those, use the ``-t movie``
 ``-t episode`` flags.
 
 If input file is remote file or a release name with no folder and extension,
-you should use the ``-n`` or ``--name-only`` flag. It will disable folder and extension
+you should use the ``-n`` orS ``--name-only`` flag. It will disable folder and extension
 parsing, and any concrete file related analysis.
 
 Guessit also allows you to specify the type of information you want
@@ -56,25 +56,71 @@ using the ``-i`` or ``--info`` flag::
 You can see the list of options that guessit.py accepts like that::
 
     $ guessit -h
-    Usage: guessit.py [options] file1 [file2...]
+    Usage: guessit [options] file1 [file2...]
 
     Options:
       -h, --help            show this help message and exit
-      -v, --verbose         Display debug output
-      -p, --properties      Display properties that can be guessed.
-      -l, --values          Display property values that can be guessed.
-      -s, --transformers    Display transformers that can be used.
-      -i INFO, --info=INFO  The desired information type: filename, video,
+      -P SHOW_PROPERTY, --show-property=SHOW_PROPERTY
+                            Display the value of a single property (title, series,
+                            videoCodec, year, type ...)
+
+      Naming:
+        -t TYPE, --type=TYPE
+                            The suggested file type: movie, episode. If undefined,
+                            type will be guessed.
+        -n, --name-only     Parse files as name only. Disable folder parsing,
+                            extension parsing, and file content analysis.
+        -c, --split-camel   Split camel case part of filename.
+        -Y, --date-year-first
+                            If short date is found, consider the first digits as
+                            the year.
+        -D, --date-day-first
+                            If short date is found, consider the second digits as
+                            the day.
+        -E, --episode-prefer-number
+                            Guess "serie.213.avi" as the episodeNumber 213.
+                            Without this option, it will be guessed as season 2,
+                            episodeNumber 13
+        -L ALLOWED_LANGUAGES, --allowed-languages=ALLOWED_LANGUAGES
+                            List of allowed languages. Separate languages codes
+                            with ";"
+        -C ALLOWED_COUNTRIES, --allowed-countries=ALLOWED_COUNTRIES
+                            List of allowed countries. Separate country codes with
+                            ";"
+        -S EXPECTED_SERIES, --expected-series=EXPECTED_SERIES
+                            List of expected series to parse. Separate series
+                            names with ";"
+        -T EXPECTED_TITLE, --expected-title=EXPECTED_TITLE
+                            List of expected titles to parse. Separate title names
+                            with ";"
+        -G EXPECTED_GROUP, --expected-group=EXPECTED_GROUP
+                            List of expected groups to parse. Separate group names
+                            with ";"
+        --disabled-transformers=DISABLED_TRANSFORMERS
+                            List of transformers to disable. Separate transformers
+                            names with ";"
+
+      Output:
+        -v, --verbose       Display debug output
+        -a, --advanced      Display advanced information for filename guesses, as
+                            json output
+        -y, --yaml          Display information for filename guesses as yaml
+                            output (like unit-test)
+        -f INPUT_FILE, --input-file=INPUT_FILE
+                            Read filenames from an input file.
+        -d, --demo          Run a few builtin tests instead of analyzing a file
+
+      Information:
+        -p, --properties    Display properties that can be guessed.
+        -V, --values        Display property values that can be guessed.
+        -s, --transformers  Display transformers that can be used.
+
+      guessit.io:
+        -b, --bug           Submit a wrong detection to the guessit.io service
+
+      Other features:
+        -i INFO, --info=INFO
+                            The desired information type: filename, video,
                             hash_mpc or a hash from python's hashlib module, such
                             as hash_md5, hash_sha1, ...; or a list of any of them,
                             comma-separated
-      -n, --name-only       Parse files as name only. Disable folder parsing,
-                            extension parsing, and file content analysis.
-      -t TYPE, --type=TYPE  The suggested file type: movie, episode. If undefined,
-                            type will be guessed.
-      -a, --advanced        Display advanced information for filename guesses, as
-                            json output
-      -y, --yaml            Display information for filename guesses as yaml
-                            output (like unit-test)
-      -d, --demo            Run a few builtin tests instead of analyzing a file
-      -b, --bug             Submit a wrong detection to the guessit.io service

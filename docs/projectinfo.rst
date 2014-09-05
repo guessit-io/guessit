@@ -32,4 +32,4 @@ GuessIt is under active development, and contributions are more than welcome!
 License
 -------
 
-GuessIt is licensed under the `LGPLV3 license <http://www.gnu.org/licenses/lgpl.html>`_.
+GuessIt is licensed under the `LGPLv3 license <http://www.gnu.org/licenses/lgpl.html>`_.
