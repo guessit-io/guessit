@@ -38,9 +38,9 @@ output_group = OptionGroup(option_parser, "Output")
 option_parser.add_option_group(output_group)
 output_group.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False,
                          help='Display debug output')
-option_parser.add_option('-P', '--show-property', dest='show_property', default=None,
+output_group.add_option('-P', '--show-property', dest='show_property', default=None,
                           help='Display the value of a single property (title, series, videoCodec, year, type ...)'),
-option_parser.add_option('-u', '--unidentified', dest='unidentified', action='store_true', default=False,
+output_group.add_option('-u', '--unidentified', dest='unidentified', action='store_true', default=False,
                          help='Display the unidentified parts.'),
 output_group.add_option('-a', '--advanced', dest='advanced', action='store_true', default=False,
                          help='Display advanced information for filename guesses, as json output')
