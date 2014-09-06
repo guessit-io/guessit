@@ -102,6 +102,7 @@ class GuessFiletype(Transformer):
         else:
             if fileext and not options.get('name_only'):
                 other = {'extension': fileext}
+                list(mtree.unidentified_leaves())[-1].guess = Guess(other)
 
         # check whether we are in a 'Movies', 'Tv Shows', ... folder
         folder_rexps = [
