@@ -63,12 +63,11 @@ def build_opts(transformers=None):
             transformer.register_options(opts, naming_opts, output_opts, information_opts, webservice_opts, other_opts)
 
     return opts, naming_opts, output_opts, information_opts, webservice_opts, other_opts
-
-
-opts, naming_opts, output_opts, information_opts, webservice_opts, other_opts = None, None, None, None, None, None
-
+_opts, _naming_opts, _output_opts, _information_opts, _webservice_opts, _other_opts = None, None, None, None, None, None
 
 def reload(transformers=None):
-    global opts, naming_opts, output_opts, information_opts, webservice_opts, other_opts
-    opts, naming_opts, output_opts, information_opts, webservice_opts, other_opts = build_opts(transformers)
-reload()
+    global _opts, _naming_opts, _output_opts, _information_opts, _webservice_opts, _other_opts
+    _opts, _naming_opts, _output_opts, _information_opts, _webservice_opts, _other_opts = build_opts(transformers)
+
+def get_opts():
+    return _opts

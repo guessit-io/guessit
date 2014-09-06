@@ -19,7 +19,6 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from guessit.options import naming_opts
 
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder

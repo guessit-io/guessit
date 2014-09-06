@@ -19,7 +19,7 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from guessit.options import naming_opts, options_list_callback
+from guessit.options import options_list_callback
 
 from guessit.plugins.transformers import Transformer
 from babelfish import Country

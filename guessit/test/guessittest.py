@@ -43,8 +43,8 @@ def addImportPath(path):
 log = logging.getLogger(__name__)
 
 from guessit.plugins import transformers
+from guessit.options import get_opts
 import guessit
-from guessit.options import opts
 from guessit import *
 from guessit.matcher import *
 from guessit.fileutils import *
@@ -85,7 +85,7 @@ class TestGuessit(TestCase):
 
             if options:
                 args = shlex.split(options)
-                options, _ = opts.parse_args(args)
+                options, _ = get_opts().parse_args(args)
                 options = vars(options)
             try:
                 found = guess_func(filename, options)

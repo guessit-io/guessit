@@ -23,7 +23,7 @@ from guessit.containers import PropertiesContainer
 from guessit.matcher import GuessFinder
 
 from guessit.plugins.transformers import Transformer
-from guessit.options import naming_opts, options_list_callback
+from guessit.options import options_list_callback
 
 import re
 

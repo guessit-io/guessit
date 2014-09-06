@@ -25,7 +25,8 @@ import logging
 import os
 
 from guessit import PY2, u, guess_file_info, __version__
-from guessit.options import opts
+from guessit.plugins import transformers
+from guessit.options import get_opts
 from guessit.__version__ import __version__
 
 
@@ -67,8 +68,6 @@ def guess_file(filename, info='filename', options=None, **kwargs):
 
 
 def _supported_properties():
-    from guessit.plugins import transformers
-
     all_properties = defaultdict(list)
     transformers_properties = []
     for transformer in transformers.all_transformers():
@@ -214,13 +213,10 @@ def main(args=None, setup_logging=True):
         # Wrap sys.stdout into a StreamWriter to allow writing unicode.
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
-    # Transformers may register options at init.
-    from guessit.plugins import transformers
-
     if args:
-        options, args = opts.parse_args(args)
+        options, args = get_opts().parse_args(args)
     else:  # pragma: no cover
-        options, args = opts.parse_args()
+        options, args = get_opts().parse_args()
     if options.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
