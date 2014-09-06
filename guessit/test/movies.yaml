@@ -669,3 +669,22 @@
   screenSize: 1080p
   title: Riddick Unrated
   videoCodec: h265
+
+? Barbecue-2014-French-mHD-1080p
+: options: -n
+  language: fr
+  other: mHD
+  screenSize: 1080p
+  title: Barbecue
+  year: 2014
+
+? Underworld Quadrilogie VO+VFF+VFQ 1080p HDlight.x264~Tonyk~Monde Infernal
+: options: -n
+  language:
+  - fr
+  - vo
+  other: HDLight
+  screenSize: 1080p
+  title: Underworld Quadrilogie
+  videoCodec: h264
+
