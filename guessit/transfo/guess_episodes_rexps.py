@@ -174,6 +174,11 @@ class GuessEpisodesRexps(Transformer):
 
         self.container.register_property(None, r'[^0-9]((?P<season>' + digital_numeral + ')[^0-9 .-]?-?(?P<other>xAll))', confidence=1.0, formatter={None: parse_numeral, 'other': lambda x: 'Complete', 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
 
+    def register_options(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
+        naming_opts.add_option('-E', '--episode-prefer-number', action='store_true', dest='episode_prefer_number', default=False,
+                               help='Guess "serie.213.avi" as the episodeNumber 213. Without this option, '
+                                    'it will be guessed as season 2, episodeNumber 13')
+
     def supported_properties(self):
         return ['episodeNumber', 'season', 'episodeList', 'seasonList', 'episodeCount', 'seasonCount', 'version', 'other']
 

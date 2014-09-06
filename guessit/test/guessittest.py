@@ -44,7 +44,7 @@ log = logging.getLogger(__name__)
 
 from guessit.plugins import transformers
 import guessit
-from guessit.options import option_parser
+from guessit.options import opts
 from guessit import *
 from guessit.matcher import *
 from guessit.fileutils import *
@@ -85,7 +85,7 @@ class TestGuessit(TestCase):
 
             if options:
                 args = shlex.split(options)
-                options, _ = option_parser.parse_args(args)
+                options, _ = opts.parse_args(args)
                 options = vars(options)
             try:
                 found = guess_func(filename, options)

@@ -19,6 +19,7 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+from guessit.options import reload as reload_options
 
 from stevedore import ExtensionManager
 from pkg_resources import EntryPoint
@@ -51,6 +52,9 @@ class Transformer(object):  # pragma: no cover
         pass
 
     def post_process(self, mtree, options=None):
+        pass
+
+    def register_options(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
         pass
 
     def rate_quality(self, guess, *props):
@@ -203,5 +207,6 @@ def reload(custom=False):
         _extensions = CustomTransformerExtensionManager()
     else:
         _extensions = DefaultTransformerExtensionManager()
+    reload_options(all_transformers())
 
 reload()

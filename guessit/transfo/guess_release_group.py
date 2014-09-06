@@ -21,6 +21,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.plugins.transformers import Transformer
+from guessit.options import naming_opts, options_list_callback
 from guessit.matcher import GuessFinder, build_guess
 from guessit.containers import PropertiesContainer
 from guessit.patterns import sep
@@ -32,6 +33,7 @@ import re
 class GuessReleaseGroup(Transformer):
     def __init__(self):
         Transformer.__init__(self, -190)
+
         self.container = PropertiesContainer(canonical_from_pattern=False)
         self._allowed_groupname_pattern = '[\w@#€£$&!\?]'
         self._forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour', 'bonus'],
@@ -49,6 +51,10 @@ class GuessReleaseGroup(Transformer):
         self.container.register_property('releaseGroup', self._allowed_groupname_pattern + '+')
         self.container.register_property('releaseGroup', self._allowed_groupname_pattern + '+-' + self._allowed_groupname_pattern + '+')
         self.re_sep = re.compile('(' + sep + ')')
+
+    def register_options(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
+        naming_opts.add_option('-G', '--expected-group', type='string', action='callback', callback=options_list_callback, dest='expected_group', default=None,
+                               help='List of expected groups to parse. Separate group names with ";"')
 
     def supported_properties(self):
         return self.container.get_supported_properties()
