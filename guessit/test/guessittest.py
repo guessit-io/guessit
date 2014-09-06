@@ -179,9 +179,9 @@ class TestGuessit(TestCase):
                 log.error("FAILED: " + failed_property)
 
         for additional_entry, additional_properties in additionals.items():
-            log.warn('---- ' + additional_entry + ' ----')
+            log.warning('---- ' + additional_entry + ' ----')
             for additional_property in additional_properties:
-                log.warn("ADDITIONAL: " + additional_property)
+                log.warning("ADDITIONAL: " + additional_property)
 
         self.assertTrue(correct == total,
                         msg='Correct: %d < Total: %d' % (correct, total))

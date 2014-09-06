@@ -178,8 +178,8 @@ def submit_bug(filename, options):
     from requests.exceptions import RequestException
 
     try:
-        opts = { k: v for k, v in options.__dict__.items()
-                 if v and k != 'submit_bug'}
+        opts = dict((k, v) for k, v in options.__dict__.items()
+                    if v and k != 'submit_bug')
 
         r = requests.post('http://localhost:5000/bugs', {'filename': filename,
                                                          'version': __version__,
