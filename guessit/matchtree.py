@@ -187,7 +187,13 @@ class BaseMatchTree(UnicodeMixin):
         If this node is the root of the tree, then return ()."""
         if self.parent is None:
             return ()
-        return self.parent.node_idx + (self.parent.children.index(self),)
+        return self.parent.node_idx + (self.node_last_idx,)
+
+    @property
+    def node_last_idx(self):
+        if self.parent is None:
+            return None
+        return self.parent.children.index(self)
 
     def node_at(self, idx):
         """Return the node at the given index in the subtree rooted at

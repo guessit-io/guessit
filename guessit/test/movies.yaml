@@ -14,7 +14,7 @@
   format: DVD
   language: spanish
   videoCodec: DivX
-  releaseGroup: SEDG
+  releaseGroup: Artik[SEDG]
 
 ? Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
 : title: Dark City
@@ -54,6 +54,7 @@
   audioProfile: HE
   language: [ french, english ]
   subtitleLanguage: [ french, english ]
+  releaseGroup: XCT
 
 ? Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi
 : title: Battle Royale
@@ -78,6 +79,7 @@
   audioCodec: AAC
   language: [ French, English ]
   subtitleLanguage: [ French, English ]
+  releaseGroup: XCT
 
 ? Movies/Toy Story (1995)/Toy Story [HDTV 720p English-Spanish].mkv
 : title: Toy Story
@@ -396,7 +398,7 @@
   format: BluRay
   audioCodec: DTS
   videoCodec: h264
-  releaseGroup: D-Z0N3
+  releaseGroup: D Z0N3
 
 ? Street.Kings.2008.BluRay.1080p.DTS.x264.dxva EuReKA.mkv
 : title: Street Kings
@@ -451,20 +453,24 @@
   language:
     - French
     - English
+  format: DVD
 
 ? Immersion.French.2011.STV.READNFO.QC.FRENCH.NTSC.DVDR.nfo
 : title: Immersion French
   year: 2011
   language: French
+  format: DVD
 
 ? Immersion.French.2011.STV.READNFO.QC.NTSC.DVDR.nfo
 : title: Immersion French
   year: 2011
+  format: DVD
 
 ? French.Immersion.2011.STV.READNFO.QC.ENGLISH.NTSC.DVDR.nfo
 : title: French Immersion
   year: 2011
   language: ENGLISH
+  format: DVD
 
 ? Howl's_Moving_Castle_(2004)_[720p,HDTV,x264,DTS]-FlexGet.avi
 : videoCodec: h264
@@ -694,3 +700,47 @@
   language: mul
   releaseGroup: KZ
   title: A Bout Portant
+
+? "Mise à Sac (Alain Cavalier, 1967) [Vhs.Rip.Vff]"
+: options: -n
+  format: VHS
+  language: fr
+  title: "Mise à Sac"
+  year: 1967
+
+? A Bout Portant (The Killers).PAL.Multi.DVD-R-KZ
+: options: -n
+  format: DVD
+  language: mul
+  releaseGroup: KZ
+  title: A Bout Portant
+
+? Youth.In.Revolt.(Be.Bad).2009.MULTI.1080p.LAME3*92-MEDIOZZ
+: options: -n
+  audioCodec: MP3
+  language: mul
+  releaseGroup: MEDIOZZ
+  screenSize: 1080p
+  title: Youth In Revolt
+  year: 2009
+
+? La Defense Lincoln (The Lincoln Lawyer) 2011 [DVDRIP][Vostfr]
+: options: -n
+  format: DVD
+  subtitleLanguage: fr
+  title: La Defense Lincoln
+  year: 2011
+
+? '[h265 - HEVC] Fight Club French 1080p DTS.'
+: options: -n
+  audioCodec: DTS
+  language: fr
+  screenSize: 1080p
+  title: Fight Club
+  videoCodec: h265
+
+? Love Gourou (Mike Myers) - FR
+: options: -n
+  language: fr
+  title: Love Gourou
+

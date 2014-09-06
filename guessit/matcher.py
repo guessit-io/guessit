@@ -163,15 +163,20 @@ class IterativeMatcher(object):
         return self.match_tree.matched()
 
 
+def build_guess(node, name, value=None, confidence=1.0):
+    guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
+    if value is None:
+        guess.metadata().span = node.span
+    guess.metadata().input = node.value if value is None else value
+    return guess
+
+
 def found_property(node, name, value=None, confidence=1.0, update_guess=True, logger=None):
     # automatically retrieve the log object from the caller frame
     if not logger:
         caller_frame = inspect.stack()[1][0]
         logger = caller_frame.f_locals['self'].log
-    guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
-    if value is None:
-        guess.metadata().span = node.span
-    guess.metadata().input = node.value if value is None else value
+    guess = build_guess(node, name, value, confidence)
     return found_guess(node, guess, update_guess=update_guess, logger=logger)
 
 

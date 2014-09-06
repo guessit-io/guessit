@@ -339,7 +339,7 @@
 ? '[the.group] Some.Series.S03E15.Title.Two.720p'
 : options: -n
   episodeNumber: 15
-  releaseGroup: the-group
+  releaseGroup: the.group
   screenSize: 720p
   season: 3
   series: Some Series

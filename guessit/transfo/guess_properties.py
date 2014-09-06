@@ -190,7 +190,7 @@ class GuessProperties(Transformer):
         # releases use it and it helps to identify release groups, so we adapt
         register_property('videoApi', {'DXVA': ['DXVA']})
 
-        register_property('audioCodec', {'MP3': ['MP3'],
+        register_property('audioCodec', {'MP3': ['MP3', 'LAME', 'LAME(?:\d)+-(?:\d)+'],
                                          'DolbyDigital': ['DD'],
                                          'AAC': ['AAC'],
                                          'AC3': ['AC3'],
