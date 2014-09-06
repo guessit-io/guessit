@@ -21,7 +21,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.plugins.transformers import Transformer
-from guessit.options import naming_opts, options_list_callback
+from guessit.options import options_list_callback
 from guessit.matcher import GuessFinder, build_guess
 from guessit.containers import PropertiesContainer
 from guessit.patterns import sep
@@ -112,7 +112,11 @@ class GuessReleaseGroup(Transformer):
         return False
 
     def validate_next_leaves(self, node):
-        # Don't override title. Should be more precise.
+        if 'series' in node.root.info or 'title' in node.root.info:
+            # --expected-series or --expected-title is used.
+            return True
+
+        # Make sure to avoid collision with 'series' or 'title' guessed later. Should be more precise.
         leaves = node.root.unidentified_leaves()
         return len(list(leaves)) > 1
 

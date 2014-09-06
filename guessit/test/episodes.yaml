@@ -1075,3 +1075,56 @@
   series: Something
   date: 2008-12-13
   title: FlexGet
+
+? '[Ignored] Test 12'
+: options: -n
+  episodeNumber: 12
+  releaseGroup: Ignored
+  series: Test
+
+? '[FlexGet] Test 12'
+: options: -n
+  episodeNumber: 12
+  releaseGroup: FlexGet
+  series: Test
+
+? Test.13.HDTV-Ignored
+: options: -n
+  episodeNumber: 13
+  format: HDTV
+  releaseGroup: Ignored
+  series: Test
+
+? Test.13.HDTV-Ignored
+: options: -n --expected-series test
+  episodeNumber: 13
+  format: HDTV
+  releaseGroup: Ignored
+  series: Test
+
+? Test.13.HDTV-Ignored
+: series: Test
+  episodeNumber: 13
+  format: HDTV
+  releaseGroup: Ignored
+
+? Test.13.HDTV-Ignored
+: options: -n --expected-group "Name;FlexGet"
+  episodeNumber: 13
+  format: HDTV
+  releaseGroup: Ignored
+  series: Test
+
+? Test.13.HDTV-FlexGet
+: options: -n
+  episodeNumber: 13
+  format: HDTV
+  releaseGroup: FlexGet
+  series: Test
+
+? Test.14.HDTV-Name
+: options: -n
+  episodeNumber: 14
+  format: HDTV
+  releaseGroup: Name
+  series: Test
