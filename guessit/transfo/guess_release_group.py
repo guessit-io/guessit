@@ -187,8 +187,8 @@ class GuessReleaseGroup(Transformer):
                         break
 
             if not validated_guess and node.is_explicit() and node.node_last_idx == 0: # first node from group
-                guess.metadata().confidence = 0.4
                 validated_guess = build_guess(node, 'releaseGroup', value=node.value[1:len(node.value)-1])
+                validated_guess.metadata().confidence = 0.4
                 validated_guess.metadata().span = 1, len(node.value)
                 node.guess = validated_guess
 
