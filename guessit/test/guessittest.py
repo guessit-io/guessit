@@ -102,12 +102,12 @@ class TestGuessit(TestCase):
                     del found['type']
                 except:
                     pass
-            for prop in ('container', 'mimetype'):
+            for prop in ('container', 'mimetype', 'unidentified'):
                 if prop in found:
                     del found[prop]
 
             # props which are list of just 1 elem should be opened for easier writing of the tests
-            for prop in ('language', 'subtitleLanguage', 'other', 'episodeDetails'):
+            for prop in ('language', 'subtitleLanguage', 'other', 'episodeDetails', 'unidentified'):
                 value = found.get(prop, None)
                 if isinstance(value, list) and len(value) == 1:
                     found[prop] = value[0]

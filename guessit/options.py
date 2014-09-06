@@ -40,6 +40,8 @@ output_group.add_option('-v', '--verbose', action='store_true', dest='verbose', 
                          help='Display debug output')
 option_parser.add_option('-P', '--show-property', dest='show_property', default=None,
                           help='Display the value of a single property (title, series, videoCodec, year, type ...)'),
+option_parser.add_option('-u', '--unidentified', dest='unidentified', action='store_true', default=False,
+                         help='Display the unidentified parts.'),
 output_group.add_option('-a', '--advanced', dest='advanced', action='store_true', default=False,
                          help='Display advanced information for filename guesses, as json output')
 output_group.add_option('-y', '--yaml', dest='yaml', action='store_true', default=False,

@@ -509,6 +509,6 @@ def smart_merge(guesses):
     #    merged before
     result = merge_all(guesses,
                        append=['language', 'subtitleLanguage', 'other',
-                               'episodeDetails'])
+                               'episodeDetails', 'unidentified'])
 
     return result

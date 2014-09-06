@@ -36,6 +36,12 @@ def guess_file(filename, info='filename', options=None, **kwargs):
         print('For:', filename)
     guess = guess_file_info(filename, info, options, **kwargs)
 
+    if not options.get('unidentified'):
+        try:
+            del guess['unidentified']
+        except KeyError:
+            pass
+
     if options.get('show_property'):
         print (guess.get(options.get('show_property'), ''))
         return
