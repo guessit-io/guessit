@@ -60,9 +60,6 @@ You can see the list of options that guessit.py accepts like that::
 
     Options:
       -h, --help            show this help message and exit
-      -P SHOW_PROPERTY, --show-property=SHOW_PROPERTY
-                            Display the value of a single property (title, series,
-                            videoCodec, year, type ...)
 
       Naming:
         -t TYPE, --type=TYPE
@@ -102,6 +99,10 @@ You can see the list of options that guessit.py accepts like that::
 
       Output:
         -v, --verbose       Display debug output
+        -P SHOW_PROPERTY, --show-property=SHOW_PROPERTY
+                            Display the value of a single property (title, series,
+                            videoCodec, year, type ...)
+        -u, --unidentified  Display the unidentified parts.
         -a, --advanced      Display advanced information for filename guesses, as
                             json output
         -y, --yaml          Display information for filename guesses as yaml

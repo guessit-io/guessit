@@ -337,7 +337,7 @@ Other properties
 
   Other property will appear under this property.
 
-  - ``Fansub``, ``HR``, ``HQ``, ``Netflix``, ``Screener``, ``Unrated``, ``HD``, ``3D``, ``SyncFix``, ``Bonus``, ``WideScreen``, ``Fastsub``, ``R5``, ``AudioFix``, ``DDC``, ``Trailer``, ``Complete``, ``Limited``, ``Classic``, ``Proper``, ``DualAudio``, ``LiNE``
+  - ``Fansub``, ``HR``, ``HQ``, ``Netflix``, ``Screener``, ``Unrated``, ``HD``, ``mHD``, ``HDLight``, ``3D``, ``SyncFix``, ``Bonus``, ``WideScreen``, ``Fastsub``, ``R5``, ``AudioFix``, ``DDC``, ``Trailer``, ``Complete``, ``Limited``, ``Classic``, ``Proper``, ``DualAudio``, ``LiNE``
 
 
 Other features
@@ -365,9 +365,6 @@ guessit can be use from command line::
 
     Options:
       -h, --help            show this help message and exit
-      -P SHOW_PROPERTY, --show-property=SHOW_PROPERTY
-                            Display the value of a single property (title, series,
-                            videoCodec, year, type ...)
 
       Naming:
         -t TYPE, --type=TYPE
@@ -407,6 +404,10 @@ guessit can be use from command line::
 
       Output:
         -v, --verbose       Display debug output
+        -P SHOW_PROPERTY, --show-property=SHOW_PROPERTY
+                            Display the value of a single property (title, series,
+                            videoCodec, year, type ...)
+        -u, --unidentified  Display the unidentified parts.
         -a, --advanced      Display advanced information for filename guesses, as
                             json output
         -y, --yaml          Display information for filename guesses as yaml

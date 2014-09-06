@@ -6,12 +6,24 @@
 History
 =======
 
-0.9.1 (unreleased)
+0.9.2 (unreleased)
 
 * Nothing changed yet.
 
+0.9.1 (2014-09-06)
+------------------
+
+* Added ``--unidentified`` option to display unidentified parts of the filename
+  This option affects command line only - From API `unidentified` properties will
+  always be grabbed regardless this settings
+* Better guessing of `releaseGroup` property
+* Added ``mHD`` and ``HDLight`` to ``other properties``
+* Better guessing of ``format`` = ``DVD`` property (DVD-R pattern)
+* Some ``info`` logs changed to ``debug`` for quiet integration
+* Small fixes
+
 0.9.0 (2014-09-05)
-----------------
+------------------
 
 * Better auto-detection of anime episodes, containing a ``crc32`` or a digits ``episodeNumber``.
 * Better listing of options on ``guessit -h``
