@@ -26,6 +26,7 @@ import os
 
 from guessit import PY2, u, guess_file_info, __version__
 from guessit.options import option_parser
+from guessit.__version__ import __version__
 
 
 def guess_file(filename, info='filename', options=None, **kwargs):
@@ -172,12 +173,17 @@ def run_demo(episodes=True, movies=True, options=None):
             print('-' * 80)
             guess_file(f, options=options, type='movie')
 
-def submit_bug(filename):
+def submit_bug(filename, options):
     import requests # only import when needed
     from requests.exceptions import RequestException
 
     try:
-        r = requests.post('http://guessit.io/bugs', {'filename': filename})
+        opts = { k: v for k, v in options.__dict__.items()
+                 if v and k != 'submit_bug'}
+
+        r = requests.post('http://localhost:5000/bugs', {'filename': filename,
+                                                         'version': __version__,
+                                                         'options': str(opts)})
         if r.status_code == 200:
             print('Successfully submitted file: %s' % r.text)
         else:
@@ -262,7 +268,7 @@ def main(args=None, setup_logging=True):
         help_required = False
         if options.submit_bug:
             for filename in filenames:
-                submit_bug(filename)
+                submit_bug(filename, options)
         else:
             for filename in filenames:
                 guess_file(filename,
