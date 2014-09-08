@@ -221,8 +221,8 @@ class GuessProperties(Transformer):
                                           'HE': 20
                                           })
 
-        register_property('audioChannels', {'7.1': ['7[\W_]1', '7ch'],
-                                            '5.1': ['5[\W_]1', '5ch'],
+        register_property('audioChannels', {'7.1': ['7[\W_]1', '7ch', '8ch'],
+                                            '5.1': ['5[\W_]1', '5ch', '6ch'],
                                             '2.0': ['2[\W_]0', '2ch', 'stereo'],
                                             '1.0': ['1[\W_]0', '1ch', 'mono']
                                             })
