@@ -745,10 +745,10 @@
   title: Love Gourou
 
 ? '[h265 - hevc] transformers 2 1080p french ac3 6ch.'
-: audioChannels: '5.1'
+: options: -n
+  audioChannels: '5.1'
   audioCodec: AC3
   language: fr
   screenSize: 1080p
   title: transformers 2
-  type: movie
   videoCodec: h265
