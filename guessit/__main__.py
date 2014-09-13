@@ -276,7 +276,7 @@ def main(args=None, setup_logging=True):
 
 
     if help_required:  # pragma: no cover
-        opts.print_help()
+        get_opts().print_help()
 
 if __name__ == '__main__':
     main()
