@@ -73,7 +73,7 @@ class GuessProperties(Transformer):
                                      'PPV': ['PPV', 'PPV-Rip'],  # Pay Per View
                                      'TV': ['SD-TV', 'SD-TV-Rip', 'Rip-SD-TV', 'TV-Rip', 'Rip-TV'],
                                      'DVB': ['DVB-Rip', 'DVB', 'PD-TV'],
-                                     'DVD': ['DVD', 'DVD-Rip', 'VIDEO-TS', 'DVD-R'],
+                                     'DVD': ['DVD', 'DVD-Rip', 'VIDEO-TS', 'DVD-R', 'DVD-9', 'DVD-5'],
                                      'HDTV': ['HD-TV', 'TV-RIP-HD', 'HD-TV-RIP'],
                                      'VOD': ['VOD', 'VOD-Rip'],
                                      'WEBRip': ['WEB-Rip'],
