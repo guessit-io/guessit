@@ -22,7 +22,7 @@ History
 * Added ``--unidentified`` option to display unidentified parts of the filename
   This option affects command line only - From API `unidentified` properties will
   always be grabbed regardless this settings
-* Better guessing of `releaseGroup` property
+* Better guessing of ``releaseGroup`` property
 * Added ``mHD`` and ``HDLight`` to ``other properties``
 * Better guessing of ``format`` = ``DVD`` property (DVD-R pattern)
 * Some ``info`` logs changed to ``debug`` for quiet integration
