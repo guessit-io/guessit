@@ -8,7 +8,12 @@ History
 
 0.9.2 (unreleased)
 
-* Nothing changed yet.
+* Added support of option registration on transformers
+* Better detection of releaseGroup when using ``expected-series`` or ``expected-title`` option
+* Better ``audioChannel`` = ``5.1`` / ``7.1`` guessing (``6ch``, ``8ch``)
+* Fixed usage not showing when invalid options were passed
+* Added PAL, SECAM and NTSC to ``other`` possible values
+* Recognize DVD-9 and DVD-5 as ``format`` = ``DVD``` property
 
 0.9.1 (2014-09-06)
 ------------------
