@@ -253,7 +253,7 @@ class GuessProperties(Transformer):
         self.container.register_property('other', 'Fastsub', canonical_form='Fastsub')
         self.container.register_property('other', '(?:Seasons?' + sep + '?)?Complete', canonical_form='Complete')
 
-        self.container.register_canonical_properties('other', 'R5', 'Screener', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR')
+        self.container.register_canonical_properties('other', 'R5', 'Screener', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC')
         self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', validator=WeakValidator())
 
         for prop in self.container.get_properties('format'):
