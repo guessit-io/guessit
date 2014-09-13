@@ -234,7 +234,7 @@ def main(args=None, setup_logging=True):
 
     if options.version:
         print('+-------------------------------------------------------+')
-        print('+                   GuessIt ' + __version__ +'                       +')
+        print('+                   GuessIt ' + __version__ + (28-len(__version__)) * ' ' + '+')
         print('+-------------------------------------------------------+')
         print('|      Please report any bug or feature request at      |')
         print('|       https://github.com/wackou/guessit/issues.       |')
