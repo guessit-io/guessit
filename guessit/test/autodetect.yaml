@@ -419,3 +419,20 @@
   year: 1987
   type: movie
 
+? 2009.shoot.fruit.chan.multi.dvd9.pal
+: options: -n
+  format: DVD
+  language: mul
+  other: PAL
+  title: shoot fruit chan
+  type: movie
+  year: 2009
+
+? 2009.shoot.fruit.chan.multi.dvd5.pal
+: options: -n
+  format: DVD
+  language: mul
+  other: PAL
+  title: shoot fruit chan
+  type: movie
+  year: 2009
