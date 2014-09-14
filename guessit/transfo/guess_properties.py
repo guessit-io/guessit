@@ -21,7 +21,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer, NoValidator, \
-    ChainedValidator, DefaultValidator, OnlyOneValidator
+    ChainedValidator, DefaultValidator, OnlyOneValidator, LeftValidator
 from guessit.patterns import sep, build_or_pattern
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.patterns.numeral import numeral, parse_numeral
@@ -65,9 +65,9 @@ class GuessProperties(Transformer):
 
         # http://en.wikipedia.org/wiki/Pirated_movie_release_types
         register_property('format', {'VHS': ['VHS', 'VHS-Rip'],
-                                     'Cam': ['CAM', 'CAMRip'],
+                                     'Cam': ['CAM', 'CAMRip', 'HD-CAM'],
                                      #'Telesync': ['TELESYNC', 'PDVD'],
-                                     'Telesync': (['TS'], {'confidence': 0.2}),
+                                     'Telesync': (['TS', 'HD-TS'], {'confidence': 0.4}),
                                      'Workprint': ['WORKPRINT', 'WP'],
                                      'Telecine': ['TELECINE', 'TC'],
                                      'PPV': ['PPV', 'PPV-Rip'],  # Pay Per View
@@ -195,7 +195,7 @@ class GuessProperties(Transformer):
                                          'AAC': ['AAC'],
                                          'AC3': ['AC3'],
                                          'Flac': ['FLAC'],
-                                         'DTS': ['DTS'],
+                                         'DTS': (['DTS'], {'validator': LeftValidator()}),
                                          'TrueHD': ['True-HD']
                                          })
 
@@ -255,7 +255,8 @@ class GuessProperties(Transformer):
         self.container.register_property('other', 'R5', 'RC', canonical_form='R5')
         self.container.register_property('other', 'Pre-Air', 'Preair', canonical_form='Preair')
 
-        self.container.register_canonical_properties('other', 'Screener', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC',
+        self.container.register_canonical_properties('other', 'Screener', 'Remux', '3D', 'HD', 'mHD', 'HDLight', 'HQ',
+                                                     'DDC',
                                                      'HR', 'PAL', 'SECAM', 'NTSC')
         self.container.register_canonical_properties('other', 'Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', validator=WeakValidator())
 

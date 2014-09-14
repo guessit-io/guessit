@@ -87,6 +87,36 @@ class NoValidator(object):
         return True
 
 
+class LeftValidator(object):
+    """Make sure our match is starting by separator, or by another entry"""
+
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        span = _get_span(prop, match)
+        span = _trim_span(span, string[span[0]:span[1]])
+        start, end = span
+
+        sep_start = start <= 0 or string[start - 1] in sep
+        start_by_other = start in entry_end
+        if not sep_start and not start_by_other:
+            return False
+        return True
+
+
+class RightValidator(object):
+    """Make sure our match is ended by separator, or by another entry"""
+
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        span = _get_span(prop, match)
+        span = _trim_span(span, string[span[0]:span[1]])
+        start, end = span
+
+        sep_end = end >= len(string) or string[end] in sep
+        end_by_other = end in entry_start
+        if not sep_end and not end_by_other:
+            return False
+        return True
+
+
 class ChainedValidator(object):
     def __init__(self, *validators):
         self._validators = validators

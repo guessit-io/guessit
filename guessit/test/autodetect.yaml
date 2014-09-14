@@ -171,6 +171,18 @@
   releaseGroup: PublicHD
   audioChannels: "5.1"
 
+? White.House.Down.2013.1080p.BluRay.DTSHD.MA.5.1.x264-PublicHD.mkv
+: type: movie
+  title: White House Down
+  year: 2013
+  screenSize: 1080p
+  format: BluRay
+  audioCodec: DTS
+  audioProfile: HDMA
+  videoCodec: h264
+  releaseGroup: PublicHD
+  audioChannels: "5.1"
+
 ? Hostages.S01E01.Pilot.for.Air.720p.WEB-DL.DD5.1.H.264-NTb.nfo
 : type: episodeinfo
   series: Hostages
