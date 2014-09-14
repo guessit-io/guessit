@@ -6,9 +6,17 @@
 History
 =======
 
-0.9.3 (unreleased)
+0.9.4 (unreleased)
 ------------------
 * Nothing changed yet.
+
+0.9.3 (2014-09-14)
+------------------
+* Added ``Preair`` and ``Remux`` to ``other`` property
+* Better detection of ``audioProfile`` = ``HD`` / ``HDMA`` for ``audioCodec`` = ``DTS``
+* Better detection of ``format``` = ``BluRay`` (when followed by Rip)
+* Recognize ``RC`` as ``R5``
+* Recognize ``WEB-HD```and ``ẀEB`` as ``WEB-DL``
 
 0.9.2 (2014-09-13)
 ------------------
