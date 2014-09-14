@@ -77,7 +77,7 @@ class GuessProperties(Transformer):
                                      'HDTV': ['HD-TV', 'TV-RIP-HD', 'HD-TV-RIP'],
                                      'VOD': ['VOD', 'VOD-Rip'],
                                      'WEBRip': ['WEB-Rip'],
-                                     'WEB-DL': ['WEB-DL'],
+                                     'WEB-DL': ['WEB-DL', 'WEB-HD', 'WEB'],
                                      'HD-DVD': ['HD-(?:DVD)?-Rip', 'HD-DVD'],
                                      'BluRay': ['Blu-ray', 'B[DR]', 'B[DR]-Rip', 'BD[59]', 'BD25', 'BD50']
                                      })
