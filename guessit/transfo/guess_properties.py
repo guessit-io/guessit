@@ -79,7 +79,7 @@ class GuessProperties(Transformer):
                                      'WEBRip': ['WEB-Rip'],
                                      'WEB-DL': ['WEB-DL', 'WEB-HD', 'WEB'],
                                      'HD-DVD': ['HD-(?:DVD)?-Rip', 'HD-DVD'],
-                                     'BluRay': ['Blu-ray', 'B[DR]', 'B[DR]-Rip', 'BD[59]', 'BD25', 'BD50']
+                                     'BluRay': ['Blu-ray(?:-Rip)?', 'B[DR]', 'B[DR]-Rip', 'BD[59]', 'BD25', 'BD50']
                                      })
 
         register_quality('format', {'VHS': -100,
