@@ -339,7 +339,7 @@ Other properties
 
   - ``Fansub``, ``HR``, ``HQ``, ``Netflix``, ``Screener``, ``Preair``, ``Unrated``, ``HD``, ``mHD``, ``HDLight``, ``3D``,
     ``SyncFix``, ``Bonus``, ``WideScreen``, ``Fastsub``, ``R5``, ``AudioFix``, ``DDC``, ``Trailer``, ``Complete``,
-    ``Limited``, ``Classic``, ``Proper``, ``DualAudio``, ``LiNE``, ``PAL``, ``SECAM``, ``NTSC``
+    ``Limited``, ``Classic``, ``Proper``, ``DualAudio``, ``LiNE``, ``Remux``, ``PAL``, ``SECAM``, ``NTSC``
 
 
 Other features
