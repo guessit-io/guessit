@@ -169,7 +169,7 @@ LNG_COMMON_WORDS = frozenset([
     'no', 'non', 'war', 'min', 'new', 'car', 'day', 'bad', 'bat', 'fan',
     'fry', 'cop', 'zen', 'gay', 'fat', 'one', 'cherokee', 'got', 'an', 'as',
     'cat', 'her', 'be', 'hat', 'sun', 'may', 'my', 'mr', 'rum', 'pi', 'bb', 'bt',
-    'tv', 'aw', 'by', 'md', 'mp', 'cd', 'lt', 'gt'
+    'tv', 'aw', 'by', 'md', 'mp', 'cd', 'lt', 'gt', 'in', 'ad',
     # french words
     'bas', 'de', 'le', 'son', 'ne', 'ca', 'ce', 'et', 'que',
     'mal', 'est', 'vol', 'or', 'mon', 'se', 'je', 'tu', 'me',
