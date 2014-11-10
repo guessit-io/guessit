@@ -186,31 +186,51 @@ class FormatterValidator(object):
             return formatted
 
 
+def _get_positions(prop, string, node, match, entry_start, entry_end):
+    span = match.span()
+    start = span[0]
+    end = span[1]
+
+    at_start = True
+    at_end = True
+
+    while start > 0:
+        start = start - 1
+        if string[start] not in sep:
+            at_start = False
+            break
+    while end < len(string) - 1:
+        end = end + 1
+        if string[end] not in sep:
+            at_end = False
+            break
+    return (at_start, at_end);
+
+
 class WeakValidator(DefaultValidator):
     """Make sure our match is surrounded by separators and is the first or last element in the string"""
     def validate(self, prop, string, node, match, entry_start, entry_end):
         if super(WeakValidator, self).validate(prop, string, node, match, entry_start, entry_end):
-            span = match.span()
-            start = span[0]
-            end = span[1]
+            at_start, at_end = _get_positions(prop, string, node, match, entry_start, entry_end)
+            return at_start or at_end
+        return False
 
-            at_start = True
-            at_end = True
 
-            while start > 0:
-                start = start - 1
-                if string[start] not in sep:
-                    at_start = False
-                    break
-            if at_start:
+class NeighborValidator(DefaultValidator):
+    """Make sure the node is next another one"""
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        at_start, at_end = _get_positions(prop, string, node, match, entry_start, entry_end)
+
+        if at_start:
+            previous_leaf = node.root.previous_leaf(node)
+            if previous_leaf is not None:
                 return True
-            while end < len(string) - 1:
-                end = end + 1
-                if string[end] not in sep:
-                    at_end = False
-                    break
-            if at_end:
+
+        if at_end:
+            next_leaf = node.root.next_leaf(node)
+            if next_leaf is not None:
                 return True
+
         return False
 
 

@@ -21,7 +21,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer, NoValidator, \
-    ChainedValidator, DefaultValidator, OnlyOneValidator, LeftValidator
+    ChainedValidator, DefaultValidator, OnlyOneValidator, LeftValidator, NeighborValidator
 from guessit.patterns import sep, build_or_pattern
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.patterns.numeral import numeral, parse_numeral
@@ -247,7 +247,7 @@ class GuessProperties(Transformer):
                                     'Netflix': ['Netflix', 'NF']
                                     })
 
-        self.container.register_property('other', 'Real', 'Fix', canonical_form='Proper', validator=WeakValidator())
+        self.container.register_property('other', 'Real', 'Fix', canonical_form='Proper', validator=NeighborValidator())
         self.container.register_property('other', 'Proper', 'Repack', 'Rerip', canonical_form='Proper')
         self.container.register_property('other', 'Fansub', canonical_form='Fansub')
         self.container.register_property('other', 'Fastsub', canonical_form='Fastsub')

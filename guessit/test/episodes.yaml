@@ -946,6 +946,24 @@
   season: 2
   series: Test
 
+? Real.Test.S02E01.hdtv.proper
+: options: -n
+  episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 1
+  season: 2
+  series: Real Test
+
+? Test.Real.S02E01.hdtv.proper
+: options: -n
+  episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 1
+  season: 2
+  series: Test Real
+
 ? Test.S02E01.hdtv.proper
 : options: -n
   episodeNumber: 1
@@ -1147,3 +1165,10 @@
   format: HDTV
   releaseGroup: Name
   series: Test
+
+? Real.Time.With.Bill.Maher.2014.10.31.HDTV.XviD-AFG.avi
+: date: 2014-10-31
+  format: HDTV
+  releaseGroup: AFG
+  series: Real Time With Bill Maher
+  videoCodec: XviD
