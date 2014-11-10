@@ -1,14 +1,12 @@
-.. This is your project NEWS file which will contain the release notes.
-.. Example: http://www.python.org/download/releases/2.6/NEWS.txt
-.. The content of this file, along with README.rst, will appear in your
-.. project's PyPI page.
-
 History
 =======
 
-0.9.4 (unreleased)
+0.9.4 (2014-11-10)
 ------------------
-* Nothing changed yet.
+* Fixed exception when filename contains multiple languages ISO codes
+* Fixed transformers initialization logging
+* Fixed possible exception in language transformer
+* Added more words to common english words
 
 0.9.3 (2014-09-14)
 ------------------
