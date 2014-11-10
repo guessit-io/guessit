@@ -199,6 +199,15 @@ def log_found_guess(guess, logger=None):
                               (k, v, guess.raw(k), guess.confidence(k)))
 
 
+def _get_split_spans(node, span):
+    partition_spans = node.get_partition_spans(span)
+    for to_remove_span in partition_spans:
+        if to_remove_span[0] == span[0] and to_remove_span[1] in [span[1], span[1] + 1]:
+            partition_spans.remove(to_remove_span)
+            break
+    return partition_spans
+
+
 class GuessFinder(object):
     def __init__(self, guess_func, confidence=None, logger=None, options=None):
         self.guess_func = guess_func
@@ -243,13 +252,16 @@ class GuessFinder(object):
                     for skip_node in skip_nodes:
                         if skip_node.parent.node_idx == node.node_idx[:len(skip_node.parent.node_idx)] and\
                             skip_node.span == span or\
-                            skip_node.span == (span[0] + skip_node.offset, span[1] + skip_node.offset):
-                            partition_spans = node.get_partition_spans(skip_node.span)
-                            for to_remove_span in partition_spans:
-                                if to_remove_span[0] == skip_node.span[0] and to_remove_span[1] in [skip_node.span[1], skip_node.span[1] + 1]:
-                                    partition_spans.remove(to_remove_span)
-                                    break
-                            #break
+                                skip_node.span == (span[0] + skip_node.offset, span[1] + skip_node.offset):
+                            if partition_spans is None:
+                                partition_spans = _get_split_spans(node, skip_node.span)
+                            else:
+                                new_partition_spans = []
+                                for partition_span in partition_spans:
+                                    tmp_node = MatchTree(value, span=partition_span, parent=node)
+                                    tmp_partitions_spans = _get_split_spans(tmp_node, skip_node.span)
+                                    new_partition_spans.extend(tmp_partitions_spans)
+                                partition_spans.extend(new_partition_spans)
 
                 if not partition_spans:
                     # restore sentinels compensation

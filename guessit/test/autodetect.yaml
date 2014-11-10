@@ -459,3 +459,15 @@
   type: episode
   videoCodec: XviD
   year: 2014
+
+? Ice.Lake.Rebels.S01E06.Ice.Lake.Games.720p.HDTV.x264-DHD
+: options: -n
+  episodeNumber: 6
+  format: HDTV
+  releaseGroup: DHD
+  screenSize: 720p
+  season: 1
+  series: Ice Lake Rebels
+  title: Ice Lake Games
+  type: episode
+  videoCodec: h264
