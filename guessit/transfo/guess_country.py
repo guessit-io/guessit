@@ -78,7 +78,7 @@ class GuessCountry(Transformer):
             except babelfish.Error:
                 continue
 
-        return Country.fromguessit(country), None
+        return Country.fromguessit(country), (start, end)
 
     def is_valid_country(self, country, options=None):
         if options and options.get('allowed_countries'):
