@@ -47,7 +47,7 @@ class GuessCountry(Transformer):
 
     def should_process(self, mtree, options=None):
         options = options or {}
-        return not options.get('nocountry', False)
+        return options.get('country', True)
 
     def _scan_country(self, country, strict=False):
         """

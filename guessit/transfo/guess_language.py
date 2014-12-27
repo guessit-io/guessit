@@ -134,7 +134,7 @@ class GuessLanguage(Transformer):
 
     def should_process(self, mtree, options=None):
         options = options or {}
-        return not options.get('nolanguage', False)
+        return options.get('language', True)
 
     def process(self, mtree, options=None):
         GuessFinder(self.guess_language, None, self.log, options).process_nodes(mtree.unidentified_leaves())
