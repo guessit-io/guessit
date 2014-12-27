@@ -21,7 +21,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.plugins.transformers import Transformer
-from guessit.options import options_list_callback
 from guessit.matcher import GuessFinder, build_guess
 from guessit.containers import PropertiesContainer
 from guessit.patterns import sep
@@ -52,9 +51,9 @@ class GuessReleaseGroup(Transformer):
         self.container.register_property('releaseGroup', self._allowed_groupname_pattern + '+-' + self._allowed_groupname_pattern + '+')
         self.re_sep = re.compile('(' + sep + ')')
 
-    def register_options(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
-        naming_opts.add_option('-G', '--expected-group', type='string', action='callback', callback=options_list_callback, dest='expected_group', default=None,
-                               help='List of expected groups to parse. Separate group names with ";"')
+    def register_arguments(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
+        naming_opts.add_argument('-G', '--expected-group', action='append', dest='expected_group',
+                               help='Expected release group (can be used multiple times)')
 
     def supported_properties(self):
         return self.container.get_supported_properties()

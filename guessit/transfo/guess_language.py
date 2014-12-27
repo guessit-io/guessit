@@ -21,7 +21,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.language import search_language, subtitle_prefixes, subtitle_suffixes
-from guessit.options import options_list_callback
 from guessit.patterns.extension import subtitle_exts
 from guessit.textutils import find_words
 from guessit.plugins.transformers import Transformer
@@ -32,9 +31,9 @@ class GuessLanguage(Transformer):
     def __init__(self):
         Transformer.__init__(self, 30)
 
-    def register_options(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
-        naming_opts.add_option('-L', '--allowed-languages', type='string', action='callback', callback=options_list_callback, dest='allowed_languages', default=None,
-                               help='List of allowed languages. Separate languages codes with ";"')
+    def register_arguments(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
+        naming_opts.add_argument('-L', '--allowed-languages', action='append', dest='allowed_languages',
+                               help='Allowed language (can be used multiple times)')
 
     def supported_properties(self):
         return ['language', 'subtitleLanguage']

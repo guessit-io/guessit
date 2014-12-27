@@ -217,9 +217,9 @@ def main(args=None, setup_logging=True):
     from guessit.plugins import transformers
 
     if args:
-        options, args = get_opts().parse_args(args)
+        options = get_opts().parse_args(args)
     else:  # pragma: no cover
-        options, args = get_opts().parse_args()
+        options = get_opts().parse_args()
     if options.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
@@ -255,8 +255,8 @@ def main(args=None, setup_logging=True):
             print('PyYAML not found. Using default output.')
 
     filenames = []
-    if args:
-        filenames.extend(args)
+    if options.filename:
+        filenames.extend(options.filename)
     if options.input_file:
         input_file = open(options.input_file, 'r')
         try:

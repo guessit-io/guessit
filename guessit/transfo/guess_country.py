@@ -19,7 +19,6 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from guessit.options import options_list_callback
 
 from guessit.plugins.transformers import Transformer
 from babelfish import Country
@@ -38,9 +37,9 @@ class GuessCountry(Transformer):
         Transformer.__init__(self, -170)
         self.replace_language = frozenset(['uk'])
 
-    def register_options(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
-        naming_opts.add_option('-C', '--allowed-countries', type='string', action='callback', callback=options_list_callback, dest='allowed_countries', default=None,
-                               help='List of allowed countries. Separate country codes with ";"')
+    def register_arguments(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
+        naming_opts.add_argument('-C', '--allowed-country', action='append', dest='allowed_countries',
+                                 help='Allowed country (can be used multiple times)')
 
     def supported_properties(self):
         return ['country']

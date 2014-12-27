@@ -363,73 +363,72 @@ Usage
 guessit can be use from command line::
 
     $ guessit
-    Usage: guessit [options] file1 [file2...]
+    usage: guessit [-h] [-t TYPE] [-n] [-c] [-X DISABLED_TRANSFORMERS] [-v]
+                   [-P SHOW_PROPERTY] [-u] [-a] [-y] [-f INPUT_FILE] [-d] [-p]
+                   [-V] [-s] [--version] [-b] [-i INFO] [-S EXPECTED_SERIES]
+                   [-T EXPECTED_TITLE] [-Y] [-D] [-L ALLOWED_LANGUAGES] [-E]
+                   [-C ALLOWED_COUNTRIES] [-G EXPECTED_GROUP]
+                   [filename [filename ...]]
 
-    Options:
+    positional arguments:
+      filename              Filename or release name to guess
+
+    optional arguments:
       -h, --help            show this help message and exit
 
-      Naming:
-        -t TYPE, --type=TYPE
-                            The suggested file type: movie, episode. If undefined,
+    Naming:
+      -t TYPE, --type TYPE  The suggested file type: movie, episode. If undefined,
                             type will be guessed.
-        -n, --name-only     Parse files as name only. Disable folder parsing,
+      -n, --name-only       Parse files as name only. Disable folder parsing,
                             extension parsing, and file content analysis.
-        -c, --split-camel   Split camel case part of filename.
-        -Y, --date-year-first
+      -c, --split-camel     Split camel case part of filename.
+      -X DISABLED_TRANSFORMERS, --disabled-transformer DISABLED_TRANSFORMERS
+                            Transformer to disable (can be used multiple time)
+      -S EXPECTED_SERIES, --expected-series EXPECTED_SERIES
+                            Expected series to parse (can be used multiple times)
+      -T EXPECTED_TITLE, --expected-title EXPECTED_TITLE
+                            Expected title (can be used multiple times)
+      -Y, --date-year-first
                             If short date is found, consider the first digits as
                             the year.
-        -D, --date-day-first
-                            If short date is found, consider the second digits as
+      -D, --date-day-first  If short date is found, consider the second digits as
                             the day.
-        -E, --episode-prefer-number
+      -L ALLOWED_LANGUAGES, --allowed-languages ALLOWED_LANGUAGES
+                            Allowed language (can be used multiple times)
+      -E, --episode-prefer-number
                             Guess "serie.213.avi" as the episodeNumber 213.
                             Without this option, it will be guessed as season 2,
                             episodeNumber 13
-        -L ALLOWED_LANGUAGES, --allowed-languages=ALLOWED_LANGUAGES
-                            List of allowed languages. Separate languages codes
-                            with ";"
-        -C ALLOWED_COUNTRIES, --allowed-countries=ALLOWED_COUNTRIES
-                            List of allowed countries. Separate country codes with
-                            ";"
-        -S EXPECTED_SERIES, --expected-series=EXPECTED_SERIES
-                            List of expected series to parse. Separate series
-                            names with ";"
-        -T EXPECTED_TITLE, --expected-title=EXPECTED_TITLE
-                            List of expected titles to parse. Separate title names
-                            with ";"
-        -G EXPECTED_GROUP, --expected-group=EXPECTED_GROUP
-                            List of expected groups to parse. Separate group names
-                            with ";"
-        --disabled-transformers=DISABLED_TRANSFORMERS
-                            List of transformers to disable. Separate transformers
-                            names with ";"
+      -C ALLOWED_COUNTRIES, --allowed-country ALLOWED_COUNTRIES
+                            Allowed country (can be used multiple times)
+      -G EXPECTED_GROUP, --expected-group EXPECTED_GROUP
+                            Expected release group (can be used multiple times)
 
-      Output:
-        -v, --verbose       Display debug output
-        -P SHOW_PROPERTY, --show-property=SHOW_PROPERTY
+    Output:
+      -v, --verbose         Display debug output
+      -P SHOW_PROPERTY, --show-property SHOW_PROPERTY
                             Display the value of a single property (title, series,
                             videoCodec, year, type ...)
-        -u, --unidentified  Display the unidentified parts.
-        -a, --advanced      Display advanced information for filename guesses, as
+      -u, --unidentified    Display the unidentified parts.
+      -a, --advanced        Display advanced information for filename guesses, as
                             json output
-        -y, --yaml          Display information for filename guesses as yaml
+      -y, --yaml            Display information for filename guesses as yaml
                             output (like unit-test)
-        -f INPUT_FILE, --input-file=INPUT_FILE
+      -f INPUT_FILE, --input-file INPUT_FILE
                             Read filenames from an input file.
-        -d, --demo          Run a few builtin tests instead of analyzing a file
+      -d, --demo            Run a few builtin tests instead of analyzing a file
 
-      Information:
-        -p, --properties    Display properties that can be guessed.
-        -V, --values        Display property values that can be guessed.
-        -s, --transformers  Display transformers that can be used.
-        --version           Display the guessit version.
+    Information:
+      -p, --properties      Display properties that can be guessed.
+      -V, --values          Display property values that can be guessed.
+      -s, --transformers    Display transformers that can be used.
+      --version             Display the guessit version.
 
-      guessit.io:
-        -b, --bug           Submit a wrong detection to the guessit.io service
+    guessit.io:
+      -b, --bug             Submit a wrong detection to the guessit.io service
 
-      Other features:
-        -i INFO, --info=INFO
-                            The desired information type: filename, video,
+    Other features:
+      -i INFO, --info INFO  The desired information type: filename, video,
                             hash_mpc or a hash from python's hashlib module, such
                             as hash_md5, hash_sha1, ...; or a list of any of them,
                             comma-separated

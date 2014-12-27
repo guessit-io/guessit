@@ -24,7 +24,6 @@ from guessit.containers import PropertiesContainer
 from guessit.matcher import GuessFinder
 
 from guessit.plugins.transformers import Transformer
-from guessit.options import options_list_callback
 
 import re
 
@@ -33,9 +32,9 @@ class ExpectedTitle(Transformer):
     def __init__(self):
         Transformer.__init__(self, 225)
 
-    def register_options(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
-        naming_opts.add_option('-T', '--expected-title', type='string', action='callback', callback=options_list_callback, dest='expected_title', default=None,
-                               help='List of expected titles to parse. Separate title names with ";"')
+    def register_arguments(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
+        naming_opts.add_argument('-T', '--expected-title', action='append', dest='expected_title',
+                                 help='Expected title (can be used multiple times)')
 
     def should_process(self, mtree, options=None):
         return options and options.get('expected_title')

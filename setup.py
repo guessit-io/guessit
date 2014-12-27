@@ -28,7 +28,8 @@ README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
-install_requires = ['babelfish>=0.5.3', 'stevedore>=0.14', 'requests', 'python-dateutil>=2.1']
+# argparse is available in python>2.7. For older version, requires 'argparse' module.
+install_requires = ['babelfish>=0.5.3', 'stevedore>=0.14', 'requests', 'python-dateutil>=2.1', 'argparse']
 
 tests_require = ['PyYAML']  # Fabric not available (yet!) for python3
 

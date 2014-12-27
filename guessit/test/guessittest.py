@@ -85,7 +85,7 @@ class TestGuessit(TestCase):
 
             if options:
                 args = shlex.split(options)
-                options, _ = get_opts().parse_args(args)
+                options = get_opts().parse_args(args)
                 options = vars(options)
             try:
                 found = guess_func(filename, options)

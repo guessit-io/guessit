@@ -54,7 +54,7 @@ class Transformer(object):  # pragma: no cover
     def post_process(self, mtree, options=None):
         pass
 
-    def register_options(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
+    def register_arguments(self, opts, naming_opts, output_opts, information_opts, webservice_opts, other_options):
         pass
 
     def rate_quality(self, guess, *props):
