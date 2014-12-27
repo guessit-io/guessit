@@ -1,6 +1,12 @@
 History
 =======
 
+0.10.0 (2014-27-12)
+------------------
+* Fixed exception when serie title starts with Ep
+* Fixed exception when trying to parse a full length country name
+* Removed deprecated optparse module, replaced by argparse
+
 0.9.4 (2014-11-10)
 ------------------
 * Fixed exception when filename contains multiple languages ISO codes
