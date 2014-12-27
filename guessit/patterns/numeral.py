@@ -130,7 +130,7 @@ def parse_numeral(value, int_enabled=True, roman_enabled=True, word_enabled=True
             if clean:
                 for word in value.split():
                     try:
-                        return __parse_roman(word)
+                        return __parse_roman(word.upper())
                     except ValueError:
                         pass
             return __parse_roman(value)
