@@ -21,3 +21,5 @@ Scripts
 /3.3*/
 /3.4*/
 .python-version
+.eggs/
+.tox/
