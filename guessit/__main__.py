@@ -44,7 +44,7 @@ def guess_file(filename, info='filename', options=None, **kwargs):
             pass
 
     if options.get('show_property'):
-        print (guess.get(options.get('show_property'), ''))
+        print(guess.get(options.get('show_property'), ''))
         return
 
     if options.get('yaml'):
@@ -61,7 +61,7 @@ def guess_file(filename, info='filename', options=None, **kwargs):
                 print(":" + yline[1:])
             else:
                 print(yline)
-            i = i + 1
+            i += 1
         return
     print('GuessIt found:', guess.nice_string(options.get('advanced')))
 
@@ -82,7 +82,7 @@ def _supported_properties():
             for property_name in supported_properties:
                 all_properties[property_name] # just make sure it exists
 
-    return (all_properties, transformers_properties)
+    return all_properties, transformers_properties
 
 
 def display_transformers():
@@ -140,8 +140,7 @@ def run_demo(episodes=True, movies=True, options=None):
                    'Series/Simpsons/The_simpsons_s13e18_-_i_am_furious_yellow.mpg',
                    'Series/Simpsons/Saison 12 Français/Simpsons,.The.12x08.A.Bas.Le.Sergent.Skinner.FR.[tvu.org.ru].avi',
                    'Series/Dr._Slump_-_002_DVB-Rip_Catalan_by_kelf.avi',
-                   'Series/Kaamelott/Kaamelott - Livre V - Second Volet - HD 704x396 Xvid 2 pass - Son 5.1 - TntRip by Slurm.avi'
-                   ]
+                   'Series/Kaamelott/Kaamelott - Livre V - Second Volet - HD 704x396 Xvid 2 pass - Son 5.1 - TntRip by Slurm.avi']
 
         for f in testeps:
             print('-' * 80)
@@ -153,8 +152,8 @@ def run_demo(episodes=True, movies=True, options=None):
                       'Movies/Blade Runner (1982)/Blade.Runner.(1982).(Director\'s.Cut).CD1.DVDRip.XviD.AC3-WAF.avi',
                       'Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv',
                       'Movies/Sin City (BluRay) (2005)/Sin.City.2005.BDRip.720p.x264.AC3-SEPTiC.mkv',
-                      'Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi',  # FIXME: PROPER and R5 get overwritten
-                      '[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv',  # FIXME: title gets overwritten
+                      'Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi',
+                      '[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv',
                       'Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi',
                       'Movies/Brazil (1985)/Brazil_Criterion_Edition_(1985).CD2.English.srt',
                       'Movies/Persepolis (2007)/[XCT] Persepolis [H264+Aac-128(Fr-Eng)+ST(Fr-Eng)+Ind].mkv',
@@ -173,8 +172,9 @@ def run_demo(episodes=True, movies=True, options=None):
             print('-' * 80)
             guess_file(f, options=options, type='movie')
 
+
 def submit_bug(filename, options):
-    import requests # only import when needed
+    import requests  # only import when needed
     from requests.exceptions import RequestException
 
     try:
@@ -193,11 +193,10 @@ def submit_bug(filename, options):
         print('Could not submit bug at the moment, please try again later.')
 
 
-
 def main(args=None, setup_logging=True):
     if setup_logging:
         from guessit import slogging
-        slogging.setupLogging()
+        slogging.setup_logging()
 
     if PY2:  # pragma: no cover
         import codecs
@@ -264,7 +263,7 @@ def main(args=None, setup_logging=True):
         finally:
             input_file.close()
 
-    filenames = filter(lambda filename: filename, filenames)
+    filenames = filter(lambda f: f, filenames)
 
     if filenames:
         help_required = False
@@ -276,7 +275,6 @@ def main(args=None, setup_logging=True):
                 guess_file(filename,
                            info=options.info.split(','),
                            options=vars(options))
-
 
     if help_required:  # pragma: no cover
         get_opts().print_help()

@@ -41,8 +41,8 @@ class GuessWeakEpisodesRexps(Transformer):
 
         episode_words = ['episodes?']
 
-        def _formater(episodeNumber):
-            epnum = parse_numeral(episodeNumber)
+        def _formater(episode_number):
+            epnum = parse_numeral(episode_number)
             if not valid_year(epnum):
                 if epnum > 100:
                     season, epnum = epnum // 100, epnum % 100

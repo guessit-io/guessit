@@ -43,16 +43,16 @@ french_alt_word_numeral_list = [
 
 
 def __build_word_numeral(*args, **kwargs):
-    re = None
+    re_ = None
     for word_list in args:
         for word in word_list:
-            if not re:
-                re = '(?:(?=\w+)'
+            if not re_:
+                re_ = '(?:(?=\w+)'
             else:
-                re += '|'
-            re += word
-    re += ')'
-    return re
+                re_ += '|'
+            re_ += word
+    re_ += ')'
+    return re_
 
 word_numeral = __build_word_numeral(english_word_numeral_list, french_word_numeral_list, french_alt_word_numeral_list)
 
@@ -84,10 +84,10 @@ def __parse_roman(value):
 
     result = 0
     index = 0
-    for numeral, integer in __romanNumeralMap:
-        while value[index:index + len(numeral)] == numeral:
+    for num, integer in __romanNumeralMap:
+        while value[index:index + len(num)] == num:
             result += integer
-            index += len(numeral)
+            index += len(num)
     return result
 
 

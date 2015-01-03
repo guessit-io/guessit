@@ -29,6 +29,7 @@ TLDS = [l.strip().decode('utf-8')
         for l in resource_stream('guessit', 'tlds-alpha-by-domain.txt').readlines()
         if b'--' not in l][1:]
 
+
 class GuessWebsite(Transformer):
     def __init__(self):
         Transformer.__init__(self, 45)

@@ -39,18 +39,18 @@ class GuessEpisodeInfoFromPosition(Transformer):
         # a few helper functions to be able to filter using high-level semantics
         def before_epnum_in_same_pathgroup():
             return [leaf for leaf in mtree.unidentified_leaves(lambda x: len(x.clean_value) > 1)
-                     if (leaf.node_idx[0] == epnum_idx[0] and
-                         leaf.node_idx[1:] < epnum_idx[1:])]
+                    if (leaf.node_idx[0] == epnum_idx[0] and
+                    leaf.node_idx[1:] < epnum_idx[1:])]
 
         def after_epnum_in_same_pathgroup():
             return [leaf for leaf in mtree.unidentified_leaves(lambda x: len(x.clean_value) > 1)
-                     if (leaf.node_idx[0] == epnum_idx[0] and
-                         leaf.node_idx[1:] > epnum_idx[1:])]
+                    if (leaf.node_idx[0] == epnum_idx[0] and
+                    leaf.node_idx[1:] > epnum_idx[1:])]
 
         def after_epnum_in_same_explicitgroup():
             return [leaf for leaf in mtree.unidentified_leaves(lambda x: len(x.clean_value) > 1)
-                     if (leaf.node_idx[:2] == epnum_idx[:2] and
-                         leaf.node_idx[2:] > epnum_idx[2:])]
+                    if (leaf.node_idx[:2] == epnum_idx[:2] and
+                    leaf.node_idx[2:] > epnum_idx[2:])]
 
         # epnumber is the first group and there are only 2 after it in same
         # path group
@@ -58,16 +58,16 @@ class GuessEpisodeInfoFromPosition(Transformer):
         title_candidates = self._filter_candidates(after_epnum_in_same_pathgroup(), options)
 
         if ('title' not in mtree.info and  # no title
-                    'series' in mtree.info and # series present
-                    before_epnum_in_same_pathgroup() == [] and  # no groups before
-                    len(title_candidates) == 1):  # only 1 group after
+                'series' in mtree.info and # series present
+                before_epnum_in_same_pathgroup() == [] and  # no groups before
+                len(title_candidates) == 1):  # only 1 group after
 
             found_property(title_candidates[0], 'title', confidence=0.4)
             return
 
         if ('title' not in mtree.info and  # no title
-            before_epnum_in_same_pathgroup() == [] and  # no groups before
-            len(title_candidates) == 2):  # only 2 groups after
+                before_epnum_in_same_pathgroup() == [] and  # no groups before
+                len(title_candidates) == 2):  # only 2 groups after
 
             found_property(title_candidates[0], 'series', confidence=0.4)
             found_property(title_candidates[1], 'title', confidence=0.4)
@@ -142,7 +142,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
                 found_property(title_candidates[1], 'title', confidence=0.4)
             elif len(title_candidates) == 1:
                 # but if there's only one candidate, it's probably the series name
-                found_property(title_candidates[0], 'series' if not 'series' in mtree.info else 'title', confidence=0.4)
+                found_property(title_candidates[0], 'series' if 'series' not in mtree.info else 'title', confidence=0.4)
 
         # if we only have 1 remaining valid group in the folder containing the
         # file, then it's likely that it is the series name

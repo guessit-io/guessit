@@ -44,14 +44,14 @@ def hash_file(filename):
         buf = f.read(bytesize)
         (l_value,) = struct.unpack(longlongformat, buf)
         hash_value += l_value
-        hash_value = hash_value & 0xFFFFFFFFFFFFFFFF  # to remain as 64bit number
+        hash_value &= 0xFFFFFFFFFFFFFFFF  # to remain as 64bit number
 
     f.seek(max(0, filesize - 65536), 0)
     for x in range(int(65536 / bytesize)):
         buf = f.read(bytesize)
         (l_value,) = struct.unpack(longlongformat, buf)
         hash_value += l_value
-        hash_value = hash_value & 0xFFFFFFFFFFFFFFFF
+        hash_value &= 0xFFFFFFFFFFFFFFFF
 
     f.close()
 

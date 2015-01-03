@@ -63,15 +63,15 @@ class Transformer(object):  # pragma: no cover
 
 class CustomTransformerExtensionManager(ExtensionManager):
     def __init__(self, namespace='guessit.transformer', invoke_on_load=True,
-        invoke_args=(), invoke_kwds={}, propagate_map_exceptions=True, on_load_failure_callback=None,
+                 invoke_args=(), invoke_kwds={}, propagate_map_exceptions=True, on_load_failure_callback=None,
                  verify_requirements=False):
         super(CustomTransformerExtensionManager, self).__init__(namespace=namespace,
-                 invoke_on_load=invoke_on_load,
-                 invoke_args=invoke_args,
-                 invoke_kwds=invoke_kwds,
-                 propagate_map_exceptions=propagate_map_exceptions,
-                 on_load_failure_callback=on_load_failure_callback,
-                 verify_requirements=verify_requirements)
+                                                                invoke_on_load=invoke_on_load,
+                                                                invoke_args=invoke_args,
+                                                                invoke_kwds=invoke_kwds,
+                                                                propagate_map_exceptions=propagate_map_exceptions,
+                                                                on_load_failure_callback=on_load_failure_callback,
+                                                                verify_requirements=verify_requirements)
 
     def order_extensions(self, extensions):
         """Order the loaded transformers
@@ -184,6 +184,7 @@ def add_transformer(name, module_name, class_name):
     """
 
     _extensions.register_module(name, module_name, (class_name,))
+
 
 def add_transformer(entry_point):
     """

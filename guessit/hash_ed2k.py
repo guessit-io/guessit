@@ -24,6 +24,8 @@ from guessit import s, to_hex
 import hashlib
 import os.path
 
+from functools import reduce
+
 
 def hash_file(filename):
     """Returns the ed2k hash of a given file.

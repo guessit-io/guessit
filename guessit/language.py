@@ -234,7 +234,7 @@ def find_possible_languages(string, allowed_languages=None):
         for prefix in lang_prefixes:
             if lang_word.startswith(prefix):
                 lang_word = lang_word[len(prefix):]
-        if not lang_word in common_words:
+        if lang_word not in common_words:
             try:
                 lang = Language.fromguessit(lang_word)
                 if allowed_languages:
@@ -274,8 +274,8 @@ def search_language(string, allowed_languages=None):
 
         # only allow those languages that have a 2-letter code, those that
         # don't are too esoteric and probably false matches
-        #if language.lang not in lng3_to_lng2:
-        #    continue
+        # if language.lang not in lng3_to_lng2:
+        #     continue
 
         # confidence depends on alpha2, alpha3, english name, ...
         if len(lang) == 2:

@@ -31,7 +31,7 @@ RED_FONT = "\x1B[0;31m"
 RESET_FONT = "\x1B[0m"
 
 
-def setupLogging(colored=True, with_time=False, with_thread=False, filename=None, with_lineno=False):  # pragma: no cover
+def setup_logging(colored=True, with_time=False, with_thread=False, filename=None, with_lineno=False):  # pragma: no cover
     """Set up a nice colored logger as the main application logger."""
 
     class SimpleFormatter(logging.Formatter):

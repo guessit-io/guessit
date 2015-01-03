@@ -134,6 +134,7 @@ def _add_camel_properties(mtree, options=None, **kwargs):
         value = leaf.value
         _guess_camel_string(mtree, value, options=options, skip_title=True, **kwargs)
 
+
 def _guess_camel_string(mtree, string, options=None, skip_title=False, **kwargs):
     if string and is_camel(string):
         log.debug('"%s" is camel cased. Try to detect more properties.' % (string,))
@@ -148,6 +149,7 @@ def _guess_camel_string(mtree, string, options=None, skip_title=False, **kwargs)
             mtree.matched().update(camel_tree.matched())
             return True
     return False
+
 
 def guess_video_metadata(filename):
     """Gets the video metadata properties out of a given file. The file needs to
@@ -257,6 +259,7 @@ def guess_video_metadata(filename):
         return result
 
 default_options = {}
+
 
 def guess_file_info(filename, info=None, options=None, **kwargs):
     """info can contain the names of the various plugins, such as 'filename' to

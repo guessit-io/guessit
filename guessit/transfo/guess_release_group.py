@@ -36,8 +36,7 @@ class GuessReleaseGroup(Transformer):
         self.container = PropertiesContainer(canonical_from_pattern=False)
         self._allowed_groupname_pattern = '[\w@#€£$&!\?]'
         self._forbidden_groupname_lambda = [lambda elt: elt in ['rip', 'by', 'for', 'par', 'pour', 'bonus'],
-                               lambda elt: self._is_number(elt),
-                               ]
+                                            lambda elt: self._is_number(elt)]
         # If the previous property in this list, the match will be considered as safe
         # and group name can contain a separator.
         self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels', 'other']
@@ -105,7 +104,7 @@ class GuessReleaseGroup(Transformer):
     def is_leaf_previous(self, leaf, node):
         if leaf.span[1] <= node.span[0]:
             for idx in range(leaf.span[1], node.span[0]):
-                if not leaf.root.value[idx] in sep:
+                if leaf.root.value[idx] not in sep:
                     return False
             return True
         return False

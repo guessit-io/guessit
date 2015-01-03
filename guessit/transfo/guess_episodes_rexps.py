@@ -63,7 +63,7 @@ class GuessEpisodesRexps(Transformer):
         season_markers_re = re.compile(build_or_pattern(season_markers), re.IGNORECASE)
         episode_markers_re = re.compile(build_or_pattern(episode_markers), re.IGNORECASE)
 
-        def list_parser(value, propertyListName, discrete_separators_re=discrete_separators_re, range_separators_re=range_separators_re, allow_discrete=False, fill_gaps=False):
+        def list_parser(value, property_list_name, discrete_separators_re=discrete_separators_re, range_separators_re=range_separators_re, allow_discrete=False, fill_gaps=False):
             discrete_elements = filter(lambda x: x != '', discrete_separators_re.split(value))
             discrete_elements = [x.strip() for x in discrete_elements]
 
@@ -104,7 +104,7 @@ class GuessEpisodesRexps(Transformer):
 
             if len(ret) > 1:
                 if not allow_discrete:
-                    valid_ret = []
+                    valid_ret = list()
                     # replace discrete elements by ranges
                     valid_ret.append(ret[0])
                     for i in range(0, len(ret) - 1):
@@ -117,7 +117,7 @@ class GuessEpisodesRexps(Transformer):
                 if fill_gaps:
                     ret = list(range(min(ret), max(ret) + 1))
                 if len(ret) > 1:
-                    return {None: ret[0], propertyListName: ret}
+                    return {None: ret[0], property_list_name: ret}
             if len(ret) > 0:
                 return ret[0]
             return None
@@ -126,7 +126,7 @@ class GuessEpisodesRexps(Transformer):
             return list_parser(value, 'episodeList', discrete_separators_re=re.compile('x', re.IGNORECASE))
 
         def episode_parser_e(value):
-            return list_parser(value, 'episodeList', discrete_separators_re=re.compile('e',re.IGNORECASE), fill_gaps=True)
+            return list_parser(value, 'episodeList', discrete_separators_re=re.compile('e', re.IGNORECASE), fill_gaps=True)
 
         def episode_parser(value):
             return list_parser(value, 'episodeList')
@@ -136,13 +136,13 @@ class GuessEpisodesRexps(Transformer):
 
         class ResolutionCollisionValidator(object):
             def validate(self, prop, string, node, match, entry_start, entry_end):
-                return len(match.group(2)) < 3 #limit
+                return len(match.group(2)) < 3 # limit
 
         self.container.register_property(None, r'(' + season_words_re.pattern + sep + '?(?P<season>' + numeral + ')' + sep + '?' + season_words_re.pattern + '?)', confidence=1.0, formatter=parse_numeral)
         self.container.register_property(None, r'(' + season_words_re.pattern + sep + '?(?P<season>' + digital_numeral + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + digital_numeral + ')*)' + sep + '?' + season_words_re.pattern + '?)' + sep, confidence=1.0, formatter={None: parse_numeral, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), FormatterValidator('season', lambda x: len(x) > 1 if hasattr(x, '__len__') else False)))
 
         self.container.register_property(None, r'(' + season_markers_re.pattern + '(?P<season>' + digital_numeral + ')[^0-9]?' + sep + '?(?P<episodeNumber>(?:e' + digital_numeral + '(?:' + sep + '?[e-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_e, 'season': season_parser}, validator=NoValidator())
-        #self.container.register_property(None, r'[^0-9]((?P<season>' + digital_numeral + ')[^0-9 .-]?-?(?P<episodeNumber>(?:x' + digital_numeral + '(?:' + sep + '?[x-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_x, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
+        # self.container.register_property(None, r'[^0-9]((?P<season>' + digital_numeral + ')[^0-9 .-]?-?(?P<episodeNumber>(?:x' + digital_numeral + '(?:' + sep + '?[x-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_x, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
         self.container.register_property(None, sep + r'((?P<season>' + digital_numeral + ')' + sep + '' + '(?P<episodeNumber>(?:x' + sep + digital_numeral + '(?:' + sep + '[x-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_x, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
         self.container.register_property(None, r'((?P<season>' + digital_numeral + ')' + '(?P<episodeNumber>(?:x' + digital_numeral + '(?:[x-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_x, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
         self.container.register_property(None, r'(' + season_markers_re.pattern + '(?P<season>' + digital_numeral + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + digital_numeral + ')*))', confidence=0.6, formatter={None: parse_numeral, 'season': season_parser}, validator=NoValidator())

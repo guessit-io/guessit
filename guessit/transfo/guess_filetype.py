@@ -105,13 +105,11 @@ class GuessFiletype(Transformer):
                 list(mtree.unidentified_leaves())[-1].guess = Guess(other)
 
         # check whether we are in a 'Movies', 'Tv Shows', ... folder
-        folder_rexps = [
-                        (r'Movies?', upgrade_movie),
+        folder_rexps = [(r'Movies?', upgrade_movie),
                         (r'Films?', upgrade_movie),
                         (r'Tv[ _-]?Shows?', upgrade_episode),
                         (r'Series?', upgrade_episode),
-                        (r'Episodes?', upgrade_episode),
-                        ]
+                        (r'Episodes?', upgrade_episode)]
         for frexp, upgrade_func in folder_rexps:
             frexp = re.compile(frexp, re.IGNORECASE)
             for pathgroup in mtree.children:

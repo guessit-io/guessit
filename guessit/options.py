@@ -20,7 +20,7 @@ def build_opts(transformers=None):
     output_opts.add_argument('-v', '--verbose', action='store_true', dest='verbose', default=False,
                              help='Display debug output')
     output_opts.add_argument('-P', '--show-property', dest='show_property', default=None,
-                              help='Display the value of a single property (title, series, videoCodec, year, type ...)'),
+                             help='Display the value of a single property (title, series, videoCodec, year, type ...)'),
     output_opts.add_argument('-u', '--unidentified', dest='unidentified', action='store_true', default=False,
                              help='Display the unidentified parts.'),
     output_opts.add_argument('-a', '--advanced', dest='advanced', action='store_true', default=False,
@@ -34,23 +34,23 @@ def build_opts(transformers=None):
 
     information_opts = opts.add_argument_group("Information")
     information_opts.add_argument('-p', '--properties', dest='properties', action='store_true', default=False,
-                             help='Display properties that can be guessed.')
+                                  help='Display properties that can be guessed.')
     information_opts.add_argument('-V', '--values', dest='values', action='store_true', default=False,
-                             help='Display property values that can be guessed.')
+                                  help='Display property values that can be guessed.')
     information_opts.add_argument('-s', '--transformers', dest='transformers', action='store_true', default=False,
-                             help='Display transformers that can be used.')
+                                  help='Display transformers that can be used.')
     information_opts.add_argument('--version', dest='version', action='store_true', default=False,
-                                 help='Display the guessit version.')
+                                  help='Display the guessit version.')
 
     webservice_opts = opts.add_argument_group("guessit.io")
     webservice_opts.add_argument('-b', '--bug', action='store_true', dest='submit_bug', default=False,
-                             help='Submit a wrong detection to the guessit.io service')
+                                 help='Submit a wrong detection to the guessit.io service')
 
     other_opts = opts.add_argument_group("Other features")
     other_opts.add_argument('-i', '--info', dest='info', default='filename',
-                          help='The desired information type: filename, video, hash_mpc or a hash from python\'s '
-                               'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
-                               'them, comma-separated')
+                            help='The desired information type: filename, video, hash_mpc or a hash from python\'s '
+                            'hashlib module, such as hash_md5, hash_sha1, ...; or a list of any of '
+                            'them, comma-separated')
 
     if transformers:
         for transformer in transformers:

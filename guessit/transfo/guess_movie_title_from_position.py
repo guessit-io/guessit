@@ -61,9 +61,7 @@ class GuessMovieTitleFromPosition(Transformer):
         # specific cases:
         # if we find the same group both in the folder name and the filename,
         # it's a good candidate for title
-        if (folder_leftover and basename_leftover and
-            folder_leftover[0].clean_value == basename_leftover[0].clean_value):
-
+        if folder_leftover and basename_leftover and folder_leftover[0].clean_value == basename_leftover[0].clean_value:
             found_property(folder_leftover[0], 'title', confidence=0.8)
             return
 
@@ -74,14 +72,14 @@ class GuessMovieTitleFromPosition(Transformer):
         # ex: Millenium Trilogy (2009)/(1)The Girl With The Dragon Tattoo(2009).mkv
         if len(folder_leftover) > 0 and len(basename_leftover) > 1:
             series = folder_leftover[0]
-            filmNumber = basename_leftover[0]
+            film_number = basename_leftover[0]
             title = basename_leftover[1]
 
             basename_leaves = list(basename.leaves())
 
             num = None
             try:
-                num = int(filmNumber.clean_value)
+                num = int(film_number.clean_value)
             except ValueError:
                 pass
 
@@ -89,13 +87,13 @@ class GuessMovieTitleFromPosition(Transformer):
                 self.log.debug('series: %s' % series.clean_value)
                 self.log.debug('title: %s' % title.clean_value)
                 if (series.clean_value != title.clean_value and
-                            series.clean_value != filmNumber.clean_value and
-                            basename_leaves.index(filmNumber) == 0 and
+                            series.clean_value != film_number.clean_value and
+                            basename_leaves.index(film_number) == 0 and
                             basename_leaves.index(title) == 1):
 
                     found_property(title, 'title', confidence=0.6)
                     found_property(series, 'filmSeries', confidence=0.6)
-                    found_property(filmNumber, 'filmNumber', num, confidence=0.6)
+                    found_property(film_number, 'filmNumber', num, confidence=0.6)
                 return
 
         if folder:
@@ -137,8 +135,7 @@ class GuessMovieTitleFromPosition(Transformer):
             # ex: Movies/Alice in Wonderland DVDRip.XviD-DiAMOND/dmd-aw.avi
             # ex: Movies/Somewhere.2010.DVDRip.XviD-iLG/i-smwhr.avi  <-- TODO: gets caught here?
             if (basename_leftover[0].clean_value.count(' ') == 0 and
-                folder_leftover and
-                folder_leftover[0].clean_value.count(' ') >= 2):
+                    folder_leftover and folder_leftover[0].clean_value.count(' ') >= 2):
 
                 found_property(folder_leftover[0], 'title', confidence=0.7)
                 return

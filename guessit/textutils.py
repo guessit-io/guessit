@@ -38,8 +38,8 @@ def strip_brackets(s):
         return s
 
     if ((s[0] == '[' and s[-1] == ']') or
-        (s[0] == '(' and s[-1] == ')') or
-        (s[0] == '{' and s[-1] == '}')):
+       (s[0] == '(' and s[-1] == ')') or
+       (s[0] == '{' and s[-1] == '}')):
         return s[1:-1]
 
     return s

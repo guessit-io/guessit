@@ -62,7 +62,7 @@ class GuessMetadata(object):
         :rtype: int
         :return: confidence value
         """
-        return self._confidence if not self._confidence is None else self.parent.confidence if self.parent else None
+        return self._confidence if self._confidence is not None else self.parent.confidence if self.parent else None
 
     @confidence.setter
     def confidence(self, confidence):
@@ -75,7 +75,7 @@ class GuessMetadata(object):
         :rtype: string
         :return: String used to find this guess value
         """
-        return self._input if not self._input is None else self.parent.input if self.parent else None
+        return self._input if self._input is not None else self.parent.input if self.parent else None
 
     @input.setter
     def input(self, input):
@@ -92,7 +92,7 @@ class GuessMetadata(object):
         :rtype: tuple (int, int)
         :return: span of input string used to find this guess value
         """
-        return self._span if not self._span is None else self.parent.span if self.parent else None
+        return self._span if self._span is not None else self.parent.span if self.parent else None
 
     @span.setter
     def span(self, span):
@@ -110,7 +110,7 @@ class GuessMetadata(object):
         :rtype: :class:`_Property`
         :return: The property
         """
-        return self._prop if not self._prop is None else self.parent.prop if self.parent else None
+        return self._prop if self._prop is not None else self.parent.prop if self.parent else None
 
     @property
     def raw(self):
@@ -220,7 +220,7 @@ class Guess(UnicodeMixin, dict):
         """
         if prop is None:
             return self._global_metadata
-        if not prop in self._metadata:
+        if prop not in self._metadata:
             self._metadata[prop] = GuessMetadata(parent=self._global_metadata)
         return self._metadata[prop]
 
@@ -258,7 +258,7 @@ class Guess(UnicodeMixin, dict):
                     self._metadata[prop] = other._metadata[prop]
                 except KeyError:
                     pass
-        if not confidence is None:
+        if confidence is not None:
             for prop in other:
                 self.set_confidence(prop, confidence)
 
@@ -331,26 +331,26 @@ def choose_string(g1, g2):
     combined_prob = 1 - (1 - c1) * (1 - c2)
 
     if v1l == v2l:
-        return (v1, combined_prob)
+        return v1, combined_prob
 
     # check for common patterns
     elif v1l == 'the ' + v2l:
-        return (v1, combined_prob)
+        return v1, combined_prob
     elif v2l == 'the ' + v1l:
-        return (v2, combined_prob)
+        return v2, combined_prob
 
     # if one string is contained in the other, return the shortest one
     elif v2l in v1l:
-        return (v2, combined_prob)
+        return v2, combined_prob
     elif v1l in v2l:
-        return (v1, combined_prob)
+        return v1, combined_prob
 
     # in case of conflict, return the one with highest confidence
     else:
         if c1 > c2:
-            return (v1, c1 - c2)
+            return v1, c1 - c2
         else:
-            return (v2, c2 - c1)
+            return v2, c2 - c1
 
 
 def _merge_similar_guesses_nocheck(guesses, prop, choose):

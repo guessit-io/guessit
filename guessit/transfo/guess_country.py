@@ -89,7 +89,7 @@ class GuessCountry(Transformer):
 
     def guess_country(self, string, node=None, options=None):
         c = string.strip().lower()
-        if not c in LNG_COMMON_WORDS:
+        if c not in LNG_COMMON_WORDS:
             try:
                 country, country_span = self._scan_country(c, True)
                 if self.is_valid_country(country, options):

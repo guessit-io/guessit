@@ -85,7 +85,6 @@ class IterativeMatcher(object):
             filename = filename.decode('utf-8')
 
         filename = normalize_unicode(filename)
-        clean_function = None
         if options and options.get('clean_function'):
             clean_function = options.get('clean_function')
             if not hasattr(clean_function, '__call__'):
@@ -117,13 +116,13 @@ class IterativeMatcher(object):
             # Process
             for transformer in transformers.all_transformers():
                 disabled = options.get('disabled_transformers')
-                if not disabled or not transformer.name in disabled:
+                if not disabled or transformer.name not in disabled:
                     self._process(transformer, False)
 
             # Post-process
             for transformer in transformers.all_transformers():
                 disabled = options.get('disabled_transformers')
-                if not disabled or not transformer.name in disabled:
+                if not disabled or transformer.name not in disabled:
                     self._process(transformer, True)
 
             log.debug('Found match tree:\n%s' % u(mtree))
@@ -152,11 +151,11 @@ class IterativeMatcher(object):
 
     def _validate_options(self, options):
         valid_filetypes = ('subtitle', 'info', 'video',
-                   'movie', 'moviesubtitle', 'movieinfo',
-                   'episode', 'episodesubtitle', 'episodeinfo')
+                           'movie', 'moviesubtitle', 'movieinfo',
+                           'episode', 'episodesubtitle', 'episodeinfo')
 
-        type = options.get('type')
-        if type and type not in valid_filetypes:
+        type_ = options.get('type')
+        if type_ and type_ not in valid_filetypes:
             raise ValueError("filetype needs to be one of %s" % (valid_filetypes,))
 
     def matched(self):
@@ -220,7 +219,6 @@ class GuessFinder(object):
             self.process_node(node)
 
     def process_node(self, node, iterative=True, partial_span=None):
-        value = None
         if partial_span:
             value = node.value[partial_span[0]:partial_span[1]]
         else:
@@ -266,7 +264,6 @@ class GuessFinder(object):
                 if not partition_spans:
                     # restore sentinels compensation
 
-                    guess = None
                     if isinstance(result, Guess):
                         guess = result
                     else:
@@ -287,7 +284,7 @@ class GuessFinder(object):
                                     found_child = child
                                     break
                             for child in node.children:
-                                if not child is found_child:
+                                if child is not found_child:
                                     self.process_node(child)
                 else:
                     for partition_span in partition_spans:

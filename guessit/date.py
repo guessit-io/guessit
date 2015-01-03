@@ -39,6 +39,7 @@ date_regexps = [
     re.compile('[^\d](\d{1,2})%s(\d{1,2})%s(\d{4})[^\d]' % (_dsep, _dsep_bis), re.IGNORECASE),
     re.compile('[^\d](\d{1,2}(?:st|nd|rd|th)?%s(?:[a-z]{3,10})%s\d{4})[^\d]' % (_dsep, _dsep), re.IGNORECASE)]
 
+
 def valid_year(year, today=None):
     """Check if number is a valid year"""
     if not today:
@@ -104,7 +105,6 @@ def search_date(string, year_first=None, day_first=True):
         return None, None
 
     today = datetime.date.today()
-    date = None
 
     # If day_first/year_first is undefined, parse is made using both possible values.
     yearfirst_opts = [False, True]
@@ -124,6 +124,6 @@ def search_date(string, year_first=None, day_first=True):
             pass
         # check date plausibility
         if date and valid_year(date.year, today=today):
-            return (date.date(), (start+1, end-1)) #compensate for sentinels
+            return date.date(), (start+1, end-1) #compensate for sentinels
 
     return None, None
