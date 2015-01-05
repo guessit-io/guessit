@@ -137,7 +137,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
 
             title_candidates = self._filter_candidates(basename.unidentified_leaves(), options)
 
-            if len(title_candidates) >= 2 and not 'series' in mtree.info:
+            if len(title_candidates) >= 2 and 'series' not in mtree.info:
                 found_property(title_candidates[0], 'series', confidence=0.4)
                 found_property(title_candidates[1], 'title', confidence=0.4)
             elif len(title_candidates) == 1:

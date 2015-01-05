@@ -164,9 +164,24 @@ class IterativeMatcher(object):
 
 def build_guess(node, name, value=None, confidence=1.0):
     guess = Guess({name: node.clean_value if value is None else value}, confidence=confidence)
-    if value is None:
-        guess.metadata().span = node.span
     guess.metadata().input = node.value if value is None else value
+    if value is None:
+        left_offset = 0
+        right_offset = 0
+
+        clean_value = node.clean_value
+
+        for i in range(0, len(node.value)):
+            if clean_value[0] == node.value[i]:
+                break
+            left_offset += 1
+
+        for i in reversed(range(0, len(node.value))):
+            if clean_value[-1] == node.value[i]:
+                break
+            right_offset += 1
+
+        guess.metadata().span = (node.span[0] - node.offset + left_offset, node.span[1] - node.offset - right_offset)
     return guess
 
 
