@@ -87,9 +87,9 @@ class CustomTransformerExtensionManager(ExtensionManager):
 
     def _load_one_plugin(self, ep, invoke_on_load, invoke_args, invoke_kwds, verify_requirements=True):
         if not ep.dist:
-            plugin = ep.load(require=False)
+            plugin = ep._load()  # require kwarg of ep.load() is deprecated, so access this internal method.
         else:
-            plugin = ep.load(require=verify_requirements)
+            plugin = ep.load()
         if invoke_on_load:
             obj = plugin(*invoke_args, **invoke_kwds)
         else:

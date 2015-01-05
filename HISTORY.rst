@@ -5,6 +5,7 @@ History
 ------------------
 * Avoid word Stay to be recognized as AY subtitle
 * Fixed exception when no unidentified leaves remains
+* Avoid usage of deprecated EntryPoint.load() require argument
 
 0.10.0 (2014-27-12)
 ------------------
