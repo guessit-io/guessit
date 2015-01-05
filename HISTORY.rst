@@ -1,6 +1,11 @@
 History
 =======
 
+0.10.1 (unreleased)
+------------------
+* Avoid word Stay to be recognized as AY subtitle
+* Fixed exception when no unidentified leaves remains
+
 0.10.0 (2014-27-12)
 ------------------
 * Fixed exception when serie title starts with Ep

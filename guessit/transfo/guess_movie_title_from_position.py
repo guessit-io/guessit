@@ -101,9 +101,12 @@ class GuessMovieTitleFromPosition(Transformer):
             if year_group:
                 groups_before = folder.previous_unidentified_leaves(year_group)
                 if groups_before:
-                    node = next(groups_before)
-                    found_property(node, 'title', confidence=0.8)
-                    return
+                    try:
+                        node = next(groups_before)
+                        found_property(node, 'title', confidence=0.8)
+                        return
+                    except StopIteration:
+                        pass
 
         # if we have either format or videoCodec in the folder containing the
         # file or one of its parents, then we should probably look for the title

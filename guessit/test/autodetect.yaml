@@ -478,3 +478,12 @@
   series: The League
   title: Epi Sexy
   type: episode
+
+? Stay (2005) [1080p]/Stay.2005.1080p.BluRay.x264.YIFY.mp4
+: format: BluRay
+  releaseGroup: YIFY
+  screenSize: 1080p
+  title: Stay
+  type: movie
+  videoCodec: h264
+  year: 2005
