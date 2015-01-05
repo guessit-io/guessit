@@ -1,6 +1,9 @@
 History
 =======
 
+0.10.2 (unreleased)
+------------------
+
 0.10.1 (2015-05-01)
 ------------------
 * Avoid word Stay to be recognized as AY subtitle
