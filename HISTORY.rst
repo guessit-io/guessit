@@ -4,18 +4,21 @@ History
 0.10.2 (unreleased)
 ------------------
 
-0.10.1 (2015-05-01)
+
+0.10.1 (2015-01-05)
 ------------------
 * Avoid word Stay to be recognized as AY subtitle
 * Fixed exception when no unidentified leaves remains
 * Avoid usage of deprecated EntryPoint.load() require argument
 * Fixed invalid raw data for some properties (title, series and maybe others)
 
-0.10.0 (2014-27-12)
+
+0.10.0 (2014-12-27)
 ------------------
 * Fixed exception when serie title starts with Ep
 * Fixed exception when trying to parse a full length country name
 * Removed deprecated optparse module, replaced by argparse
+
 
 0.9.4 (2014-11-10)
 ------------------
@@ -24,6 +27,7 @@ History
 * Fixed possible exception in language transformer
 * Added more words to common english words
 
+
 0.9.3 (2014-09-14)
 ------------------
 * Added ``Preair`` and ``Remux`` to ``other`` property
@@ -31,6 +35,7 @@ History
 * Better detection of ``format``` = ``BluRay`` (when followed by Rip)
 * Recognize ``RC`` as ``R5``
 * Recognize ``WEB-HD```and ``ẀEB`` as ``WEB-DL``
+
 
 0.9.2 (2014-09-13)
 ------------------
@@ -41,6 +46,7 @@ History
 * Fixed usage not showing when invalid options were passed
 * Added ``PAL``, ``SECAM`` and ``NTSC`` to ``other`` possible values
 * Recognize DVD-9 and DVD-5 as ``format`` = ``DVD`` property
+
 
 0.9.1 (2014-09-06)
 ------------------
@@ -53,6 +59,7 @@ History
 * Better guessing of ``format`` = ``DVD`` property (DVD-R pattern)
 * Some ``info`` logs changed to ``debug`` for quiet integration
 * Small fixes
+
 
 0.9.0 (2014-09-05)
 ------------------
