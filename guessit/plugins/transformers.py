@@ -87,8 +87,11 @@ class CustomTransformerExtensionManager(ExtensionManager):
 
     def _load_one_plugin(self, ep, invoke_on_load, invoke_args, invoke_kwds, verify_requirements=True):
         if not ep.dist:
-            if hasattr(ep, '_load'):
-                plugin = ep._load()  # `require` argument of ep.load() is deprecated in newer versions of setuptools
+            # `require` argument of ep.load() is deprecated in newer versions of setuptools
+            if hasattr(ep, 'resolve'):
+                plugin = ep.resolve()
+            elif hasattr(ep, '_load'):
+                plugin = ep._load()
             else:
                 plugin = ep.load(require=False)
         else:
