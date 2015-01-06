@@ -21,6 +21,7 @@
 from setuptools import setup, find_packages
 
 import os
+import sys
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -28,8 +29,10 @@ README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
-# argparse is available in python>2.7. For older version, requires 'argparse' module.
-install_requires = ['babelfish>=0.5.3', 'stevedore>=0.14', 'requests', 'python-dateutil>=2.1', 'argparse']
+install_requires = ['babelfish>=0.5.3', 'stevedore>=0.14', 'requests', 'python-dateutil>=2.1']
+if sys.version_info < (2, 7):
+    # argparse is part of the standard library in python 2.7+
+    install_requires.append('argparse')
 
 tests_require = ['PyYAML']  # Fabric not available (yet!) for python3
 
