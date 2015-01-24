@@ -29,7 +29,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 
-install_requires = ['babelfish>=0.5.3', 'stevedore>=0.14', 'requests', 'python-dateutil>=2.1']
+install_requires = ['babelfish>=0.5.4', 'stevedore>=0.14', 'requests', 'python-dateutil>=2.1']
 if sys.version_info < (2, 7):
     # argparse is part of the standard library in python 2.7+
     install_requires.append('argparse')
