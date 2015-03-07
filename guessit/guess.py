@@ -22,6 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from guessit import UnicodeMixin, s, u, base_text_type
 from babelfish import Language, Country
+from guessit.textutils import common_words
 import json
 import datetime
 import logging
@@ -294,8 +295,8 @@ def choose_string(g1, g2):
     """Function used by merge_similar_guesses to choose between 2 possible
     properties when they are strings.
 
-    If the 2 strings are similar, or one is contained in the other, the latter is returned
-    with an increased confidence.
+    If the 2 strings are similar or have common words longer than 3 letters,
+    the one with highest confidence is returned with an increased confidence.
 
     If the 2 strings are dissimilar, the one with the higher confidence is returned, with
     a weaker confidence.
@@ -339,11 +340,15 @@ def choose_string(g1, g2):
     elif v2l == 'the ' + v1l:
         return v2, combined_prob
 
-    # if one string is contained in the other, return the shortest one
-    elif v2l in v1l:
-        return v2, combined_prob
-    elif v1l in v2l:
-        return v1, combined_prob
+    # If the 2 strings have common words longer than 3 letters,
+    # return the one with highest confidence.
+    commons = common_words(v1l, v2l)
+    for common_word in commons:
+        if len(common_word) > 3:
+            if c1 >= c2:
+                return v1, combined_prob
+            else:
+                return v2, combined_prob
 
     # in case of conflict, return the one with highest confidence
     else:

@@ -487,3 +487,14 @@
   type: movie
   videoCodec: h264
   year: 2005
+
+? /media/live/A/Anger.Management.S02E82.720p.HDTV.X264-DIMENSION.mkv
+: format: HDTV
+  releaseGroup: DIMENSION
+  screenSize: 720p
+  series: Anger Management
+  type: episode
+  season: 2
+  episodeNumber: 82
+  videoCodec: h264
+

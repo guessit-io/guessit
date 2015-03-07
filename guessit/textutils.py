@@ -353,3 +353,13 @@ def from_camel(string):
         else:
             pieces.append(char)
     return ''.join(pieces)
+
+
+def common_words(s1, s2):
+    common = []
+    words1 = set(s1.split())
+    for word in s2.split():
+        # strip some chars here, e.g. as in [1]
+        if word in words1:
+            common.append(word)
+    return common
