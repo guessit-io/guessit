@@ -197,11 +197,11 @@ class Guess(UnicodeMixin, dict):
         FIXME: doc with param"""
         if advanced:
             data = self.to_dict(advanced)
-            return json.dumps(data, indent=4)
+            return json.dumps(data, indent=4, ensure_ascii=False)
         else:
             data = self.to_dict()
 
-            parts = json.dumps(data, indent=4).split('\n')
+            parts = json.dumps(data, indent=4, ensure_ascii=False).split('\n')
             for i, p in enumerate(parts):
                 if p[:5] != '    "':
                     continue
