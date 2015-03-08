@@ -1,9 +1,12 @@
 History
 =======
 
-0.10.2 (unreleased)
+0.10.2 (2015-03-08)
 ------------------
-
+* Use common words to resolve conflicts on strings
+* Bump babelfish version
+* Fix setuptools deprecation warning
+* Package argparse dependency only if python<2.7
 
 0.10.1 (2015-01-05)
 ------------------
