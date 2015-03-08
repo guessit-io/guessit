@@ -1,6 +1,10 @@
 History
 =======
 
+0.10.3 (unreleased)
+------------------
+
+
 0.10.2 (2015-03-08)
 ------------------
 * Use common words to resolve conflicts on strings
