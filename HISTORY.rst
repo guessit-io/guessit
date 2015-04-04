@@ -1,6 +1,9 @@
 History
 =======
 
+0.10.4 (unreleased)
+------------------
+
 0.10.3 (2015-04-04)
 ------------------
 * Fix issues related to unicode encoding/decoding
