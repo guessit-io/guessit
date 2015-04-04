@@ -498,3 +498,10 @@
   episodeNumber: 82
   videoCodec: h264
 
+? "[Figmentos] Monster 34 - At the End of Darkness [781219F1].mkv"
+: type: episode
+  releaseGroup: Figmentos
+  series: Monster
+  episodeNumber: 34
+  title: At the End of Darkness
+  crc32: 781219F1

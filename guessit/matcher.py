@@ -171,15 +171,16 @@ def build_guess(node, name, value=None, confidence=1.0):
 
         clean_value = node.clean_value
 
-        for i in range(0, len(node.value)):
-            if clean_value[0] == node.value[i]:
-                break
-            left_offset += 1
+        if clean_value:
+            for i in range(0, len(node.value)):
+                if clean_value[0] == node.value[i]:
+                    break
+                left_offset += 1
 
-        for i in reversed(range(0, len(node.value))):
-            if clean_value[-1] == node.value[i]:
-                break
-            right_offset += 1
+            for i in reversed(range(0, len(node.value))):
+                if clean_value[-1] == node.value[i]:
+                    break
+                right_offset += 1
 
         guess.metadata().span = (node.span[0] - node.offset + left_offset, node.span[1] - node.offset - right_offset)
     return guess

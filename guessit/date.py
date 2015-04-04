@@ -31,8 +31,8 @@ _dsep = r'[-/ \.]'
 _dsep_bis = r'[-/ \.x]'
 
 date_regexps = [
-    re.compile('[^\d](\d{8})[^\d]', re.IGNORECASE),
-    re.compile('[^\d](\d{6})[^\d]', re.IGNORECASE),
+    re.compile('%s(\d{8})%s' % (_dsep, _dsep), re.IGNORECASE),
+    re.compile('%s(\d{6})%s' % (_dsep, _dsep), re.IGNORECASE),
     re.compile('[^\d](\d{2})%s(\d{1,2})%s(\d{1,2})[^\d]' % (_dsep, _dsep), re.IGNORECASE),
     re.compile('[^\d](\d{1,2})%s(\d{1,2})%s(\d{2})[^\d]' % (_dsep, _dsep), re.IGNORECASE),
     re.compile('[^\d](\d{4})%s(\d{1,2})%s(\d{1,2})[^\d]' % (_dsep_bis, _dsep), re.IGNORECASE),
