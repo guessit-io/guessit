@@ -266,12 +266,13 @@ def main(args=None, setup_logging=True):
     filenames = filter(lambda f: f, filenames)
 
     if filenames:
-        help_required = False
         if options.submit_bug:
             for filename in filenames:
+                help_required = False
                 submit_bug(filename, options)
         else:
             for filename in filenames:
+                help_required = False
                 guess_file(filename,
                            info=options.info.split(','),
                            options=vars(options))
