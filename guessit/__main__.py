@@ -52,7 +52,7 @@ def guess_file(filename, info='filename', options=None, **kwargs):
         for k, v in guess.items():
             if isinstance(v, list) and len(v) == 1:
                 guess[k] = v[0]
-        ystr = yaml.safe_dump({filename: dict(guess)}, default_flow_style=False)
+        ystr = yaml.safe_dump({filename: dict(guess)}, default_flow_style=False, allow_unicode=True)
         i = 0
         for yline in ystr.splitlines():
             if i == 0:
