@@ -1,9 +1,11 @@
 History
 =======
 
-0.10.3 (unreleased)
+0.10.3 (2015-04-04)
 ------------------
-
+* Fix issues related to unicode encoding/decoding
+* Fix possible crashes in guess_video_rexps
+* Fix invalid guess result when crc32 contains 6 digits than can be parsed as a date
 
 0.10.2 (2015-03-08)
 ------------------
