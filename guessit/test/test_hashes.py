@@ -37,7 +37,8 @@ class TestHashes(TestGuessit):
         for hash_type, filename, expected_value in hashes:
             guess = guess_file_info(file_in_same_dir(__file__, filename), hash_type)
             computed_value = guess.get(hash_type)
-            self.assertEqual(expected_value, guess.get(hash_type), "Invalid %s for %s: %s != %s" % (hash_type, filename, computed_value, expected_value))
+            assert expected_value == guess.get(hash_type), \
+                "Invalid %s for %s: %s != %s" % (hash_type, filename, computed_value, expected_value)
 
 
 suite = allTests(TestHashes)

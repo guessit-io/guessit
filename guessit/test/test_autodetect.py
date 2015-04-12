@@ -26,13 +26,13 @@ from guessit.test.guessittest import *
 class TestAutoDetect(TestGuessit):
     def testEmpty(self):
         result = guessit.guess_file_info('')
-        self.assertEqual(result, {})
+        assert result == {}
 
         result = guessit.guess_file_info('___-__')
-        self.assertEqual(result, {})
+        assert result == {}
 
         result = guessit.guess_file_info('__-.avc')
-        self.assertEqual(result, {'type': 'unknown', 'extension': 'avc'})
+        assert result == {'type': 'unknown', 'extension': 'avc'}
 
     def testAutoDetect(self):
         self.checkMinimumFieldsCorrect(filename='autodetect.yaml',
