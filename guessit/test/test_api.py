@@ -48,8 +48,3 @@ class TestApi(TestGuessit):
 
         assert 'container' not in file_info_name_only
         assert 'container' in file_info
-
-suite = allTests(TestApi)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

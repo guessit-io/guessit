@@ -85,9 +85,3 @@ class TestMatchTree(TestGuessit):
 
     def test_match(self):
         self.checkFields(keywords, guess_info)
-
-
-suite = allTests(TestMatchTree)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

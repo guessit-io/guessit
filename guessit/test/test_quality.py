@@ -121,8 +121,3 @@ class TestQuality(TestGuessit):
         best_quality_guess = best_quality_properties(['audioCodec'], guess_720p, guess_1080p)
 
         assert guess_720p == best_quality_guess, "DTS is not the best audioCodec"
-
-suite = allTests(TestQuality)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

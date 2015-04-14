@@ -119,9 +119,3 @@ class TestLanguage(TestGuessit):
     def test_exceptions(self):
         assert Language.fromguessit('br') == Language.fromguessit('pt(br)')
         assert Language.fromguessit('unknown') == Language.fromguessit('und')
-
-
-suite = allTests(TestLanguage)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

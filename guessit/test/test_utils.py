@@ -156,9 +156,3 @@ class TestUtils(TestGuessit):
         assert search_date(' Something 01-02-03 ', year_first=False, day_first=True) == (date(2003, 2, 1), (11, 19))
         assert search_date(' Something 01-02-03 ', year_first=True) == (date(2001, 2, 3), (11, 19))
         assert search_date(' Something 01-02-03 ', day_first=False) == (date(2003, 1, 2), (11, 19))
-
-
-suite = allTests(TestUtils)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

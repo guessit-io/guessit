@@ -62,8 +62,3 @@ class TestMain(TestGuessit):
         __main__.main(["-t", "episode", "A.Serie.S02E06.avi"], False)
         __main__.main(["-i", "hash_mpc", file_in_same_dir(__file__, "1MB")], False)
         __main__.main(["-i", "hash_md5", file_in_same_dir(__file__, "1MB")], False)
-
-suite = allTests(TestMain)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

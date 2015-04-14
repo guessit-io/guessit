@@ -39,9 +39,3 @@ class TestHashes(TestGuessit):
             computed_value = guess.get(hash_type)
             assert expected_value == guess.get(hash_type), \
                 "Invalid %s for %s: %s != %s" % (hash_type, filename, computed_value, expected_value)
-
-
-suite = allTests(TestHashes)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

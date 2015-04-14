@@ -37,9 +37,3 @@ class TestAutoDetect(TestGuessit):
     def testAutoDetect(self):
         self.checkMinimumFieldsCorrect(filename='autodetect.yaml',
                                        remove_type=False)
-
-
-suite = allTests(TestAutoDetect)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)
