@@ -19,6 +19,7 @@
 #
 
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 
 import os
 import sys
@@ -34,7 +35,7 @@ if sys.version_info < (2, 7):
     # argparse is part of the standard library in python 2.7+
     install_requires.append('argparse')
 
-tests_require = ['PyYAML']  # Fabric not available (yet!) for python3
+tests_require = ['pytest', 'PyYAML']  # Fabric not available (yet!) for python3
 
 setup_requires = []
 
@@ -48,6 +49,24 @@ entry_points = {
 }
 
 dependency_links = []
+
+
+class PyTest(TestCommand):
+	user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+	
+	def initialize_options(self):
+		TestCommand.initialize_options(self)
+		self.pytest_args = []
+
+	def finalize_options(self):
+		TestCommand.finalize_options(self)
+		self.test_args = []
+
+	def run(self):
+		import pytest
+		errno = pytest.main(self.pytest_args)
+		exit(errno)
+
 
 exec(open("guessit/__version__.py").read())  # load version without importing guessit
 
@@ -76,6 +95,7 @@ args = dict(name='guessit',
             download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % __version__,
             license='LGPLv3',
             packages=find_packages(),
+			cmdclass={"test": PyTest},
             include_package_data=True,
             install_requires=install_requires,
             setup_requires=setup_requires,
