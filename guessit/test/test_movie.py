@@ -27,9 +27,3 @@ class TestMovie(TestGuessit):
     def testMovies(self):
         self.checkMinimumFieldsCorrect(filetype='movie',
                                        filename='movies.yaml')
-
-
-suite = allTests(TestMovie)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

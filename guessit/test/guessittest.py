@@ -183,5 +183,4 @@ class TestGuessit(TestCase):
             for additional_property in additional_properties:
                 log.warning("ADDITIONAL: " + additional_property)
 
-        self.assertTrue(correct == total,
-                        msg='Correct: %d < Total: %d' % (correct, total))
+        assert correct == total, 'Correct: %d < Total: %d' % (correct, total)

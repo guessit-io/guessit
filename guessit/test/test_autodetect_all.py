@@ -38,9 +38,3 @@ class TestAutoDetectAll(TestGuessit):
     def testAutoMatcherEpisodes(self):
         self.checkMinimumFieldsCorrect(filename='episodes.yaml',
                                        exclude_files=IGNORE_EPISODES)
-
-
-suite = allTests(TestAutoDetectAll)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

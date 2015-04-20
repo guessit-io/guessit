@@ -52,42 +52,36 @@ class TestMatchTree(TestGuessit):
         t.partition((3, 7, 20))
         leaves = list(t.leaves())
 
-        self.assertEqual(leaves[0].span, (0, 3))
+        assert leaves[0].span == (0, 3)
 
-        self.assertEqual('One', leaves[0].value)
-        self.assertEqual(' Two', leaves[1].value)
-        self.assertEqual(' Three(Three)', leaves[2].value)
-        self.assertEqual(' Four', leaves[3].value)
+        assert 'One' == leaves[0].value
+        assert ' Two' == leaves[1].value
+        assert ' Three(Three)' == leaves[2].value
+        assert ' Four' == leaves[3].value
 
         leaves[2].partition((1, 6, 7, 12))
         three_leaves = list(leaves[2].leaves())
 
-        self.assertEqual('Three', three_leaves[1].value)
-        self.assertEqual('Three', three_leaves[3].value)
+        assert 'Three' == three_leaves[1].value
+        assert 'Three' == three_leaves[3].value
 
         leaves = list(t.leaves())
 
-        self.assertEqual(len(leaves), 8)
+        assert len(leaves) == 8
 
-        self.assertEqual(leaves[5], three_leaves[3])
+        assert leaves[5] == three_leaves[3]
 
-        self.assertEqual(t.previous_leaf(leaves[5]), leaves[4])
-        self.assertEqual(t.next_leaf(leaves[5]), leaves[6])
+        assert t.previous_leaf(leaves[5]) == leaves[4]
+        assert t.next_leaf(leaves[5]) == leaves[6]
 
-        self.assertEqual(t.next_leaves(leaves[5]), [leaves[6], leaves[7]])
-        self.assertEqual(t.previous_leaves(leaves[5]), [leaves[4], leaves[3], leaves[2], leaves[1], leaves[0]])
+        assert t.next_leaves(leaves[5]) == [leaves[6], leaves[7]]
+        assert t.previous_leaves(leaves[5]) == [leaves[4], leaves[3], leaves[2], leaves[1], leaves[0]]
 
-        self.assertEqual(t.next_leaf(leaves[7]), None)
-        self.assertEqual(t.previous_leaf(leaves[0]), None)
+        assert t.next_leaf(leaves[7]) is None
+        assert t.previous_leaf(leaves[0]) is None
 
-        self.assertEqual(t.next_leaves(leaves[7]), [])
-        self.assertEqual(t.previous_leaves(leaves[0]), [])
+        assert t.next_leaves(leaves[7]) == []
+        assert t.previous_leaves(leaves[0]) == []
 
     def test_match(self):
         self.checkFields(keywords, guess_info)
-
-
-suite = allTests(TestMatchTree)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

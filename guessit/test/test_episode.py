@@ -27,9 +27,3 @@ class TestEpisode(TestGuessit):
     def testEpisodes(self):
         self.checkMinimumFieldsCorrect(filetype='episode',
                                        filename='episodes.yaml')
-
-
-suite = allTests(TestEpisode)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)

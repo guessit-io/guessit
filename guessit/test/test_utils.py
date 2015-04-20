@@ -48,7 +48,7 @@ class TestUtils(TestGuessit):
                      }
         tests = alltests[sys.platform == 'win32']
         for path, split in tests.items():
-            self.assertEqual(split, split_path(path))
+            assert split == split_path(path)
 
     def test_strip_brackets(self):
         allTests = (('', ''),
@@ -59,59 +59,60 @@ class TestUtils(TestGuessit):
                     )
 
         for i, e in allTests:
-            self.assertEqual(e, strip_brackets(i))
+            assert e == strip_brackets(i)
 
     def test_levenshtein(self):
-        self.assertEqual(levenshtein("abcdef ghijk lmno", "abcdef ghijk lmno"), 0)
-        self.assertEqual(levenshtein("abcdef ghijk lmnop", "abcdef ghijk lmno"), 1)
-        self.assertEqual(levenshtein("abcdef ghijk lmno", "abcdef ghijk lmn"), 1)
-        self.assertEqual(levenshtein("abcdef ghijk lmno", "abcdef ghijk lmnp"), 1)
-        self.assertEqual(levenshtein("abcdef ghijk lmno", "abcdef ghijk lmnq"), 1)
-        self.assertEqual(levenshtein("cbcdef ghijk lmno", "abcdef ghijk lmnq"), 2)
-        self.assertEqual(levenshtein("cbcdef ghihk lmno", "abcdef ghijk lmnq"), 3)
+        assert levenshtein("abcdef ghijk lmno", "abcdef ghijk lmno") == 0
+        assert levenshtein("abcdef ghijk lmnop", "abcdef ghijk lmno") == 1
+        assert levenshtein("abcdef ghijk lmno", "abcdef ghijk lmn") == 1
+        assert levenshtein("abcdef ghijk lmno", "abcdef ghijk lmnp") == 1
+        assert levenshtein("abcdef ghijk lmno", "abcdef ghijk lmnq") == 1
+        assert levenshtein("cbcdef ghijk lmno", "abcdef ghijk lmnq") == 2
+        assert levenshtein("cbcdef ghihk lmno", "abcdef ghijk lmnq") == 3
 
     def test_reorder_title(self):
-        self.assertEqual(reorder_title("Simpsons, The"), "The Simpsons")
-        self.assertEqual(reorder_title("Simpsons,The"), "The Simpsons")
-        self.assertEqual(reorder_title("Simpsons,Les", articles=('the', 'le', 'la', 'les')), "Les Simpsons")
-        self.assertEqual(reorder_title("Simpsons, Les", articles=('the', 'le', 'la', 'les')), "Les Simpsons")
+        assert reorder_title("Simpsons, The") == "The Simpsons"
+        assert reorder_title("Simpsons,The") == "The Simpsons"
+        assert reorder_title("Simpsons,Les", articles=('the', 'le', 'la', 'les')) == "Les Simpsons"
+        assert reorder_title("Simpsons, Les", articles=('the', 'le', 'la', 'les')) == "Les Simpsons"
 
     def test_camel(self):
-        self.assertEqual("", from_camel(""))
+        assert "" == from_camel("")
 
-        self.assertEqual("Hello world", str_replace("Hello World", 6, 'w'))
-        self.assertEqual("Hello *****", str_fill("Hello World", (6, 11), '*'))
+        assert "Hello world" == str_replace("Hello World", 6, 'w')
+        assert "Hello *****" == str_fill("Hello World", (6, 11), '*')
 
-        self.assertTrue("This is camel", from_camel("ThisIsCamel"))
+        assert "This is camel" == from_camel("ThisIsCamel")
 
-        self.assertEqual('camel case', from_camel('camelCase'))
-        self.assertEqual('A case', from_camel('ACase'))
-        self.assertEqual('MiXedCaSe is not camel case', from_camel('MiXedCaSe is not camelCase'))
+        assert 'camel case' == from_camel('camelCase')
+        assert 'A case' == from_camel('ACase')
+        assert 'MiXedCaSe is not camel case' == from_camel('MiXedCaSe is not camelCase')
 
-        self.assertEqual("This is camel cased title", from_camel("ThisIsCamelCasedTitle"))
-        self.assertEqual("This is camel CASED title", from_camel("ThisIsCamelCASEDTitle"))
+        assert "This is camel cased title" == from_camel("ThisIsCamelCasedTitle")
+        assert "This is camel CASED title" == from_camel("ThisIsCamelCASEDTitle")
 
-        self.assertEqual("These are camel CASED title", from_camel("TheseAreCamelCASEDTitle"))
+        assert "These are camel CASED title" == from_camel("TheseAreCamelCASEDTitle")
 
-        self.assertEqual("Give a camel case string", from_camel("GiveACamelCaseString"))
+        assert "Give a camel case string" == from_camel("GiveACamelCaseString")
 
-        self.assertEqual("Death TO camel case", from_camel("DeathTOCamelCase"))
-        self.assertEqual("But i like java too:)", from_camel("ButILikeJavaToo:)"))
+        assert "Death TO camel case" == from_camel("DeathTOCamelCase")
+        assert "But i like java too:)" == from_camel("ButILikeJavaToo:)")
 
-        self.assertEqual("Beatdown french DVD rip.mkv", from_camel("BeatdownFrenchDVDRip.mkv"))
-        self.assertEqual("DO NOTHING ON UPPER CASE", from_camel("DO NOTHING ON UPPER CASE"))
+        assert "Beatdown french DVD rip.mkv" == from_camel("BeatdownFrenchDVDRip.mkv")
+        assert "DO NOTHING ON UPPER CASE" == from_camel("DO NOTHING ON UPPER CASE")
 
-        self.assertFalse(is_camel("this_is_not_camel"))
-        self.assertTrue(is_camel("ThisIsCamel"))
+        assert not is_camel("this_is_not_camel")
+        assert is_camel("ThisIsCamel")
 
-        self.assertEqual("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv", from_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv"))
-        self.assertFalse(is_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv"))
+        assert "Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv" == \
+               from_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv")
+        assert not is_camel("Dark.City.(1998).DC.BDRIP.720p.DTS.X264-CHD.mkv")
 
-        self.assertEqual("A2LiNE", from_camel("A2LiNE"))
+        assert "A2LiNE" == from_camel("A2LiNE")
 
     def test_date(self):
-        self.assertEqual(search_year(' in the year 2000... '), (2000, (13, 17)))
-        self.assertEqual(search_year(' they arrived in 1492. '), (None, None))
+        assert search_year(' in the year 2000... ') == (2000, (13, 17))
+        assert search_year(' they arrived in 1492. ') == (None, None)
 
         today = date.today()
         today_year_2 = int(str(today.year)[2:])
@@ -122,42 +123,36 @@ class TestUtils(TestGuessit):
         past = today - timedelta(days=10000)
         past_year_2 = int(str(past.year)[2:])
 
-        self.assertEqual(search_date(' Something before 2002-04-22 '), (date(2002, 4, 22), (18, 28)))
-        self.assertEqual(search_date(' 2002-04-22 Something after '), (date(2002, 4, 22), (1, 11)))
+        assert search_date(' Something before 2002-04-22 ') == (date(2002, 4, 22), (18, 28))
+        assert search_date(' 2002-04-22 Something after ') == (date(2002, 4, 22), (1, 11))
 
-        self.assertEqual(search_date(' This happened on 2002-04-22. '), (date(2002, 4, 22), (18, 28)))
-        self.assertEqual(search_date(' This happened on 22-04-2002. '), (date(2002, 4, 22), (18, 28)))
+        assert search_date(' This happened on 2002-04-22. ') == (date(2002, 4, 22), (18, 28))
+        assert search_date(' This happened on 22-04-2002. ') == (date(2002, 4, 22), (18, 28))
 
-        self.assertEqual(search_date(' This happened on 13-04-%s. ' % (today_year_2,)), (date(today.year, 4, 13), (18, 26)))
-        self.assertEqual(search_date(' This happened on 22-04-%s. ' % (future_year_2,)), (date(future.year, 4, 22), (18, 26)))
-        self.assertEqual(search_date(' This happened on 20-04-%s. ' % (past_year_2)), (date(past.year, 4, 20), (18, 26)))
+        assert search_date(' This happened on 13-04-%s. ' % (today_year_2,)) == (date(today.year, 4, 13), (18, 26))
+        assert search_date(' This happened on 22-04-%s. ' % (future_year_2,)) == (date(future.year, 4, 22), (18, 26))
+        assert search_date(' This happened on 20-04-%s. ' % (past_year_2)) == (date(past.year, 4, 20), (18, 26))
 
-        self.assertEqual(search_date(' This happened on 13-06-14. ', year_first=True), (date(2013, 6, 14), (18, 26)))
-        self.assertEqual(search_date(' This happened on 13-05-14. ', year_first=False), (date(2014, 5, 13), (18, 26)))
+        assert search_date(' This happened on 13-06-14. ', year_first=True) == (date(2013, 6, 14), (18, 26))
+        assert search_date(' This happened on 13-05-14. ', year_first=False) == (date(2014, 5, 13), (18, 26))
 
-        self.assertEqual(search_date(' This happened on 04-13-%s. ' % (today_year_2,)), (date(today.year, 4, 13), (18, 26)))
-        self.assertEqual(search_date(' This happened on 04-22-%s. ' % (future_year_2,)), (date(future.year, 4, 22), (18, 26)))
-        self.assertEqual(search_date(' This happened on 04-20-%s. ' % (past_year_2)), (date(past.year, 4, 20), (18, 26)))
+        assert search_date(' This happened on 04-13-%s. ' % (today_year_2,)) == (date(today.year, 4, 13), (18, 26))
+        assert search_date(' This happened on 04-22-%s. ' % (future_year_2,)) == (date(future.year, 4, 22), (18, 26))
+        assert search_date(' This happened on 04-20-%s. ' % (past_year_2)) == (date(past.year, 4, 20), (18, 26))
 
-        self.assertEqual(search_date(' This happened on 35-12-%s. ' % (today_year_2,)), (None, None))
-        self.assertEqual(search_date(' This happened on 37-18-%s. ' % (future_year_2,)), (None, None))
-        self.assertEqual(search_date(' This happened on 44-42-%s. ' % (past_year_2)), (None, None))
+        assert search_date(' This happened on 35-12-%s. ' % (today_year_2,)) == (None, None)
+        assert search_date(' This happened on 37-18-%s. ' % (future_year_2,)) == (None, None)
+        assert search_date(' This happened on 44-42-%s. ' % (past_year_2)) == (None, None)
 
-        self.assertEqual(search_date(' This happened on %s. ' % (today, )), (today, (18, 28)))
-        self.assertEqual(search_date(' This happened on %s. ' % (future, )), (future, (18, 28)))
-        self.assertEqual(search_date(' This happened on %s. ' % (past, )), (past, (18, 28)))
+        assert search_date(' This happened on %s. ' % (today, )) == (today, (18, 28))
+        assert search_date(' This happened on %s. ' % (future, )) == (future, (18, 28))
+        assert search_date(' This happened on %s. ' % (past, )) == (past, (18, 28))
 
-        self.assertEqual(search_date(' released date: 04-03-1901? '), (None, None))
+        assert search_date(' released date: 04-03-1901? ') == (None, None)
 
-        self.assertEqual(search_date(' There\'s no date in here. '), (None, None))
+        assert search_date(' There\'s no date in here. ') == (None, None)
 
-        self.assertEqual(search_date(' Something 01-02-03 '), (date(2003, 2, 1), (11, 19)))
-        self.assertEqual(search_date(' Something 01-02-03 ', year_first=False, day_first=True), (date(2003, 2, 1), (11, 19)))
-        self.assertEqual(search_date(' Something 01-02-03 ', year_first=True), (date(2001, 2, 3), (11, 19)))
-        self.assertEqual(search_date(' Something 01-02-03 ', day_first=False), (date(2003, 1, 2), (11, 19)))
-
-
-suite = allTests(TestUtils)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)
+        assert search_date(' Something 01-02-03 ') == (date(2003, 2, 1), (11, 19))
+        assert search_date(' Something 01-02-03 ', year_first=False, day_first=True) == (date(2003, 2, 1), (11, 19))
+        assert search_date(' Something 01-02-03 ', year_first=True) == (date(2001, 2, 3), (11, 19))
+        assert search_date(' Something 01-02-03 ', day_first=False) == (date(2003, 1, 2), (11, 19))
