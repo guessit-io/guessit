@@ -32,23 +32,19 @@ class TestApi(TestGuessit):
         episode_info = guessit.guess_episode_info(movie_path)
         file_info = guessit.guess_file_info(movie_path)
 
-        self.assertEqual(guessit.guess_file_info(movie_path, type='movie'), movie_info)
-        self.assertEqual(guessit.guess_file_info(movie_path, type='video'), video_info)
-        self.assertEqual(guessit.guess_file_info(movie_path, type='episode'), episode_info)
+        assert guessit.guess_file_info(movie_path, type='movie') == movie_info
+        assert guessit.guess_file_info(movie_path, type='video') == video_info
+        assert guessit.guess_file_info(movie_path, type='episode') == episode_info 
 
-        self.assertEqual(guessit.guess_file_info(movie_path, options={'type': 'movie'}), movie_info)
-        self.assertEqual(guessit.guess_file_info(movie_path, options={'type': 'video'}), video_info)
-        self.assertEqual(guessit.guess_file_info(movie_path, options={'type': 'episode'}), episode_info)
+        assert guessit.guess_file_info(movie_path, options={'type': 'movie'}) == movie_info
+        assert guessit.guess_file_info(movie_path, options={'type': 'video'}) == video_info
+        assert guessit.guess_file_info(movie_path, options={'type': 'episode'}) == episode_info
 
-        self.assertEqual(guessit.guess_file_info(movie_path, options={'type': 'episode'}, type='movie'), episode_info)  # kwargs priority other options
+        # kwargs priority other options
+        assert guessit.guess_file_info(movie_path, options={'type': 'episode'}, type='movie') == episode_info
 
         movie_path_name_only = 'Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD'
         file_info_name_only = guessit.guess_file_info(movie_path_name_only, options={"name_only": True})
 
-        self.assertFalse('container' in file_info_name_only)
-        self.assertTrue('container' in file_info)
-
-suite = allTests(TestApi)
-
-if __name__ == '__main__':
-    TextTestRunner(verbosity=2).run(suite)
+        assert 'container' not in file_info_name_only
+        assert 'container' in file_info
