@@ -53,7 +53,7 @@ dependency_links = []
 
 class PyTest(TestCommand):
     user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
-    
+
     def initialize_options(self):
         TestCommand.initialize_options(self)
         self.pytest_args = []
@@ -80,7 +80,6 @@ args = dict(name='guessit',
                          'Operating System :: OS Independent',
                          'Intended Audience :: Developers',
                          'Programming Language :: Python :: 2',
-                         'Programming Language :: Python :: 2.6',
                          'Programming Language :: Python :: 2.7',
                          'Programming Language :: Python :: 3',
                          'Programming Language :: Python :: 3.3',
