@@ -19,12 +19,11 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+import re
+
 from guessit.containers import PropertiesContainer
 from guessit.matcher import GuessFinder
-
 from guessit.plugins.transformers import Transformer
-
-import re
 
 
 class ExpectedSeries(Transformer):

@@ -20,6 +20,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import logging
+
 from guessit.plugins.transformers import Transformer
 from babelfish import Country
 from guessit import Guess
@@ -27,7 +29,7 @@ from guessit.textutils import iter_words
 from guessit.matcher import GuessFinder, found_guess
 from guessit.language import LNG_COMMON_WORDS
 import babelfish
-import logging
+
 
 log = logging.getLogger(__name__)
 

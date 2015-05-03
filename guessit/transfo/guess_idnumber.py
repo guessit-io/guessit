@@ -20,9 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import re
+
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
-import re
+
 
 _DIGIT = 0
 _LETTER = 1

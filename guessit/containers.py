@@ -21,10 +21,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import types
+
 from .patterns import compile_pattern, sep
 from . import base_text_type
 from .guess import Guess
-import types
 
 
 def _get_span(prop, match):

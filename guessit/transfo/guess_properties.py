@@ -20,14 +20,14 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer, NoValidator, \
-    ChainedValidator, DefaultValidator, OnlyOneValidator, LeftValidator, NeighborValidator
+import re
+
+from guessit.containers import PropertiesContainer, WeakValidator, LeavesValidator, QualitiesContainer, ChainedValidator, DefaultValidator, OnlyOneValidator, LeftValidator, NeighborValidator
 from guessit.patterns import sep, build_or_pattern
 from guessit.patterns.extension import subtitle_exts, video_exts, info_exts
 from guessit.patterns.numeral import numeral, parse_numeral
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder, found_property
-import re
 
 
 class GuessProperties(Transformer):

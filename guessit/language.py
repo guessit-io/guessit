@@ -20,13 +20,16 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit import UnicodeMixin, base_text_type, u
-from guessit.textutils import find_words
-from babelfish import Language, Country
-import babelfish
 import re
 import logging
+
+from guessit import u
+from guessit.textutils import find_words
+
+from babelfish import Language, Country
+import babelfish
 from guessit.guess import Guess
+
 
 __all__ = ['Language', 'UNDETERMINED',
            'search_language', 'guess_language']

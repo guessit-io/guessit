@@ -20,10 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit import s, u
 import os.path
 import zipfile
 import io
+
+from guessit import s, u
 
 
 def split_path(path):

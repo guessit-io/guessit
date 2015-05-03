@@ -20,13 +20,15 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from datetime import date, timedelta
+
 from guessit.test.guessittest import *
+
 from guessit.fileutils import split_path
 from guessit.textutils import strip_brackets, str_replace, str_fill, from_camel, is_camel,\
     levenshtein, reorder_title
 from guessit import PY2
 from guessit.date import search_date, search_year
-from datetime import datetime, date, timedelta
 
 
 class TestUtils(TestGuessit):

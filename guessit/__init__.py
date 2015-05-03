@@ -20,7 +20,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import pkg_resources
 from .__version__ import __version__
 
 __all__ = ['Guess', 'Language',

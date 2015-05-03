@@ -19,13 +19,13 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from guessit.options import reload as reload_options
+from logging import getLogger
 
-from stevedore import ExtensionManager
 from pkg_resources import EntryPoint
 
+from guessit.options import reload as reload_options
+from stevedore import ExtensionManager
 from stevedore.extension import Extension
-from logging import getLogger
 
 log = getLogger(__name__)
 

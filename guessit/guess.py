@@ -20,12 +20,14 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit import UnicodeMixin, s, u, base_text_type
-from babelfish import Language, Country
-from guessit.textutils import common_words
 import json
 import datetime
 import logging
+
+from guessit import UnicodeMixin, s, u, base_text_type
+from babelfish import Language, Country
+from guessit.textutils import common_words
+
 
 log = logging.getLogger(__name__)
 

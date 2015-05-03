@@ -20,13 +20,14 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import re
+
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder, build_guess
 from guessit.containers import PropertiesContainer
 from guessit.patterns import sep
 from guessit.guess import Guess
 from guessit.textutils import strip_brackets
-import re
 
 
 class GuessReleaseGroup(Transformer):

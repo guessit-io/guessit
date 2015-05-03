@@ -20,10 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from functools import reduce
+
 from guessit.plugins.transformers import Transformer
 from guessit.textutils import find_first_level_groups
 from guessit.patterns import group_delimiters
-from functools import reduce
 
 
 class SplitExplicitGroups(Transformer):

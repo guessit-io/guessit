@@ -28,7 +28,7 @@ from guessit.guess import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
 from guessit.transfo import TransformerException
 from guessit.plugins.transformers import Transformer, get_transformer
-from guessit.matcher import log_found_guess, found_guess, found_property
+from guessit.matcher import log_found_guess, found_guess
 
 
 class GuessFiletype(Transformer):

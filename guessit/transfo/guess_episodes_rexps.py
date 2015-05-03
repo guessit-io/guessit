@@ -20,13 +20,14 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import re
+
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
 from guessit.patterns import sep, build_or_pattern
 from guessit.containers import PropertiesContainer, WeakValidator, NoValidator, ChainedValidator, DefaultValidator, \
     FormatterValidator
 from guessit.patterns.numeral import numeral, digital_numeral, parse_numeral
-import re
 
 
 class GuessEpisodesRexps(Transformer):

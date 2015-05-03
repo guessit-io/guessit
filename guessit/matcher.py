@@ -23,13 +23,13 @@ from __future__ import absolute_import, division, print_function, \
     unicode_literals
 
 import logging
+import inspect
 
 from guessit import PY3, u
 from guessit.transfo import TransformerException
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_default
 from guessit.guess import Guess
-import inspect
 
 log = logging.getLogger(__name__)
 

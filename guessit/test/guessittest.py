@@ -20,13 +20,16 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit import base_text_type, u
 from collections import defaultdict
-from unittest import TestCase, TestLoader, TextTestRunner
+from unittest import TestCase, TestLoader
 import shlex
-import babelfish
-import yaml, logging, sys, os
+import logging
+import os
+import sys
 from os.path import *
+
+import babelfish
+import yaml
 
 
 def currentPath():
@@ -42,12 +45,12 @@ def addImportPath(path):
 
 log = logging.getLogger(__name__)
 
-from guessit.plugins import transformers
 from guessit.options import get_opts
-import guessit
+from guessit import base_text_type
 from guessit import *
 from guessit.matcher import *
 from guessit.fileutils import *
+import guessit
 
 
 def allTests(testClass):
