@@ -149,7 +149,8 @@ class IterativeMatcher(object):
 
         return second_pass_options
 
-    def _validate_options(self, options):
+    @staticmethod
+    def _validate_options(options):
         valid_filetypes = ('subtitle', 'info', 'video',
                            'movie', 'moviesubtitle', 'movieinfo',
                            'episode', 'episodesubtitle', 'episodeinfo')

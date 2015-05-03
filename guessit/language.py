@@ -74,7 +74,8 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
                 babelfish.country_converters['name'].codes |
                 frozenset(self.guessit_exceptions.keys()))
 
-    def convert(self, alpha3, country=None, script=None):
+    @staticmethod
+    def convert(alpha3, country=None, script=None):
         return str(babelfish.Language(alpha3, country, script))
 
     def reverse(self, name):
@@ -133,7 +134,8 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):
                 frozenset(babelfish.COUNTRIES.values()) |
                 frozenset(self.guessit_exceptions.keys()))
 
-    def convert(self, alpha2):
+    @staticmethod
+    def convert(alpha2):
         if alpha2 == 'GB':
             return 'UK'
         return str(Country(alpha2))

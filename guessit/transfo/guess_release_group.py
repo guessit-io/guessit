@@ -58,7 +58,8 @@ class GuessReleaseGroup(Transformer):
     def supported_properties(self):
         return self.container.get_supported_properties()
 
-    def _is_number(self, s):
+    @staticmethod
+    def _is_number(s):
         try:
             int(s)
             return True
@@ -102,7 +103,8 @@ class GuessReleaseGroup(Transformer):
                 return True
         return False
 
-    def is_leaf_previous(self, leaf, node):
+    @staticmethod
+    def is_leaf_previous(leaf, node):
         if leaf.span[1] <= node.span[0]:
             for idx in range(leaf.span[1], node.span[0]):
                 if leaf.root.value[idx] not in sep:
@@ -110,7 +112,8 @@ class GuessReleaseGroup(Transformer):
             return True
         return False
 
-    def validate_next_leaves(self, node):
+    @staticmethod
+    def validate_next_leaves(node):
         if 'series' in node.root.info or 'title' in node.root.info:
             # --expected-series or --expected-title is used.
             return True

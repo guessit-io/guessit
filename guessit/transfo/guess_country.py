@@ -50,7 +50,8 @@ class GuessCountry(Transformer):
         options = options or {}
         return options.get('country', True)
 
-    def _scan_country(self, country, strict=False):
+    @staticmethod
+    def _scan_country(country, strict=False):
         """
         Find a country if it is at the start or end of country string
         """
@@ -81,7 +82,8 @@ class GuessCountry(Transformer):
 
         return Country.fromguessit(country), (start, end)
 
-    def is_valid_country(self, country, options=None):
+    @staticmethod
+    def is_valid_country(country, options=None):
         if options and options.get('allowed_countries'):
             allowed_countries = options.get('allowed_countries')
             return country.name.lower() in allowed_countries or country.alpha2.lower() in allowed_countries

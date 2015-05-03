@@ -114,7 +114,8 @@ class GuessProperties(Transformer):
 
         class ResolutionValidator(object):
             """Make sure our match is surrounded by separators, or by another entry"""
-            def validate(self, prop, string, node, match, entry_start, entry_end):
+            @staticmethod
+            def validate(prop, string, node, match, entry_start, entry_end):
                 """
                 span = _get_span(prop, match)
                 span = _trim_span(span, string[span[0]:span[1]])

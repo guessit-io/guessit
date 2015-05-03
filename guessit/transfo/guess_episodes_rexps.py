@@ -136,7 +136,8 @@ class GuessEpisodesRexps(Transformer):
             return list_parser(value, 'seasonList')
 
         class ResolutionCollisionValidator(object):
-            def validate(self, prop, string, node, match, entry_start, entry_end):
+            @staticmethod
+            def validate(prop, string, node, match, entry_start, entry_end):
                 return len(match.group(2)) < 3 # limit
 
         self.container.register_property(None, r'(' + season_words_re.pattern + sep + '?(?P<season>' + numeral + ')' + sep + '?' + season_words_re.pattern + '?)', confidence=1.0, formatter=parse_numeral)

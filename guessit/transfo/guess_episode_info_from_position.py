@@ -110,7 +110,8 @@ class GuessEpisodeInfoFromPosition(Transformer):
         options = options or {}
         return not options.get('skip_title') and mtree.guess.get('type', '').startswith('episode')
 
-    def _filter_candidates(self, candidates, options):
+    @staticmethod
+    def _filter_candidates(candidates, options):
         episode_details_transformer = get_transformer('guess_episode_details')
         if episode_details_transformer:
             return [n for n in candidates if not episode_details_transformer.container.find_properties(n.value, n, options, re_match=True)]
