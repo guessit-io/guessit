@@ -282,13 +282,13 @@ def choose_int(g1, g2):
     properties when they are integers."""
     v1, c1 = g1  # value, confidence
     v2, c2 = g2
-    if (v1 == v2):
-        return (v1, 1 - (1 - c1) * (1 - c2))
+    if v1 == v2:
+        return v1, 1 - (1 - c1) * (1 - c2)
     else:
         if c1 > c2:
-            return (v1, c1 - c2)
+            return v1, c1 - c2
         else:
-            return (v2, c2 - c1)
+            return v2, c2 - c1
 
 
 def choose_string(g1, g2):

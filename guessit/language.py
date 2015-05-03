@@ -82,7 +82,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):
         if with_country:
             lang = Language.fromguessit(with_country.group(1).strip())
             lang.country = babelfish.Country.fromguessit(with_country.group(2).strip())
-            return (lang.alpha3, lang.country.alpha2 if lang.country else None, lang.script or None)
+            return lang.alpha3, lang.country.alpha2 if lang.country else None, lang.script or None
 
         # exceptions come first, as they need to override a potential match
         # with any of the other guessers

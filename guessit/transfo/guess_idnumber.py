@@ -43,8 +43,8 @@ class GuessIdnumber(Transformer):
         if match is not None:
             result = match.groupdict()
             switch_count = 0
-            switch_letter_count = 0;
-            letter_count = 0;
+            switch_letter_count = 0
+            letter_count = 0
             last_letter = None
 
             last = _LETTER

@@ -30,13 +30,13 @@ from os.path import *
 
 
 def currentPath():
-    '''Returns the path in which the calling file is located.'''
+    """Returns the path in which the calling file is located."""
     return dirname(join(os.getcwd(), sys._getframe(1).f_globals['__file__']))
 
 
 def addImportPath(path):
-    '''Function that adds the specified path to the import path. The path can be
-    absolute or relative to the calling file.'''
+    """Function that adds the specified path to the import path. The path can be
+    absolute or relative to the calling file."""
     importPath = abspath(join(currentPath(), path))
     sys.path = [importPath] + sys.path
 
@@ -94,7 +94,7 @@ class TestGuessit(TestCase):
                 log.exception("An exception has occured in %s: %s" % (filename, e))
                 continue
 
-            total = total + 1
+            total += 1
 
             # no need for these in the unittests
             if remove_type:

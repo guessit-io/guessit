@@ -41,8 +41,6 @@ def _get_span(prop, match):
         return start, end
     else:
         return match.span()
-        start = span[0]
-        end = span[1]
 
 
 def _trim_span(span, value, blanks = sep):

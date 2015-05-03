@@ -76,7 +76,7 @@ class GuessEpisodesRexps(Transformer):
                 else:
                     match = range_separators_re.search(discrete_elements[i])
                     if match and match.start() == 0:
-                        proper_discrete_elements[i-1] = proper_discrete_elements[i-1] + discrete_elements[i]
+                        proper_discrete_elements[i - 1] += discrete_elements[i]
                     elif match and match.end() == len(discrete_elements[i]):
                         proper_discrete_elements.append(discrete_elements[i] + discrete_elements[i + 1])
                     else:

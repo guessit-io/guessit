@@ -67,9 +67,9 @@ def search_year(string):
     if match:
         year = int(match.group(1))
         if valid_year(year):
-            return (year, match.span(1))
+            return year, match.span(1)
 
-    return (None, None)
+    return None, None
 
 
 def search_date(string, year_first=None, day_first=True):
