@@ -213,6 +213,9 @@ def main(args=None, setup_logging=True):
         # Wrap sys.stdout into a StreamWriter to allow writing unicode.
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
+    # Needed for guessit.plugins.transformers.reload() to be called.
+    from guessit.plugins import transformers
+
     if args:
         options = get_opts().parse_args(args)
     else:  # pragma: no cover
