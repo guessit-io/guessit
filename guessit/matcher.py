@@ -23,13 +23,13 @@ from __future__ import absolute_import, division, print_function, \
     unicode_literals
 
 import logging
+import inspect
 
 from guessit import PY3, u
 from guessit.transfo import TransformerException
 from guessit.matchtree import MatchTree
 from guessit.textutils import normalize_unicode, clean_default
 from guessit.guess import Guess
-import inspect
 
 log = logging.getLogger(__name__)
 
@@ -149,7 +149,8 @@ class IterativeMatcher(object):
 
         return second_pass_options
 
-    def _validate_options(self, options):
+    @staticmethod
+    def _validate_options(options):
         valid_filetypes = ('subtitle', 'info', 'video',
                            'movie', 'moviesubtitle', 'movieinfo',
                            'episode', 'episodesubtitle', 'episodeinfo')

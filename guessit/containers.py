@@ -21,10 +21,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import types
+
 from .patterns import compile_pattern, sep
 from . import base_text_type
 from .guess import Guess
-import types
 
 
 def _get_span(prop, match):
@@ -41,8 +42,6 @@ def _get_span(prop, match):
         return start, end
     else:
         return match.span()
-        start = span[0]
-        end = span[1]
 
 
 def _trim_span(span, value, blanks = sep):
@@ -83,14 +82,16 @@ def _get_groups(compiled_re):
 
 
 class NoValidator(object):
-    def validate(self, prop, string, node, match, entry_start, entry_end):
+    @staticmethod
+    def validate(prop, string, node, match, entry_start, entry_end):
         return True
 
 
 class LeftValidator(object):
     """Make sure our match is starting by separator, or by another entry"""
 
-    def validate(self, prop, string, node, match, entry_start, entry_end):
+    @staticmethod
+    def validate(prop, string, node, match, entry_start, entry_end):
         span = _get_span(prop, match)
         span = _trim_span(span, string[span[0]:span[1]])
         start, end = span
@@ -105,7 +106,8 @@ class LeftValidator(object):
 class RightValidator(object):
     """Make sure our match is ended by separator, or by another entry"""
 
-    def validate(self, prop, string, node, match, entry_start, entry_end):
+    @staticmethod
+    def validate(prop, string, node, match, entry_start, entry_end):
         span = _get_span(prop, match)
         span = _trim_span(span, string[span[0]:span[1]])
         start, end = span
@@ -281,7 +283,8 @@ class LeavesValidator(DefaultValidator):
                         return ret
             return False
 
-    def _check_rule(self, lambda_, previous_leaf):
+    @staticmethod
+    def _check_rule(lambda_, previous_leaf):
         return lambda_(previous_leaf)
 
 
@@ -622,7 +625,8 @@ class PropertiesContainer(object):
                     return guess
         return guesses
 
-    def _effective_prop_value(self, prop, group_name, input=None, span=None, sep_replacement=None):
+    @staticmethod
+    def _effective_prop_value(prop, group_name, input=None, span=None, sep_replacement=None):
         if prop.canonical_form:
             return prop.canonical_form
         if input is None:

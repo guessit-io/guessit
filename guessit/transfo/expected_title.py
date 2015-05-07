@@ -20,12 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import re
+
 from guessit.containers import PropertiesContainer
 from guessit.matcher import GuessFinder
-
 from guessit.plugins.transformers import Transformer
-
-import re
 
 
 class ExpectedTitle(Transformer):
@@ -39,7 +38,8 @@ class ExpectedTitle(Transformer):
     def should_process(self, mtree, options=None):
         return options and options.get('expected_title')
 
-    def expected_titles(self, string, node=None, options=None):
+    @staticmethod
+    def expected_titles(string, node=None, options=None):
         container = PropertiesContainer(enhance=True, canonical_from_pattern=False)
 
         for expected_title in options.get('expected_title'):

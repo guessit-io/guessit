@@ -28,7 +28,7 @@ from guessit.guess import Guess
 from guessit.patterns.extension import subtitle_exts, info_exts, video_exts
 from guessit.transfo import TransformerException
 from guessit.plugins.transformers import Transformer, get_transformer
-from guessit.matcher import log_found_guess, found_guess, found_property
+from guessit.matcher import log_found_guess, found_guess
 
 
 class GuessFiletype(Transformer):
@@ -135,7 +135,7 @@ class GuessFiletype(Transformer):
         # if we have an episode_rexp (eg: s02e13), it is an episode
         episode_transformer = get_transformer('guess_episodes_rexps')
         if episode_transformer:
-            filename_parts = list(x.value for x in mtree.unidentified_leaves());
+            filename_parts = list(x.value for x in mtree.unidentified_leaves())
             filename_parts.append(filename)
             for filename_part in filename_parts:
                 guess = episode_transformer.guess_episodes_rexps(filename_part)

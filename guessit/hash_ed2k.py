@@ -20,11 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit import s, to_hex
 import hashlib
 import os.path
-
 from functools import reduce
+
+from guessit import s, to_hex
 
 
 def hash_file(filename):

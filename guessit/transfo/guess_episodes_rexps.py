@@ -20,13 +20,14 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import re
+
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
 from guessit.patterns import sep, build_or_pattern
 from guessit.containers import PropertiesContainer, WeakValidator, NoValidator, ChainedValidator, DefaultValidator, \
     FormatterValidator
 from guessit.patterns.numeral import numeral, digital_numeral, parse_numeral
-import re
 
 
 class GuessEpisodesRexps(Transformer):
@@ -76,7 +77,7 @@ class GuessEpisodesRexps(Transformer):
                 else:
                     match = range_separators_re.search(discrete_elements[i])
                     if match and match.start() == 0:
-                        proper_discrete_elements[i-1] = proper_discrete_elements[i-1] + discrete_elements[i]
+                        proper_discrete_elements[i - 1] += discrete_elements[i]
                     elif match and match.end() == len(discrete_elements[i]):
                         proper_discrete_elements.append(discrete_elements[i] + discrete_elements[i + 1])
                     else:
@@ -135,7 +136,8 @@ class GuessEpisodesRexps(Transformer):
             return list_parser(value, 'seasonList')
 
         class ResolutionCollisionValidator(object):
-            def validate(self, prop, string, node, match, entry_start, entry_end):
+            @staticmethod
+            def validate(prop, string, node, match, entry_start, entry_end):
                 return len(match.group(2)) < 3 # limit
 
         self.container.register_property(None, r'(' + season_words_re.pattern + sep + '?(?P<season>' + numeral + ')' + sep + '?' + season_words_re.pattern + '?)', confidence=1.0, formatter=parse_numeral)

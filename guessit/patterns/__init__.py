@@ -23,8 +23,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import re
 
-from guessit import base_text_type
-
 group_delimiters = ['()', '[]', '{}']
 
 # separator character regexp

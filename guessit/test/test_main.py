@@ -21,8 +21,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from guessit.test.guessittest import *
-from guessit.fileutils import split_path, file_in_same_dir
-from guessit.textutils import strip_brackets, str_replace, str_fill
+from guessit.fileutils import file_in_same_dir
 from guessit import PY2
 from guessit import __main__
 

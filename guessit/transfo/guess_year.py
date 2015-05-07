@@ -32,7 +32,8 @@ class GuessYear(Transformer):
     def supported_properties(self):
         return ['year']
 
-    def guess_year(self, string, node=None, options=None):
+    @staticmethod
+    def guess_year(string, node=None, options=None):
         year, span = search_year(string)
         if year:
             return {'year': year}, span

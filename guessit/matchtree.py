@@ -20,15 +20,16 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import copy
+import logging
+
 import guessit  # @UnusedImport needed for doctests
 from guessit import UnicodeMixin, base_text_type
 from guessit.textutils import clean_default, str_fill
 from guessit.patterns import group_delimiters
-from guessit.guess import (merge_similar_guesses, smart_merge,
-                           choose_int, choose_string, Guess)
-from itertools import takewhile
-import copy
-import logging
+from guessit.guess import (smart_merge,
+                           Guess)
+
 
 log = logging.getLogger(__name__)
 
@@ -255,7 +256,7 @@ class BaseMatchTree(UnicodeMixin):
     def _other_leaf(self, leaf, offset):
         leaves = list(self.leaves())
         index = leaves.index(leaf) + offset
-        if index > 0 and index < len(leaves):
+        if 0 < index < len(leaves):
             return leaves[index]
         return None
 
@@ -263,7 +264,7 @@ class BaseMatchTree(UnicodeMixin):
         """Return previous leaves for this node"""
         leaves = list(self.leaves())
         index = leaves.index(leaf)
-        if index > 0 and index < len(leaves):
+        if 0 < index < len(leaves):
             previous_leaves = leaves[:index]
             previous_leaves.reverse()
             return previous_leaves
@@ -273,7 +274,7 @@ class BaseMatchTree(UnicodeMixin):
         """Return next leaves for this node"""
         leaves = list(self.leaves())
         index = leaves.index(leaf)
-        if index > 0 and index < len(leaves):
+        if 0 < index < len(leaves):
             return leaves[index + 1:len(leaves)]
         return []
 

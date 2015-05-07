@@ -24,7 +24,7 @@ from collections import defaultdict
 import logging
 import os
 
-from guessit import PY2, u, guess_file_info, __version__
+from guessit import PY2, u, guess_file_info
 from guessit.options import get_opts
 from guessit.__version__ import __version__
 
@@ -213,6 +213,7 @@ def main(args=None, setup_logging=True):
         # Wrap sys.stdout into a StreamWriter to allow writing unicode.
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
+    # Needed for guessit.plugins.transformers.reload() to be called.
     from guessit.plugins import transformers
 
     if args:

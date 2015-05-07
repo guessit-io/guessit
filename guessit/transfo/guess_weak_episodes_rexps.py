@@ -20,14 +20,15 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import re
+
 from guessit.plugins.transformers import Transformer
+
 from guessit.matcher import GuessFinder
 from guessit.patterns import sep, build_or_pattern
-from guessit.containers import PropertiesContainer, LeavesValidator, NoValidator, WeakValidator
+from guessit.containers import PropertiesContainer
 from guessit.patterns.numeral import numeral, parse_numeral
 from guessit.date import valid_year
-
-import re
 
 
 class GuessWeakEpisodesRexps(Transformer):

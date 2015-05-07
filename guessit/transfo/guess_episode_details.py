@@ -20,10 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import itertools
+
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import found_guess
 from guessit.containers import PropertiesContainer
-import itertools
 
 
 class GuessEpisodeDetails(Transformer):

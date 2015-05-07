@@ -19,13 +19,13 @@
 #
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from guessit.options import reload as reload_options
+from logging import getLogger
 
-from stevedore import ExtensionManager
 from pkg_resources import EntryPoint
 
+from guessit.options import reload as reload_options
+from stevedore import ExtensionManager
 from stevedore.extension import Extension
-from logging import getLogger
 
 log = getLogger(__name__)
 
@@ -73,7 +73,8 @@ class CustomTransformerExtensionManager(ExtensionManager):
                                                                 on_load_failure_callback=on_load_failure_callback,
                                                                 verify_requirements=verify_requirements)
 
-    def order_extensions(self, extensions):
+    @staticmethod
+    def order_extensions(extensions):
         """Order the loaded transformers
 
         It should follow those rules
@@ -85,7 +86,8 @@ class CustomTransformerExtensionManager(ExtensionManager):
         extensions.sort(key=lambda ext: -ext.obj.priority)
         return extensions
 
-    def _load_one_plugin(self, ep, invoke_on_load, invoke_args, invoke_kwds, verify_requirements=True):
+    @staticmethod
+    def _load_one_plugin(ep, invoke_on_load, invoke_args, invoke_kwds, verify_requirements=True):
         if not ep.dist:
             # `require` argument of ep.load() is deprecated in newer versions of setuptools
             if hasattr(ep, 'resolve'):
@@ -108,7 +110,8 @@ class CustomTransformerExtensionManager(ExtensionManager):
     def objects(self):
         return self.map(self._get_obj)
 
-    def _get_obj(self, ext):
+    @staticmethod
+    def _get_obj(ext):
         return ext.obj
 
     def object(self, name):

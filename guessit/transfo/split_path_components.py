@@ -20,9 +20,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from os.path import splitext
+
 from guessit.plugins.transformers import Transformer
 from guessit import fileutils
-from os.path import splitext
 
 
 class SplitPathComponents(Transformer):

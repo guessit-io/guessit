@@ -20,34 +20,37 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from guessit import base_text_type, u
 from collections import defaultdict
-from unittest import TestCase, TestLoader, TextTestRunner
+from unittest import TestCase, TestLoader
 import shlex
-import babelfish
-import yaml, logging, sys, os
+import logging
+import os
+import sys
 from os.path import *
+
+import babelfish
+import yaml
 
 
 def currentPath():
-    '''Returns the path in which the calling file is located.'''
+    """Returns the path in which the calling file is located."""
     return dirname(join(os.getcwd(), sys._getframe(1).f_globals['__file__']))
 
 
 def addImportPath(path):
-    '''Function that adds the specified path to the import path. The path can be
-    absolute or relative to the calling file.'''
+    """Function that adds the specified path to the import path. The path can be
+    absolute or relative to the calling file."""
     importPath = abspath(join(currentPath(), path))
     sys.path = [importPath] + sys.path
 
 log = logging.getLogger(__name__)
 
-from guessit.plugins import transformers
 from guessit.options import get_opts
-import guessit
+from guessit import base_text_type
 from guessit import *
 from guessit.matcher import *
 from guessit.fileutils import *
+import guessit
 
 
 def allTests(testClass):
@@ -94,7 +97,7 @@ class TestGuessit(TestCase):
                 log.exception("An exception has occured in %s: %s" % (filename, e))
                 continue
 
-            total = total + 1
+            total += 1
 
             # no need for these in the unittests
             if remove_type:

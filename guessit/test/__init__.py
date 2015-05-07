@@ -21,6 +21,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
+
 from guessit.slogging import setup_logging
+
 setup_logging()
 logging.disable(logging.INFO)

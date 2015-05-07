@@ -38,14 +38,16 @@ class GuessLanguage(Transformer):
     def supported_properties(self):
         return ['language', 'subtitleLanguage']
 
-    def guess_language(self, string, node=None, options=None):
+    @staticmethod
+    def guess_language(string, node=None, options=None):
         allowed_languages = None
         if options and 'allowed_languages' in options:
             allowed_languages = options.get('allowed_languages')
         guess = search_language(string, allowed_languages)
         return guess
 
-    def _skip_language_on_second_pass(self, mtree, node):
+    @staticmethod
+    def _skip_language_on_second_pass(mtree, node):
         """Check if found node is a valid language node, or if it's a false positive.
 
         :param mtree: Tree detected on first pass.
@@ -138,7 +140,8 @@ class GuessLanguage(Transformer):
     def process(self, mtree, options=None):
         GuessFinder(self.guess_language, None, self.log, options).process_nodes(mtree.unidentified_leaves())
 
-    def promote_subtitle(self, node):
+    @staticmethod
+    def promote_subtitle(node):
         if 'language' in node.guess:
             node.guess.set('subtitleLanguage', node.guess['language'],
                            confidence=node.guess.confidence('language'))

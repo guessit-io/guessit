@@ -20,9 +20,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import re
+
 from guessit.plugins.transformers import Transformer
 from guessit.matcher import GuessFinder
-import re
+
 
 _DIGIT = 0
 _LETTER = 1
@@ -43,8 +45,8 @@ class GuessIdnumber(Transformer):
         if match is not None:
             result = match.groupdict()
             switch_count = 0
-            switch_letter_count = 0;
-            letter_count = 0;
+            switch_letter_count = 0
+            letter_count = 0
             last_letter = None
 
             last = _LETTER
