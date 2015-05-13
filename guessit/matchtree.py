@@ -419,9 +419,9 @@ class MatchTree(BaseMatchTree):
             log.debug('Final result: ' + result.nice_string())
             self._matched_result = result
 
-        for unidentified_leaves in self.unidentified_leaves():
+        for leaf in self.unidentified_leaves():
             if 'unidentified' not in self._matched_result:
                 self._matched_result['unidentified'] = []
-            self._matched_result['unidentified'].append(unidentified_leaves.clean_value)
+            self._matched_result['unidentified'].append(leaf.clean_value)
 
         return self._matched_result

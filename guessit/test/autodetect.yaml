@@ -227,6 +227,7 @@
   title: La petite bande
   videoCodec: h264
   year: 1983
+  other: PAL
 
 ? Retour de Flammes (Gregor Schnitzler 2003) FULL DVD.iso
 : type: movie
@@ -376,6 +377,7 @@
   series: Something
   title: Title
   type: episode
+  extension: torrent
 
 ? Show-A (US) - Episode Title S02E09 hdtv
 : options: -n

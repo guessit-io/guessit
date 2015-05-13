@@ -376,6 +376,7 @@
   releaseGroup: Fov
   year: 2008
   other: Proper
+  properCount: 1
 
 ? "Da Vinci's Demons - 1x04 - The Magician.mkv"
 : series: "Da Vinci's Demons"
@@ -590,6 +591,7 @@
   videoCodec: XviD
   releaseGroup: GIGGITY
   other: proper
+  properCount: 1
   episodeDetails: [Unaired, Pilot]
   title: Unaired Pilot
 

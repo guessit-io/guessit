@@ -39,6 +39,7 @@
 : title: Borat
   year: 2006
   other: PROPER
+  properCount: 2
   format: DVD
   other: [ R5, Proper ]
   videoCodec: XviD
@@ -146,6 +147,7 @@
   videoCodec: XviD
   releaseGroup: ARROW
   other: ['Proper', 'Limited']
+  properCount: 2
 
 ? Movies/Fr - Paris 2054, Renaissance (2005) - De Christian Volckman - (Film Divx Science Fiction Fantastique Thriller Policier N&B).avi
 : title: Paris 2054, Renaissance
@@ -454,23 +456,27 @@
     - French
     - English
   format: DVD
+  other: NTSC
 
 ? Immersion.French.2011.STV.READNFO.QC.FRENCH.NTSC.DVDR.nfo
 : title: Immersion French
   year: 2011
   language: French
   format: DVD
+  other: NTSC
 
 ? Immersion.French.2011.STV.READNFO.QC.NTSC.DVDR.nfo
 : title: Immersion French
   year: 2011
   format: DVD
+  other: NTSC
 
 ? French.Immersion.2011.STV.READNFO.QC.ENGLISH.NTSC.DVDR.nfo
 : title: French Immersion
   year: 2011
   language: ENGLISH
   format: DVD
+  other: NTSC
 
 ? Howl's_Moving_Castle_(2004)_[720p,HDTV,x264,DTS]-FlexGet.avi
 : videoCodec: h264
@@ -564,13 +570,13 @@
   audioCodec: AC3
   audioProfile: HQ
   releaseGroup: Hive-CM8
-  
+
 
 ? "Star Wars: Episode IV - A New Hope (2004) Special Edition.MKV"
 : title: Star Wars Episode IV
   year: 2004
   edition: Special Edition
-  
+
 ? Dr.LiNE.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : videoCodec: XviD
   title: Dr LiNE The Lorax
@@ -588,7 +594,7 @@
   language: French
   format: TV
   year: 2007
-  
+
 ? entre.ciel.et.terre.(1994).dvdrip.h264.aac-psypeon.avi
 : audioCodec: AAC
   format: DVD
@@ -596,7 +602,7 @@
   title: entre ciel et terre
   videoCodec: h264
   year: 1994
-  
+
 ? Yves.Saint.Laurent.2013.FRENCH.DVDSCR.MD.XviD-ViVARiUM.avi
 : format: DVD
   language: French
@@ -605,7 +611,7 @@
   title: Yves Saint Laurent
   videoCodec: XviD
   year: 2013
-  
+
 ? Echec et Mort - Hard to Kill - Steven Seagal Multi 1080p BluRay x264 CCATS.avi
 : format: BluRay
   language: Multiple languages
@@ -619,7 +625,7 @@
   title: Paparazzi
   screenSize: 1080p
   format: HDTV
-  
+
 ? some.movie.720p.bluray.x264-mind
 : options: -n
   title: some movie
@@ -627,7 +633,7 @@
   videoCodec: h264
   releaseGroup: mind
   format: BluRay
-  
+
 ? Dr LiNE The Lorax 720p h264 BluRay
 : options: -n
   title: Dr LiNE The Lorax
@@ -711,6 +717,7 @@
 ? A Bout Portant (The Killers).PAL.Multi.DVD-R-KZ
 : options: -n
   format: DVD
+  other: PAL
   language: mul
   releaseGroup: KZ
   title: A Bout Portant
