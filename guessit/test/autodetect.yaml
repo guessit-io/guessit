@@ -507,3 +507,21 @@
   episodeNumber: 34
   title: At the End of Darkness
   crc32: 781219F1
+
+? Game.of.Thrones.S05E07.720p.HDTV-KILLERS.mkv
+: type: episode
+  episodeNumber: 7
+  format: HDTV
+  releaseGroup: KILLERS
+  screenSize: 720p
+  season: 5
+  series: Game of Thrones
+
+? Game.of.Thrones.S05E07.HDTV.720p-KILLERS.mkv
+: type: episode
+  episodeNumber: 7
+  format: HDTV
+  releaseGroup: KILLERS
+  screenSize: 720p
+  season: 5
+  series: Game of Thrones

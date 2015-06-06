@@ -40,10 +40,12 @@ class GuessReleaseGroup(Transformer):
                                             lambda elt: self._is_number(elt)]
         # If the previous property in this list, the match will be considered as safe
         # and group name can contain a separator.
-        self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels', 'other']
+        self.previous_safe_properties = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels', 'screenSize', 'other']
         self.previous_safe_values = {'other': ['Complete']}
         self.next_safe_properties = ['extension', 'website']
         self.next_safe_values = {'format': ['Telesync']}
+        self.next_unsafe_properties = list(self.previous_safe_properties)
+        self.next_unsafe_properties.extend(['episodeNumber', 'season'])
         self.container.sep_replace_char = '-'
         self.container.canonical_from_pattern = False
         self.container.enhance = True
@@ -112,11 +114,20 @@ class GuessReleaseGroup(Transformer):
             return True
         return False
 
-    @staticmethod
-    def validate_next_leaves(node):
+    def validate_next_leaves(self, node):
         if 'series' in node.root.info or 'title' in node.root.info:
             # --expected-series or --expected-title is used.
             return True
+
+        next_leaf = node.root.next_leaf(node)
+        node_idx = node.node_last_idx
+        while next_leaf and next_leaf.node_last_idx >= node_idx:
+            node_idx = next_leaf.node_last_idx
+            # Check next properties in the same group are not in unsafe properties list
+            for next_unsafe_property in self.next_unsafe_properties:
+                if next_unsafe_property in next_leaf.info:
+                    return False
+            next_leaf = next_leaf.root.next_leaf(next_leaf)
 
         # Make sure to avoid collision with 'series' or 'title' guessed later. Should be more precise.
         leaves = node.root.unidentified_leaves()
@@ -129,7 +140,7 @@ class GuessReleaseGroup(Transformer):
             return False
         if safe:
             for k, v in leaf.guess.items():
-                if k in self.previous_safe_values and not v in self.previous_safe_values[k]:
+                if k in self.previous_safe_values and v not in self.previous_safe_values[k]:
                     return False
         return True
 
