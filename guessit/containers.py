@@ -490,6 +490,9 @@ class PropertiesContainer(object):
                 if computed_confidence is not None:
                     prop.confidence = computed_confidence
 
+        entries.sort(key=lambda entry: -entry[0].confidence)
+        # sort entries, from most confident to less confident
+
         if validate:
             # compute entries start and ends
             for prop, match in entries:

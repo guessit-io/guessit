@@ -117,6 +117,24 @@ class BaseMatchTree(UnicodeMixin):
         return result
 
     @property
+    def guesses(self):
+        """
+        List all guesses, including children ones.
+
+        :return: list of guesses objects
+        """
+
+        result = []
+
+        if self.guess:
+            result.append(self.guess)
+
+        for c in self.children:
+            result.extend(c.guesses)
+
+        return result
+
+    @property
     def root(self):
         """Return the root node of the tree."""
         if not self.parent:

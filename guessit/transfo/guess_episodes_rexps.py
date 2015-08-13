@@ -144,7 +144,7 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_property(None, r'(' + season_words_re.pattern + sep + '?(?P<season>' + digital_numeral + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + digital_numeral + ')*)' + sep + '?' + season_words_re.pattern + '?)' + sep, confidence=1.0, formatter={None: parse_numeral, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), FormatterValidator('season', lambda x: len(x) > 1 if hasattr(x, '__len__') else False)))
 
         self.container.register_property(None, r'(' + season_markers_re.pattern + '(?P<season>' + digital_numeral + ')[^0-9]?' + sep + '?(?P<episodeNumber>(?:e' + digital_numeral + '(?:' + sep + '?[e-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_e, 'season': season_parser}, validator=NoValidator())
-        # self.container.register_property(None, r'[^0-9]((?P<season>' + digital_numeral + ')[^0-9 .-]?-?(?P<episodeNumber>(?:x' + digital_numeral + '(?:' + sep + '?[x-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_x, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
+
         self.container.register_property(None, sep + r'((?P<season>' + digital_numeral + ')' + sep + '' + '(?P<episodeNumber>(?:x' + sep + digital_numeral + '(?:' + sep + '[x-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_x, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
         self.container.register_property(None, r'((?P<season>' + digital_numeral + ')' + '(?P<episodeNumber>(?:x' + digital_numeral + '(?:[x-]' + digital_numeral + ')*)))', confidence=1.0, formatter={None: parse_numeral, 'episodeNumber': episode_parser_x, 'season': season_parser}, validator=ChainedValidator(DefaultValidator(), ResolutionCollisionValidator()))
         self.container.register_property(None, r'(' + season_markers_re.pattern + '(?P<season>' + digital_numeral + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + digital_numeral + ')*))', confidence=0.6, formatter={None: parse_numeral, 'season': season_parser}, validator=NoValidator())
@@ -153,13 +153,11 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_property(None, r'(ep' + sep + r'?(?P<episodeNumber>' + digital_numeral + ')' + sep + '?)', confidence=0.7, formatter=parse_numeral)
         self.container.register_property(None, r'(ep' + sep + r'?(?P<episodeNumber>' + digital_numeral + ')' + sep + '?v(?P<version>\d+))', confidence=0.7, formatter=parse_numeral)
 
-
         self.container.register_property(None, r'(' + episode_markers_re.pattern + '(?P<episodeNumber>' + digital_numeral + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + digital_numeral + ')*))', confidence=0.6, formatter={None: parse_numeral, 'episodeNumber': episode_parser})
         self.container.register_property(None, r'(' + episode_words_re.pattern + sep + '?(?P<episodeNumber>' + digital_numeral + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + digital_numeral + ')*)' + sep + '?' + episode_words_re.pattern + '?)', confidence=0.8, formatter={None: parse_numeral, 'episodeNumber': episode_parser})
 
         self.container.register_property(None, r'(' + episode_markers_re.pattern + '(?P<episodeNumber>' + digital_numeral + ')'  + sep + '?v(?P<version>\d+))', confidence=0.6, formatter={None: parse_numeral, 'episodeNumber': episode_parser})
         self.container.register_property(None, r'(' + episode_words_re.pattern + sep + '?(?P<episodeNumber>' + digital_numeral + ')'  + sep + '?v(?P<version>\d+))', confidence=0.8, formatter={None: parse_numeral, 'episodeNumber': episode_parser})
-
 
         self.container.register_property('episodeNumber', r'^ ?(\d{2})' + sep, confidence=0.4, formatter=parse_numeral)
         self.container.register_property('episodeNumber', r'^ ?(\d{2})' + sep, confidence=0.4, formatter=parse_numeral)
@@ -186,7 +184,14 @@ class GuessEpisodesRexps(Transformer):
 
     def guess_episodes_rexps(self, string, node=None, options=None):
         found = self.container.find_properties(string, node, options)
-        return self.container.as_guess(found, string)
+        guess = self.container.as_guess(found, string)
+        if guess and node:
+            # Remove already guessed properties in the same group that have already been found with different values
+            for existing_guess in node.group_node().guesses:
+                for k, v in existing_guess.items():
+                    if k in guess:
+                        del guess[k]
+        return guess
 
     def should_process(self, mtree, options=None):
         return mtree.guess.get('type', '').startswith('episode')

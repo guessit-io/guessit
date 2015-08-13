@@ -1187,3 +1187,21 @@
   episodeNumber: 6
   title: I'm Sorry, Who's Yosi?
 
+? 24.S05E07.FRENCH.DVDRip.XviD-FiXi0N.avi
+: episodeNumber: 7
+  format: DVD
+  language: fr
+  season: 5
+  series: '24'
+  videoCodec: XviD
+
+? 12.Monkeys.S01E12.FRENCH.BDRip.x264-VENUE.mkv
+: episodeNumber: 12
+  format: BluRay
+  language: fr
+  releaseGroup: VENUE
+  season: 1
+  series: 12 Monkeys
+  videoCodec: h264
+
+
