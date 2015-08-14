@@ -1194,6 +1194,7 @@
   season: 5
   series: '24'
   videoCodec: XviD
+  releaseGroup: FiXi0N
 
 ? 12.Monkeys.S01E12.FRENCH.BDRip.x264-VENUE.mkv
 : episodeNumber: 12
@@ -1202,6 +1203,29 @@
   releaseGroup: VENUE
   season: 1
   series: 12 Monkeys
+  videoCodec: h264
+
+? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.720p.CC.WEBRip.AAC2.0.x264-BTW.mkv
+: audioChannels: '2.0'
+  audioCodec: AAC
+  date: 2015-07-01
+  format: WEBRip
+  other: CC
+  releaseGroup: BTW
+  screenSize: 720p
+  series: The Daily Show
+  title: Kirsten Gillibrand Extended
+  videoCodec: h264
+
+? The.Daily.Show.2015.07.02.Sarah.Vowell.CC.WEBRip.AAC2.0.x264-BTW.mkv
+: audioChannels: '2.0'
+  audioCodec: AAC
+  date: 2015-07-02
+  format: WEBRip
+  other: CC
+  releaseGroup: BTW
+  series: The Daily Show
+  title: Sarah Vowell
   videoCodec: h264
 
 

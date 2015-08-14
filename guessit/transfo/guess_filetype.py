@@ -226,12 +226,9 @@ class GuessFiletype(Transformer):
             else:
                 raise TransformerException(__name__, 'Unknown file type')
 
-    def post_process(self, mtree, options=None):
-        # now look whether there are some specific hints for episode vs movie
-        # If we have a date and no year, this is a TV Show.
-        if 'date' in mtree.info and 'year' not in mtree.info and mtree.info.get('type') != 'episode':
-            mtree.guess['type'] = 'episode'
-            for type_leaves in mtree.leaves_containing('type'):
-                type_leaves.guess['type'] = 'episode'
-            for title_leaves in mtree.leaves_containing('title'):
-                title_leaves.guess.rename('title', 'series')
+    def second_pass_options(self, mtree, options=None):
+        if 'type' not in options or not options['type']:
+            # now look whether there are some specific hints for episode vs movie
+            # If we have a date and no year, this is a TV Show.
+            if 'date' in mtree.info and 'year' not in mtree.info and mtree.info.get('type') != 'episode':
+                return {'type': 'episode'}
