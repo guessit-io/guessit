@@ -187,10 +187,10 @@ def submit_bug(filename, options):
         if r.status_code == 200:
             print('Successfully submitted file: %s' % r.text)
         else:
-            print('Could not submit bug at the moment, please try again later.')
+            print('Could not submit bug at the moment, please try again later: %s %s' % (r.status_code, r.reason))
 
     except RequestException as e:
-        print('Could not submit bug at the moment, please try again later.')
+        print('Could not submit bug at the moment, please try again later: %s' % e)
 
 
 def main(args=None, setup_logging=True):
