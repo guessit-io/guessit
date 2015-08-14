@@ -235,6 +235,13 @@ class NeighborValidator(DefaultValidator):
 
         return False
 
+class FullMatchValidator(DefaultValidator):
+    """Make sure the node match fully"""
+    def validate(self, prop, string, node, match, entry_start, entry_end):
+        at_start, at_end = _get_positions(prop, string, node, match, entry_start, entry_end)
+
+        return at_start and at_end
+
 
 class LeavesValidator(DefaultValidator):
     def __init__(self, lambdas=None, previous_lambdas=None, next_lambdas=None, both_side=False, default_=True):
