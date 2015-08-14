@@ -181,7 +181,7 @@ def submit_bug(filename, options):
         opts = dict((k, v) for k, v in options.__dict__.items()
                     if v and k != 'submit_bug')
 
-        r = requests.post('http://localhost:5000/bugs', {'filename': filename,
+        r = requests.post('http://guessit.io/bugs', {'filename': filename,
                                                          'version': __version__,
                                                          'options': str(opts)})
         if r.status_code == 200:
