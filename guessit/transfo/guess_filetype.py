@@ -233,7 +233,12 @@ class GuessFiletype(Transformer):
             # If we have a date and no year, this is a TV Show.
             if 'date' in mtree.info and 'year' not in mtree.info and mtree.info.get('type') != 'episode':
                 return {'type': 'episode'}
-            # If we have a year, no season but an episodeNumber, this is a movie.
+            # If we have a year, no season but a weak episodeNumber, this is a movie.
             if 'year' in mtree.info and 'episodeNumber' in mtree.info and not 'season' in mtree.info and mtree.info.get('type') != 'movie':
-                return {'type': 'movie'}
+                try:
+                    int(mtree.raw['episodeNumber'])
+                    return {'type': 'movie'}
+                except ValueError:
+                    pass
+
 

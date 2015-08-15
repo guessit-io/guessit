@@ -117,6 +117,14 @@ class BaseMatchTree(UnicodeMixin):
         return result
 
     @property
+    def raw(self):
+        result = {}
+        for guess in self.guesses:
+            for k in guess.keys():
+                result[k] = guess.raw(k)
+        return result
+
+    @property
     def guesses(self):
         """
         List all guesses, including children ones.
