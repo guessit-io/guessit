@@ -156,6 +156,13 @@ class GuessFiletype(Transformer):
 
             weak_episode_transformer = get_transformer('guess_weak_episodes_rexps')
             if weak_episode_transformer:
+                found = weak_episode_transformer.container.find_properties(filename, mtree, options, 'episodeNumber')
+                guess = weak_episode_transformer.container.as_guess(found, filename)
+                if guess and (guess.raw('episodeNumber')[0] == '0' or guess['episodeNumber'] >= 10):
+                    self.log.debug('Found characteristic property of episodes: %s"', guess)
+                    upgrade_episode()
+                    return filetype_container[0], other
+
                 found = properties_transformer.container.find_properties(filename, mtree, options, 'crc32')
                 guess = properties_transformer.container.as_guess(found, filename)
                 if guess:
@@ -229,16 +236,19 @@ class GuessFiletype(Transformer):
 
     def second_pass_options(self, mtree, options=None):
         if 'type' not in options or not options['type']:
-            # now look whether there are some specific hints for episode vs movie
-            # If we have a date and no year, this is a TV Show.
-            if 'date' in mtree.info and 'year' not in mtree.info and mtree.info.get('type') != 'episode':
-                return {'type': 'episode'}
-            # If we have a year, no season but a weak episodeNumber, this is a movie.
-            if 'year' in mtree.info and 'episodeNumber' in mtree.info and not 'season' in mtree.info and mtree.info.get('type') != 'movie':
-                try:
-                    int(mtree.raw['episodeNumber'])
-                    return {'type': 'movie'}
-                except ValueError:
-                    pass
+            if mtree.info.get('type') != 'episode':
+                # now look whether there are some specific hints for episode vs movie
+                # If we have a date and no year, this is a TV Show.
+                if 'date' in mtree.info and 'year' not in mtree.info:
+                    return {'type': 'episode'}
+
+            if mtree.info.get('type') != 'movie':
+                # If we have a year, no season but raw episodeNumber is a number not starting with '0', this is a movie.
+                if 'year' in mtree.info and 'episodeNumber' in mtree.info and not 'season' in mtree.info:
+                    try:
+                        int(mtree.raw['episodeNumber'])
+                        return {'type': 'movie'}
+                    except ValueError:
+                        pass
 
 
