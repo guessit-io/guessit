@@ -47,4 +47,4 @@ class SplitExplicitGroups(Transformer):
             # patterns, such as dates, etc...
             # groups = functools.reduce(lambda l, x: l + x.split('-'), groups, [])
 
-            c.split_on_components(groups)
+            c.split_on_components(groups, category='explicit')

@@ -217,7 +217,8 @@ class GuessFiletype(Transformer):
         if mime is not None:
             filetype_info.update({'mimetype': mime}, confidence=1.0)
 
-        node_ext = mtree.node_at((-1,))
+        # Retrieve the last node of category path (extension node)
+        node_ext = list(filter(lambda x: x.category == 'path', mtree.nodes()))[-1]
         found_guess(node_ext, filetype_info)
 
         if mtree.guess.get('type') in [None, 'unknown']:

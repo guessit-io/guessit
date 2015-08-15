@@ -141,7 +141,8 @@ class GuessLanguage(Transformer):
             #   the group is the last group of the filename, it is probably the
             #   language of the subtitle
             #   (eg: 'xxx.english.srt')
-            if (mtree.node_at((-1,)).value.lower() in subtitle_exts and
+            ext_node = list(filter(lambda x: x.category == 'path', mtree.nodes()))[-1]
+            if (ext_node.value.lower() in subtitle_exts and
                     node == list(mtree.leaves())[-2]):
                 self.promote_subtitle(node)
 
