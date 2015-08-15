@@ -606,7 +606,9 @@
 ? Yves.Saint.Laurent.2013.FRENCH.DVDSCR.MD.XviD-ViVARiUM.avi
 : format: DVD
   language: French
-  other: Screener
+  other:
+      - MD
+      - Screener
   releaseGroup: ViVARiUM
   title: Yves Saint Laurent
   videoCodec: XviD
