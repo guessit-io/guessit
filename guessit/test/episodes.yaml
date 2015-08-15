@@ -1247,3 +1247,13 @@
   other: LD
   videoCodec: XviD
   year: 2005
+
+? Astro.Le.Petit.Robot.S01E01+02.FRENCH.DVDRiP.X264.INT-BOOLZ.mkv
+: episodeNumber: 1
+  episodeList: [1, 2]
+  format: DVD
+  language: fr
+  releaseGroup: INT-BOOLZ
+  season: 1
+  series: Astro Le Petit Robot
+  videoCodec: h264
