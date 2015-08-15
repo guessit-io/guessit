@@ -274,7 +274,8 @@ class GuessFinder(object):
         if isinstance(result, Guess):
             guess = result
         else:
-            guess = Guess(result, confidence=self.confidence, input=string, span=span)
+            no_sentinel_string =string[1:-1]
+            guess = Guess(result, confidence=self.confidence, input=no_sentinel_string, span=span)
 
         if not iterative:
             found_guess(node, guess, logger=self.logger)
