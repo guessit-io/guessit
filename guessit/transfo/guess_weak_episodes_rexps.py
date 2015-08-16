@@ -38,7 +38,7 @@ class GuessWeakEpisodesRexps(Transformer):
         of_separators = ['of', 'sur', '/', '\\']
         of_separators_re = re.compile(build_or_pattern(of_separators, escape=True), re.IGNORECASE)
 
-        self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False)
+        self.container = PropertiesContainer(enhance=False, canonical_from_pattern=False, remove_duplicates=True)
 
         episode_words = ['episodes?']
 

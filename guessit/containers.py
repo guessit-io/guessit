@@ -297,7 +297,7 @@ class LeavesValidator(DefaultValidator):
 
 class _Property:
     """Represents a property configuration."""
-    def __init__(self, keys=None, pattern=None, canonical_form=None, canonical_from_pattern=True, confidence=1.0, enhance=True, global_span=False, validator=DefaultValidator(), formatter=None, disabler=None, confidence_lambda=None):
+    def __init__(self, keys=None, pattern=None, canonical_form=None, canonical_from_pattern=True, confidence=1.0, enhance=True, global_span=False, validator=DefaultValidator(), formatter=None, disabler=None, confidence_lambda=None, remove_duplicates=False):
         """
         :param keys: Keys of the property (format, screenSize, ...)
         :type keys: string
@@ -316,6 +316,8 @@ class _Property:
         :type validator: :class:`DefaultValidator`
         :param formatter: Formater to use
         :type formatter: function
+        :param remove_duplicates: Keep only the last match if multiple values are found
+        :type remove_duplicates: bool
         """
         if isinstance(keys, list):
             self.keys = keys
@@ -342,6 +344,7 @@ class _Property:
         self.validator = validator
         self.formatter = formatter
         self.disabler = disabler
+        self.remove_duplicates = remove_duplicates
 
     def disabled(self, options):
         if self.disabler:
@@ -486,7 +489,8 @@ class PropertiesContainer(object):
                         entries.append((prop, match))
                 else:
                     matches = list(prop.compiled.finditer(string))
-                    duplicate_matches[prop] = matches
+                    if prop.remove_duplicates:
+                        duplicate_matches[prop] = matches
                     for match in matches:
                         entries.append((prop, match))
 
@@ -541,7 +545,7 @@ class PropertiesContainer(object):
                         del entry_end[end]
 
         for prop, prop_duplicate_matches in duplicate_matches.items():
-            # Keeping the last valid match.
+            # Keeping the last valid match only.
             # Needed for the.100.109.hdtv-lol.mp4
             for duplicate_match in prop_duplicate_matches[:-1]:
                 entries.remove((prop, duplicate_match))
