@@ -189,11 +189,22 @@ class GuessEpisodesRexps(Transformer):
         found = self.container.find_properties(string, node, options)
         guess = self.container.as_guess(found, string)
         if guess and node:
-            # Remove already guessed properties in the same group that have already been found with different values
-            for existing_guess in node.group_node().guesses:
-                for k, v in existing_guess.items():
-                    if k in guess:
-                        del guess[k]
+            if 'season' in guess and 'episodeNumber' in guess:
+                # If two guesses contains both season and episodeNumber in same group, create an episodeList
+                for existing_guess in node.group_node().guesses:
+                    if 'season' in existing_guess and 'episodeNumber' in existing_guess:
+                        if 'episodeList' not in existing_guess:
+                            existing_guess['episodeList'] = [existing_guess['episodeNumber']]
+                        existing_guess['episodeList'].append(guess['episodeNumber'])
+                        guess['episodeList'] = list(existing_guess['episodeList'])
+                        del guess['episodeNumber']
+            elif 'episodeNumber' in guess:
+                # If two guesses contains only episodeNumber in same group, remove the existing one.
+                for existing_guess in node.group_node().guesses:
+                    if 'episodeNumber' in existing_guess:
+                        for k, v in existing_guess.items():
+                            if k in guess:
+                                del guess[k]
         return guess
 
     def should_process(self, mtree, options=None):
