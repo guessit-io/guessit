@@ -155,10 +155,16 @@ class DefaultValidator(object):
         span = _trim_span(span, string[span[0]:span[1]])
         start, end = span
 
+        return DefaultValidator.validate_string(string, span, entry_start, entry_end)
+
+    @staticmethod
+    def validate_string(string, span, entry_start=None, entry_end=None):
+        start, end = span
+
         sep_start = start <= 0 or string[start - 1] in sep
         sep_end = end >= len(string) or string[end] in sep
-        start_by_other = start in entry_end
-        end_by_other = end in entry_start
+        start_by_other = start in entry_end if entry_end else False
+        end_by_other = end in entry_start if entry_start else False
         if (sep_start or start_by_other) and (sep_end or end_by_other):
             return True
         return False
