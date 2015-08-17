@@ -111,8 +111,13 @@ Episode properties
 
 - **part**
 
-  Part number of the episode.
+  Part number of the video.
 
+- **partList**
+
+List of part numbers if several were found.
+
+- note: If several are found, ``part`` is the first item of this list.
 
 - **version**
 

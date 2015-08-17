@@ -1493,6 +1493,14 @@
   videoCodec: XviD
   releaseGroup: Etc-Group
 
+? Show.Name.Part.1.and.Part.2.Blah-Group
+: options: -n -t episode
+  part: 1
+  partList:
+  - 1
+  - 2
+  series: Show Name
+
 ? Show Name - 01 - Ep Name
 : options: -n
   episodeNumber: 1

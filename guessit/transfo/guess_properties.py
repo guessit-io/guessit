@@ -239,8 +239,8 @@ class GuessProperties(Transformer):
 
         self.container.register_property('crc32', '(?:[a-fA-F]|[0-9]){8}', enhance=False, canonical_from_pattern=False)
 
-        weak_episode_words = ['pt', 'part']
-        self.container.register_property(None, '(' + build_or_pattern(weak_episode_words) + sep + '?(?P<part>' + numeral + '))[^0-9]', enhance=False, canonical_from_pattern=False, confidence=0.4, formatter=parse_numeral)
+        part_words = ['pt', 'part']
+        self.container.register_property(None, '(' + build_or_pattern(part_words) + sep + '?(?P<part>' + numeral + '))[^0-9]', enhance=False, canonical_from_pattern=False, confidence=0.4, formatter=parse_numeral)
 
         register_property('other', {'AudioFix': ['Audio-Fix', 'Audio-Fixed'],
                                     'SyncFix': ['Sync-Fix', 'Sync-Fixed'],
@@ -273,10 +273,25 @@ class GuessProperties(Transformer):
 
     def guess_properties(self, string, node=None, options=None):
         found = self.container.find_properties(string, node, options)
-        return self.container.as_guess(found, string)
+        guess = self.container.as_guess(found, string)
+
+        if guess and node:
+            if 'part' in guess:
+                # If two guesses contains both part in same group, create an partList
+                for existing_guess in node.group_node().guesses:
+                    if 'part' in existing_guess:
+                        if 'partList' not in existing_guess:
+                            existing_guess['partList'] = [existing_guess['part']]
+                        existing_guess['partList'].append(guess['part'])
+                        guess['partList'] = list(existing_guess['partList'])
+                        del guess['part']
+
+        return guess
 
     def supported_properties(self):
-        return self.container.get_supported_properties()
+        supported_properties = list(self.container.get_supported_properties())
+        supported_properties.append('partList')
+        return supported_properties
 
     def process(self, mtree, options=None):
         GuessFinder(self.guess_properties, 1.0, self.log, options).process_nodes(mtree.unidentified_leaves())
