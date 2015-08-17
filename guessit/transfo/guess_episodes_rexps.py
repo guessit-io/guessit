@@ -154,6 +154,7 @@ class GuessEpisodesRexps(Transformer):
         self.container.register_property(None, r'(' + season_markers_re.pattern + '(?P<season>' + digital_numeral + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + digital_numeral + ')*))', confidence=0.6, formatter={None: parse_numeral, 'season': season_parser}, validator=NoValidator())
 
         self.container.register_property(None, r'((?P<episodeNumber>' + digital_numeral + ')' + sep + '?v(?P<version>\d+))', confidence=0.6, formatter=parse_numeral)
+        self.container.register_property('version', sep + r'V(\d+)' + sep, confidence=0.6, formatter=parse_numeral, validator=NoValidator())
         self.container.register_property(None, r'(ep' + sep + r'?(?P<episodeNumber>' + digital_numeral + ')' + sep + '?)', confidence=0.7, formatter=parse_numeral)
         self.container.register_property(None, r'(ep' + sep + r'?(?P<episodeNumber>' + digital_numeral + ')' + sep + '?v(?P<version>\d+))', confidence=0.7, formatter=parse_numeral)
 
