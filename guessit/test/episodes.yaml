@@ -1724,6 +1724,17 @@
   season: 16
   series: Bleach
 
+? '[ShinBunBu-Subs] Bleach - 02-03 (CX 1280x720 x264 AAC)'
+: audioCodec: AAC
+  episodeList:
+  - 2
+  - 3
+  episodeNumber: 2
+  releaseGroup: ShinBunBu-Subs
+  screenSize: 720p
+  series: Bleach
+  videoCodec: h264
+
 ? 003. Show Name - Ep Name.ext
 : episodeNumber: 3
   series: Show Name

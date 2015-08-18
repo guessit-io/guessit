@@ -186,7 +186,7 @@ LNG_COMMON_WORDS = frozenset([
     'la', 'el', 'del', 'por', 'mar', 'al',
     # other
     'ind', 'arw', 'ts', 'ii', 'bin', 'chan', 'ss', 'san', 'oss', 'iii',
-    'vi', 'ben', 'da', 'lt', 'ch', 'sr', 'ps',
+    'vi', 'ben', 'da', 'lt', 'ch', 'sr', 'ps', 'cx',
     # new from babelfish
     'mkv', 'avi', 'dmd', 'the', 'dis', 'cut', 'stv', 'des', 'dia', 'and',
     'cab', 'sub', 'mia', 'rim', 'las', 'une', 'par', 'srt', 'ano', 'toy',
