@@ -251,8 +251,8 @@ class GuessProperties(Transformer):
 
         self.container.register_property('other', 'Real', 'Fix', canonical_form='Proper', validator=ChainedValidator(FullMatchValidator(), NeighborValidator()))
         self.container.register_property('other', 'Proper', 'Repack', 'Rerip', canonical_form='Proper')
-        self.container.register_property('other', 'Fansub', canonical_form='Fansub')
-        self.container.register_property('other', 'Fastsub', canonical_form='Fastsub')
+        self.container.register_property('other', 'Fansub', canonical_form='Fansub', validator=ChainedValidator(FullMatchValidator(), NeighborValidator()))
+        self.container.register_property('other', 'Fastsub', canonical_form='Fastsub', validator=ChainedValidator(FullMatchValidator(), NeighborValidator()))
         self.container.register_property('other', '(?:Seasons?' + sep + '?)?Complete', canonical_form='Complete')
         self.container.register_property('other', 'R5', 'RC', canonical_form='R5')
         self.container.register_property('other', 'Pre-Air', 'Preair', canonical_form='Preair')

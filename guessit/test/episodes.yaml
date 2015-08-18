@@ -1549,10 +1549,54 @@
   subtitleLanguage: fr
   videoProfile: 8bit
 
- # [Kaerizaki-Fansub]_One_Piece_679_[VOSTFR][HD_1280x720].mp4
- # [Kaerizaki-Fansub]_One_Piece_681_[VOSTFR][HD_1280x720]_V2.mp4
- # [Kaerizaki-Fansub] High School DxD New 04 VOSTFR HD (1280x720) V2.mp4
- # [Kaerizaki-Fansub] One Piece 603 VOSTFR PS VITA (960x544) V2.mp4
+? '[Kaerizaki-Fansub]_One_Piece_679_[VOSTFR][HD_1280x720].mp4'
+: options: -E
+  episodeNumber: 679
+  other: HD
+  releaseGroup: Kaerizaki-Fansub
+  screenSize: 720p
+  series: One Piece
+  subtitleLanguage: fr
+
+? '[Kaerizaki-Fansub]_One_Piece_679_[VOSTFR][FANSUB][HD_1280x720].mp4'
+: options: -E
+  episodeNumber: 679
+  other:
+  - Fansub
+  - HD
+  releaseGroup: Kaerizaki-Fansub
+  screenSize: 720p
+  series: One Piece
+  subtitleLanguage: fr
+
+? '[Kaerizaki-Fansub]_One_Piece_681_[VOSTFR][HD_1280x720]_V2.mp4'
+: options: -E
+  episodeNumber: 681
+  other: HD
+  releaseGroup: Kaerizaki-Fansub
+  screenSize: 720p
+  series: One Piece
+  subtitleLanguage: fr
+  version: 2
+
+? '[Kaerizaki-Fansub] High School DxD New 04 VOSTFR HD (1280x720) V2.mp4'
+: options: -E
+  episodeNumber: 4
+  other: HD
+  releaseGroup: Kaerizaki-Fansub
+  screenSize: 720p
+  series: High School DxD New
+  subtitleLanguage: fr
+  version: 2
+
+? '[Kaerizaki-Fansub] One Piece 603 VOSTFR PS VITA (960x544) V2.mp4'
+: options: -E
+  episodeNumber: 603
+  releaseGroup: Kaerizaki-Fansub
+  screenSize: 960x544
+  series: One Piece
+  subtitleLanguage: fr
+  version: 2
 
 ? '[Group Name] Show Name.13'
 : options: -n
