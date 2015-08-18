@@ -579,8 +579,8 @@ class PropertiesContainer(object):
                         for prop, match in key_entries:
                             start, end = _get_span(prop, match)
                             if not best_prop or \
-                            best_prop.confidence < best_prop.confidence or \
-                            best_prop.confidence == best_prop.confidence and \
+                            best_prop.confidence < prop.confidence or \
+                            best_prop.confidence == prop.confidence and \
                             best_match.span()[1] - best_match.span()[0] < match.span()[1] - match.span()[0]:
                                 best_prop, best_match = prop, match
 
