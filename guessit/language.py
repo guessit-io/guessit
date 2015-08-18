@@ -207,7 +207,7 @@ LNG_COMMON_WORDS_STRICT = frozenset(['brazil'])
 
 
 subtitle_prefixes = ['sub', 'subs', 'st', 'vost', 'subforced', 'fansub', 'hardsub']
-subtitle_suffixes = ['subforced', 'fansub', 'hardsub']
+subtitle_suffixes = ['subforced', 'fansub', 'hardsub', 'sub', 'subs']
 lang_prefixes = ['true']
 
 
