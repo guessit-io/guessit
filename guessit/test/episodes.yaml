@@ -1687,20 +1687,55 @@
   season: 16
   series: Bleach
 
-# Bleach s16e03e04 313-314
+? Bleach.s16e03-04.313-314
+: options: -n
+  episodeList:
+  - 3
+  - 4
+  episodeNumber: 3
+  season: 16
+  series: Bleach
 
-# Bleach - s16e03-04 - 313-314
-# Bleach.s16e03-04.313-314
-# Bleach s16e03e04 313-314
+? Bleach - s16e03-04 - 313-314
+: options: -n
+  episodeList:
+  - 3
+  - 4
+  episodeNumber: 3
+  season: 16
+  series: Bleach
 
-# Bleach - 313-314 - s16e03-04
+? Bleach.s16e03-04.313-314
+: options: -n
+  episodeList:
+  - 3
+  - 4
+  episodeNumber: 3
+  season: 16
+  series: Bleach
+
+
+? Bleach s16e03e04 313-314
+: options: -n
+  episodeList:
+  - 3
+  - 4
+  episodeNumber: 3
+  season: 16
+  series: Bleach
 
 ? 003. Show Name - Ep Name.ext
 : episodeNumber: 3
   series: Show Name
   title: Ep Name
 
-# 003-004. Show Name - Ep Name.ext
+? 003-004. Show Name - Ep Name.ext
+: episodeList:
+  - 3
+  - 4
+  episodeNumber: 3
+  series: Show Name
+  title: Ep Name
 
 ? One Piece - 102
 : options: -n -t episode

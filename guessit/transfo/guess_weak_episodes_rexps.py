@@ -67,11 +67,33 @@ class GuessWeakEpisodesRexps(Transformer):
         return self.container.get_supported_properties()
 
     def guess_weak_episodes_rexps(self, string, node=None, options=None):
-        if node and 'episodeNumber' in node.root.info:
-            return None
-
         properties = self.container.find_properties(string, node, options)
         guess = self.container.as_guess(properties, string)
+
+        if node and guess:
+            if 'episodeNumber' in guess and 'season' in guess:
+                existing_guesses = list(filter(lambda x: 'season' in x and 'episodeNumber' in x, node.group_node().guesses))
+                if existing_guesses:
+                    return None
+            elif 'episodeNumber' in guess:
+                # If we only have episodeNumber in the guess, and another node contains both season and episodeNumber
+                # keep only the second.
+                safe_guesses = list(filter(lambda x: 'season' in x and 'episodeNumber' in x, node.group_node().guesses))
+                if safe_guesses:
+                    return None
+                else:
+                    # If we have other nodes containing episodeNumber, create an episodeList.
+                    existing_guesses = list(filter(lambda x: 'season' not in x and 'episodeNumber' in x, node.group_node().guesses))
+                    for existing_guess in existing_guesses:
+                        if 'episodeList' not in existing_guess:
+                            existing_guess['episodeList'] = [existing_guess['episodeNumber']]
+                        existing_guess['episodeList'].append(guess['episodeNumber'])
+                        existing_guess['episodeList'].sort()
+                        if existing_guess['episodeNumber'] > guess['episodeNumber']:
+                            existing_guess.set_confidence('episodeNumber', 0)
+                        else:
+                            guess.set_confidence('episodeNumber', 0)
+                        guess['episodeList'] = list(existing_guess['episodeList'])
 
         return guess
 

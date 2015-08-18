@@ -283,8 +283,12 @@ class GuessProperties(Transformer):
                         if 'partList' not in existing_guess:
                             existing_guess['partList'] = [existing_guess['part']]
                         existing_guess['partList'].append(guess['part'])
+                        existing_guess['partList'].sort()
+                        if existing_guess['part'] > guess['part']:
+                            existing_guess.set_confidence('part', 0)
+                        else:
+                            guess.set_confidence('part', 0)
                         guess['partList'] = list(existing_guess['partList'])
-                        del guess['part']
 
         return guess
 
