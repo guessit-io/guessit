@@ -153,8 +153,6 @@ class DefaultValidator(object):
     def validate(self, prop, string, node, match, entry_start, entry_end):
         span = _get_span(prop, match)
         span = _trim_span(span, string[span[0]:span[1]])
-        start, end = span
-
         return DefaultValidator.validate_string(string, span, entry_start, entry_end)
 
     @staticmethod
