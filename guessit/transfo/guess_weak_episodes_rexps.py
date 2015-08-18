@@ -21,6 +21,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import re
+from guessit.patterns.list import list_parser, all_separators_re
 
 from guessit.plugins.transformers import Transformer
 
@@ -42,7 +43,10 @@ class GuessWeakEpisodesRexps(Transformer):
 
         episode_words = ['episodes?']
 
-        def _formater(episode_number):
+        def episode_list_parser(value):
+            return list_parser(value, 'episodeList')
+
+        def season_episode_parser(episode_number):
             epnum = parse_numeral(episode_number)
             if not valid_year(epnum):
                 if epnum > 100:
@@ -55,13 +59,13 @@ class GuessWeakEpisodesRexps(Transformer):
                 else:
                     return epnum
 
-        self.container.register_property(['episodeNumber', 'season'], '[0-9]{2,4}', confidence=0.6, formatter=_formater, disabler=lambda options: options.get('episode_prefer_number') if options else False)
-        self.container.register_property(['episodeNumber', 'season'], '[0-9]{4}', confidence=0.6, formatter=_formater)
-        self.container.register_property('episodeNumber', '[^0-9](\d{2,3})', confidence=0.6, formatter=parse_numeral, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
+        self.container.register_property(['episodeNumber', 'season'], '[0-9]{2,4}', confidence=0.6, formatter=season_episode_parser, disabler=lambda options: options.get('episode_prefer_number') if options else False)
+        self.container.register_property(['episodeNumber', 'season'], '[0-9]{4}', confidence=0.6, formatter=season_episode_parser)
         self.container.register_property(None, '(' + build_or_pattern(episode_words) + sep + '?(?P<episodeNumber>' + numeral + '))[^0-9]', confidence=0.4, formatter=parse_numeral)
         self.container.register_property(None, r'(?P<episodeNumber>' + numeral + ')' + sep + '?' + of_separators_re.pattern + sep + '?(?P<episodeCount>' + numeral +')', confidence=0.6, formatter=parse_numeral)
-        self.container.register_property('episodeNumber', r'^' + sep + '?(\d{2,3})' + sep, confidence=0.4, formatter=parse_numeral, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
-        self.container.register_property('episodeNumber', sep + r'(\d{2,3})' + sep + '?$', confidence=0.4, formatter=parse_numeral, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
+        self.container.register_property('episodeNumber', '[^0-9](\d{2,3}' + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + '\d{2,3}' + ')*)', confidence=0.4, formatter=episode_list_parser, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
+        self.container.register_property('episodeNumber', r'^' + sep + '?(\d{2,3}' + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + '\d{2,3}' + ')*)' + sep, confidence=0.4, formatter=episode_list_parser, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
+        self.container.register_property('episodeNumber', sep + r'(\d{2,3}' + '(?:' + sep + '?' + all_separators_re.pattern + sep + '?' + '\d{2,3}' + ')*)' + sep + '?$', confidence=0.4, formatter=episode_list_parser, disabler=lambda options: not options.get('episode_prefer_number') if options else True)
 
     def supported_properties(self):
         return self.container.get_supported_properties()
