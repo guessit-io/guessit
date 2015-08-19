@@ -1,8 +1,26 @@
 History
 =======
 
-0.10.4 (unreleased)
+0.10.4 (2015-08-19)
 -------------------
+* Added ``LD``/``MD`` properties
+* Added better support for ``episodeList``
+* Added more rules for filetype autodetection
+* Added support for ``episodeList`` on weak episode patterns
+* Added ``partList`` property (list for ``part`` property)
+* Added vob to supported file extensions
+* Added more ignore words to language detection
+* Added string options support for API methods (will be parsed like command-line)
+* Added better subtitle detection (prefix priority over suffix)
+* Fixed ``version`` property no detected when detached from ``episodeNumber``
+* Fixed ``releaseGroup`` property no detected when prefixed by ``screenSize``
+* Fixed single digit detected as an ``episodeNumber``
+* Fixed an internal issue in matcher causing absolute and relative group spans confusion
+* Fixed an internal issue in properties container causing invalid ordering of found patterns
+* Fixed raw value for some properties (--advanced)
+* Use pytest as test runner
+* Remove support for python 2.6
+
 
 0.10.3 (2015-04-04)
 -------------------
