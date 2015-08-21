@@ -128,6 +128,7 @@ class GuessEpisodeInfoFromPosition(Transformer):
         if not eps:
             eps = [node for node in mtree.leaves() if 'date' in node.guess]
 
+        eps = sorted(eps, key=lambda ep: -ep.guess.confidence())
         if eps:
             self.match_from_epnum_position(mtree, eps[0], options)
 
