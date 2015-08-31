@@ -61,7 +61,6 @@ class GuessProperties(Transformer):
             for canonical_form, quality in quality_dict.items():
                 self.qualities.register_quality(propname, canonical_form, quality)
 
-        register_property('container', {'mp4': ['MP4']})
 
         # http://en.wikipedia.org/wiki/Pirated_movie_release_types
         register_property('format', {'VHS': ['VHS', 'VHS-Rip'],
@@ -110,7 +109,8 @@ class GuessProperties(Transformer):
                                          '1080p': ['(?:\d{3,}(?:\\|\/|x|\*))?1080p?x?'],
                                          '4K': ['(?:\d{3,}(?:\\|\/|x|\*))?2160(?:i|p?x?)']
                                          },
-                          validator=ChainedValidator(DefaultValidator(), OnlyOneValidator()))
+                          validator=ChainedValidator(DefaultValidator(), OnlyOneValidator())) #
+                          #TODO: Edit OnlyOneValitor to check only in current folder
 
         _digits_re = re.compile('\d+')
 
