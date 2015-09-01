@@ -54,7 +54,7 @@ or, with `easy_install <http://pypi.python.org/pypi/setuptools>`_::
 
     $ easy_install guessit
 
-But, you really `shouldn't do that <http://www.pip-installer.org/en/latest/other-tools.html#pip-compared-to-easy-install>`_.
+But, you really `shouldn't do that <http://stackoverflow.com/questions/3220404/why-use-pip-over-easy-install>`_.
 
 You can now launch a demo::
 
@@ -93,7 +93,7 @@ The full list of available properties can be seen in the
 Other features
 --------------
 
-GuessIt also allows you to compute a whole lof of hashes from a file,
+GuessIt also allows you to compute a whole lot of hashes from a file,
 namely all the ones you can find in the hashlib python module (md5,
 sha1, ...), but also the Media Player Classic hash that is used (amongst
 others) by OpenSubtitles and SMPlayer, as well as the ed2k hash.
