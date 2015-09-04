@@ -1,8 +1,17 @@
 History
 =======
 
-0.11.0 (unreleased)
+0.11.0 (2015-09-04)
 -------------------
+
+* Fixed year-season episodes with 'x' separator
+* Fixed name guessing when a subdirectory contains a number
+* Fixed possible IndexError in release_group plugin
+* Fixed infinite recursion when multiple languages from same node are ignored in the second pass
+* Added skip of language guess for 2-3 letters directories
+* Added exclusion of common words from title guessing
+* Added a higher confidence on filename over directories
+
 
 0.10.4 (2015-08-19)
 -------------------
