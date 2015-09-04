@@ -1852,3 +1852,12 @@
   season: 1
   series: Fear the Walking Dead
   title: En Close, Yet En Far
+
+? /av/unsorted/The.Daily.Show.2015.07.22.Jake.Gyllenhaal.720p.HDTV.x264-BATV.mkv
+: date: 2015-07-22
+  format: HDTV
+  releaseGroup: BATV
+  screenSize: 720p
+  series: The Daily Show
+  title: Jake Gyllenhaal
+  videoCodec: h264
