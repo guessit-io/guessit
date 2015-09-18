@@ -35,7 +35,7 @@ if sys.version_info < (2, 7):
     # argparse is part of the standard library in python 2.7+
     install_requires.append('argparse')
 
-tests_require = ['pytest', 'PyYAML']  # Fabric not available (yet!) for python3
+tests_require = ['pytest>=2.7.3', 'PyYAML']  # Fabric not available (yet!) for python3
 
 setup_requires = []
 
@@ -84,6 +84,7 @@ args = dict(name='guessit',
                          'Programming Language :: Python :: 3',
                          'Programming Language :: Python :: 3.3',
                          'Programming Language :: Python :: 3.4',
+                         'Programming Language :: Python :: 3.5',
                          'Topic :: Multimedia',
                          'Topic :: Software Development :: Libraries :: Python Modules'
                          ],

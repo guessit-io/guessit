@@ -3,10 +3,12 @@ python:
   - 2.7
   - 3.3
   - 3.4
+  - 3.5
   - pypy
 install:
   - pip install -r requirements.txt
-  - pip install coveralls
+  - pip install pytest>=2.7.3 --upgrade
+  - pip install PyYAML coveralls
 script:
   - coverage run --source=guessit setup.py test
   - python setup.py build
