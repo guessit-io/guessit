@@ -1,0 +1,7 @@
+pytest>=2.7.3
+pytest-capturelog
+pylint
+tox
+pyyaml
+-e .
+https://github.com/Toilal/rebulk/archive/master.zip

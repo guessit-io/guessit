@@ -1,0 +1,19 @@
+language: python
+python:
+  - 2.7
+  - 3.3
+  - 3.4
+# - 3.5 (pylint currently fails with python 3.5)
+# - pypy (something doesn't work with regex module)
+install:
+  - pip install -r dev-requirements.txt
+  - pip install https://github.com/Toilal/rebulk/archive/master.zip --upgrade
+  - pip install pytest>=2.7.3 --upgrade
+  - pip install pylint
+  - pip install coveralls
+script:
+  - pylint guessit
+  - coverage run --source=guessit setup.py test
+  - python setup.py build
+after_success:
+  - coveralls
