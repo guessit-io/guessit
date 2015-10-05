@@ -17,6 +17,8 @@ GuessIt
     :target: https://coveralls.io/r/wackou/guessit
     :alt: Coveralls
 
+`HuBoard <https://huboard.com/wackou/guessit>`_
+
 
 GuessIt is a python library that extracts as much information as possible from a video file.
 
