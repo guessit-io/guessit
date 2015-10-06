@@ -1,17 +1,17 @@
 # Multiple input strings having same expected results can be chained.
 # Use $ marker to check inputs that should not match results.
-? 2x5
-? 2X5
-? 02x05
-? 2X05
-? 02x5
+? +2x5
+? +2X5
+? +02x05
+? +2X05
+? +02x5
 ? S02E05
 ? s02e05
 ? s02e5
 ? s2e05
-? $s03e05
-? $s02e06
-? $3x05
-? $2x06
+? -s03e05
+? -s02e06
+? -3x05
+? -2x06
 : season: 2
   episodeNumber: 5

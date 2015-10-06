@@ -13,6 +13,7 @@ from io import open  # pylint: disable=redefined-builtin
 
 from .. import guessit
 
+import regex as re
 import os
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -58,23 +59,20 @@ class OrderedDictYAMLLoader(yaml.Loader):
 
 
 class EntryResult(object):
-    def __init__(self, string):
-        if string[0] == '$':
-            self.negates = True
-            self.string = string[1:]
-        else:
-            self.negates = False
-            self.string = string
+    def __init__(self, string, negates=False):
+        self.string = string
+        self.negates = negates
         self.valid = []
         self.missing = []
         self.different = []
         self.extra = []
+        self.others = []
 
     @property
     def ok(self):
         if self.negates:
             return self.missing or self.different
-        return not self.missing and not self.different and not self.extra
+        return not self.missing and not self.different and not self.extra and not self.others
 
     @property
     def warning(self):
@@ -85,22 +83,23 @@ class EntryResult(object):
     @property
     def error(self):
         if self.negates:
-            return not self.missing and not self.different
-        return self.missing or self.different
+            return not self.missing and not self.different and not self.others
+        return self.missing or self.different or self.others
 
     def __repr__(self):
         if self.ok:
             return self.string + ': OK!'
         elif self.warning:
-            return '%s%s: WARNING! (valid=%i, extra=%i)' % ('$' if self.negates else '', self.string, len(self.valid))
+            return '%s%s: WARNING! (valid=%i, extra=%i)' % ('-' if self.negates else '', self.string, len(self.valid),
+                                                            len(self.extra))
         elif self.error:
-            return '%s%s: ERROR! (valid=%i, missing=%i, different=%i, extra=%i)' % \
-                   ('$' if self.negates else '', self.string, len(self.valid), len(self.missing), len(self.different),
-                    len(self.extra))
+            return '%s%s: ERROR! (valid=%i, missing=%i, different=%i, extra=%i, others=%i)' % \
+                   ('-' if self.negates else '', self.string, len(self.valid), len(self.missing), len(self.different),
+                    len(self.extra), len(self.others))
         else:
-            return '%s%s: UNKOWN! (valid=%i, missing=%i, different=%i, extra=%i)' % \
-                   ('$' if self.negates else '', self.string, len(self.valid), len(self.missing), len(self.different),
-                    len(self.extra))
+            return '%s%s: UNKOWN! (valid=%i, missing=%i, different=%i, extra=%i, others=%i)' % \
+                   ('-' if self.negates else '', self.string, len(self.valid), len(self.missing), len(self.different),
+                    len(self.extra), len(self.others))
 
     @property
     def details(self):
@@ -121,6 +120,10 @@ class EntryResult(object):
             ret.append('extra=' + str(len(self.extra)))
         for extra in self.extra:
             ret.append(' ' * 4 + str(extra))
+        if self.others:
+            ret.append('others=' + str(len(self.others)))
+        for other in self.others:
+            ret.append(' ' * 4 + str(other))
         return ret
 
 
@@ -131,6 +134,8 @@ class Results(list):
 
 
 class TestYml(object):
+    options_re = re.compile(r'^([ \+-]+)(.*)')
+
     """
     Run tests from yaml files.
     Multiple input strings having same expected results can be chained.
@@ -138,9 +143,23 @@ class TestYml(object):
     """
     @pytest.mark.parametrize('filename', [
         'rules/episodes.yml',
+        'rules/format.yml',
+        'rules/videoCodec.yml',
+        'rules/audioCodec.yml',
+        'rules/screenSize.yml',
+        'rules/website.yml',
+        'rules/year.yml',
+        'movies.yml',
         'series.yml'
     ], ids=[
         'rules/episodes',
+        'rules/format',
+        'rules/videoCodec',
+        'rules/audioCodec',
+        'rules/screenSize',
+        'rules/website',
+        'rules/year',
+        'movies',
         'series'
     ])
     def test(self, filename):
@@ -150,13 +169,13 @@ class TestYml(object):
 
         last_expected = None
         for string, expected in reversed(list(data.items())):
-            if not expected:
+            if expected is None:
                 data[string] = last_expected
             else:
                 last_expected = expected
 
         for string, expected in data.items():
-            entry = self._test_entry(string, expected)
+            entry = self.check(str(string), expected)
             if entry.ok:
                 logging.debug('[' + filename + '] ' + str(entry))
             elif entry.warning:
@@ -168,24 +187,68 @@ class TestYml(object):
             entries.append(entry)
         entries.assert_ok()
 
-    def _test_entry(self, string, expected):
+    def check(self, string, expected):
+        negates, global_, string = self.parse_token_options(string)
+
         result = guessit(string)
 
-        entry = EntryResult(string)
+        entry = EntryResult(string, negates)
 
-        for expected_key, expected_value in expected.items():
-            if expected_key in result.keys():
-                if result[expected_key] != expected_value:
-                    entry.different.append((expected_key, expected_value, result[expected_key]))
+        if global_:
+            self.check_global(string, result, entry)
+
+        self.check_expected(result, expected, entry)
+
+        return entry
+
+    def parse_token_options(self, string):
+        matches = self.options_re.search(string)
+        negates = False
+        global_ = False
+        if matches:
+            string = matches.group(2)
+            for opt in matches.group(1):
+                if '-' in opt:
+                    negates = True
+                if '+' in opt:
+                    global_ = True
+        return negates, global_, string
+
+    def check_global(self, string, result, entry):
+        global_span = None
+        for result_matches in result.matches.values():
+            for result_match in result_matches:
+                if not global_span:
+                    global_span = list(result_match.span)
                 else:
-                    entry.valid.append((expected_key, expected_value))
-            else:
-                entry.missing.append((expected_key, expected_value))
+                    if global_span[0] > result_match.span[0]:
+                        global_span[0] = result_match.span[0]
+                    if global_span[1] < result_match.span[1]:
+                        global_span[1] = result_match.span[1]
+        if global_span and global_span[1] - global_span[0] < len(string):
+            entry.others.append("Match is not global")
+
+    def check_expected(self, result, expected, entry):
+        if expected:
+            for expected_key, expected_value in expected.items():
+                if expected_key:
+                    negates_key, _, result_key = self.parse_token_options(expected_key)
+                    if result_key in result.keys():
+                        if result[result_key] != expected_value:
+                            if negates_key:
+                                entry.valid.append((expected_key, expected_value))
+                            else:
+                                entry.different.append((expected_key, expected_value, result[expected_key]))
+                        else:
+                            if negates_key:
+                                entry.different.append((expected_key, expected_value, result[expected_key]))
+                            else:
+                                entry.valid.append((expected_key, expected_value))
+                    elif not negates_key:
+                        entry.missing.append((expected_key, expected_value))
 
         for result_key, result_value in result.items():
             if result_key not in expected.keys():
                 entry.extra.append((result_key, result_value))
-
-        return entry
 
 

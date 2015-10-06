@@ -8,10 +8,9 @@ from rebulk import Rebulk
 
 import regex as re
 
-EPISODES = Rebulk()
+EPISODES = Rebulk().regex_defaults(flags=re.IGNORECASE)
 
 EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)',
                r'S(?P<season>\d+)[ex](?P<episodeNumber>\d+)',
-               formatter={'season': int, 'episodeNumber': int},
-               flags=re.IGNORECASE,
+               formatter=int,
                children=True)

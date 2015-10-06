@@ -1,0 +1,30 @@
+# Multiple input strings having same expected results can be chained.
+# Use $ marker to check inputs that should not match results.
+
+
+? +MP3
+? +lame
+? +lame3.12
+? +lame3.100
+: audioCodec: MP3
+
+? +DolbyDigital
+? +DD
+? -Dolby Digital
+: audioCodec: DD
+
+? +AAC
+: audioCodec: AAC
+
+? +AC3
+: audioCodec: AC3
+
+? +Flac
+: audioCodec: FLAC
+
+? +DTS
+: audioCodec: DTS
+
+? +True-HD
+? +trueHD
+: audioCodec: True-HD

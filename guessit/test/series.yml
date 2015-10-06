@@ -3,6 +3,18 @@
   season: 2
   episodeNumber: 5
   #title: Vaginatown
-  #format: HDTV
-  #videoCodec: XviD
+  format: HDTV
+  videoCodec: XviD
   #releaseGroup: 0TV
+
+? Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi
+: #series: Dexter
+  season: 5
+  episodeNumber: 2
+  #title: Hello, Bandit
+  #language: English
+  #subtitleLanguage: French
+  format: HDTV
+  videoCodec: XviD
+  #releaseGroup: AlFleNi-TeaM
+  website: tvu.org.ru
