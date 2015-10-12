@@ -149,6 +149,7 @@ class TestYml(object):
         'rules/screenSize.yml',
         'rules/website.yml',
         'rules/year.yml',
+        'rules/processors.yml',
         'movies.yml',
         'series.yml'
     ], ids=[
@@ -159,6 +160,7 @@ class TestYml(object):
         'rules/screenSize',
         'rules/website',
         'rules/year',
+        'rules/processors',
         'movies',
         'series'
     ])
