@@ -3,12 +3,10 @@
 """
 Processors
 """
-from collections import defaultdict
-
 from rebulk import Rebulk
 
 
-def prefer_last_path(matches, context):
+def prefer_last_path(matches):
     """
     If multiple match are found, keep the one in filename part.
 

@@ -7,6 +7,7 @@ Rebulk configuration for guessit
 from rebulk import Rebulk
 
 from .episodes import EPISODES
+from .extension import EXTENSION
 from .format import FORMAT
 from .video_codec import VIDEO_CODEC
 from .audio_codec import AUDIO_CODEC
@@ -19,6 +20,7 @@ from .processors import PROCESSORS
 REBULK = Rebulk()
 
 REBULK.rebulk(EPISODES)
+REBULK.rebulk(EXTENSION)
 REBULK.rebulk(FORMAT)
 REBULK.rebulk(VIDEO_CODEC)
 REBULK.rebulk(AUDIO_CODEC)
@@ -26,4 +28,5 @@ REBULK.rebulk(SCREEN_SIZE)
 REBULK.rebulk(WEBSITE)
 REBULK.rebulk(YEAR)
 REBULK.rebulk(PATH_MARKER)
+
 REBULK.rebulk(PROCESSORS)

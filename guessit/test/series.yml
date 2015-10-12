@@ -6,6 +6,7 @@
   format: HDTV
   videoCodec: XviD
   #releaseGroup: 0TV
+  extension: avi
 
 ? Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi
 : #series: Dexter
@@ -18,3 +19,4 @@
   videoCodec: XviD
   #releaseGroup: AlFleNi-TeaM
   website: tvu.org.ru
+  extension: avi

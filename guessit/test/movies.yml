@@ -5,4 +5,5 @@
   format: HD-DVD
   audioCodec: DTS
   videoCodec: h264
+  extension: mkv
   #releaseGroup: ESiR
