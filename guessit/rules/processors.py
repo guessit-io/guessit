@@ -29,4 +29,4 @@ def prefer_last_path(matches):
                         matches.remove(named)
 
 
-PROCESSORS = Rebulk().post_processor(prefer_last_path)
+PROCESSORS = Rebulk().processor(prefer_last_path)

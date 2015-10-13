@@ -1,0 +1,10 @@
+# Multiple input strings having same expected results can be chained.
+# Use - marker to check inputs that should not match results.
+? Title Only
+? -Title XViD 720p Only
+? sub/folder/Title Only
+? -sub/folder/Title XViD 720p Only
+? Title Only.mkv
+? Title Only.avi
+: title: Title Only
+

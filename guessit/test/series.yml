@@ -1,18 +1,18 @@
 ? Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.avi
-: #series: Californication
+: title: Californication
   season: 2
   episodeNumber: 5
-  #title: Vaginatown
+  #episodeTitle: Vaginatown
   format: HDTV
   videoCodec: XviD
   #releaseGroup: 0TV
   extension: avi
 
 ? Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi
-: #series: Dexter
+: title: Dexter
   season: 5
   episodeNumber: 2
-  #title: Hello, Bandit
+  #episodeTitle: Hello, Bandit
   #language: English
   #subtitleLanguage: French
   format: HDTV
