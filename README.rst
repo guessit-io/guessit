@@ -9,12 +9,12 @@ GuessIt
     :target: https://pypi.python.org/pypi/guessit
     :alt: LGPLv3 License
 
-.. image:: http://img.shields.io/travis/wackou/guessit.svg?branch=2.x
-    :target: http://travis-ci.org/wackou/guessit
+.. image:: http://img.shields.io/travis/wackou/guessit/2.x.svg
+    :target: https://travis-ci.org/wackou/guessit
     :alt: Build Status
 
-.. image:: http://img.shields.io/coveralls/wackou/guessit.svg?branch=2.x
-    :target: https://coveralls.io/r/wackou/guessit
+.. image:: http://img.shields.io/coveralls/wackou/guessit/2.x.svg
+    :target: https://coveralls.io/github/wackou/guessit?branch=2.x
     :alt: Coveralls
 
 `HuBoard <https://huboard.com/wackou/guessit>`_
