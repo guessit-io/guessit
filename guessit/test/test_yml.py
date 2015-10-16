@@ -133,39 +133,37 @@ class Results(list):
         assert not errors
 
 
-class TestYml(object):
-    options_re = re.compile(r'^([ \+-]+)(.*)')
+def files_and_ids(predicate=None):
+    files = []
+    ids = []
 
+    for (dirpath, _, filenames) in os.walk(__location__):
+        if dirpath == __location__:
+            dirpath_rel = ''
+        else:
+            dirpath_rel = os.path.relpath(dirpath, __location__)
+        for filename in filenames:
+            name, ext = os.path.splitext(filename)
+            filepath = os.path.join(dirpath_rel, filename)
+            if ext == '.yml' and (not predicate or predicate(filepath)):
+                files.append(filepath)
+                ids.append(os.path.join(dirpath_rel, name))
+
+    return files, ids
+
+
+class TestYml(object):
     """
     Run tests from yaml files.
     Multiple input strings having same expected results can be chained.
     Use $ marker to check inputs that should not match results.
     """
-    @pytest.mark.parametrize('filename', [
-        'rules/episodes.yml',
-        'rules/format.yml',
-        'rules/videoCodec.yml',
-        'rules/audioCodec.yml',
-        'rules/screenSize.yml',
-        'rules/title.yml',
-        'rules/website.yml',
-        'rules/year.yml',
-        'rules/processors.yml',
-        'movies.yml',
-        'series.yml'
-    ], ids=[
-        'rules/episodes',
-        'rules/format',
-        'rules/videoCodec',
-        'rules/audioCodec',
-        'rules/screenSize',
-        'rules/title',
-        'rules/website',
-        'rules/year',
-        'rules/processors',
-        'movies',
-        'series'
-    ])
+
+    options_re = re.compile(r'^([ \+-]+)(.*)')
+
+    files, ids = files_and_ids()
+
+    @pytest.mark.parametrize('filename', files, ids=ids)
     def test(self, filename):
         with open(os.path.join(__location__, filename), 'r', encoding='utf-8') as infile:
             data = yaml.load(infile, OrderedDictYAMLLoader)

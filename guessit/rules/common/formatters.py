@@ -17,4 +17,15 @@ def cleanup(input_string):
     """
     for sep in seps:
         input_string = input_string.replace(sep, ' ')
+    return strip(input_string)
+
+
+def strip(input_string):
+    """
+    Strip separators from input_string
+    :param input_string:
+    :type input_string:
+    :return:
+    :rtype:
+    """
     return input_string.strip(seps)

@@ -6,4 +6,4 @@
   audioCodec: DTS
   videoCodec: h264
   extension: mkv
-  #releaseGroup: ESiR
+  releaseGroup: ESiR

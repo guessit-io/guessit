@@ -1,0 +1,6 @@
+# Multiple input strings having same expected results can be chained.
+# Use - marker to check inputs that should not match results.
+? Some.Title.XViD-ReleaseGroup
+? Some.Title.XViD-ReleaseGroup.mkv
+: releaseGroup: ReleaseGroup
+

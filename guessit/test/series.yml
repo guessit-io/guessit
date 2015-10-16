@@ -5,7 +5,7 @@
   #episodeTitle: Vaginatown
   format: HDTV
   videoCodec: XviD
-  #releaseGroup: 0TV
+  releaseGroup: 0TV
   extension: avi
 
 ? Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi
@@ -17,6 +17,6 @@
   #subtitleLanguage: French
   format: HDTV
   videoCodec: XviD
-  #releaseGroup: AlFleNi-TeaM
+  releaseGroup: AlFleNi-TeaM
   website: tvu.org.ru
   extension: avi
