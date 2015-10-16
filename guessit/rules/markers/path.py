@@ -29,8 +29,6 @@ def mark_path(input_string):
     for i in range(0, len(indices) - 1):
         ret.append(Match(indices[i] + 1, indices[i+1]))
 
-    if ret:
-        ret[-1].tags.append('last')
     return ret
 
 

@@ -13,7 +13,7 @@ class TitleFromPosition(Rule):
     Add title match in existing matches
     """
     def when(self, matches, context):
-        filename = matches.markers.named('path', lambda marker: 'last' in marker.tags, 0)
+        filename = matches.markers.named('path', -1)
         start, end = filename.span
 
         first_hole = matches.holes(start, end+1, formatter=cleanup, predicate=lambda hole: hole.value, index=0)

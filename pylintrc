@@ -97,7 +97,7 @@ disable=W0704,E1604,W1632,W1619,W1603,W1633,W1638,E1603,W1623,W1616,W1639,W1629,
     W1624,E1605,E1608,W1620,W1615,W1617,W1634,W1604,W1610,E1602,W1636,W1606,E1606,W1611,E1607,W1635,W1622,W1637,
     W1605,W1621,W1613,W1609,I0021,W1607,E1601,W1627,W1628,W1625,W1614,W1630,W1612,W1608,
     too-few-public-methods,too-many-arguments,too-many-instance-attributes,bad-builtin,too-many-ancestors,
-    too-few-format-args,fixme,
+    too-few-format-args,fixme,duplicate-code,deprecated-lambda,
     I
 
 

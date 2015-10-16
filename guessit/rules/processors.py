@@ -14,13 +14,13 @@ def prefer_last_path(matches):
     :param context:
     :return:
     """
+    filename = matches.markers.named('path', -1)
     for name in matches.names:
         named_list = matches.named(name)
         if len(named_list) > 1:
             keep_list = []
             for named in named_list:
-                marker = matches.markers.at_match(named,
-                                                  lambda marker: marker.name == 'path' and 'last' in marker.tags, 0)
+                marker = matches.markers.at_match(named, lambda marker: marker is filename, 0)
                 if marker:
                     keep_list.append(named)
             if keep_list:

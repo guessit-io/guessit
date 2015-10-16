@@ -18,6 +18,8 @@ import os
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+#filename_predicate = lambda filename: 'episodeTitle' in filename
+filename_predicate = None
 
 class OrderedDictYAMLLoader(yaml.Loader):
     """
@@ -161,7 +163,7 @@ class TestYml(object):
 
     options_re = re.compile(r'^([ \+-]+)(.*)')
 
-    files, ids = files_and_ids()
+    files, ids = files_and_ids(filename_predicate)
 
     @pytest.mark.parametrize('filename', files, ids=ids)
     def test(self, filename):

@@ -15,6 +15,7 @@ from .screen_size import SCREEN_SIZE
 from .website import WEBSITE
 from .year import YEAR
 from .title import TITLE
+from .episode_title import EPISODE_TITLE
 from .markers.path import PATH_MARKER
 from .processors import PROCESSORS
 from .release_group import RELEASE_GROUP
@@ -31,6 +32,7 @@ REBULK.rebulk(SCREEN_SIZE)
 REBULK.rebulk(WEBSITE)
 REBULK.rebulk(YEAR)
 REBULK.rebulk(TITLE)
+REBULK.rebulk(EPISODE_TITLE)
 REBULK.rebulk(RELEASE_GROUP)
 
 REBULK.rebulk(PATH_MARKER)
