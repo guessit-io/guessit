@@ -14,5 +14,8 @@
 : subtitleLanguage: French
 
 ? +ENG.-.sub.FR
+? ENG.-.FR.sub
+? +ENG.-.subFR
+? +ENG.-.FRsub
 : language: English
   subtitleLanguage: French
