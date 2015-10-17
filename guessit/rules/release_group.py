@@ -12,6 +12,8 @@ class SceneReleaseGroup(Rule):
     """
     Add title match in existing matches
     """
+    priority = 5
+
     def when(self, matches, context):
         filename = matches.markers.named('path', -1)
         start, end = filename.span

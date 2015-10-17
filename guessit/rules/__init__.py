@@ -17,6 +17,7 @@ from .year import YEAR
 from .title import TITLE
 from .episode_title import EPISODE_TITLE
 from .markers.path import PATH_MARKER
+from .language import LANGUAGE
 from .processors import PROCESSORS
 from .release_group import RELEASE_GROUP
 
@@ -33,6 +34,7 @@ REBULK.rebulk(WEBSITE)
 REBULK.rebulk(YEAR)
 REBULK.rebulk(TITLE)
 REBULK.rebulk(EPISODE_TITLE)
+REBULK.rebulk(LANGUAGE)
 REBULK.rebulk(RELEASE_GROUP)
 
 REBULK.rebulk(PATH_MARKER)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
+import babelfish
 import pytest
 
 import logging
@@ -19,7 +20,10 @@ import os
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 #filename_predicate = lambda filename: 'episodeTitle' in filename
+#string_predicate = lambda string: 'sub/folder/Title Only' in string
 filename_predicate = None
+string_predicate = None
+
 
 class OrderedDictYAMLLoader(yaml.Loader):
     """
@@ -179,16 +183,18 @@ class TestYml(object):
                 last_expected = expected
 
         for string, expected in data.items():
-            entry = self.check(str(string), expected)
-            if entry.ok:
-                logging.debug('[' + filename + '] ' + str(entry))
-            elif entry.warning:
-                logging.warning('[' + filename + '] ' + str(entry))
-            elif entry.error:
-                logging.error('[' + filename + '] ' + str(entry))
-                for line in entry.details:
-                    logging.error('[' + filename + '] ' + ' ' * 4 + line)
-            entries.append(entry)
+            string = str(string)
+            if not string_predicate or string_predicate(string):  # pylint: disable=not-callable
+                entry = self.check(string, expected)
+                if entry.ok:
+                    logging.debug('[' + filename + '] ' + str(entry))
+                elif entry.warning:
+                    logging.warning('[' + filename + '] ' + str(entry))
+                elif entry.error:
+                    logging.error('[' + filename + '] ' + str(entry))
+                    for line in entry.details:
+                        logging.error('[' + filename + '] ' + ' ' * 4 + line)
+                entries.append(entry)
         entries.assert_ok()
 
     def check(self, string, expected):
@@ -232,13 +238,20 @@ class TestYml(object):
         if global_span and global_span[1] - global_span[0] < len(string):
             entry.others.append("Match is not global")
 
+    def is_same(self, value, expected):
+        if isinstance(value, babelfish.Language):
+            expected = babelfish.Language.fromguessit(expected)  # pylint: disable=no-member
+        elif isinstance(value, babelfish.Country):
+            expected = babelfish.Country.fromguessit(expected)  # pylint: disable=no-member
+        return value == expected
+
     def check_expected(self, result, expected, entry):
         if expected:
             for expected_key, expected_value in expected.items():
                 if expected_key:
                     negates_key, _, result_key = self.parse_token_options(expected_key)
                     if result_key in result.keys():
-                        if result[result_key] != expected_value:
+                        if not self.is_same(result[result_key], expected_value):
                             if negates_key:
                                 entry.valid.append((expected_key, expected_value))
                             else:

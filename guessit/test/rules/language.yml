@@ -1,0 +1,18 @@
+# Multiple input strings having same expected results can be chained.
+# Use - marker to check inputs that should not match results.
+? +English
+? .ENG.
+: language: English
+
+? +French
+: language: French
+
+? +SubFrench
+  +SubFr
+  +STFr
+  +ST.FR
+: subtitleLanguage: French
+
+? +ENG.-.sub.FR
+: language: English
+  subtitleLanguage: French

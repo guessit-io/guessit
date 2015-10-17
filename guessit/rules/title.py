@@ -12,6 +12,8 @@ class TitleFromPosition(Rule):
     """
     Add title match in existing matches
     """
+    priority = 10
+
     def when(self, matches, context):
         filename = matches.markers.named('path', -1)
         start, end = filename.span

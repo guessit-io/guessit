@@ -12,9 +12,9 @@
 : title: Dexter
   season: 5
   episodeNumber: 2
-  #episodeTitle: Hello, Bandit
-  #language: English
-  #subtitleLanguage: French
+  episodeTitle: Hello, Bandit
+  language: English
+  subtitleLanguage: French
   format: HDTV
   videoCodec: XviD
   releaseGroup: AlFleNi-TeaM
