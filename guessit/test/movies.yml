@@ -7,3 +7,12 @@
   videoCodec: h264
   extension: mkv
   releaseGroup: ESiR
+
+? Movies/El Dia de la Bestia (1995)/El.dia.de.la.bestia.DVDrip.Spanish.DivX.by.Artik[SEDG].avi
+: title: El dia de la bestia
+  year: 1995
+  format: DVD
+  language: spanish
+  videoCodec: DivX
+  releaseGroup: Artik[SEDG]
+  extension: avi

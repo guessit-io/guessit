@@ -17,6 +17,7 @@ from .year import YEAR
 from .title import TITLE
 from .episode_title import EPISODE_TITLE
 from .markers.path import PATH_MARKER
+from .markers.groups import GROUPS_MARKER
 from .language import LANGUAGE
 from .processors import PROCESSORS
 from .release_group import RELEASE_GROUP
@@ -38,4 +39,5 @@ REBULK.rebulk(LANGUAGE)
 REBULK.rebulk(RELEASE_GROUP)
 
 REBULK.rebulk(PATH_MARKER)
+REBULK.rebulk(GROUPS_MARKER)
 REBULK.rebulk(PROCESSORS)
