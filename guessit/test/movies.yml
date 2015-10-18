@@ -43,3 +43,24 @@
   #other: [ R5, Proper ]
   videoCodec: XviD
   releaseGroup: PUKKA
+
+? "[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv"
+: title: Le Prestige
+  format: DVD
+  videoCodec: h264
+  videoProfile: HP
+  audioCodec: AAC
+  audioProfile: HE
+  language: [ french, english ]
+  subtitleLanguage: [ french, english ]
+  releaseGroup: XCT
+
+? Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi
+: title: Battle Royale
+  year: 2000
+  #edition: special edition
+  #cdNumber: 1
+  #cdNumberTotal: 2
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: "[ZeaL]"

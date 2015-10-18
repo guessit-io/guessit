@@ -11,7 +11,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
-install_requires = ['rebulk>=0.2.1', 'regex', 'babelfish>=0.5.4']
+install_requires = ['rebulk>=0.3.0', 'regex', 'babelfish>=0.5.4']
 
 tests_require = ['pytest', 'pyyaml']
 

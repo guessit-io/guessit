@@ -48,3 +48,7 @@
 ? -h 264
 ? -x264
 : videoCodec: h265
+
+? h265-HP
+: videoCodec: h265
+  videoProfile: HP

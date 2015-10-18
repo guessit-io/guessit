@@ -28,3 +28,23 @@
 ? +True-HD
 ? +trueHD
 : audioCodec: True-HD
+
+? +DTS-HD
+: audioCodec: DTS
+  audioProfile: HD
+
+? +DTS-HDma
+: audioCodec: DTS
+  audioProfile: HDMA
+
+? +AC3-hq
+: audioCodec: AC3
+  audioProfile: HQ
+
+? +AAC-HE
+: audioCodec: AAC
+  audioProfile: HE
+
+? +AAC-LC
+: audioCodec: AAC
+  audioProfile: LC
