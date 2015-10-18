@@ -21,7 +21,7 @@ class TitleFromPosition(Rule):
         first_hole = matches.holes(start, end+1, formatter=cleanup, predicate=lambda hole: hole.value, index=0)
         if first_hole:
             group_markers = matches.markers.named('group')
-            title = first_hole.crop(*group_markers, index=0)
+            title = first_hole.crop(group_markers, index=0)
 
             return title
 

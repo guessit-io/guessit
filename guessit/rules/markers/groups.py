@@ -24,6 +24,7 @@ def mark_groups(input_string):
     openings = ([], [], [])
     i = 0
 
+    ret = []
     for char in input_string:
         start_type = starting.find(char)
         if start_type > -1:
@@ -34,7 +35,8 @@ def mark_groups(input_string):
         end_type = ending.find(char)
         if end_type > -1:
             start_index = openings[end_type].pop()
-            yield start_index, i
+            ret.append((start_index, i))
+    return ret
 
 
 GROUPS_MARKER.functional(mark_groups)

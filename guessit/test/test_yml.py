@@ -16,6 +16,7 @@ from .. import guessit
 
 import regex as re
 import os
+from rebulk.utils import is_iterable
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -239,11 +240,17 @@ class TestYml(object):
             entry.others.append("Match is not global")
 
     def is_same(self, value, expected):
-        if isinstance(value, babelfish.Language):
-            expected = babelfish.Language.fromguessit(expected)  # pylint: disable=no-member
-        elif isinstance(value, babelfish.Country):
-            expected = babelfish.Country.fromguessit(expected)  # pylint: disable=no-member
-        return value == expected
+        values = set(value) if is_iterable(value) else set((value,))
+        expecteds = set(expected) if is_iterable(expected) else set((expected,))
+        if len(values) != len(expecteds):
+            return False
+        if isinstance(next(iter(values)), babelfish.Language):
+            # pylint: disable=no-member
+            expecteds = set([babelfish.Language.fromguessit(expected) for expected in expecteds])
+        elif isinstance(next(iter(values)), babelfish.Country):
+            # pylint: disable=no-member
+            expecteds = set([babelfish.Country.fromguessit(expected) for expected in expecteds])
+        return values == expecteds
 
     def check_expected(self, result, expected, entry):
         if expected:

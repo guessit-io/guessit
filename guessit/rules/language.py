@@ -236,10 +236,16 @@ class SubtitlePrefixLanguageRule(Rule):
     Convert language guess as subtitleLanguage if previous match is a subtitle language prefix
     """
     def when(self, matches, context):
+        ret = []
         for language in matches.named('language'):
             prefix = matches.previous(language, lambda match: match.name == 'subtitleLanguage.prefix', 0)
+            if not prefix:
+                group_marker = matches.markers.at_match(language, lambda marker: marker.name == 'group', 0)
+                if group_marker:
+                    prefix = matches.previous(group_marker, lambda match: match.name == 'subtitleLanguage.prefix', 0)
             if prefix:
-                yield (prefix, language)
+                ret.append((prefix, language))
+        return ret
 
     def then(self, matches, when_response, context):
         for prefix, language in when_response:
@@ -258,21 +264,27 @@ class SubtitleSuffixLanguageRule(Rule):
     priority = -1
 
     def when(self, matches, context):
+        ret = []
         for language in matches.named('language'):
             suffix = matches.next(language, lambda match: match.name == 'subtitleLanguage.suffix', 0)
             if suffix:
-                yield (suffix, language)
+                ret.append((suffix, language))
+        return ret
 
     def then(self, matches, when_response, context):
         for suffix, language in when_response:
-            matches.remove(suffix)
+            while suffix in matches:
+                # make sure we remove all suffix as it can be in prefix list too.
+                matches.remove(suffix)
             matches.remove(language)
             language.name = 'subtitleLanguage'
             matches.append(language)
 
 
-LANGUAGE.string(*subtitle_prefixes, name="subtitleLanguage.prefix", private=True, validator=seps_surround)
-LANGUAGE.string(*subtitle_suffixes, name="subtitleLanguage.suffix", private=True, validator=seps_surround)
+LANGUAGE.string(*subtitle_prefixes, name="subtitleLanguage.prefix", ignore_case=True, private=True,
+                validator=seps_surround)
+LANGUAGE.string(*subtitle_suffixes, name="subtitleLanguage.suffix", ignore_case=True, private=True,
+                validator=seps_surround)
 LANGUAGE.functional(find_languages)
 LANGUAGE.rules(SubtitlePrefixLanguageRule)
 LANGUAGE.rules(SubtitleSuffixLanguageRule)
