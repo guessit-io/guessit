@@ -19,7 +19,11 @@ class TitleFromPosition(Rule):
         start, end = filename.span
 
         first_hole = matches.holes(start, end+1, formatter=cleanup, predicate=lambda hole: hole.value, index=0)
-        return first_hole
+        if first_hole:
+            group_markers = matches.markers.named('group')
+            title = first_hole.crop(*group_markers, index=0)
+
+            return title
 
     def then(self, matches, when_response, context):
         when_response.name = 'title'

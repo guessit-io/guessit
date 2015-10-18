@@ -19,10 +19,10 @@ import os
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-#filename_predicate = lambda filename: 'episodeTitle' in filename
-#string_predicate = lambda string: 'sub/folder/Title Only' in string
 filename_predicate = None
 string_predicate = None
+#filename_predicate = lambda filename: 'episodeTitle' in filename
+#string_predicate = lambda string: 'Dexter' in string
 
 
 class OrderedDictYAMLLoader(yaml.Loader):

@@ -7,3 +7,7 @@
 ? Some.Title.XViD-by.Artik[SEDG].avi
 : releaseGroup: Artik[SEDG]
 
+? "[ABC] Some.Title.XViD.avi"
+? some/folder/[ABC]Some.Title.avi
+: releaseGroup: ABC
+

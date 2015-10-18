@@ -16,3 +16,30 @@
   videoCodec: DivX
   releaseGroup: Artik[SEDG]
   extension: avi
+
+? Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
+: title: Dark City
+  year: 1998
+  format: BluRay
+  screenSize: 720p
+  audioCodec: DTS
+  videoCodec: h264
+  releaseGroup: CHD
+
+? Movies/Sin City (BluRay) (2005)/Sin.City.2005.BDRip.720p.x264.AC3-SEPTiC.mkv
+: title: Sin City
+  year: 2005
+  format: BluRay
+  screenSize: 720p
+  videoCodec: h264
+  audioCodec: AC3
+  releaseGroup: SEPTiC
+
+? Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi
+: title: Borat
+  year: 2006
+  #properCount: 2
+  format: DVD
+  #other: [ R5, Proper ]
+  videoCodec: XviD
+  releaseGroup: PUKKA
