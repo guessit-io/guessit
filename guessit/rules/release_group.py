@@ -30,6 +30,10 @@ def clean_groupname(string):
             string = string.strip(groupname_seps)
     return string
 
+_scene_next = ['extension', 'website']
+_scene_previous = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels',
+                   'screenSize', 'other']
+
 
 class SceneReleaseGroup(Rule):
     """
@@ -48,8 +52,10 @@ class SceneReleaseGroup(Rule):
 
         if last_hole:
             next_match = matches.next(last_hole, index=0)
-            if not next_match or next_match.name in ['extension', 'website']:
-                return last_hole
+            if not next_match or next_match.name in _scene_next:
+                previous_match = matches.previous(last_hole, index=0)
+                if not previous_match or previous_match.name in _scene_previous:
+                    return last_hole
 
     def then(self, matches, when_response, context):
         when_response.name = 'releaseGroup'

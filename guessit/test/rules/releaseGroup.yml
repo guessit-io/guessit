@@ -11,3 +11,5 @@
 ? some/folder/[ABC]Some.Title.avi
 : releaseGroup: ABC
 
+? Some.Title.XViD-S2E02.NoReleaseGroup.avi
+: releaseGroup: !!null

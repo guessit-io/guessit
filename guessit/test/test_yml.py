@@ -255,7 +255,7 @@ class TestYml(object):
     def check_expected(self, result, expected, entry):
         if expected:
             for expected_key, expected_value in expected.items():
-                if expected_key:
+                if expected_key and expected_value is not None:
                     negates_key, _, result_key = self.parse_token_options(expected_key)
                     if result_key in result.keys():
                         if not self.is_same(result[result_key], expected_value):
