@@ -57,7 +57,8 @@ class SceneReleaseGroup(AppendMatchRule):
                 next_match = matches.next(last_hole, index=0)
                 if not next_match or next_match.name in _scene_next:
                     previous_match = matches.previous(last_hole, index=0)
-                    if not previous_match or previous_match.name in _scene_previous:
+                    if (not previous_match or previous_match.name in _scene_previous) \
+                            and not matches.input_string[previous_match.end:last_hole.start].strip(seps):
                         last_hole.name = 'releaseGroup'
                         ret.append(last_hole)
         return ret
