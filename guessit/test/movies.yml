@@ -59,8 +59,8 @@
 : title: Battle Royale
   year: 2000
   edition: Special Edition
-  #cdNumber: 1
-  #cdNumberTotal: 2
+  cdNumber: 1
+  cdNumberTotal: 2
   format: DVD
   videoCodec: XviD
   releaseGroup: "[ZeaL]"

@@ -23,6 +23,7 @@ from .processors import PROCESSORS
 from .release_group import RELEASE_GROUP
 from .other import OTHER
 from .edition import EDITION
+from .cds import CDS
 
 
 REBULK = Rebulk()
@@ -41,6 +42,7 @@ REBULK.rebulk(LANGUAGE)
 REBULK.rebulk(RELEASE_GROUP)
 REBULK.rebulk(OTHER)
 REBULK.rebulk(EDITION)
+REBULK.rebulk(CDS)
 
 REBULK.rebulk(PATH_MARKER)
 REBULK.rebulk(GROUPS_MARKER)
