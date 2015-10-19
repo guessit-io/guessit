@@ -92,3 +92,4 @@ def proper_count(matches):
         matches.append(proper_count_match)
 
 OTHER.post_processor(proper_count)
+

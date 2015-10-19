@@ -22,6 +22,7 @@ from .language import LANGUAGE
 from .processors import PROCESSORS
 from .release_group import RELEASE_GROUP
 from .other import OTHER
+from .edition import EDITION
 
 
 REBULK = Rebulk()
@@ -39,6 +40,7 @@ REBULK.rebulk(EPISODE_TITLE)
 REBULK.rebulk(LANGUAGE)
 REBULK.rebulk(RELEASE_GROUP)
 REBULK.rebulk(OTHER)
+REBULK.rebulk(EDITION)
 
 REBULK.rebulk(PATH_MARKER)
 REBULK.rebulk(GROUPS_MARKER)
