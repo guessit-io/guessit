@@ -128,3 +128,35 @@
   format: DVD
   videoCodec: XviD
   releaseGroup: TheWretched
+
+? movies/Steig Larsson Millenium Trilogy (2009) BRrip 720 AAC x264/(1)The Girl With The Dragon Tattoo (2009) BRrip 720 AAC x264.mkv
+: title: The Girl With The Dragon Tattoo
+  #filmSeries: Steig Larsson Millenium Trilogy
+  #filmNumber: 1
+  year: 2009
+  format: BluRay
+  audioCodec: AAC
+  videoCodec: h264
+  screenSize: 720p
+
+? movies/Greenberg.REPACK.LiMiTED.DVDRip.XviD-ARROW/arw-repack-greenberg.dvdrip.xvid.avi
+: title: Greenberg
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: ARROW
+  other: ['Proper', 'Limited']
+  properCount: 1
+
+? Movies/Fr - Paris 2054, Renaissance (2005) - De Christian Volckman - (Film Divx Science Fiction Fantastique Thriller Policier N&B).avi
+: title: Paris 2054, Renaissance
+  year: 2005
+  language: french
+  videoCodec: DivX
+
+? Movies/[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi
+: title: Avida
+  year: 2006
+  language: french
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: PROD

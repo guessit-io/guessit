@@ -60,6 +60,7 @@ class SceneReleaseGroup(AppendMatchRule):
                     if (not previous_match or previous_match.name in _scene_previous) \
                             and not matches.input_string[previous_match.end:last_hole.start].strip(seps):
                         last_hole.name = 'releaseGroup'
+                        last_hole.tags = ['scene']
                         ret.append(last_hole)
         return ret
 
@@ -69,10 +70,14 @@ class AnimeReleaseGroup(AppendMatchRule):
     Add releaseGroup match in existing matches (anime format)
     ...[ReleaseGroup] Something.mkv
     """
-    priority = 5
+    priority = 4
 
     def when(self, matches, context):
         ret = []
+
+        # If a scene releaseGroup is found, ignore this kind of releaseGroup rule.
+        if matches.named('releaseGroup', lambda match: 'scene' in match.tags):
+            return ret
 
         for filepart in marker_sorted(matches.markers.named('path'), matches):
 
