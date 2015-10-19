@@ -3,8 +3,7 @@
 """
 audioCodec and audioProfile property
 """
-from rebulk import Rebulk
-from rebulk.rules import RemoveMatchRule
+from rebulk import Rebulk, RemoveMatchRule
 import regex as re
 
 from .common import dash

@@ -4,23 +4,24 @@
 Processors
 """
 from rebulk import Rebulk
+from .common.comparators import marker_sorted
 
 
 def prefer_last_path(matches):
     """
-    If multiple match are found, keep the one in filename part.
+    If multiple match are found, keep the one in the most valuable filepart.
 
     :param matches:
     :param context:
     :return:
     """
-    filename = matches.markers.named('path', -1)
+    filepart = marker_sorted(matches.markers.named('path'), matches)[0]
     for name in matches.names:
         named_list = matches.named(name)
         if len(named_list) > 1:
             keep_list = []
             for named in named_list:
-                marker = matches.markers.at_match(named, lambda marker: marker is filename, 0)
+                marker = matches.markers.at_match(named, lambda marker: marker is filepart, 0)
                 if marker:
                     keep_list.append(named)
             if keep_list:

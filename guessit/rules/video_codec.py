@@ -3,12 +3,10 @@
 """
 videoCodec and videoProfile property
 """
-from rebulk import Rebulk
+from rebulk import Rebulk, RemoveMatchRule
 import regex as re
-from rebulk.rules import RemoveMatchRule
 
 from .common import dash
-
 from .common.validators import seps_surround
 
 VIDEO_CODEC = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)

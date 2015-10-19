@@ -3,12 +3,12 @@
 """
 Episode title
 """
-from rebulk import Rebulk, Rule
+from rebulk import Rebulk, AppendMatchRule
 
 from .common.formatters import cleanup
 
 
-class EpisodeTitleFromPosition(Rule):
+class EpisodeTitleFromPosition(AppendMatchRule):
     """
     Add episode title match in existing matches
     Must run after TitleFromPosition rule.
@@ -23,11 +23,8 @@ class EpisodeTitleFromPosition(Rule):
         if second_hole:
             episode = matches.previous(second_hole, lambda previous: previous.name in ['episodeNumber', 'season'], 0)
             if episode:
+                second_hole.name = 'episodeTitle'
                 return second_hole
-
-    def then(self, matches, when_response, context):
-        when_response.name = 'episodeTitle'
-        matches.append(when_response)
 
 
 EPISODE_TITLE = Rebulk().rules(EpisodeTitleFromPosition)

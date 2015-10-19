@@ -5,10 +5,11 @@ Release group
 """
 import copy
 
-from rebulk import Rebulk, Rule
+from rebulk import Rebulk, AppendMatchRule
 
 from .common.formatters import cleanup
-from guessit.rules.common import seps
+from .common import seps
+from .common.comparators import marker_sorted
 
 forbidden_groupnames = ['rip', 'by', 'for', 'par', 'pour', 'bonus']
 
@@ -35,7 +36,7 @@ _scene_previous = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfi
                    'screenSize', 'other']
 
 
-class SceneReleaseGroup(Rule):
+class SceneReleaseGroup(AppendMatchRule):
     """
     Add releaseGroup match in existing matches (scene format).
 
@@ -44,25 +45,25 @@ class SceneReleaseGroup(Rule):
     priority = 5
 
     def when(self, matches, context):
-        filename = matches.markers.named('path', -1)
-        start, end = filename.span
+        ret = []
 
-        last_hole = matches.holes(start, end + 1, formatter=clean_groupname,
-                                  predicate=lambda hole: cleanup(hole.value), index=-1)
+        for filepart in marker_sorted(matches.markers.named('path'), matches):
+            start, end = filepart.span
 
-        if last_hole:
-            next_match = matches.next(last_hole, index=0)
-            if not next_match or next_match.name in _scene_next:
-                previous_match = matches.previous(last_hole, index=0)
-                if not previous_match or previous_match.name in _scene_previous:
-                    return last_hole
+            last_hole = matches.holes(start, end + 1, formatter=clean_groupname,
+                                      predicate=lambda hole: cleanup(hole.value), index=-1)
 
-    def then(self, matches, when_response, context):
-        when_response.name = 'releaseGroup'
-        matches.append(when_response)
+            if last_hole:
+                next_match = matches.next(last_hole, index=0)
+                if not next_match or next_match.name in _scene_next:
+                    previous_match = matches.previous(last_hole, index=0)
+                    if not previous_match or previous_match.name in _scene_previous:
+                        last_hole.name = 'releaseGroup'
+                        ret.append(last_hole)
+        return ret
 
 
-class AnimeReleaseGroup(Rule):
+class AnimeReleaseGroup(AppendMatchRule):
     """
     Add releaseGroup match in existing matches (anime format)
     ...[ReleaseGroup] Something.mkv
@@ -70,25 +71,25 @@ class AnimeReleaseGroup(Rule):
     priority = 5
 
     def when(self, matches, context):
-        filename = matches.markers.named('path', -1)
+        ret = []
 
-        # pylint:disable=bad-continuation
-        group_marker = matches.markers \
-            .at_match(filename,
-                      lambda marker: marker.name == 'group' and
-                                     matches.next(marker, lambda match: match.name == 'title', 0),
-                      0)
+        for filepart in marker_sorted(matches.markers.named('path'), matches):
 
-        if group_marker:
-            release_group = copy.copy(group_marker)
-            release_group.marker = False
-            release_group.raw_start += 1
-            release_group.raw_end -= 1
-            return release_group
+            # pylint:disable=bad-continuation
+            group_marker = matches.markers \
+                .at_match(filepart,
+                          lambda marker: marker.name == 'group' and
+                                         matches.next(marker, lambda match: match.name == 'title', 0),
+                          0)
 
-    def then(self, matches, when_response, context):
-        when_response.name = 'releaseGroup'
-        matches.append(when_response)
+            if group_marker:
+                release_group = copy.copy(group_marker)
+                release_group.marker = False
+                release_group.raw_start += 1
+                release_group.raw_end -= 1
+                release_group.name = 'releaseGroup'
+                ret.append(release_group)
+        return ret
 
 
 RELEASE_GROUP = Rebulk().rules(SceneReleaseGroup, AnimeReleaseGroup)

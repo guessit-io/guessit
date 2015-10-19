@@ -4,14 +4,13 @@
 format property
 """
 import copy
-from rebulk import Rebulk
+from rebulk import Rebulk, RemoveMatchRule
 
 from .common import dash
 
 import regex as re
 from .common import seps
 from .common.validators import seps_surround
-from rebulk.rules import RemoveMatchRule
 
 OTHER = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
 OTHER.defaults(name="other", validator=seps_surround)
