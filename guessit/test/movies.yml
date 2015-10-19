@@ -38,9 +38,9 @@
 ? Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi
 : title: Borat
   year: 2006
-  #properCount: 2
+  properCount: 2
   format: DVD
-  #other: [ R5, Proper ]
+  other: [ R5, Proper ]
   videoCodec: XviD
   releaseGroup: PUKKA
 

@@ -8,10 +8,11 @@ from rebulk import Rebulk
 from .common import dash
 
 import regex as re
-from .common.validators import seps_surround
+from .common.validators import seps_before, seps_after
+from rebulk.rules import RemoveMatchRule
 
 FORMAT = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
-FORMAT.defaults(name="format", validator=seps_surround)
+FORMAT.defaults(name="format")
 
 FORMAT.regex("VHS", "VHS-Rip", value="VHS")
 FORMAT.regex("CAM", "CAM-Rip", "HD-CAM", value="Cam")
@@ -21,10 +22,36 @@ FORMAT.regex("TELECINE", "TC", value="Telecine")
 FORMAT.regex("PPV", "PPV-Rip", value="PPV")  # Pay Per View
 FORMAT.regex("SD-TV", "SD-TV-Rip", "Rip-SD-TV", "TV-Rip", "Rip-TV", value="TV")  # TV is too common to allow matching
 FORMAT.regex("DVB-Rip", "DVB", "PD-TV", value="DVB")
-FORMAT.regex("DVD", "DVD-Rip", "VIDEO-TS", "DVD-R", "DVD-9", "DVD-5", value="DVD")
+FORMAT.regex("DVD", "DVD-Rip", "VIDEO-TS", "DVD-R(?:$|^E)",  # "DVD-R(?:$|^E)" => DVD-Real ...
+             "DVD-9", "DVD-5", value="DVD")
+
 FORMAT.regex("HD-TV", "TV-RIP-HD", "HD-TV-RIP", "HD-RIP", value="HDTV")
 FORMAT.regex("VOD", "VOD-Rip", value="VOD")
 FORMAT.regex("WEB-Rip", value="WEBRip")
 FORMAT.regex("WEB-DL", "WEB-HD", "WEB", value="WEB-DL")
 FORMAT.regex("HD-DVD-Rip", "HD-DVD", value="HD-DVD")
 FORMAT.regex("Blu-ray(?:-Rip)?", "B[DR]", "B[DR]-Rip", "BD[59]", "BD25", "BD50", value="BluRay")
+
+
+class ValidateFormat(RemoveMatchRule):
+    """
+    Validate format with screener property or separated.
+    """
+    priority = 255
+
+    def when(self, matches, context):
+        ret = []
+        for format_match in matches.named('format'):
+            if not seps_before(format_match) and \
+                    not matches.range(format_match.start - 1, format_match.start - 2,
+                                      lambda match: match.name == 'other' and match.value == 'Screener'):
+                ret.append(format_match)
+                break
+            if not seps_after(format_match) and \
+                    not matches.range(format_match.end, format_match.end + 1,
+                                      lambda match: match.name == 'other' and match.value == 'Screener'):
+                ret.append(format_match)
+                break
+        return ret
+
+FORMAT.rules(ValidateFormat)
