@@ -45,12 +45,12 @@ class ValidateFormat(RemoveMatchRule):
                     not matches.range(format_match.start - 1, format_match.start - 2,
                                       lambda match: match.name == 'other' and match.value == 'Screener'):
                 ret.append(format_match)
-                break
+                continue
             if not seps_after(format_match) and \
                     not matches.range(format_match.end, format_match.end + 1,
                                       lambda match: match.name == 'other' and match.value == 'Screener'):
                 ret.append(format_match)
-                break
+                continue
         return ret
 
 FORMAT.rules(ValidateFormat)
