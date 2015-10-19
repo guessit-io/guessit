@@ -9,7 +9,7 @@
   releaseGroup: ESiR
 
 ? Movies/El Dia de la Bestia (1995)/El.dia.de.la.bestia.DVDrip.Spanish.DivX.by.Artik[SEDG].avi
-: title: El dia de la bestia
+: title: El Dia de la Bestia
   year: 1995
   format: DVD
   language: spanish
@@ -160,3 +160,39 @@
   format: DVD
   videoCodec: XviD
   releaseGroup: PROD
+
+? Movies/Alice in Wonderland DVDRip.XviD-DiAMOND/dmd-aw.avi
+: title: Alice in Wonderland
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: DiAMOND
+
+? Movies/Ne.Le.Dis.A.Personne.Fr 2 cd/personnea_mp.avi
+: title: Ne Le Dis A Personne
+  language: french
+  cdNumberTotal: 2
+
+? Movies/Bunker Palace Hôtel (Enki Bilal) (1989)/Enki Bilal - Bunker Palace Hotel (Fr Vhs Rip).avi
+: title: Bunker Palace Hôtel
+  year: 1989
+  language: french
+  format: VHS
+
+? Movies/21 (2008)/21.(2008).DVDRip.x264.AC3-FtS.[sharethefiles.com].mkv
+: title: "21"
+  year: 2008
+  format: DVD
+  videoCodec: h264
+  audioCodec: AC3
+  releaseGroup: FtS
+  website: sharethefiles.com
+
+? Movies/9 (2009)/9.2009.Blu-ray.DTS.720p.x264.HDBRiSe.[sharethefiles.com].mkv
+: title: "9"
+  year: 2009
+  format: BluRay
+  audioCodec: DTS
+  screenSize: 720p
+  videoCodec: h264
+  releaseGroup: HDBRiSe
+  website: sharethefiles.com
