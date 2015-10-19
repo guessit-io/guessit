@@ -64,3 +64,53 @@
   format: DVD
   videoCodec: XviD
   releaseGroup: "[ZeaL]"
+
+? Movies/Brazil (1985)/Brazil_Criterion_Edition_(1985).CD2.avi
+: title: Brazil
+  edition: Criterion Edition
+  year: 1985
+  cdNumber: 2
+
+? Movies/Persepolis (2007)/[XCT] Persepolis [H264+Aac-128(Fr-Eng)+ST(Fr-Eng)+Ind].mkv
+: title: Persepolis
+  year: 2007
+  videoCodec: h264
+  audioCodec: AAC
+  language: [ French, English ]
+  subtitleLanguage: [ French, English ]
+  releaseGroup: XCT
+
+? Movies/Toy Story (1995)/Toy Story [HDTV 720p English-Spanish].mkv
+: title: Toy Story
+  year: 1995
+  format: HDTV
+  screenSize: 720p
+  language: [ english, spanish ]
+
+? Movies/Office Space (1999)/Office.Space.[Dual-DVDRip].[Spanish-English].[XviD-AC3-AC3].[by.Oswald].avi
+: title: Office Space
+  year: 1999
+  format: DVD
+  language: [ english, spanish ]
+  videoCodec: XviD
+  audioCodec: AC3
+
+? Movies/Wild Zero (2000)/Wild.Zero.DVDivX-EPiC.avi
+: title: Wild Zero
+  year: 2000
+  videoCodec: DivX
+  releaseGroup: EPiC
+
+? movies/Baraka_Edition_Collector.avi
+: title: Baraka
+  edition: Collector Edition
+
+? Movies/Blade Runner (1982)/Blade.Runner.(1982).(Director's.Cut).CD1.DVDRip.XviD.AC3-WAF.avi
+: title: Blade Runner
+  year: 1982
+  edition: Director's cut
+  cdNumber: 1
+  format: DVD
+  videoCodec: XviD
+  audioCodec: AC3
+  releaseGroup: WAF
