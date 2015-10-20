@@ -12,6 +12,8 @@ from collections import OrderedDict
 # io.open supports encoding= in python 2.7
 from io import open  # pylint: disable=redefined-builtin
 
+import six
+
 from .. import guessit
 
 import regex as re
@@ -184,17 +186,18 @@ class TestYml(object):
                 last_expected = expected
 
         for string, expected in data.items():
-            string = str(string)
+            if not isinstance(string, six.text_type):
+                string = six.text_type(string)
             if not string_predicate or string_predicate(string):  # pylint: disable=not-callable
                 entry = self.check(string, expected)
                 if entry.ok:
-                    logging.debug('[' + filename + '] ' + str(entry))
+                    logging.debug(u'[' + filename + '] ' + six.text_type(entry))
                 elif entry.warning:
-                    logging.warning('[' + filename + '] ' + str(entry))
+                    logging.warning(u'[' + filename + '] ' + six.text_type(entry))
                 elif entry.error:
-                    logging.error('[' + filename + '] ' + str(entry))
+                    logging.error(u'[' + filename + '] ' + six.text_type(entry))
                     for line in entry.details:
-                        logging.error('[' + filename + '] ' + ' ' * 4 + line)
+                        logging.error(u'[' + filename + '] ' + ' ' * 4 + line)
                 entries.append(entry)
         entries.assert_ok()
 

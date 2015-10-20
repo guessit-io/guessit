@@ -3,9 +3,8 @@
 """
 Common module
 """
+import six
 
-seps = r' [](){}!?+*|&=%§-_~#/\.'  # list of tags/words separators
+seps = six.u(' [](){}!?+*|&=%§-_~#/\.')  # list of tags/words separators
 
-dash = ("-", r"[\W_]?")  # abbreviation used by many rebulk objects.
-
-
+dash = (six.u('-'), six.u('[\W_]?'))  # abbreviation used by many rebulk objects.
