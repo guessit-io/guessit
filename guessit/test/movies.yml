@@ -196,3 +196,17 @@
   videoCodec: h264
   releaseGroup: HDBRiSe
   website: sharethefiles.com
+
+? Movies/Mamma.Mia.2008.DVDRip.AC3.XviD-CrazyTeam/Mamma.Mia.2008.DVDRip.AC3.XviD-CrazyTeam.avi
+: title: Mamma Mia
+  year: 2008
+  format: DVD
+  audioCodec: AC3
+  videoCodec: XviD
+  releaseGroup: CrazyTeam
+
+? Movies/M.A.S.H. (1970)/MASH.(1970).[Divx.5.02][Dual-Subtitulos][DVDRip].ogm
+: title: MASH
+  year: 1970
+  videoCodec: DivX
+  format: DVD
