@@ -204,7 +204,8 @@ class TestYml(object):
     def check(self, string, expected):
         negates, global_, string = self.parse_token_options(string)
 
-        result = guessit(string)
+        options = expected.get('options')
+        result = guessit(string, options)
 
         entry = EntryResult(string, negates)
 
@@ -258,7 +259,7 @@ class TestYml(object):
     def check_expected(self, result, expected, entry):
         if expected:
             for expected_key, expected_value in expected.items():
-                if expected_key and expected_value is not None:
+                if expected_key and expected_key != 'options' and expected_value is not None:
                     negates_key, _, result_key = self.parse_token_options(expected_key)
                     if result_key in result.keys():
                         if not self.is_same(result[result_key], expected_value):

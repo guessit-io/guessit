@@ -186,11 +186,12 @@ all_lang_prefixes_suffixes = subtitle_prefixes + subtitle_suffixes + lang_prefix
 _words_rexp = re.compile(r'\w+', re.UNICODE)
 
 
-def find_languages(string, allowed_languages=None):
+def find_languages(string, options=None):
     """Find languages in the string
 
     :return: list of tuple (property, Language, lang_word, word)
     """
+    allowed_languages = options.get('allowed_languages')
     common_words = LNG_COMMON_WORDS_STRICT if allowed_languages else LNG_COMMON_WORDS
 
     matches = []

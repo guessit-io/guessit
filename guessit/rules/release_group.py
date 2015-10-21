@@ -31,7 +31,6 @@ def clean_groupname(string):
             string = string.strip(groupname_seps)
     return string
 
-_scene_next = ['extension', 'website']
 _scene_previous = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels',
                    'screenSize', 'other']
 
@@ -54,14 +53,12 @@ class SceneReleaseGroup(AppendMatchRule):
                                       predicate=lambda hole: cleanup(hole.value), index=-1)
 
             if last_hole:
-                next_match = matches.next(last_hole, index=0)
-                if not next_match or next_match.name in _scene_next:
-                    previous_match = matches.previous(last_hole, index=0)
-                    if (not previous_match or previous_match.name in _scene_previous) \
-                            and not matches.input_string[previous_match.end:last_hole.start].strip(seps):
-                        last_hole.name = 'releaseGroup'
-                        last_hole.tags = ['scene']
-                        ret.append(last_hole)
+                previous_match = matches.previous(last_hole, index=0)
+                if previous_match and previous_match.name in _scene_previous and \
+                        not matches.input_string[previous_match.end:last_hole.start].strip(seps):
+                    last_hole.name = 'releaseGroup'
+                    last_hole.tags = ['scene']
+                    ret.append(last_hole)
         return ret
 
 

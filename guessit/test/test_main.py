@@ -4,5 +4,6 @@
 
 from ..__main__ import main
 
+
 def test_main_no_args():
-    main()
+    main([])
