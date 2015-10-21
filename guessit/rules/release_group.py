@@ -29,6 +29,9 @@ def clean_groupname(string):
         if string.lower().startswith(forbidden):
             string = string[len(forbidden):]
             string = string.strip(groupname_seps)
+        if string.lower().endswith(forbidden):
+            string = string[:len(forbidden)]
+            string = string.strip(groupname_seps)
     return string
 
 _scene_previous = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels',
