@@ -30,6 +30,8 @@ class GuessitEncoder(json.JSONEncoder):
             ret['start'] = o.start
             ret['end'] = o.end
             return ret
+        if hasattr(o, 'name'):  # For babelfish country/language objects
+            return o.name
         return super(GuessitEncoder, self).default(o)
 
 
