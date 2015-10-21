@@ -235,3 +235,20 @@
   releaseGroup: HiS@SiLUHD
   language: english
   website: sharethefiles.com
+
+? Movies/Ratatouille/video_ts-ratatouille.srt
+: title: ratatouille
+  format: DVD
+
+? Movies/001 __ A classer/Fantomas se déchaine - Louis de Funès.avi
+: title: Fantomas se déchaine   Louis de Funès
+# TODO: Remove author from title, or add a new property like subtitle ...
+
+? Movies/Comme une Image (2004)/Comme.Une.Image.FRENCH.DVDRiP.XViD-NTK.par-www.divx-overnet.com.avi
+: title: Comme une Image
+  year: 2004
+  language: french
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: NTK
+  website: www.divx-overnet.com
