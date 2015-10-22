@@ -22,7 +22,10 @@ import json
 
 
 class GuessitEncoder(json.JSONEncoder):
-    def default(self, o):
+    """
+    JSON Encoder for guessit response
+    """
+    def default(self, o):  # pylint:disable=method-hidden
         if isinstance(o, Match):
             ret = OrderedDict()
             ret['value'] = o.value
