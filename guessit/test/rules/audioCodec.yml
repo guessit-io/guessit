@@ -48,3 +48,21 @@
 ? +AAC-LC
 : audioCodec: AAC
   audioProfile: LC
+
+? +7.1
+? +7ch
+? +8ch
+: audioChannels: '7.1'
+
+? +5.1
+? +5ch
+? +6ch
+: audioChannels: '5.1'
+
+? +2ch
+? +stereo
+: audioChannels: '2.0'
+
+? +1ch
+? +mono
+: audioChannels: '1.0'

@@ -252,3 +252,15 @@
   videoCodec: XviD
   releaseGroup: NTK
   website: www.divx-overnet.com
+
+? Movies/Fantastic Mr Fox/Fantastic.Mr.Fox.2009.DVDRip.{x264+LC-AAC.5.1}{Fr-Eng}{Sub.Fr-Eng}-™.[sharethefiles.com].mkv
+: title: Fantastic Mr Fox
+  year: 2009
+  format: DVD
+  videoCodec: h264
+  audioCodec: AAC
+  audioProfile: LC
+  audioChannels: "5.1"
+  language: [ french, english ]
+  subtitleLanguage: [ french, english ]
+  website: sharethefiles.com
