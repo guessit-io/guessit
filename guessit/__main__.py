@@ -33,9 +33,8 @@ class GuessitEncoder(json.JSONEncoder):
             ret['start'] = o.start
             ret['end'] = o.end
             return ret
-        if hasattr(o, 'name'):  # For babelfish country/language objects
-            return o.name
-        return super(GuessitEncoder, self).default(o)
+        else:
+            return str(o)
 
 
 def guess_filename(filename, options):
@@ -55,9 +54,6 @@ def guess_filename(filename, options):
         print(json.dumps(guess, cls=GuessitEncoder, ensure_ascii=False))
     elif options.yaml:
         import yaml
-        for key, value in guess.items():
-            if isinstance(value, list) and len(value) == 1:
-                guess[key] = value[0]
         ystr = yaml.safe_dump({filename: dict(guess)}, default_flow_style=False, allow_unicode=True)
         i = 0
         for yline in ystr.splitlines():

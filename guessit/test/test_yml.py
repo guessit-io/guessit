@@ -25,7 +25,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 filename_predicate = None
 string_predicate = None
 #filename_predicate = lambda filename: 'episodeTitle' in filename
-#string_predicate = lambda string: 'Dexter' in string
+#string_predicate = lambda string: '-DVD.BlablaBla.Fix.Blablabla.XVID' in string
 
 
 class OrderedDictYAMLLoader(yaml.Loader):

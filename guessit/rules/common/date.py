@@ -30,28 +30,6 @@ def valid_year(year):
     return 1920 <= year < 2030
 
 
-def search_year(string):
-    """Looks for year patterns, and if found return the year and group span.
-
-    Assumes there are sentinels at the beginning and end of the string that
-    always allow matching a non-digit delimiting the date.
-
-    Note this only looks for valid production years, that is between 1920
-    and now + 5 years, so for instance 2000 would be returned as a valid
-    year but 1492 would not.
-
-    >>> search_year(' in the year 2000... ')
-    (13, 17, 2000)
-
-    >>> search_year(' they arrived in 1492. ')
-    """
-    match = re.search(r'[^0-9]([0-9]{4})[^0-9]', string)
-    if match:
-        year = int(match.group(1))
-        if valid_year(year):
-            return (match.start(1), match.end(1), year)
-
-
 def search_date(string, year_first=None, day_first=True):
     """Looks for date patterns, and if found return the date and group span.
 
@@ -75,10 +53,7 @@ def search_date(string, year_first=None, day_first=True):
         search_match = date_re.search(string)
         if search_match and (match is None or search_match.end() - search_match.start() > len(match)):
             start, end = search_match.start(1), search_match.end(1)
-            if date_re.groups:
-                match = '-'.join(search_match.groups()[1:])
-            else:
-                match = search_match.group()
+            match = '-'.join(search_match.groups()[1:])
 
     if match is None:
         return
@@ -96,7 +71,8 @@ def search_date(string, year_first=None, day_first=True):
     for kwargs in kwargs_list:
         try:
             date = parser.parse(match, **kwargs)
-        except (ValueError, TypeError): #see https://bugs.launchpad.net/dateutil/+bug/1247643
+        except (ValueError, TypeError):  # pragma: no cover
+            # see https://bugs.launchpad.net/dateutil/+bug/1247643
             date = None
 
         # check date plausibility
