@@ -24,6 +24,7 @@ from .release_group import RELEASE_GROUP
 from .other import OTHER
 from .edition import EDITION
 from .cds import CDS
+from .bonus import BONUS
 
 
 REBULK = Rebulk()
@@ -43,6 +44,7 @@ REBULK.rebulk(RELEASE_GROUP)
 REBULK.rebulk(OTHER)
 REBULK.rebulk(EDITION)
 REBULK.rebulk(CDS)
+REBULK.rebulk(BONUS)
 
 REBULK.rebulk(PATH_MARKER)
 REBULK.rebulk(GROUPS_MARKER)

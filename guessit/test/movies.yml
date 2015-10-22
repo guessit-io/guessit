@@ -264,3 +264,20 @@
   language: [ french, english ]
   subtitleLanguage: [ french, english ]
   website: sharethefiles.com
+
+? Movies/Somewhere.2010.DVDRip.XviD-iLG/i-smwhr.avi
+: title: Somewhere
+  year: 2010
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: iLG
+
+? Movies/Moon_(2009).mkv
+: title: Moon
+  year: 2009
+
+? Movies/Moon_(2009)-x02-Making_Of.mkv
+: title: Moon
+  year: 2009
+  bonusNumber: 2
+  bonusTitle: Making Of
