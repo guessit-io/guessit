@@ -64,7 +64,7 @@ def parse_options(options):
     :return:
     :rtype:
     """
-    if isinstance(options, six.text_type):
+    if isinstance(options, six.string_types):
         args = shlex.split(options)
         options = vars(argument_parser.parse_args(args))
     if options is None:
