@@ -241,7 +241,7 @@
   format: DVD
 
 ? Movies/001 __ A classer/Fantomas se déchaine - Louis de Funès.avi
-: title: Fantomas se déchaine   Louis de Funès
+: title: Fantomas se déchaine Louis de Funès
 # TODO: Remove author from title, or add a new property like subtitle ...
 
 ? Movies/Comme une Image (2004)/Comme.Une.Image.FRENCH.DVDRiP.XViD-NTK.par-www.divx-overnet.com.avi
@@ -308,7 +308,7 @@
   bonusTitle: Stunts
 
 ? OSS_117--Cairo,_Nest_of_Spies.mkv
-: title: OSS 117  Cairo, Nest of Spies
+: title: OSS 117 Cairo, Nest of Spies
 
 ? The Godfather Part 3.mkv
 ? The Godfather Part III.mkv
@@ -324,3 +324,19 @@
   year: 1999
   bonusNumber: 2
   bonusTitle: 60 Minutes Interview 1996
+
+? Rush.._Beyond_The_Lighted_Stage-x09-Between_Sun_and_Moon-2002_Hartford.mkv
+: title: Rush Beyond The Lighted Stage
+  bonusNumber: 9
+  bonusTitle: Between Sun and Moon
+  year: 2002
+
+? /public/uTorrent/Downloads Finished/Movies/Indiana.Jones.and.the.Temple.of.Doom.1984.HDTV.720p.x264.AC3.5.1-REDµX/Indiana.Jones.and.the.Temple.of.Doom.1984.HDTV.720p.x264.AC3.5.1-REDµX.mkv
+: title: Indiana Jones and the Temple of Doom
+  year: 1984
+  format: HDTV
+  screenSize: 720p
+  videoCodec: h264
+  audioCodec: AC3
+  audioChannels: "5.1"
+  releaseGroup: REDµX

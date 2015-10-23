@@ -5,6 +5,7 @@ Formatters
 """
 
 from . import seps
+import regex as re
 
 
 def cleanup(input_string):
@@ -17,7 +18,7 @@ def cleanup(input_string):
     """
     for sep in seps:
         input_string = input_string.replace(sep, ' ')
-    return strip(input_string)
+    return re.sub(' +', ' ', strip(input_string))
 
 
 def strip(input_string):
