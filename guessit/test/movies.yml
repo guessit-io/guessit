@@ -281,3 +281,31 @@
   year: 2009
   bonusNumber: 2
   bonusTitle: Making Of
+
+? movies/James_Bond-f17-Goldeneye.mkv
+: title: Goldeneye
+  filmSeries: James Bond
+  filmNumber: 17
+
+
+? /movies/James_Bond-f21-Casino_Royale.mkv
+: title: Casino Royale
+  filmSeries: James Bond
+  filmNumber: 21
+
+? /movies/James_Bond-f21-Casino_Royale-x01-Becoming_Bond.mkv
+: title: Casino Royale
+  filmSeries: James Bond
+  filmNumber: 21
+  bonusNumber: 1
+  bonusTitle: Becoming Bond
+
+? /movies/James_Bond-f21-Casino_Royale-x02-Stunts.mkv
+: title: Casino Royale
+  filmSeries: James Bond
+  filmNumber: 21
+  bonusNumber: 2
+  bonusTitle: Stunts
+
+? OSS_117--Cairo,_Nest_of_Spies.mkv
+: title: OSS 117  Cairo, Nest of Spies

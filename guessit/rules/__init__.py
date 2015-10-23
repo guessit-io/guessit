@@ -25,6 +25,7 @@ from .other import OTHER
 from .edition import EDITION
 from .cds import CDS
 from .bonus import BONUS
+from .film import FILM
 
 
 REBULK = Rebulk()
@@ -45,6 +46,7 @@ REBULK.rebulk(OTHER)
 REBULK.rebulk(EDITION)
 REBULK.rebulk(CDS)
 REBULK.rebulk(BONUS)
+REBULK.rebulk(FILM)
 
 REBULK.rebulk(PATH_MARKER)
 REBULK.rebulk(GROUPS_MARKER)
