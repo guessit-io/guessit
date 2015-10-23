@@ -4,11 +4,11 @@
 format property
 """
 import copy
+
 from rebulk import Rebulk, RemoveMatchRule
+import regex as re
 
 from ..common import dash
-
-import regex as re
 from ..common import seps
 from ..common.validators import seps_surround
 
@@ -74,6 +74,7 @@ class ValidateScreenerRule(RemoveMatchRule):
                 ret.append(screener)
         return ret
 
+
 OTHER.rules(ValidateHasNeighbor, ValidateScreenerRule)
 
 
@@ -90,5 +91,5 @@ def proper_count(matches):
         proper_count_match.value = len(propers)
         matches.append(proper_count_match)
 
-OTHER.post_processor(proper_count)
 
+OTHER.post_processor(proper_count)

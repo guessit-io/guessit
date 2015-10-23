@@ -4,6 +4,7 @@
 Date and year
 """
 from rebulk import Rebulk
+
 from ..common.date import search_date, valid_year
 from ..common.validators import seps_surround
 
@@ -27,5 +28,6 @@ def date(string, context):
     ret = search_date(string, context.get('date_year_first'), context.get('date_day_first'))
     if ret:
         return ret[0], ret[1], {'value': ret[2]}
+
 
 DATE.functional(date, name="date")

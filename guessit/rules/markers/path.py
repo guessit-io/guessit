@@ -27,7 +27,7 @@ def mark_path(input_string):
 
     ret = []
     for i in range(0, len(indices) - 1):
-        ret.append(Match(indices[i] + 1, indices[i+1]))
+        ret.append(Match(indices[i] + 1, indices[i + 1]))
 
     return ret
 

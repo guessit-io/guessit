@@ -19,7 +19,7 @@ class EpisodeTitleFromPosition(AppendMatchRule):
         filename = matches.markers.named('path', -1)
         start, end = filename.span
 
-        second_hole = matches.holes(start, end+1, formatter=cleanup, predicate=lambda hole: hole.value, index=1)
+        second_hole = matches.holes(start, end + 1, formatter=cleanup, predicate=lambda hole: hole.value, index=1)
         if second_hole:
             episode = matches.previous(second_hole, lambda previous: previous.name in ['episodeNumber', 'season'], 0)
             if episode:

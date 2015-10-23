@@ -4,6 +4,7 @@
 Processors
 """
 from rebulk import Rebulk
+
 from .common.comparators import marker_sorted
 
 
@@ -50,5 +51,6 @@ def enlarge_group_matches(matches):
             match.end += 1
             match.raw_end -= 1
             matches.append(match)
+
 
 PROCESSORS = Rebulk().processor(prefer_last_path, enlarge_group_matches)

@@ -207,7 +207,7 @@ def find_languages(string, options=None):
                 key = 'subtitleLanguage'
         for suffix in subtitle_suffixes:
             if lang_word.endswith(suffix):
-                lang_word = lang_word[:len(suffix)-1]
+                lang_word = lang_word[:len(suffix) - 1]
                 key = 'subtitleLanguage'
         for prefix in lang_prefixes:
             if lang_word.startswith(prefix):
@@ -236,6 +236,7 @@ class SubtitlePrefixLanguageRule(Rule):
     """
     Convert language guess as subtitleLanguage if previous match is a subtitle language prefix
     """
+
     def when(self, matches, context):
         ret = []
         for language in matches.named('language'):

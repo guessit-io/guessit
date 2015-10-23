@@ -27,4 +27,3 @@ WEBSITE.regex(r'(?:[^a-z0-9]|^)((?:\L<safe_subdomains>\.)*[a-z-]+\.(?:\L<safe_tl
               safe_subdomains=SAFE_SUBDOMAINS, safe_tlds=SAFE_TLDS, children=True)
 WEBSITE.regex(r'(?:[^a-z0-9]|^)((?:\L<safe_subdomains>\.)*[a-z-]+\.(?:\L<safe_prefix>\.)+(?:\L<tlds>))(?:[^a-z0-9]|$)',
               safe_subdomains=SAFE_SUBDOMAINS, safe_prefix=SAFE_PREFIX, tlds=TLDS, children=True)
-

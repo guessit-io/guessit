@@ -22,7 +22,7 @@ class TitleFromPosition(AppendMatchRule):
         """
         start, end = filepart.span
 
-        first_hole = matches.holes(start, end+1, formatter=cleanup, predicate=lambda hole: hole.value, index=0)
+        first_hole = matches.holes(start, end + 1, formatter=cleanup, predicate=lambda hole: hole.value, index=0)
         if first_hole:
             group_markers = matches.markers.named('group')
             title = first_hole.crop(group_markers, index=0)
@@ -82,5 +82,6 @@ class PreferTitleWithYear(RemoveMatchRule):
 
         if with_year:
             return without_year
+
 
 TITLE = Rebulk().rules(TitleFromPosition, PreferTitleWithYear)

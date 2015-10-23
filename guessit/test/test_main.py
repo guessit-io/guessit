@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
 
-from ..__main__ import main
+import os
 
 import pytest
 
-import os
+from ..__main__ import main
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 

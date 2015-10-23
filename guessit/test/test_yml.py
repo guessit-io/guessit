@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
+import logging
+from collections import OrderedDict
+
 import babelfish
 import pytest
-
-import logging
-
 import yaml
-import yaml.constructor
-from collections import OrderedDict
+
 # io.open supports encoding= in python 2.7
 from io import open  # pylint: disable=redefined-builtin
 
@@ -24,8 +23,10 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 
 filename_predicate = None
 string_predicate = None
-#filename_predicate = lambda filename: 'episodeTitle' in filename
-#string_predicate = lambda string: '-DVD.BlablaBla.Fix.Blablabla.XVID' in string
+
+
+# filename_predicate = lambda filename: 'episodeTitle' in filename
+# string_predicate = lambda string: '-DVD.BlablaBla.Fix.Blablabla.XVID' in string
 
 
 class OrderedDictYAMLLoader(yaml.Loader):
@@ -278,5 +279,3 @@ class TestYml(object):
         for result_key, result_value in result.items():
             if result_key not in expected.keys():
                 entry.extra.append((result_key, result_value))
-
-

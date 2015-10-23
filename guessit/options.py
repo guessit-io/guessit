@@ -5,8 +5,8 @@ Options
 """
 
 from argparse import ArgumentParser
-
 import shlex
+
 import six
 
 
@@ -20,7 +20,7 @@ def build_argument_parser():
     opts.add_argument(dest='filename', help='Filename or release name to guess', nargs='*')
 
     naming_opts = opts.add_argument_group("Naming")
-    #naming_opts.add_argument('-t', '--type', dest='type', default=None,
+    # naming_opts.add_argument('-t', '--type', dest='type', default=None,
     #                         help='The suggested file type: movie, episode. If undefined, type will be guessed.')
     naming_opts.add_argument('-Y', '--date-year-first', action='store_true', dest='date_year_first', default=None,
                              help='If short date is found, consider the first digits as the year.')
@@ -71,5 +71,5 @@ def parse_options(options):
         options = {}
     return options
 
-argument_parser = build_argument_parser()
 
+argument_parser = build_argument_parser()

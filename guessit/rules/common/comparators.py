@@ -17,6 +17,7 @@ def marker_comparator(matches, markers):
     :return:
     :rtype:
     """
+
     def comparator(marker1, marker2):
         """
         The actual comparator function.
@@ -28,6 +29,7 @@ def marker_comparator(matches, markers):
         if len_diff:
             return len_diff
         return markers.index(marker2) - markers.index(marker1)
+
     return comparator
 
 

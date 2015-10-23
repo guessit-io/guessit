@@ -4,10 +4,9 @@
 format property
 """
 from rebulk import Rebulk, RemoveMatchRule
+import regex as re
 
 from ..common import dash
-
-import regex as re
 from ..common.validators import seps_before, seps_after
 
 FORMAT = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
@@ -52,5 +51,6 @@ class ValidateFormat(RemoveMatchRule):
                 ret.append(format_match)
                 continue
         return ret
+
 
 FORMAT.rules(ValidateFormat)

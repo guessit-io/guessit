@@ -4,8 +4,8 @@
 screenSize property
 """
 from rebulk import Rebulk
-
 import regex as re
+
 from ..common.validators import seps_surround
 
 SCREEN_SIZE = Rebulk().regex_defaults(flags=re.IGNORECASE)

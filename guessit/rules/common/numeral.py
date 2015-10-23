@@ -50,6 +50,7 @@ def __build_word_numeral(*args):
     re_ += ')'
     return re_
 
+
 word_numeral = __build_word_numeral(english_word_numeral_list, french_word_numeral_list, french_alt_word_numeral_list)
 
 numeral = '(?:' + digital_numeral + '|' + roman_numeral + '|' + word_numeral + ')'

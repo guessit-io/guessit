@@ -10,7 +10,6 @@ import regex as re
 
 from dateutil import parser
 
-
 _dsep = r'[-/ \.]'
 _dsep_bis = r'[-/ \.x]'
 

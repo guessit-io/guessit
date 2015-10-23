@@ -6,25 +6,23 @@ Entry point module
 # pragma: no cover
 from __future__ import print_function
 from collections import OrderedDict
-from rebulk.match import Match
-
-import six
-
 import os
 import logging
+import json
+
+from rebulk.match import Match
+import six
 
 from guessit.__version__ import __version__
-
 from guessit.options import argument_parser
 from guessit.api import guessit
-
-import json
 
 
 class GuessitEncoder(json.JSONEncoder):
     """
     JSON Encoder for guessit response
     """
+
     def default(self, o):  # pylint:disable=method-hidden
         if isinstance(o, Match):
             ret = OrderedDict()
@@ -96,13 +94,13 @@ def main(args=None):  # pylint:disable=too-many-branches
 
     help_required = True
     if options.properties or options.values:
-        #display_properties(options)
+        # display_properties(options)
         # TODO: Add display of available properties
         help_required = False
 
     if options.version:
         print('+-------------------------------------------------------+')
-        print('+                   GuessIt ' + __version__ + (28-len(__version__)) * ' ' + '+')
+        print('+                   GuessIt ' + __version__ + (28 - len(__version__)) * ' ' + '+')
         print('+-------------------------------------------------------+')
         print('|      Please report any bug or feature request at      |')
         print('|       https://github.com/wackou/guessit/issues.       |')
@@ -115,6 +113,7 @@ def main(args=None):  # pylint:disable=too-many-branches
             def default_representer(dumper, data):
                 """Default representer"""
                 return dumper.represent_str(str(data))
+
             yaml.SafeDumper.add_representer(babelfish.Language, default_representer)
             yaml.SafeDumper.add_representer(babelfish.Country, default_representer)
         except ImportError:  # pragma: no cover
@@ -140,6 +139,7 @@ def main(args=None):  # pylint:disable=too-many-branches
 
     if help_required:  # pragma: no cover
         argument_parser.print_help()
+
 
 if __name__ == '__main__':  # pragma: no cover
     main()

@@ -6,7 +6,6 @@ Groups markers (...), [...] and {...}
 
 from rebulk import Rebulk
 
-
 GROUPS_MARKER = Rebulk()
 GROUPS_MARKER.defaults(name="group", marker=True)
 

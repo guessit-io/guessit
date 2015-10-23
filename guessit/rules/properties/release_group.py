@@ -34,6 +34,7 @@ def clean_groupname(string):
             string = string.strip(groupname_seps)
     return string
 
+
 _scene_previous = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels',
                    'screenSize', 'other']
 
