@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Season/Episode numbering support
+Bonus support
 """
 import re
 from rebulk import Rebulk, AppendMatchRule
@@ -23,7 +23,8 @@ class BonusTitleRule(AppendMatchRule):
     def when(self, matches, context):
         bonus_number = matches.named('bonusNumber', lambda match: not match.private, index=0)
         if bonus_number:
-            hole = matches.holes(bonus_number.end, formatter=cleanup, index=0)
+            filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == 'path', 0)
+            hole = matches.holes(bonus_number.end, filepath.end+1, formatter=cleanup, index=0)
             if hole and hole.value:
                 hole.name = 'bonusTitle'
                 return hole
