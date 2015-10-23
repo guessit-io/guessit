@@ -11,7 +11,7 @@
 ? +DolbyDigital
 ? +DD
 ? -Dolby Digital
-: audioCodec: DD
+: audioCodec: DolbyDigital
 
 ? +AAC
 : audioCodec: AAC
@@ -66,3 +66,7 @@
 ? +1ch
 ? +mono
 : audioChannels: '1.0'
+
+? DD5.1
+: audioCodec: DolbyDigital
+  audioChannels: '5.1'

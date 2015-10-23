@@ -26,6 +26,8 @@ from .properties.cds import CDS
 from .properties.bonus import BONUS
 from .properties.film import FILM
 from .properties.part import PART
+from .properties.crc import CRC
+
 from .processors import PROCESSORS
 
 REBULK = Rebulk()
@@ -51,5 +53,6 @@ REBULK.rebulk(CDS)
 REBULK.rebulk(BONUS)
 REBULK.rebulk(FILM)
 REBULK.rebulk(PART)
+REBULK.rebulk(CRC)
 
 REBULK.rebulk(PROCESSORS)
