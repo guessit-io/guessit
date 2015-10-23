@@ -476,3 +476,38 @@
   language: ENGLISH
   format: DVD
   other: NTSC
+
+? Howl's_Moving_Castle_(2004)_[720p,HDTV,x264,DTS]-FlexGet.avi
+: videoCodec: h264
+  format: HDTV
+  title: Howl's Moving Castle
+  screenSize: 720p
+  year: 2004
+  audioCodec: DTS
+  releaseGroup: FlexGet
+
+? Pirates de langkasuka.2008.FRENCH.1920X1080.h264.AVC.AsiaRa.mkv
+: screenSize: 1080p
+  year: 2008
+  language: French
+  videoCodec: h264
+  title: Pirates de langkasuka
+  releaseGroup: AsiaRa
+
+? Masala (2013) Telugu Movie HD DVDScr XviD - Exclusive.avi
+: year: 2013
+  videoCodec: XviD
+  title: Masala
+  format: HD-DVD
+  other: Screener
+  language: Telugu
+  releaseGroup: Exclusive
+
+? Django Unchained 2012 DVDSCR X264 AAC-P2P.nfo
+: year: 2012
+  other: Screener
+  videoCodec: h264
+  title: Django Unchained
+  audioCodec: AAC
+  format: DVD
+  releaseGroup: P2P

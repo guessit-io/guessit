@@ -7,10 +7,12 @@ import regex as re
 from rebulk import Rebulk, AppendMatchRule
 
 from ..common.formatters import cleanup
+from ..common.validators import seps_surround
 
 BONUS = Rebulk().regex_defaults(flags=re.IGNORECASE)
 
 BONUS.regex(r'x(\d+)', name='bonusNumber', private_parent=True, children=True, formatter=int,
+            validator={'__parent__': lambda match: seps_surround},
             conflict_solver=lambda match: match.name in ['videoCodec', 'episodeNumber'])
 
 

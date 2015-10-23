@@ -10,14 +10,15 @@ import regex as re
 
 def cleanup(input_string):
     """
-    Removes and strip separators from input_string
+    Removes and strip separators from input_string (but keep ',;' characters)
     :param input_string:
     :type input_string:
     :return:
     :rtype:
     """
     for sep in seps:
-        input_string = input_string.replace(sep, ' ')
+        if sep not in ',;':
+            input_string = input_string.replace(sep, ' ')
     return re.sub(' +', ' ', strip(input_string))
 
 
