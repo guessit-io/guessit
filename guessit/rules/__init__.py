@@ -3,7 +3,6 @@
 """
 Rebulk configuration for guessit
 """
-
 from rebulk import Rebulk
 
 from .episodes import EPISODES
@@ -26,7 +25,7 @@ from .edition import EDITION
 from .cds import CDS
 from .bonus import BONUS
 from .film import FILM
-
+from .part import PART
 
 REBULK = Rebulk()
 
@@ -47,6 +46,7 @@ REBULK.rebulk(EDITION)
 REBULK.rebulk(CDS)
 REBULK.rebulk(BONUS)
 REBULK.rebulk(FILM)
+REBULK.rebulk(PART)
 
 REBULK.rebulk(PATH_MARKER)
 REBULK.rebulk(GROUPS_MARKER)
