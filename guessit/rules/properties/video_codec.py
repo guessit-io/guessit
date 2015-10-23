@@ -33,6 +33,7 @@ VIDEO_CODEC.string('HP', 'HiP', value='HP', tags='videoProfile.rule')
 VIDEO_CODEC.regex('Hi422P', value='Hi422P', tags='videoProfile.rule')
 VIDEO_CODEC.regex('Hi444PP', value='Hi444PP', tags='videoProfile.rule')
 
+VIDEO_CODEC.string('DXVA', value='DXVA', name='videoApi')
 
 class VideoProfileRule(RemoveMatchRule):
     """

@@ -340,3 +340,13 @@
   audioCodec: AC3
   audioChannels: "5.1"
   releaseGroup: REDµX
+
+? The.Director’s.Notebook.2006.Blu-Ray.x264.DXVA.720p.AC3-de[42].mkv
+: title: The Director’s Notebook
+  year: 2006
+  format: BluRay
+  videoCodec: h264
+  videoApi: DXVA
+  screenSize: 720p
+  audioCodec: AC3
+  releaseGroup: de[42]
