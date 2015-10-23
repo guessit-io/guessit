@@ -20,7 +20,7 @@ FORMAT.regex("TELECINE", "TC", value="Telecine")
 FORMAT.regex("PPV", "PPV-Rip", value="PPV")  # Pay Per View
 FORMAT.regex("SD-TV", "SD-TV-Rip", "Rip-SD-TV", "TV-Rip", "Rip-TV", value="TV")  # TV is too common to allow matching
 FORMAT.regex("DVB-Rip", "DVB", "PD-TV", value="DVB")
-FORMAT.regex("DVD", "DVD-Rip", "VIDEO-TS", "DVD-R(?:$|^E)",  # "DVD-R(?:$|^E)" => DVD-Real ...
+FORMAT.regex("DVD", "DVD-Rip", "VIDEO-TS", "DVD-R(?:$|(?!E))",  # "DVD-R(?:$|^E)" => DVD-Real ...
              "DVD-9", "DVD-5", value="DVD")
 
 FORMAT.regex("HD-TV", "TV-RIP-HD", "HD-TV-RIP", "HD-RIP", value="HDTV")

@@ -17,11 +17,11 @@ class TitleFromPosition(AppendMatchRule):
     priority = 10
 
     @staticmethod
-    def ignore_language(match, index, start_index):
+    def ignore_language(match):
         """
         Ignore language included in the possible title (hole)
         """
-        return match.name == 'language' and index > start_index
+        return match.name == 'language'
 
     @staticmethod
     def check_title_in_filepart(filepart, matches):
@@ -33,22 +33,55 @@ class TitleFromPosition(AppendMatchRule):
         first_hole = matches.holes(start, end + 1, formatter=cleanup, ignore=TitleFromPosition.ignore_language,
                                    predicate=lambda hole: hole.value, index=0)
 
-        if first_hole:
-            trailing_language = matches.range(first_hole.start, first_hole.end, lambda match: match.name == 'language',
-                                              -1)
+        to_remove = []
 
-            if trailing_language:
-                if not matches.input_string[trailing_language.end:first_hole.end].strip(seps):
-                    first_hole.end = trailing_language.start
+        if first_hole:
+            title_languages = matches.range(first_hole.start, first_hole.end, lambda match: match.name == 'language')
+
+            if title_languages:
+                to_keep = []
+
+                hole_trailing_language = title_languages[-1]
+
+                if hole_trailing_language and \
+                        not matches.input_string[hole_trailing_language.end:first_hole.end].strip(seps):
+                    # We have a language at end of title.
+                    # Keep it if other languages exists in the filepart and if note a code
+                    other_languages = matches.range(filepart.start, filepart.end,
+                                                    lambda match: match.name == 'language'
+                                                    and match != hole_trailing_language)
+                    if not other_languages or len(hole_trailing_language) <= 3:
+                        first_hole.end = hole_trailing_language.start
+                        to_keep.append(hole_trailing_language)
+
+                hole_starting_language = title_languages[0]
+                if hole_starting_language and hole_starting_language not in to_keep and \
+                        not matches.input_string[first_hole.start:hole_starting_language.start].strip(seps):
+                    # We have a language at start of title.
+                    # Keep it if other languages exists in the filepart and if not a code.
+                    other_languages = matches.range(filepart.start, filepart.end,
+                                                    lambda match: match.name == 'language'
+                                                    and match != hole_starting_language)
+
+                    if not other_languages or len(hole_starting_language) <= 3:
+                        first_hole.start = hole_starting_language.end
+                        to_keep.append(hole_starting_language)
+
+                to_remove.extend(title_languages)
+                for keep_match in to_keep:
+                    to_remove.remove(keep_match)
 
             group_markers = matches.markers.named('group')
             title = first_hole.crop(group_markers, index=0)
 
             if title and title.value:
-                return title
+                return title, to_remove
+        return None, None
 
     def when(self, matches, context):
         fileparts = list(marker_sorted(matches.markers.named('path'), matches))
+
+        to_remove = []
 
         # Priorize fileparts containing the year
         years_fileparts = []
@@ -63,20 +96,28 @@ class TitleFromPosition(AppendMatchRule):
                 years_fileparts.remove(filepart)
             except ValueError:
                 pass
-            title = TitleFromPosition.check_title_in_filepart(filepart, matches)
+            title, to_remove_c = TitleFromPosition.check_title_in_filepart(filepart, matches)
             if title:
                 ret.append(title)
                 title.name = 'title'
+                to_remove.extend(to_remove_c)
                 break
 
         # Add title match in all fileparts containing the year.
         for filepart in years_fileparts:
-            title = TitleFromPosition.check_title_in_filepart(filepart, matches)
+            title, to_remove_c = TitleFromPosition.check_title_in_filepart(filepart, matches)
             if title:
                 ret.append(title)
                 title.name = 'title'
+                to_remove.extend(to_remove_c)
 
-        return ret
+        return ret, to_remove
+
+    def then(self, matches, when_response, context):
+        titles, to_remove = when_response
+        super(TitleFromPosition, self).then(matches, titles, context)
+        for to_remove in when_response[1]:
+            matches.remove(to_remove)
 
 
 class PreferTitleWithYear(RemoveMatchRule):
