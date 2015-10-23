@@ -35,6 +35,7 @@ VIDEO_CODEC.regex('Hi444PP', value='Hi444PP', tags='videoProfile.rule')
 
 VIDEO_CODEC.string('DXVA', value='DXVA', name='videoApi')
 
+
 class VideoProfileRule(RemoveMatchRule):
     """
     Rule to validate videoProfile

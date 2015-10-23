@@ -7,6 +7,7 @@ from rebulk import Rebulk, AppendMatchRule, RemoveMatchRule
 
 from ..common.formatters import cleanup
 from ..common.comparators import marker_sorted
+from ..common import seps
 
 
 class TitleFromPosition(AppendMatchRule):
@@ -16,17 +17,34 @@ class TitleFromPosition(AppendMatchRule):
     priority = 10
 
     @staticmethod
+    def ignore_language(match, index, start_index):
+        """
+        Ignore language included in the possible title (hole)
+        """
+        return match.name == 'language' and index > start_index
+
+    @staticmethod
     def check_title_in_filepart(filepart, matches):
         """
-        Find title in filepart
+        Find title in filepart (ignoring language)
         """
         start, end = filepart.span
 
-        first_hole = matches.holes(start, end + 1, formatter=cleanup, predicate=lambda hole: hole.value, index=0)
+        first_hole = matches.holes(start, end + 1, formatter=cleanup, ignore=TitleFromPosition.ignore_language,
+                                   predicate=lambda hole: hole.value, index=0)
+
         if first_hole:
+            trailing_language = matches.range(first_hole.start, first_hole.end, lambda match: match.name == 'language',
+                                              -1)
+
+            if trailing_language:
+                if not matches.input_string[trailing_language.end:first_hole.end].strip(seps):
+                    first_hole.end = trailing_language.start
+
             group_markers = matches.markers.named('group')
             title = first_hole.crop(group_markers, index=0)
-            if title:
+
+            if title and title.value:
                 return title
 
     def when(self, matches, context):
