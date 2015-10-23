@@ -17,7 +17,7 @@ class FilmTitleRule(AppendMatchRule):
     """
     Abstract rule to validate audio profiles
     """
-    priority = 1024  # must be before title guessing
+    priority = 260  # Must be before title guessing
 
     def when(self, matches, context):
         bonus_number = matches.named('filmNumber', lambda match: not match.private, index=0)
