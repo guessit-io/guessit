@@ -6,7 +6,7 @@ Bonus support
 import regex as re
 from rebulk import Rebulk, AppendMatchRule
 
-from .common.formatters import cleanup
+from ..common.formatters import cleanup
 
 BONUS = Rebulk().regex_defaults(flags=re.IGNORECASE)
 

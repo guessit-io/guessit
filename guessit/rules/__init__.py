@@ -5,29 +5,34 @@ Rebulk configuration for guessit
 """
 from rebulk import Rebulk
 
-from .episodes import EPISODES
-from .extension import EXTENSION
-from .format import FORMAT
-from .video_codec import VIDEO_CODEC
-from .audio_codec import AUDIO_CODEC
-from .screen_size import SCREEN_SIZE
-from .website import WEBSITE
-from .date import DATE
-from .title import TITLE
-from .episode_title import EPISODE_TITLE
 from .markers.path import PATH_MARKER
 from .markers.groups import GROUPS_MARKER
-from .language import LANGUAGE
+
+from .properties.episodes import EPISODES
+from .properties.extension import EXTENSION
+from .properties.format import FORMAT
+from .properties.video_codec import VIDEO_CODEC
+from .properties.audio_codec import AUDIO_CODEC
+from .properties.screen_size import SCREEN_SIZE
+from .properties.website import WEBSITE
+from .properties.date import DATE
+from .properties.title import TITLE
+from .properties.episode_title import EPISODE_TITLE
+from .properties.language import LANGUAGE
+from .properties.release_group import RELEASE_GROUP
+from .properties.other import OTHER
+from .properties.edition import EDITION
+from .properties.cds import CDS
+from .properties.bonus import BONUS
+from .properties.film import FILM
+from .properties.part import PART
+
 from .processors import PROCESSORS
-from .release_group import RELEASE_GROUP
-from .other import OTHER
-from .edition import EDITION
-from .cds import CDS
-from .bonus import BONUS
-from .film import FILM
-from .part import PART
 
 REBULK = Rebulk()
+
+REBULK.rebulk(PATH_MARKER)
+REBULK.rebulk(GROUPS_MARKER)
 
 REBULK.rebulk(EPISODES)
 REBULK.rebulk(EXTENSION)
@@ -48,6 +53,4 @@ REBULK.rebulk(BONUS)
 REBULK.rebulk(FILM)
 REBULK.rebulk(PART)
 
-REBULK.rebulk(PATH_MARKER)
-REBULK.rebulk(GROUPS_MARKER)
 REBULK.rebulk(PROCESSORS)

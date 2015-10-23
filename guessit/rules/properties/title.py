@@ -5,8 +5,8 @@ Title
 """
 from rebulk import Rebulk, AppendMatchRule, RemoveMatchRule
 
-from .common.formatters import cleanup
-from .common.comparators import marker_sorted
+from ..common.formatters import cleanup
+from ..common.comparators import marker_sorted
 
 
 class TitleFromPosition(AppendMatchRule):

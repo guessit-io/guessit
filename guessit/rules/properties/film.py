@@ -6,7 +6,7 @@ Film support
 import regex as re
 from rebulk import Rebulk, AppendMatchRule
 
-from .common.formatters import cleanup
+from ..common.formatters import cleanup
 
 FILM = Rebulk().regex_defaults(flags=re.IGNORECASE)
 

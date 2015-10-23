@@ -5,7 +5,7 @@ Episode title
 """
 from rebulk import Rebulk, AppendMatchRule
 
-from .common.formatters import cleanup
+from ..common.formatters import cleanup
 
 
 class EpisodeTitleFromPosition(AppendMatchRule):

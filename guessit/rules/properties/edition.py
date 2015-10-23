@@ -6,8 +6,8 @@ edition property
 from rebulk import Rebulk
 import regex as re
 
-from .common import dash
-from .common.validators import seps_surround
+from ..common import dash
+from ..common.validators import seps_surround
 
 EDITION = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
 EDITION.defaults(name='edition', validator=seps_surround)

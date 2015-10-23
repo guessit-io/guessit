@@ -5,10 +5,10 @@ format property
 """
 from rebulk import Rebulk, RemoveMatchRule
 
-from .common import dash
+from ..common import dash
 
 import regex as re
-from .common.validators import seps_before, seps_after
+from ..common.validators import seps_before, seps_after
 
 FORMAT = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
 FORMAT.defaults(name="format")

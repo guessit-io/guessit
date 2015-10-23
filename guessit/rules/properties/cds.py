@@ -6,7 +6,7 @@ cd properties
 from rebulk import Rebulk
 import regex as re
 
-from .common import dash
+from ..common import dash
 
 CDS = Rebulk().regex_defaults(flags=re.IGNORECASE)
 

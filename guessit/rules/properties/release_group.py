@@ -7,9 +7,9 @@ import copy
 
 from rebulk import Rebulk, AppendMatchRule
 
-from .common.formatters import cleanup
-from .common import seps
-from .common.comparators import marker_sorted
+from ..common.formatters import cleanup
+from ..common import seps
+from ..common.comparators import marker_sorted
 
 forbidden_groupnames = ['rip', 'by', 'for', 'par', 'pour', 'bonus']
 
