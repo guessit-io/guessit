@@ -3,7 +3,7 @@
 """
 Bonus support
 """
-import re
+import regex as re
 from rebulk import Rebulk, AppendMatchRule
 
 from .common.formatters import cleanup
@@ -24,9 +24,10 @@ class BonusTitleRule(AppendMatchRule):
         bonus_number = matches.named('bonusNumber', lambda match: not match.private, index=0)
         if bonus_number:
             filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == 'path', 0)
-            hole = matches.holes(bonus_number.end, filepath.end+1, formatter=cleanup, index=0)
+            hole = matches.holes(bonus_number.end, filepath.end + 1, formatter=cleanup, index=0)
             if hole and hole.value:
                 hole.name = 'bonusTitle'
                 return hole
+
 
 BONUS.rules(BonusTitleRule)
