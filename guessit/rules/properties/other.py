@@ -38,6 +38,8 @@ for value in ('Screener', 'Remux', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'H
 for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer'):
     OTHER.string(value, value=value, tags='other.has-neighbor')
 
+OTHER.string('VO', 'OV', value='OV', tags='other.has-neighbor')
+
 OTHER.regex('Scr(?:eener)?', value='Screener', validator=None, tags='other.validate.screener')
 
 

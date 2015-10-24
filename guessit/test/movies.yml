@@ -647,3 +647,134 @@
   screenSize: 720p
   videoCodec: h264
   format: BluRay
+
+#TODO: Camelcase implementation
+#? BeatdownFrenchDVDRip.mkv
+#: options: -c
+#  title: Beatdown
+#  language: French
+#  format: DVD
+
+#? YvesSaintLaurent2013FrenchDVDScrXvid.avi
+#: options: -c
+#  format: DVD
+#  language: French
+#  other: Screener
+#  title: Yves saint laurent
+#  videoCodec: XviD
+#  year: 2013
+
+
+? Elle.s.en.va.720p.mkv
+: screenSize: 720p
+  title: Elle s en va
+
+? FooBar.7.PDTV-FlexGet
+: format: DVB
+  releaseGroup: FlexGet
+  title: FooBar 7
+
+? h265 - HEVC Riddick Unrated Director Cut French 1080p DTS.mkv
+: audioCodec: DTS
+  edition: Director's cut
+  language: fr
+  screenSize: 1080p
+  title: Riddick
+  other: Unrated
+  videoCodec: h265
+
+? "[h265 - HEVC] Riddick Unrated Director Cut French [1080p DTS].mkv"
+: audioCodec: DTS
+  edition: Director's cut
+  language: fr
+  screenSize: 1080p
+  title: Riddick
+  other: Unrated
+  videoCodec: h265
+
+? Barbecue-2014-French-mHD-1080p
+: options: -n
+  language: fr
+  other: mHD
+  screenSize: 1080p
+  title: Barbecue
+  year: 2014
+
+? Underworld Quadrilogie VO+VFF+VFQ 1080p HDlight.x264~Tonyk~Monde Infernal
+: options: -n
+  language: fr
+  other:
+    - HDLight
+    - OV
+  screenSize: 1080p
+  title: Underworld Quadrilogie
+  videoCodec: h264
+
+? A Bout Portant (The Killers).PAL.Multi.DVD-R-KZ
+: options: -n
+  format: DVD
+  language: mul
+  releaseGroup: KZ
+  title: A Bout Portant
+
+? "Mise à Sac (Alain Cavalier, 1967) [Vhs.Rip.Vff]"
+: format: VHS
+  language: fr
+  title: "Mise à Sac"
+  year: 1967
+
+? A Bout Portant (The Killers).PAL.Multi.DVD-R-KZ
+: format: DVD
+  other: PAL
+  language: mul
+  releaseGroup: KZ
+  title: A Bout Portant
+
+? Youth.In.Revolt.(Be.Bad).2009.MULTI.1080p.LAME3*92-MEDIOZZ
+: audioCodec: MP3
+  language: mul
+  releaseGroup: MEDIOZZ
+  screenSize: 1080p
+  title: Youth In Revolt
+  year: 2009
+
+? La Defense Lincoln (The Lincoln Lawyer) 2011 [DVDRIP][Vostfr]
+: format: DVD
+  subtitleLanguage: fr
+  title: La Defense Lincoln
+  year: 2011
+
+? '[h265 - HEVC] Fight Club French 1080p DTS.'
+: audioCodec: DTS
+  language: fr
+  screenSize: 1080p
+  title: Fight Club
+  videoCodec: h265
+
+? Love Gourou (Mike Myers) - FR
+: language: fr
+  title: Love Gourou
+
+? '[h265 - hevc] transformers 2 1080p french ac3 6ch.'
+: audioChannels: '5.1'
+  audioCodec: AC3
+  language: fr
+  screenSize: 1080p
+  title: transformers 2
+  videoCodec: h265
+
+? 1.Angry.Man.1957.mkv
+: title: 1 Angry Man
+  year: 1957
+
+? 12.Angry.Men.1957.mkv
+: title: 12 Angry Men
+  year: 1957
+
+? 123.Angry.Men.1957.mkv
+: title: 123 Angry Men
+  year: 1957
+
+? "Looney Tunes 1444x866 Porky's Last Stand.mkv"
+: screenSize: 1444x866
+  title: Looney Tunes

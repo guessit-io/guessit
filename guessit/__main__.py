@@ -31,6 +31,8 @@ class GuessitEncoder(json.JSONEncoder):
             ret['start'] = o.start
             ret['end'] = o.end
             return ret
+        elif hasattr(o, 'name'):  # Babelfish languages/countries long name
+            return o.name
         else:
             return str(o)
 

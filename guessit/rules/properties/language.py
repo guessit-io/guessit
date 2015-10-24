@@ -18,7 +18,7 @@ UNDETERMINED = babelfish.Language('und')
 SYN = {('und', None): ['unknown', 'inconnu', 'unk', 'un'],
        ('ell', None): ['gr', 'greek'],
        ('spa', None): ['esp', 'español'],
-       ('fra', None): ['français', 'vf', 'vff', 'vfi'],
+       ('fra', None): ['français', 'vf', 'vff', 'vfi', 'vfq'],
        ('swe', None): ['se'],
        ('por', 'BR'): ['po', 'pb', 'pob', 'br', 'brazilian'],
        ('cat', None): ['català'],
@@ -158,7 +158,7 @@ LNG_COMMON_WORDS = frozenset([
     'la', 'el', 'del', 'por', 'mar', 'al',
     # other
     'ind', 'arw', 'ts', 'ii', 'bin', 'chan', 'ss', 'san', 'oss', 'iii',
-    'vi', 'ben', 'da', 'lt', 'ch', 'sr', 'ps', 'cx',
+    'vi', 'ben', 'da', 'lt', 'ch', 'sr', 'ps', 'cx', 'vo',
     # new from babelfish
     'mkv', 'avi', 'dmd', 'the', 'dis', 'cut', 'stv', 'des', 'dia', 'and',
     'cab', 'sub', 'mia', 'rim', 'las', 'une', 'par', 'srt', 'ano', 'toy',
