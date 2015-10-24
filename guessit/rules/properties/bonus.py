@@ -13,7 +13,8 @@ BONUS = Rebulk().regex_defaults(flags=re.IGNORECASE)
 
 BONUS.regex(r'x(\d+)', name='bonusNumber', private_parent=True, children=True, formatter=int,
             validator={'__parent__': lambda match: seps_surround},
-            conflict_solver=lambda match: match.name in ['videoCodec', 'episodeNumber'])
+            conflict_solver=lambda match, conflicting: conflicting
+            if match.name in ['videoCodec', 'episodeNumber'] else None)
 
 
 class BonusTitleRule(AppendMatchRule):
