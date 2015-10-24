@@ -241,7 +241,7 @@
   format: DVD
 
 ? Movies/001 __ A classer/Fantomas se déchaine - Louis de Funès.avi
-: title: Fantomas se déchaine Louis de Funès
+: title: Fantomas se déchaine - Louis de Funès
 # TODO: Remove author from title, or add a new property like subtitle ...
 
 ? Movies/Comme une Image (2004)/Comme.Une.Image.FRENCH.DVDRiP.XViD-NTK.par-www.divx-overnet.com.avi
@@ -308,7 +308,7 @@
   bonusTitle: Stunts
 
 ? OSS_117--Cairo,_Nest_of_Spies.mkv
-: title: OSS 117 Cairo, Nest of Spies
+: title: OSS 117--Cairo, Nest of Spies
 
 ? The Godfather Part 3.mkv
 ? The Godfather Part III.mkv
@@ -323,7 +323,7 @@
 : title: The Insider
   year: 1999
   bonusNumber: 2
-  bonusTitle: 60 Minutes Interview 1996
+  bonusTitle: 60 Minutes Interview-1996
 
 ? Rush.._Beyond_The_Lighted_Stage-x09-Between_Sun_and_Moon-2002_Hartford.mkv
 : title: Rush Beyond The Lighted Stage
@@ -569,3 +569,8 @@
   audioCodec: AC3
   audioProfile: HQ
   releaseGroup: Hive-CM8
+
+? "Star Wars: Episode IV - A New Hope (2004) Special Edition.MKV"
+: title: "Star Wars: Episode IV - A New Hope"
+  year: 2004
+  edition: Special Edition

@@ -17,7 +17,7 @@ def cleanup(input_string):
     :rtype:
     """
     for sep in seps:
-        if sep not in ',;':
+        if sep not in ',:;-':
             input_string = input_string.replace(sep, ' ')
     return re.sub(' +', ' ', strip(input_string))
 
