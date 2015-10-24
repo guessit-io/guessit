@@ -172,7 +172,9 @@ LNG_COMMON_WORDS = frozenset([
     # countries
     'gt', 'lt', 'im',
     # part/pt
-    'pt'
+    'pt',
+    # screener
+    'scr'
 ])
 
 LNG_COMMON_WORDS_STRICT = frozenset(['brazil'])
