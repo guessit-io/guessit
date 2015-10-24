@@ -24,7 +24,7 @@ class TitleFromPosition(AppendMatchRule):
         return match.name == 'language'
 
     @staticmethod
-    def check_title_in_filepart(filepart, matches):
+    def check_title_in_filepart(filepart, matches):  # pylint: disable=too-many-locals
         """
         Find title in filepart (ignoring language)
         """
@@ -41,31 +41,35 @@ class TitleFromPosition(AppendMatchRule):
             if title_languages:
                 to_keep = []
 
-                hole_trailing_language = title_languages[-1]
+                hole_trailing_languages = matches.chain_before(first_hole.end, seps,
+                                                               predicate=lambda match: match.name == 'language')
 
-                if hole_trailing_language and \
-                        not matches.input_string[hole_trailing_language.end:first_hole.end].strip(seps):
-                    # We have a language at end of title.
+                if hole_trailing_languages:
+                    # We have one or many language at end of title.
                     # Keep it if other languages exists in the filepart and if note a code
                     other_languages = matches.range(filepart.start, filepart.end,
                                                     lambda match: match.name == 'language'
-                                                    and match != hole_trailing_language)
-                    if not other_languages or len(hole_trailing_language) <= 3:
-                        first_hole.end = hole_trailing_language.start
-                        to_keep.append(hole_trailing_language)
+                                                    and match not in hole_trailing_languages)
+                    for hole_trailing_language in hole_trailing_languages:
+                        if not other_languages or len(hole_trailing_language) <= 3:
+                            first_hole.end = hole_trailing_language.start
+                            to_keep.append(hole_trailing_language)
 
-                hole_starting_language = title_languages[0]
-                if hole_starting_language and hole_starting_language not in to_keep and \
-                        not matches.input_string[first_hole.start:hole_starting_language.start].strip(seps):
-                    # We have a language at start of title.
+                hole_starting_languages = matches.chain_after(first_hole.start, seps,
+                                                              predicate=lambda match: match.name == 'language' and
+                                                              match not in to_keep)
+
+                if hole_starting_languages:
+                    # We have one or many language at start of title.
                     # Keep it if other languages exists in the filepart and if not a code.
                     other_languages = matches.range(filepart.start, filepart.end,
                                                     lambda match: match.name == 'language'
-                                                    and match != hole_starting_language)
+                                                    and match not in hole_starting_languages)
 
-                    if not other_languages or len(hole_starting_language) <= 3:
-                        first_hole.start = hole_starting_language.end
-                        to_keep.append(hole_starting_language)
+                    for hole_starting_language in hole_starting_languages:
+                        if not other_languages or len(hole_starting_language) <= 3:
+                            first_hole.start = hole_starting_language.end
+                            to_keep.append(hole_starting_language)
 
                 to_remove.extend(title_languages)
                 for keep_match in to_keep:

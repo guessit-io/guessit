@@ -8,9 +8,9 @@
 : language: French
 
 ? +SubFrench
-  +SubFr
-  +STFr
-  +ST.FR
+? +SubFr
+? +STFr
+? ST.FR
 : subtitleLanguage: French
 
 ? +ENG.-.sub.FR
