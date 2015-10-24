@@ -114,3 +114,21 @@ class Ac3Rule(AudioProfileRule):
 
 
 AUDIO_CODEC.rules(DtsRule, AacRule, Ac3Rule, AudioValidatorRule)
+
+
+class HqConflictRule(RemoveMatchRule):
+    """
+    Solve conflict between HQ from other property and from audioProfile.
+    """
+
+    priority = 250  # Must run after AudioProfileRule
+
+    def when(self, matches, context):
+        hq_audio = matches.named('audioProfile', lambda match: match.value == 'HQ')
+        hq_audio_spans = [match.span for match in hq_audio]
+        hq_other = matches.named('other', lambda match: match.span in hq_audio_spans)
+
+        if hq_other:
+            return hq_other
+
+AUDIO_CODEC.rules(HqConflictRule)

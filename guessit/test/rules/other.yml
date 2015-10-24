@@ -128,3 +128,9 @@
 
 ? +The complete movie
 : title: The complete movie
+
+? +AC3-HQ
+: audioProfile: HQ
+
+? Other-HQ
+: other: HQ
