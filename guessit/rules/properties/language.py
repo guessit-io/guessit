@@ -246,16 +246,25 @@ class SubtitlePrefixLanguageRule(Rule):
             if not prefix:
                 group_marker = matches.markers.at_match(language, lambda marker: marker.name == 'group', 0)
                 if group_marker:
+                    # Find prefix if placed just before the group
                     prefix = matches.previous(group_marker, lambda match: match.name == 'subtitleLanguage.prefix', 0)
+                    if not prefix:
+                        # Find prefix if placed before in the group
+                        prefix = matches.range(group_marker.start, language.start,
+                                               lambda match: match.name == 'subtitleLanguage.prefix', 0)
             if prefix:
                 ret.append((prefix, language))
         return ret
 
     def then(self, matches, when_response, context):
         for prefix, language in when_response:
-            while prefix in matches:
-                # make sure we remove all prefix as it can be in suffix list too.
+            if prefix in matches:
+                suffix_equivalent = matches.range(prefix.start, prefix.end,
+                                                  lambda match: match.name == 'subtitleLanguage.suffix', index=0)
+
                 matches.remove(prefix)
+                if suffix_equivalent and suffix_equivalent in matches:
+                    matches.remove(suffix_equivalent)
             matches.remove(language)
             language.name = 'subtitleLanguage'
             matches.append(language)
@@ -277,9 +286,12 @@ class SubtitleSuffixLanguageRule(Rule):
 
     def then(self, matches, when_response, context):
         for suffix, language in when_response:
-            while suffix in matches:
-                # make sure we remove all suffix as it can be in prefix list too.
+            if suffix in matches:
+                prefix_equivalent = matches.range(suffix.start, suffix.end,
+                                                  lambda match: match.name == 'subtitleLanguage.prefix', index=0)
                 matches.remove(suffix)
+                if prefix_equivalent and prefix_equivalent in matches:
+                    matches.remove(prefix_equivalent)
             matches.remove(language)
             language.name = 'subtitleLanguage'
             matches.append(language)
