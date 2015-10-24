@@ -11,10 +11,12 @@ from ..common.validators import seps_surround
 
 BONUS = Rebulk().regex_defaults(flags=re.IGNORECASE)
 
+
 BONUS.regex(r'x(\d+)', name='bonusNumber', private_parent=True, children=True, formatter=int,
             validator={'__parent__': lambda match: seps_surround},
             conflict_solver=lambda match, conflicting: match
-            if conflicting.name in ['videoCodec', 'episodeNumber'] else '__default__')
+            if conflicting.name in ['videoCodec', 'episodeNumber'] and 'bonus-conflict' not in conflicting.tags
+            else '__default__')
 
 
 class BonusTitleRule(AppendMatchRule):

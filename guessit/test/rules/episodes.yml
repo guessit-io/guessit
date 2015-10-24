@@ -15,3 +15,13 @@
 ? -2x06
 : season: 2
   episodeNumber: 5
+
+? "+0102"
+? "+102"
+: season: 1
+  episodeNumber: 2
+
+? "0102 S03E04"
+? "S03E04 102"
+: season: 3
+  episodeNumber: 4

@@ -13,19 +13,21 @@ class EpisodeTitleFromPosition(AppendMatchRule):
     Add episode title match in existing matches
     Must run after TitleFromPosition rule.
     """
-    priority = 10
+    priority = 9  # Just after main title
 
     def when(self, matches, context):
         filename = matches.markers.named('path', -1)
         start, end = filename.span
 
-        second_hole = matches.holes(start, end + 1, formatter=chain(cleanup, reorder_title),
-                                    predicate=lambda hole: hole.value, index=1)
-        if second_hole:
-            episode = matches.previous(second_hole, lambda previous: previous.name in ['episodeNumber', 'season'], 0)
+        holes = matches.holes(start, end + 1, formatter=chain(cleanup, reorder_title),
+                              predicate=lambda hole: hole.value)
+
+        for hole in holes:
+            episode = matches.previous(hole,
+                                       lambda previous: previous.name in ['episodeNumber', 'season', 'date'], 0)
             if episode:
                 group_markers = matches.markers.named('group')
-                title = second_hole.crop(group_markers, index=0)
+                title = hole.crop(group_markers, index=0)
 
                 if title and title.value:
                     title.name = 'episodeTitle'

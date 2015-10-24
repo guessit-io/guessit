@@ -28,8 +28,10 @@ def guess_idnumber(string):
     :rtype:
     """
     #pylint:disable=invalid-name
-    match = _idnum.search(string)
-    if match is not None:
+    ret = []
+
+    matches = list(_idnum.finditer(string))
+    for match in matches:
         result = match.groupdict()
         switch_count = 0
         switch_letter_count = 0
@@ -60,7 +62,9 @@ def guess_idnumber(string):
         letters_ratio = (float(switch_letter_count) / letter_count) if letter_count > 0 else 1
 
         if switch_ratio > 0.4 and letters_ratio > 0.4:
-            return match.span()
+            ret.append(match.span())
+
+    return ret
 
 CRC.functional(guess_idnumber, name='idNumber')
 
