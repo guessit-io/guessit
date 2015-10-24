@@ -7,6 +7,11 @@ Formatters
 from . import seps
 import regex as re
 
+_excluded_clean_chars = ',:;-/\\'
+clean_chars = ""
+for sep in seps:
+    if sep not in _excluded_clean_chars:
+        clean_chars += sep
 
 def cleanup(input_string):
     """
@@ -16,9 +21,8 @@ def cleanup(input_string):
     :return:
     :rtype:
     """
-    for sep in seps:
-        if sep not in ',:;-':
-            input_string = input_string.replace(sep, ' ')
+    for char in clean_chars:
+        input_string = input_string.replace(char, ' ')
     return re.sub(' +', ' ', strip(input_string))
 
 

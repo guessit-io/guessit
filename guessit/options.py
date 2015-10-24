@@ -22,6 +22,8 @@ def build_argument_parser():
     naming_opts = opts.add_argument_group("Naming")
     # naming_opts.add_argument('-t', '--type', dest='type', default=None,
     #                         help='The suggested file type: movie, episode. If undefined, type will be guessed.')
+    naming_opts.add_argument('-n', '--name-only', dest='name_only', action='store_true', default=False,
+                             help='Parse files as name only (consider "/" and "\\" like other characters)')
     naming_opts.add_argument('-Y', '--date-year-first', action='store_true', dest='date_year_first', default=None,
                              help='If short date is found, consider the first digits as the year.')
     naming_opts.add_argument('-D', '--date-day-first', action='store_true', dest='date_day_first', default=None,
