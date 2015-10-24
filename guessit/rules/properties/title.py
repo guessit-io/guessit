@@ -3,14 +3,15 @@
 """
 Title
 """
-from rebulk import Rebulk, AppendMatchRule, RemoveMatchRule
+from rebulk import Rebulk, RemoveMatchRule, AppendRemoveMatchRule
 
-from ..common.formatters import cleanup
+from ..common.formatters import cleanup, reorder_title, chain
 from ..common.comparators import marker_sorted
 from ..common import seps
+from rebulk.rules import AppendRemoveMatchRule
 
 
-class TitleFromPosition(AppendMatchRule):
+class TitleFromPosition(AppendRemoveMatchRule):
     """
     Add title match in existing matches
     """
@@ -30,7 +31,8 @@ class TitleFromPosition(AppendMatchRule):
         """
         start, end = filepart.span
 
-        first_hole = matches.holes(start, end + 1, formatter=cleanup, ignore=TitleFromPosition.ignore_language,
+        first_hole = matches.holes(start, end + 1, formatter=chain(cleanup, reorder_title),
+                                   ignore=TitleFromPosition.ignore_language,
                                    predicate=lambda hole: hole.value, index=0)
 
         to_remove = []
@@ -116,12 +118,6 @@ class TitleFromPosition(AppendMatchRule):
                 to_remove.extend(to_remove_c)
 
         return ret, to_remove
-
-    def then(self, matches, when_response, context):
-        titles, to_remove = when_response
-        super(TitleFromPosition, self).then(matches, titles, context)
-        for to_remove in when_response[1]:
-            matches.remove(to_remove)
 
 
 class PreferTitleWithYear(RemoveMatchRule):

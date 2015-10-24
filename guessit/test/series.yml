@@ -20,3 +20,25 @@
   releaseGroup: AlFleNi-TeaM
   website: tvu.org.ru
   extension: avi
+
+? Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
+: title: Treme
+  season: 1
+  episodeNumber: 3
+  episodeTitle: Right Place, Wrong Time
+  format: HDTV
+  videoCodec: XviD
+  releaseGroup: NoTV
+
+? Series/Duckman/Duckman - S1E13 Joking The Chicken (unedited).avi
+: title: Duckman
+  season: 1
+  episodeNumber: 13
+  episodeTitle: Joking The Chicken
+
+? Series/Simpsons/Saison 12 Français/Simpsons,.The.12x08.A.Bas.Le.Sergent.Skinner.FR.avi
+: title: The Simpsons
+  season: 12
+  episodeNumber: 8
+  episodeTitle: A Bas Le Sergent Skinner
+  language: French
