@@ -4,8 +4,9 @@
 Episode title
 """
 from rebulk import Rebulk, AppendMatchRule
+from rebulk.formatters import formatters
 
-from ..common.formatters import cleanup, reorder_title, chain
+from ..common.formatters import cleanup, reorder_title
 
 
 class EpisodeTitleFromPosition(AppendMatchRule):
@@ -19,7 +20,7 @@ class EpisodeTitleFromPosition(AppendMatchRule):
         filename = matches.markers.named('path', -1)
         start, end = filename.span
 
-        holes = matches.holes(start, end + 1, formatter=chain(cleanup, reorder_title),
+        holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
                               predicate=lambda hole: hole.value)
 
         for hole in holes:

@@ -4,8 +4,9 @@
 Title
 """
 from rebulk import Rebulk, RemoveMatchRule, AppendRemoveMatchRule
+from rebulk.formatters import formatters
 
-from ..common.formatters import cleanup, reorder_title, chain
+from ..common.formatters import cleanup, reorder_title
 from ..common.comparators import marker_sorted
 from ..common import seps
 from rebulk.rules import AppendRemoveMatchRule
@@ -31,7 +32,7 @@ class TitleFromPosition(AppendRemoveMatchRule):
         """
         start, end = filepart.span
 
-        first_hole = matches.holes(start, end + 1, formatter=chain(cleanup, reorder_title),
+        first_hole = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
                                    ignore=TitleFromPosition.ignore_language,
                                    predicate=lambda hole: hole.value, index=0)
 
@@ -127,20 +128,33 @@ class PreferTitleWithYear(RemoveMatchRule):
     priority = -255
 
     def when(self, matches, context):
-        with_year = []
-        without_year = []
+        to_keep = []
+        to_remove = []
 
         for title in matches.named('title'):
             filepart = matches.markers.at_match(title, lambda marker: marker.name == 'path', 0)
             if filepart:
                 year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
                 if year_match:
-                    with_year.append(title)
+                    to_keep.append(title)
                 else:
-                    without_year.append(title)
+                    to_remove.append(title)
 
-        if with_year:
-            return without_year
+        if to_keep:
+            title_values = set([title.value for title in to_keep])
+            if len(title_values) > 1:
+                # We have distinct values for title with year. Keep only values from most valuable filepart.
+                fileparts = marker_sorted(matches.markers.named('path'), matches)
+                best_title = None
+                for filepart in fileparts:
+                    best_title = matches.range(filepart.start, filepart.end, lambda match: match.name == 'title', 0)
+                    if best_title:
+                        break
+                for title in to_keep:
+                    if title.value != best_title.value:
+                        to_remove.append(title)
+                        to_keep.remove(title)
+            return to_remove
 
 
 TITLE = Rebulk().rules(TitleFromPosition, PreferTitleWithYear)

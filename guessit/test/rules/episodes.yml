@@ -25,3 +25,13 @@
 ? "S03E04 102"
 : season: 3
   episodeNumber: 4
+
+? +serie Saison 2 other
+? +serie Season 2 other
+? +serie Saisons 2 other
+? +serie Seasons 2 other
+? +serie Serie 2 other
+? +serie Series 2 other
+? +serie Season Two other
+? +serie Season II other
+: season: 2

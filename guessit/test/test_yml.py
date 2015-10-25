@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
 import logging
+logger = logging.getLogger(__name__)
+
 from collections import OrderedDict
 
 import babelfish
@@ -192,13 +194,13 @@ class TestYml(object):
             if not string_predicate or string_predicate(string):  # pylint: disable=not-callable
                 entry = self.check(string, expected)
                 if entry.ok:
-                    logging.debug(u'[' + filename + '] ' + six.text_type(entry))
+                    logger.debug(u'[' + filename + '] ' + six.text_type(entry))
                 elif entry.warning:
-                    logging.warning(u'[' + filename + '] ' + six.text_type(entry))
+                    logger.warning(u'[' + filename + '] ' + six.text_type(entry))
                 elif entry.error:
-                    logging.error(u'[' + filename + '] ' + six.text_type(entry))
+                    logger.error(u'[' + filename + '] ' + six.text_type(entry))
                     for line in entry.details:
-                        logging.error(u'[' + filename + '] ' + ' ' * 4 + line)
+                        logger.error(u'[' + filename + '] ' + ' ' * 4 + line)
                 entries.append(entry)
         entries.assert_ok()
 

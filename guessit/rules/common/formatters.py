@@ -6,6 +6,7 @@ Formatters
 
 from . import seps
 import regex as re
+from rebulk.formatters import formatters
 
 _excluded_clean_chars = ',:;-/\\'
 clean_chars = ""
@@ -38,6 +39,17 @@ def strip(input_string):
     return input_string.strip(seps)
 
 
+def raw_cleanup(raw):
+    """
+    Cleanup a raw value to perform raw comparison
+    :param raw:
+    :type raw:
+    :return:
+    :rtype:
+    """
+    return formatters(cleanup, strip)(raw.lower())
+
+
 def reorder_title(title, articles=('the',), separators=(',', ', ')):
     """
     Reorder the title
@@ -57,19 +69,3 @@ def reorder_title(title, articles=('the',), separators=(',', ', ')):
             if ltitle[-len(suffix):] == suffix:
                 return title[-len(suffix) + len(separator):] + ' ' + title[:-len(suffix)]
     return title
-
-
-def chain(*formatters):
-    """
-    Chain formatter functions
-    :param functions:
-    :type functions:
-    :return:
-    :rtype:
-    """
-    def formatters_chain(input_string):  # pylint:disable=missing-docstring
-        for formatter in formatters:
-            input_string = formatter(input_string)
-        return input_string
-
-    return formatters_chain

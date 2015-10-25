@@ -10,7 +10,8 @@ from .common.comparators import marker_sorted
 
 def prefer_last_path(matches):
     """
-    If multiple match are found, keep the one in the most valuable filepart.
+    If multiple match are found with same name, keep the one in the most valuable filepart.
+    Also keep others match with same value than those in mose valuable filepart.
 
     :param matches:
     :param context:
@@ -18,17 +19,24 @@ def prefer_last_path(matches):
     """
     filepart = marker_sorted(matches.markers.named('path'), matches)[0]
     for name in matches.names:
-        named_list = matches.named(name)
-        if len(named_list) > 1:
+        name_matches = matches.named(name)
+        if len(name_matches) > 1:
             keep_list = []
-            for named in named_list:
-                marker = matches.markers.at_match(named, lambda marker: marker is filepart, 0)
+            keep_values = []
+            for name_match in name_matches:
+                marker = matches.markers.at_match(name_match, lambda marker: marker is filepart, 0)
                 if marker:
-                    keep_list.append(named)
+                    keep_list.append(name_match)
+                    keep_values.append(name_match.value)
+
+            for name_match in name_matches:
+                if name_match not in keep_list and name_match.value in keep_values:
+                    keep_list.append(name_match)
+
             if keep_list:
-                for named in named_list:
-                    if named not in keep_list:
-                        matches.remove(named)
+                for name_match in name_matches:
+                    if name_match not in keep_list:
+                        matches.remove(name_match)
 
 
 def enlarge_group_matches(matches):
@@ -53,4 +61,4 @@ def enlarge_group_matches(matches):
             matches.append(match)
 
 
-PROCESSORS = Rebulk().processor(prefer_last_path, enlarge_group_matches)
+PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(prefer_last_path)

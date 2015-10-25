@@ -5,6 +5,10 @@ Entry point module
 """
 # pragma: no cover
 from __future__ import print_function
+
+from rebulk import debug
+debug.DEBUG = True
+
 from collections import OrderedDict
 import os
 import logging
