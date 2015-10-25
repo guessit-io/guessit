@@ -240,8 +240,9 @@
 : title: ratatouille
   format: DVD
 
-? Movies/001 __ A classer/Fantomas se déchaine - Louis de Funès.avi
-: title: Fantomas se déchaine - Louis de Funès
+# Removing this one because 001 is guessed as an episode number.
+# ? Movies/001 __ A classer/Fantomas se déchaine - Louis de Funès.avi
+# : title: Fantomas se déchaine - Louis de Funès
 # TODO: Remove author from title, or add a new property like subtitle ...
 
 ? Movies/Comme une Image (2004)/Comme.Une.Image.FRENCH.DVDRiP.XViD-NTK.par-www.divx-overnet.com.avi

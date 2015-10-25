@@ -11,7 +11,7 @@ from .common.comparators import marker_sorted
 def prefer_last_path(matches):
     """
     If multiple match are found with same name, keep the one in the most valuable filepart.
-    Also keep others match with same value than those in mose valuable filepart.
+    Also keep others match with same value than those in most valuable filepart.
 
     :param matches:
     :param context:

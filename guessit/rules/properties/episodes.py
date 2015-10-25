@@ -12,11 +12,12 @@ from guessit.rules.common import dash
 from ..common.numeral import numeral, parse_numeral
 
 EPISODES = Rebulk().defaults(validate_all=True, validator={'__parent__': seps_surround})
-EPISODES.regex_defaults(flags=re.IGNORECASE, children=True)
+EPISODES.regex_defaults(flags=re.IGNORECASE, children=True, private_parent=True)
 
 EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)',  # 01x02
                r'S(?P<season>\d+)[ex](?P<episodeNumber>\d+)',  # S01E02, S01x02
                r'S(?P<season>\d+)xe(?P<episodeNumber>\d+)',  # S01Ex02
+               r'S(?P<season>\d{1,2})',  # S01
                formatter=int,
                private_parent=True,
                tags=['SxxExx'],

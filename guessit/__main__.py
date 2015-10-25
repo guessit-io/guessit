@@ -6,9 +6,6 @@ Entry point module
 # pragma: no cover
 from __future__ import print_function
 
-from rebulk import debug
-debug.DEBUG = True
-
 from collections import OrderedDict
 import os
 import logging
@@ -20,7 +17,6 @@ import six
 from guessit.__version__ import __version__
 from guessit.options import argument_parser
 from guessit.api import guessit
-
 
 class GuessitEncoder(json.JSONEncoder):
     """
