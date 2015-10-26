@@ -1,5 +1,0 @@
-# Multiple input strings having same expected results can be chained.
-# Use - marker to check inputs that should not match results.
-? Series.S01E02.This.is.the.Episode.Title.mkv
-: episodeTitle: This is the Episode Title
-

@@ -6,6 +6,13 @@ Comparators
 from functools import cmp_to_key
 
 
+def marker_comparator_predicate(match):
+    """
+    Match predicate used in comparator
+    """
+    return not match.private and match.name not in ['extension', 'properCount']
+
+
 def marker_comparator(matches, markers):
     """
     Builds a comparator that returns markers sorted from the most valuable to the less.
@@ -17,12 +24,12 @@ def marker_comparator(matches, markers):
     :return:
     :rtype:
     """
-
     def comparator(marker1, marker2):
         """
         The actual comparator function.
         """
-        matches_count = len(matches.range(*marker2.span)) - len(matches.range(*marker1.span))
+        matches_count = len(matches.range(*marker2.span, predicate=marker_comparator_predicate)) - \
+            len(matches.range(*marker1.span, predicate=marker_comparator_predicate))
         if matches_count:
             return matches_count
         len_diff = len(marker2) - len(marker1)

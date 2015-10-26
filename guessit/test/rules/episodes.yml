@@ -35,3 +35,33 @@
 ? +serie Season Two other
 ? +serie Season II other
 : season: 2
+
+? Some Series.S02E01.Episode.title.mkv
+? Some Series/Season 02/E01-Episode title.mkv
+? Some Series/Season 02/Some Series-E01-Episode title.mkv
+? Some Dummy Directory/Season 02/Some Series-E01-Episode title.mkv
+? -Some Dummy Directory/Season 02/E01-Episode title.mkv
+? Some Series/Unsafe Season 02/Some Series-E01-Episode title.mkv
+? -Some Series/Unsafe Season 02/E01-Episode title.mkv
+? Some Series/Season 02/E01-Episode title.mkv
+? Some Series/ Season 02/E01-Episode title.mkv
+? Some Dummy Directory/Some Series S02/E01-Episode title.mkv
+? Some Dummy Directory/S02 Some Series/E01-Episode title.mkv
+: title: Some Series
+  episodeTitle: Episode title
+  season: 2
+  episodeNumber: 1
+
+? Some Series.S02E01.mkv
+? Some Series/Season 02/E01.mkv
+? Some Series/Season 02/Some Series-E01.mkv
+? Some Dummy Directory/Season 02/Some Series-E01.mkv
+? -Some Dummy Directory/Season 02/E01.mkv
+? Some Series/Unsafe Season 02/Some Series-E01.mkv
+? -Some Series/Unsafe Season 02/E01.mkv
+? Some Series/Season 02/E01.mkv
+? Some Series/ Season 02/E01.mkv
+? Some Dummy Directory/Some Series S02/E01-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.mkv
+: title: Some Series
+  season: 2
+  episodeNumber: 1

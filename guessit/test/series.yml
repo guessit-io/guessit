@@ -199,3 +199,59 @@
   format: DVD
   episodeDetails: Extras
   videoCodec: XviD
+
+? series/Freaks And Geeks/Season 1/Episode 4 - Kim Kelly Is My Friend-eng(1).srt
+: title: Freaks And Geeks
+  season: 1
+  episodeNumber: 4
+  episodeTitle: Kim Kelly Is My Friend
+  subtitleLanguage: English  # This is really a subtitleLanguage, despite guessit 1.x assert for language.
+
+? /mnt/series/The Big Bang Theory/S01/The.Big.Bang.Theory.S01E01.mkv
+: title: The Big Bang Theory
+  season: 1
+  episodeNumber: 1
+
+? /media/Parks_and_Recreation-s03-e01.mkv
+: title: Parks and Recreation
+  season: 3
+  episodeNumber: 1
+
+? /media/Parks_and_Recreation-s03-e02-Flu_Season.mkv
+: title: Parks and Recreation
+  season: 3
+  episodeTitle: Flu Season
+  episodeNumber: 2
+
+? /media/Parks_and_Recreation-s03-x01.mkv
+: title: Parks and Recreation
+  season: 3
+  bonusNumber: 1
+
+? /media/Parks_and_Recreation-s03-x02-Gag_Reel.mkv
+: title: Parks and Recreation
+  season: 3
+  bonusNumber: 2
+  bonusTitle: Gag Reel
+
+? /media/Band_of_Brothers-e01-Currahee.mkv
+: title: Band of Brothers
+  episodeNumber: 1
+  episodeTitle: Currahee
+
+? /media/Band_of_Brothers-x02-We_Stand_Alone_Together.mkv
+: title: Band of Brothers
+  bonusNumber: 2
+  bonusTitle: We Stand Alone Together
+
+? /TV Shows/Mad.M-5x9.mkv
+: title: Mad M
+  season: 5
+  episodeNumber: 9
+
+? /TV Shows/new.girl.117.hdtv-lol.mp4
+: title: new girl
+  season: 1
+  episodeNumber: 17
+  format: HDTV
+  releaseGroup: lol

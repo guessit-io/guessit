@@ -39,6 +39,9 @@ class TitleFromPosition(AppendRemoveMatchRule):
         to_remove = []
 
         if first_hole:
+            group_markers = matches.markers.named('group')
+            first_hole = first_hole.crop(group_markers, index=0)
+
             title_languages = matches.range(first_hole.start, first_hole.end, lambda match: match.name == 'language')
 
             if title_languages:
@@ -49,7 +52,7 @@ class TitleFromPosition(AppendRemoveMatchRule):
 
                 if hole_trailing_languages:
                     # We have one or many language at end of title.
-                    # Keep it if other languages exists in the filepart and if note a code
+                    # Keep it if other languages exists in the filepart and if not a code
                     other_languages = matches.range(filepart.start, filepart.end,
                                                     lambda match: match.name == 'language'
                                                     and match not in hole_trailing_languages)
@@ -78,13 +81,11 @@ class TitleFromPosition(AppendRemoveMatchRule):
                 for keep_match in to_keep:
                     to_remove.remove(keep_match)
 
-            group_markers = matches.markers.named('group')
-            title = first_hole.crop(group_markers, index=0)
-
-            if title and title.value:
-                title.name = 'title'
-                title.tags = ['title']
-                titles = title.split(title_seps, lambda match: match.value)
+            if first_hole and first_hole.value:
+                first_hole.name = 'title'
+                first_hole.tags = ['title']
+                # Split and keep values that can be a title
+                titles = first_hole.split(title_seps, lambda match: match.value)
                 for title in titles[1:]:
                     title.name = 'alternativeTitle'
                 return titles, to_remove

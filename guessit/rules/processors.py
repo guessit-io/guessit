@@ -3,40 +3,44 @@
 """
 Processors
 """
+from collections import defaultdict
 from rebulk import Rebulk
 
 from .common.comparators import marker_sorted
 
 
-def prefer_last_path(matches):
+def remove_ambiguous(matches):
     """
-    If multiple match are found with same name, keep the one in the most valuable filepart.
-    Also keep others match with same value than those in most valuable filepart.
+    If multiple match are found with same name and different values, keep the one in the most valuable filepart.
+    Also keep others match with same name and values than those kept ones.
 
     :param matches:
     :param context:
     :return:
     """
-    filepart = marker_sorted(matches.markers.named('path'), matches)[0]
-    for name in matches.names:
-        name_matches = matches.named(name)
-        if len(name_matches) > 1:
-            keep_list = []
-            keep_values = []
-            for name_match in name_matches:
-                marker = matches.markers.at_match(name_match, lambda marker: marker is filepart, 0)
-                if marker:
-                    keep_list.append(name_match)
-                    keep_values.append(name_match.value)
+    fileparts = marker_sorted(matches.markers.named('path'), matches)
 
-            for name_match in name_matches:
-                if name_match not in keep_list and name_match.value in keep_values:
-                    keep_list.append(name_match)
+    previous_fileparts_names = set()
+    to_remove = []
+    for filepart in fileparts:
+        current_filepart_values = defaultdict(list)
 
-            if keep_list:
-                for name_match in name_matches:
-                    if name_match not in keep_list:
-                        matches.remove(name_match)
+        filepart_matches = matches.range(filepart.start, filepart.end)
+
+        current_filepart_names = set()
+        for match in filepart_matches:
+            current_filepart_names.add(match.name)
+            if match.name in previous_fileparts_names:
+                if match.value not in current_filepart_values[match.name]:
+                    to_remove.append(match)
+            else:
+                if match.value not in current_filepart_values[match.name]:
+                    current_filepart_values[match.name].append(match.value)
+
+        previous_fileparts_names.update(current_filepart_names)
+
+    for match in to_remove:
+        matches.remove(match)
 
 
 def enlarge_group_matches(matches):
@@ -61,4 +65,4 @@ def enlarge_group_matches(matches):
             matches.append(match)
 
 
-PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(prefer_last_path)
+PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(remove_ambiguous)
