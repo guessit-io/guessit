@@ -8,7 +8,7 @@ from rebulk.formatters import formatters
 
 from ..common.formatters import cleanup, reorder_title
 from ..common.comparators import marker_sorted
-from ..common import seps
+from ..common import seps, title_seps
 from rebulk.rules import AppendRemoveMatchRule
 
 
@@ -26,7 +26,7 @@ class TitleFromPosition(AppendRemoveMatchRule):
         return match.name == 'language'
 
     @staticmethod
-    def check_title_in_filepart(filepart, matches):  # pylint: disable=too-many-locals
+    def check_titles_in_filepart(filepart, matches):  # pylint: disable=too-many-locals
         """
         Find title in filepart (ignoring language)
         """
@@ -82,7 +82,12 @@ class TitleFromPosition(AppendRemoveMatchRule):
             title = first_hole.crop(group_markers, index=0)
 
             if title and title.value:
-                return title, to_remove
+                title.name = 'title'
+                title.tags = ['title']
+                titles = title.split(title_seps, lambda match: match.value)
+                for title in titles[1:]:
+                    title.name = 'alternativeTitle'
+                return titles, to_remove
         return None, None
 
     def when(self, matches, context):
@@ -103,19 +108,17 @@ class TitleFromPosition(AppendRemoveMatchRule):
                 years_fileparts.remove(filepart)
             except ValueError:
                 pass
-            title, to_remove_c = TitleFromPosition.check_title_in_filepart(filepart, matches)
-            if title:
-                ret.append(title)
-                title.name = 'title'
+            titles, to_remove_c = TitleFromPosition.check_titles_in_filepart(filepart, matches)
+            if titles:
+                ret.extend(titles)
                 to_remove.extend(to_remove_c)
                 break
 
         # Add title match in all fileparts containing the year.
         for filepart in years_fileparts:
-            title, to_remove_c = TitleFromPosition.check_title_in_filepart(filepart, matches)
-            if title:
-                ret.append(title)
-                title.name = 'title'
+            titles, to_remove_c = TitleFromPosition.check_titles_in_filepart(filepart, matches)
+            if titles:
+                ret.extend(titles)
                 to_remove.extend(to_remove_c)
 
         return ret, to_remove

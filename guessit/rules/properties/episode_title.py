@@ -3,7 +3,8 @@
 """
 Episode title
 """
-from rebulk import Rebulk, AppendMatchRule
+from guessit.rules.common import seps
+from rebulk import Rebulk, AppendMatchRule, Rule
 from rebulk.formatters import formatters
 
 from ..common.formatters import cleanup, reorder_title
@@ -32,7 +33,31 @@ class EpisodeTitleFromPosition(AppendMatchRule):
 
                 if title and title.value:
                     title.name = 'episodeTitle'
+                    title.tags = ['title']
                     return title
 
 
-EPISODE_TITLE = Rebulk().rules(EpisodeTitleFromPosition)
+class AlternativeTitleReplace(Rule):
+    """
+    If alternateTitle was found and title is next to episodeNumber, season or date, replace it with episodeTitle.
+    """
+    priority = 9  # Just after main title
+
+    def when(self, matches, context):
+        alternative_title = matches.range(predicate=lambda match: match.name == 'alternativeTitle', index=0)
+        if alternative_title:
+            main_title = matches.chain_before(alternative_title.start, seps=seps,
+                                              predicate=lambda match: 'title' in match.tags, index=0)
+            if main_title:
+                episode = matches.previous(main_title,
+                                           lambda previous: previous.name in ['episodeNumber', 'season', 'date'], 0)
+                if episode:
+                    return alternative_title
+
+    def then(self, matches, when_response, context):
+        matches.remove(when_response)
+        when_response.name = 'episodeTitle'
+        matches.append(when_response)
+
+
+EPISODE_TITLE = Rebulk().rules(EpisodeTitleFromPosition, AlternativeTitleReplace)

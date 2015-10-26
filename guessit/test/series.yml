@@ -98,3 +98,26 @@
   language: English
   subtitleLanguage: French
   other: Complete
+
+? Series/Pure Laine/Pure.Laine.1x01.Toutes.Couleurs.Unies.FR.(Québec).DVB-Kceb.[tvu.org.ru].avi
+: title: Pure Laine
+  season: 1
+  episodeNumber: 1
+  episodeTitle: Toutes Couleurs Unies
+  format: DVB
+  releaseGroup: Kceb
+  language: french
+  website: tvu.org.ru
+
+? Series/Pure Laine/2x05 - Pure Laine - Je Me Souviens.avi
+: title: Pure Laine
+  season: 2
+  episodeNumber: 5
+  episodeTitle: Je Me Souviens
+
+? Series/Tout sur moi/Tout sur moi - S02E02 - Ménage à trois (14-01-2008) [Rip by Ampli].avi
+: title: Tout sur moi
+  season: 2
+  episodeNumber: 2
+  episodeTitle: Ménage à trois
+  date: 2008-01-14

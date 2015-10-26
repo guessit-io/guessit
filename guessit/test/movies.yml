@@ -242,8 +242,7 @@
 
 # Removing this one because 001 is guessed as an episode number.
 # ? Movies/001 __ A classer/Fantomas se déchaine - Louis de Funès.avi
-# : title: Fantomas se déchaine - Louis de Funès
-# TODO: Remove author from title, or add a new property like subtitle ...
+# : title: Fantomas se déchaine
 
 ? Movies/Comme une Image (2004)/Comme.Une.Image.FRENCH.DVDRiP.XViD-NTK.par-www.divx-overnet.com.avi
 : title: Comme une Image
@@ -309,7 +308,8 @@
   bonusTitle: Stunts
 
 ? OSS_117--Cairo,_Nest_of_Spies.mkv
-: title: OSS 117--Cairo, Nest of Spies
+: title: OSS 117
+# TODO: Implement subTitle for movies.
 
 ? The Godfather Part 3.mkv
 ? The Godfather Part III.mkv
@@ -572,7 +572,8 @@
   releaseGroup: Hive-CM8
 
 ? "Star Wars: Episode IV - A New Hope (2004) Special Edition.MKV"
-: title: "Star Wars: Episode IV - A New Hope"
+: title: "Star Wars: Episode IV"
+  alternativeTitle: A New Hope
   year: 2004
   edition: Special Edition
 
@@ -627,12 +628,18 @@
   language: Multiple languages
   releaseGroup: CCATS
   screenSize: 1080p
-  title: Echec et Mort - Hard to Kill - Steven Seagal
+  title: Echec et Mort
+  alternativeTitle:
+    - Hard to Kill
+    - Steven Seagal
   videoCodec: h264
 
 ? Paparazzi - Timsit/Lindon (MKV 1080p tvripHD)
 : options: -n
-  title: Paparazzi - Timsit/Lindon
+  title: Paparazzi
+  alternativeTitle:
+    - Timsit
+    - Lindon
   screenSize: 1080p
   format: HDTV
 
