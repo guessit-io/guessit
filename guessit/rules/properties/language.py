@@ -297,10 +297,28 @@ class SubtitleSuffixLanguageRule(Rule):
             matches.append(language)
 
 
+class SubtitleExtensionRule(Rule):
+    """
+    Convert language guess as subtitleLanguage if next match is a subtitle extension
+    """
+    priority = -2
+
+    def when(self, matches, context):
+        subtitle_extension = matches.named('extension', lambda match: 'subtitle' in match.tags, 0)
+        if subtitle_extension:
+            subtitle_language = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
+            if subtitle_language:
+                return subtitle_language
+
+    def then(self, matches, when_response, context):
+        matches.remove(when_response)
+        when_response.name = 'subtitleLanguage'
+        matches.append(when_response)
+
+
 LANGUAGE.string(*subtitle_prefixes, name="subtitleLanguage.prefix", ignore_case=True, private=True,
                 validator=seps_surround)
 LANGUAGE.string(*subtitle_suffixes, name="subtitleLanguage.suffix", ignore_case=True, private=True,
                 validator=seps_surround)
 LANGUAGE.functional(find_languages)
-LANGUAGE.rules(SubtitlePrefixLanguageRule)
-LANGUAGE.rules(SubtitleSuffixLanguageRule)
+LANGUAGE.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
