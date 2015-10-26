@@ -26,7 +26,9 @@ class EpisodeTitleFromPosition(AppendMatchRule):
 
         for hole in holes:
             episode = matches.previous(hole,
-                                       lambda previous: previous.name in ['episodeNumber', 'season', 'date'], 0)
+                                       lambda previous: previous.name in
+                                       ['episodeNumber', 'episodeDetails', 'season', 'date'],
+                                       0)
             if episode:
                 group_markers = matches.markers.named('group')
                 title = hole.crop(group_markers, index=0)

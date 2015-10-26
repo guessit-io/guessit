@@ -121,3 +121,81 @@
   episodeNumber: 2
   episodeTitle: Ménage à trois
   date: 2008-01-14
+
+? The.Mentalist.2x21.18-5-4.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi
+: title: The Mentalist
+  season: 2
+  episodeNumber: 21
+  episodeTitle: 18-5-4
+  language: english
+  subtitleLanguage: french
+  format: HDTV
+  videoCodec: XviD
+  releaseGroup: AlFleNi-TeaM
+  website: tvu.org.ru
+
+? series/__ Incomplete __/Dr Slump (Catalan)/Dr._Slump_-_003_DVB-Rip_Catalan_by_kelf.avi
+: title: Dr Slump
+  episodeNumber: 3
+  format: DVB
+  language: catalan
+
+# Disabling this test because it just doesn't looks like a serie ...
+#? series/Ren and Stimpy - Black_hole_[DivX].avi
+#: title: Ren and Stimpy
+#  episodeTitle: Black hole
+#  videoCodec: DivX
+
+# Disabling this test because it just doesn't looks like a serie ...
+# ? Series/Walt Disney/Donald.Duck.-.Good.Scouts.[www.bigernie.jump.to].avi
+#: title: Donald Duck
+#  episodeTitle: Good Scouts
+#  website: www.bigernie.jump.to
+
+? Series/Neverwhere/Neverwhere.05.Down.Street.[tvu.org.ru].avi
+: title: Neverwhere
+  episodeNumber: 5
+  episodeTitle: Down Street
+  website: tvu.org.ru
+
+? Series/South Park/Season 4/South.Park.4x07.Cherokee.Hair.Tampons.DVDRip.[tvu.org.ru].avi
+: title: South Park
+  season: 4
+  episodeNumber: 7
+  episodeTitle: Cherokee Hair Tampons
+  format: DVD
+  website: tvu.org.ru
+
+? Series/Kaamelott/Kaamelott - Livre V - Ep 23 - Le Forfait.avi
+: title: Kaamelott
+  alternativeTitle: Livre V
+  episodeNumber: 23
+  episodeTitle: Le Forfait
+
+? Series/Duckman/Duckman - 110 (10) - 20021218 - Cellar Beware.avi
+: title: Duckman
+  season: 1
+  episodeNumber: 10
+  date: 2002-12-18
+  episodeTitle: Cellar Beware
+
+# Removing this test because it doesn't look like a series
+# ? Series/Ren & Stimpy/Ren And Stimpy - Onward & Upward-Adult Party Cartoon.avi
+# : title: Ren And Stimpy
+#   episodeTitle: Onward & Upward-Adult Party Cartoon
+
+? Series/Breaking Bad/Minisodes/Breaking.Bad.(Minisodes).01.Good.Cop.Bad.Cop.WEBRip.XviD.avi
+: title: Breaking Bad
+  episodeFormat: Minisode
+  episodeNumber: 1
+  episodeTitle: Good Cop Bad Cop
+  format: WEBRip
+  videoCodec: XviD
+
+? Series/My Name Is Earl/My.Name.Is.Earl.S01Extras.-.Bad.Karma.DVDRip.XviD.avi
+: title: My Name Is Earl
+  season: 1
+  episodeTitle: Bad Karma
+  format: DVD
+  episodeDetails: Extras
+  videoCodec: XviD
