@@ -4,7 +4,7 @@
 Path markers
 """
 
-from rebulk import Rebulk, Match
+from rebulk import Rebulk
 
 from rebulk.utils import find_all
 
@@ -21,7 +21,7 @@ def mark_path(input_string, context):
     """
     ret = []
     if context.get('name_only', False):
-        ret.append(Match(0, len(input_string)))
+        ret.append((0, len(input_string)))
     else:
         indices = list(find_all(input_string, '/'))
         indices += list(find_all(input_string, r'\\'))
@@ -30,7 +30,7 @@ def mark_path(input_string, context):
         indices.sort()
 
         for i in range(0, len(indices) - 1):
-            ret.append(Match(indices[i] + 1, indices[i + 1]))
+            ret.append((indices[i] + 1, indices[i + 1]))
 
     return ret
 

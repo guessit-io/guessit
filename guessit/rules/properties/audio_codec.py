@@ -35,6 +35,7 @@ AUDIO_CODEC.regex('1ch', 'mono', value='1.0')
 
 audio_properties = ['audioCodec', 'audioProfile', 'audioChannels']
 
+
 class AudioValidatorRule(RemoveMatchRule):
     """
     Remove audio properties if not surrounded by separators and not next each others

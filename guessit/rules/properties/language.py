@@ -4,7 +4,7 @@
 Language and subtitleLanguage
 """
 # pylint: disable=no-member
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import unicode_literals
 
 import regex as re
 from babelfish import Language, Country
@@ -217,15 +217,16 @@ def find_languages(string, options=None):
         if lang_word not in common_words and word.lower() not in common_words:
             try:
                 lang = Language.fromguessit(lang_word)
+                match = (start, end, {'name': key, 'value': lang})
                 if allowed_languages:
                     if lang.name.lower() in allowed_languages \
                             or lang.alpha2.lower() in allowed_languages \
                             or lang.alpha3.lower() in allowed_languages:
-                        matches.append((start, end, {'name': key, 'value': lang}))
+                        matches.append(match)
                 # Keep language with alpha2 equivalent. Others are probably
                 # uncommon languages.
                 elif lang == 'mul' or hasattr(lang, 'alpha2'):
-                    matches.append((start, end, {'name': key, 'value': lang}))
+                    matches.append(match)
             except babelfish.Error:
                 pass
     return matches
