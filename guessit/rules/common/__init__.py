@@ -5,7 +5,7 @@ Common module
 """
 import six
 
-seps = six.u(r' [](){}!?+*|&=§-_~#/\.,;')  # list of tags/words separators
+seps = six.u(r' [](){}+*|&=§-_~#/\.,;')  # list of tags/words separators
 
 title_seps = six.u(r'-+/\|;')  # separators for title
 

@@ -11,13 +11,15 @@ from ..common.validators import seps_surround
 CRC = Rebulk().regex_defaults(flags=re.IGNORECASE)
 CRC.defaults(validator=seps_surround)
 
+CRC.regex('(?:[a-fA-F]|[0-9]){8}', name='crc32')
+
+
 _DIGIT = 0
 _LETTER = 1
 _OTHER = 2
 
 
 _idnum = re.compile(r'(?P<idNumber>[a-zA-Z0-9-]{20,})')  # 1.0, (0, 0))
-
 
 def guess_idnumber(string):
     """
