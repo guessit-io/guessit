@@ -65,3 +65,22 @@
 : title: Some Series
   season: 2
   episodeNumber: 1
+
+? Some Series S03E01E02
+: title: Some Series
+  season: 3
+  episodeNumber: [1, 2]
+
+? Some Series S01S02S03
+? Some Series S01-02-03
+? Some Series S01 S02 S03
+? -Some Series S01 02 03
+: title: Some Series
+  season: [1, 2, 3]
+
+? Some Series E01E02E03
+? Some Series E01-02-03
+? Some Series E01 E02 E03
+? Some Series E01 02 03
+: title: Some Series
+  episodeNumber: [1, 2, 3]

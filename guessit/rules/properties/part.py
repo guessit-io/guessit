@@ -13,5 +13,5 @@ PART = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
 
 prefixes = ['pt', 'part']
 
-PART.regex(r'\L<prefixes>' + dash[1][:len(dash[1]) - 1] + '(' + numeral + r')(?:$|[^\d])', prefixes=prefixes,
+PART.regex(r'\L<prefixes>-(' + numeral + r')(?:$|[^\d])', prefixes=prefixes,
            name='part', private_parent=True, children=True, formatter=parse_numeral)

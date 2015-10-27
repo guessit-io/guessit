@@ -8,9 +8,15 @@ import regex as re
 
 from ..common import dash
 
-CDS = Rebulk().regex_defaults(flags=re.IGNORECASE)
+CDS = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
 
-CDS.regex('cd' + dash[1] + '(?P<cdNumber>[0-9])(?:' + dash[1] + 'of' + dash[1] + '(?P<cdNumberTotal>[0-9]))?',
-          formatter={'cdNumber': int, 'cdNumberTotal': int}, every=True, private_parent=True)
-CDS.regex('(?P<cdNumberTotal>[1-9])' + dash[1] + 'cds?', every=True, private_parent=True,
-          formatter={'cdNumberTotal': int})
+CDS.regex(r'cd-?(?P<cdNumber>\d+)(?:-?of-?(?P<cdNumberTotal>\d+))?',
+          validator={'cdNumber': lambda match: match.value > 0, 'cdNumberTotal': lambda match: match.value > 0},
+          formatter={'cdNumber': int, 'cdNumberTotal': int},
+          children=True,
+          private_parent=True)
+CDS.regex(r'(?P<cdNumberTotal>\d+)-?cds?',
+          validator={'cdNumber': lambda match: match.value > 0, 'cdNumberTotal': lambda match: match.value > 0},
+          formatter={'cdNumberTotal': int},
+          children=True,
+          private_parent=True)

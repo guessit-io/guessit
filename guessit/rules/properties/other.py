@@ -16,10 +16,10 @@ from guessit.rules.common.formatters import raw_cleanup
 OTHER = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
 OTHER.defaults(name="other", validator=seps_surround)
 
-OTHER.regex('Audio-Fix', 'Audio-Fixed', value='AudioFix')
-OTHER.regex('Sync-Fix', 'Sync-Fixed', value='SyncFix')
-OTHER.regex('Dual-Audio', value='DualAudio')
-OTHER.regex('ws', 'wide-screen', value='WideScreen')
+OTHER.regex('Audio-?Fix', 'Audio-?Fixed', value='AudioFix')
+OTHER.regex('Sync-?Fix', 'Sync-?Fixed', value='SyncFix')
+OTHER.regex('Dual-?Audio', value='DualAudio')
+OTHER.regex('ws', 'wide-?screen', value='WideScreen')
 OTHER.string('Netflix', 'NF', value='Netflix')
 
 OTHER.string('Real', 'Fix', value='Proper', tags='other.has-neighbor')
@@ -30,7 +30,7 @@ OTHER.string('Fastsub', value='Fastsub', tags='other.has-neighbor')
 OTHER.regex('(?:Seasons?-)?Complete', value='Complete',
             validator=lambda match: seps_surround(match) and match.raw.lower().strip(seps) != "complete")
 OTHER.string('R5', 'RC', value='R5')
-OTHER.regex('Pre-Air', value='Preair')
+OTHER.regex('Pre-?Air', value='Preair')
 
 for value in ('Screener', 'Remux', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC', 'CC', 'LD',
               'MD'):

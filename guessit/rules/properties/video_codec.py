@@ -16,8 +16,8 @@ VIDEO_CODEC.regex(r"Rv\d{2}", value="Real")
 VIDEO_CODEC.regex("Mpeg2", value="Mpeg2")
 VIDEO_CODEC.regex("DVDivX", "DivX", value="DivX")
 VIDEO_CODEC.regex("XviD", value="XviD")
-VIDEO_CODEC.regex("[hx]-264(?:-AVC)?", "MPEG-4(?:-AVC)", value="h264")
-VIDEO_CODEC.regex("[hx]-265(?:-HEVC)?", "HEVC", value="h265")
+VIDEO_CODEC.regex("[hx]-?264(?:-?AVC)?", "MPEG-?4(?:-?AVC)", value="h264")
+VIDEO_CODEC.regex("[hx]-?265(?:-?HEVC)?", "HEVC", value="h265")
 
 # http://blog.mediacoderhq.com/h264-profiles-and-levels/
 # http://fr.wikipedia.org/wiki/H.264

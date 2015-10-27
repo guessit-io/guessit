@@ -255,3 +255,14 @@
   episodeNumber: 17
   format: HDTV
   releaseGroup: lol
+
+? Kaamelott - 5x44x45x46x47x48x49x50.avi
+: title: Kaamelott
+  season: 5
+  episodeNumber: [44, 45, 46, 47, 48, 49, 50]
+
+? Example S01E01-02.avi
+? Example S01E01E02.avi
+: title: Example
+  season: 1
+  episodeNumber: [1, 2]

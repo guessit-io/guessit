@@ -14,17 +14,19 @@ from ..common.numeral import numeral, parse_numeral
 EPISODES = Rebulk()
 EPISODES.regex_defaults(flags=re.IGNORECASE)
 
-EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)',  # 01x02
-               r'S(?P<season>\d+)[ex](?P<episodeNumber>\d+)',  # S01E02, S01x02
-               r'S(?P<season>\d+)xe(?P<episodeNumber>\d+)',  # S01Ex02
-               r'S(?P<season>\d{1,2})',  # S01
+# 01x02, 01x02x03x04
+EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)(?:(?:x|-|&)(?P<episodeNumber>\d+))*',
+               # S01E02, S01x02, S01E02E03, S01Ex02, S01xE02, SO1Ex02Ex03
+               r'S(?P<season>\d+)(?:xE|Ex|E|x)(?P<episodeNumber>\d+)(?:(?:xE|Ex|E|x|-|&)(?P<episodeNumber>\d+))*',
+               # S01
+               r'S(?P<season>\d+)(?:(?:S|-|&)(?P<season>\d+))*',
                formatter=int,
                tags=['SxxExx'],
                children=True,
                private_parent=True,
                conflict_solver=lambda match, other: match
                if match.name in ['season', 'episodeNumber']
-               and other.name == 'screenSize'
+               and other.name in ['screenSize']
                else '__default__')
 
 # episodeDetails property
@@ -37,38 +39,37 @@ EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, ch
 season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series']
 episode_words = ['episode', 'episodes']
 
-EPISODES.regex(r'\L<season_words>-(?P<season>' + numeral + ')', season_words=season_words,  # Season 1, # Season one
+EPISODES.regex(r'\L<season_words>-?(?P<season>' + numeral + ')', season_words=season_words,  # Season 1, # Season one
                abbreviations=[dash], formatter=parse_numeral)
-EPISODES.regex(r'\L<episode_words>-(?P<episodeNumber>\d+)', episode_words=episode_words,  # Episode 4
+EPISODES.regex(r'\L<episode_words>-?(?P<episodeNumber>\d+)', episode_words=episode_words,  # Episode 4
                abbreviations=[dash], formatter=int)
 
-season_markers = ['s']
-episode_markers = ['e', 'ep']
+# 12, 13
+EPISODES.regex(r'(?P<episodeNumber>\d{2})(?:[x-](<?P<episodeNumber>\d{2}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter=int)
 
+# 012, 013
+EPISODES.regex(r'0(?P<episodeNumber>\d{1,2})(?:[x-]0(<?P<episodeNumber>\d{1,2}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter=int)
 
-no_zero_validator = {'__parent__': seps_surround,
-                     'season': lambda match: match.value > 0, 'episodeNumber': lambda match: match.value > 0}
-
-EPISODES.regex(r'(?P<episodeNumber>\d{2})', tags=['bonus-conflict', 'weak-movie'], formatter=int)  # 12
-EPISODES.regex(r'0(?P<episodeNumber>\d{1,2})', tags=['bonus-conflict', 'weak-movie'], formatter=int)  # 02, 012
-EPISODES.regex(r'(?P<episodeNumber>\d{3,4})', tags=['bonus-conflict', 'weak-movie'], formatter=int,  # 112, 113
-               validator=no_zero_validator,
+# 112, 113
+EPISODES.regex(r'(?P<episodeNumber>\d{3,4})(?:[x-](<?P<episodeNumber>\d{3,4}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter=int,
                disabled=lambda context: not context.get('episode_prefer_number', False))
 
-EPISODES.regex(r'\L<episode_markers>-(?P<episodeNumber>\d{2})',  # ep 12, e 12
-               formatter=int, abbreviations=[dash], episode_markers=episode_markers)
-EPISODES.regex(r'\L<episode_markers>-0(?P<episodeNumber>\d{1,2})',  # ep 02, ep 012, e 02, e 012
-               formatter=int, abbreviations=[dash], episode_markers=episode_markers)
-EPISODES.regex(r'\L<episode_markers>-(?P<episodeNumber>\d{3,4})', # ep 112, ep 113, e 112, e 113
-               formatter=int, abbreviations=[dash], episode_markers=episode_markers)
+# e112, e113
+EPISODES.regex(r'e(?P<episodeNumber>\d{1,4})(?:(?:e|x|-)(?P<episodeNumber>\d{1,4}))*',
+               formatter=int)
 
-EPISODES.regex(r'(?P<season>\d{1})(?P<episodeNumber>\d{2})', tags=['bonus-conflict', 'weak-movie'],  # 102
+# ep 112, ep113, ep112, ep113
+EPISODES.regex(r'ep-?(?P<episodeNumber>\d{1,4})(?:(?:ep|e|x|-)(?P<episodeNumber>\d{1,4}))*',
+               abbreviations=[dash],
+               formatter=int)
+
+# 102, 0102
+EPISODES.regex(r'(?P<season>\d{1,2})(?P<episodeNumber>\d{2})(?:(?:x|-)(?P<episodeNumber>\d{2}))*',
+               tags=['bonus-conflict', 'weak-movie'],
                formatter=int,
-               validator=no_zero_validator,
-               disabled=lambda context: context.get('episode_prefer_number', False))
-EPISODES.regex(r'(?P<season>\d{2})(?P<episodeNumber>\d{2})', tags=['bonus-conflict', 'weak-movie'],  # 0102
-               formatter=int,
-               validator=no_zero_validator,
                conflict_solver=lambda match, other: match if other.name == 'year' else '__default__',
                disabled=lambda context: context.get('episode_prefer_number', False))
 
@@ -77,7 +78,7 @@ EPISODES.defaults()
 EPISODES.regex(r'Minisodes?', name='episodeFormat', value="Minisode")
 
 # Harcoded movie to disable weak season/episodes
-EPISODES.regex('OSS-117',
+EPISODES.regex('OSS-?117',
                abbreviations=[dash], name="hardcoded-movies", marker=True,
                conflict_solver=lambda match, other: None)
 
@@ -107,7 +108,7 @@ class RemoveWeakIfSxxExx(RemoveMatchRule):
 
 class EpisodeDetailValidator(RemoveMatchRule):
     """
-    Validate rules if they are detached or next to season or episodeNumber.
+    Validate episodeDetails if they are detached or next to season or episodeNumber.
     """
     priority = 2048
 
