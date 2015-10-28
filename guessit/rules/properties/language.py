@@ -5,11 +5,12 @@ Language and subtitleLanguage
 """
 # pylint: disable=no-member
 from __future__ import unicode_literals
+import copy
 
 import regex as re
 from babelfish import Language, Country
 import babelfish
-from rebulk import Rebulk, Rule
+from rebulk import Rebulk, Rule, RemoveMatchRule
 
 from guessit.rules.common.validators import seps_surround
 
@@ -235,13 +236,15 @@ def find_languages(string, options=None):
 LANGUAGE = Rebulk()
 
 
-class SubtitlePrefixLanguageRule(Rule):
+class SubtitlePrefixLanguageRule(RemoveMatchRule):
     """
     Convert language guess as subtitleLanguage if previous match is a subtitle language prefix
     """
+    priority = 380
 
     def when(self, matches, context):
-        ret = []
+        to_rename = []
+        to_remove = matches.named('subtitleLanguage.prefix')
         for language in matches.named('language'):
             prefix = matches.previous(language, lambda match: match.name == 'subtitleLanguage.prefix', 0)
             if not prefix:
@@ -254,48 +257,49 @@ class SubtitlePrefixLanguageRule(Rule):
                         prefix = matches.range(group_marker.start, language.start,
                                                lambda match: match.name == 'subtitleLanguage.prefix', 0)
             if prefix:
-                ret.append((prefix, language))
-        return ret
+                to_rename.append((prefix, language))
+                if prefix in to_remove:
+                    to_remove.remove(prefix)
+        return to_rename, to_remove
 
     def then(self, matches, when_response, context):
-        for prefix, language in when_response:
-            if prefix in matches:
-                suffix_equivalent = matches.range(prefix.start, prefix.end,
-                                                  lambda match: match.name == 'subtitleLanguage.suffix', index=0)
+        to_rename, to_remove = when_response
+        super(SubtitlePrefixLanguageRule, self).then(matches, to_remove, context)
+        for prefix, match in to_rename:
+            # Remove suffix equivalent of  prefix.
+            suffix = copy.copy(prefix)
+            suffix.name = 'subtitleLanguage.suffix'
+            if suffix in matches:
+                matches.remove(suffix)
+            matches.remove(match)
+            match.name = 'subtitleLanguage'
+            matches.append(match)
 
-                matches.remove(prefix)
-                if suffix_equivalent and suffix_equivalent in matches:
-                    matches.remove(suffix_equivalent)
-            matches.remove(language)
-            language.name = 'subtitleLanguage'
-            matches.append(language)
 
-
-class SubtitleSuffixLanguageRule(Rule):
+class SubtitleSuffixLanguageRule(RemoveMatchRule):
     """
     Convert language guess as subtitleLanguage if next match is a subtitle language suffix
     """
-    priority = -1
+    priority = 379
 
     def when(self, matches, context):
-        ret = []
+        to_append = []
+        to_remove = matches.named('subtitleLanguage.suffix')
         for language in matches.named('language'):
             suffix = matches.next(language, lambda match: match.name == 'subtitleLanguage.suffix', 0)
             if suffix:
-                ret.append((suffix, language))
-        return ret
+                to_append.append(language)
+                if suffix in to_remove:
+                    to_remove.remove(suffix)
+        return to_append, to_remove
 
     def then(self, matches, when_response, context):
-        for suffix, language in when_response:
-            if suffix in matches:
-                prefix_equivalent = matches.range(suffix.start, suffix.end,
-                                                  lambda match: match.name == 'subtitleLanguage.prefix', index=0)
-                matches.remove(suffix)
-                if prefix_equivalent and prefix_equivalent in matches:
-                    matches.remove(prefix_equivalent)
-            matches.remove(language)
-            language.name = 'subtitleLanguage'
-            matches.append(language)
+        to_rename, to_remove = when_response
+        super(SubtitleSuffixLanguageRule, self).then(matches, to_remove, context)
+        for match in to_rename:
+            matches.remove(match)
+            match.name = 'subtitleLanguage'
+            matches.append(match)
 
 
 class SubtitleExtensionRule(Rule):
