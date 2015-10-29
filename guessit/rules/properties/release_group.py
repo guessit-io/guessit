@@ -5,7 +5,7 @@ Release group
 """
 import copy
 
-from rebulk import Rebulk, AppendMatchRule
+from rebulk import Rebulk, Rule, AppendMatch
 
 from ..common.formatters import cleanup
 from ..common import seps
@@ -39,13 +39,14 @@ _scene_previous = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfi
                    'screenSize', 'other']
 
 
-class SceneReleaseGroup(AppendMatchRule):
+class SceneReleaseGroup(Rule):
     """
     Add releaseGroup match in existing matches (scene format).
 
     Something.XViD-ReleaseGroup.mkv
     """
     priority = 5
+    consequence = AppendMatch
 
     def when(self, matches, context):
         ret = []
@@ -66,12 +67,13 @@ class SceneReleaseGroup(AppendMatchRule):
         return ret
 
 
-class AnimeReleaseGroup(AppendMatchRule):
+class AnimeReleaseGroup(Rule):
     """
     Add releaseGroup match in existing matches (anime format)
     ...[ReleaseGroup] Something.mkv
     """
     priority = 4
+    consequence = AppendMatch
 
     def when(self, matches, context):
         ret = []

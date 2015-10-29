@@ -4,7 +4,7 @@
 Film support
 """
 import regex as re
-from rebulk import Rebulk, AppendMatchRule
+from rebulk import Rebulk, AppendMatch, Rule
 
 from ..common.formatters import cleanup
 
@@ -13,11 +13,12 @@ FILM = Rebulk().regex_defaults(flags=re.IGNORECASE)
 FILM.regex(r'f(\d+)', name='filmNumber', private_parent=True, children=True, formatter=int)
 
 
-class FilmTitleRule(AppendMatchRule):
+class FilmTitleRule(Rule):
     """
     Abstract rule to validate audio profiles
     """
     priority = 15  # Must be before title guessing
+    consequence = AppendMatch
 
     def when(self, matches, context):
         bonus_number = matches.named('filmNumber', lambda match: not match.private, index=0)

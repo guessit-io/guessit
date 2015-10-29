@@ -3,7 +3,7 @@
 """
 audioCodec and audioProfile property
 """
-from rebulk import Rebulk, RemoveMatchRule
+from rebulk import Rebulk, Rule, RemoveMatch
 import regex as re
 
 from ..common import dash
@@ -36,12 +36,13 @@ AUDIO_CODEC.regex('1ch', 'mono', value='1.0')
 audio_properties = ['audioCodec', 'audioProfile', 'audioChannels']
 
 
-class AudioValidatorRule(RemoveMatchRule):
+class AudioValidatorRule(Rule):
     """
     Remove audio properties if not surrounded by separators and not next each others
     """
 
     priority = 2048
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         ret = []
@@ -63,11 +64,12 @@ class AudioValidatorRule(RemoveMatchRule):
         return ret
 
 
-class AudioProfileRule(RemoveMatchRule):
+class AudioProfileRule(Rule):
     """
     Abstract rule to validate audio profiles
     """
     priority = 255
+    consequence = RemoveMatch
 
     def __init__(self, codec):
         super(AudioProfileRule, self).__init__()
@@ -117,12 +119,13 @@ class Ac3Rule(AudioProfileRule):
 AUDIO_CODEC.rules(DtsRule, AacRule, Ac3Rule, AudioValidatorRule)
 
 
-class HqConflictRule(RemoveMatchRule):
+class HqConflictRule(Rule):
     """
     Solve conflict between HQ from other property and from audioProfile.
     """
 
     priority = 250  # Must run after AudioProfileRule
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         hq_audio = matches.named('audioProfile', lambda match: match.value == 'HQ')

@@ -3,7 +3,7 @@
 """
 Date and year
 """
-from rebulk import Rebulk, RemoveMatchRule
+from rebulk import Rebulk, RemoveMatch, Rule
 
 from ..common.date import search_date, valid_year
 from ..common.validators import seps_surround
@@ -33,11 +33,12 @@ def date(string, context):
 DATE.functional(date, name="date")
 
 
-class KeepMarkedYearInFilepart(RemoveMatchRule):
+class KeepMarkedYearInFilepart(Rule):
     """
     Keep first years marked with [](){} in filepart, or if no year is marked, ensure it won't override titles.
     """
     priority = 512  # Must be before title and filmTitle rules
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         ret = []

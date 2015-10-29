@@ -10,7 +10,7 @@ import copy
 import regex as re
 from babelfish import Language, Country
 import babelfish
-from rebulk import Rebulk, Rule, RemoveMatchRule
+from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
 
 from guessit.rules.common.validators import seps_surround
 
@@ -236,11 +236,12 @@ def find_languages(string, options=None):
 LANGUAGE = Rebulk()
 
 
-class SubtitlePrefixLanguageRule(RemoveMatchRule):
+class SubtitlePrefixLanguageRule(Rule):
     """
     Convert language guess as subtitleLanguage if previous match is a subtitle language prefix
     """
     priority = 380
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         to_rename = []
@@ -276,11 +277,12 @@ class SubtitlePrefixLanguageRule(RemoveMatchRule):
             matches.append(match)
 
 
-class SubtitleSuffixLanguageRule(RemoveMatchRule):
+class SubtitleSuffixLanguageRule(Rule):
     """
     Convert language guess as subtitleLanguage if next match is a subtitle language suffix
     """
     priority = 379
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         to_append = []
@@ -307,6 +309,7 @@ class SubtitleExtensionRule(Rule):
     Convert language guess as subtitleLanguage if next match is a subtitle extension
     """
     priority = -2
+    consequence = RenameMatch('subtitleLanguage')
 
     def when(self, matches, context):
         subtitle_extension = matches.named('extension', lambda match: 'subtitle' in match.tags, 0)
@@ -314,11 +317,6 @@ class SubtitleExtensionRule(Rule):
             subtitle_language = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
             if subtitle_language:
                 return subtitle_language
-
-    def then(self, matches, when_response, context):
-        matches.remove(when_response)
-        when_response.name = 'subtitleLanguage'
-        matches.append(when_response)
 
 
 LANGUAGE.string(*subtitle_prefixes, name="subtitleLanguage.prefix", ignore_case=True, private=True,

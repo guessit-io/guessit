@@ -3,20 +3,20 @@
 """
 Title
 """
-from rebulk import Rebulk, RemoveMatchRule, AppendRemoveMatchRule
+from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch
 from rebulk.formatters import formatters
 
 from ..common.formatters import cleanup, reorder_title
 from ..common.comparators import marker_sorted
 from ..common import seps, title_seps
-from rebulk.rules import AppendRemoveMatchRule
 
 
-class TitleFromPosition(AppendRemoveMatchRule):
+class TitleFromPosition(Rule):
     """
     Add title match in existing matches
     """
     priority = 10
+    consequence = [AppendMatch, RemoveMatch]
 
     @staticmethod
     def ignore_language(match):
@@ -89,7 +89,6 @@ class TitleFromPosition(AppendRemoveMatchRule):
                 for title in titles[1:]:
                     title.name = 'alternativeTitle'
                 return titles, to_remove
-        return None, None
 
     def when(self, matches, context):
         fileparts = list(marker_sorted(matches.markers.named('path'), matches))
@@ -109,27 +108,30 @@ class TitleFromPosition(AppendRemoveMatchRule):
                 years_fileparts.remove(filepart)
             except ValueError:
                 pass
-            titles, to_remove_c = TitleFromPosition.check_titles_in_filepart(filepart, matches)
+            titles = TitleFromPosition.check_titles_in_filepart(filepart, matches)
             if titles:
+                titles, to_remove_c = titles
                 ret.extend(titles)
                 to_remove.extend(to_remove_c)
                 break
 
         # Add title match in all fileparts containing the year.
         for filepart in years_fileparts:
-            titles, to_remove_c = TitleFromPosition.check_titles_in_filepart(filepart, matches)
+            titles = TitleFromPosition.check_titles_in_filepart(filepart, matches)
             if titles:
+                titles, to_remove_c = titles
                 ret.extend(titles)
                 to_remove.extend(to_remove_c)
 
         return ret, to_remove
 
 
-class PreferTitleWithYear(RemoveMatchRule):
+class PreferTitleWithYear(Rule):
     """
     Prefer title where filepart contains year.
     """
     priority = -255
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         to_keep = []

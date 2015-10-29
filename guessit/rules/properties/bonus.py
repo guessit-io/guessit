@@ -4,7 +4,7 @@
 Bonus support
 """
 import regex as re
-from rebulk import Rebulk, AppendMatchRule
+from rebulk import Rebulk, AppendMatch, Rule
 
 from ..common.formatters import cleanup
 from ..common.validators import seps_surround
@@ -19,11 +19,12 @@ BONUS.regex(r'x(\d+)', name='bonusNumber', private_parent=True, children=True, f
             else '__default__')
 
 
-class BonusTitleRule(AppendMatchRule):
+class BonusTitleRule(Rule):
     """
     Abstract rule to validate audio profiles
     """
     priority = 250
+    consequence = AppendMatch
 
     def when(self, matches, context):
         bonus_number = matches.named('bonusNumber', lambda match: not match.private, index=0)

@@ -3,7 +3,7 @@
 """
 format property
 """
-from rebulk import Rebulk, RemoveMatchRule
+from rebulk import Rebulk, RemoveMatch, Rule
 import regex as re
 
 from ..common import dash
@@ -32,11 +32,12 @@ FORMAT.regex("HD-?DVD-?Rip", "HD-?DVD", value="HD-DVD")
 FORMAT.regex("Blu-?ray(?:-?Rip)?", "B[DR]", "B[DR]-?Rip", "BD[59]", "BD25", "BD50", value="BluRay")
 
 
-class ValidateFormat(RemoveMatchRule):
+class ValidateFormat(Rule):
     """
     Validate format with screener property or separated.
     """
     priority = 255
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         ret = []

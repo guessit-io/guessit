@@ -3,7 +3,7 @@
 """
 videoCodec and videoProfile property
 """
-from rebulk import Rebulk, RemoveMatchRule
+from rebulk import Rebulk, Rule, RemoveMatch
 import regex as re
 
 from ..common import dash
@@ -36,11 +36,12 @@ VIDEO_CODEC.regex('Hi444PP', value='Hi444PP', tags='videoProfile.rule')
 VIDEO_CODEC.string('DXVA', value='DXVA', name='videoApi')
 
 
-class VideoProfileRule(RemoveMatchRule):
+class VideoProfileRule(Rule):
     """
     Rule to validate videoProfile
     """
     priority = 255
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         profile_list = matches.named('videoProfile', lambda match: 'videoProfile.rule' in match.tags)

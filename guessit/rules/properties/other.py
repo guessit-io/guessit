@@ -5,7 +5,7 @@ format property
 """
 import copy
 
-from rebulk import Rebulk, RemoveMatchRule
+from rebulk import Rebulk, Rule, RemoveMatch
 import regex as re
 
 from ..common import dash
@@ -44,11 +44,12 @@ OTHER.string('VO', 'OV', value='OV', tags='other.has-neighbor')
 OTHER.regex('Scr(?:eener)?', value='Screener', validator=None, tags='other.validate.screener')
 
 
-class ValidateHasNeighbor(RemoveMatchRule):
+class ValidateHasNeighbor(Rule):
     """
     Validate tag other.has-neighbor
     """
     priority = 255
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         ret = []
@@ -63,11 +64,12 @@ class ValidateHasNeighbor(RemoveMatchRule):
         return ret
 
 
-class ValidateScreenerRule(RemoveMatchRule):
+class ValidateScreenerRule(Rule):
     """
     Validate tag other.validate.screener
     """
     priority = 255
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         ret = []

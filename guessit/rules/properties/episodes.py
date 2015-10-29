@@ -4,7 +4,7 @@
 Season/Episode numbering support
 """
 
-from rebulk import Rebulk, RemoveMatchRule
+from rebulk import Rebulk, RemoveMatch, Rule
 
 import regex as re
 from ..common.validators import seps_surround
@@ -84,33 +84,36 @@ EPISODES.regex('OSS-?117',
 
 
 
-class RemoveWeakIfMovie(RemoveMatchRule):
+class RemoveWeakIfMovie(Rule):
     """
     Remove weak-movie tagged matches if it seems to be a movie.
     """
     priority = 550
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         if matches.named('year') or matches.markers.named('hardcoded-movies'):
             return matches.tagged('weak-movie')
 
 
-class RemoveWeakIfSxxExx(RemoveMatchRule):
+class RemoveWeakIfSxxExx(Rule):
     """
     Remove weak-movie tagged matches if SxxExx pattern is matched.
     """
     priority = 550
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         if matches.tagged('SxxExx'):
             return matches.tagged('weak-movie')
 
 
-class EpisodeDetailValidator(RemoveMatchRule):
+class EpisodeDetailValidator(Rule):
     """
     Validate episodeDetails if they are detached or next to season or episodeNumber.
     """
     priority = 2048
+    consequence = RemoveMatch
 
     def when(self, matches, context):
         ret = []

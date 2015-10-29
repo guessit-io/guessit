@@ -5,18 +5,19 @@ Episode title
 """
 from collections import defaultdict
 from guessit.rules.common import seps, title_seps
-from rebulk import Rebulk, AppendMatchRule, Rule
+from rebulk import Rebulk, Rule, AppendMatch, RenameMatch
 from rebulk.formatters import formatters
 
 from ..common.formatters import cleanup, reorder_title
 
 
-class EpisodeTitleFromPosition(AppendMatchRule):
+class EpisodeTitleFromPosition(Rule):
     """
     Add episode title match in existing matches
     Must run after TitleFromPosition rule.
     """
     priority = 8  # Just after main title
+    consequence = AppendMatch
 
     def when(self, matches, context):
         if matches.named('episodeTitle'):
@@ -48,6 +49,7 @@ class AlternativeTitleReplace(Rule):
     If alternateTitle was found and title is next to episodeNumber, season or date, replace it with episodeTitle.
     """
     priority = 7  # Just after main title
+    consequence = RenameMatch
 
     def when(self, matches, context):
         if matches.named('episodeTitle'):
@@ -114,6 +116,7 @@ class Filepart3EpisodeTitle(Rule):
     Then title is to be found in AAAA.
     """
     priority = 11  # Before main title rule
+    consequence = AppendMatch('title')
 
     def when(self, matches, context):
         fileparts = matches.markers.named('path')
@@ -134,10 +137,6 @@ class Filepart3EpisodeTitle(Rule):
                 if hole:
                     return hole
 
-    def then(self, matches, when_response, context):
-        when_response.name = 'title'
-        matches.append(when_response)
-
 
 class Filepart2EpisodeTitle(Rule):
     """
@@ -150,6 +149,7 @@ class Filepart2EpisodeTitle(Rule):
     Then title is to be found in AAAA.
     """
     priority = 11  # Before main title rule
+    consequence = AppendMatch('title')
 
     def when(self, matches, context):
         fileparts = matches.markers.named('path')
@@ -167,10 +167,6 @@ class Filepart2EpisodeTitle(Rule):
                                      predicate=lambda match: match.value, index=0)
                 if hole:
                     return hole
-
-    def then(self, matches, when_response, context):
-        when_response.name = 'title'
-        matches.append(when_response)
 
 
 EPISODE_TITLE = Rebulk().rules(EpisodeTitleFromPosition,
