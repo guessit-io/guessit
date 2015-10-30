@@ -54,9 +54,15 @@ class ValidateHasNeighbor(Rule):
         ret = []
         for to_check in matches.range(predicate=lambda match: 'other.has-neighbor' in match.tags):
             previous_match = matches.previous(to_check, index=0)
+            previous_group = matches.markers.previous(to_check, lambda marker: marker.name == 'group', 0)
+            if previous_group and (not previous_match or previous_group.end > previous_match.end):
+                previous_match = previous_group
             if previous_match and not matches.input_string[previous_match.end:to_check.start].strip(seps):
                 break
             next_match = matches.next(to_check, index=0)
+            next_group = matches.markers.next(to_check, lambda marker: marker.name == 'group', 0)
+            if next_group and (not next_match or next_group.start < next_match.start):
+                next_match = next_group
             if next_match and not matches.input_string[to_check.end:next_match.start].strip(seps):
                 break
             ret.append(to_check)

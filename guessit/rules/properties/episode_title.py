@@ -69,7 +69,10 @@ class EpisodeTitleFromPosition(Rule):
                                        lambda previous: previous.name in
                                        ['episodeNumber', 'episodeDetails', 'season', 'date'],
                                        0)
-            if episode:
+
+            crc32 = matches.named('crc32')
+
+            if episode or crc32:
                 group_markers = matches.markers.named('group')
                 title = hole.crop(group_markers, index=0)
 
@@ -96,8 +99,12 @@ class AlternativeTitleReplace(Rule):
                                               predicate=lambda match: 'title' in match.tags, index=0)
             if main_title:
                 episode = matches.previous(main_title,
-                                           lambda previous: previous.name in ['episodeNumber', 'season', 'date'], 0)
-                if episode:
+                                           lambda previous: previous.name in ['episodeNumber', 'episodeDetails',
+                                                                              'season', 'date'], 0)
+
+                crc32 = matches.named('crc32')
+
+                if episode or crc32:
                     return alternative_title
 
     def then(self, matches, when_response, context):

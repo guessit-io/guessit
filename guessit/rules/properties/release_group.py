@@ -4,6 +4,7 @@
 Release group
 """
 import copy
+from guessit.rules.common.validators import int_coercable
 from guessit.rules.properties.title import TitleFromPosition
 
 from rebulk import Rebulk, Rule, AppendMatch
@@ -37,7 +38,7 @@ def clean_groupname(string):
 
 
 _scene_previous = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels',
-                   'screenSize', 'other']
+                   'screenSize']
 
 
 class SceneReleaseGroup(Rule):
@@ -61,7 +62,8 @@ class SceneReleaseGroup(Rule):
             if last_hole:
                 previous_match = matches.previous(last_hole, index=0)
                 if previous_match and previous_match.name in _scene_previous and \
-                        not matches.input_string[previous_match.end:last_hole.start].strip(seps):
+                        not matches.input_string[previous_match.end:last_hole.start].strip(seps)\
+                        and not int_coercable(last_hole.value.strip(seps)):
                     last_hole.name = 'releaseGroup'
                     last_hole.tags = ['scene']
                     ret.append(last_hole)
@@ -86,14 +88,13 @@ class AnimeReleaseGroup(Rule):
         for filepart in marker_sorted(matches.markers.named('path'), matches):
 
             # pylint:disable=bad-continuation
-            group_marker = matches.markers \
-                .at_match(filepart,
-                          lambda marker: marker.name == 'group' and
-                                         matches.next(marker, lambda match: match.name == 'title', 0),
-                          0)
+            empty_group_marker = matches.markers \
+                .range(filepart.start, filepart.end, lambda marker: marker.name == 'group'
+                       and not matches.range(marker.start, marker.end)
+                       and not int_coercable(marker.value.strip(seps)), 0)
 
-            if group_marker:
-                release_group = copy.copy(group_marker)
+            if empty_group_marker:
+                release_group = copy.copy(empty_group_marker)
                 release_group.marker = False
                 release_group.raw_start += 1
                 release_group.raw_end -= 1

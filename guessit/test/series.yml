@@ -266,3 +266,23 @@
 : title: Example
   season: 1
   episodeNumber: [1, 2]
+
+? Series/Baccano!/Baccano!_-_T1_-_Trailer_-_[Ayu](dae8173e).mkv
+: title: Baccano!
+  other: Trailer
+  releaseGroup: Ayu
+  episodeTitle: T1
+  crc32: dae8173e
+
+? Series/Doctor Who (2005)/Season 06/Doctor Who (2005) - S06E01 - The Impossible Astronaut (1).avi
+: title: Doctor Who
+  year: 2005
+  season: 6
+  episodeNumber: 1
+  episodeTitle: The Impossible Astronaut
+
+? The Sopranos - [05x07] - In Camelot.mp4
+: title: The Sopranos
+  season: 5
+  episodeNumber: 7
+  episodeTitle: In Camelot
