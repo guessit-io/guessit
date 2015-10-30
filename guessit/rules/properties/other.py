@@ -48,7 +48,6 @@ class ValidateHasNeighbor(Rule):
     """
     Validate tag other.has-neighbor
     """
-    priority = 255
     consequence = RemoveMatch
 
     def when(self, matches, context):
@@ -68,7 +67,6 @@ class ValidateScreenerRule(Rule):
     """
     Validate tag other.validate.screener
     """
-    priority = 255
     consequence = RemoveMatch
 
     def when(self, matches, context):

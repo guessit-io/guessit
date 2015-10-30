@@ -37,7 +37,7 @@ class KeepMarkedYearInFilepart(Rule):
     """
     Keep first years marked with [](){} in filepart, or if no year is marked, ensure it won't override titles.
     """
-    priority = 512  # Must be before title and filmTitle rules
+    priority = 64
     consequence = RemoveMatch
 
     def when(self, matches, context):

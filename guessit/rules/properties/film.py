@@ -15,9 +15,8 @@ FILM.regex(r'f(\d+)', name='filmNumber', private_parent=True, children=True, for
 
 class FilmTitleRule(Rule):
     """
-    Abstract rule to validate audio profiles
+    Rule to find out filmSeries (hole after filmNumber property
     """
-    priority = 15  # Must be before title guessing
     consequence = AppendMatch
 
     def when(self, matches, context):

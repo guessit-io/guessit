@@ -36,7 +36,7 @@ class ValidateFormat(Rule):
     """
     Validate format with screener property or separated.
     """
-    priority = 255
+    priority = 64
     consequence = RemoveMatch
 
     def when(self, matches, context):

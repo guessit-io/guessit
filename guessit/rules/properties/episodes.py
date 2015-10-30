@@ -83,12 +83,11 @@ EPISODES.regex('OSS-?117',
                conflict_solver=lambda match, other: None)
 
 
-
 class RemoveWeakIfMovie(Rule):
     """
     Remove weak-movie tagged matches if it seems to be a movie.
     """
-    priority = 550
+    priority = 64
     consequence = RemoveMatch
 
     def when(self, matches, context):
@@ -100,7 +99,7 @@ class RemoveWeakIfSxxExx(Rule):
     """
     Remove weak-movie tagged matches if SxxExx pattern is matched.
     """
-    priority = 550
+    priority = 64
     consequence = RemoveMatch
 
     def when(self, matches, context):
@@ -112,7 +111,7 @@ class EpisodeDetailValidator(Rule):
     """
     Validate episodeDetails if they are detached or next to season or episodeNumber.
     """
-    priority = 2048
+    priority = 64
     consequence = RemoveMatch
 
     def when(self, matches, context):

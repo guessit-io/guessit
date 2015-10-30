@@ -5,10 +5,45 @@ Episode title
 """
 from collections import defaultdict
 from guessit.rules.common import seps, title_seps
+from guessit.rules.properties.title import TitleFromPosition
 from rebulk import Rebulk, Rule, AppendMatch, RenameMatch
 from rebulk.formatters import formatters
 
 from ..common.formatters import cleanup, reorder_title
+
+
+class TitleToEpisodeTitle(Rule):
+    """
+    If multiple different title are found, convert the one following episode number to episodeTitle.
+    """
+    dependency = TitleFromPosition
+
+    def when(self, matches, context):
+        titles = matches.named('title')
+
+        if len(titles) < 2:
+            return
+
+        title_groups = defaultdict(list)
+        for title in titles:
+            title_groups[title.value].append(title)
+
+        episode_titles = []
+        main_titles = []
+        for title in titles:
+            if matches.previous(title, lambda match: match.name == 'episodeNumber'):
+                episode_titles.append(title)
+            else:
+                main_titles.append(title)
+
+        if episode_titles:
+            return episode_titles
+
+    def then(self, matches, when_response, context):
+        for episode_title in when_response:
+            matches.remove(episode_title)
+            episode_title.name = 'episodeTitle'
+            matches.append(episode_title)
 
 
 class EpisodeTitleFromPosition(Rule):
@@ -16,7 +51,7 @@ class EpisodeTitleFromPosition(Rule):
     Add episode title match in existing matches
     Must run after TitleFromPosition rule.
     """
-    priority = 8  # Just after main title
+    dependency = TitleToEpisodeTitle
     consequence = AppendMatch
 
     def when(self, matches, context):
@@ -48,7 +83,7 @@ class AlternativeTitleReplace(Rule):
     """
     If alternateTitle was found and title is next to episodeNumber, season or date, replace it with episodeTitle.
     """
-    priority = 7  # Just after main title
+    dependency = EpisodeTitleFromPosition
     consequence = RenameMatch
 
     def when(self, matches, context):
@@ -71,40 +106,6 @@ class AlternativeTitleReplace(Rule):
         matches.append(when_response)
 
 
-class TitleToEpisodeTitle(Rule):
-    """
-    If multiple different title are found, convert the one following episode number to episodeTitle.
-    """
-    priority = 9  # Just after main title
-
-    def when(self, matches, context):
-        titles = matches.named('title')
-
-        if len(titles) < 2:
-            return
-
-        title_groups = defaultdict(list)
-        for title in titles:
-            title_groups[title.value].append(title)
-
-        episode_titles = []
-        main_titles = []
-        for title in titles:
-            if matches.previous(title, lambda match: match.name == 'episodeNumber'):
-                episode_titles.append(title)
-            else:
-                main_titles.append(title)
-
-        if episode_titles:
-            return episode_titles
-
-    def then(self, matches, when_response, context):
-        for episode_title in when_response:
-            matches.remove(episode_title)
-            episode_title.name = 'episodeTitle'
-            matches.append(episode_title)
-
-
 class Filepart3EpisodeTitle(Rule):
     """
     If we have at least 3 filepart structured like this:
@@ -115,7 +116,6 @@ class Filepart3EpisodeTitle(Rule):
     If CCCC contains episodeNumber and BBB contains seasonNumber
     Then title is to be found in AAAA.
     """
-    priority = 11  # Before main title rule
     consequence = AppendMatch('title')
 
     def when(self, matches, context):
@@ -148,7 +148,6 @@ class Filepart2EpisodeTitle(Rule):
     If BBBB contains episodeNumber and AAA contains a hole followed by seasonNumber
     Then title is to be found in AAAA.
     """
-    priority = 11  # Before main title rule
     consequence = AppendMatch('title')
 
     def when(self, matches, context):

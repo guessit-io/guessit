@@ -40,7 +40,6 @@ class VideoProfileRule(Rule):
     """
     Rule to validate videoProfile
     """
-    priority = 255
     consequence = RemoveMatch
 
     def when(self, matches, context):

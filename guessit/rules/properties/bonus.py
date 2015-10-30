@@ -4,6 +4,7 @@
 Bonus support
 """
 import regex as re
+from guessit.rules.properties.title import TitleFromPosition
 from rebulk import Rebulk, AppendMatch, Rule
 
 from ..common.formatters import cleanup
@@ -21,9 +22,9 @@ BONUS.regex(r'x(\d+)', name='bonusNumber', private_parent=True, children=True, f
 
 class BonusTitleRule(Rule):
     """
-    Abstract rule to validate audio profiles
+    Find bonus title after bonusNumber.
     """
-    priority = 250
+    dependency = TitleFromPosition
     consequence = AppendMatch
 
     def when(self, matches, context):

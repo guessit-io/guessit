@@ -40,8 +40,7 @@ class AudioValidatorRule(Rule):
     """
     Remove audio properties if not surrounded by separators and not next each others
     """
-
-    priority = 2048
+    priority = 64
     consequence = RemoveMatch
 
     def when(self, matches, context):
@@ -68,7 +67,8 @@ class AudioProfileRule(Rule):
     """
     Abstract rule to validate audio profiles
     """
-    priority = 255
+    priority = 64
+    dependency = AudioValidatorRule
     consequence = RemoveMatch
 
     def __init__(self, codec):
@@ -124,7 +124,7 @@ class HqConflictRule(Rule):
     Solve conflict between HQ from other property and from audioProfile.
     """
 
-    priority = 250  # Must run after AudioProfileRule
+    dependency = [DtsRule, AacRule, Ac3Rule]
     consequence = RemoveMatch
 
     def when(self, matches, context):

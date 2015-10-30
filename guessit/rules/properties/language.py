@@ -240,7 +240,6 @@ class SubtitlePrefixLanguageRule(Rule):
     """
     Convert language guess as subtitleLanguage if previous match is a subtitle language prefix
     """
-    priority = 380
     consequence = RemoveMatch
 
     def when(self, matches, context):
@@ -281,7 +280,7 @@ class SubtitleSuffixLanguageRule(Rule):
     """
     Convert language guess as subtitleLanguage if next match is a subtitle language suffix
     """
-    priority = 379
+    dependency = SubtitlePrefixLanguageRule
     consequence = RemoveMatch
 
     def when(self, matches, context):
@@ -308,7 +307,6 @@ class SubtitleExtensionRule(Rule):
     """
     Convert language guess as subtitleLanguage if next match is a subtitle extension
     """
-    priority = -2
     consequence = RenameMatch('subtitleLanguage')
 
     def when(self, matches, context):

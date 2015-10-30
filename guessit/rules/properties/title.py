@@ -3,6 +3,9 @@
 """
 Title
 """
+from guessit.rules.properties.film import FilmTitleRule
+from guessit.rules.properties.language import SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, \
+    SubtitleExtensionRule
 from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch
 from rebulk.formatters import formatters
 
@@ -15,8 +18,8 @@ class TitleFromPosition(Rule):
     """
     Add title match in existing matches
     """
-    priority = 10
     consequence = [AppendMatch, RemoveMatch]
+    dependency = [FilmTitleRule, SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule]
 
     @staticmethod
     def ignore_language(match):
@@ -130,37 +133,30 @@ class PreferTitleWithYear(Rule):
     """
     Prefer title where filepart contains year.
     """
-    priority = -255
+    dependency = TitleFromPosition
     consequence = RemoveMatch
 
     def when(self, matches, context):
-        to_keep = []
-        to_remove = []
+        with_year = []
+        titles = matches.named('title')
 
-        for title in matches.named('title'):
+        for title in titles:
             filepart = matches.markers.at_match(title, lambda marker: marker.name == 'path', 0)
             if filepart:
                 year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
                 if year_match:
-                    to_keep.append(title)
-                else:
-                    to_remove.append(title)
+                    with_year.append(title)
 
-        if to_keep:
-            title_values = set([title.value for title in to_keep])
-            if len(title_values) > 1:
-                # We have distinct values for title with year. Keep only values from most valuable filepart.
-                fileparts = marker_sorted(matches.markers.named('path'), matches)
-                best_title = None
-                for filepart in fileparts:
-                    best_title = matches.range(filepart.start, filepart.end, lambda match: match.name == 'title', 0)
-                    if best_title:
-                        break
-                for title in to_keep:
-                    if title.value != best_title.value:
-                        to_remove.append(title)
-                        to_keep.remove(title)
-            return to_remove
+        if with_year:
+            title_values = set([title.value for title in with_year])
+        else:
+            title_values = set([title.value for title in titles])
+
+        to_remove = []
+        for title in titles:
+            if title.value not in title_values:
+                to_remove.append(title)
+        return to_remove
 
 
 TITLE = Rebulk().rules(TitleFromPosition, PreferTitleWithYear)

@@ -4,6 +4,7 @@
 Release group
 """
 import copy
+from guessit.rules.properties.title import TitleFromPosition
 
 from rebulk import Rebulk, Rule, AppendMatch
 
@@ -45,7 +46,7 @@ class SceneReleaseGroup(Rule):
 
     Something.XViD-ReleaseGroup.mkv
     """
-    priority = 5
+    dependency = TitleFromPosition
     consequence = AppendMatch
 
     def when(self, matches, context):
@@ -72,7 +73,7 @@ class AnimeReleaseGroup(Rule):
     Add releaseGroup match in existing matches (anime format)
     ...[ReleaseGroup] Something.mkv
     """
-    priority = 4
+    dependency = [SceneReleaseGroup, TitleFromPosition]
     consequence = AppendMatch
 
     def when(self, matches, context):
