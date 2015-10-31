@@ -28,8 +28,7 @@ EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)(?:(?P<episodeNumberSepar
                children=True,
                private_parent=True,
                conflict_solver=lambda match, other: match
-               if match.name in ['season', 'episodeNumber']
-               and other.name in ['screenSize']
+               if match.name in ['season', 'episodeNumber'] and other.name in ['screenSize']
                else '__default__')
 
 # episodeDetails property
@@ -44,38 +43,52 @@ episode_words = ['episode', 'episodes']
 
 EPISODES.regex(r'\L<season_words>-?(?P<season>' + numeral + ')', season_words=season_words,  # Season 1, # Season one
                abbreviations=[dash], formatter=parse_numeral)
-EPISODES.regex(r'\L<episode_words>-?(?P<episodeNumber>\d+)', episode_words=episode_words,  # Episode 4
+EPISODES.regex(r'\L<episode_words>-?(?P<episodeNumber>\d+)' +
+               r'(?:v(?P<version>\d+))?', episode_words=episode_words,  # Episode 4
                abbreviations=[dash], formatter=int)
 
 # 12, 13
-EPISODES.regex(r'(?P<episodeNumber>\d{2})(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{2}))*',
-               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int})
+EPISODES.regex(r'(?P<episodeNumber>\d{2})' +
+               r'(?:v(?P<version>\d+))?' +
+               r'(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{2}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int})
 
 # 012, 013
-EPISODES.regex(r'0(?P<episodeNumber>\d{1,2})(?:(?P<episodeNumberSeparator>[x-])0(<?P<episodeNumber>\d{1,2}))*',
-               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int})
+EPISODES.regex(r'0(?P<episodeNumber>\d{1,2})' +
+               r'(?:v(?P<version>\d+))?' +
+               r'(?:(?P<episodeNumberSeparator>[x-])0(<?P<episodeNumber>\d{1,2}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int})
 
 # 112, 113
-EPISODES.regex(r'(?P<episodeNumber>\d{3,4})(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{3,4}))*',
-               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int},
+EPISODES.regex(r'(?P<episodeNumber>\d{3,4})' +
+               r'(?:v(?P<version>\d+))?' +
+               r'(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{3,4}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int},
                disabled=lambda context: not context.get('episode_prefer_number', False))
 
 # e112, e113
-EPISODES.regex(r'e(?P<episodeNumber>\d{1,4})(?:(?P<episodeNumberSeparator>e|x|-)(?P<episodeNumber>\d{1,4}))*',
-               formatter={'episodeNumber': int})
+EPISODES.regex(r'e(?P<episodeNumber>\d{1,4})' +
+               r'(?:v(?P<version>\d+))?' +
+               r'(?:(?P<episodeNumberSeparator>e|x|-)(?P<episodeNumber>\d{1,4}))*',
+               formatter={'episodeNumber': int, 'version': int})
 
 # ep 112, ep113, ep112, ep113
-EPISODES.regex(r'ep-?(?P<episodeNumber>\d{1,4})(?:(?P<episodeNumberSeparator>ep|e|x|-)(?P<episodeNumber>\d{1,4}))*',
+EPISODES.regex(r'ep-?(?P<episodeNumber>\d{1,4})' +
+               r'(?:v(?P<version>\d+))?' +
+               r'(?:(?P<episodeNumberSeparator>ep|e|x|-)(?P<episodeNumber>\d{1,4}))*',
                abbreviations=[dash],
-               formatter={'episodeNumber': int})
+               formatter={'episodeNumber': int, 'version': int})
 
 # 102, 0102
 EPISODES.regex(r'(?P<season>\d{1,2})(?P<episodeNumber>\d{2})' +
+               r'(?:v(?P<version>\d+))?' +
                r'(?:(?P<episodeNumberSeparator>x|-)(?P<episodeNumber>\d{2}))*',
                tags=['bonus-conflict', 'weak-movie', 'weak-duplicate'],
-               formatter={'season': int, 'episodeNumber': int},
+               formatter={'season': int, 'episodeNumber': int, 'version': int},
                conflict_solver=lambda match, other: match if other.name == 'year' else '__default__',
                disabled=lambda context: context.get('episode_prefer_number', False))
+
+EPISODES.regex(r'v(?P<version>\d+)', children=True, private_parent=True, formatter=int)
 
 EPISODES.defaults()
 
@@ -133,7 +146,7 @@ class RemoveWeakIfSxxExx(Rule):
     consequence = RemoveMatch
 
     def when(self, matches, context):
-        if matches.tagged('SxxExx'):
+        if matches.tagged('SxxExx', lambda match: not match.private):
             return matches.tagged('weak-movie')
 
 
@@ -173,4 +186,21 @@ class EpisodeDetailValidator(Rule):
                 ret.append(detail)
         return ret
 
-EPISODES.rules(RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate, EpisodeDetailValidator)
+
+class VersionValidator(Rule):
+    """
+    Validate version if previous match is episodeNumber
+    """
+    priority = 64
+    dependency = [RemoveWeakIfMovie, RemoveWeakIfSxxExx]
+    consequence = RemoveMatch
+
+    def when(self, matches, context):
+        ret = []
+        for version in matches.named('version'):
+            episode_number = matches.previous(version, lambda match: match.name == 'episodeNumber', 0)
+            if not episode_number:
+                ret.append(version)
+        return ret
+
+EPISODES.rules(RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate, EpisodeDetailValidator, VersionValidator)

@@ -617,3 +617,156 @@
   episodeNumber: 9
   format: HDTV
   releaseGroup: lol
+
+? Criminal.Minds.5x03.Reckoner.ENG.-.sub.FR.HDTV.XviD-STi.[tvu.org.ru].avi
+: title: Criminal Minds
+  language: English
+  subtitleLanguage: French
+  season: 5
+  episodeNumber: 3
+  videoCodec: XviD
+  format: HDTV
+  website: tvu.org.ru
+  releaseGroup: STi
+  episodeTitle: Reckoner
+
+? 03-Criminal.Minds.avi
+: title: Criminal Minds
+  episodeNumber: 3
+
+? '[Evil-Saizen]_Laughing_Salesman_14_[DVD][1C98686A].mkv'
+: crc32: 1C98686A
+  episodeNumber: 14
+  format: DVD
+  releaseGroup: Evil-Saizen
+  title: Laughing Salesman
+
+? '[Kaylith] Zankyou no Terror - 04 [480p][B4D4514E].mp4'
+: crc32: B4D4514E
+  episodeNumber: 4
+  releaseGroup: Kaylith
+  screenSize: 480p
+  title: Zankyou no Terror
+
+? '[PuyaSubs!] Seirei Tsukai no Blade Dance - 05 [720p][32DD560E].mkv'
+: crc32: 32DD560E
+  episodeNumber: 5
+  releaseGroup: PuyaSubs!
+  screenSize: 720p
+  title: Seirei Tsukai no Blade Dance
+
+? '[Doremi].Happiness.Charge.Precure.27.[1280x720].[DC91581A].mkv'
+: crc32: DC91581A
+  episodeNumber: 27
+  releaseGroup: Doremi
+  screenSize: 720p
+  title: Happiness Charge Precure
+
+? "[Daisei] Free!：Iwatobi Swim Club - 01 ~ (BD 720p 10-bit AAC) [99E8E009].mkv"
+: audioCodec: AAC
+  crc32: 99E8E009
+  episodeNumber: 1
+  format: BluRay
+  releaseGroup: Daisei
+  screenSize: 720p
+  title: Free!：Iwatobi Swim Club
+  videoProfile: 10bit
+
+? '[Tsundere] Boku wa Tomodachi ga Sukunai - 03 [BDRip h264 1920x1080 10bit FLAC][AF0C22CC].mkv'
+: audioCodec: FLAC
+  crc32: AF0C22CC
+  episodeNumber: 3
+  format: BluRay
+  releaseGroup: Tsundere
+  screenSize: 1080p
+  title: Boku wa Tomodachi ga Sukunai
+  videoCodec: h264
+  videoProfile: 10bit
+
+? '[t.3.3.d]_Mikakunin_de_Shinkoukei_-_12_[720p][5DDC1352].mkv'
+: crc32: 5DDC1352
+  episodeNumber: 12
+  screenSize: 720p
+  title: Mikakunin de Shinkoukei
+  releaseGroup: t.3.3.d
+
+? '[Anime-Koi] Sabagebu! - 06 [h264-720p][ABB3728A].mkv'
+: crc32: ABB3728A
+  episodeNumber: 6
+  releaseGroup: Anime-Koi
+  screenSize: 720p
+  title: Sabagebu!
+  videoCodec: h264
+
+? '[aprm-Diogo4D] [BD][1080p] Nagi no Asukara 08 [4D102B7C].mkv'
+: crc32: 4D102B7C
+  episodeNumber: 8
+  format: BluRay
+  releaseGroup: aprm-Diogo4D
+  screenSize: 1080p
+  title: Nagi no Asukara
+
+? '[Akindo-SSK] Zankyou no Terror - 05 [720P][Sub_ITA][F5CCE87C].mkv'
+: crc32: F5CCE87C
+  episodeNumber: 5
+  releaseGroup: Akindo-SSK
+  screenSize: 720p
+  title: Zankyou no Terror
+  subtitleLanguage: it
+
+? Naruto Shippuden Episode 366 VOSTFR.avi
+: episodeNumber: 366
+  title: Naruto Shippuden
+  subtitleLanguage: fr
+
+? Naruto Shippuden Episode 366v2 VOSTFR.avi
+: episodeNumber: 366
+  version: 2
+  title: Naruto Shippuden
+  subtitleLanguage: fr
+
+? '[HorribleSubs] Ao Haru Ride - 06 [480p].mkv'
+: episodeNumber: 6
+  releaseGroup: HorribleSubs
+  screenSize: 480p
+  title: Ao Haru Ride
+
+? '[DeadFish] Tari Tari - 01 [BD][720p][AAC].mp4'
+: audioCodec: AAC
+  episodeNumber: 1
+  format: BluRay
+  releaseGroup: DeadFish
+  screenSize: 720p
+  title: Tari Tari
+
+? '[NoobSubs] Sword Art Online II 06 (720p 8bit AAC).mp4'
+: audioCodec: AAC
+  episodeNumber: 6
+  releaseGroup: NoobSubs
+  screenSize: 720p
+  title: Sword Art Online II
+  videoProfile: 8bit
+
+? '[DeadFish] 01 - Tari Tari [BD][720p][AAC].mp4'
+: audioCodec: AAC
+  episodeNumber: 1
+  format: BluRay
+  releaseGroup: DeadFish
+  screenSize: 720p
+  title: Tari Tari
+
+? '[NoobSubs] 06 Sword Art Online II (720p 8bit AAC).mp4'
+: audioCodec: AAC
+  episodeNumber: 6
+  releaseGroup: NoobSubs
+  screenSize: 720p
+  title: Sword Art Online II
+  videoProfile: 8bit
+
+? '[DeadFish] 12 - Tari Tari [BD][720p][AAC].mp4'
+: audioCodec: AAC
+  episodeNumber: 12
+  format: BluRay
+  releaseGroup: DeadFish
+  screenSize: 720p
+  title: Tari Tari
