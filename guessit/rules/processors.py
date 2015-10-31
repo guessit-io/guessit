@@ -4,10 +4,12 @@
 Processors
 """
 from collections import defaultdict
+import copy
 from rebulk import Rebulk
 
 from .common.formatters import strip
 from .common.comparators import marker_sorted
+from .common.date import valid_year
 
 import six
 
@@ -120,6 +122,22 @@ def equivalent_holes(matches):
         matches.append(new_match)
 
 
+def season_year(matches):
+    """
+    If a season is a valid year and no year was found, create an match with year.
+    :param matches:
+    :type matches:
+    :return:
+    :rtype:
+    """
+    if not matches.named('year'):
+        for season in matches.named('season'):
+            if valid_year(season.value):
+                year = copy.copy(season)
+                year.name = 'year'
+                matches.append(year)
+
+
 def enlarge_group_matches(matches):
     """
     Enlarge matches that are starting and/or ending group to include brackets in their span.
@@ -143,4 +161,4 @@ def enlarge_group_matches(matches):
 
 
 PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(equivalent_holes, remove_ambiguous,
-                                                                      country_in_title)
+                                                                      country_in_title, season_year)

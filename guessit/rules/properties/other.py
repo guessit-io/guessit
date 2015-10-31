@@ -36,7 +36,7 @@ for value in ('Screener', 'Remux', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'H
               'MD'):
     OTHER.string(value, value=value)
 
-for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer'):
+for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL'):
     OTHER.string(value, value=value, tags='other.has-neighbor')
 
 OTHER.string('VO', 'OV', value='OV', tags='other.has-neighbor')

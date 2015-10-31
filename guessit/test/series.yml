@@ -443,3 +443,170 @@
   format: HDTV
   videoCodec: h264
   releaseGroup: IMMERSE
+
+? Marvels.Agents.of.S.H.I.E.L.D.S01E06.720p.HDTV.X264-DIMENSION.mkv
+: title: Marvels Agents of S H I E L D
+  season: 1
+  episodeNumber: 6
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: DIMENSION
+
+? Marvels.Agents.of.S.H.I.E.L.D..S01E06.720p.HDTV.X264-DIMENSION.mkv
+: title: Marvels Agents of S H I E L D
+  season: 1
+  episodeNumber: 6
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: DIMENSION
+
+? Series/Friday Night Lights/Season 1/Friday Night Lights S01E19 - Ch-Ch-Ch-Ch-Changes.avi
+: title: Friday Night Lights
+  season: 1
+  episodeNumber: 19
+  episodeTitle: Ch-Ch-Ch-Ch-Changes
+
+? Dexter Saison VII FRENCH.BDRip.XviD-MiND.nfo
+: title: Dexter
+  season: 7
+  videoCodec: XviD
+  language: French
+  format: BluRay
+  releaseGroup: MiND
+
+? Dexter Saison sept FRENCH.BDRip.XviD-MiND.nfo
+: title: Dexter
+  season: 7
+  videoCodec: XviD
+  language: French
+  format: BluRay
+  releaseGroup: MiND
+
+? "Pokémon S16 - E29 - 1280*720 HDTV VF.mkv"
+: title: Pokémon
+  format: HDTV
+  language: French
+  season: 16
+  episodeNumber: 29
+  screenSize: 720p
+
+? One.Piece.E576.VOSTFR.720p.HDTV.x264-MARINE-FORD.mkv
+: episodeNumber: 576
+  videoCodec: h264
+  format: HDTV
+  title: One Piece
+  releaseGroup: MARINE-FORD
+  subtitleLanguage: French
+  screenSize: 720p
+
+? Dexter.S08E12.FINAL.MULTi.1080p.BluRay.x264-MiND.mkv
+: videoCodec: h264
+  episodeNumber: 12
+  season: 8
+  format: BluRay
+  title: Dexter
+  other: FINAL
+  language: Multiple languages
+  releaseGroup: MiND
+  screenSize: 1080p
+
+? One Piece - E623 VOSTFR HD [www.manga-ddl-free.com].mkv
+: website: www.manga-ddl-free.com
+  episodeNumber: 623
+  subtitleLanguage: French
+  title: One Piece
+  other: HD
+
+? Falling Skies Saison 1.HDLight.720p.x264.VFF.mkv
+: language: French
+  screenSize: 720p
+  season: 1
+  title: Falling Skies
+  videoCodec: h264
+  other: HDLight
+
+? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BP.mkv
+: episodeNumber: 9
+  videoCodec: h264
+  format: WEB-DL
+  title: Sleepy Hollow
+  audioChannels: "5.1"
+  screenSize: 720p
+  season: 1
+  videoProfile: BP
+  audioCodec: DolbyDigital
+
+? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BS.mkv
+: episodeNumber: 9
+  videoCodec: h264
+  format: WEB-DL
+  title: Sleepy Hollow
+  audioChannels: "5.1"
+  screenSize: 720p
+  season: 1
+  releaseGroup: BS
+  audioCodec: DolbyDigital
+
+? Battlestar.Galactica.S00.Pilot.FRENCH.DVDRip.XviD-NOTAG.avi
+: title: Battlestar Galactica
+  season: 0
+  episodeDetails: Pilot
+  language: French
+  format: DVD
+  videoCodec: XviD
+  releaseGroup: NOTAG
+
+? The Big Bang Theory S00E00 Unaired Pilot VOSTFR TVRip XviD-VioCs
+: title: The Big Bang Theory
+  season: 0
+  episodeNumber: 0
+  subtitleLanguage: French
+  format: TV
+  videoCodec: XviD
+  releaseGroup: VioCs
+  episodeDetails: [Unaired, Pilot]
+
+? The Big Bang Theory S01E00 PROPER Unaired Pilot TVRip XviD-GIGGITY
+: title: The Big Bang Theory
+  season: 1
+  episodeNumber: 0
+  format: TV
+  videoCodec: XviD
+  releaseGroup: GIGGITY
+  other: Proper
+  properCount: 1
+  episodeDetails: [Unaired, Pilot]
+
+? Pawn.Stars.S2014E18.720p.HDTV.x264-KILLERS
+: title: Pawn Stars
+  season: 2014
+  year: 2014
+  episodeNumber: 18
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: KILLERS
+
+? 2.Broke.Girls.S03E10.480p.HDTV.x264-mSD.mkv
+: title: 2 Broke Girls
+  season: 3
+  episodeNumber: 10
+  screenSize: 480p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: mSD
+
+? House.of.Cards.2013.S02E03.1080p.NF.WEBRip.DD5.1.x264-NTb.mkv
+: title: House of Cards
+  year: 2013
+  season: 2
+  episodeNumber: 3
+  screenSize: 1080p
+  other: Netflix
+  format: WEBRip
+  audioChannels: "5.1"
+  audioCodec: DolbyDigital
+  videoCodec: h264
+  releaseGroup: NTb
