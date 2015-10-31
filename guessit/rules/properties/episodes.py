@@ -6,23 +6,25 @@ Season/Episode numbering support
 from collections import defaultdict
 import copy
 
-from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch
+from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
 
 import regex as re
 from ..common.validators import seps_surround
-from ..common import dash
+from ..common import dash, alt_dash
 from ..common.numeral import numeral, parse_numeral
 
 EPISODES = Rebulk()
 EPISODES.regex_defaults(flags=re.IGNORECASE)
 
 # 01x02, 01x02x03x04
-EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)(?:(?P<episodeNumberSeparator>x|-|&)(?P<episodeNumber>\d+))*',
+EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)' +
+               r'(?:(?P<episodeNumberSeparator>x|-|&)(?P<episodeNumber>\d+))*',
                # S01E02, S01x02, S01E02E03, S01Ex02, S01xE02, SO1Ex02Ex03
                r'S(?P<season>\d+)(?:xE|Ex|E|x)(?P<episodeNumber>\d+)' +
                r'(?:(?P<episodeNumberSeparator>xE|Ex|E|x|-|&)(?P<episodeNumber>\d+))*',
                # S01
-               r'S(?P<season>\d+)(?:(?P<seasonSeparator>S|-|&)(?P<season>\d+))*',
+               r'S(?P<season>\d+)' +
+               r'(?:(?P<seasonSeparator>S|-|&)(?P<season>\d+))*',
                formatter={'season': int, 'episodeNumber': int},
                tags=['SxxExx'],
                children=True,
@@ -39,13 +41,25 @@ EPISODES.regex(r'Extras?', name='episodeDetails', value='Extras')
 EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
 season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series']
-episode_words = ['episode', 'episodes']
+episode_words = ['episode', 'episodes', 'ep']
+of_words = ['of', 'sur']
 
-EPISODES.regex(r'\L<season_words>-?(?P<season>' + numeral + ')', season_words=season_words,  # Season 1, # Season one
-               abbreviations=[dash], formatter=parse_numeral)
+EPISODES.regex(r'\L<season_words>@?(?P<season>' + numeral + ')' +
+               r'(?:@?\L<of_words>@?(?P<count>' + numeral + '))?' +
+               r'(?:(?P<seasonSeparator>-)(?P<season>\d+))*' +
+               r'(?:(?P<seasonSeparator>&)(?P<season>\d+))*',
+               of_words=of_words,
+               season_words=season_words,  # Season 1, # Season one
+               abbreviations=[alt_dash], formatter={'season': parse_numeral, 'count': parse_numeral})
+
 EPISODES.regex(r'\L<episode_words>-?(?P<episodeNumber>\d+)' +
-               r'(?:v(?P<version>\d+))?', episode_words=episode_words,  # Episode 4
+               r'(?:v(?P<version>\d+))?' +
+               r'(?:-?\L<of_words>?-?(?P<count>\d+))?',
+               of_words=of_words,
+               episode_words=episode_words,  # Episode 4
                abbreviations=[dash], formatter=int)
+
+EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
 # 12, 13
 EPISODES.regex(r'(?P<episodeNumber>\d{2})' +
@@ -92,6 +106,10 @@ EPISODES.regex(r'v(?P<version>\d+)', children=True, private_parent=True, formatt
 
 EPISODES.defaults()
 
+# detached of X count (season/episode)
+EPISODES.regex(r'(?P<episodeNumber>\d+)?-?\L<of_words>-?(?P<count>\d+)-?\L<episode_words>?', of_words=of_words,
+               episode_words=episode_words, abbreviations=[dash], children=True, private_parent=True, formatter=int)
+
 EPISODES.regex(r'Minisodes?', name='episodeFormat', value="Minisode")
 
 # Harcoded movie to disable weak season/episodes
@@ -100,7 +118,31 @@ EPISODES.regex('OSS-?117',
                conflict_solver=lambda match, other: None)
 
 
-class SeparatorRange(Rule):
+class CountValidator(Rule):
+    """
+    Validate count property and rename it
+    """
+    priority = 64
+    consequence = [RemoveMatch, RenameMatch('episodeCount'), RenameMatch('seasonCount')]
+
+    def when(self, matches, context):
+        to_remove = []
+        episode_count = []
+        season_count = []
+
+        for count in matches.named('count'):
+            previous = matches.previous(count, lambda match: match.name in ['episodeNumber', 'season'], 0)
+            if previous:
+                if previous.name == 'episodeNumber':
+                    episode_count.append(count)
+                elif previous.name == 'season':
+                    season_count.append(count)
+            else:
+                to_remove.append(count)
+        return to_remove, episode_count, season_count
+
+
+class EpisodeNumberSeparatorRange(Rule):
     """
     Remove separator matches and create matches for episoderNumber range.
     """
@@ -123,7 +165,31 @@ class SeparatorRange(Rule):
             to_remove.append(separator)
         return to_remove, to_append
 
-EPISODES.rules(SeparatorRange)
+
+class SeasonSeparatorRange(Rule):
+    """
+    Remove separator matches and create matches for season range.
+    """
+    priority = 128
+    consequence = [RemoveMatch, AppendMatch]
+
+    def when(self, matches, context):
+        to_remove = []
+        to_append = []
+        for separator in matches.named('seasonSeparator'):
+            previous_match = matches.previous(separator, lambda match: match.name == 'season', 0)
+            next_match = matches.next(separator, lambda match: match.name == 'season', 0)
+
+            if separator.value == '-':
+                for episode_number in range(previous_match.value+1, next_match.value):
+                    match = copy.copy(separator)
+                    match.name = 'season'
+                    match.value = episode_number
+                    to_append.append(match)
+            to_remove.append(separator)
+        return to_remove, to_append
+
+EPISODES.rules(EpisodeNumberSeparatorRange, SeasonSeparatorRange)
 
 
 class RemoveWeakIfMovie(Rule):
@@ -203,4 +269,5 @@ class VersionValidator(Rule):
                 ret.append(version)
         return ret
 
-EPISODES.rules(RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate, EpisodeDetailValidator, VersionValidator)
+EPISODES.rules(RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate, EpisodeDetailValidator, VersionValidator,
+               CountValidator)

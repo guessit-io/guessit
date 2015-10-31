@@ -770,3 +770,42 @@
   releaseGroup: DeadFish
   screenSize: 720p
   title: Tari Tari
+
+? Something.Season.2.1of4.Ep.Title.HDTV.torrent
+: episodeCount: 4
+  episodeNumber: 1
+  format: HDTV
+  season: 2
+  title: Something
+  episodeTitle: Title
+  extension: torrent
+
+? Something.Season.2of5.3of9.Ep.Title.HDTV.torrent
+: episodeCount: 9
+  episodeNumber: 3
+  format: HDTV
+  season: 2
+  seasonCount: 5
+  title: Something
+  episodeTitle: Title
+  extension: torrent
+
+? Something.Other.Season.3of5.Complete.HDTV.torrent
+: format: HDTV
+  other: Complete
+  season: 3
+  seasonCount: 5
+  title: Something Other
+  extension: torrent
+
+? Something.Other.Season.1-3.avi
+: season: [1, 2, 3]
+  title: Something Other
+
+? Something.Other.Season.1&3.avi
+: season: [1, 3]
+  title: Something Other
+
+? Something.Other.Season.1&3-1to12ep.avi
+: season: [1, 3]
+  title: Something Other
