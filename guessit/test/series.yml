@@ -610,3 +610,10 @@
   audioCodec: DolbyDigital
   videoCodec: h264
   releaseGroup: NTb
+
+? the.100.109.hdtv-lol.mp4
+: title: the 100
+  season: 1
+  episodeNumber: 9
+  format: HDTV
+  releaseGroup: lol

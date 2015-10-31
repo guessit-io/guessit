@@ -3,13 +3,14 @@
 """
 Season/Episode numbering support
 """
+from collections import defaultdict
 import copy
 
 from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch
 
 import regex as re
 from ..common.validators import seps_surround
-from guessit.rules.common import dash
+from ..common import dash
 from ..common.numeral import numeral, parse_numeral
 
 EPISODES = Rebulk()
@@ -71,7 +72,7 @@ EPISODES.regex(r'ep-?(?P<episodeNumber>\d{1,4})(?:(?P<episodeNumberSeparator>ep|
 # 102, 0102
 EPISODES.regex(r'(?P<season>\d{1,2})(?P<episodeNumber>\d{2})' +
                r'(?:(?P<episodeNumberSeparator>x|-)(?P<episodeNumber>\d{2}))*',
-               tags=['bonus-conflict', 'weak-movie'],
+               tags=['bonus-conflict', 'weak-movie', 'weak-duplicate'],
                formatter={'season': int, 'episodeNumber': int},
                conflict_solver=lambda match, other: match if other.name == 'year' else '__default__',
                disabled=lambda context: context.get('episode_prefer_number', False))
@@ -111,6 +112,7 @@ class SeparatorRange(Rule):
 
 EPISODES.rules(SeparatorRange)
 
+
 class RemoveWeakIfMovie(Rule):
     """
     Remove weak-movie tagged matches if it seems to be a movie.
@@ -135,6 +137,26 @@ class RemoveWeakIfSxxExx(Rule):
             return matches.tagged('weak-movie')
 
 
+class RemoveWeakDuplicate(Rule):
+    """
+    Remove weak-duplicate tagged matches if duplicate patterns, for example The 100.109
+    """
+    priority = 64
+    consequence = RemoveMatch
+
+    def when(self, matches, context):
+        to_remove = []
+        for filepart in matches.markers.named('path'):
+            patterns = defaultdict(list)
+            for match in reversed(matches.range(filepart.start, filepart.end,
+                                                predicate=lambda match: 'weak-duplicate' in match.tags)):
+                if match.pattern in patterns[match.name]:
+                    to_remove.append(match)
+                else:
+                    patterns[match.name].append(match.pattern)
+        return to_remove
+
+
 class EpisodeDetailValidator(Rule):
     """
     Validate episodeDetails if they are detached or next to season or episodeNumber.
@@ -151,4 +173,4 @@ class EpisodeDetailValidator(Rule):
                 ret.append(detail)
         return ret
 
-EPISODES.rules(RemoveWeakIfMovie, RemoveWeakIfSxxExx, EpisodeDetailValidator)
+EPISODES.rules(RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate, EpisodeDetailValidator)
