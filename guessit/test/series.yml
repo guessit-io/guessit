@@ -296,3 +296,83 @@
   format: HDTV
   videoCodec: XviD
   releaseGroup: LOL
+
+? /Volumes/data-1/Series/Futurama/Season 3/Futurama_-_S03_DVD_Bonus_-_Deleted_Scenes_Part_3.ogm
+: title: Futurama
+  season: 3
+  part: 3
+  other: Bonus
+  episodeTitle: Deleted Scenes
+  format: DVD
+
+? Ben.and.Kate.S01E02.720p.HDTV.X264-DIMENSION.mkv
+: title: Ben and Kate
+  season: 1
+  episodeNumber: 2
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: DIMENSION
+
+? /volume1/TV Series/Drawn Together/Season 1/Drawn Together 1x04 Requiem for a Reality Show.avi
+: title: Drawn Together
+  season: 1
+  episodeNumber: 4
+  episodeTitle: Requiem for a Reality Show
+
+? Sons.of.Anarchy.S05E06.720p.WEB.DL.DD5.1.H.264-CtrlHD.mkv
+: title: Sons of Anarchy
+  season: 5
+  episodeNumber: 6
+  screenSize: 720p
+  format: WEB-DL
+  audioChannels: "5.1"
+  audioCodec: DolbyDigital
+  videoCodec: h264
+  releaseGroup: CtrlHD
+
+? /media/bdc64bfe-e36f-4af8-b550-e6fd2dfaa507/TV_Shows/Doctor Who (2005)/Saison 6/Doctor Who (2005) - S06E13 - The Wedding of River Song.mkv
+: title: Doctor Who
+  season: 6
+  episodeNumber: 13
+  year: 2005
+  episodeTitle: The Wedding of River Song
+  idNumber: bdc64bfe-e36f-4af8-b550-e6fd2dfaa507
+
+? /mnt/videos/tvshows/Doctor Who/Season 06/E13 - The Wedding of River Song.mkv
+: title: Doctor Who
+  season: 6
+  episodeNumber: 13
+  episodeTitle: The Wedding of River Song
+
+? The.Simpsons.S24E03.Adventures.in.Baby-Getting.720p.WEB-DL.DD5.1.H.264-CtrlHD.mkv
+: title: The Simpsons
+  season: 24
+  episodeNumber: 3
+  episodeTitle: Adventures in Baby-Getting
+  screenSize: 720p
+  format: WEB-DL
+  audioChannels: "5.1"
+  audioCodec: DolbyDigital
+  videoCodec: h264
+  releaseGroup: CtrlHD
+
+? /home/disaster/Videos/TV/Merlin/merlin_2008.5x02.arthurs_bane_part_two.repack.720p_hdtv_x264-fov.mkv
+: title: Merlin
+  season: 5
+  episodeNumber: 2
+  part: 2
+  episodeTitle: arthurs bane
+  screenSize: 720p
+  format: HDTV
+  videoCodec: h264
+  releaseGroup: fov
+  year: 2008
+  other: Proper
+  properCount: 1
+
+? "Da Vinci's Demons - 1x04 - The Magician.mkv"
+: title: "Da Vinci's Demons"
+  season: 1
+  episodeNumber: 4
+  episodeTitle: The Magician

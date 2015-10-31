@@ -6,7 +6,10 @@ Processors
 from collections import defaultdict
 from rebulk import Rebulk
 
+from .common.formatters import strip
 from .common.comparators import marker_sorted
+
+import six
 
 
 def remove_ambiguous(matches):
@@ -21,23 +24,23 @@ def remove_ambiguous(matches):
     fileparts = marker_sorted(matches.markers.named('path'), matches)
 
     previous_fileparts_names = set()
+    values = defaultdict(list)
+
     to_remove = []
     for filepart in fileparts:
-        current_filepart_values = defaultdict(list)
-
         filepart_matches = matches.range(filepart.start, filepart.end)
 
-        current_filepart_names = set()
+        filepart_names = set()
         for match in filepart_matches:
-            current_filepart_names.add(match.name)
+            filepart_names.add(match.name)
             if match.name in previous_fileparts_names:
-                if match.value not in current_filepart_values[match.name]:
+                if match.value not in values[match.name]:
                     to_remove.append(match)
             else:
-                if match.value not in current_filepart_values[match.name]:
-                    current_filepart_values[match.name].append(match.value)
+                if match.value not in values[match.name]:
+                    values[match.name].append(match.value)
 
-        previous_fileparts_names.update(current_filepart_names)
+        previous_fileparts_names.update(filepart_names)
 
     for match in to_remove:
         matches.remove(match)
@@ -52,9 +55,68 @@ def country_in_title(matches):
     :rtype:
     """
     country = matches.named('country', index=0)
-    title = matches.named('title', index=0)
-    if country and title:
-        title.value += ' (%s)' % country.value
+    titles = matches.named('title')
+    if country and titles:
+        for title in titles:
+            title.value += ' (%s)' % country.value
+
+
+def _preferred_string(value1, value2):  # pylint:disable=too-many-return-statements
+    """
+    Retrieves preferred title from both values.
+    :param value1:
+    :type value1: str
+    :param value2:
+    :type value2: str
+    :return: The preferred title
+    :rtype: str
+    """
+    if value1 and not value2:
+        return value1
+    if value2 and not value1:
+        return value2
+    if value1 == value2:
+        return value1
+    if value1.istitle() and not value2.istitle():
+        return value1
+    if value2.istitle() and not value1.istitle():
+        return value2
+    if value1[0].isupper() and not value1[0].isupper():
+        return value1
+    if value2[0].isupper() and not value1[0].isupper():
+        return value2
+    return value1
+
+
+def equivalent_holes(matches):
+    """
+    Creates equivalent matches for holes that have same values than existing (case insensitive)
+    :param matches:
+    :type matches:
+    :return:
+    :rtype:
+    """
+    new_matches = []
+
+    for filepath in marker_sorted(matches.markers.named('path'), matches):
+        holes = matches.holes(start=filepath.start, end=filepath.end, formatter=strip)
+        for name in matches.names:
+            for hole in list(holes):
+                for current_match in matches.named(name):
+                    if isinstance(current_match.value, six.string_types) and \
+                                    hole.value.lower() == current_match.value.lower():
+                        new_value = _preferred_string(hole.value, current_match.value)
+                        if hole.value != new_value:
+                            hole.value = new_value
+                        if current_match.value != new_value:
+                            current_match.value = new_value
+                        hole.name = name
+                        hole.tags = ['equivalent']
+                        new_matches.append(hole)
+                        holes.remove(hole)
+
+    for new_match in new_matches:
+        matches.append(new_match)
 
 
 def enlarge_group_matches(matches):
@@ -79,4 +141,5 @@ def enlarge_group_matches(matches):
             matches.append(match)
 
 
-PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(remove_ambiguous, country_in_title)
+PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(equivalent_holes, remove_ambiguous,
+                                                                      country_in_title)
