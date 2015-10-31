@@ -26,7 +26,7 @@ class TitleFromPosition(Rule):
         """
         Ignore language included in the possible title (hole)
         """
-        return match.name == 'language'
+        return match.name in ['language', 'country']
 
     @staticmethod
     def check_titles_in_filepart(filepart, matches):  # pylint: disable=too-many-locals

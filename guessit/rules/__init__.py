@@ -19,6 +19,7 @@ from .properties.date import DATE
 from .properties.title import TITLE
 from .properties.episode_title import EPISODE_TITLE
 from .properties.language import LANGUAGE
+from .properties.country import COUNTRY
 from .properties.release_group import RELEASE_GROUP
 from .properties.other import OTHER
 from .properties.edition import EDITION
@@ -46,6 +47,7 @@ REBULK.rebulk(DATE)
 REBULK.rebulk(TITLE)
 REBULK.rebulk(EPISODE_TITLE)
 REBULK.rebulk(LANGUAGE)
+REBULK.rebulk(COUNTRY)
 REBULK.rebulk(RELEASE_GROUP)
 REBULK.rebulk(OTHER)
 REBULK.rebulk(EDITION)

@@ -30,10 +30,12 @@ def build_argument_parser():
                              help='If short date is found, consider the second digits as the day.')
     naming_opts.add_argument('-L', '--allowed-languages', action='append', dest='allowed_languages',
                              help='Allowed language (can be used multiple times)')
+    naming_opts.add_argument('-C', '--allowed-countries', action='append', dest='allowed_countries',
+                             help='Allowed country (can be used multiple times)')
     naming_opts.add_argument('-E', '--episode-prefer-number', action='store_true', dest='episode_prefer_number',
-                             default=False,
-                             help='Guess "serie.213.avi" as the episodeNumber 213. Without this option, '
-                                  'it will be guessed as season 2, episodeNumber 13')
+                                 default=False,
+                                 help='Guess "serie.213.avi" as the episodeNumber 213. Without this option, '
+                                      'it will be guessed as season 2, episodeNumber 13')
 
     output_opts = opts.add_argument_group("Output")
     output_opts.add_argument('-v', '--verbose', action='store_true', dest='verbose', default=False,

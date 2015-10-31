@@ -43,6 +43,20 @@ def remove_ambiguous(matches):
         matches.remove(match)
 
 
+def country_in_title(matches):
+    """
+    If country and title are found, append country value to title as 2-letter code
+    :param matches:
+    :type matches:
+    :return:
+    :rtype:
+    """
+    country = matches.named('country', index=0)
+    title = matches.named('title', index=0)
+    if country and title:
+        title.value += ' (%s)' % country.value
+
+
 def enlarge_group_matches(matches):
     """
     Enlarge matches that are starting and/or ending group to include brackets in their span.
@@ -65,4 +79,4 @@ def enlarge_group_matches(matches):
             matches.append(match)
 
 
-PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(remove_ambiguous)
+PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(remove_ambiguous, country_in_title)

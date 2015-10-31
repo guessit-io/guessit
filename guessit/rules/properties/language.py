@@ -8,11 +8,14 @@ from __future__ import unicode_literals
 import copy
 
 import regex as re
-from babelfish import Language, Country
 import babelfish
+
 from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
 
-from guessit.rules.common.validators import seps_surround
+from ..common.words import iter_words, COMMON_WORDS
+from ..common.validators import seps_surround
+
+COMMON_WORDS_STRICT = frozenset(['brazil'])
 
 UNDETERMINED = babelfish.Language('und')
 
@@ -59,7 +62,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
 
         name = name.lower()
         if with_country:
-            lang = Language.fromguessit(with_country.group(1).strip())
+            lang = babelfish.Language.fromguessit(with_country.group(1).strip())
             lang.country = babelfish.Country.fromguessit(with_country.group(2).strip())
             return lang.alpha3, lang.country.alpha2 if lang.country else None, lang.script or None
 
@@ -86,119 +89,23 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
 
 babelfish.language_converters['guessit'] = GuessitConverter()
 
-COUNTRIES_SYN = {'ES': ['españa'],
-                 'GB': ['UK'],
-                 'BR': ['brazilian', 'bra'],
-                 # FIXME: this one is a bit of a stretch, not sure how to do
-                 #        it properly, though...
-                 'MX': ['Latinoamérica', 'latin america']}
-
-
-class GuessitCountryConverter(babelfish.CountryReverseConverter):  # pylint: disable=missing-docstring
-    def __init__(self):
-        self.guessit_exceptions = {}
-
-        for alpha2, synlist in COUNTRIES_SYN.items():
-            for syn in synlist:
-                self.guessit_exceptions[syn.lower()] = alpha2
-
-    @property
-    def codes(self):  # pylint: disable=missing-docstring
-        return (babelfish.country_converters['name'].codes |
-                frozenset(babelfish.COUNTRIES.values()) |
-                frozenset(self.guessit_exceptions.keys()))
-
-    def convert(self, alpha2):
-        if alpha2 == 'GB':
-            return 'UK'
-        return str(Country(alpha2))
-
-    def reverse(self, name):
-        # exceptions come first, as they need to override a potential match
-        # with any of the other guessers
-        try:
-            return self.guessit_exceptions[name.lower()]
-        except KeyError:
-            pass
-
-        try:
-            return babelfish.Country(name.upper()).alpha2
-        except ValueError:
-            pass
-
-        for conv in [babelfish.Country.fromname]:
-            try:
-                return conv(name).alpha2
-            except babelfish.CountryReverseError:
-                pass
-
-        raise babelfish.CountryReverseError(name)
-
-
-babelfish.country_converters['guessit'] = GuessitCountryConverter()
-
-
-# list of common words which could be interpreted as languages, but which
-# are far too common to be able to say they represent a language in the
-# middle of a string (where they most likely carry their commmon meaning)
-LNG_COMMON_WORDS = frozenset([
-    # english words
-    'is', 'it', 'am', 'mad', 'men', 'man', 'run', 'sin', 'st', 'to',
-    'no', 'non', 'war', 'min', 'new', 'car', 'day', 'bad', 'bat', 'fan',
-    'fry', 'cop', 'zen', 'gay', 'fat', 'one', 'cherokee', 'got', 'an', 'as',
-    'cat', 'her', 'be', 'hat', 'sun', 'may', 'my', 'mr', 'rum', 'pi', 'bb',
-    'bt', 'tv', 'aw', 'by', 'md', 'mp', 'cd', 'lt', 'gt', 'in', 'ad', 'ice',
-    'ay', 'at', 'star', 'so', 'he',
-    # french words
-    'bas', 'de', 'le', 'son', 'ne', 'ca', 'ce', 'et', 'que',
-    'mal', 'est', 'vol', 'or', 'mon', 'se', 'je', 'tu', 'me',
-    'ne', 'ma', 'va', 'au',
-    # japanese words,
-    'wa', 'ga', 'ao',
-    # spanish words
-    'la', 'el', 'del', 'por', 'mar', 'al',
-    # other
-    'ind', 'arw', 'ts', 'ii', 'bin', 'chan', 'ss', 'san', 'oss', 'iii',
-    'vi', 'ben', 'da', 'lt', 'ch', 'sr', 'ps', 'cx', 'vo',
-    # new from babelfish
-    'mkv', 'avi', 'dmd', 'the', 'dis', 'cut', 'stv', 'des', 'dia', 'and',
-    'cab', 'sub', 'mia', 'rim', 'las', 'une', 'par', 'srt', 'ano', 'toy',
-    'job', 'gag', 'reel', 'www', 'for', 'ayu', 'csi', 'ren', 'moi', 'sur',
-    'fer', 'fun', 'two', 'big', 'psy', 'air',
-    # movie title
-    'brazil',
-    # release groups
-    'bs',  # Bosnian
-    'kz',
-    # countries
-    'gt', 'lt', 'im',
-    # part/pt
-    'pt',
-    # screener
-    'scr'
-])
-
-LNG_COMMON_WORDS_STRICT = frozenset(['brazil'])
-
 subtitle_prefixes = ['sub', 'subs', 'st', 'vost', 'subforced', 'fansub', 'hardsub']
 subtitle_suffixes = ['subforced', 'fansub', 'hardsub', 'sub', 'subs']
 lang_prefixes = ['true']
 
 all_lang_prefixes_suffixes = subtitle_prefixes + subtitle_suffixes + lang_prefixes
 
-_words_rexp = re.compile(r'\w+', re.UNICODE)
 
-
-def find_languages(string, options=None):
+def find_languages(string, context=None):
     """Find languages in the string
 
     :return: list of tuple (property, Language, lang_word, word)
     """
-    allowed_languages = options.get('allowed_languages')
-    common_words = LNG_COMMON_WORDS_STRICT if allowed_languages else LNG_COMMON_WORDS
+    allowed_languages = context.get('allowed_languages')
+    common_words = COMMON_WORDS_STRICT if allowed_languages else COMMON_WORDS
 
     matches = []
-    for word_match in _words_rexp.finditer(string.replace('_', ' ')):
+    for word_match in iter_words(string):
         word = word_match.group()
         start, end = word_match.span()
 
@@ -217,7 +124,7 @@ def find_languages(string, options=None):
                 lang_word = lang_word[len(prefix):]
         if lang_word not in common_words and word.lower() not in common_words:
             try:
-                lang = Language.fromguessit(lang_word)
+                lang = babelfish.Language.fromguessit(lang_word)
                 match = (start, end, {'name': key, 'value': lang})
                 if allowed_languages:
                     if lang.name.lower() in allowed_languages \
