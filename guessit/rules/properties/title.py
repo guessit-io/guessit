@@ -35,22 +35,23 @@ class TitleFromPosition(Rule):
         """
         start, end = filepart.span
 
-        first_hole = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
-                                   ignore=TitleFromPosition.ignore_language,
-                                   predicate=lambda hole: hole.value, index=0)
+        holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
+                              ignore=TitleFromPosition.ignore_language,
+                              predicate=lambda hole: hole.value)
 
         to_remove = []
 
-        if first_hole:
+        for hole in holes:
+            # pylint:disable=cell-var-from-loop
             group_markers = matches.markers.named('group')
-            first_hole = first_hole.crop(group_markers, index=0)
+            hole = hole.crop(group_markers, index=0)
 
-            title_languages = matches.range(first_hole.start, first_hole.end, lambda match: match.name == 'language')
+            title_languages = matches.range(hole.start, hole.end, lambda match: match.name == 'language')
 
             if title_languages:
                 to_keep = []
 
-                hole_trailing_languages = matches.chain_before(first_hole.end, seps,
+                hole_trailing_languages = matches.chain_before(hole.end, seps,
                                                                predicate=lambda match: match.name == 'language')
 
                 if hole_trailing_languages:
@@ -61,10 +62,10 @@ class TitleFromPosition(Rule):
                                                     and match not in hole_trailing_languages)
                     for hole_trailing_language in hole_trailing_languages:
                         if not other_languages or len(hole_trailing_language) <= 3:
-                            first_hole.end = hole_trailing_language.start
+                            hole.end = hole_trailing_language.start
                             to_keep.append(hole_trailing_language)
 
-                hole_starting_languages = matches.chain_after(first_hole.start, seps,
+                hole_starting_languages = matches.chain_after(hole.start, seps,
                                                               predicate=lambda match: match.name == 'language' and
                                                               match not in to_keep)
 
@@ -77,18 +78,18 @@ class TitleFromPosition(Rule):
 
                     for hole_starting_language in hole_starting_languages:
                         if not other_languages or len(hole_starting_language) <= 3:
-                            first_hole.start = hole_starting_language.end
+                            hole.start = hole_starting_language.end
                             to_keep.append(hole_starting_language)
 
                 to_remove.extend(title_languages)
                 for keep_match in to_keep:
                     to_remove.remove(keep_match)
 
-            if first_hole and first_hole.value:
-                first_hole.name = 'title'
-                first_hole.tags = ['title']
+            if hole and hole.value:
+                hole.name = 'title'
+                hole.tags = ['title']
                 # Split and keep values that can be a title
-                titles = first_hole.split(title_seps, lambda match: match.value)
+                titles = hole.split(title_seps, lambda match: match.value)
                 for title in titles[1:]:
                     title.name = 'alternativeTitle'
                 return titles, to_remove
