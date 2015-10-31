@@ -80,7 +80,24 @@
 
 ? Some Series E01E02E03
 ? Some Series E01-02-03
+? Some Series E01-03
 ? Some Series E01 E02 E03
 ? Some Series E01 02 03
 : title: Some Series
   episodeNumber: [1, 2, 3]
+
+? Some Series E01E02E04
+? Some Series E01 E02 E04
+? Some Series E01 02 04
+: title: Some Series
+  episodeNumber: [1, 2, 4]
+
+? Some Series E01-02-04
+? Some Series E01-04
+? Some Series E01-04
+: title: Some Series
+  episodeNumber: [1, 2, 3, 4]
+
+? Some Series E01-02-E04
+: title: Some Series
+  episodeNumber: [1, 2, 4]

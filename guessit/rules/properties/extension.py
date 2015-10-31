@@ -8,7 +8,7 @@ from rebulk import Rebulk
 import regex as re
 
 EXTENSION = Rebulk().regex_defaults(flags=re.IGNORECASE)
-EXTENSION.defaults(name="extension", formatter=lambda value: value[1:])
+EXTENSION.defaults(name='extension', formatter=lambda value: value[1:], conflict_solver=lambda match, other: other)
 
 EXTENSION.regex(r'\.\L<exts>$', exts=['srt', 'idx', 'sub', 'ssa', 'ass'], tags=["subtitle"])
 EXTENSION.regex(r'\.\L<exts>$', exts=['nfo'], tags=["info"])

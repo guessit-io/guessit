@@ -113,7 +113,8 @@ def equivalent_holes(matches):
                         hole.name = name
                         hole.tags = ['equivalent']
                         new_matches.append(hole)
-                        holes.remove(hole)
+                        if hole in holes:
+                            holes.remove(hole)
 
     for new_match in new_matches:
         matches.append(new_match)

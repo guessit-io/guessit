@@ -22,8 +22,9 @@
 ? +Telesync
 ? +TS
 ? +HD TS
-? +Hd.Ts
-? +HD.TS
+? -Hd.Ts # ts file extension
+? -HD.TS # ts file extension
+? +Hd-Ts
 : format: Telesync
 
 ? +Workprint
