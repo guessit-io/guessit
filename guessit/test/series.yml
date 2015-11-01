@@ -987,3 +987,53 @@
   episodeTitle: Title Here
   videoCodec: h264
   year: 2013
+
+? FlexGet.14.of.21.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
+: options: -n
+  audioChannels: '5.1'
+  audioCodec: AAC
+  episodeCount: 21
+  episodeNumber: 14
+  format: HDTV
+  releaseGroup: NOGRP
+  screenSize: 720p
+  title: FlexGet
+  episodeTitle: Title Here
+  videoCodec: h264
+
+? FlexGet.Series.2013.14.of.21.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
+: audioChannels: '5.1'
+  audioCodec: AAC
+  episodeCount: 21
+  episodeNumber: 14
+  format: HDTV
+  releaseGroup: NOGRP
+  screenSize: 720p
+  season: 2013
+  title: FlexGet
+  episodeTitle: Title Here
+  videoCodec: h264
+  year: 2013
+
+? Something.S04E05E09
+: episodeNumber: # 1.x guessit this as a range from 5 to 9. But not sure if it should ...
+  - 5
+  - 9
+  season: 4
+  title: Something
+
+? FooBar 360 1080i
+: options: --episode-prefer-number
+  episodeNumber: 360
+  screenSize: 1080i
+  title: FooBar
+
+? FooBar 360 1080i
+: episodeNumber: 60
+  season: 3
+  screenSize: 1080i
+  title: FooBar
+
+? FooBar 360
+: screenSize: 360p
+  title: FooBar
