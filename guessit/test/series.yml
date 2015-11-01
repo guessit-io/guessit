@@ -972,3 +972,18 @@
   season: 1
   title: Something
   episodeTitle: FlexGet  # 1.x guess this as releaseGroup, but it's better to guess it as episodeTitle
+
+? FlexGet.US.S2013E14.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
+: options: -n
+  audioChannels: '5.1'
+  audioCodec: AAC
+  country: US
+  episodeNumber: 14
+  format: HDTV
+  releaseGroup: NOGRP
+  screenSize: 720p
+  season: 2013
+  title: FlexGet (US)
+  episodeTitle: Title Here
+  videoCodec: h264
+  year: 2013

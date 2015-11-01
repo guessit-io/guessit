@@ -6,7 +6,7 @@ Contry
 # pylint: disable=no-member
 from __future__ import unicode_literals
 
-from rebulk import Rebulk, Rule, RemoveMatch
+from rebulk import Rebulk
 
 import babelfish
 
@@ -91,24 +91,8 @@ def find_countries(string, context=None):
             continue
     return ret
 
-COUNTRY.functional(find_countries)
 
+COUNTRY.functional(find_countries,
+                   #  Prefer language and any other property over country
+                   conflict_solver=lambda match, other: match)
 
-class ValidateCountry(Rule):
-    """
-    Validate country
-
-    Series Title (US)
-    """
-    consequence = RemoveMatch
-
-    def when(self, matches, context):
-        ret = []
-        countries = matches.named('country')
-        for country in countries:
-            group = matches.markers.at_match(country, lambda marker: marker.name == 'group', 0)
-            if not group or group and len(matches.range(group.start, group.end)) > 1:
-                ret.append(country)
-        return ret
-
-COUNTRY.rules(ValidateCountry)

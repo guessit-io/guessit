@@ -22,11 +22,43 @@ class TitleFromPosition(Rule):
     dependency = [FilmTitleRule, SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule]
 
     @staticmethod
-    def ignore_language(match):
+    def is_ignored(match):
         """
-        Ignore language included in the possible title (hole)
+        Ignore matches when scanning for title (hole)
         """
         return match.name in ['language', 'country']
+
+    @staticmethod
+    def should_keep(match, to_keep, matches, filepart, hole):
+        """
+        Check if this match should be accepted when ending or starting a hole.
+        :param match:
+        :type match:
+        :param to_keep:
+        :type to_keep: list[Match]
+        :param matches:
+        :type matches: Matches
+        :param hole: the filepart match
+        :type hole: Match
+        :param hole: the hole match
+        :type hole: Match
+        :return:
+        :rtype:
+        """
+        # Keep language if other languages exists in the filepart and if not a code.
+        if match.name == 'language' and len(match) <= 3:
+            return True
+
+        outside_matches = filepart.crop(hole)
+        other_languages = []
+        for outside in outside_matches:
+            other_languages.extend(matches.range(outside.start, outside.end,
+                                                 lambda c_match: c_match.name == match.name and c_match not in to_keep))
+
+        if not other_languages:
+            return True
+
+        return False
 
     @staticmethod
     def check_titles_in_filepart(filepart, matches):  # pylint: disable=too-many-locals
@@ -36,54 +68,38 @@ class TitleFromPosition(Rule):
         start, end = filepart.span
 
         holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
-                              ignore=TitleFromPosition.ignore_language,
+                              ignore=TitleFromPosition.is_ignored,
                               predicate=lambda hole: hole.value)
-
-        to_remove = []
 
         for hole in holes:
             # pylint:disable=cell-var-from-loop
+
+            to_remove = []
+            to_keep = []
+
+            ignored_matches = matches.range(hole.start, hole.end, TitleFromPosition.is_ignored)
+
+            if ignored_matches:
+                for ignored_match in reversed(ignored_matches):
+                    # pylint:disable=undefined-loop-variable
+                    trailing = matches.chain_before(hole.end, seps, predicate=lambda match: match == ignored_match)
+                    if trailing and TitleFromPosition.should_keep(ignored_match, to_keep, matches, filepart, hole):
+                        to_keep.append(ignored_match)
+                        hole.end = ignored_match.start
+
+                for ignored_match in ignored_matches:
+                    if ignored_match not in to_keep:
+                        starting = matches.chain_after(hole.start, seps, predicate=lambda match: match == ignored_match)
+                        if starting and TitleFromPosition.should_keep(ignored_match, to_keep, matches, filepart, hole):
+                            to_keep.append(ignored_match)
+                            hole.start = ignored_match.end
+
+            to_remove.extend(ignored_matches)
+            for keep_match in to_keep:
+                to_remove.remove(keep_match)
+
             group_markers = matches.markers.named('group')
             hole = hole.crop(group_markers, index=0)
-
-            title_languages = matches.range(hole.start, hole.end, lambda match: match.name == 'language')
-
-            if title_languages:
-                to_keep = []
-
-                hole_trailing_languages = matches.chain_before(hole.end, seps,
-                                                               predicate=lambda match: match.name == 'language')
-
-                if hole_trailing_languages:
-                    # We have one or many language at end of title.
-                    # Keep it if other languages exists in the filepart and if not a code
-                    other_languages = matches.range(filepart.start, filepart.end,
-                                                    lambda match: match.name == 'language'
-                                                    and match not in hole_trailing_languages)
-                    for hole_trailing_language in hole_trailing_languages:
-                        if not other_languages or len(hole_trailing_language) <= 3:
-                            hole.end = hole_trailing_language.start
-                            to_keep.append(hole_trailing_language)
-
-                hole_starting_languages = matches.chain_after(hole.start, seps,
-                                                              predicate=lambda match: match.name == 'language' and
-                                                              match not in to_keep)
-
-                if hole_starting_languages:
-                    # We have one or many language at start of title.
-                    # Keep it if other languages exists in the filepart and if not a code.
-                    other_languages = matches.range(filepart.start, filepart.end,
-                                                    lambda match: match.name == 'language'
-                                                    and match not in hole_starting_languages)
-
-                    for hole_starting_language in hole_starting_languages:
-                        if not other_languages or len(hole_starting_language) <= 3:
-                            hole.start = hole_starting_language.end
-                            to_keep.append(hole_starting_language)
-
-                to_remove.extend(title_languages)
-                for keep_match in to_keep:
-                    to_remove.remove(keep_match)
 
             if hole and hole.value:
                 hole.name = 'title'
