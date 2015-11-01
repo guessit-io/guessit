@@ -36,6 +36,8 @@ def build_argument_parser():
                              default=False,
                              help='Guess "serie.213.avi" as the episodeNumber 213. Without this option, '
                                   'it will be guessed as season 2, episodeNumber 13')
+    naming_opts.add_argument('-T', '--expected-title', action='append', dest='expected_title',
+                             help='Expected title to parse (can be used multiple times)')
 
     output_opts = opts.add_argument_group("Output")
     output_opts.add_argument('-v', '--verbose', action='store_true', dest='verbose', default=False,

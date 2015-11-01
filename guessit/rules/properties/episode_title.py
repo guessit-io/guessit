@@ -5,11 +5,10 @@ Episode title
 """
 from collections import defaultdict
 from guessit.rules.common import seps, title_seps
-from guessit.rules.properties.title import TitleFromPosition
+from guessit.rules.properties.title import TitleFromPosition, TitleBaseRule
 from rebulk import Rebulk, Rule, AppendMatch, RenameMatch
-from rebulk.formatters import formatters
 
-from ..common.formatters import cleanup, reorder_title
+from ..common.formatters import cleanup
 
 
 class TitleToEpisodeTitle(Rule):
@@ -46,42 +45,48 @@ class TitleToEpisodeTitle(Rule):
             matches.append(episode_title)
 
 
-class EpisodeTitleFromPosition(Rule):
+class EpisodeTitleFromPosition(TitleBaseRule):
     """
     Add episode title match in existing matches
     Must run after TitleFromPosition rule.
     """
     dependency = TitleToEpisodeTitle
-    consequence = AppendMatch
+
+    def hole_filter(self, hole, matches):
+        episode = matches.previous(hole,
+                                   lambda previous: any(name in previous.names
+                                                        for name in ['episodeNumber', 'episodeDetails',
+                                                                     'episodeCount', 'season', 'seasonCount',
+                                                                     'date', 'title']),
+                                   0)
+
+        crc32 = matches.named('crc32')
+
+        return episode or crc32
+
+    def filepart_filter(self, filepart, matches):
+        # Filepart where title was found.
+        if matches.range(filepart.start, filepart.end, lambda match: match.name == 'title'):
+            return True
+        return False
+
+    def is_ignored(self, match):
+        if match.name == 'episodeDetails':
+            return True
+        return super(EpisodeTitleFromPosition, self).is_ignored(match)
+
+    def should_keep(self, match, to_keep, matches, filepart, hole):
+        if match.name == 'episodeDetails' and not matches.previous(match, lambda match: match.name == 'season'):
+            return True, False  # Keep episodeDetails, but don't crop title.
+        return super(EpisodeTitleFromPosition, self).should_keep(match, to_keep, matches, filepart, hole)
+
+    def __init__(self):
+        super(EpisodeTitleFromPosition, self).__init__('episodeTitle', ['title'])
 
     def when(self, matches, context):
         if matches.named('episodeTitle'):
             return
-
-        filename = matches.markers.named('path', -1)
-        start, end = filename.span
-
-        holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
-                              predicate=lambda hole: hole.value)
-
-        for hole in holes:
-            episode = matches.previous(hole,
-                                       lambda previous: any(name in previous.names
-                                                            for name in ['episodeNumber', 'episodeDetails',
-                                                                         'episodeCount', 'season', 'seasonCount',
-                                                                         'date']),
-                                       0)
-
-            crc32 = matches.named('crc32')
-
-            if episode or crc32:
-                group_markers = matches.markers.named('group')
-                title = hole.crop(group_markers, index=0)
-
-                if title and title.value:
-                    title.name = 'episodeTitle'
-                    title.tags = ['title']
-                    return title
+        return super(EpisodeTitleFromPosition, self).when(matches, context)
 
 
 class AlternativeTitleReplace(Rule):
@@ -104,7 +109,7 @@ class AlternativeTitleReplace(Rule):
                                            lambda previous: any(name in previous.names
                                                                 for name in ['episodeNumber', 'episodeDetails',
                                                                              'episodeCount', 'season', 'seasonCount',
-                                                                             'date']),
+                                                                             'date', 'title']),
                                            0)
 
                 crc32 = matches.named('crc32')

@@ -1037,3 +1037,10 @@
 ? FooBar 360
 : screenSize: 360p
   title: FooBar
+
+? BarFood christmas special HDTV
+: options: --expected-title BarFood
+  format: HDTV
+  title: BarFood
+  episodeTitle: christmas special
+  episodeDetails: Special

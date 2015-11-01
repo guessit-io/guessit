@@ -14,7 +14,7 @@ from ..common import dash, alt_dash
 from ..common.numeral import numeral, parse_numeral
 
 EPISODES = Rebulk()
-EPISODES.regex_defaults(flags=re.IGNORECASE)
+EPISODES.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
 
 # 01x02, 01x02x03x04
 EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)' +
@@ -35,7 +35,8 @@ EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)' +
 
 # episodeDetails property
 for episode_detail in ('Special', 'Bonus', 'Omake', 'Ova', 'Oav', 'Pilot', 'Unaired'):
-    EPISODES.string(episode_detail, name='episodeDetails')
+    EPISODES.string(episode_detail, value=episode_detail, name='episodeDetails',
+                    conflict_solver=lambda match, other: None)
 EPISODES.regex(r'Extras?', name='episodeDetails', value='Extras')
 
 EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
