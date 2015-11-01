@@ -809,3 +809,166 @@
 ? Something.Other.Season.1&3-1to12ep.avi
 : season: [1, 3]
   title: Something Other
+
+? W2Test.123.HDTV.XViD-FlexGet
+: episodeNumber: 23
+  season: 1
+  format: HDTV
+  releaseGroup: FlexGet
+  title: W2Test
+  videoCodec: XviD
+
+? W2Test.123.HDTV.XViD-FlexGet
+: options: --episode-prefer-number
+  episodeNumber: 123
+  format: HDTV
+  releaseGroup: FlexGet
+  title: W2Test
+  videoCodec: XviD
+
+? FooBar.0307.PDTV-FlexGet
+: episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  season: 3
+  title: FooBar
+
+? FooBar.0307.PDTV-FlexGet
+? FooBar.307.PDTV-FlexGet
+: options: --episode-prefer-number
+  episodeNumber: 307
+  format: DVB
+  releaseGroup: FlexGet
+  title: FooBar
+
+? FooBar.07.PDTV-FlexGet
+: options: --episode-prefer-number
+  episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  title: FooBar
+
+? FooBar.7.PDTV-FlexGet
+: options: --episode-prefer-number
+  episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  title: FooBar
+
+? FooBar.0307.PDTV-FlexGet
+: episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  season: 3
+  title: FooBar
+
+? FooBar.307.PDTV-FlexGet
+: episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  season: 3
+  title: FooBar
+
+? FooBar.07.PDTV-FlexGet
+: episodeNumber: 7
+  format: DVB
+  releaseGroup: FlexGet
+  title: FooBar
+
+? FooBar.07v4.PDTV-FlexGet
+: episodeNumber: 7
+  version: 4
+  format: DVB
+  releaseGroup: FlexGet
+  title: FooBar
+
+? FooBar.7.PDTV-FlexGet
+: format: DVB
+  releaseGroup: FlexGet
+  title: FooBar 7
+
+? FooBar.7v3.PDTV-FlexGet
+: options: --episode-prefer-number
+  episodeNumber: 7
+  version: 3
+  format: DVB
+  releaseGroup: FlexGet
+  title: FooBar
+
+? Test.S02E01.hdtv.real.proper
+: episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 2
+  season: 2
+  title: Test
+
+? Real.Test.S02E01.hdtv.proper
+: episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 1
+  season: 2
+  title: Real Test
+
+? Test.Real.S02E01.hdtv.proper
+: episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 1
+  season: 2
+  title: Test Real
+
+? Test.S02E01.hdtv.proper
+: episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 1
+  season: 2
+  title: Test
+
+? Test.S02E01.hdtv.real.repack.proper
+: episodeNumber: 1
+  format: HDTV
+  other: Proper
+  properCount: 3
+  season: 2
+  title: Test
+
+? Date.Show.03-29-2012.HDTV.XViD-FlexGet
+: date: 2012-03-29
+  format: HDTV
+  releaseGroup: FlexGet
+  title: Date Show
+  videoCodec: XviD
+
+? Something.1x5.Season.Complete-FlexGet
+: episodeNumber: 5
+  other: Complete
+  season: 1
+  title: Something
+  releaseGroup: FlexGet
+
+? Something Seasons 1 & 2 - Complete
+: other: Complete
+  season:
+  - 1
+  - 2
+  title: Something
+
+? Something Seasons 4 Complete
+: other: Complete
+  season: 4
+  title: Something
+
+? Something.1xAll.Season.Complete-FlexGet
+: other: Complete
+  season: 1
+  title: Something
+  releaseGroup: FlexGet
+
+? Something.1xAll-FlexGet
+: other: Complete
+  season: 1
+  title: Something
+  episodeTitle: FlexGet  # 1.x guess this as releaseGroup, but it's better to guess it as episodeTitle

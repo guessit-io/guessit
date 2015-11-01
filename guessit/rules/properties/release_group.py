@@ -37,8 +37,10 @@ def clean_groupname(string):
     return string
 
 
-_scene_previous = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile', 'audioChannels',
-                   'screenSize']
+_scene_previous_names = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile',
+                         'audioChannels', 'screenSize']
+
+_scene_previous_tags = ['release-group-prefix']
 
 
 class SceneReleaseGroup(Rule):
@@ -61,9 +63,19 @@ class SceneReleaseGroup(Rule):
 
             if last_hole:
                 previous_match = matches.previous(last_hole, index=0)
-                if previous_match and previous_match.name in _scene_previous and \
+                if previous_match and (previous_match.name in _scene_previous_names or
+                                       any(tag in previous_match.tags for tag in _scene_previous_tags)) and \
                         not matches.input_string[previous_match.end:last_hole.start].strip(seps)\
                         and not int_coercable(last_hole.value.strip(seps)):
+
+                    # if hole is insed a group marker with same value, remove [](){} ...
+                    group = matches.markers.at_match(last_hole, lambda marker: marker.name == 'group', 0)
+                    if group:
+                        group.formatter = clean_groupname
+                        if group.value == last_hole.value:
+                            last_hole.start = group.start + 1
+                            last_hole.end = group.end - 1
+
                     last_hole.name = 'releaseGroup'
                     last_hole.tags = ['scene']
                     ret.append(last_hole)
@@ -98,6 +110,7 @@ class AnimeReleaseGroup(Rule):
                 release_group.marker = False
                 release_group.raw_start += 1
                 release_group.raw_end -= 1
+                release_group.tags = ['anime']
                 release_group.name = 'releaseGroup'
                 ret.append(release_group)
         return ret

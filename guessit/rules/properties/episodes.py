@@ -43,11 +43,12 @@ EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, ch
 season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series']
 episode_words = ['episode', 'episodes', 'ep']
 of_words = ['of', 'sur']
+all_words = ['All']
 
 EPISODES.regex(r'\L<season_words>@?(?P<season>' + numeral + ')' +
                r'(?:@?\L<of_words>@?(?P<count>' + numeral + '))?' +
-               r'(?:(?P<seasonSeparator>-)(?P<season>\d+))*' +
-               r'(?:(?P<seasonSeparator>&)(?P<season>\d+))*',
+               r'(?:@?(?P<seasonSeparator>-)@?(?P<season>\d+))*' +
+               r'(?:@?(?P<seasonSeparator>&)@?(?P<season>\d+))*',
                of_words=of_words,
                season_words=season_words,  # Season 1, # Season one
                abbreviations=[alt_dash], formatter={'season': parse_numeral, 'count': parse_numeral})
@@ -58,6 +59,13 @@ EPISODES.regex(r'\L<episode_words>-?(?P<episodeNumber>\d+)' +
                of_words=of_words,
                episode_words=episode_words,  # Episode 4
                abbreviations=[dash], formatter=int)
+
+EPISODES.regex(r'S?(?P<season>\d+)-?(?:xE|Ex|E|x)-?(?P<other>\L<all_words>)',
+               tags=['SxxExx'],
+               all_words=all_words,
+               abbreviations=[dash],
+               validator=None,
+               formatter={'season': int, 'other': lambda match: 'Complete'})
 
 EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
@@ -77,6 +85,13 @@ EPISODES.regex(r'0(?P<episodeNumber>\d{1,2})' +
 EPISODES.regex(r'(?P<episodeNumber>\d{3,4})' +
                r'(?:v(?P<version>\d+))?' +
                r'(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{3,4}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int},
+               disabled=lambda context: not context.get('episode_prefer_number', False))
+
+# 1, 2, 3
+EPISODES.regex(r'(?P<episodeNumber>\d)' +
+               r'(?:v(?P<version>\d+))?' +
+               r'(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{1,2}))*',
                tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int},
                disabled=lambda context: not context.get('episode_prefer_number', False))
 
