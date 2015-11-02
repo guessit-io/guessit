@@ -28,10 +28,13 @@ AUDIO_CODEC.string("LC", value="LC", tags="AAC")
 AUDIO_CODEC.string("HQ", value="HQ", tags="AC3")
 
 AUDIO_CODEC.defaults(name="audioChannels")
-AUDIO_CODEC.regex(r'7[\W_]1', '7ch', '8ch', value='7.1')
-AUDIO_CODEC.regex(r'5[\W_]1', '5ch', '6ch', value='5.1')
-AUDIO_CODEC.regex('2ch', 'stereo', value='2.0')
-AUDIO_CODEC.regex('1ch', 'mono', value='1.0')
+AUDIO_CODEC.regex(r'(7[\W_]1)(?:[^\d]|$)', value='7.1', children=True)
+AUDIO_CODEC.regex(r'(5[\W_]1)(?:[^\d]|$)', value='5.1', children=True)
+AUDIO_CODEC.regex(r'(2[\W_]0)(?:[^\d]|$)', value='2.0', children=True)
+AUDIO_CODEC.string('7ch', '8ch', value='7.1')
+AUDIO_CODEC.string('5ch', '6ch', value='5.1')
+AUDIO_CODEC.string('2ch', 'stereo', value='2.0')
+AUDIO_CODEC.string('1ch', 'mono', value='1.0')
 
 audio_properties = ['audioCodec', 'audioProfile', 'audioChannels']
 
