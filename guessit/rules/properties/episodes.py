@@ -271,7 +271,7 @@ class EpisodeDetailValidator(Rule):
 
 class VersionValidator(Rule):
     """
-    Validate version if previous match is episodeNumber
+    Validate version if previous match is episodeNumber or if surrounded by separators.
     """
     priority = 64
     dependency = [RemoveWeakIfMovie, RemoveWeakIfSxxExx]
@@ -281,7 +281,7 @@ class VersionValidator(Rule):
         ret = []
         for version in matches.named('version'):
             episode_number = matches.previous(version, lambda match: match.name == 'episodeNumber', 0)
-            if not episode_number:
+            if not episode_number and not seps_surround(version.initiator):
                 ret.append(version)
         return ret
 
