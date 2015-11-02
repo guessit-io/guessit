@@ -1473,3 +1473,66 @@
   title: One Piece
   subtitleLanguage: fr
   version: 2
+
+? '[Group Name] Show Name.13'
+: episodeNumber: 13
+  releaseGroup: Group Name
+  title: Show Name
+
+? '[Group Name] Show Name - 13'
+: episodeNumber: 13
+  releaseGroup: Group Name
+  title: Show Name
+
+? '[Group Name] Show Name 13'
+: episodeNumber: 13
+  releaseGroup: Group Name
+  title: Show Name
+
+# [Group Name] Show Name.13-14
+# [Group Name] Show Name - 13-14
+# Show Name 13-14
+
+? '[Stratos-Subs]_Infinite_Stratos_-_12_(1280x720_H.264_AAC)_[379759DB]'
+: audioCodec: AAC
+  crc32: 379759DB
+  episodeNumber: 12
+  releaseGroup: Stratos-Subs
+  screenSize: 720p
+  title: Infinite Stratos
+  videoCodec: h264
+
+# [ShinBunBu-Subs] Bleach - 02-03 (CX 1280x720 x264 AAC)
+
+? '[SGKK] Bleach 312v1 [720p/MKV]'
+: options: -E  # guessit 1.x for episodeNumber only when version is guessed, but it's doesn't make it consistent.
+  episodeNumber: 312
+  releaseGroup: SGKK
+  screenSize: 720p
+  title: Bleach
+  version: 1
+
+? '[Ayako]_Infinite_Stratos_-_IS_-_07_[H264][720p][EB7838FC]'
+: crc32: EB7838FC
+  episodeNumber: 7
+  releaseGroup: Ayako
+  screenSize: 720p
+  title: Infinite Stratos
+  videoCodec: h264
+
+? '[Ayako] Infinite Stratos - IS - 07v2 [H264][720p][44419534]'
+: crc32: '44419534'
+  episodeNumber: 7
+  releaseGroup: Ayako
+  screenSize: 720p
+  title: Infinite Stratos
+  videoCodec: h264
+  version: 2
+
+? '[Ayako-Shikkaku] Oniichan no Koto Nanka Zenzen Suki Janain Dakara ne - 10 [LQ][h264][720p] [8853B21C]'
+: crc32: 8853B21C
+  episodeNumber: 10
+  releaseGroup: Ayako-Shikkaku
+  screenSize: 720p
+  title: Oniichan no Koto Nanka Zenzen Suki Janain Dakara ne
+  videoCodec: h264
