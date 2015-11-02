@@ -24,3 +24,4 @@ Scripts
 .eggs/
 .tox/
 .doit.db
+lastfailed
