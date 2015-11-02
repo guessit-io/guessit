@@ -75,10 +75,10 @@ class EpisodeTitleFromPosition(TitleBaseRule):
             return True
         return super(EpisodeTitleFromPosition, self).is_ignored(match)
 
-    def should_keep(self, match, to_keep, matches, filepart, hole):
+    def should_keep(self, match, to_keep, matches, filepart, hole, starting):
         if match.name == 'episodeDetails' and not matches.previous(match, lambda match: match.name == 'season'):
             return True, False  # Keep episodeDetails, but don't crop title.
-        return super(EpisodeTitleFromPosition, self).should_keep(match, to_keep, matches, filepart, hole)
+        return super(EpisodeTitleFromPosition, self).should_keep(match, to_keep, matches, filepart, hole, starting)
 
     def __init__(self):
         super(EpisodeTitleFromPosition, self).__init__('episodeTitle', ['title'])

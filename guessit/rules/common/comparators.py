@@ -10,7 +10,18 @@ def marker_comparator_predicate(match):
     """
     Match predicate used in comparator
     """
-    return not match.private and match.name not in ['extension', 'properCount']
+    return not match.private and \
+           match.name not in ['extension', 'properCount', 'title', 'episodeTitle', 'alternativeTitle']
+
+
+def marker_weight(matches, marker):
+    """
+    Compute the comparator weight of a marker
+    :param matches:
+    :param marker:
+    :return:
+    """
+    return len(set(match.name for match in matches.range(*marker.span, predicate=marker_comparator_predicate)))
 
 
 def marker_comparator(matches, markers):
@@ -28,8 +39,7 @@ def marker_comparator(matches, markers):
         """
         The actual comparator function.
         """
-        matches_count = len(matches.range(*marker2.span, predicate=marker_comparator_predicate)) - \
-            len(matches.range(*marker1.span, predicate=marker_comparator_predicate))
+        matches_count = marker_weight(matches, marker2) - marker_weight(matches, marker1)
         if matches_count:
             return matches_count
         len_diff = len(marker2) - len(marker1)

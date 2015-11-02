@@ -74,7 +74,7 @@ class TitleBaseRule(Rule):
         """
         return match.name in ['language', 'country']
 
-    def should_keep(self, match, to_keep, matches, filepart, hole):
+    def should_keep(self, match, to_keep, matches, filepart, hole, starting):
         """
         Check if this match should be accepted when ending or starting a hole.
         :param match:
@@ -87,13 +87,12 @@ class TitleBaseRule(Rule):
         :type hole: Match
         :param hole: the hole match
         :type hole: Match
+        :param starting: true if match is starting the hole
+        :type starting: bool
         :return:
         :rtype:
         """
-        # Keep language if other languages exists in the filepart and if not a code.
-        if match.name == 'language' and len(match) <= 3:
-            return True
-
+        # Keep language if other languages exists in the filepart.
         outside_matches = filepart.crop(hole)
         other_languages = []
         for outside in outside_matches:
@@ -133,7 +132,7 @@ class TitleBaseRule(Rule):
                     # pylint:disable=undefined-loop-variable
                     trailing = matches.chain_before(hole.end, seps, predicate=lambda match: match == ignored_match)
                     if trailing:
-                        should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole)
+                        should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, False)
                         if should_keep:
                             # pylint:disable=unpacking-non-sequence
                             try:
@@ -149,7 +148,7 @@ class TitleBaseRule(Rule):
                     if ignored_match not in to_keep:
                         starting = matches.chain_after(hole.start, seps, predicate=lambda match: match == ignored_match)
                         if starting:
-                            should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole)
+                            should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, True)
                             if should_keep:
                                 # pylint:disable=unpacking-non-sequence
                                 try:

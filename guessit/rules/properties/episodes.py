@@ -73,26 +73,26 @@ EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, ch
 # 12, 13
 EPISODES.regex(r'(?P<episodeNumber>\d{2})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{2}))*',
+               r'(?:(?P<episodeNumberSeparator>[x-])(?P<episodeNumber>\d{2}))*',
                tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int})
 
 # 012, 013
 EPISODES.regex(r'0(?P<episodeNumber>\d{1,2})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>[x-])0(<?P<episodeNumber>\d{1,2}))*',
+               r'(?:(?P<episodeNumberSeparator>[x-])0(?P<episodeNumber>\d{1,2}))*',
                tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int})
 
 # 112, 113
 EPISODES.regex(r'(?P<episodeNumber>\d{3,4})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{3,4}))*',
+               r'(?:(?P<episodeNumberSeparator>[x-])(?P<episodeNumber>\d{3,4}))*',
                tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int},
                disabled=lambda context: not context.get('episode_prefer_number', False))
 
 # 1, 2, 3
 EPISODES.regex(r'(?P<episodeNumber>\d)' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>[x-])(<?P<episodeNumber>\d{1,2}))*',
+               r'(?:(?P<episodeNumberSeparator>[x-])(?P<episodeNumber>\d{1,2}))*',
                tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int},
                disabled=lambda context: not context.get('episode_prefer_number', False))
 
@@ -269,6 +269,37 @@ class EpisodeDetailValidator(Rule):
         return ret
 
 
+class RemoveDetachedEpisodeNumber(Rule):
+    """
+    If multiple episodeNumber are found, remove those that are not detached from a range and less than 10.
+
+    Fairy Tail 2 - 16-20, 2 should be removed.
+    """
+    priority = 64
+    consequence = RemoveMatch
+    dependency = [RemoveWeakIfSxxExx, RemoveWeakDuplicate]
+
+    def when(self, matches, context):
+        ret = []
+
+        episode_numbers = []
+        episode_values = set()
+        for match in matches.named('episodeNumber', lambda match: not match.private and 'weak-movie' in match.tags):
+            if match.value not in episode_values:
+                episode_numbers.append(match)
+                episode_values.add(match.value)
+
+        episode_numbers = list(sorted(episode_numbers, key=lambda match: match.value))
+        if len(episode_numbers) > 1 and \
+                        episode_numbers[0].value < 10 and \
+                        episode_numbers[1].value - episode_numbers[0].value != 1:
+            parent = episode_numbers[0]
+            while parent:  # TODO: Add a feature in rebulk to avoid this ...
+                ret.append(parent)
+                parent = parent.parent
+        return ret
+
+
 class VersionValidator(Rule):
     """
     Validate version if previous match is episodeNumber or if surrounded by separators.
@@ -285,5 +316,5 @@ class VersionValidator(Rule):
                 ret.append(version)
         return ret
 
-EPISODES.rules(RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate, EpisodeDetailValidator, VersionValidator,
-               CountValidator)
+EPISODES.rules(RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate, EpisodeDetailValidator,
+               RemoveDetachedEpisodeNumber, VersionValidator, CountValidator)

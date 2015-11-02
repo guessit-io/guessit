@@ -1536,3 +1536,118 @@
   screenSize: 720p
   title: Oniichan no Koto Nanka Zenzen Suki Janain Dakara ne
   videoCodec: h264
+
+# TODO: Add support for absolute episodes
+? Bleach - s16e03-04 - 313-314
+? Bleach.s16e03-04.313-314
+? Bleach.s16e03-04.313-314
+? Bleach - s16e03-04 - 313-314
+? Bleach.s16e03-04.313-314
+? Bleach s16e03e04 313-314
+: episodeNumber: [3, 4]
+  season: 16
+  title: Bleach
+
+? Bleach - 313-314
+: options: -E
+  episodeNumber: [313, 314]
+  title: Bleach
+
+? '[ShinBunBu-Subs] Bleach - 02-03 (CX 1280x720 x264 AAC)'
+: audioCodec: AAC
+  episodeNumber: [2, 3]
+  releaseGroup: ShinBunBu-Subs
+  screenSize: 720p
+  title: Bleach
+  videoCodec: h264
+
+? 003. Show Name - Ep Name.avi
+: episodeNumber: 3
+  title: Show Name
+  episodeTitle: Ep Name
+
+? 003-004. Show Name - Ep Name.avi
+: episodeNumber: [3, 4]
+  title: Show Name
+  episodeTitle: Ep Name
+
+? One Piece - 102
+: episodeNumber: 2
+  season: 1
+  title: One Piece
+
+? "[ACX]_Wolf's_Spirit_001.mkv"
+: episodeNumber: 1
+  releaseGroup: ACX
+  title: "Wolf's Spirit"
+
+? Project.Runway.S14E00.and.S14E01.(Eng.Subs).SDTV.x264-[2Maverick].mp4
+: episodeNumber: [0, 1]
+  format: TV
+  releaseGroup: 2Maverick
+  season: 14
+  title: Project Runway
+  subtitleLanguage: en
+  videoCodec: h264
+
+? '[Hatsuyuki-Kaitou]_Fairy_Tail_2_-_16-20_[720p][10bit].torrent'
+: episodeNumber: [16, 17, 18, 19, 20]
+  releaseGroup: Hatsuyuki-Kaitou
+  screenSize: 720p
+  title: Fairy Tail 2
+  videoProfile: 10bit
+
+? '[Hatsuyuki-Kaitou]_Fairy_Tail_2_-_16-20_(191-195)_[720p][10bit].torrent'
+: options: -E
+  episodeNumber: [16, 17, 18, 19, 20, 191, 192, 193, 194, 195]
+  releaseGroup: Hatsuyuki-Kaitou
+  screenSize: 720p
+  title: Fairy Tail 2
+
+? "Looney Tunes 1940x01 Porky's Last Stand.mkv"
+: episodeNumber: 1
+  season: 1940
+  title: Looney Tunes
+  episodeTitle: Porky's Last Stand
+  year: 1940
+
+? The.Good.Wife.S06E01.E10.720p.WEB-DL.DD5.1.H.264-CtrlHD/The.Good.Wife.S06E09.Trust.Issues.720p.WEB-DL.DD5.1.H.264-CtrlHD.mkv
+: audioChannels: '5.1'
+  audioCodec: DolbyDigital
+  episodeNumber: 9
+  format: WEB-DL
+  releaseGroup: CtrlHD
+  screenSize: 720p
+  season: 6
+  title: The Good Wife
+  episodeTitle: Trust Issues
+  videoCodec: h264
+
+? Fear the Walking Dead - 01x02 - So Close, Yet So Far.REPACK-KILLERS.French.C.updated.Addic7ed.com.mkv
+: episodeNumber: 2
+  language: fr
+  other: Proper
+  properCount: 1
+  season: 1
+  title: Fear the Walking Dead
+  episodeTitle: So Close, Yet So Far
+
+? Fear the Walking Dead - 01x02 - En Close, Yet En Far.REPACK-KILLERS.French.C.updated.Addic7ed.com.mkv
+: episodeNumber: 2
+  language: fr
+  other: Proper
+  properCount: 1
+  season: 1
+  title: Fear the Walking Dead
+  episodeTitle: En Close, Yet En Far
+
+? /av/unsorted/The.Daily.Show.2015.07.22.Jake.Gyllenhaal.720p.HDTV.x264-BATV.mkv
+: date: 2015-07-22
+  format: HDTV
+  releaseGroup: BATV
+  screenSize: 720p
+  title: The Daily Show
+  episodeTitle: Jake Gyllenhaal
+  videoCodec: h264
+
+
