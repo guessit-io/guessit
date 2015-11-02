@@ -1044,3 +1044,98 @@
   title: BarFood
   episodeTitle: christmas special
   episodeDetails: Special
+
+? Something.2008x12.13-FlexGet
+: title: Something
+  date: 2008-12-13
+  episodeTitle: FlexGet
+
+? '[Ignored] Test 12'
+: episodeNumber: 12
+  releaseGroup: Ignored
+  title: Test
+
+? '[FlexGet] Test 12'
+: episodeNumber: 12
+  releaseGroup: FlexGet
+  title: Test
+
+? Test.13.HDTV-Ignored
+: episodeNumber: 13
+  format: HDTV
+  releaseGroup: Ignored
+  title: Test
+
+? Test.13.HDTV-Ignored
+: options: --expected-series test
+  episodeNumber: 13
+  format: HDTV
+  releaseGroup: Ignored
+  title: Test
+
+? Test.13.HDTV-Ignored
+: title: Test
+  episodeNumber: 13
+  format: HDTV
+  releaseGroup: Ignored
+
+? Test.13.HDTV-Ignored
+: episodeNumber: 13
+  format: HDTV
+  releaseGroup: Ignored
+  title: Test
+
+? Test.13.HDTV-FlexGet
+: episodeNumber: 13
+  format: HDTV
+  releaseGroup: FlexGet
+  title: Test
+
+? Test.14.HDTV-Name
+: episodeNumber: 14
+  format: HDTV
+  releaseGroup: Name
+  title: Test
+
+? Real.Time.With.Bill.Maher.2014.10.31.HDTV.XviD-AFG.avi
+: date: 2014-10-31
+  format: HDTV
+  releaseGroup: AFG
+  title: Real Time With Bill Maher
+  videoCodec: XviD
+
+? Arrow.S03E21.Al.Sah-Him.1080p.WEB-DL.DD5.1.H.264-BS.mkv
+: title: Arrow
+  season: 3
+  episodeNumber: 21
+  episodeTitle: Al Sah-Him
+  screenSize: 1080p
+  audioCodec: DolbyDigital
+  audioChannels: "5.1"
+  videoCodec: h264
+  releaseGroup: BS
+  format: WEB-DL
+
+? How to Make It in America - S02E06 - I'm Sorry, Who's Yosi?.mkv
+: title: How to Make It in America
+  season: 2
+  episodeNumber: 6
+  episodeTitle: I'm Sorry, Who's Yosi?
+
+? 24.S05E07.FRENCH.DVDRip.XviD-FiXi0N.avi
+: episodeNumber: 7
+  format: DVD
+  language: fr
+  season: 5
+  title: '24'
+  videoCodec: XviD
+  releaseGroup: FiXi0N
+
+? 12.Monkeys.S01E12.FRENCH.BDRip.x264-VENUE.mkv
+: episodeNumber: 12
+  format: BluRay
+  language: fr
+  releaseGroup: VENUE
+  season: 1
+  title: 12 Monkeys
+  videoCodec: h264
