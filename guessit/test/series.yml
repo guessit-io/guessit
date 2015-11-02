@@ -1139,3 +1139,267 @@
   season: 1
   title: 12 Monkeys
   videoCodec: h264
+
+? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.720p.CC.WEBRip.AAC2.0.x264-BTW.mkv
+: audioChannels: '2.0'
+  audioCodec: AAC
+  date: 2015-07-01
+  format: WEBRip
+  other: CC
+  releaseGroup: BTW
+  screenSize: 720p
+  title: The Daily Show
+  episodeTitle: Kirsten Gillibrand Extended
+  videoCodec: h264
+
+? The.Daily.Show.2015.07.02.Sarah.Vowell.CC.WEBRip.AAC2.0.x264-BTW.mkv
+: audioChannels: '2.0'
+  audioCodec: AAC
+  date: 2015-07-02
+  format: WEBRip
+  other: CC
+  releaseGroup: BTW
+  title: The Daily Show
+  episodeTitle: Sarah Vowell
+  videoCodec: h264
+
+? 90.Day.Fiance.S02E07.I.Have.To.Tell.You.Something.720p.HDTV.x264-W4F
+: episodeNumber: 7
+  format: HDTV
+  screenSize: 720p
+  season: 2
+  title: 90 Day Fiance
+  episodeTitle: I Have To Tell You Something
+  releaseGroup: W4F
+
+? Doctor.Who.2005.S04E06.FRENCH.LD.DVDRip.XviD-TRACKS.avi
+: episodeNumber: 6
+  format: DVD
+  language: fr
+  releaseGroup: TRACKS
+  season: 4
+  title: Doctor Who
+  other: LD
+  videoCodec: XviD
+  year: 2005
+
+? Astro.Le.Petit.Robot.S01E01+02.FRENCH.DVDRiP.X264.INT-BOOLZ.mkv
+: episodeNumber: [1, 2]
+  format: DVD
+  language: fr
+  releaseGroup: INT-BOOLZ
+  season: 1
+  title: Astro Le Petit Robot
+  videoCodec: h264
+
+? Annika.Bengtzon.2012.E01.Le.Testament.De.Nobel.FRENCH.DVDRiP.XViD-STVFRV.avi
+: episodeNumber: 1
+  format: DVD
+  language: fr
+  releaseGroup: STVFRV
+  title: Annika Bengtzon
+  episodeTitle: Le Testament De Nobel
+  videoCodec: XviD
+  year: 2012
+
+? Dead.Set.02.FRENCH.LD.DVDRip.XviD-EPZ.avi
+: episodeNumber: 2
+  format: DVD
+  language: fr
+  other: LD
+  releaseGroup: EPZ
+  title: Dead Set
+  videoCodec: XviD
+
+? Phineas and Ferb S01E00 & S01E01 & S01E02
+: episodeNumber: [0, 1, 2]
+  season: 1
+  title: Phineas and Ferb
+
+? Show.Name.S01E02.S01E03.HDTV.XViD.Etc-Group
+: episodeNumber: [2, 3]
+  format: HDTV
+  releaseGroup: Etc-Group
+  season: 1
+  title: Show Name
+  videoCodec: XviD
+
+? Show Name - S01E02 - S01E03 - S01E04 - Ep Name
+: episodeNumber: [2, 3, 4]
+  season: 1
+  title: Show Name
+  episodeTitle: Ep Name
+
+? Show.Name.1x02.1x03.HDTV.XViD.Etc-Group
+: episodeNumber: [2, 3]
+  format: HDTV
+  releaseGroup: Etc-Group
+  season: 1
+  title: Show Name
+  videoCodec: XviD
+
+? Show Name - 1x02 - 1x03 - 1x04 - Ep Name
+: episodeNumber: [2, 3, 4]
+  season: 1
+  title: Show Name
+  episodeTitle: Ep Name
+
+? Show.Name.S01E02.HDTV.XViD.Etc-Group
+: episodeNumber: 2
+  format: HDTV
+  releaseGroup: Etc-Group
+  season: 1
+  title: Show Name
+  videoCodec: XviD
+
+? Show Name - S01E02 - My Ep Name
+: episodeNumber: 2
+  season: 1
+  title: Show Name
+  episodeTitle: My Ep Name
+
+? Show Name - S01.E03 - My Ep Name
+: episodeNumber: 3
+  season: 1
+  title: Show Name
+  episodeTitle: My Ep Name
+
+? Show.Name.S01E02E03.HDTV.XViD.Etc-Group
+: episodeNumber: [2, 3]
+  format: HDTV
+  releaseGroup: Etc-Group
+  season: 1
+  title: Show Name
+  videoCodec: XviD
+
+? Show Name - S01E02-03 - My Ep Name
+: episodeNumber: [2, 3]
+  season: 1
+  title: Show Name
+  episodeTitle: My Ep Name
+
+? Show.Name.S01.E02.E03
+: episodeNumber: [2, 3]
+  season: 1
+  title: Show Name
+
+? Show_Name.1x02.HDTV_XViD_Etc-Group
+: episodeNumber: 2
+  format: HDTV
+  releaseGroup: Etc-Group
+  season: 1
+  title: Show Name
+  videoCodec: XviD
+
+? Show Name - 1x02 - My Ep Name
+: episodeNumber: 2
+  season: 1
+  title: Show Name
+  episodeTitle: My Ep Name
+
+? Show_Name.1x02x03x04.HDTV_XViD_Etc-Group
+: episodeNumber: [2, 3, 4]
+  format: HDTV
+  releaseGroup: Etc-Group
+  season: 1
+  title: Show Name
+  videoCodec: XviD
+
+? Show Name - 1x02-03-04 - My Ep Name
+: episodeNumber: [2, 3, 4]
+  season: 1
+  title: Show Name
+  episodeTitle: My Ep Name
+
+# 1x guess this as episodeNumber 100 but 101 as episodeNumber 1 season 1.
+? Show.Name.100.Event.2010.11.23.HDTV.XViD.Etc-Group
+: date: 2010-11-23
+  season: 1
+  episodeNumber: 0
+  format: HDTV
+  releaseGroup: Etc-Group
+  title: Show Name
+  episodeTitle: Event
+  videoCodec: XviD
+
+? Show.Name.101.Event.2010.11.23.HDTV.XViD.Etc-Group
+: date: 2010-11-23
+  season: 1
+  episodeNumber: 1
+  format: HDTV
+  releaseGroup: Etc-Group
+  title: Show Name
+  episodeTitle: Event
+  videoCodec: XviD
+
+? Show.Name.2010.11.23.HDTV.XViD.Etc-Group
+: date: 2010-11-23
+  format: HDTV
+  releaseGroup: Etc-Group
+  title: Show Name
+
+? Show Name - 2010-11-23 - Ep Name
+: date: 2010-11-23
+  title: Show Name
+  episodeTitle: Ep Name
+
+? Show Name Season 1 Episode 2 Ep Name
+: episodeNumber: 2
+  season: 1
+  title: Show Name
+  episodeTitle: Ep Name
+
+? Show.Name.S01.HDTV.XViD.Etc-Group
+: format: HDTV
+  releaseGroup: Etc-Group
+  season: 1
+  title: Show Name
+  videoCodec: XviD
+
+? Show.Name.E02-03
+: episodeNumber: [2, 3]
+  title: Show Name
+
+? Show.Name.E02.2010
+: episodeNumber: 2
+  year: 2010
+  title: Show Name
+
+? Show.Name.E23.Test
+: episodeNumber: 23
+  title: Show Name
+  episodeTitle: Test
+
+? Show.Name.Part.3.HDTV.XViD.Etc-Group
+: part: 3
+  title: Show Name
+  format: HDTV
+  videoCodec: XviD
+  releaseGroup: Etc-Group
+
+? Show.Name.Part.1.and.Part.2.Blah-Group
+: part: [1, 2]
+  title: Show Name
+
+? Show Name - 01 - Ep Name
+: episodeNumber: 1
+  title: Show Name
+  episodeTitle: Ep Name
+
+? 01 - Ep Name
+: episodeNumber: 1
+  title: Ep Name
+
+? Show.Name.102.HDTV.XViD.Etc-Group
+: episodeNumber: 2
+  format: HDTV
+  releaseGroup: Etc-Group
+  season: 1
+  title: Show Name
+  videoCodec: XviD
+
+? '[HorribleSubs] Maria the Virgin Witch - 01 [720p].mkv'
+: episodeNumber: 1
+  releaseGroup: HorribleSubs
+  screenSize: 720p
+  title: Maria the Virgin Witch
