@@ -18,13 +18,13 @@ EPISODES.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
 
 # 01x02, 01x02x03x04
 EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)' +
-               r'(?:(?P<episodeNumberSeparator>x|-|&)(?P<episodeNumber>\d+))*',
+               r'(?:(?P<episodeNumberSeparator>x|-|\+|&)(?P<episodeNumber>\d+))*',
                # S01E02, S01x02, S01E02E03, S01Ex02, S01xE02, SO1Ex02Ex03
                r'S(?P<season>\d+)(?:xE|Ex|E|x)(?P<episodeNumber>\d+)' +
-               r'(?:(?P<episodeNumberSeparator>xE|Ex|E|x|-|&)(?P<episodeNumber>\d+))*',
+               r'(?:(?P<episodeNumberSeparator>xE|Ex|E|x|-|\+|&)(?P<episodeNumber>\d+))*',
                # S01
                r'S(?P<season>\d+)' +
-               r'(?:(?P<seasonSeparator>S|-|&)(?P<season>\d+))*',
+               r'(?:(?P<seasonSeparator>S|-|\+|&)(?P<season>\d+))*',
                formatter={'season': int, 'episodeNumber': int},
                tags=['SxxExx'],
                children=True,
@@ -49,7 +49,7 @@ all_words = ['All']
 EPISODES.regex(r'\L<season_words>@?(?P<season>' + numeral + ')' +
                r'(?:@?\L<of_words>@?(?P<count>' + numeral + '))?' +
                r'(?:@?(?P<seasonSeparator>-)@?(?P<season>\d+))*' +
-               r'(?:@?(?P<seasonSeparator>&)@?(?P<season>\d+))*',
+               r'(?:@?(?P<seasonSeparator>\+|&)@?(?P<season>\d+))*',
                of_words=of_words,
                season_words=season_words,  # Season 1, # Season one
                abbreviations=[alt_dash], formatter={'season': parse_numeral, 'count': parse_numeral})
