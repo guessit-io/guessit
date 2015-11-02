@@ -5,6 +5,7 @@ dist/
 
 # Python dist
 *.egg-info/
+.eggs/
 
 # Coverage
 .coverage
@@ -14,6 +15,9 @@ dist/
 
 # Tox
 .tox/
+
+# py.test
+lastfailed
 
 # Jetbrain
 *.iml

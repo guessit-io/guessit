@@ -13,7 +13,9 @@ HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 install_requires = ['rebulk>=0.4.1', 'regex', 'babelfish>=0.5.5', 'python-dateutil']
 
-tests_require = ['pytest', 'pyyaml']
+setup_requires=['pytest-runner']
+
+tests_require = ['pytest', 'PyYAML']
 
 entry_points = {
     'console_scripts': [
@@ -21,22 +23,6 @@ entry_points = {
     ],
 }
 
-
-class PyTest(TestCommand):
-    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
-
-    def initialize_options(self):
-        TestCommand.initialize_options(self)
-        self.pytest_args = ['--ignore=setup.py', '--doctest-modules']
-
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-
-    def run(self):
-        import pytest
-        errno = pytest.main(self.pytest_args)
-        exit(errno)
 
 exec(open("guessit/__version__.py").read())  # load version without importing guessit
 
@@ -65,9 +51,9 @@ args = dict(name='guessit',
             download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % __version__,
             license='LGPLv3',
             packages=find_packages(),
-            cmdclass={"test": PyTest},
             include_package_data=True,
             install_requires=install_requires,
+            setup_requires=setup_requires,
             tests_require=tests_require,
             entry_points=entry_points,
             test_suite='guessit.test',
