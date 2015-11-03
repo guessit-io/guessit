@@ -35,8 +35,7 @@ EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)' +
 
 # episodeDetails property
 for episode_detail in ('Special', 'Bonus', 'Omake', 'Ova', 'Oav', 'Pilot', 'Unaired'):
-    EPISODES.string(episode_detail, value=episode_detail, name='episodeDetails',
-                    conflict_solver=lambda match, other: None)
+    EPISODES.string(episode_detail, value=episode_detail, name='episodeDetails')
 EPISODES.regex(r'Extras?', name='episodeDetails', value='Extras')
 
 EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)

@@ -57,7 +57,7 @@ class EpisodeTitleFromPosition(TitleBaseRule):
                                    lambda previous: any(name in previous.names
                                                         for name in ['episodeNumber', 'episodeDetails',
                                                                      'episodeCount', 'season', 'seasonCount',
-                                                                     'date', 'title']),
+                                                                     'date', 'title', 'year']),
                                    0)
 
         crc32 = matches.named('crc32')
@@ -70,15 +70,10 @@ class EpisodeTitleFromPosition(TitleBaseRule):
             return True
         return False
 
-    def is_ignored(self, match):
+    def should_remove(self, match, matches, filepart, hole):
         if match.name == 'episodeDetails':
-            return True
-        return super(EpisodeTitleFromPosition, self).is_ignored(match)
-
-    def should_keep(self, match, to_keep, matches, filepart, hole, starting):
-        if match.name == 'episodeDetails' and not matches.previous(match, lambda match: match.name == 'season'):
-            return True, False  # Keep episodeDetails, but don't crop title.
-        return super(EpisodeTitleFromPosition, self).should_keep(match, to_keep, matches, filepart, hole, starting)
+            return False
+        return super(EpisodeTitleFromPosition, self).should_remove(match, matches, filepart, hole)
 
     def __init__(self):
         super(EpisodeTitleFromPosition, self).__init__('episodeTitle', ['title'])
@@ -109,7 +104,7 @@ class AlternativeTitleReplace(Rule):
                                            lambda previous: any(name in previous.names
                                                                 for name in ['episodeNumber', 'episodeDetails',
                                                                              'episodeCount', 'season', 'seasonCount',
-                                                                             'date', 'title']),
+                                                                             'date', 'title', 'year']),
                                            0)
 
                 crc32 = matches.named('crc32')

@@ -13,7 +13,10 @@ EDITION = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).str
 EDITION.defaults(name='edition', validator=seps_surround)
 
 EDITION.regex('collector', 'collector-edition', 'edition-collector', value='Collector Edition')
-EDITION.regex('special-edition', 'edition-special', value='Special Edition')
+EDITION.regex('special-edition', 'edition-special', value='Special Edition',
+              conflict_solver=lambda match, other: other
+              if other.name == 'episodeDetails' and other.value == 'Special'
+              else '__default__')
 EDITION.regex('criterion-edition', 'edition-criterion', value='Criterion Edition')
 EDITION.regex('deluxe', 'deluxe-edition', 'edition-deluxe', value='Deluxe Edition')
 EDITION.regex('director\'?s?-cut', 'director\'?s?-cut-edition', 'edition-director\'?s?-cut', value='Director\'s cut')

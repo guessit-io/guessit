@@ -68,6 +68,9 @@ class SceneReleaseGroup(Rule):
                         not matches.input_string[previous_match.end:last_hole.start].strip(seps)\
                         and not int_coercable(last_hole.value.strip(seps)):
 
+                    last_hole.name = 'releaseGroup'
+                    last_hole.tags = ['scene']
+
                     # if hole is insed a group marker with same value, remove [](){} ...
                     group = matches.markers.at_match(last_hole, lambda marker: marker.name == 'group', 0)
                     if group:
@@ -75,9 +78,8 @@ class SceneReleaseGroup(Rule):
                         if group.value == last_hole.value:
                             last_hole.start = group.start + 1
                             last_hole.end = group.end - 1
+                            last_hole.tags = ['anime']
 
-                    last_hole.name = 'releaseGroup'
-                    last_hole.tags = ['scene']
                     ret.append(last_hole)
         return ret
 
@@ -94,7 +96,7 @@ class AnimeReleaseGroup(Rule):
         ret = []
 
         # If a scene releaseGroup is found, ignore this kind of releaseGroup rule.
-        if matches.named('releaseGroup', lambda match: 'scene' in match.tags):
+        if matches.named('releaseGroup'):
             return ret
 
         for filepart in marker_sorted(matches.markers.named('path'), matches):

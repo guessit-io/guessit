@@ -93,6 +93,8 @@ def find_countries(string, context=None):
 
 
 COUNTRY.functional(find_countries,
-                   #  Prefer language and any other property over country
-                   conflict_solver=lambda match, other: match)
+                   #  Prefer language and any other property over country if not US or GB.
+                   conflict_solver=lambda match, other: match
+                   if other.name != 'language' or match.value not in [babelfish.Country('US'), babelfish.Country('GB')]
+                   else other)
 

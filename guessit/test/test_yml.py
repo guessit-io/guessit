@@ -175,6 +175,13 @@ class TestYml(object):
 
     files, ids = files_and_ids(filename_predicate)
 
+    @staticmethod
+    def set_default(expected, default):
+        if default:
+            for k, v in default.items():
+                if k not in expected:
+                    expected[k] = v
+
     @pytest.mark.parametrize('filename', files, ids=ids)
     def test(self, filename):
         with open(os.path.join(__location__, filename), 'r', encoding='utf-8') as infile:
@@ -188,7 +195,15 @@ class TestYml(object):
             else:
                 last_expected = expected
 
+        default = None
+        try:
+            default = data['__default__']
+            del data['__default__']
+        except KeyError:
+            pass
+
         for string, expected in data.items():
+            TestYml.set_default(expected, default)
             if not isinstance(string, six.text_type):
                 string = six.text_type(string)
             if not string_predicate or string_predicate(string):  # pylint: disable=not-callable

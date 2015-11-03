@@ -18,6 +18,13 @@ For episodes, some properties have been renamed
 - ``series`` is now ``title``.
 - ``title`` is now ``episodeTitle``.
 
-All other episodes properties have been ported with the same name (*Work in progress ...*)
+For movies, some properties have been renamed
 
-For movies, all properties have been ported with the same name (*Work in progress ...*).
+- ``filmtitle`` is now ``filmSeries``
+
+``type`` ``episode`` value is now ``series``.
+
+All info type (``seriesinfo``, ``movieinfo``) have been removed in favor of checking the ``extension`` property for
+``nfo`` value.
+
+All other properties have been ported with the same name (*Work in progress ...*)

@@ -72,7 +72,7 @@ class TitleBaseRule(Rule):
         """
         Ignore matches when scanning for title (hole)
         """
-        return match.name in ['language', 'country']
+        return match.name in ['language', 'country', 'episodeDetails']
 
     def should_keep(self, match, to_keep, matches, filepart, hole, starting):
         """
@@ -93,22 +93,35 @@ class TitleBaseRule(Rule):
         :rtype:
         """
         # Keep language if other languages exists in the filepart.
-        outside_matches = filepart.crop(hole)
-        other_languages = []
-        for outside in outside_matches:
-            other_languages.extend(matches.range(outside.start, outside.end,
-                                                 lambda c_match: c_match.name == match.name and c_match not in to_keep))
+        if match.name in ['language', 'country']:
+            outside_matches = filepart.crop(hole)
+            other_languages = []
+            for outside in outside_matches:
+                other_languages.extend(matches.range(outside.start, outside.end,
+                                                     lambda c_match: c_match.name == match.name and
+                                                     c_match not in to_keep))
 
-        if not other_languages:
-            return True
+            if not other_languages:
+                return True
 
         return False
+
+    def should_remove(self, match, matches, filepart, hole):
+        """
+        Check if this match should be removed after beeing ignored.
+        :param match:
+        :param matches:
+        :param filepart:
+        :param hole:
+        :return:
+        """
+        return True
 
     def check_titles_in_filepart(self, filepart, matches):
         """
         Find title in filepart (ignoring language)
         """
-        # pylint:disable=too-many-locals,too-many-branches
+        # pylint:disable=too-many-locals,too-many-branches,too-many-statements
         start, end = filepart.span
 
         holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
@@ -160,7 +173,9 @@ class TitleBaseRule(Rule):
                                 if crop:
                                     hole.start = ignored_match.end
 
-            to_remove.extend(ignored_matches)
+            for match in ignored_matches:
+                if self.should_remove(match, matches, filepart, hole):
+                    to_remove.append(match)
             for keep_match in to_keep:
                 to_remove.remove(keep_match)
 
@@ -170,8 +185,17 @@ class TitleBaseRule(Rule):
                 if self.alternative_match_name:
                     # Split and keep values that can be a title
                     titles = hole.split(title_seps, lambda match: match.value)
-                    for title in titles[1:]:
-                        title.name = self.alternative_match_name
+                    for title in list(titles[1:]):
+                        previous_title = titles[titles.index(title) - 1]
+                        separator = matches.input_string[previous_title.end:title.start]
+                        if len(separator) == 1 and '-' == separator \
+                                and previous_title.raw[-1] not in seps \
+                                and title.raw[0] not in seps:
+                            titles[titles.index(title) - 1].end = title.end
+                            titles.remove(title)
+                        else:
+                            title.name = self.alternative_match_name
+
                 else:
                     titles = [hole]
                 return titles, to_remove
@@ -238,6 +262,7 @@ class PreferTitleWithYear(Rule):
         return not context.get('expected_title')
 
     def when(self, matches, context):
+        with_year_in_group = []
         with_year = []
         titles = matches.named('title')
 
@@ -246,9 +271,15 @@ class PreferTitleWithYear(Rule):
             if filepart:
                 year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
                 if year_match:
-                    with_year.append(title)
+                    group = matches.markers.at_match(year_match, lambda group: group.name == 'group')
+                    if group:
+                        with_year_in_group.append(title)
+                    else:
+                        with_year.append(title)
 
-        if with_year:
+        if with_year_in_group:
+            title_values = set([title.value for title in with_year_in_group])
+        elif with_year:
             title_values = set([title.value for title in with_year])
         else:
             title_values = set([title.value for title in titles])

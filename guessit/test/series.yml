@@ -1,3 +1,6 @@
+? __default__
+: type: series
+
 ? Series/Californication/Season 2/Californication.2x05.Vaginatown.HDTV.XviD-0TV.avi
 : title: Californication
   season: 2
@@ -195,7 +198,7 @@
 ? Series/My Name Is Earl/My.Name.Is.Earl.S01Extras.-.Bad.Karma.DVDRip.XviD.avi
 : title: My Name Is Earl
   season: 1
-  episodeTitle: Bad Karma
+  episodeTitle: Extras - Bad Karma
   format: DVD
   episodeDetails: Extras
   videoCodec: XviD
@@ -553,6 +556,7 @@
 : title: Battlestar Galactica
   season: 0
   episodeDetails: Pilot
+  episodeTitle: Pilot
   language: French
   format: DVD
   videoCodec: XviD
@@ -886,6 +890,7 @@
 : format: DVB
   releaseGroup: FlexGet
   title: FooBar 7
+  type: movie
 
 ? FooBar.7v3.PDTV-FlexGet
 : options: --episode-prefer-number
@@ -1376,10 +1381,14 @@
   format: HDTV
   videoCodec: XviD
   releaseGroup: Etc-Group
+  type: movie
+  # Fallback to movie type because we can't tell it's a series ...
 
 ? Show.Name.Part.1.and.Part.2.Blah-Group
 : part: [1, 2]
   title: Show Name
+  type: movie
+  # Fallback to movie type because we can't tell it's a series ...
 
 ? Show Name - 01 - Ep Name
 : episodeNumber: 1
