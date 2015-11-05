@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Contry
+Country
 """
 # pylint: disable=no-member
 from __future__ import unicode_literals

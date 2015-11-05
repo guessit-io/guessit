@@ -11,7 +11,6 @@ import regex as re
 import babelfish
 
 from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
-
 from ..common.words import iter_words, COMMON_WORDS
 from ..common.validators import seps_surround
 
@@ -217,7 +216,9 @@ class SubtitleExtensionRule(Rule):
     consequence = RenameMatch('subtitleLanguage')
 
     def when(self, matches, context):
-        subtitle_extension = matches.named('extension', lambda match: 'subtitle' in match.tags, 0)
+        subtitle_extension = matches.named('container',
+                                           lambda match: 'extension' in match.tags and'subtitle' in match.tags,
+                                           0)
         if subtitle_extension:
             subtitle_language = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
             if subtitle_language:

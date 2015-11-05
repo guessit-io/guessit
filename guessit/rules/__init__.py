@@ -9,7 +9,7 @@ from .markers.path import PATH_MARKER
 from .markers.groups import GROUPS_MARKER
 
 from .properties.episodes import EPISODES
-from .properties.extension import EXTENSION
+from .properties.container import CONTAINER
 from .properties.format import FORMAT
 from .properties.video_codec import VIDEO_CODEC
 from .properties.audio_codec import AUDIO_CODEC
@@ -37,7 +37,7 @@ REBULK.rebulk(PATH_MARKER)
 REBULK.rebulk(GROUPS_MARKER)
 
 REBULK.rebulk(EPISODES)
-REBULK.rebulk(EXTENSION)
+REBULK.rebulk(CONTAINER)
 REBULK.rebulk(FORMAT)
 REBULK.rebulk(VIDEO_CODEC)
 REBULK.rebulk(AUDIO_CODEC)

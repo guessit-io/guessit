@@ -9,7 +9,7 @@
   format: HDTV
   videoCodec: XviD
   releaseGroup: 0TV
-  extension: avi
+  container: avi
 
 ? Series/dexter/Dexter.5x02.Hello,.Bandit.ENG.-.sub.FR.HDTV.XviD-AlFleNi-TeaM.[tvu.org.ru].avi
 : title: Dexter
@@ -22,7 +22,7 @@
   videoCodec: XviD
   releaseGroup: AlFleNi-TeaM
   website: tvu.org.ru
-  extension: avi
+  container: avi
 
 ? Series/Treme/Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
 : title: Treme
@@ -782,7 +782,7 @@
   season: 2
   title: Something
   episodeTitle: Title
-  extension: torrent
+  container: torrent
 
 ? Something.Season.2of5.3of9.Ep.Title.HDTV.torrent
 : episodeCount: 9
@@ -792,7 +792,7 @@
   seasonCount: 5
   title: Something
   episodeTitle: Title
-  extension: torrent
+  container: torrent
 
 ? Something.Other.Season.3of5.Complete.HDTV.torrent
 : format: HDTV
@@ -800,7 +800,7 @@
   season: 3
   seasonCount: 5
   title: Something Other
-  extension: torrent
+  container: torrent
 
 ? Something.Other.Season.1-3.avi
 : season: [1, 2, 3]

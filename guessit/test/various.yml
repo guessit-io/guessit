@@ -374,7 +374,7 @@
   title: Something
   episodeTitle: Title
   type: episode
-  extension: torrent
+  container: torrent
 
 ? Show-A (US) - Episode Title S02E09 hdtv
 : options: -n

@@ -8,7 +8,7 @@
   format: HD-DVD
   audioCodec: DTS
   videoCodec: h264
-  extension: mkv
+  container: mkv
   releaseGroup: ESiR
 
 ? Movies/El Dia de la Bestia (1995)/El.dia.de.la.bestia.DVDrip.Spanish.DivX.by.Artik[SEDG].avi
@@ -18,7 +18,7 @@
   language: spanish
   videoCodec: DivX
   releaseGroup: Artik[SEDG]
-  extension: avi
+  container: avi
 
 ? Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
 : title: Dark City

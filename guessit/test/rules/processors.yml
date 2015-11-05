@@ -5,4 +5,4 @@
 ? Some movie (2000)/Some movie (2001).mkv
 ? Some movie (2001)/Some movie.mkv
 : year: 2001
-  extension: mkv
+  container: mkv
