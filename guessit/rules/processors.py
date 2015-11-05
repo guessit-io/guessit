@@ -12,6 +12,7 @@ from .common.comparators import marker_sorted
 from .common.date import valid_year
 
 from .properties.type import type_processor
+from .properties.mimetype import mimetype_processor
 
 import six
 
@@ -163,4 +164,5 @@ def enlarge_group_matches(matches):
 
 
 PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(equivalent_holes, remove_ambiguous,
-                                                                      country_in_title, season_year, type_processor)
+                                                                      country_in_title, season_year, mimetype_processor,
+                                                                      type_processor)
