@@ -14,7 +14,7 @@ GuessIt
     :alt: Build Status
 
 .. image:: http://img.shields.io/coveralls/wackou/guessit/master.svg
-    :target: https://coveralls.io/github/wackou/guessit?branch=master
+    :target: https://coveralls.io/github/wackou/guessit?branch=1.x
     :alt: Coveralls
 
 `HuBoard <https://huboard.com/wackou/guessit>`_
