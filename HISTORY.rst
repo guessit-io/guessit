@@ -1,8 +1,11 @@
 History
 =======
 
-0.11.1 (unreleased)
--------------------
+1.0.2 (2015-11-05)
+------------------
+* Latest stable version from guessit ``1.x``, consider upgrading to ``2.x``
+* Fix RST syntax errors for pypi readme display
+* Fix issue in subtitle suffix
 
 0.11.0 (2015-09-04)
 -------------------
@@ -51,7 +54,7 @@ History
 * Use common words to resolve conflicts on strings
 * Bump babelfish version
 * Fix setuptools deprecation warning
-* Package argparse dependency only if python<2.7
+* Package argparse dependency only if python<2.7
 
 
 0.10.1 (2015-01-05)
@@ -132,7 +135,7 @@ History
 * Added ``--show-property`` option to only show a single property
 * Added ``--input-file`` option to parse a list of
 * Added ``--version`` option
-* Added ``ass```to subtitle extensions
+* Added ``ass`` to subtitle extensions
 * Added ``Fansub`` value for ``other`` property
 * Added more date formats support with ``dateutil`` dependency
 * Added customizable ``clean_function`` (API)
