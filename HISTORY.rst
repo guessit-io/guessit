@@ -1,6 +1,9 @@
 History
 =======
 
+1.0.3 (unreleased)
+------------------
+
 1.0.2 (2015-11-05)
 ------------------
 * Latest stable version from guessit ``1.x``, consider upgrading to ``2.x``
