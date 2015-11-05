@@ -979,8 +979,7 @@
   episodeTitle: FlexGet  # 1.x guess this as releaseGroup, but it's better to guess it as episodeTitle
 
 ? FlexGet.US.S2013E14.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
-: options: -n
-  audioChannels: '5.1'
+: audioChannels: '5.1'
   audioCodec: AAC
   country: US
   episodeNumber: 14
@@ -994,8 +993,7 @@
   year: 2013
 
 ? FlexGet.14.of.21.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
-: options: -n
-  audioChannels: '5.1'
+: audioChannels: '5.1'
   audioCodec: AAC
   episodeCount: 21
   episodeNumber: 14

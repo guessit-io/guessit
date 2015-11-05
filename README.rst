@@ -20,17 +20,38 @@ GuessIt
 `HuBoard <https://huboard.com/wackou/guessit>`_
 
 
-GuessIt is a python library that extracts as much information as possible from a video file.
+GuessIt is a python library that extracts as much information as possible from a video filename.
 
-It has a very powerful filename matcher that allows to guess a lot of metadata from a video using its filename only.
+It has a very powerful matcher that allows to guess a lot of metadata from a video using its filename only.
 This matcher works with both movies and tv shows episodes.
 
-Important note
-==============
-GuessIt 2.x is a rewrite from scratch and is currently in Alpha. Support for additional features like hashes
-computations has been dropped. GuessIt is now a release name parser only.
+For example, GuessIt can do the following::
 
-Previous stable version of GuessIt is still available in ``1.x`` branch and using `pip install guessit<2`.
+    $ guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
+    For: Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
+    GuessIt found: {
+        "title": "Treme",
+        "season": 1,
+        "episodeNumber": 3,
+        "episodeTitle": "Right Place, Wrong Time",
+        "format": "HDTV",
+        "videoCodec": "XviD",
+        "releaseGroup": "NoTV",
+        "container": "avi",
+        "mimetype": "video/x-msvideo",
+        "type": "episode"
+    }
+
+Important note
+--------------
+GuessIt 2 has been rewriten from scratch and is currently in Alpha. GuessIt is now a release name parser only, and
+support for additional features like hashes computations has been dropped.
+
+To migrate from guessit ``0.x`` or ``1.x``, please read
+`MIGRATION.rst <https://github.com/wackou/guessit/blob/2.x/MIGRATION.rst>`_.
+
+Previous version of GuessIt is still available in ``1.x`` branch and using ``pip install guessit<2``, but won't be
+maintained anymore.
 
 Install
 -------
@@ -38,12 +59,6 @@ Install
 Installing GuessIt is simple with `pip <http://www.pip-installer.org/>`_::
 
     $ pip install guessit
-
-or, with `easy_install <http://pypi.python.org/pypi/setuptools>`_::
-
-    $ easy_install guessit
-
-But, you really `shouldn't do that <http://stackoverflow.com/questions/3220404/why-use-pip-over-easy-install>`_.
 
 Filename matcher
 ----------------
@@ -54,15 +69,72 @@ exactly the raw filename.
 
 Usage
 -----
-Work in progress ...
+
+guessit can be use from command line::
+
+    $ guessit
+    usage: __main__.py [-h] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES]
+                       [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE] [-v]
+                       [-P SHOW_PROPERTY] [-u] [-a] [-j] [-y] [-f INPUT_FILE]
+                       [--version]
+                       [filename [filename ...]]
+
+    positional arguments:
+      filename              Filename or release name to guess
+
+    optional arguments:
+      -h, --help            show this help message and exit
+
+    Naming:
+      -Y, --date-year-first
+                            If short date is found, consider the first digits as
+                            the year.
+      -D, --date-day-first  If short date is found, consider the second digits as
+                            the day.
+      -L ALLOWED_LANGUAGES, --allowed-languages ALLOWED_LANGUAGES
+                            Allowed language (can be used multiple times)
+      -C ALLOWED_COUNTRIES, --allowed-countries ALLOWED_COUNTRIES
+                            Allowed country (can be used multiple times)
+      -E, --episode-prefer-number
+                            Guess "serie.213.avi" as the episodeNumber 213.
+                            Without this option, it will be guessed as season 2,
+                            episodeNumber 13
+      -T EXPECTED_TITLE, --expected-title EXPECTED_TITLE
+                            Expected title to parse (can be used multiple times)
+
+    Output:
+      -v, --verbose         Display debug output
+      -P SHOW_PROPERTY, --show-property SHOW_PROPERTY
+                            Display the value of a single property (title, series,
+                            videoCodec, year, ...)
+      -u, --unidentified    Display the unidentified parts.
+      -a, --advanced        Display advanced information for filename guesses, as
+                            json output
+      -j, --json            Display information for filename guesses as json
+                            output
+      -y, --yaml            Display information for filename guesses as yaml
+                            output (like unit-test)
+      -f INPUT_FILE, --input-file INPUT_FILE
+                            Read filenames from an input file.
+
+    Information:
+      --version             Display the guessit version.
+
+It can also be used as a python module::
+
+    >>> from guessit import guessit
+    >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
+    MatchesDict([('title', 'Treme'), ('season', 1), ('episodeNumber', 3), ('episodeTitle', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('videoCodec', 'XviD'), ('releaseGroup', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
+
+``MatchesDict`` is a dict that keeps matches ordering.
+
 
 Support
 -------
 
-The project website for GuessIt is hosted at `ReadTheDocs <http://guessit.readthedocs.org/>`_.
-There you will also find the User guide and Developer documentation.
-
 This project is hosted on GitHub: `<https://github.com/wackou/guessit>`_
+
+Docs will be available soon availabe ReadTheDocs.
 
 Contribute
 ----------

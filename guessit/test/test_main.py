@@ -46,11 +46,3 @@ def test_main_help():
 
 def test_main_version():
     main(['--version'])
-
-
-def test_main_properties():
-    main(['--properties'])
-
-
-def test_main_value():
-    main(['--values'])

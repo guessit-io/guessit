@@ -18,4 +18,4 @@ def mimetype_processor(matches):
     """
     mime, _ = mimetypes.guess_type(matches.input_string, strict=False)
     if mime is not None:
-        matches.append(Match(0, len(matches.input_string), name='mimetype', value=mime))
+        matches.append(Match(len(matches.input_string), len(matches.input_string), name='mimetype', value=mime))

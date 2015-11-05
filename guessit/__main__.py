@@ -27,7 +27,8 @@ class GuessitEncoder(json.JSONEncoder):
         if isinstance(o, Match):
             ret = OrderedDict()
             ret['value'] = o.value
-            ret['raw'] = o.raw
+            if o.raw:
+                ret['raw'] = o.raw
             ret['start'] = o.start
             ret['end'] = o.end
             return ret
@@ -95,10 +96,6 @@ def main(args=None):  # pylint:disable=too-many-branches
         logging.getLogger().setLevel(logging.DEBUG)
 
     help_required = True
-    if options.properties or options.values:
-        # display_properties(options)
-        # TODO: Add display of available properties
-        help_required = False
 
     if options.version:
         print('+-------------------------------------------------------+')

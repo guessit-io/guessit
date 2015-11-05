@@ -704,16 +704,14 @@
   videoCodec: h265
 
 ? Barbecue-2014-French-mHD-1080p
-: options: -n
-  language: fr
+: language: fr
   other: mHD
   screenSize: 1080p
   title: Barbecue
   year: 2014
 
 ? Underworld Quadrilogie VO+VFF+VFQ 1080p HDlight.x264~Tonyk~Monde Infernal
-: options: -n
-  language: fr
+: language: fr
   other:
     - HDLight
     - OV
@@ -722,8 +720,7 @@
   videoCodec: h264
 
 ? A Bout Portant (The Killers).PAL.Multi.DVD-R-KZ
-: options: -n
-  format: DVD
+: format: DVD
   language: mul
   releaseGroup: KZ
   title: A Bout Portant

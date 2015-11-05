@@ -28,7 +28,7 @@ exec(open("guessit/__version__.py").read())  # load version without importing gu
 
 args = dict(name='guessit',
             version=__version__,
-            description='GuessIt - a library for guessing information from video files.',
+            description='GuessIt - a library for guessing information from video filenames.',
             long_description=README + '\n\n' + HISTORY,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
             classifiers=['Development Status :: 3 - Alpha',
