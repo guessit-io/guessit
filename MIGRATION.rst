@@ -13,16 +13,14 @@ Options
 
 Properties
 ----------
-For episodes, some properties have been renamed
+For episode type, some properties have been renamed
 
 - ``series`` is now ``title``.
 - ``title`` is now ``episodeTitle``.
 
-For movies, some properties have been renamed
+For movie type, some properties have been renamed
 
 - ``filmtitle`` is now ``filmSeries``
-
-``type`` ``episode`` value is now ``series``.
 
 All info type (``seriesinfo``, ``movieinfo``) have been removed in favor of checking the ``extension`` property for
 ``nfo`` value.

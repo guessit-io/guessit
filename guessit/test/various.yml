@@ -9,7 +9,7 @@
   releaseGroup: ESiR
 
 ? Series/Duckman/Duckman - 101 (01) - 20021107 - I, Duckman.avi
-: type: series
+: type: episode
   title: Duckman
   season: 1
   episodeNumber: 1
@@ -17,21 +17,21 @@
   date: 2002-11-07
 
 ? Series/Neverwhere/Neverwhere.05.Down.Street.[tvu.org.ru].avi
-: type: series
+: type: episode
   title: Neverwhere
   episodeNumber: 5
   episodeTitle: Down Street
   website: tvu.org.ru
 
 ? Neverwhere.05.Down.Street.[tvu.org.ru].avi
-: type: series
+: type: episode
   title: Neverwhere
   episodeNumber: 5
   episodeTitle: Down Street
   website: tvu.org.ru
 
 ? Series/Breaking Bad/Minisodes/Breaking.Bad.(Minisodes).01.Good.Cop.Bad.Cop.WEBRip.XviD.avi
-: type: series
+: type: episode
   title: Breaking Bad
   episodeFormat: Minisode
   episodeNumber: 1
@@ -40,7 +40,7 @@
   videoCodec: XviD
 
 ? Series/Kaamelott/Kaamelott - Livre V - Ep 23 - Le Forfait.avi
-: type: series
+: type: episode
   title: Kaamelott
   episodeNumber: 23
   episodeTitle: Le Forfait
@@ -66,7 +66,7 @@
   format: DVD
 
 ? the.mentalist.501.hdtv-lol.mp4
-: type: series
+: type: episode
   title: the mentalist
   season: 5
   episodeNumber: 1
@@ -74,7 +74,7 @@
   releaseGroup: lol
 
 ? the.simpsons.2401.hdtv-lol.mp4
-: type: series
+: type: episode
   title: the simpsons
   season: 24
   episodeNumber: 1
@@ -82,7 +82,7 @@
   releaseGroup: lol
 
 ? Homeland.S02E01.HDTV.x264-EVOLVE.mp4
-: type: series
+: type: episode
   title: Homeland
   season: 2
   episodeNumber: 1
@@ -91,13 +91,13 @@
   releaseGroup: EVOLVE
 
 ? /media/Band_of_Brothers-e01-Currahee.mkv
-: type: series
+: type: episode
   title: Band of Brothers
   episodeNumber: 1
   episodeTitle: Currahee
 
 ? /media/Band_of_Brothers-x02-We_Stand_Alone_Together.mkv
-: type: series
+: type: episode
   title: Band of Brothers
   bonusNumber: 2
   bonusTitle: We Stand Alone Together
@@ -111,7 +111,7 @@
   bonusTitle: Stunts
 
 ? /TV Shows/new.girl.117.hdtv-lol.mp4
-: type: series
+: type: episode
   title: new girl
   season: 1
   episodeNumber: 17
@@ -119,7 +119,7 @@
   releaseGroup: lol
 
 ? The.Office.(US).1x03.Health.Care.HDTV.XviD-LOL.avi
-: type: series
+: type: episode
   title: The Office (US)
   country: US
   season: 1
@@ -149,7 +149,7 @@
   year: 2002
 
 ? House.Hunters.International.S56E06.720p.hdtv.x264.mp4
-: type: series
+: type: episode
   title: House Hunters International
   season: 56
   episodeNumber: 6
@@ -182,7 +182,7 @@
   audioChannels: "5.1"
 
 ? Hostages.S01E01.Pilot.for.Air.720p.WEB-DL.DD5.1.H.264-NTb.nfo
-: type: series
+: type: episode
   title: Hostages
   episodeTitle: Pilot for Air
   season: 1
@@ -240,7 +240,7 @@
   title: A Common Title Special
 
 ? A.Common.Title.2014.Special.avi
-: type: series
+: type: episode
   year: 2014
   title: A Common Title
   episodeTitle: Special
@@ -253,7 +253,7 @@
   edition: Special Edition
 
 ? Downton.Abbey.2013.Christmas.Special.HDTV.x264-FoV.mp4
-: type: series
+: type: episode
   year: 2013
   title: Downton Abbey
   episodeTitle: Christmas Special
@@ -263,7 +263,7 @@
   episodeDetails: Special
 
 ? Doctor_Who_2013_Christmas_Special.The_Time_of_The_Doctor.HD
-: type: series
+: type: episode
   title: Doctor Who
   other: HD
   episodeDetails: Special
@@ -271,14 +271,14 @@
   year: 2013
 
 ? Doctor Who 2005 50th Anniversary Special The Day of the Doctor 3.avi
-: type: series
+: type: episode
   title: Doctor Who
   episodeDetails: Special
   episodeTitle: 50th Anniversary Special The Day of the Doctor 3
   year: 2005
 
 ? Robot Chicken S06-Born Again Virgin Christmas Special HDTV x264.avi
-: type: series
+: type: episode
   title: Robot Chicken
   format: HDTV
   season: 6
@@ -288,7 +288,7 @@
 
 ? Wicked.Tuna.S03E00.Head.To.Tail.Special.HDTV.x264-YesTV
 : options: -n
-  type: series
+  type: episode
   title: Wicked Tuna
   episodeTitle: Head To Tail Special
   releaseGroup: YesTV
@@ -307,7 +307,7 @@
   releaseGroup: C4TV
   season: 3
   country: United Kingdom
-  type: series
+  type: episode
 
 ? /tmp/star.trek.9/star.trek.9.mkv
 : type: movie
@@ -324,7 +324,7 @@
   season: 1
   title: FlexGet
   episodeTitle: TheName
-  type: series
+  type: episode
   videoCodec: XviD
 
 ? FlexGet.S01E02.TheName.HDTV.xvid
@@ -334,7 +334,7 @@
   season: 1
   title: FlexGet
   episodeTitle: TheName
-  type: series
+  type: episode
   videoCodec: XviD
 
 ? some.series.S03E14.Title.Here.720p
@@ -344,7 +344,7 @@
   season: 3
   title: some series
   episodeTitle: Title Here
-  type: series
+  type: episode
 
 ? '[the.group] Some.Series.S03E15.Title.Two.720p'
 : options: -n
@@ -354,7 +354,7 @@
   season: 3
   title: Some Series
   episodeTitle: Title Two
-  type: series
+  type: episode
 
 ? 'HD 720p: Some series.S03E16.Title.Three'
 : options: -n
@@ -364,7 +364,7 @@
   season: 3
   title: Some series
   episodeTitle: Title Three
-  type: series
+  type: episode
 
 ? Something.Season.2.1of4.Ep.Title.HDTV.torrent
 : episodeCount: 4
@@ -373,7 +373,7 @@
   season: 2
   title: Something
   episodeTitle: Title
-  type: series
+  type: episode
   extension: torrent
 
 ? Show-A (US) - Episode Title S02E09 hdtv
@@ -383,7 +383,7 @@
   format: HDTV
   season: 2
   title: Show-A (US)
-  type: series
+  type: episode
 
 ? Jack's.Show.S03E01.blah.1080p
 : options: -n
@@ -392,7 +392,7 @@
   season: 3
   title: Jack's Show
   episodeTitle: blah
-  type: series
+  type: episode
 
 ? FlexGet.epic
 : options: -n
@@ -455,7 +455,7 @@
   releaseGroup: EVO
   season: 1
   title: The Flash
-  type: series
+  type: episode
   videoCodec: XviD
   year: 2014
 
@@ -468,7 +468,7 @@
   season: 1
   title: Ice Lake Rebels
   episodeTitle: Ice Lake Games
-  type: series
+  type: episode
   videoCodec: h264
 
 ? The League - S06E10 - Epi Sexy.mkv
@@ -476,7 +476,7 @@
   season: 6
   title: The League
   episodeTitle: Epi Sexy
-  type: series
+  type: episode
 
 ? Stay (2005) [1080p]/Stay.2005.1080p.BluRay.x264.YIFY.mp4
 : format: BluRay
@@ -492,13 +492,13 @@
   releaseGroup: DIMENSION
   screenSize: 720p
   title: Anger Management
-  type: series
+  type: episode
   season: 2
   episodeNumber: 82
   videoCodec: h264
 
 ? "[Figmentos] Monster 34 - At the End of Darkness [781219F1].mkv"
-: type: series
+: type: episode
   releaseGroup: Figmentos
   title: Monster
   episodeNumber: 34
@@ -506,7 +506,7 @@
   crc32: 781219F1
 
 ? Game.of.Thrones.S05E07.720p.HDTV-KILLERS.mkv
-: type: series
+: type: episode
   episodeNumber: 7
   format: HDTV
   releaseGroup: KILLERS
@@ -515,7 +515,7 @@
   title: Game of Thrones
 
 ? Game.of.Thrones.S05E07.HDTV.720p-KILLERS.mkv
-: type: series
+: type: episode
   episodeNumber: 7
   format: HDTV
   releaseGroup: KILLERS
@@ -524,7 +524,7 @@
   title: Game of Thrones
 
 ? Parks and Recreation - [04x12] - Ad Campaign.avi
-: type: series
+: type: episode
   title: Parks and Recreation
   season: 4
   episodeNumber: 12
@@ -540,7 +540,7 @@
   releaseGroup: publichd
 
 ? /var/medias/series/The Originals/Season 02/The.Originals.S02E15.720p.HDTV.X264-DIMENSION.mkv
-: type: series
+: type: episode
   title: The Originals
   season: 2
   episodeNumber: 15

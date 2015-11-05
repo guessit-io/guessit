@@ -27,7 +27,7 @@ def type_processor(matches):
     episode_details = matches.named('episodeDetails')
 
     if episode or season or episode_details:
-        _type(matches, 'series')
+        _type(matches, 'episode')
         return
 
     film = matches.named('filmNumber')
@@ -39,18 +39,18 @@ def type_processor(matches):
     date = matches.named('date')
 
     if date and not year:
-        _type(matches, 'series')
+        _type(matches, 'episode')
         return
 
     bonus = matches.named('bonusNumber')
     if bonus and not year:
-        _type(matches, 'series')
+        _type(matches, 'episode')
         return
 
     crc32 = matches.named('crc32')
     anime_release_group = matches.named('releaseGroup', lambda match: 'anime' in match.tags)
     if crc32 and anime_release_group:
-        _type(matches, 'series')
+        _type(matches, 'episode')
         return
 
     _type(matches, 'movie')
