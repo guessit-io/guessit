@@ -73,11 +73,10 @@ Usage
 guessit can be use from command line::
 
     $ guessit
-    usage: __main__.py [-h] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES]
-                       [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE] [-v]
-                       [-P SHOW_PROPERTY] [-u] [-a] [-j] [-y] [-f INPUT_FILE]
-                       [--version]
-                       [filename [filename ...]]
+    usage: -c [-h] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES] [-C ALLOWED_COUNTRIES]
+          [-E] [-T EXPECTED_TITLE] [-f INPUT_FILE] [-v] [-P SHOW_PROPERTY]
+          [-a] [-j] [-y] [--version]
+          [filename [filename ...]]
 
     positional arguments:
       filename              Filename or release name to guess
@@ -86,6 +85,8 @@ guessit can be use from command line::
       -h, --help            show this help message and exit
 
     Naming:
+      -n, --name-only       Parse files as name only, considering "/" and "\" like
+                            other separators.
       -Y, --date-year-first
                             If short date is found, consider the first digits as
                             the year.
@@ -102,20 +103,22 @@ guessit can be use from command line::
       -T EXPECTED_TITLE, --expected-title EXPECTED_TITLE
                             Expected title to parse (can be used multiple times)
 
+    Input:
+      -f INPUT_FILE, --input-file INPUT_FILE
+                            Read filenames from an input text file. File should
+                            use UTF-8 charset.
+
     Output:
       -v, --verbose         Display debug output
       -P SHOW_PROPERTY, --show-property SHOW_PROPERTY
                             Display the value of a single property (title, series,
                             videoCodec, year, ...)
-      -u, --unidentified    Display the unidentified parts.
       -a, --advanced        Display advanced information for filename guesses, as
                             json output
       -j, --json            Display information for filename guesses as json
                             output
       -y, --yaml            Display information for filename guesses as yaml
-                            output (like unit-test)
-      -f INPUT_FILE, --input-file INPUT_FILE
-                            Read filenames from an input file.
+                            output
 
     Information:
       --version             Display the guessit version.
@@ -127,6 +130,10 @@ It can also be used as a python module::
     MatchesDict([('title', 'Treme'), ('season', 1), ('episodeNumber', 3), ('episodeTitle', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('videoCodec', 'XviD'), ('releaseGroup', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
 
 ``MatchesDict`` is a dict that keeps matches ordering.
+
+Command line options can be given as dict or string to the second argument.
+
+GuessIt only accept unicode string, so you need to use ``u`` prefix for input string on python 2.
 
 
 Support

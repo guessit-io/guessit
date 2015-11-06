@@ -3,6 +3,8 @@
 """
 Release group
 """
+from __future__ import unicode_literals
+
 import copy
 from guessit.rules.common.validators import int_coercable
 from guessit.rules.properties.title import TitleFromPosition

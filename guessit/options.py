@@ -3,6 +3,7 @@
 """
 Options
 """
+from __future__ import unicode_literals
 
 from argparse import ArgumentParser
 import shlex
@@ -21,7 +22,7 @@ def build_argument_parser():
 
     naming_opts = opts.add_argument_group("Naming")
     naming_opts.add_argument('-n', '--name-only', dest='name_only', action='store_true', default=False,
-                             help='Parse files as name only (consider "/" and "\\" like other separators)')
+                             help='Parse files as name only, considering "/" and "\\" like other separators.')
     naming_opts.add_argument('-Y', '--date-year-first', action='store_true', dest='date_year_first', default=None,
                              help='If short date is found, consider the first digits as the year.')
     naming_opts.add_argument('-D', '--date-day-first', action='store_true', dest='date_day_first', default=None,
@@ -39,7 +40,7 @@ def build_argument_parser():
 
     input_opts = opts.add_argument_group("Input")
     input_opts.add_argument('-f', '--input-file', dest='input_file', default=False,
-                            help='Read filenames from an input file.')
+                            help='Read filenames from an input text file. File should use UTF-8 charset.')
 
     output_opts = opts.add_argument_group("Output")
     output_opts.add_argument('-v', '--verbose', action='store_true', dest='verbose', default=False,

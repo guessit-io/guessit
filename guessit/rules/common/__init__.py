@@ -3,11 +3,11 @@
 """
 Common module
 """
-import six
+from __future__ import unicode_literals
 
-seps = six.u(r' [](){}+*|&=§-_~#/\.,;:')  # list of tags/words separators
+seps = r' [](){}+*|&=§-_~#/\.,;:'  # list of tags/words separators
 
-title_seps = six.u(r'-+/\|;')  # separators for title
+title_seps = r'-+/\|;'  # separators for title
 
-dash = (six.u(r'-'), six.u(r'[\W_]'))  # abbreviation used by many rebulk objects.
-alt_dash = (six.u(r'@'), six.u(r'[\W_]'))  # abbreviation used by many rebulk objects.
+dash = (r'-', r'[\W_]')  # abbreviation used by many rebulk objects.
+alt_dash = (r'@', r'[\W_]')  # abbreviation used by many rebulk objects.

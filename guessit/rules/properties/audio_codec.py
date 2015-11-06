@@ -3,6 +3,8 @@
 """
 audioCodec and audioProfile property
 """
+from __future__ import unicode_literals
+
 from rebulk import Rebulk, Rule, RemoveMatch
 import regex as re
 

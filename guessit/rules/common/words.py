@@ -3,6 +3,8 @@
 """
 Words utils
 """
+from __future__ import unicode_literals
+
 import regex as re
 
 _words_rexp = re.compile(r'\w+', re.UNICODE)

@@ -3,6 +3,7 @@
 """
 Website property.
 """
+from __future__ import unicode_literals
 
 from pkg_resources import resource_stream  # @UnresolvedImport
 

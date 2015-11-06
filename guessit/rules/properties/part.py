@@ -3,6 +3,8 @@
 """
 Part support
 """
+from __future__ import unicode_literals
+
 import regex as re
 from rebulk import Rebulk
 

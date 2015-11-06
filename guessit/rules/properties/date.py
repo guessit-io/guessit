@@ -3,6 +3,8 @@
 """
 Date and year
 """
+from __future__ import unicode_literals
+
 from rebulk import Rebulk, RemoveMatch, Rule
 
 from ..common.date import search_date, valid_year

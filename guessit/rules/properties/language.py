@@ -5,6 +5,7 @@ Language and subtitleLanguage
 """
 # pylint: disable=no-member
 from __future__ import unicode_literals
+
 import copy
 
 import regex as re

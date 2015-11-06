@@ -4,19 +4,22 @@
 Entry point module
 """
 # pragma: no cover
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 from collections import OrderedDict
 import os
 import logging
 import json
+import sys
+import six
 
 from rebulk.match import Match
-import six
 
 from guessit.__version__ import __version__
 from guessit.options import argument_parser
 from guessit.api import guessit
+
+from io import open  #pylint:disable=redefined-builtin
 
 class GuessitEncoder(json.JSONEncoder):
     """
@@ -73,20 +76,12 @@ def main(args=None):  # pylint:disable=too-many-branches
     """
     Main function for entry point
     """
-    if six.PY2:  # pragma: no cover
-        import codecs
-        import locale
-        import sys
-
+    if six.PY2 and os.name == 'nt':  # pragma: no cover
         # see http://bugs.python.org/issue2128
-        if os.name == 'nt':
-            for i, j in enumerate(sys.argv):
-                sys.argv[i] = j.decode(locale.getpreferredencoding())
+        import locale
 
-        # see https://github.com/wackou/guessit/issues/43
-        # and http://stackoverflow.com/questions/4545661/unicodedecodeerror-when-redirecting-to-file
-        # Wrap sys.stdout into a StreamWriter to allow writing unicode.
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
+        for i, j in enumerate(sys.argv):
+            sys.argv[i] = j.decode(locale.getpreferredencoding())
 
     if args is None:  # pragma: no cover
         options = argument_parser.parse_args()
@@ -121,9 +116,13 @@ def main(args=None):  # pylint:disable=too-many-branches
 
     filenames = []
     if options.filename:
-        filenames.extend(options.filename)
+        for filename in options.filename:
+            encoding = sys.getfilesystemencoding()
+            if not isinstance(filename, six.text_type):
+                filename = filename.decode(encoding)
+            filenames.append(filename)
     if options.input_file:
-        input_file = open(options.input_file, 'r')
+        input_file = open(options.input_file, 'r', encoding='utf-8')
         try:
             filenames.extend([line.strip() for line in input_file.readlines()])
         finally:

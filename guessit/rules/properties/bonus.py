@@ -3,6 +3,8 @@
 """
 Bonus support
 """
+from __future__ import unicode_literals
+
 import regex as re
 from guessit.rules.properties.title import TitleFromPosition
 from rebulk import Rebulk, AppendMatch, Rule

@@ -3,6 +3,8 @@
 """
 Title
 """
+from __future__ import unicode_literals
+
 from guessit.rules.properties.film import FilmTitleRule
 from guessit.rules.properties.language import SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, \
     SubtitleExtensionRule

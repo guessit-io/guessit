@@ -3,6 +3,8 @@
 """
 mimetype property
 """
+from __future__ import unicode_literals
+
 import mimetypes
 
 from rebulk.match import Match

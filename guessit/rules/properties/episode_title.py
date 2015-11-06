@@ -3,6 +3,8 @@
 """
 Episode title
 """
+from __future__ import unicode_literals
+
 from collections import defaultdict
 from guessit.rules.common import seps, title_seps
 from guessit.rules.properties.title import TitleFromPosition, TitleBaseRule

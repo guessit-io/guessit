@@ -14,7 +14,11 @@ Example::
     >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
     MatchesDict([('title', 'Treme'), ('season', 1), ('episodeNumber', 3), ('episodeTitle', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('videoCodec', 'XviD'), ('releaseGroup', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
 
+``MatchesDict`` is a dict that keeps matches ordering.
+
 Command line options can be given as dict or string to the second argument.
+
+GuessIt only accept unicode string, so you need to use ``u`` prefix for input string on python 2.
 
 Properties
 ----------

@@ -3,6 +3,8 @@
 """
 format property
 """
+from __future__ import unicode_literals
+
 import copy
 
 from rebulk import Rebulk, Rule, RemoveMatch

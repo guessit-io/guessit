@@ -3,6 +3,8 @@
 """
 Rebulk configuration for guessit
 """
+from __future__ import unicode_literals
+
 from rebulk import Rebulk
 
 from .markers.path import PATH_MARKER
