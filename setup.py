@@ -13,9 +13,9 @@ HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
 install_requires = ['rebulk>=0.4.2', 'regex', 'babelfish>=0.5.5', 'python-dateutil']
 
-setup_requires=['pytest-runner']
+setup_requires = ['pytest-runner']
 
-tests_require = ['pytest', 'PyYAML']
+tests_require = ['pytest', 'pytest-benchmark', 'PyYAML']
 
 entry_points = {
     'console_scripts': [
