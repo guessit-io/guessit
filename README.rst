@@ -9,11 +9,11 @@ GuessIt
     :target: https://pypi.python.org/pypi/guessit
     :alt: License
 
-.. image:: http://img.shields.io/travis/wackou/guessit/master.svg
+.. image:: http://img.shields.io/travis/wackou/guessit/1.x.svg
     :target: https://travis-ci.org/wackou/guessit
     :alt: Build Status
 
-.. image:: http://img.shields.io/coveralls/wackou/guessit/master.svg
+.. image:: http://img.shields.io/coveralls/wackou/guessit/1.x.svg
     :target: https://coveralls.io/github/wackou/guessit?branch=1.x
     :alt: Coveralls
 
