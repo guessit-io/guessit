@@ -6,8 +6,10 @@ python:
   - 3.5
   - pypy
 install:
+  - pip install pip --upgrade
   - pip install -r requirements.txt
-  - pip install pytest>=2.7.3 --upgrade
+  - pip install pytest --upgrade
+  - pip install pytest-benchmark
   - pip install PyYAML coveralls
 script:
   - coverage run --source=guessit setup.py test
