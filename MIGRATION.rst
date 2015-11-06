@@ -11,7 +11,7 @@ API
 Example::
 
     >>> from guessit import guessit
-    >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
+    >>> guessit(u'Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')  # doctest: +ALLOW_UNICODE
     MatchesDict([('title', 'Treme'), ('season', 1), ('episodeNumber', 3), ('episodeTitle', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('videoCodec', 'XviD'), ('releaseGroup', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
 
 ``MatchesDict`` is a dict that keeps matches ordering.
