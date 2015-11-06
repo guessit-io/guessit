@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
+# pylint: disable=no-self-use,pointless-statement,missing-docstring,invalid-name,line-too-long
 import pytest
 
 import time
