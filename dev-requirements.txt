@@ -4,6 +4,7 @@ doit
 # For python 3.5, pytest>=2.7.3 required
 # https://github.com/pytest-dev/pytest/issues/744
 pytest>=2.7.3
+pytest-benchmark
 pylint
 # Test dependencies
 PyYAML

@@ -37,7 +37,7 @@ if sys.version_info < (2, 7):
 
 setup_requires=['pytest-runner']
 
-tests_require = ['pytest', 'PyYAML']  # Fabric not available (yet!) for python3
+tests_require = ['pytest', 'pytest-benchmark', 'PyYAML']  # Fabric not available (yet!) for python3
 
 extras_require = {'language_detection': ['guess-language>=0.2'],
                   'video_metadata': ['enzyme']}
@@ -55,7 +55,7 @@ exec(open("guessit/__version__.py").read())  # load version without importing gu
 
 args = dict(name='guessit',
             version=__version__,
-            description='GuessIt - a library for guessing information from video files.',
+            description='GuessIt - a library for guessing information from video filenames.',
             long_description=README + '\n\n' + HISTORY,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
             classifiers=['Development Status :: 5 - Production/Stable',
