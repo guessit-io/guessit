@@ -1,6 +1,6 @@
 pytest>=2.7.3
 pytest-capturelog
-timeit
+pytest-benchmark
 pylint
 tox
 pyyaml
