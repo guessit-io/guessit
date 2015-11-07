@@ -1,6 +1,7 @@
 pytest>=2.7.3
 pytest-capturelog
 pytest-benchmark
+zest.releaser[recommended]
 pylint
 tox
 pyyaml

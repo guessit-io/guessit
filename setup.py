@@ -57,6 +57,7 @@ args = dict(name='guessit',
             tests_require=tests_require,
             entry_points=entry_points,
             test_suite='guessit.test',
+            zip_safe=True
             )
 
 setup(**args)

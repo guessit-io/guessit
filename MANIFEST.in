@@ -1,6 +1,9 @@
 recursive-include guessit *.py *.yml *.txt *.ini
 recursive-exclude guessit *.pyc
+include LICENSE
 include *.rst
 include *.ini
 include *.cfg
-include LICENSE
+include *.txt
+include .coveragerc
+include pylintrc
