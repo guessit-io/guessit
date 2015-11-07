@@ -1,0 +1,6 @@
+recursive-include guessit *.py *.yml *.txt *.ini
+recursive-exclude guessit *.pyc
+include *.rst
+include *.ini
+include *.cfg
+include LICENSE
