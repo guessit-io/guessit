@@ -16,7 +16,7 @@ CONTAINER.defaults(name='container',
                    formatter=lambda value: value[1:],
                    tags=['extension'],
                    conflict_solver=lambda match, other: other
-                   if other.name in ['format', 'videoCodec'] or
+                   if other.name in ['format', 'video_codec'] or
                    other.name == 'container' and 'extension' not in other.tags
                    else '__default__')
 
@@ -37,7 +37,7 @@ CONTAINER.regex(r'\.\L<exts>$', exts=torrent, tags=['extension', 'torrent'])
 CONTAINER.defaults(name='container',
                    validator=seps_surround,
                    conflict_solver=lambda match, other: match
-                   if other.name in ['format', 'videoCodec'] or other.name == 'container' and 'extension' in other.tags
+                   if other.name in ['format', 'video_codec'] or other.name == 'container' and 'extension' in other.tags
                    else '__default__')
 
 CONTAINER.string(*[sub for sub in subtitles if sub not in ['sub']], tags=['subtitle'])

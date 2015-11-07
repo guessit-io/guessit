@@ -32,11 +32,11 @@ For example, GuessIt can do the following::
     GuessIt found: {
         "title": "Treme",
         "season": 1,
-        "episodeNumber": 3,
-        "episodeTitle": "Right Place, Wrong Time",
+        "episode": 3,
+        "episode_title": "Right Place, Wrong Time",
         "format": "HDTV",
-        "videoCodec": "XviD",
-        "releaseGroup": "NoTV",
+        "video_codec": "XviD",
+        "release_group": "NoTV",
         "container": "avi",
         "mimetype": "video/x-msvideo",
         "type": "episode"
@@ -127,7 +127,7 @@ It can also be used as a python module::
 
     >>> from guessit import guessit
     >>> guessit(u'Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')  # doctest: +ALLOW_UNICODE
-    MatchesDict([('title', 'Treme'), ('season', 1), ('episodeNumber', 3), ('episodeTitle', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('videoCodec', 'XviD'), ('releaseGroup', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
+    MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('video_codec', 'XviD'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
 
 ``MatchesDict`` is a dict that keeps matches ordering.
 

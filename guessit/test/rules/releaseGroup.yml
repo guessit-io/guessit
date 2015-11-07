@@ -2,14 +2,14 @@
 # Use - marker to check inputs that should not match results.
 ? Some.Title.XViD-ReleaseGroup
 ? Some.Title.XViD-ReleaseGroup.mkv
-: releaseGroup: ReleaseGroup
+: release_group: ReleaseGroup
 
 ? Some.Title.XViD-by.Artik[SEDG].avi
-: releaseGroup: Artik[SEDG]
+: release_group: Artik[SEDG]
 
 ? "[ABC] Some.Title.XViD.avi"
 ? some/folder/[ABC]Some.Title.avi
-: releaseGroup: ABC
+: release_group: ABC
 
 ? Some.Title.XViD-S2E02.NoReleaseGroup.avi
-: releaseGroup: !!null
+: release_group: !!null

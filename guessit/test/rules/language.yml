@@ -11,16 +11,16 @@
 ? +SubFr
 ? +STFr
 ? ST.FR
-: subtitleLanguage: French
+: subtitle_language: French
 
 ? +ENG.-.sub.FR
 ? ENG.-.FR Sub
 ? +ENG.-.SubFR
 ? +ENG.-.FRSUB
 : language: English
-  subtitleLanguage: French
+  subtitle_language: French
 
 ? "{Fr-Eng}.St{Fr-Eng}"
 ? "Le.Prestige[x264.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv"
 : language: [French, English]
-  subtitleLanguage: [French, English]
+  subtitle_language: [French, English]

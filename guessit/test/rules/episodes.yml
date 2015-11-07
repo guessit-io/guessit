@@ -14,17 +14,17 @@
 ? -3x05
 ? -2x06
 : season: 2
-  episodeNumber: 5
+  episode: 5
 
 ? "+0102"
 ? "+102"
 : season: 1
-  episodeNumber: 2
+  episode: 2
 
 ? "0102 S03E04"
 ? "S03E04 102"
 : season: 3
-  episodeNumber: 4
+  episode: 4
 
 ? +serie Saison 2 other
 ? +serie Season 2 other
@@ -48,9 +48,9 @@
 ? Some Dummy Directory/Some Series S02/E01-Episode title.mkv
 ? Some Dummy Directory/S02 Some Series/E01-Episode title.mkv
 : title: Some Series
-  episodeTitle: Episode title
+  episode_title: Episode title
   season: 2
-  episodeNumber: 1
+  episode: 1
 
 ? Some Series.S02E01.mkv
 ? Some Series/Season 02/E01.mkv
@@ -64,12 +64,12 @@
 ? Some Dummy Directory/Some Series S02/E01-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.mkv
 : title: Some Series
   season: 2
-  episodeNumber: 1
+  episode: 1
 
 ? Some Series S03E01E02
 : title: Some Series
   season: 3
-  episodeNumber: [1, 2]
+  episode: [1, 2]
 
 ? Some Series S01S02S03
 ? Some Series S01-02-03
@@ -84,20 +84,20 @@
 ? Some Series E01 E02 E03
 ? Some Series E01 02 03
 : title: Some Series
-  episodeNumber: [1, 2, 3]
+  episode: [1, 2, 3]
 
 ? Some Series E01E02E04
 ? Some Series E01 E02 E04
 ? Some Series E01 02 04
 : title: Some Series
-  episodeNumber: [1, 2, 4]
+  episode: [1, 2, 4]
 
 ? Some Series E01-02-04
 ? Some Series E01-04
 ? Some Series E01-04
 : title: Some Series
-  episodeNumber: [1, 2, 3, 4]
+  episode: [1, 2, 3, 4]
 
 ? Some Series E01-02-E04
 : title: Some Series
-  episodeNumber: [1, 2, 4]
+  episode: [1, 2, 4]

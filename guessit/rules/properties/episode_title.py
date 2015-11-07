@@ -15,7 +15,7 @@ from ..common.formatters import cleanup
 
 class TitleToEpisodeTitle(Rule):
     """
-    If multiple different title are found, convert the one following episode number to episodeTitle.
+    If multiple different title are found, convert the one following episode number to episode_title.
     """
     dependency = TitleFromPosition
 
@@ -32,7 +32,7 @@ class TitleToEpisodeTitle(Rule):
         episode_titles = []
         main_titles = []
         for title in titles:
-            if matches.previous(title, lambda match: match.name == 'episodeNumber'):
+            if matches.previous(title, lambda match: match.name == 'episode'):
                 episode_titles.append(title)
             else:
                 main_titles.append(title)
@@ -43,7 +43,7 @@ class TitleToEpisodeTitle(Rule):
     def then(self, matches, when_response, context):
         for episode_title in when_response:
             matches.remove(episode_title)
-            episode_title.name = 'episodeTitle'
+            episode_title.name = 'episode_title'
             matches.append(episode_title)
 
 
@@ -57,8 +57,8 @@ class EpisodeTitleFromPosition(TitleBaseRule):
     def hole_filter(self, hole, matches):
         episode = matches.previous(hole,
                                    lambda previous: any(name in previous.names
-                                                        for name in ['episodeNumber', 'episodeDetails',
-                                                                     'episodeCount', 'season', 'seasonCount',
+                                                        for name in ['episode', 'episode_details',
+                                                                     'episode_count', 'season', 'seasonCount',
                                                                      'date', 'title', 'year']),
                                    0)
 
@@ -73,28 +73,28 @@ class EpisodeTitleFromPosition(TitleBaseRule):
         return False
 
     def should_remove(self, match, matches, filepart, hole):
-        if match.name == 'episodeDetails':
+        if match.name == 'episode_details':
             return False
         return super(EpisodeTitleFromPosition, self).should_remove(match, matches, filepart, hole)
 
     def __init__(self):
-        super(EpisodeTitleFromPosition, self).__init__('episodeTitle', ['title'])
+        super(EpisodeTitleFromPosition, self).__init__('episode_title', ['title'])
 
     def when(self, matches, context):
-        if matches.named('episodeTitle'):
+        if matches.named('episode_title'):
             return
         return super(EpisodeTitleFromPosition, self).when(matches, context)
 
 
 class AlternativeTitleReplace(Rule):
     """
-    If alternateTitle was found and title is next to episodeNumber, season or date, replace it with episodeTitle.
+    If alternateTitle was found and title is next to episode, season or date, replace it with episode_title.
     """
     dependency = EpisodeTitleFromPosition
     consequence = RenameMatch
 
     def when(self, matches, context):
-        if matches.named('episodeTitle'):
+        if matches.named('episode_title'):
             return
 
         alternative_title = matches.range(predicate=lambda match: match.name == 'alternativeTitle', index=0)
@@ -104,8 +104,8 @@ class AlternativeTitleReplace(Rule):
             if main_title:
                 episode = matches.previous(main_title,
                                            lambda previous: any(name in previous.names
-                                                                for name in ['episodeNumber', 'episodeDetails',
-                                                                             'episodeCount', 'season', 'seasonCount',
+                                                                for name in ['episode', 'episode_details',
+                                                                             'episode_count', 'season', 'seasonCount',
                                                                              'date', 'title', 'year']),
                                            0)
 
@@ -116,7 +116,7 @@ class AlternativeTitleReplace(Rule):
 
     def then(self, matches, when_response, context):
         matches.remove(when_response)
-        when_response.name = 'episodeTitle'
+        when_response.name = 'episode_title'
         matches.append(when_response)
 
 
@@ -124,10 +124,10 @@ class Filepart3EpisodeTitle(Rule):
     """
     If we have at least 3 filepart structured like this:
 
-    Serie name/SO1/E01-episodeTitle.mkv
+    Serie name/SO1/E01-episode_title.mkv
     AAAAAAAAAA/BBB/CCCCCCCCCCCCCCCCCCCC
 
-    If CCCC contains episodeNumber and BBB contains seasonNumber
+    If CCCC contains episode and BBB contains seasonNumber
     Then title is to be found in AAAA.
     """
     consequence = AppendMatch('title')
@@ -141,7 +141,7 @@ class Filepart3EpisodeTitle(Rule):
         directory = fileparts[-2]
         subdirectory = fileparts[-3]
 
-        episode_number = matches.range(filename.start, filename.end, lambda match: match.name == 'episodeNumber', 0)
+        episode_number = matches.range(filename.start, filename.end, lambda match: match.name == 'episode', 0)
         if episode_number:
             season = matches.range(directory.start, directory.end, lambda match: match.name == 'season', 0)
 
@@ -156,10 +156,10 @@ class Filepart2EpisodeTitle(Rule):
     """
     If we have at least 2 filepart structured like this:
 
-    Serie name SO1/E01-episodeTitle.mkv
+    Serie name SO1/E01-episode_title.mkv
     AAAAAAAAAAAAA/BBBBBBBBBBBBBBBBBBBBB
 
-    If BBBB contains episodeNumber and AAA contains a hole followed by seasonNumber
+    If BBBB contains episode and AAA contains a hole followed by seasonNumber
     Then title is to be found in AAAA.
     """
     consequence = AppendMatch('title')
@@ -172,7 +172,7 @@ class Filepart2EpisodeTitle(Rule):
         filename = fileparts[-1]
         directory = fileparts[-2]
 
-        episode_number = matches.range(filename.start, filename.end, lambda match: match.name == 'episodeNumber', 0)
+        episode_number = matches.range(filename.start, filename.end, lambda match: match.name == 'episode', 0)
         if episode_number:
             season = matches.range(directory.start, directory.end, lambda match: match.name == 'season', 0)
             if season:

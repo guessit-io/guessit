@@ -6,72 +6,72 @@
 ? +lame
 ? +lame3.12
 ? +lame3.100
-: audioCodec: MP3
+: audio_codec: MP3
 
 ? +DolbyDigital
 ? +DD
 ? -Dolby Digital
-: audioCodec: DolbyDigital
+: audio_codec: DolbyDigital
 
 ? +AAC
-: audioCodec: AAC
+: audio_codec: AAC
 
 ? +AC3
-: audioCodec: AC3
+: audio_codec: AC3
 
 ? +Flac
-: audioCodec: FLAC
+: audio_codec: FLAC
 
 ? +DTS
-: audioCodec: DTS
+: audio_codec: DTS
 
 ? +True-HD
 ? +trueHD
-: audioCodec: True-HD
+: audio_codec: True-HD
 
 ? +DTS-HD
-: audioCodec: DTS
-  audioProfile: HD
+: audio_codec: DTS
+  audio_profile: HD
 
 ? +DTS-HDma
-: audioCodec: DTS
-  audioProfile: HDMA
+: audio_codec: DTS
+  audio_profile: HDMA
 
 ? +AC3-hq
-: audioCodec: AC3
-  audioProfile: HQ
+: audio_codec: AC3
+  audio_profile: HQ
 
 ? +AAC-HE
-: audioCodec: AAC
-  audioProfile: HE
+: audio_codec: AAC
+  audio_profile: HE
 
 ? +AAC-LC
-: audioCodec: AAC
-  audioProfile: LC
+: audio_codec: AAC
+  audio_profile: LC
 
 ? +AAC2.0
-: audioCodec: AAC
-  audioChannels: '2.0'
+: audio_codec: AAC
+  audio_channels: '2.0'
 
 ? +7.1
 ? +7ch
 ? +8ch
-: audioChannels: '7.1'
+: audio_channels: '7.1'
 
 ? +5.1
 ? +5ch
 ? +6ch
-: audioChannels: '5.1'
+: audio_channels: '5.1'
 
 ? +2ch
 ? +2.0
 ? +stereo
-: audioChannels: '2.0'
+: audio_channels: '2.0'
 
 ? +1ch
 ? +mono
-: audioChannels: '1.0'
+: audio_channels: '1.0'
 
 ? DD5.1
-: audioCodec: DolbyDigital
-  audioChannels: '5.1'
+: audio_codec: DolbyDigital
+  audio_channels: '5.1'

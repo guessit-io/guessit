@@ -74,7 +74,7 @@ class TitleBaseRule(Rule):
         """
         Ignore matches when scanning for title (hole)
         """
-        return match.name in ['language', 'country', 'episodeDetails']
+        return match.name in ['language', 'country', 'episode_details']
 
     def should_keep(self, match, to_keep, matches, filepart, hole, starting):
         """

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Language and subtitleLanguage
+Language and subtitle_language
 """
 # pylint: disable=no-member
 from __future__ import unicode_literals
@@ -114,11 +114,11 @@ def find_languages(string, context=None):
         for prefix in subtitle_prefixes:
             if lang_word.startswith(prefix):
                 lang_word = lang_word[len(prefix):]
-                key = 'subtitleLanguage'
+                key = 'subtitle_language'
         for suffix in subtitle_suffixes:
             if lang_word.endswith(suffix):
                 lang_word = lang_word[:len(suffix) - 1]
-                key = 'subtitleLanguage'
+                key = 'subtitle_language'
         for prefix in lang_prefixes:
             if lang_word.startswith(prefix):
                 lang_word = lang_word[len(prefix):]
@@ -145,24 +145,24 @@ LANGUAGE = Rebulk()
 
 class SubtitlePrefixLanguageRule(Rule):
     """
-    Convert language guess as subtitleLanguage if previous match is a subtitle language prefix
+    Convert language guess as subtitle_language if previous match is a subtitle language prefix
     """
     consequence = RemoveMatch
 
     def when(self, matches, context):
         to_rename = []
-        to_remove = matches.named('subtitleLanguage.prefix')
+        to_remove = matches.named('subtitle_language.prefix')
         for language in matches.named('language'):
-            prefix = matches.previous(language, lambda match: match.name == 'subtitleLanguage.prefix', 0)
+            prefix = matches.previous(language, lambda match: match.name == 'subtitle_language.prefix', 0)
             if not prefix:
                 group_marker = matches.markers.at_match(language, lambda marker: marker.name == 'group', 0)
                 if group_marker:
                     # Find prefix if placed just before the group
-                    prefix = matches.previous(group_marker, lambda match: match.name == 'subtitleLanguage.prefix', 0)
+                    prefix = matches.previous(group_marker, lambda match: match.name == 'subtitle_language.prefix', 0)
                     if not prefix:
                         # Find prefix if placed before in the group
                         prefix = matches.range(group_marker.start, language.start,
-                                               lambda match: match.name == 'subtitleLanguage.prefix', 0)
+                                               lambda match: match.name == 'subtitle_language.prefix', 0)
             if prefix:
                 to_rename.append((prefix, language))
                 if prefix in to_remove:
@@ -175,26 +175,26 @@ class SubtitlePrefixLanguageRule(Rule):
         for prefix, match in to_rename:
             # Remove suffix equivalent of  prefix.
             suffix = copy.copy(prefix)
-            suffix.name = 'subtitleLanguage.suffix'
+            suffix.name = 'subtitle_language.suffix'
             if suffix in matches:
                 matches.remove(suffix)
             matches.remove(match)
-            match.name = 'subtitleLanguage'
+            match.name = 'subtitle_language'
             matches.append(match)
 
 
 class SubtitleSuffixLanguageRule(Rule):
     """
-    Convert language guess as subtitleLanguage if next match is a subtitle language suffix
+    Convert language guess as subtitle_language if next match is a subtitle language suffix
     """
     dependency = SubtitlePrefixLanguageRule
     consequence = RemoveMatch
 
     def when(self, matches, context):
         to_append = []
-        to_remove = matches.named('subtitleLanguage.suffix')
+        to_remove = matches.named('subtitle_language.suffix')
         for language in matches.named('language'):
-            suffix = matches.next(language, lambda match: match.name == 'subtitleLanguage.suffix', 0)
+            suffix = matches.next(language, lambda match: match.name == 'subtitle_language.suffix', 0)
             if suffix:
                 to_append.append(language)
                 if suffix in to_remove:
@@ -206,15 +206,15 @@ class SubtitleSuffixLanguageRule(Rule):
         super(SubtitleSuffixLanguageRule, self).then(matches, to_remove, context)
         for match in to_rename:
             matches.remove(match)
-            match.name = 'subtitleLanguage'
+            match.name = 'subtitle_language'
             matches.append(match)
 
 
 class SubtitleExtensionRule(Rule):
     """
-    Convert language guess as subtitleLanguage if next match is a subtitle extension
+    Convert language guess as subtitle_language if next match is a subtitle extension
     """
-    consequence = RenameMatch('subtitleLanguage')
+    consequence = RenameMatch('subtitle_language')
 
     def when(self, matches, context):
         subtitle_extension = matches.named('container',
@@ -226,9 +226,9 @@ class SubtitleExtensionRule(Rule):
                 return subtitle_language
 
 
-LANGUAGE.string(*subtitle_prefixes, name="subtitleLanguage.prefix", ignore_case=True, private=True,
+LANGUAGE.string(*subtitle_prefixes, name="subtitle_language.prefix", ignore_case=True, private=True,
                 validator=seps_surround)
-LANGUAGE.string(*subtitle_suffixes, name="subtitleLanguage.suffix", ignore_case=True, private=True,
+LANGUAGE.string(*subtitle_suffixes, name="subtitle_language.suffix", ignore_case=True, private=True,
                 validator=seps_surround)
 LANGUAGE.functional(find_languages)
 LANGUAGE.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)

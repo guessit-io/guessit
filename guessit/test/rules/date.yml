@@ -42,5 +42,5 @@
 ? 2012 2009 S01E02 2015  # If no year is marked, the second one is guessed.
 : title: "2012"
   year: 2009
-  episodeTitle: "2015"
+  episode_title: "2015"
 

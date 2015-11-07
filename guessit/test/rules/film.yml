@@ -4,6 +4,6 @@
 ? Film Title-f01-Series Title
 ? directory/Film Title-f01-Series Title/file.mkv
 : title: Series Title
-  filmSeries: Film Title
-  filmNumber: 1
+  film_title: Film Title
+  film: 1
 

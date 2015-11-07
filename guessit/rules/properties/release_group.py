@@ -39,15 +39,15 @@ def clean_groupname(string):
     return string
 
 
-_scene_previous_names = ['videoCodec', 'format', 'videoApi', 'audioCodec', 'audioProfile', 'videoProfile',
-                         'audioChannels', 'screenSize']
+_scene_previous_names = ['video_codec', 'format', 'video_api', 'audio_codec', 'audio_profile', 'video_profile',
+                         'audio_channels', 'screen_size']
 
 _scene_previous_tags = ['release-group-prefix']
 
 
 class SceneReleaseGroup(Rule):
     """
-    Add releaseGroup match in existing matches (scene format).
+    Add release_group match in existing matches (scene format).
 
     Something.XViD-ReleaseGroup.mkv
     """
@@ -70,7 +70,7 @@ class SceneReleaseGroup(Rule):
                         not matches.input_string[previous_match.end:last_hole.start].strip(seps)\
                         and not int_coercable(last_hole.value.strip(seps)):
 
-                    last_hole.name = 'releaseGroup'
+                    last_hole.name = 'release_group'
                     last_hole.tags = ['scene']
 
                     # if hole is insed a group marker with same value, remove [](){} ...
@@ -88,7 +88,7 @@ class SceneReleaseGroup(Rule):
 
 class AnimeReleaseGroup(Rule):
     """
-    Add releaseGroup match in existing matches (anime format)
+    Add release_group match in existing matches (anime format)
     ...[ReleaseGroup] Something.mkv
     """
     dependency = [SceneReleaseGroup, TitleFromPosition]
@@ -97,8 +97,8 @@ class AnimeReleaseGroup(Rule):
     def when(self, matches, context):
         ret = []
 
-        # If a scene releaseGroup is found, ignore this kind of releaseGroup rule.
-        if matches.named('releaseGroup'):
+        # If a scene release_group is found, ignore this kind of release_group rule.
+        if matches.named('release_group'):
             return ret
 
         for filepart in marker_sorted(matches.markers.named('path'), matches):
@@ -115,7 +115,7 @@ class AnimeReleaseGroup(Rule):
                 release_group.raw_start += 1
                 release_group.raw_end -= 1
                 release_group.tags = ['anime']
-                release_group.name = 'releaseGroup'
+                release_group.name = 'release_group'
                 ret.append(release_group)
         return ret
 

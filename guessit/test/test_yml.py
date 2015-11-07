@@ -27,7 +27,7 @@ filename_predicate = None
 string_predicate = None
 
 
-# filename_predicate = lambda filename: 'episodeTitle' in filename
+# filename_predicate = lambda filename: 'episode_title' in filename
 # string_predicate = lambda string: '-DVD.BlablaBla.Fix.Blablabla.XVID' in string
 
 

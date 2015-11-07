@@ -12,13 +12,13 @@ from ..common import dash
 
 CDS = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
 
-CDS.regex(r'cd-?(?P<cdNumber>\d+)(?:-?of-?(?P<cdNumberTotal>\d+))?',
-          validator={'cdNumber': lambda match: match.value > 0, 'cdNumberTotal': lambda match: match.value > 0},
-          formatter={'cdNumber': int, 'cdNumberTotal': int},
+CDS.regex(r'cd-?(?P<cd>\d+)(?:-?of-?(?P<cd_count>\d+))?',
+          validator={'cd': lambda match: match.value > 0, 'cd_count': lambda match: match.value > 0},
+          formatter={'cd': int, 'cd_count': int},
           children=True,
           private_parent=True)
-CDS.regex(r'(?P<cdNumberTotal>\d+)-?cds?',
-          validator={'cdNumber': lambda match: match.value > 0, 'cdNumberTotal': lambda match: match.value > 0},
-          formatter={'cdNumberTotal': int},
+CDS.regex(r'(?P<cd_count>\d+)-?cds?',
+          validator={'cd': lambda match: match.value > 0, 'cd_count': lambda match: match.value > 0},
+          formatter={'cd_count': int},
           children=True,
           private_parent=True)

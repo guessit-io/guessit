@@ -19,26 +19,26 @@ EPISODES = Rebulk()
 EPISODES.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
 
 # 01x02, 01x02x03x04
-EPISODES.regex(r'(?P<season>\d+)x(?P<episodeNumber>\d+)' +
-               r'(?:(?P<episodeNumberSeparator>x|-|\+|&)(?P<episodeNumber>\d+))*',
+EPISODES.regex(r'(?P<season>\d+)x(?P<episode>\d+)' +
+               r'(?:(?P<episodeSeparator>x|-|\+|&)(?P<episode>\d+))*',
                # S01E02, S01x02, S01E02E03, S01Ex02, S01xE02, SO1Ex02Ex03
-               r'S(?P<season>\d+)(?:xE|Ex|E|x)(?P<episodeNumber>\d+)' +
-               r'(?:(?P<episodeNumberSeparator>xE|Ex|E|x|-|\+|&)(?P<episodeNumber>\d+))*',
+               r'S(?P<season>\d+)(?:xE|Ex|E|x)(?P<episode>\d+)' +
+               r'(?:(?P<episodeSeparator>xE|Ex|E|x|-|\+|&)(?P<episode>\d+))*',
                # S01
                r'S(?P<season>\d+)' +
                r'(?:(?P<seasonSeparator>S|-|\+|&)(?P<season>\d+))*',
-               formatter={'season': int, 'episodeNumber': int},
+               formatter={'season': int, 'episode': int},
                tags=['SxxExx'],
                children=True,
                private_parent=True,
                conflict_solver=lambda match, other: match
-               if match.name in ['season', 'episodeNumber'] and other.name in ['screenSize']
+               if match.name in ['season', 'episode'] and other.name in ['screen_size']
                else '__default__')
 
-# episodeDetails property
+# episode_details property
 for episode_detail in ('Special', 'Bonus', 'Omake', 'Ova', 'Oav', 'Pilot', 'Unaired'):
-    EPISODES.string(episode_detail, value=episode_detail, name='episodeDetails')
-EPISODES.regex(r'Extras?', name='episodeDetails', value='Extras')
+    EPISODES.string(episode_detail, value=episode_detail, name='episode_details')
+EPISODES.regex(r'Extras?', name='episode_details', value='Extras')
 
 EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
@@ -55,7 +55,7 @@ EPISODES.regex(r'\L<season_words>@?(?P<season>' + numeral + ')' +
                season_words=season_words,  # Season 1, # Season one
                abbreviations=[alt_dash], formatter={'season': parse_numeral, 'count': parse_numeral})
 
-EPISODES.regex(r'\L<episode_words>-?(?P<episodeNumber>\d+)' +
+EPISODES.regex(r'\L<episode_words>-?(?P<episode>\d+)' +
                r'(?:v(?P<version>\d+))?' +
                r'(?:-?\L<of_words>?-?(?P<count>\d+))?',
                of_words=of_words,
@@ -72,50 +72,50 @@ EPISODES.regex(r'S?(?P<season>\d+)-?(?:xE|Ex|E|x)-?(?P<other>\L<all_words>)',
 EPISODES.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
 # 12, 13
-EPISODES.regex(r'(?P<episodeNumber>\d{2})' +
+EPISODES.regex(r'(?P<episode>\d{2})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>[x-])(?P<episodeNumber>\d{2}))*',
-               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int})
+               r'(?:(?P<episodeSeparator>[x-])(?P<episode>\d{2}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int})
 
 # 012, 013
-EPISODES.regex(r'0(?P<episodeNumber>\d{1,2})' +
+EPISODES.regex(r'0(?P<episode>\d{1,2})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>[x-])0(?P<episodeNumber>\d{1,2}))*',
-               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int})
+               r'(?:(?P<episodeSeparator>[x-])0(?P<episode>\d{1,2}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int})
 
 # 112, 113
-EPISODES.regex(r'(?P<episodeNumber>\d{3,4})' +
+EPISODES.regex(r'(?P<episode>\d{3,4})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>[x-])(?P<episodeNumber>\d{3,4}))*',
-               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int},
+               r'(?:(?P<episodeSeparator>[x-])(?P<episode>\d{3,4}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int},
                disabled=lambda context: not context.get('episode_prefer_number', False))
 
 # 1, 2, 3
-EPISODES.regex(r'(?P<episodeNumber>\d)' +
+EPISODES.regex(r'(?P<episode>\d)' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>[x-])(?P<episodeNumber>\d{1,2}))*',
-               tags=['bonus-conflict', 'weak-movie'], formatter={'episodeNumber': int, 'version': int},
+               r'(?:(?P<episodeSeparator>[x-])(?P<episode>\d{1,2}))*',
+               tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int},
                disabled=lambda context: not context.get('episode_prefer_number', False))
 
 # e112, e113
-EPISODES.regex(r'e(?P<episodeNumber>\d{1,4})' +
+EPISODES.regex(r'e(?P<episode>\d{1,4})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>e|x|-)(?P<episodeNumber>\d{1,4}))*',
-               formatter={'episodeNumber': int, 'version': int})
+               r'(?:(?P<episodeSeparator>e|x|-)(?P<episode>\d{1,4}))*',
+               formatter={'episode': int, 'version': int})
 
 # ep 112, ep113, ep112, ep113
-EPISODES.regex(r'ep-?(?P<episodeNumber>\d{1,4})' +
+EPISODES.regex(r'ep-?(?P<episode>\d{1,4})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>ep|e|x|-)(?P<episodeNumber>\d{1,4}))*',
+               r'(?:(?P<episodeSeparator>ep|e|x|-)(?P<episode>\d{1,4}))*',
                abbreviations=[dash],
-               formatter={'episodeNumber': int, 'version': int})
+               formatter={'episode': int, 'version': int})
 
 # 102, 0102
-EPISODES.regex(r'(?P<season>\d{1,2})(?P<episodeNumber>\d{2})' +
+EPISODES.regex(r'(?P<season>\d{1,2})(?P<episode>\d{2})' +
                r'(?:v(?P<version>\d+))?' +
-               r'(?:(?P<episodeNumberSeparator>x|-)(?P<episodeNumber>\d{2}))*',
+               r'(?:(?P<episodeSeparator>x|-)(?P<episode>\d{2}))*',
                tags=['bonus-conflict', 'weak-movie', 'weak-duplicate'],
-               formatter={'season': int, 'episodeNumber': int, 'version': int},
+               formatter={'season': int, 'episode': int, 'version': int},
                conflict_solver=lambda match, other: match if other.name == 'year' else '__default__',
                disabled=lambda context: context.get('episode_prefer_number', False))
 
@@ -124,10 +124,10 @@ EPISODES.regex(r'v(?P<version>\d+)', children=True, private_parent=True, formatt
 EPISODES.defaults()
 
 # detached of X count (season/episode)
-EPISODES.regex(r'(?P<episodeNumber>\d+)?-?\L<of_words>-?(?P<count>\d+)-?\L<episode_words>?', of_words=of_words,
+EPISODES.regex(r'(?P<episode>\d+)?-?\L<of_words>-?(?P<count>\d+)-?\L<episode_words>?', of_words=of_words,
                episode_words=episode_words, abbreviations=[dash], children=True, private_parent=True, formatter=int)
 
-EPISODES.regex(r'Minisodes?', name='episodeFormat', value="Minisode")
+EPISODES.regex(r'Minisodes?', name='episode_format', value="Minisode")
 
 # Harcoded movie to disable weak season/episodes
 EPISODES.regex('OSS-?117',
@@ -140,7 +140,7 @@ class CountValidator(Rule):
     Validate count property and rename it
     """
     priority = 64
-    consequence = [RemoveMatch, RenameMatch('episodeCount'), RenameMatch('seasonCount')]
+    consequence = [RemoveMatch, RenameMatch('episode_count'), RenameMatch('seasonCount')]
 
     def when(self, matches, context):
         to_remove = []
@@ -148,9 +148,9 @@ class CountValidator(Rule):
         season_count = []
 
         for count in matches.named('count'):
-            previous = matches.previous(count, lambda match: match.name in ['episodeNumber', 'season'], 0)
+            previous = matches.previous(count, lambda match: match.name in ['episode', 'season'], 0)
             if previous:
-                if previous.name == 'episodeNumber':
+                if previous.name == 'episode':
                     episode_count.append(count)
                 elif previous.name == 'season':
                     season_count.append(count)
@@ -169,14 +169,14 @@ class EpisodeNumberSeparatorRange(Rule):
     def when(self, matches, context):
         to_remove = []
         to_append = []
-        for separator in matches.named('episodeNumberSeparator'):
-            previous_match = matches.previous(separator, lambda match: match.name == 'episodeNumber', 0)
-            next_match = matches.next(separator, lambda match: match.name == 'episodeNumber', 0)
+        for separator in matches.named('episodeSeparator'):
+            previous_match = matches.previous(separator, lambda match: match.name == 'episode', 0)
+            next_match = matches.next(separator, lambda match: match.name == 'episode', 0)
 
             if previous_match and next_match and separator.value == '-':
                 for episode_number in range(previous_match.value+1, next_match.value):
                     match = copy.copy(separator)
-                    match.name = 'episodeNumber'
+                    match.name = 'episode'
                     match.value = episode_number
                     to_append.append(match)
             to_remove.append(separator)
@@ -255,24 +255,24 @@ class RemoveWeakDuplicate(Rule):
 
 class EpisodeDetailValidator(Rule):
     """
-    Validate episodeDetails if they are detached or next to season or episodeNumber.
+    Validate episode_details if they are detached or next to season or episode.
     """
     priority = 64
     consequence = RemoveMatch
 
     def when(self, matches, context):
         ret = []
-        for detail in matches.named('episodeDetails'):
+        for detail in matches.named('episode_details'):
             if not seps_surround(detail) \
-                    and not matches.previous(detail, lambda match: match.name in ['season', 'episodeNumber']) \
-                    and not matches.next(detail, lambda match: match.name in ['season', 'episodeNumber']):
+                    and not matches.previous(detail, lambda match: match.name in ['season', 'episode']) \
+                    and not matches.next(detail, lambda match: match.name in ['season', 'episode']):
                 ret.append(detail)
         return ret
 
 
 class RemoveDetachedEpisodeNumber(Rule):
     """
-    If multiple episodeNumber are found, remove those that are not detached from a range and less than 10.
+    If multiple episode are found, remove those that are not detached from a range and less than 10.
 
     Fairy Tail 2 - 16-20, 2 should be removed.
     """
@@ -285,7 +285,7 @@ class RemoveDetachedEpisodeNumber(Rule):
 
         episode_numbers = []
         episode_values = set()
-        for match in matches.named('episodeNumber', lambda match: not match.private and 'weak-movie' in match.tags):
+        for match in matches.named('episode', lambda match: not match.private and 'weak-movie' in match.tags):
             if match.value not in episode_values:
                 episode_numbers.append(match)
                 episode_values.add(match.value)
@@ -303,7 +303,7 @@ class RemoveDetachedEpisodeNumber(Rule):
 
 class VersionValidator(Rule):
     """
-    Validate version if previous match is episodeNumber or if surrounded by separators.
+    Validate version if previous match is episode or if surrounded by separators.
     """
     priority = 64
     dependency = [RemoveWeakIfMovie, RemoveWeakIfSxxExx]
@@ -312,7 +312,7 @@ class VersionValidator(Rule):
     def when(self, matches, context):
         ret = []
         for version in matches.named('version'):
-            episode_number = matches.previous(version, lambda match: match.name == 'episodeNumber', 0)
+            episode_number = matches.previous(version, lambda match: match.name == 'episode', 0)
             if not episode_number and not seps_surround(version.initiator):
                 ret.append(version)
         return ret

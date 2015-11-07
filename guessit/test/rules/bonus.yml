@@ -4,6 +4,6 @@
 ? Movie Title-x01-Other Title
 ? directory/Movie Title-x01-Other Title/file.mkv
 : title: Movie Title
-  bonusTitle: Other Title
-  bonusNumber: 1
+  bonus_title: Other Title
+  bonus: 1
 

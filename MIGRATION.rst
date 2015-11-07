@@ -12,7 +12,7 @@ Example::
 
     >>> from guessit import guessit
     >>> guessit(u'Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')  # doctest: +ALLOW_UNICODE
-    MatchesDict([('title', 'Treme'), ('season', 1), ('episodeNumber', 3), ('episodeTitle', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('videoCodec', 'XviD'), ('releaseGroup', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
+    MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('video_codec', 'XviD'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
 
 ``MatchesDict`` is a dict that keeps matches ordering.
 
@@ -22,22 +22,37 @@ GuessIt only accept unicode string, so you need to use ``u`` prefix for input st
 
 Properties
 ----------
-For ``episode`` type, some properties have been renamed
+Some properties have been renamed.
 
 - ``series`` is now ``title``.
-- ``title`` is now ``episodeTitle``.
+- ``title`` is now ``episode_title`` (for ``episode`` ``type`` only).
+- ``episodeNumber`` is now ``episode``.
+- ``bonusNumber`` is now ``bonus``
+- ``filmNumber`` is now ``film``
+- ``cdNumber`` is now ``cd `` and ``cdNumberTotal`` is now ``cd_count``
+- ``idNumber`` is now ``uuid``
 
-``episodeList`` and ``partList`` were removed. ``episodeNumber`` and ``part`` properties that can now be a ``list``
-when multiple values are found.
+``episodeList`` and ``partList`` have been removed. ``episode_number`` and ``part`` properties that can now contains an
+``int`` or a ``list[int]``.
 
-For ``movie`` type, some properties have been renamed
+All info ``type``, like ``seriesinfo`` and ``movieinfo``. You can check directly ``nfo`` value in ``container``
+property.
 
-- ``filmtitle`` is now ``filmSeries``
+All ``camelCase`` properties have been renamed to ``underscore_case``.
 
-All info ``type``, like ``seriesinfo`` and ``movieinfo``, have been removed in favor of checking the ``container``
-property for ``nfo`` value.
-
-All other properties have been ported with the same name.
+- ``releaseGroup`` is now ``release_group``
+- ``episodeCount`` is now ``episode_count``
+- ``episodeDetails`` is now ``episode_details``
+- ``episodeFormat`` is now ``episode_format``
+- ``screenSize`` is now ``screen_size``
+- ``videoCodec`` is now ``video_codec``
+- ``videoProfile`` is now ``video_profile``
+- ``videoApi`` is now ``video_api``
+- ``audioChannels`` is now ``audio_channels``
+- ``audioCodec`` is now ``audio_codec``
+- ``audioProfile`` is now ``audio_profile``
+- ``subtitleLanguage`` is now ``subtitle_language``
+- ``bonusTitle`` is now ``bonus_title``
 
 Options
 -------
@@ -100,13 +115,13 @@ output.::
             "start": 6,
             "end": 7
         },
-        "episodeNumber": {
+        "episode": {
             "value": 3,
             "raw": "03",
             "start": 8,
             "end": 10
         },
-        "episodeTitle": {
+        "episode_title": {
             "value": "Right Place, Wrong Time",
             "raw": ".Right.Place,.Wrong.Time.",
             "start": 10,
@@ -118,13 +133,13 @@ output.::
             "start": 35,
             "end": 39
         },
-        "videoCodec": {
+        "video_codec": {
             "value": "XviD",
             "raw": "XviD",
             "start": 40,
             "end": 44
         },
-        "releaseGroup": {
+        "release_group": {
             "value": "NoTV",
             "raw": "-NoTV",
             "start": 44,

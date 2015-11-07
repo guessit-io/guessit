@@ -33,8 +33,8 @@ def build_argument_parser():
                              help='Allowed country (can be used multiple times)')
     naming_opts.add_argument('-E', '--episode-prefer-number', action='store_true', dest='episode_prefer_number',
                              default=False,
-                             help='Guess "serie.213.avi" as the episodeNumber 213. Without this option, '
-                                  'it will be guessed as season 2, episodeNumber 13')
+                             help='Guess "serie.213.avi" as the episode 213. Without this option, '
+                                  'it will be guessed as season 2, episode 13')
     naming_opts.add_argument('-T', '--expected-title', action='append', dest='expected_title',
                              help='Expected title to parse (can be used multiple times)')
 
@@ -46,7 +46,7 @@ def build_argument_parser():
     output_opts.add_argument('-v', '--verbose', action='store_true', dest='verbose', default=False,
                              help='Display debug output')
     output_opts.add_argument('-P', '--show-property', dest='show_property', default=None,
-                             help='Display the value of a single property (title, series, videoCodec, year, ...)')
+                             help='Display the value of a single property (title, series, video_codec, year, ...)')
     output_opts.add_argument('-a', '--advanced', dest='advanced', action='store_true', default=False,
                              help='Display advanced information for filename guesses, as json output')
     output_opts.add_argument('-j', '--json', dest='json', action='store_true', default=False,

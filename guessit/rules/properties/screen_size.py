@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-screenSize property
+screen_size property
 """
 from __future__ import unicode_literals
 
@@ -13,11 +13,11 @@ from guessit.rules.common import dash
 
 def conflict_solver(match, other):
     """
-    Conflict solver for most screenSize.
+    Conflict solver for most screen_size.
     """
-    if other.name in ['episodeNumber', 'season']:
+    if other.name in ['episode', 'season']:
         return '__default__'
-    if other.name == 'screenSize' and 'resolution' in other.tags:
+    if other.name == 'screen_size' and 'resolution' in other.tags:
         # The chtouile to solve conflict in "720 x 432" string matching both 720p pattern (but it's not 720p ...)
         int_value = _digits_re.findall(match.raw)[-1]
         if other.value.startswith(int_value):
@@ -25,7 +25,7 @@ def conflict_solver(match, other):
     return other
 
 SCREEN_SIZE = Rebulk().regex_defaults(flags=re.IGNORECASE)
-SCREEN_SIZE.defaults(name="screenSize", validator=seps_surround, conflict_solver=conflict_solver)
+SCREEN_SIZE.defaults(name="screen_size", validator=seps_surround, conflict_solver=conflict_solver)
 
 SCREEN_SIZE.regex(r"(?:\d{3,}(?:x|\*))?360(?:i|p?x?)", value="360p")
 SCREEN_SIZE.regex(r"(?:\d{3,}(?:x|\*))?368(?:i|p?x?)", value="368p")
@@ -40,17 +40,17 @@ SCREEN_SIZE.regex(r"(?:\d{3,}(?:x|\*))?2160(?:i|p?x?)", value="4K")
 
 _digits_re = re.compile(r'\d+')
 
-SCREEN_SIZE.defaults(name="screenSize", validator=seps_surround)
+SCREEN_SIZE.defaults(name="screen_size", validator=seps_surround)
 SCREEN_SIZE.regex(r'\d{3,}-?(?:x|\*)-?\d{3,}',
                   formatter=lambda value: 'x'.join(_digits_re.findall(value)),
                   abbreviations=[dash],
                   tags=['resolution'],
-                  conflict_solver=lambda match, other: '__default__' if other.name == 'screenSize' else other)
+                  conflict_solver=lambda match, other: '__default__' if other.name == 'screen_size' else other)
 
 
 class ScreenSizeOnlyOne(Rule):
     """
-    Keep a single screenSize pet filepath part.
+    Keep a single screen_size pet filepath part.
     """
     consequence = RemoveMatch
 
@@ -58,7 +58,7 @@ class ScreenSizeOnlyOne(Rule):
         to_remove = []
         for filepart in matches.markers.named('path'):
             screensize = list(reversed(matches.range(filepart.start, filepart.end,
-                                                     lambda match: match.name == 'screenSize')))
+                                                     lambda match: match.name == 'screen_size')))
             if len(screensize) > 1:
                 to_remove.extend(screensize[1:])
 
