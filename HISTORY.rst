@@ -1,6 +1,9 @@
 History
 =======
 
+2.0a3 (unreleased)
+------------------
+
 2.0a2 (2015-11-07)
 ------------------
 * Raise TypeError instead of AssertionError when non text is given to guessit API.
