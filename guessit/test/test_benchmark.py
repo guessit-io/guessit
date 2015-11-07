@@ -33,6 +33,7 @@ def case4():
     disable_gc=True,
     warmup=False
 )
+@pytest.mark.skipif(True, reason="Disabled")
 class TestBenchmark(object):
     def test_case1(self, benchmark):
         ret = benchmark(case1)
