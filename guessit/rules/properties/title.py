@@ -308,11 +308,11 @@ class PreferTitleWithYear(Rule):
                         with_year.append(title_match)
 
         if with_year_in_group:
-            title_values = set([title.value for title in with_year_in_group])
+            title_values = set([title_match.value for title_match in with_year_in_group])
         elif with_year:
-            title_values = set([title.value for title in with_year])
+            title_values = set([title_match.value for title_match in with_year])
         else:
-            title_values = set([title.value for title in titles])
+            title_values = set([title_match.value for title_match in titles])
 
         to_remove = []
         for title_match in titles:
