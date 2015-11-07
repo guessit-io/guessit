@@ -1,6 +1,12 @@
 History
 =======
 
+2.0a4 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.0a3 (2015-11-08)
 ------------------
 * Allow rebulk customization in API module.
