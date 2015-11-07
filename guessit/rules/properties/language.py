@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Language and subtitle_language
+language and subtitle_language properties
 """
 # pylint: disable=no-member
 from __future__ import unicode_literals
@@ -14,6 +14,25 @@ import babelfish
 from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
 from ..common.words import iter_words, COMMON_WORDS
 from ..common.validators import seps_surround
+
+
+def language():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk()
+
+    rebulk.string(*subtitle_prefixes, name="subtitle_language.prefix", ignore_case=True, private=True,
+                  validator=seps_surround)
+    rebulk.string(*subtitle_suffixes, name="subtitle_language.suffix", ignore_case=True, private=True,
+                  validator=seps_surround)
+    rebulk.functional(find_languages)
+    rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
+
+    return rebulk
+
 
 COMMON_WORDS_STRICT = frozenset(['brazil'])
 
@@ -140,9 +159,6 @@ def find_languages(string, context=None):
     return matches
 
 
-LANGUAGE = Rebulk()
-
-
 class SubtitlePrefixLanguageRule(Rule):
     """
     Convert language guess as subtitle_language if previous match is a subtitle language prefix
@@ -152,19 +168,20 @@ class SubtitlePrefixLanguageRule(Rule):
     def when(self, matches, context):
         to_rename = []
         to_remove = matches.named('subtitle_language.prefix')
-        for language in matches.named('language'):
-            prefix = matches.previous(language, lambda match: match.name == 'subtitle_language.prefix', 0)
+        for lang in matches.named('language'):
+            prefix = matches.previous(lang, lambda match: match.name == 'subtitle_language.prefix', 0)
             if not prefix:
-                group_marker = matches.markers.at_match(language, lambda marker: marker.name == 'group', 0)
+                group_marker = matches.markers.at_match(lang, lambda marker: marker.name == 'group', 0)
                 if group_marker:
                     # Find prefix if placed just before the group
-                    prefix = matches.previous(group_marker, lambda match: match.name == 'subtitle_language.prefix', 0)
+                    prefix = matches.previous(group_marker, lambda match: match.name == 'subtitle_language.prefix',
+                                              0)
                     if not prefix:
                         # Find prefix if placed before in the group
-                        prefix = matches.range(group_marker.start, language.start,
+                        prefix = matches.range(group_marker.start, lang.start,
                                                lambda match: match.name == 'subtitle_language.prefix', 0)
             if prefix:
-                to_rename.append((prefix, language))
+                to_rename.append((prefix, lang))
                 if prefix in to_remove:
                     to_remove.remove(prefix)
         return to_rename, to_remove
@@ -193,10 +210,10 @@ class SubtitleSuffixLanguageRule(Rule):
     def when(self, matches, context):
         to_append = []
         to_remove = matches.named('subtitle_language.suffix')
-        for language in matches.named('language'):
-            suffix = matches.next(language, lambda match: match.name == 'subtitle_language.suffix', 0)
+        for lang in matches.named('language'):
+            suffix = matches.next(lang, lambda match: match.name == 'subtitle_language.suffix', 0)
             if suffix:
-                to_append.append(language)
+                to_append.append(lang)
                 if suffix in to_remove:
                     to_remove.remove(suffix)
         return to_append, to_remove
@@ -218,17 +235,9 @@ class SubtitleExtensionRule(Rule):
 
     def when(self, matches, context):
         subtitle_extension = matches.named('container',
-                                           lambda match: 'extension' in match.tags and'subtitle' in match.tags,
+                                           lambda match: 'extension' in match.tags and 'subtitle' in match.tags,
                                            0)
         if subtitle_extension:
-            subtitle_language = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
-            if subtitle_language:
-                return subtitle_language
-
-
-LANGUAGE.string(*subtitle_prefixes, name="subtitle_language.prefix", ignore_case=True, private=True,
-                validator=seps_surround)
-LANGUAGE.string(*subtitle_suffixes, name="subtitle_language.suffix", ignore_case=True, private=True,
-                validator=seps_surround)
-LANGUAGE.functional(find_languages)
-LANGUAGE.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
+            subtitle_lang = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
+            if subtitle_lang:
+                return subtitle_lang

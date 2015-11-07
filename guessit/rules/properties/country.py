@@ -1,16 +1,33 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Country
+country property
 """
 # pylint: disable=no-member
 from __future__ import unicode_literals
 
-from rebulk import Rebulk
-
 import babelfish
 
+from rebulk import Rebulk
 from ..common.words import COMMON_WORDS, iter_words
+
+
+def country():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk().defaults(name='country')
+
+    rebulk.functional(find_countries,
+                      #  Prefer language and any other property over country if not US or GB.
+                      conflict_solver=lambda match, other: match
+                      if other.name != 'language' or match.value not in [babelfish.Country('US'),
+                                                                         babelfish.Country('GB')]
+                      else other)
+
+    return rebulk
 
 
 COUNTRIES_SYN = {'ES': ['españa'],
@@ -63,18 +80,16 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):  # pylint: dis
 
 babelfish.country_converters['guessit'] = GuessitCountryConverter()
 
-COUNTRY = Rebulk().defaults(name='country')
 
-
-def is_valid_country(country, context=None):
+def is_valid_country(country_object, context=None):
     """
     Check if country is valid.
     """
     if context and context.get('allowed_countries'):
         allowed_countries = context.get('allowed_countries')
-        return country.name.lower() in allowed_countries or country.alpha2.lower() in allowed_countries
+        return country_object.name.lower() in allowed_countries or country_object.alpha2.lower() in allowed_countries
     else:
-        return country.name.lower() not in COMMON_WORDS and country.alpha2.lower() not in COMMON_WORDS
+        return country_object.name.lower() not in COMMON_WORDS and country_object.alpha2.lower() not in COMMON_WORDS
 
 
 def find_countries(string, context=None):
@@ -84,17 +99,9 @@ def find_countries(string, context=None):
     ret = []
     for word_match in iter_words(string.strip().lower()):
         try:
-            country = babelfish.Country.fromguessit(word_match.group())
-            if is_valid_country(country, context):
-                ret.append((word_match.start(), word_match.end(), {'value': country}))
+            country_object = babelfish.Country.fromguessit(word_match.group())
+            if is_valid_country(country_object, context):
+                ret.append((word_match.start(), word_match.end(), {'value': country_object}))
         except babelfish.Error:
             continue
     return ret
-
-
-COUNTRY.functional(find_countries,
-                   #  Prefer language and any other property over country if not US or GB.
-                   conflict_solver=lambda match, other: match
-                   if other.name != 'language' or match.value not in [babelfish.Country('US'), babelfish.Country('GB')]
-                   else other)
-

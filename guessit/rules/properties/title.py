@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Title
+title property
 """
 from __future__ import unicode_literals
 
@@ -17,11 +17,38 @@ from ..common import seps, title_seps
 from rebulk.utils import find_all
 
 
+def title():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk().rules(TitleFromPosition, PreferTitleWithYear)
+
+    def expected_title(input_string, context):
+        """
+        Expected title functional pattern.
+        :param input_string:
+        :type input_string:
+        :param context:
+        :type context:
+        :return:
+        :rtype:
+        """
+        for search in context.get('expected_title'):
+            for start in find_all(input_string, search, ignore_case=True):
+                return start, len(search)
+
+    rebulk.functional(expected_title, name='title', disabled=lambda context: not context.get('expected_title'))
+
+    return rebulk
+
+
 class TitleBaseRule(Rule):
     """
     Add title match in existing matches
     """
-    #pylint:disable=no-self-use,unused-argument
+    # pylint:disable=no-self-use,unused-argument
     consequence = [AppendMatch, RemoveMatch]
 
     def __init__(self, match_name, match_tags=None, alternative_match_name=None):
@@ -161,7 +188,8 @@ class TitleBaseRule(Rule):
 
                 for ignored_match in ignored_matches:
                     if ignored_match not in to_keep:
-                        starting = matches.chain_after(hole.start, seps, predicate=lambda match: match == ignored_match)
+                        starting = matches.chain_after(hole.start, seps,
+                                                       predicate=lambda match: match == ignored_match)
                         if starting:
                             should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, True)
                             if should_keep:
@@ -187,16 +215,16 @@ class TitleBaseRule(Rule):
                 if self.alternative_match_name:
                     # Split and keep values that can be a title
                     titles = hole.split(title_seps, lambda match: match.value)
-                    for title in list(titles[1:]):
-                        previous_title = titles[titles.index(title) - 1]
-                        separator = matches.input_string[previous_title.end:title.start]
+                    for title_match in list(titles[1:]):
+                        previous_title = titles[titles.index(title_match) - 1]
+                        separator = matches.input_string[previous_title.end:title_match.start]
                         if len(separator) == 1 and '-' == separator \
                                 and previous_title.raw[-1] not in seps \
-                                and title.raw[0] not in seps:
-                            titles[titles.index(title) - 1].end = title.end
-                            titles.remove(title)
+                                and title_match.raw[0] not in seps:
+                            titles[titles.index(title_match) - 1].end = title_match.end
+                            titles.remove(title_match)
                         else:
-                            title.name = self.alternative_match_name
+                            title_match.name = self.alternative_match_name
 
                 else:
                     titles = [hole]
@@ -268,16 +296,16 @@ class PreferTitleWithYear(Rule):
         with_year = []
         titles = matches.named('title')
 
-        for title in titles:
-            filepart = matches.markers.at_match(title, lambda marker: marker.name == 'path', 0)
+        for title_match in titles:
+            filepart = matches.markers.at_match(title_match, lambda marker: marker.name == 'path', 0)
             if filepart:
                 year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
                 if year_match:
                     group = matches.markers.at_match(year_match, lambda group: group.name == 'group')
                     if group:
-                        with_year_in_group.append(title)
+                        with_year_in_group.append(title_match)
                     else:
-                        with_year.append(title)
+                        with_year.append(title_match)
 
         if with_year_in_group:
             title_values = set([title.value for title in with_year_in_group])
@@ -287,27 +315,7 @@ class PreferTitleWithYear(Rule):
             title_values = set([title.value for title in titles])
 
         to_remove = []
-        for title in titles:
-            if title.value not in title_values:
-                to_remove.append(title)
+        for title_match in titles:
+            if title_match.value not in title_values:
+                to_remove.append(title_match)
         return to_remove
-
-
-TITLE = Rebulk().rules(TitleFromPosition, PreferTitleWithYear)
-
-
-def expected_title(input_string, context):
-    """
-    Expected title functional pattern.
-    :param input_string:
-    :type input_string:
-    :param context:
-    :type context:
-    :return:
-    :rtype:
-    """
-    for search in context.get('expected_title'):
-        for start in find_all(input_string, search, ignore_case=True):
-            return start, len(search)
-
-TITLE.functional(expected_title, name='title', disabled=lambda context: not context.get('expected_title'))

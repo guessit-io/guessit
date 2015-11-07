@@ -1,18 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Film support
+film property
 """
 from __future__ import unicode_literals
 
 import regex as re
-from rebulk import Rebulk, AppendMatch, Rule
 
+from rebulk import Rebulk, AppendMatch, Rule
 from ..common.formatters import cleanup
 
-FILM = Rebulk().regex_defaults(flags=re.IGNORECASE)
 
-FILM.regex(r'f(\d+)', name='film', private_parent=True, children=True, formatter=int)
+def film():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE)
+
+    rebulk.regex(r'f(\d+)', name='film', private_parent=True, children=True, formatter=int)
+
+    rebulk.rules(FilmTitleRule)
+
+    return rebulk
 
 
 class FilmTitleRule(Rule):
@@ -29,6 +40,3 @@ class FilmTitleRule(Rule):
             if hole and hole.value:
                 hole.name = 'film_title'
                 return hole
-
-
-FILM.rules(FilmTitleRule)

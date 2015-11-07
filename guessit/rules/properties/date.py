@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Date and year
+date and year properties
 """
 from __future__ import unicode_literals
 
@@ -10,29 +10,35 @@ from rebulk import Rebulk, RemoveMatch, Rule
 from ..common.date import search_date, valid_year
 from ..common.validators import seps_surround
 
-DATE = Rebulk()
 
-DATE = Rebulk()
-DATE.defaults(validator=seps_surround)
-
-DATE.regex(r"\d{4}", name="year", formatter=int,
-           validator=lambda match: seps_surround(match) and valid_year(match.value))
-
-
-def date(string, context):
+def date():
     """
-    Search for date in the string and retrieves match
-
-    :param string:
-    :return:
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
     """
+    rebulk = Rebulk().defaults(validator=seps_surround)
 
-    ret = search_date(string, context.get('date_year_first'), context.get('date_day_first'))
-    if ret:
-        return ret[0], ret[1], {'value': ret[2]}
+    rebulk.regex(r"\d{4}", name="year", formatter=int,
+                 validator=lambda match: seps_surround(match) and valid_year(match.value))
 
+    def date_functional(string, context):
+        """
+        Search for date in the string and retrieves match
 
-DATE.functional(date, name="date")
+        :param string:
+        :return:
+        """
+
+        ret = search_date(string, context.get('date_year_first'), context.get('date_day_first'))
+        if ret:
+            return ret[0], ret[1], {'value': ret[2]}
+
+    rebulk.functional(date_functional, name="date")
+
+    rebulk.rules(KeepMarkedYearInFilepart)
+
+    return rebulk
 
 
 class KeepMarkedYearInFilepart(Rule):
@@ -63,6 +69,3 @@ class KeepMarkedYearInFilepart(Rule):
                         if len(ungroup_years) > 2:
                             ret.extend(ungroup_years[2:])
         return ret
-
-
-DATE.rules(KeepMarkedYearInFilepart)

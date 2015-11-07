@@ -1,44 +1,55 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-audio_codec and audio_profile property
+audio_codec, audio_profile and audio_channels property
 """
 from __future__ import unicode_literals
 
-from rebulk import Rebulk, Rule, RemoveMatch
 import regex as re
 
+from rebulk import Rebulk, Rule, RemoveMatch
 from ..common import dash
 from ..common.validators import seps_before, seps_after
 
-AUDIO_CODEC = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
-AUDIO_CODEC.defaults(name="audio_codec")
-
-AUDIO_CODEC.regex("MP3", "LAME", r"LAME(?:\d)+-?(?:\d)+", value="MP3")
-AUDIO_CODEC.regex("DolbyDigital", "DD", value="DolbyDigital")
-AUDIO_CODEC.regex("AAC", value="AAC")
-AUDIO_CODEC.regex("AC3", value="AC3")
-AUDIO_CODEC.regex("Flac", value="FLAC")
-AUDIO_CODEC.regex("DTS", value="DTS")
-AUDIO_CODEC.regex("True-?HD", value="True-HD")
-
-AUDIO_CODEC.defaults(name="audio_profile")
-AUDIO_CODEC.string("HD", value="HD", tags="DTS")
-AUDIO_CODEC.regex("HD-?MA", value="HDMA", tags="DTS")
-AUDIO_CODEC.string("HE", value="HE", tags="AAC")
-AUDIO_CODEC.string("LC", value="LC", tags="AAC")
-AUDIO_CODEC.string("HQ", value="HQ", tags="AC3")
-
-AUDIO_CODEC.defaults(name="audio_channels")
-AUDIO_CODEC.regex(r'(7[\W_]1)(?:[^\d]|$)', value='7.1', children=True)
-AUDIO_CODEC.regex(r'(5[\W_]1)(?:[^\d]|$)', value='5.1', children=True)
-AUDIO_CODEC.regex(r'(2[\W_]0)(?:[^\d]|$)', value='2.0', children=True)
-AUDIO_CODEC.string('7ch', '8ch', value='7.1')
-AUDIO_CODEC.string('5ch', '6ch', value='5.1')
-AUDIO_CODEC.string('2ch', 'stereo', value='2.0')
-AUDIO_CODEC.string('1ch', 'mono', value='1.0')
-
 audio_properties = ['audio_codec', 'audio_profile', 'audio_channels']
+
+
+def audio_codec():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
+    rebulk.defaults(name="audio_codec")
+
+    rebulk.regex("MP3", "LAME", r"LAME(?:\d)+-?(?:\d)+", value="MP3")
+    rebulk.regex("DolbyDigital", "DD", value="DolbyDigital")
+    rebulk.regex("AAC", value="AAC")
+    rebulk.regex("AC3", value="AC3")
+    rebulk.regex("Flac", value="FLAC")
+    rebulk.regex("DTS", value="DTS")
+    rebulk.regex("True-?HD", value="True-HD")
+
+    rebulk.defaults(name="audio_profile")
+    rebulk.string("HD", value="HD", tags="DTS")
+    rebulk.regex("HD-?MA", value="HDMA", tags="DTS")
+    rebulk.string("HE", value="HE", tags="AAC")
+    rebulk.string("LC", value="LC", tags="AAC")
+    rebulk.string("HQ", value="HQ", tags="AC3")
+
+    rebulk.defaults(name="audio_channels")
+    rebulk.regex(r'(7[\W_]1)(?:[^\d]|$)', value='7.1', children=True)
+    rebulk.regex(r'(5[\W_]1)(?:[^\d]|$)', value='5.1', children=True)
+    rebulk.regex(r'(2[\W_]0)(?:[^\d]|$)', value='2.0', children=True)
+    rebulk.string('7ch', '8ch', value='7.1')
+    rebulk.string('5ch', '6ch', value='5.1')
+    rebulk.string('2ch', 'stereo', value='2.0')
+    rebulk.string('1ch', 'mono', value='1.0')
+
+    rebulk.rules(DtsRule, AacRule, Ac3Rule, AudioValidatorRule, HqConflictRule)
+
+    return rebulk
 
 
 class AudioValidatorRule(Rule):
@@ -54,12 +65,13 @@ class AudioValidatorRule(Rule):
         audio_list = matches.range(predicate=lambda match: match.name in audio_properties)
         for audio in audio_list:
             if not seps_before(audio):
-                valid_before = matches.range(audio.start-1, audio.start, lambda match: match.name in audio_properties)
+                valid_before = matches.range(audio.start - 1, audio.start,
+                                             lambda match: match.name in audio_properties)
                 if not valid_before:
                     ret.append(audio)
                     continue
             if not seps_after(audio):
-                valid_after = matches.range(audio.end, audio.end+1,
+                valid_after = matches.range(audio.end, audio.end + 1,
                                             lambda match: match.name in audio_properties)
                 if not valid_after:
                     ret.append(audio)
@@ -84,12 +96,10 @@ class AudioProfileRule(Rule):
         profile_list = matches.named('audio_profile', lambda match: self.codec in match.tags)
         ret = []
         for profile in profile_list:
-            audio_codec = matches.previous(profile,
-                                           lambda match: match.name == 'audio_codec' and match.value == self.codec)
-            if not audio_codec:
-                audio_codec = matches.next(profile,
-                                           lambda match: match.name == 'audio_codec' and match.value == self.codec)
-            if not audio_codec:
+            codec = matches.previous(profile, lambda match: match.name == 'audio_codec' and match.value == self.codec)
+            if not codec:
+                codec = matches.next(profile, lambda match: match.name == 'audio_codec' and match.value == self.codec)
+            if not codec:
                 ret.append(profile)
         return ret
 
@@ -121,9 +131,6 @@ class Ac3Rule(AudioProfileRule):
         super(Ac3Rule, self).__init__("AC3")
 
 
-AUDIO_CODEC.rules(DtsRule, AacRule, Ac3Rule, AudioValidatorRule)
-
-
 class HqConflictRule(Rule):
     """
     Solve conflict between HQ from other property and from audio_profile.
@@ -139,5 +146,3 @@ class HqConflictRule(Rule):
 
         if hq_other:
             return hq_other
-
-AUDIO_CODEC.rules(HqConflictRule)

@@ -7,36 +7,42 @@ from __future__ import unicode_literals
 
 from rebulk import Rebulk
 
-GROUPS_MARKER = Rebulk()
-GROUPS_MARKER.defaults(name="group", marker=True)
 
-starting = '([{'
-ending = ')]}'
-
-
-def mark_groups(input_string):
+def groups():
     """
-    Functional pattern to mark groups (...), [...] and {...}.
-
-    :param input_string:
-    :return:
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
     """
-    openings = ([], [], [])
-    i = 0
+    rebulk = Rebulk()
+    rebulk.defaults(name="group", marker=True)
 
-    ret = []
-    for char in input_string:
-        start_type = starting.find(char)
-        if start_type > -1:
-            openings[start_type].append(i)
+    starting = '([{'
+    ending = ')]}'
 
-        i += 1
+    def mark_groups(input_string):
+        """
+        Functional pattern to mark groups (...), [...] and {...}.
 
-        end_type = ending.find(char)
-        if end_type > -1:
-            start_index = openings[end_type].pop()
-            ret.append((start_index, i))
-    return ret
+        :param input_string:
+        :return:
+        """
+        openings = ([], [], [])
+        i = 0
 
+        ret = []
+        for char in input_string:
+            start_type = starting.find(char)
+            if start_type > -1:
+                openings[start_type].append(i)
 
-GROUPS_MARKER.functional(mark_groups)
+            i += 1
+
+            end_type = ending.find(char)
+            if end_type > -1:
+                start_index = openings[end_type].pop()
+                ret.append((start_index, i))
+        return ret
+
+    rebulk.functional(mark_groups)
+    return rebulk

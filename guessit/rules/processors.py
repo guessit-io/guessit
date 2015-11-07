@@ -7,16 +7,15 @@ from __future__ import unicode_literals
 
 from collections import defaultdict
 import copy
-from rebulk import Rebulk
 
+import six
+
+from rebulk import Rebulk
 from .common.formatters import strip
 from .common.comparators import marker_sorted
 from .common.date import valid_year
-
 from .properties.type import type_processor
 from .properties.mimetype import mimetype_processor
-
-import six
 
 
 def remove_ambiguous(matches):
@@ -165,6 +164,12 @@ def enlarge_group_matches(matches):
             matches.append(match)
 
 
-PROCESSORS = Rebulk().processor(enlarge_group_matches).post_processor(equivalent_holes, remove_ambiguous,
-                                                                      country_in_title, season_year, mimetype_processor,
-                                                                      type_processor)
+def processors():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    return Rebulk().processor(enlarge_group_matches).post_processor(equivalent_holes, remove_ambiguous,
+                                                                    country_in_title, season_year, mimetype_processor,
+                                                                    type_processor)

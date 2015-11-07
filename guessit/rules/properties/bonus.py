@@ -1,25 +1,35 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Bonus support
+bonus property
 """
 from __future__ import unicode_literals
 
 import regex as re
+
 from guessit.rules.properties.title import TitleFromPosition
 from rebulk import Rebulk, AppendMatch, Rule
-
 from ..common.formatters import cleanup
 from ..common.validators import seps_surround
 
-BONUS = Rebulk().regex_defaults(flags=re.IGNORECASE)
 
+def bonus():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE)
 
-BONUS.regex(r'x(\d+)', name='bonus', private_parent=True, children=True, formatter=int,
-            validator={'__parent__': lambda match: seps_surround},
-            conflict_solver=lambda match, conflicting: match
-            if conflicting.name in ['video_codec', 'episode'] and 'bonus-conflict' not in conflicting.tags
-            else '__default__')
+    rebulk.regex(r'x(\d+)', name='bonus', private_parent=True, children=True, formatter=int,
+                 validator={'__parent__': lambda match: seps_surround},
+                 conflict_solver=lambda match, conflicting: match
+                 if conflicting.name in ['video_codec', 'episode'] and 'bonus-conflict' not in conflicting.tags
+                 else '__default__')
+
+    rebulk.rules(BonusTitleRule)
+
+    return rebulk
 
 
 class BonusTitleRule(Rule):
@@ -37,6 +47,3 @@ class BonusTitleRule(Rule):
             if hole and hole.value:
                 hole.name = 'bonus_title'
                 return hole
-
-
-BONUS.rules(BonusTitleRule)

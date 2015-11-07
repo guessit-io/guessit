@@ -1,49 +1,80 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-format property
+other property
 """
 from __future__ import unicode_literals
 
 import copy
 
-from rebulk import Rebulk, Rule, RemoveMatch
 import regex as re
 
+from rebulk import Rebulk, Rule, RemoveMatch
 from ..common import dash
 from ..common import seps
 from ..common.validators import seps_surround
 from guessit.rules.common.formatters import raw_cleanup
 
-OTHER = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
-OTHER.defaults(name="other", validator=seps_surround)
 
-OTHER.regex('Audio-?Fix', 'Audio-?Fixed', value='AudioFix')
-OTHER.regex('Sync-?Fix', 'Sync-?Fixed', value='SyncFix')
-OTHER.regex('Dual-?Audio', value='DualAudio')
-OTHER.regex('ws', 'wide-?screen', value='WideScreen')
-OTHER.string('Netflix', 'NF', value='Netflix')
+def other():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
+    rebulk.defaults(name="other", validator=seps_surround)
 
-OTHER.string('Real', 'Fix', value='Proper', tags=['has-neighbor-before', 'has-neighbor-after'])
-OTHER.string('Proper', 'Repack', 'Rerip', value='Proper')
-OTHER.string('Fansub', value='Fansub', tags='has-neighbor')
-OTHER.string('Fastsub', value='Fastsub', tags='has-neighbor')
+    rebulk.regex('Audio-?Fix', 'Audio-?Fixed', value='AudioFix')
+    rebulk.regex('Sync-?Fix', 'Sync-?Fixed', value='SyncFix')
+    rebulk.regex('Dual-?Audio', value='DualAudio')
+    rebulk.regex('ws', 'wide-?screen', value='WideScreen')
+    rebulk.string('Netflix', 'NF', value='Netflix')
 
-OTHER.regex('(?:Seasons?-)?Complete', value='Complete', tags=['release-group-prefix'],
-            validator=lambda match: seps_surround(match) and match.raw.lower().strip(seps) != "complete")
-OTHER.string('R5', 'RC', value='R5')
-OTHER.regex('Pre-?Air', value='Preair')
+    rebulk.string('Real', 'Fix', value='Proper', tags=['has-neighbor-before', 'has-neighbor-after'])
+    rebulk.string('Proper', 'Repack', 'Rerip', value='Proper')
+    rebulk.string('Fansub', value='Fansub', tags='has-neighbor')
+    rebulk.string('Fastsub', value='Fastsub', tags='has-neighbor')
 
-for value in ('Screener', 'Remux', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC', 'CC', 'LD',
-              'MD'):
-    OTHER.string(value, value=value)
+    rebulk.regex('(?:Seasons?-)?Complete', value='Complete', tags=['release-group-prefix'],
+                 validator=lambda match: seps_surround(match) and match.raw.lower().strip(seps) != "complete")
+    rebulk.string('R5', 'RC', value='R5')
+    rebulk.regex('Pre-?Air', value='Preair')
 
-for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL'):
-    OTHER.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
+    for value in (
+            'Screener', 'Remux', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC', 'CC', 'LD',
+            'MD'):
+        rebulk.string(value, value=value)
 
-OTHER.string('VO', 'OV', value='OV', tags='has-neighbor')
+    for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL'):
+        rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
 
-OTHER.regex('Scr(?:eener)?', value='Screener', validator=None, tags='other.validate.screener')
+    rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')
+
+    rebulk.regex('Scr(?:eener)?', value='Screener', validator=None, tags='other.validate.screener')
+
+    rebulk.rules(ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore, ValidateScreenerRule)
+
+    rebulk.post_processor(proper_count)
+
+    return rebulk
+
+
+def proper_count(matches):
+    """
+    Add properCount property
+    :param matches:
+    :return:
+    """
+    propers = matches.named('other', lambda match: match.value == 'Proper')
+    if propers:
+        raws = {}  # Count distinct raw values
+        for proper in propers:
+            raws[raw_cleanup(proper.raw)] = proper
+        proper_count_match = copy.copy(propers[-1])
+        proper_count_match.name = 'properCount'
+        proper_count_match.value = len(raws)
+        matches.append(proper_count_match)
 
 
 class ValidateHasNeighbor(Rule):
@@ -122,26 +153,3 @@ class ValidateScreenerRule(Rule):
             if not format_match or matches.input_string[format_match.end:screener.start].strip(seps):
                 ret.append(screener)
         return ret
-
-
-OTHER.rules(ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore, ValidateScreenerRule)
-
-
-def proper_count(matches):
-    """
-    Add properCount property
-    :param matches:
-    :return:
-    """
-    propers = matches.named('other', lambda match: match.value == 'Proper')
-    if propers:
-        raws = {}  # Count distinct raw values
-        for proper in propers:
-            raws[raw_cleanup(proper.raw)] = proper
-        proper_count_match = copy.copy(propers[-1])
-        proper_count_match.name = 'properCount'
-        proper_count_match.value = len(raws)
-        matches.append(proper_count_match)
-
-
-OTHER.post_processor(proper_count)

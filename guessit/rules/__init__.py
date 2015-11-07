@@ -1,62 +1,71 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Rebulk configuration for guessit
+Rebulk object default builder
 """
 from __future__ import unicode_literals
 
 from rebulk import Rebulk
 
-from .markers.path import PATH_MARKER
-from .markers.groups import GROUPS_MARKER
+from .markers.path import path
+from .markers.groups import groups
 
-from .properties.episodes import EPISODES
-from .properties.container import CONTAINER
-from .properties.format import FORMAT
-from .properties.video_codec import VIDEO_CODEC
-from .properties.audio_codec import AUDIO_CODEC
-from .properties.screen_size import SCREEN_SIZE
-from .properties.website import WEBSITE
-from .properties.date import DATE
-from .properties.title import TITLE
-from .properties.episode_title import EPISODE_TITLE
-from .properties.language import LANGUAGE
-from .properties.country import COUNTRY
-from .properties.release_group import RELEASE_GROUP
-from .properties.other import OTHER
-from .properties.edition import EDITION
-from .properties.cds import CDS
-from .properties.bonus import BONUS
-from .properties.film import FILM
-from .properties.part import PART
-from .properties.crc import CRC
+from .properties.episodes import episodes
+from .properties.container import container
+from .properties.format import format_
+from .properties.video_codec import video_codec
+from .properties.audio_codec import audio_codec
+from .properties.screen_size import screen_size
+from .properties.website import website
+from .properties.date import date
+from .properties.title import title
+from .properties.episode_title import episode_title
+from .properties.language import language
+from .properties.country import country
+from .properties.release_group import release_group
+from .properties.other import other
+from .properties.edition import edition
+from .properties.cds import cds
+from .properties.bonus import bonus
+from .properties.film import film
+from .properties.part import part
+from .properties.crc import crc
 
-from .processors import PROCESSORS
+from .processors import processors
 
-REBULK = Rebulk()
 
-REBULK.rebulk(PATH_MARKER)
-REBULK.rebulk(GROUPS_MARKER)
+def rebulk_builder():
+    """
+    Default builder for main Rebulk object used by api.
+    :return: Main Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk()
 
-REBULK.rebulk(EPISODES)
-REBULK.rebulk(CONTAINER)
-REBULK.rebulk(FORMAT)
-REBULK.rebulk(VIDEO_CODEC)
-REBULK.rebulk(AUDIO_CODEC)
-REBULK.rebulk(SCREEN_SIZE)
-REBULK.rebulk(WEBSITE)
-REBULK.rebulk(DATE)
-REBULK.rebulk(TITLE)
-REBULK.rebulk(EPISODE_TITLE)
-REBULK.rebulk(LANGUAGE)
-REBULK.rebulk(COUNTRY)
-REBULK.rebulk(RELEASE_GROUP)
-REBULK.rebulk(OTHER)
-REBULK.rebulk(EDITION)
-REBULK.rebulk(CDS)
-REBULK.rebulk(BONUS)
-REBULK.rebulk(FILM)
-REBULK.rebulk(PART)
-REBULK.rebulk(CRC)
+    rebulk.rebulk(path())
+    rebulk.rebulk(groups())
 
-REBULK.rebulk(PROCESSORS)
+    rebulk.rebulk(episodes())
+    rebulk.rebulk(container())
+    rebulk.rebulk(format_())
+    rebulk.rebulk(video_codec())
+    rebulk.rebulk(audio_codec())
+    rebulk.rebulk(screen_size())
+    rebulk.rebulk(website())
+    rebulk.rebulk(date())
+    rebulk.rebulk(title())
+    rebulk.rebulk(episode_title())
+    rebulk.rebulk(language())
+    rebulk.rebulk(country())
+    rebulk.rebulk(release_group())
+    rebulk.rebulk(other())
+    rebulk.rebulk(edition())
+    rebulk.rebulk(cds())
+    rebulk.rebulk(bonus())
+    rebulk.rebulk(film())
+    rebulk.rebulk(part())
+    rebulk.rebulk(crc())
+
+    rebulk.rebulk(processors())
+
+    return rebulk

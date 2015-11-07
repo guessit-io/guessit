@@ -6,11 +6,25 @@ Episode title
 from __future__ import unicode_literals
 
 from collections import defaultdict
-from guessit.rules.common import seps, title_seps
-from guessit.rules.properties.title import TitleFromPosition, TitleBaseRule
-from rebulk import Rebulk, Rule, AppendMatch, RenameMatch
 
+from rebulk import Rebulk, Rule, AppendMatch, RenameMatch
+from ..common import seps, title_seps
+from ..properties.title import TitleFromPosition, TitleBaseRule
 from ..common.formatters import cleanup
+
+
+def episode_title():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    rebulk = Rebulk().rules(EpisodeTitleFromPosition,
+                            AlternativeTitleReplace,
+                            TitleToEpisodeTitle,
+                            Filepart3EpisodeTitle,
+                            Filepart2EpisodeTitle)
+    return rebulk
 
 
 class TitleToEpisodeTitle(Rule):
@@ -41,10 +55,10 @@ class TitleToEpisodeTitle(Rule):
             return episode_titles
 
     def then(self, matches, when_response, context):
-        for episode_title in when_response:
-            matches.remove(episode_title)
-            episode_title.name = 'episode_title'
-            matches.append(episode_title)
+        for title in when_response:
+            matches.remove(title)
+            title.name = 'episode_title'
+            matches.append(title)
 
 
 class EpisodeTitleFromPosition(TitleBaseRule):
@@ -105,7 +119,8 @@ class AlternativeTitleReplace(Rule):
                 episode = matches.previous(main_title,
                                            lambda previous: any(name in previous.names
                                                                 for name in ['episode', 'episode_details',
-                                                                             'episode_count', 'season', 'seasonCount',
+                                                                             'episode_count', 'season',
+                                                                             'seasonCount',
                                                                              'date', 'title', 'year']),
                                            0)
 
@@ -147,7 +162,8 @@ class Filepart3EpisodeTitle(Rule):
 
             if season:
                 hole = matches.holes(subdirectory.start, subdirectory.end,
-                                     formatter=cleanup, seps=title_seps, predicate=lambda match: match.value, index=0)
+                                     formatter=cleanup, seps=title_seps, predicate=lambda match: match.value,
+                                     index=0)
                 if hole:
                     return hole
 
@@ -180,10 +196,3 @@ class Filepart2EpisodeTitle(Rule):
                                      predicate=lambda match: match.value, index=0)
                 if hole:
                     return hole
-
-
-EPISODE_TITLE = Rebulk().rules(EpisodeTitleFromPosition,
-                               AlternativeTitleReplace,
-                               TitleToEpisodeTitle,
-                               Filepart3EpisodeTitle,
-                               Filepart2EpisodeTitle)

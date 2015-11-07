@@ -1,19 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Release group
+release_group property
 """
 from __future__ import unicode_literals
 
 import copy
+
 from guessit.rules.common.validators import int_coercable
 from guessit.rules.properties.title import TitleFromPosition
-
 from rebulk import Rebulk, Rule, AppendMatch
-
 from ..common.formatters import cleanup
 from ..common import seps
 from ..common.comparators import marker_sorted
+
+
+def release_group():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    return Rebulk().rules(SceneReleaseGroup, AnimeReleaseGroup)
+
 
 forbidden_groupnames = ['rip', 'by', 'for', 'par', 'pour', 'bonus']
 
@@ -67,7 +76,7 @@ class SceneReleaseGroup(Rule):
                 previous_match = matches.previous(last_hole, index=0)
                 if previous_match and (previous_match.name in _scene_previous_names or
                                        any(tag in previous_match.tags for tag in _scene_previous_tags)) and \
-                        not matches.input_string[previous_match.end:last_hole.start].strip(seps)\
+                        not matches.input_string[previous_match.end:last_hole.start].strip(seps) \
                         and not int_coercable(last_hole.value.strip(seps)):
 
                     last_hole.name = 'release_group'
@@ -106,18 +115,16 @@ class AnimeReleaseGroup(Rule):
             # pylint:disable=bad-continuation
             empty_group_marker = matches.markers \
                 .range(filepart.start, filepart.end, lambda marker: marker.name == 'group'
-                       and not matches.range(marker.start, marker.end)
-                       and not int_coercable(marker.value.strip(seps)), 0)
+                                                                    and not matches.range(marker.start, marker.end)
+                                                                    and not int_coercable(marker.value.strip(seps)),
+                       0)
 
             if empty_group_marker:
-                release_group = copy.copy(empty_group_marker)
-                release_group.marker = False
-                release_group.raw_start += 1
-                release_group.raw_end -= 1
-                release_group.tags = ['anime']
-                release_group.name = 'release_group'
-                ret.append(release_group)
+                group = copy.copy(empty_group_marker)
+                group.marker = False
+                group.raw_start += 1
+                group.raw_end -= 1
+                group.tags = ['anime']
+                group.name = 'release_group'
+                ret.append(group)
         return ret
-
-
-RELEASE_GROUP = Rebulk().rules(SceneReleaseGroup, AnimeReleaseGroup)
