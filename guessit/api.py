@@ -22,6 +22,7 @@ def guessit(string, options=None):
     :return:
     :rtype:
     """
-    assert isinstance(string, six.text_type), "guessit input must be %s." % six.text_type.__name__
+    if not isinstance(string, six.text_type):
+        raise TypeError("guessit input must be %s." % six.text_type.__name__)
     options = parse_options(options)
     return REBULK.matches(string, options).to_dict(options.get('advanced', False))

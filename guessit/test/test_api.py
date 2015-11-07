@@ -22,5 +22,5 @@ def test_unicode():
 
 
 def test_main_non_unicode():
-    with pytest.raises(AssertionError):
+    with pytest.raises(TypeError):
         guessit(b'Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
