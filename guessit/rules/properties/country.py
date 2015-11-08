@@ -25,7 +25,8 @@ def country():
                       conflict_solver=lambda match, other: match
                       if other.name != 'language' or match.value not in [babelfish.Country('US'),
                                                                          babelfish.Country('GB')]
-                      else other)
+                      else other,
+                      properties={'country': [None]})
 
     return rebulk
 

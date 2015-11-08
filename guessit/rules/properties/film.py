@@ -32,6 +32,8 @@ class FilmTitleRule(Rule):
     """
     consequence = AppendMatch
 
+    properties = {'film_title': [None]}
+
     def when(self, matches, context):
         bonus_number = matches.named('film', lambda match: not match.private, index=0)
         if bonus_number:

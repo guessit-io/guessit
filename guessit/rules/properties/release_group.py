@@ -63,6 +63,8 @@ class SceneReleaseGroup(Rule):
     dependency = TitleFromPosition
     consequence = AppendMatch
 
+    properties = {'release_group': [None]}
+
     def when(self, matches, context):
         ret = []
 
@@ -102,6 +104,8 @@ class AnimeReleaseGroup(Rule):
     """
     dependency = [SceneReleaseGroup, TitleFromPosition]
     consequence = AppendMatch
+
+    properties = {'release_group': [None]}
 
     def when(self, matches, context):
         ret = []

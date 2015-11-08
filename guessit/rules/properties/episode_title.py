@@ -72,7 +72,7 @@ class EpisodeTitleFromPosition(TitleBaseRule):
         episode = matches.previous(hole,
                                    lambda previous: any(name in previous.names
                                                         for name in ['episode', 'episode_details',
-                                                                     'episode_count', 'season', 'seasonCount',
+                                                                     'episode_count', 'season', 'season_count',
                                                                      'date', 'title', 'year']),
                                    0)
 
@@ -120,7 +120,7 @@ class AlternativeTitleReplace(Rule):
                                            lambda previous: any(name in previous.names
                                                                 for name in ['episode', 'episode_details',
                                                                              'episode_count', 'season',
-                                                                             'seasonCount',
+                                                                             'season_count',
                                                                              'date', 'title', 'year']),
                                            0)
 

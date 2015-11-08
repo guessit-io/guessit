@@ -57,6 +57,10 @@ def build_argument_parser():
 
 
     information_opts = opts.add_argument_group("Information")
+    information_opts.add_argument('-p', '--properties', dest='properties', action='store_true', default=False,
+                                  help='Display properties that can be guessed.')
+    information_opts.add_argument('-V', '--values', dest='values', action='store_true', default=False,
+                                  help='Display property values that can be guessed.')
     information_opts.add_argument('--version', dest='version', action='store_true', default=False,
                                   help='Display the guessit version.')
 

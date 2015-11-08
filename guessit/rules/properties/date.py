@@ -34,7 +34,7 @@ def date():
         if ret:
             return ret[0], ret[1], {'value': ret[2]}
 
-    rebulk.functional(date_functional, name="date")
+    rebulk.functional(date_functional, name="date", properties={'date': [None]})
 
     rebulk.rules(KeepMarkedYearInFilepart)
 

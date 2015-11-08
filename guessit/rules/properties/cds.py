@@ -23,11 +23,13 @@ def cds():
                  validator={'cd': lambda match: match.value > 0, 'cd_count': lambda match: match.value > 0},
                  formatter={'cd': int, 'cd_count': int},
                  children=True,
-                 private_parent=True)
+                 private_parent=True,
+                 properties={'cd': [None], 'cd_count': [None]})
     rebulk.regex(r'(?P<cd_count>\d+)-?cds?',
                  validator={'cd': lambda match: match.value > 0, 'cd_count': lambda match: match.value > 0},
                  formatter={'cd_count': int},
                  children=True,
-                 private_parent=True)
+                 private_parent=True,
+                 properties={'cd': [None], 'cd_count': [None]})
 
     return rebulk

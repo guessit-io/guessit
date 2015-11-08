@@ -28,7 +28,7 @@ def language():
                   validator=seps_surround)
     rebulk.string(*subtitle_suffixes, name="subtitle_language.suffix", ignore_case=True, private=True,
                   validator=seps_surround)
-    rebulk.functional(find_languages)
+    rebulk.functional(find_languages, properties={'language': [None]})
     rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
 
     return rebulk
@@ -165,6 +165,8 @@ class SubtitlePrefixLanguageRule(Rule):
     """
     consequence = RemoveMatch
 
+    properties = {'subtitle_language': [None]}
+
     def when(self, matches, context):
         to_rename = []
         to_remove = matches.named('subtitle_language.prefix')
@@ -207,6 +209,8 @@ class SubtitleSuffixLanguageRule(Rule):
     dependency = SubtitlePrefixLanguageRule
     consequence = RemoveMatch
 
+    properties = {'subtitle_language': [None]}
+
     def when(self, matches, context):
         to_append = []
         to_remove = matches.named('subtitle_language.suffix')
@@ -232,6 +236,8 @@ class SubtitleExtensionRule(Rule):
     Convert language guess as subtitle_language if next match is a subtitle extension
     """
     consequence = RenameMatch('subtitle_language')
+
+    properties = {'subtitle_language': [None]}
 
     def when(self, matches, context):
         subtitle_extension = matches.named('container',

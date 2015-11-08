@@ -789,7 +789,7 @@
   episode: 3
   format: HDTV
   season: 2
-  seasonCount: 5
+  season_count: 5
   title: Something
   episode_title: Title
   container: torrent
@@ -798,7 +798,7 @@
 : format: HDTV
   other: Complete
   season: 3
-  seasonCount: 5
+  season_count: 5
   title: Something Other
   container: torrent
 

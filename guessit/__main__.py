@@ -6,39 +6,18 @@ Entry point module
 # pragma: no cover
 from __future__ import print_function, unicode_literals
 
-from collections import OrderedDict
 import os
 import logging
 import json
 import sys
 import six
-
-from rebulk.match import Match
+from guessit.jsonutils import GuessitEncoder
 
 from guessit.__version__ import __version__
 from guessit.options import argument_parser
-from guessit.api import guessit
+from guessit import api
 
 from io import open  #pylint:disable=redefined-builtin
-
-class GuessitEncoder(json.JSONEncoder):
-    """
-    JSON Encoder for guessit response
-    """
-
-    def default(self, o):  # pylint:disable=method-hidden
-        if isinstance(o, Match):
-            ret = OrderedDict()
-            ret['value'] = o.value
-            if o.raw:
-                ret['raw'] = o.raw
-            ret['start'] = o.start
-            ret['end'] = o.end
-            return ret
-        elif hasattr(o, 'name'):  # Babelfish languages/countries long name
-            return o.name
-        else:
-            return str(o)
 
 
 def guess_filename(filename, options):
@@ -48,7 +27,7 @@ def guess_filename(filename, options):
     if not options.yaml and not options.json and not options.show_property:
         print('For:', filename)
 
-    guess = guessit(filename, vars(options))
+    guess = api.guessit(filename, vars(options))
 
     if options.show_property:
         print(guess.get(options.show_property, ''))
@@ -58,7 +37,10 @@ def guess_filename(filename, options):
         print(json.dumps(guess, cls=GuessitEncoder, ensure_ascii=False))
     elif options.yaml:
         import yaml
-        ystr = yaml.safe_dump({filename: dict(guess)}, default_flow_style=False, allow_unicode=True)
+        from guessit import yamlutils
+
+        ystr = yaml.dump({filename: dict(guess)}, Dumper=yamlutils.CustomDumper, default_flow_style=False,
+                         allow_unicode=True)
         i = 0
         for yline in ystr.splitlines():
             if i == 0:
@@ -70,6 +52,37 @@ def guess_filename(filename, options):
             i += 1
     else:
         print('GuessIt found:', json.dumps(guess, cls=GuessitEncoder, indent=4, ensure_ascii=False))
+
+
+def display_properties(options):
+    """
+    Display properties
+    """
+    properties = api.properties(options)
+
+    if options.json:
+        if options.values:
+            print(json.dumps(properties, ensure_ascii=False))
+        else:
+            print(json.dumps(properties.keys(), ensure_ascii=False))
+    elif options.yaml:
+        import yaml
+        from guessit import yamlutils
+        if options.values:
+            print(yaml.dump(properties, Dumper=yamlutils.CustomDumper, default_flow_style=False, allow_unicode=True))
+        else:
+            print(yaml.dump(properties.keys(), Dumper=yamlutils.CustomDumper, default_flow_style=False,
+                            allow_unicode=True))
+    else:
+        print('GuessIt properties:')
+
+        properties_list = sorted(properties.keys())
+        for property_name in properties_list:
+            property_values = properties.get(property_name)
+            print(2 * ' ' + '[+] %s' % (property_name,))
+            if property_values and options.values:
+                for property_value in property_values:
+                    print(4 * ' ' + '[!] %s' % (property_value,))
 
 
 def main(args=None):  # pylint:disable=too-many-branches
@@ -101,15 +114,13 @@ def main(args=None):  # pylint:disable=too-many-branches
         print('+-------------------------------------------------------+')
         help_required = False
 
+    if options.properties or options.values:
+        display_properties(options)
+        help_required = False
+
     if options.yaml:
         try:
-            import yaml, babelfish
-            def default_representer(dumper, data):
-                """Default representer"""
-                return dumper.represent_str(str(data))
-
-            yaml.SafeDumper.add_representer(babelfish.Language, default_representer)
-            yaml.SafeDumper.add_representer(babelfish.Country, default_representer)
+            import yaml  # pylint:disable=unused-variable
         except ImportError:  # pragma: no cover
             options.yaml = False
             print('PyYAML not found. Using default output.')

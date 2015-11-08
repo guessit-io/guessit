@@ -82,7 +82,7 @@ Some options have been removed.
 
   Features related to this option have been removed.
 
-- ``-c, --split-camel``, ``-u, --unidentified``, ``-b, --bug``, ``-p, --properties``, ``-V, --values``
+- ``-c, --split-camel``, ``-u, --unidentified``, ``-b, --bug``
 
   Will be back soon... (work in progress)
 

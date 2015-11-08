@@ -24,6 +24,7 @@ def episodes():
     """
     rebulk = Rebulk()
     rebulk.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
+    rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator'])
 
     # 01x02, 01x02x03x04
     rebulk.regex(r'(?P<season>\d+)x(?P<episode>\d+)' +
@@ -47,7 +48,8 @@ def episodes():
         rebulk.string(episode_detail, value=episode_detail, name='episode_details')
     rebulk.regex(r'Extras?', name='episode_details', value='Extras')
 
-    rebulk.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
+    rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator'],
+                    validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
     season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series']
     episode_words = ['episode', 'episodes', 'ep']
@@ -76,7 +78,8 @@ def episodes():
                  validator=None,
                  formatter={'season': int, 'other': lambda match: 'Complete'})
 
-    rebulk.defaults(validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
+    rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator'], validate_all=True,
+                    validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
     # 12, 13
     rebulk.regex(r'(?P<episode>\d{2})' +
@@ -128,7 +131,7 @@ def episodes():
 
     rebulk.regex(r'v(?P<version>\d+)', children=True, private_parent=True, formatter=int)
 
-    rebulk.defaults()
+    rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator'])
 
     # detached of X count (season/episode)
     rebulk.regex(r'(?P<episode>\d+)?-?\L<of_words>-?(?P<count>\d+)-?\L<episode_words>?', of_words=of_words,
@@ -153,7 +156,9 @@ class CountValidator(Rule):
     Validate count property and rename it
     """
     priority = 64
-    consequence = [RemoveMatch, RenameMatch('episode_count'), RenameMatch('seasonCount')]
+    consequence = [RemoveMatch, RenameMatch('episode_count'), RenameMatch('season_count')]
+
+    properties = {'episode_count': [None], 'season_count': [None]}
 
     def when(self, matches, context):
         to_remove = []
@@ -189,6 +194,7 @@ class EpisodeNumberSeparatorRange(Rule):
             if previous_match and next_match and separator.value == '-':
                 for episode_number in range(previous_match.value + 1, next_match.value):
                     match = copy.copy(separator)
+                    match.private = False
                     match.name = 'episode'
                     match.value = episode_number
                     to_append.append(match)
@@ -213,6 +219,7 @@ class SeasonSeparatorRange(Rule):
             if separator.value == '-':
                 for episode_number in range(previous_match.value + 1, next_match.value):
                     match = copy.copy(separator)
+                    match.private = False
                     match.name = 'season'
                     match.value = episode_number
                     to_append.append(match)

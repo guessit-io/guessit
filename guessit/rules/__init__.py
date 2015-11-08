@@ -30,6 +30,8 @@ from .properties.bonus import bonus
 from .properties.film import film
 from .properties.part import part
 from .properties.crc import crc
+from .properties.mimetype import mimetype
+from .properties.type import type_
 
 from .processors import processors
 
@@ -67,5 +69,8 @@ def rebulk_builder():
     rebulk.rebulk(crc())
 
     rebulk.rebulk(processors())
+
+    rebulk.rebulk(mimetype())
+    rebulk.rebulk(type_())
 
     return rebulk

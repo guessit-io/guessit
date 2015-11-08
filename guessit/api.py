@@ -4,15 +4,13 @@
 API functions that can be used by external software
 """
 from __future__ import unicode_literals
+from collections import OrderedDict
 
 import six
 
 from .rules import rebulk_builder
-
 from .options import parse_options
-
-builder = rebulk_builder
-api = None
+from rebulk.introspector import introspect
 
 
 def guessit(string, options=None):
@@ -25,16 +23,25 @@ def guessit(string, options=None):
     :return:
     :rtype:
     """
-    global api  #pylint:disable=global-statement
-    if not api:
-        api = GuessItApi(builder())
-    return api.guessit(string, options)
+    return default_api.guessit(string, options)
+
+
+def properties(options=None):
+    """
+    Retrieves all properties with possible values that can be guessed
+    :param options:
+    :type options:
+    :return:
+    :rtype:
+    """
+    return default_api.properties(options)
 
 
 class GuessItApi(object):
     """
     An api class that can be configured with custom Rebulk configuration.
     """
+
     def __init__(self, rebulk):
         """
         :param rebulk: Rebulk instance to use.
@@ -58,3 +65,20 @@ class GuessItApi(object):
             raise TypeError("guessit input must be %s." % six.text_type.__name__)
         options = parse_options(options)
         return self.rebulk.matches(string, options).to_dict(options.get('advanced', False))
+
+    def properties(self, options=None):
+        """
+        Grab properties and values that can be generated.
+        :param options:
+        :type options:
+        :return:
+        :rtype:
+        """
+        unordered = introspect(self.rebulk, options).properties
+        ordered = OrderedDict()
+        for k in sorted(unordered.keys(), key=six.text_type):
+            ordered[k] = list(sorted(unordered[k], key=six.text_type))
+        return ordered
+
+
+default_api = GuessItApi(rebulk_builder())

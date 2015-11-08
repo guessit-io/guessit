@@ -274,6 +274,8 @@ class TitleFromPosition(TitleBaseRule):
     """
     dependency = [FilmTitleRule, SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule]
 
+    properties = {'title': [None]}
+
     def __init__(self):
         super(TitleFromPosition, self).__init__('title', ['title'], 'alternativeTitle')
 
@@ -287,6 +289,8 @@ class PreferTitleWithYear(Rule):
     """
     dependency = TitleFromPosition
     consequence = RemoveMatch
+
+    properties = {'title': [None]}
 
     def enabled(self, context):
         return not context.get('expected_title')

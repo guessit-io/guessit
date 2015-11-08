@@ -9,7 +9,7 @@ import copy
 
 import regex as re
 
-from rebulk import Rebulk, Rule, RemoveMatch
+from rebulk import Rebulk, Rule, RemoveMatch, POST_PROCESS, AppendMatch
 from ..common import dash
 from ..common import seps
 from ..common.validators import seps_surround
@@ -53,28 +53,30 @@ def other():
 
     rebulk.regex('Scr(?:eener)?', value='Screener', validator=None, tags='other.validate.screener')
 
-    rebulk.rules(ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore, ValidateScreenerRule)
-
-    rebulk.post_processor(proper_count)
+    rebulk.rules(ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore, ValidateScreenerRule,
+                 ProperCountRule)
 
     return rebulk
 
 
-def proper_count(matches):
+class ProperCountRule(Rule):
     """
     Add properCount property
-    :param matches:
-    :return:
     """
-    propers = matches.named('other', lambda match: match.value == 'Proper')
-    if propers:
-        raws = {}  # Count distinct raw values
-        for proper in propers:
-            raws[raw_cleanup(proper.raw)] = proper
-        proper_count_match = copy.copy(propers[-1])
-        proper_count_match.name = 'properCount'
-        proper_count_match.value = len(raws)
-        matches.append(proper_count_match)
+    priority = POST_PROCESS
+
+    consequence = AppendMatch
+
+    def when(self, matches, context):
+        propers = matches.named('other', lambda match: match.value == 'Proper')
+        if propers:
+            raws = {}  # Count distinct raw values
+            for proper in propers:
+                raws[raw_cleanup(proper.raw)] = proper
+            proper_count_match = copy.copy(propers[-1])
+            proper_count_match.name = 'properCount'
+            proper_count_match.value = len(raws)
+            return proper_count_match
 
 
 class ValidateHasNeighbor(Rule):

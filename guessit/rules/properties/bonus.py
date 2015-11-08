@@ -39,6 +39,8 @@ class BonusTitleRule(Rule):
     dependency = TitleFromPosition
     consequence = AppendMatch
 
+    properties = {'bonus_title': [None]}
+
     def when(self, matches, context):
         bonus_number = matches.named('bonus', lambda match: not match.private, index=0)
         if bonus_number:

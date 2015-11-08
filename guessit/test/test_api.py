@@ -6,7 +6,7 @@ import os
 
 import pytest
 
-from ..api import guessit
+from ..api import guessit, properties
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -24,3 +24,8 @@ def test_unicode():
 def test_main_non_unicode():
     with pytest.raises(TypeError):
         guessit(b'Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
+
+
+def test_properties():
+    props = properties()
+    assert 'video_codec' in props.keys()

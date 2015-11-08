@@ -4,6 +4,8 @@
 type property
 """
 from __future__ import unicode_literals
+from guessit.rules.processors import Processors
+from rebulk import CustomRule, Rebulk, POST_PROCESS
 
 from rebulk.match import Match
 
@@ -18,41 +20,53 @@ def _type(matches, value):
     matches.append(Match(len(matches.input_string), len(matches.input_string), name='type', value=value))
 
 
-def type_processor(matches):
+def type_():
+    """
+    Builder for rebulk object.
+    :return: Created Rebulk object
+    :rtype: Rebulk
+    """
+    return Rebulk().rules(TypeProcessor)
+
+
+class TypeProcessor(CustomRule):
     """
     Post processor to find file type based on all others found matches.
-    :param matches:
-    :return:
     """
-    episode = matches.named('episode')
-    season = matches.named('season')
-    episode_details = matches.named('episode_details')
+    priority = POST_PROCESS
 
-    if episode or season or episode_details:
-        _type(matches, 'episode')
-        return
+    dependency = Processors
 
-    film = matches.named('film')
-    if film:
-        _type(matches, 'movie')
-        return
+    properties = {'type': ['episode', 'movie']}
 
-    year = matches.named('year')
-    date = matches.named('date')
+    def when(self, matches, context):
+        episode = matches.named('episode')
+        season = matches.named('season')
+        episode_details = matches.named('episode_details')
 
-    if date and not year:
-        _type(matches, 'episode')
-        return
+        if episode or season or episode_details:
+            return 'episode'
 
-    bonus = matches.named('bonus')
-    if bonus and not year:
-        _type(matches, 'episode')
-        return
+        film = matches.named('film')
+        if film:
+            return 'movie'
 
-    crc32 = matches.named('crc32')
-    anime_release_group = matches.named('release_group', lambda match: 'anime' in match.tags)
-    if crc32 and anime_release_group:
-        _type(matches, 'episode')
-        return
+        year = matches.named('year')
+        date = matches.named('date')
 
-    _type(matches, 'movie')
+        if date and not year:
+            return 'episode'
+
+        bonus = matches.named('bonus')
+        if bonus and not year:
+            return 'episode'
+
+        crc32 = matches.named('crc32')
+        anime_release_group = matches.named('release_group', lambda match: 'anime' in match.tags)
+        if crc32 and anime_release_group:
+            return 'episode'
+
+        return 'movie'
+
+    def then(self, matches, when_response, context):
+        _type(matches, when_response)
