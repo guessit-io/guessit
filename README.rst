@@ -44,7 +44,7 @@ For example, GuessIt can do the following::
 
 Important note
 --------------
-GuessIt 2 has been rewriten from scratch and is currently in Alpha. GuessIt is now a release name parser only, and
+GuessIt 2 has been rewriten from scratch and is currently in Beta. GuessIt is now a release name parser only, and
 support for additional features like hashes computations has been dropped.
 
 To migrate from guessit ``0.x`` or ``1.x``, please read
