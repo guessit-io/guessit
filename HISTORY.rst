@@ -4,7 +4,7 @@ History
 2.0a4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``-p``/``-V`` options to display properties and values that can be guessed.
 
 
 2.0a3 (2015-11-08)
