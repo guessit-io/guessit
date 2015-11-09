@@ -1,7 +1,7 @@
 History
 =======
 
-2.0a4 (unreleased)
+2.0a4 (2015-11-09)
 ------------------
 
 - Add ``-p``/``-V`` options to display properties and values that can be guessed.
