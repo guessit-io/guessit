@@ -61,11 +61,13 @@ def other():
 
 class ProperCountRule(Rule):
     """
-    Add properCount property
+    Add proper_count property
     """
     priority = POST_PROCESS
 
     consequence = AppendMatch
+
+    properties = {'proper_count': [None]}
 
     def when(self, matches, context):
         propers = matches.named('other', lambda match: match.value == 'Proper')
@@ -74,7 +76,7 @@ class ProperCountRule(Rule):
             for proper in propers:
                 raws[raw_cleanup(proper.raw)] = proper
             proper_count_match = copy.copy(propers[-1])
-            proper_count_match.name = 'properCount'
+            proper_count_match.name = 'proper_count'
             proper_count_match.value = len(raws)
             return proper_count_match
 

@@ -53,6 +53,7 @@ All ``camelCase`` properties have been renamed to ``underscore_case``.
 - ``audioProfile`` is now ``audio_profile``
 - ``subtitleLanguage`` is now ``subtitle_language``
 - ``bonusTitle`` is now ``bonus_title``
+- ``properCount`` is now ``proper_count``
 
 Options
 -------

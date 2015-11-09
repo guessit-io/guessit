@@ -41,25 +41,25 @@
 ? -Real.XViD
 ? -Fix.XViD
 : other: Proper
-  properCount: 1
+  proper_count: 1
 
 ? -DVD.BlablaBla.Fix.Blablabla.XVID
 ? -DVD.BlablaBla.Fix.XVID
 ? -DVD.Fix.Blablabla.XVID
 : other: Proper
-  properCount: 1
+  proper_count: 1
 
 
 ? DVD.Real.PROPER.REPACK
 : other: Proper
-  properCount: 3
+  proper_count: 3
 
 
 ? Proper
 ? +Repack
 ? +Rerip
 : other: Proper
-  properCount: 1
+  proper_count: 1
 
 ? XViD.Fansub
 : other: Fansub

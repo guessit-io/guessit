@@ -41,7 +41,7 @@
 ? Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi
 : title: Borat
   year: 2006
-  properCount: 2
+  proper_count: 2
   format: DVD
   other: [ R5, Proper ]
   video_codec: XviD
@@ -148,7 +148,7 @@
   video_codec: XviD
   release_group: ARROW
   other: ['Proper', 'Limited']
-  properCount: 1
+  proper_count: 1
 
 ? Movies/Fr - Paris 2054, Renaissance (2005) - De Christian Volckman - (Film Divx Science Fiction Fantastique Thriller Policier N&B).avi
 : title: Paris 2054, Renaissance

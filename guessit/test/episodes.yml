@@ -372,7 +372,7 @@
   release_group: fov
   year: 2008
   other: Proper
-  properCount: 1
+  proper_count: 1
 
 ? "Da Vinci's Demons - 1x04 - The Magician.mkv"
 : title: "Da Vinci's Demons"
@@ -580,7 +580,7 @@
   video_codec: XviD
   release_group: GIGGITY
   other: Proper
-  properCount: 1
+  proper_count: 1
   episode_details: [Unaired, Pilot]
 
 ? Pawn.Stars.S2014E18.720p.HDTV.x264-KILLERS
@@ -904,7 +904,7 @@
 : episode: 1
   format: HDTV
   other: Proper
-  properCount: 2
+  proper_count: 2
   season: 2
   title: Test
 
@@ -912,7 +912,7 @@
 : episode: 1
   format: HDTV
   other: Proper
-  properCount: 1
+  proper_count: 1
   season: 2
   title: Real Test
 
@@ -920,7 +920,7 @@
 : episode: 1
   format: HDTV
   other: Proper
-  properCount: 1
+  proper_count: 1
   season: 2
   title: Test Real
 
@@ -928,7 +928,7 @@
 : episode: 1
   format: HDTV
   other: Proper
-  properCount: 1
+  proper_count: 1
   season: 2
   title: Test
 
@@ -936,7 +936,7 @@
 : episode: 1
   format: HDTV
   other: Proper
-  properCount: 3
+  proper_count: 3
   season: 2
   title: Test
 
@@ -1634,7 +1634,7 @@
 : episode: 2
   language: fr
   other: Proper
-  properCount: 1
+  proper_count: 1
   season: 1
   title: Fear the Walking Dead
   episode_title: So Close, Yet So Far
@@ -1643,7 +1643,7 @@
 : episode: 2
   language: fr
   other: Proper
-  properCount: 1
+  proper_count: 1
   season: 1
   title: Fear the Walking Dead
   episode_title: En Close, Yet En Far
