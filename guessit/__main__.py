@@ -62,21 +62,21 @@ def display_properties(options):
 
     if options.json:
         if options.values:
-            print(json.dumps(properties, ensure_ascii=False))
+            print(json.dumps(properties, cls=GuessitEncoder, ensure_ascii=False))
         else:
-            print(json.dumps(properties.keys(), ensure_ascii=False))
+            print(json.dumps(list(properties.keys()), cls=GuessitEncoder, ensure_ascii=False))
     elif options.yaml:
         import yaml
         from guessit import yamlutils
         if options.values:
             print(yaml.dump(properties, Dumper=yamlutils.CustomDumper, default_flow_style=False, allow_unicode=True))
         else:
-            print(yaml.dump(properties.keys(), Dumper=yamlutils.CustomDumper, default_flow_style=False,
+            print(yaml.dump(list(properties.keys()), Dumper=yamlutils.CustomDumper, default_flow_style=False,
                             allow_unicode=True))
     else:
         print('GuessIt properties:')
 
-        properties_list = sorted(properties.keys())
+        properties_list = list(sorted(properties.keys()))
         for property_name in properties_list:
             property_values = properties.get(property_name)
             print(2 * ' ' + '[+] %s' % (property_name,))
@@ -128,8 +128,8 @@ def main(args=None):  # pylint:disable=too-many-branches
     filenames = []
     if options.filename:
         for filename in options.filename:
-            encoding = sys.getfilesystemencoding()
-            if not isinstance(filename, six.text_type):
+            if not isinstance(filename, six.text_type):  # pragma: no cover
+                encoding = sys.getfilesystemencoding()
                 filename = filename.decode(encoding)
             filenames.append(filename)
     if options.input_file:

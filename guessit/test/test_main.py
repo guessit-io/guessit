@@ -51,6 +51,18 @@ def test_main_input():
     main(['--input', os.path.join(__location__, 'test-input-file.txt')])
 
 
+def test_main_properties():
+    main(['-p'])
+    main(['-p', '--json'])
+    main(['-p', '--yaml'])
+
+
+def test_main_values():
+    main(['-V'])
+    main(['-V', '--json'])
+    main(['-V', '--yaml'])
+
+
 def test_main_help():
     with pytest.raises(SystemExit):
         main(['--help'])

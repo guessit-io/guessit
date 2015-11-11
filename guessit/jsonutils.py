@@ -25,5 +25,5 @@ class GuessitEncoder(json.JSONEncoder):
             return ret
         elif hasattr(o, 'name'):  # Babelfish languages/countries long name
             return o.name
-        else:
+        else:  # pragma: no cover
             return str(o)
