@@ -114,16 +114,16 @@ def main(args=None):  # pylint:disable=too-many-branches
         print('+-------------------------------------------------------+')
         help_required = False
 
-    if options.properties or options.values:
-        display_properties(options)
-        help_required = False
-
     if options.yaml:
         try:
             import yaml  # pylint:disable=unused-variable
         except ImportError:  # pragma: no cover
             options.yaml = False
-            print('PyYAML not found. Using default output.')
+            print('PyYAML is not installed. \'--yaml\' option will be ignored ...', file=sys.stderr)
+
+    if options.properties or options.values:
+        display_properties(options)
+        help_required = False
 
     filenames = []
     if options.filename:
