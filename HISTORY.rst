@@ -5,8 +5,9 @@ History
 ------------------
 
 - Enhance title guessing.
-- Bump rebulk to ``0.6.1`` to use deep copy instead of shallow copy inside Match crop/split methods.
-
+- Upgrade rebulk to ``0.6.1``.
+- Rename ``properCount`` to ``proper_count``
+- Avoid crash when using ``-p``/``-V`` option with ``--yaml`` and ``yaml`` module is not available.
 
 2.0a4 (2015-11-09)
 ------------------
