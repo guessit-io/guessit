@@ -87,12 +87,12 @@ Some options have been removed.
 
   Will be back soon... (work in progress)
 
-Others GuessIt ``1.x`` options have been kept.
+Other GuessIt ``1.x`` options have been kept.
 
 Output
 ------
-Output produced by ``guessit`` api function is now an instance or
-[OrderedDict](https://docs.python.org/2/library/collections.html#collections.OrderedDict). Property values are
+Output produced by ``guessit`` api function is now an instance of
+`OrderedDict <https://docs.python.org/2/library/collections.html#collections.OrderedDict>`_. Property values are
 automatically ordered based on filename, and you can still use this output as a default python ``dict``.
 
 If multiple values are available for a property, value in the dict will be a ``list`` instance.
