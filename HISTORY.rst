@@ -1,7 +1,7 @@
 History
 =======
 
-2.0b1 (unreleased)
+2.0b1 (2015-11-11)
 ------------------
 
 - Enhance title guessing.
