@@ -4,7 +4,8 @@ History
 2.0b1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Enhance title guessing.
+- Bump rebulk to ``0.6.1`` to use deep copy instead of shallow copy inside Match crop/split methods.
 
 
 2.0a4 (2015-11-09)

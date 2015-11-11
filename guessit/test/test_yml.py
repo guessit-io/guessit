@@ -185,7 +185,11 @@ class TestYml(object):
         negates, global_, string = self.parse_token_options(string)
 
         options = expected.get('options')
-        result = guessit(string, options)
+        try:
+            result = guessit(string, options)
+        except Exception as exc:
+            logger.error('[' + string + '] Exception: ' + str(exc))
+            raise exc
 
         entry = EntryResult(string, negates)
 

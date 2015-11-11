@@ -10,17 +10,6 @@ import regex as re
 _words_rexp = re.compile(r'\w+', re.UNICODE)
 
 
-def find_words(string):
-    """
-    Find all words in a string.
-    :param string:
-    :type string:
-    :return: list of word
-    :rtype: list[str]
-    """
-    return _words_rexp.findall(string.replace('_', ' '))
-
-
 def iter_words(string):
     """
     Iterate on all words in a string

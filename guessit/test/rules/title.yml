@@ -14,3 +14,19 @@
 ? title_only.mkv
 : title: title only
 
+? Some Title/some.title.mkv
+? some.title/Some.Title.mkv
+: title: Some Title
+
+? SOME TITLE/Some.title.mkv
+? Some.title/SOME TITLE.mkv
+: title: Some title
+
+? some title/Some.title.mkv
+? Some.title/some title.mkv
+: title: Some title
+
+? Some other title/Some.Other.title.mkv
+? Some.Other title/Some other title.mkv
+: title: Some Other title
+

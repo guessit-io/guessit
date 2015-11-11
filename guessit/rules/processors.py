@@ -9,9 +9,10 @@ from collections import defaultdict
 import copy
 
 import six
+from guessit.rules.common.words import iter_words
 
 from rebulk import Rebulk, Rule, CustomRule, POST_PROCESS, PRE_PROCESS, AppendMatch, RemoveMatch
-from .common.formatters import strip
+from .common.formatters import cleanup
 from .common.comparators import marker_sorted
 from .common.date import valid_year
 
@@ -66,12 +67,14 @@ class EquivalentHoles(Rule):
         new_matches = []
 
         for filepath in marker_sorted(matches.markers.named('path'), matches):
-            holes = matches.holes(start=filepath.start, end=filepath.end, formatter=strip)
+            holes = matches.holes(start=filepath.start, end=filepath.end, formatter=cleanup)
             for name in matches.names:
                 for hole in list(holes):
                     for current_match in matches.named(name):
                         if isinstance(current_match.value, six.string_types) and \
                                         hole.value.lower() == current_match.value.lower():
+                            if 'equivalent-ignore' in current_match.tags:
+                                continue
                             new_value = _preferred_string(hole.value, current_match.value)
                             if hole.value != new_value:
                                 hole.value = new_value
@@ -151,22 +154,32 @@ def _preferred_string(value1, value2):  # pylint:disable=too-many-return-stateme
     :return: The preferred title
     :rtype: str
     """
-    if value1 and not value2:
-        return value1
-    if value2 and not value1:
-        return value2
     if value1 == value2:
         return value1
     if value1.istitle() and not value2.istitle():
         return value1
-    if value2.istitle() and not value1.istitle():
-        return value2
-    if value1[0].isupper() and not value1[0].isupper():
+    if not value1.isupper() and value2.isupper():
         return value1
-    if value2[0].isupper() and not value1[0].isupper():
-        return value2
-    return value1
+    if not value1.isupper() and value1[0].isupper() and not value2[0].isupper():
+        return value1
+    if _count_title_words(value1) > _count_title_words(value2):
+        return value1
+    return value2
 
+
+def _count_title_words(value):
+    """
+    Count only many words are titles in value.
+    :param value:
+    :type value:
+    :return:
+    :rtype:
+    """
+    ret = 0
+    for word in iter_words(value):
+        if word.group(0).istitle():
+            ret += 1
+    return ret
 
 class SeasonYear(Rule):
     """
@@ -195,7 +208,7 @@ class Processors(CustomRule):
     def when(self, matches, context):
         pass
 
-    def then(self, matches, when_response, context):
+    def then(self, matches, when_response, context):  # pragma: no cover
         pass
 
 

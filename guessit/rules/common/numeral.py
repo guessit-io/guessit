@@ -108,7 +108,7 @@ def __parse_word(value):
             return word_list.index(value.lower())
         except ValueError:
             pass
-    raise ValueError
+    raise ValueError  # pragma: no cover
 
 
 _clean_re = re.compile(r'[^\d]*(\d+)[^\d]*')
@@ -159,9 +159,9 @@ def parse_numeral(value, int_enabled=True, roman_enabled=True, word_enabled=True
                 for word in value.split():
                     try:
                         return __parse_word(word)
-                    except ValueError:
+                    except ValueError:  # pragma: no cover
                         pass
-            return __parse_word(value)
-        except ValueError:
+            return __parse_word(value)  # pragma: no cover
+        except ValueError:  # pragma: no cover
             pass
-    raise ValueError('Invalid numeral: ' + value)
+    raise ValueError('Invalid numeral: ' + value)   # pragma: no cover

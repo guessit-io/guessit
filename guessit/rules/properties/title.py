@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 from guessit.rules.properties.film import FilmTitleRule
 from guessit.rules.properties.language import SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, \
     SubtitleExtensionRule
-from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch
+from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch, AppendTags
 from rebulk.formatters import formatters
 
 from ..common.formatters import cleanup, reorder_title
@@ -288,7 +288,7 @@ class PreferTitleWithYear(Rule):
     Prefer title where filepart contains year.
     """
     dependency = TitleFromPosition
-    consequence = RemoveMatch
+    consequence = [RemoveMatch, AppendTags(['equivalent-ignore'])]
 
     properties = {'title': [None]}
 
@@ -311,10 +311,13 @@ class PreferTitleWithYear(Rule):
                     else:
                         with_year.append(title_match)
 
+        to_tag = []
         if with_year_in_group:
             title_values = set([title_match.value for title_match in with_year_in_group])
+            to_tag.extend(with_year_in_group)
         elif with_year:
             title_values = set([title_match.value for title_match in with_year])
+            to_tag.extend(with_year)
         else:
             title_values = set([title_match.value for title_match in titles])
 
@@ -322,4 +325,4 @@ class PreferTitleWithYear(Rule):
         for title_match in titles:
             if title_match.value not in title_values:
                 to_remove.append(title_match)
-        return to_remove
+        return to_remove, to_tag
