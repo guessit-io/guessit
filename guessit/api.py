@@ -4,7 +4,10 @@
 API functions that can be used by external software
 """
 from __future__ import unicode_literals
-from collections import OrderedDict
+try:
+    from collections import OrderedDict
+except ImportError:  # pragma: no-cover
+    from ordereddict import OrderedDict  # pylint:disable=import-error
 
 import six
 

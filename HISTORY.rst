@@ -4,7 +4,7 @@ History
 2.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add python 2.6 support.
 
 
 2.0b1 (2015-11-11)

@@ -5,7 +5,10 @@ Comparators
 """
 from __future__ import unicode_literals
 
-from functools import cmp_to_key
+try:
+    from functools import cmp_to_key
+except ImportError:
+    from ...backports import cmp_to_key
 
 
 def marker_comparator_predicate(match):

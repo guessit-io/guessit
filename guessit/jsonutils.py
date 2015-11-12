@@ -3,7 +3,10 @@
 """
 JSON Utils
 """
-from collections import OrderedDict
+try:
+    from collections import OrderedDict
+except ImportError:  # pragma: no-cover
+    from ordereddict import OrderedDict  # pylint:disable=import-error
 import json
 
 from rebulk.match import Match
