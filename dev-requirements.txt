@@ -6,4 +6,3 @@ pylint
 tox
 pyyaml
 -e .
-https://github.com/Toilal/rebulk/archive/master.zip
