@@ -23,7 +23,7 @@ def part():
 
     prefixes = ['pt', 'part']
 
-    rebulk.regex(r'\L<prefixes>-(' + numeral + r')', prefixes=prefixes,
+    rebulk.regex(r'\L<prefixes>-?(' + numeral + r')', prefixes=prefixes,
                  name='part', validate_all=True, private_parent=True, children=True, formatter=parse_numeral)
 
     return rebulk
