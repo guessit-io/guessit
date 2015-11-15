@@ -42,7 +42,7 @@ def episodes():
                  private_parent=True,
                  conflict_solver=lambda match, other: match
                  if match.name in ['season', 'episode'] and other.name in
-                 ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container']
+                 ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date']
                  else '__default__')
 
     # episode_details property

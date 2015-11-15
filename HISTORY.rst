@@ -7,6 +7,7 @@ History
 - Add support for ``part`` with no space before number.
 - Avoid ``uuid`` and ``crc32`` collision with ``season``/``episode`` properties.
 - Add better space support for ``season``/``episode`` properties.
+- Ensure ``date`` property is found when conflicting with ``season``/``episode`` properties.
 - Add ``--type`` option.
 - Add rebulk implicit option support.
 
