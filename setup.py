@@ -32,7 +32,7 @@ args = dict(name='guessit',
             description='GuessIt - a library for guessing information from video filenames.',
             long_description=README + '\n\n' + HISTORY,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-            classifiers=['Development Status :: 3 - Alpha',
+            classifiers=['Development Status :: 4 - Beta',
                          'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
                          'Operating System :: OS Independent',
                          'Intended Audience :: Developers',
