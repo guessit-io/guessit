@@ -27,20 +27,22 @@ def episodes():
     rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator'])
 
     # 01x02, 01x02x03x04
-    rebulk.regex(r'(?P<season>\d+)x(?P<episode>\d+)' +
+    rebulk.regex(r'(?P<season>\d+)@?x@?(?P<episode>\d+)' +
                  r'(?:(?P<episodeSeparator>x|-|\+|&)(?P<episode>\d+))*',
                  # S01E02, S01x02, S01E02E03, S01Ex02, S01xE02, SO1Ex02Ex03
-                 r'S(?P<season>\d+)(?:xE|Ex|E|x)(?P<episode>\d+)' +
+                 r'S(?P<season>\d+)@?(?:xE|Ex|E|x)@?(?P<episode>\d+)' +
                  r'(?:(?P<episodeSeparator>xE|Ex|E|x|-|\+|&)(?P<episode>\d+))*',
                  # S01
                  r'S(?P<season>\d+)' +
                  r'(?:(?P<seasonSeparator>S|-|\+|&)(?P<season>\d+))*',
                  formatter={'season': int, 'episode': int},
                  tags=['SxxExx'],
+                 abbreviations=[alt_dash],
                  children=True,
                  private_parent=True,
                  conflict_solver=lambda match, other: match
-                 if match.name in ['season', 'episode'] and other.name in ['screen_size']
+                 if match.name in ['season', 'episode'] and other.name in
+                 ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container']
                  else '__default__')
 
     # episode_details property

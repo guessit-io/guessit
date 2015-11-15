@@ -75,7 +75,7 @@ class SceneReleaseGroup(Rule):
                                       predicate=lambda hole: cleanup(hole.value), index=-1)
 
             if last_hole:
-                previous_match = matches.previous(last_hole, index=0)
+                previous_match = matches.previous(last_hole, lambda match: not match.private, index=0)
                 if previous_match and (previous_match.name in _scene_previous_names or
                                        any(tag in previous_match.tags for tag in _scene_previous_tags)) and \
                         not matches.input_string[previous_match.end:last_hole.start].strip(seps) \

@@ -229,13 +229,13 @@
 ? /media/Parks_and_Recreation-s03-x01.mkv
 : title: Parks and Recreation
   season: 3
-  bonus: 1
+  episode: 1
 
 ? /media/Parks_and_Recreation-s03-x02-Gag_Reel.mkv
 : title: Parks and Recreation
   season: 3
-  bonus: 2
-  bonus_title: Gag Reel
+  episode: 2
+  episode_title: Gag Reel
 
 ? /media/Band_of_Brothers-e01-Currahee.mkv
 : title: Band of Brothers

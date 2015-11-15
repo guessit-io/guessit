@@ -6,6 +6,7 @@ dist/
 # Python dist
 *.egg-info/
 .eggs/
+build/
 
 # Coverage
 .coverage
