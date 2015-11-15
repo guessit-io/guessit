@@ -73,10 +73,10 @@ Usage
 guessit can be use from command line::
 
     $ guessit
-    usage: -c [-h] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES] [-C ALLOWED_COUNTRIES]
-          [-E] [-T EXPECTED_TITLE] [-f INPUT_FILE] [-v] [-P SHOW_PROPERTY]
-          [-a] [-j] [-y] [--version]
-          [filename [filename ...]]
+    usage: guessit [-h] [-t TYPE] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES]
+                   [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE] [-f INPUT_FILE]
+                   [-v] [-P SHOW_PROPERTY] [-a] [-j] [-y] [-p] [-V] [--version]
+                   [filename [filename ...]]
 
     positional arguments:
       filename              Filename or release name to guess
@@ -85,6 +85,8 @@ guessit can be use from command line::
       -h, --help            show this help message and exit
 
     Naming:
+      -t TYPE, --type TYPE  The suggested file type: movie, episode. If undefined,
+                            type will be guessed.
       -n, --name-only       Parse files as name only, considering "/" and "\" like
                             other separators.
       -Y, --date-year-first
@@ -97,9 +99,8 @@ guessit can be use from command line::
       -C ALLOWED_COUNTRIES, --allowed-countries ALLOWED_COUNTRIES
                             Allowed country (can be used multiple times)
       -E, --episode-prefer-number
-                            Guess "serie.213.avi" as the episodeNumber 213.
-                            Without this option, it will be guessed as season 2,
-                            episodeNumber 13
+                            Guess "serie.213.avi" as the episode 213. Without this
+                            option, it will be guessed as season 2, episode 13
       -T EXPECTED_TITLE, --expected-title EXPECTED_TITLE
                             Expected title to parse (can be used multiple times)
 
@@ -112,7 +113,7 @@ guessit can be use from command line::
       -v, --verbose         Display debug output
       -P SHOW_PROPERTY, --show-property SHOW_PROPERTY
                             Display the value of a single property (title, series,
-                            videoCodec, year, ...)
+                            video_codec, year, ...)
       -a, --advanced        Display advanced information for filename guesses, as
                             json output
       -j, --json            Display information for filename guesses as json
@@ -121,6 +122,8 @@ guessit can be use from command line::
                             output
 
     Information:
+      -p, --properties      Display properties that can be guessed.
+      -V, --values          Display property values that can be guessed.
       --version             Display the guessit version.
 
 It can also be used as a python module::
