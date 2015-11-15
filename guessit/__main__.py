@@ -27,6 +27,9 @@ def guess_filename(filename, options):
     if not options.yaml and not options.json and not options.show_property:
         print('For:', filename)
 
+    cmd_options = vars(options)
+    cmd_options['implicit'] = True  # Force implicit option in CLI
+
     guess = api.guessit(filename, vars(options))
 
     if options.show_property:
