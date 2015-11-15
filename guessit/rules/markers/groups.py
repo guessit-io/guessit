@@ -40,8 +40,11 @@ def groups():
 
             end_type = ending.find(char)
             if end_type > -1:
-                start_index = openings[end_type].pop()
-                ret.append((start_index, i))
+                try:
+                    start_index = openings[end_type].pop()
+                    ret.append((start_index, i))
+                except IndexError:
+                    pass
         return ret
 
     rebulk.functional(mark_groups)

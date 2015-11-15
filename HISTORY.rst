@@ -8,6 +8,7 @@ History
 - Avoid ``uuid`` and ``crc32`` collision with ``season``/``episode`` properties.
 - Add better space support for ``season``/``episode`` properties.
 - Ensure ``date`` property is found when conflicting with ``season``/``episode`` properties.
+- Fix ``IndexError`` when input has a closing group character with no opening one before.
 - Add ``--type`` option.
 - Add rebulk implicit option support.
 
