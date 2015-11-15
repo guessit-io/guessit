@@ -11,7 +11,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
 
-install_requires = ['rebulk>=0.6.2', 'regex', 'babelfish>=0.5.5', 'python-dateutil']
+install_requires = ['rebulk>=0.6.3', 'regex', 'babelfish>=0.5.5', 'python-dateutil']
 if sys.version_info < (2, 7):
     install_requires.extend(['argparse', 'ordereddict'])
 setup_requires = ['pytest-runner']

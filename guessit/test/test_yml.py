@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
 import logging
+from guessit.options import parse_options
 from ..yamlutils import OrderedDictYAMLLoader
 
 logger = logging.getLogger(__name__)
@@ -185,6 +186,12 @@ class TestYml(object):
         negates, global_, string = self.parse_token_options(string)
 
         options = expected.get('options')
+        if options is None:
+            options = {}
+        if not isinstance(options, dict):
+            options = parse_options(options)
+        if 'implicit' not in options:
+            options['implicit'] = True
         try:
             result = guessit(string, options)
         except Exception as exc:

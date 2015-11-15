@@ -67,7 +67,8 @@ class GuessItApi(object):
         if not isinstance(string, six.text_type):
             raise TypeError("guessit input must be %s." % six.text_type.__name__)
         options = parse_options(options)
-        return self.rebulk.matches(string, options).to_dict(options.get('advanced', False))
+        return self.rebulk.matches(string, options).to_dict(options.get('advanced', False),
+                                                            options.get('implicit', False))
 
     def properties(self, options=None):
         """
