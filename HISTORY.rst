@@ -5,6 +5,7 @@ History
 ------------------
 
 - Add ``expected-group`` option.
+- Add validation rule for single digit ``episode`` to avoid false positives.
 
 
 2.0b3 (2015-11-15)

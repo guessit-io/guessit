@@ -10,6 +10,7 @@ import copy
 
 import regex as re
 
+from guessit.rules.properties.title import TitleFromPosition
 from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
 from ..common.validators import seps_surround
 from ..common import dash, alt_dash
@@ -157,7 +158,7 @@ def episodes():
 
     rebulk.rules(EpisodeNumberSeparatorRange, SeasonSeparatorRange, RemoveWeakIfMovie, RemoveWeakIfSxxExx,
                  RemoveWeakDuplicate, EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator,
-                 CountValidator)
+                 CountValidator, EpisodeSingleDigitValidator)
 
     return rebulk
 
@@ -344,4 +345,22 @@ class VersionValidator(Rule):
             episode_number = matches.previous(version, lambda match: match.name == 'episode', 0)
             if not episode_number and not seps_surround(version.initiator):
                 ret.append(version)
+        return ret
+
+
+class EpisodeSingleDigitValidator(Rule):
+    """
+    Remove single digit episode when inside a group that doesn't own title.
+    """
+    dependency = [TitleFromPosition]
+
+    consequence = RemoveMatch
+
+    def when(self, matches, context):
+        ret = []
+        for episode in matches.named('episode', lambda match: len(match.initiator) == 1):
+            group = matches.markers.at_match(episode, lambda marker: marker.name == 'group', index=0)
+            if group:
+                if not matches.range(*group.span, predicate=lambda match: match.name == 'title'):
+                    ret.append(episode)
         return ret

@@ -1657,4 +1657,9 @@
   episode_title: Jake Gyllenhaal
   video_codec: h264
 
+? "[7.1.7.8.5] Foo Bar - 11 (H.264) [5235532D].mkv"
+: options: -E
+  episode: 11
+
+
 
