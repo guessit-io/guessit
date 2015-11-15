@@ -74,8 +74,9 @@ guessit can be use from command line::
 
     $ guessit
     usage: guessit [-h] [-t TYPE] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES]
-                   [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE] [-f INPUT_FILE]
-                   [-v] [-P SHOW_PROPERTY] [-a] [-j] [-y] [-p] [-V] [--version]
+                   [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE]
+                   [-G EXPECTED_GROUP] [-f INPUT_FILE] [-v] [-P SHOW_PROPERTY]
+                   [-a] [-j] [-y] [-p] [-V] [--version]
                    [filename [filename ...]]
 
     positional arguments:
@@ -103,6 +104,8 @@ guessit can be use from command line::
                             option, it will be guessed as season 2, episode 13
       -T EXPECTED_TITLE, --expected-title EXPECTED_TITLE
                             Expected title to parse (can be used multiple times)
+      -G EXPECTED_GROUP, --expected-group EXPECTED_GROUP
+                            Expected release group (can be used multiple times)
 
     Input:
       -f INPUT_FILE, --input-file INPUT_FILE
@@ -125,6 +128,7 @@ guessit can be use from command line::
       -p, --properties      Display properties that can be guessed.
       -V, --values          Display property values that can be guessed.
       --version             Display the guessit version.
+
 
 It can also be used as a python module::
 

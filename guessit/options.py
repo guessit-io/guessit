@@ -39,6 +39,8 @@ def build_argument_parser():
                                   'it will be guessed as season 2, episode 13')
     naming_opts.add_argument('-T', '--expected-title', action='append', dest='expected_title',
                              help='Expected title to parse (can be used multiple times)')
+    naming_opts.add_argument('-G', '--expected-group', action='append', dest='expected_group',
+                             help='Expected release group (can be used multiple times)')
 
     input_opts = opts.add_argument_group("Input")
     input_opts.add_argument('-f', '--input-file', dest='input_file', default=False,

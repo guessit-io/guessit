@@ -4,7 +4,7 @@ History
 2.0b4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``expected-group`` option.
 
 
 2.0b3 (2015-11-15)

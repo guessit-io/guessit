@@ -9,9 +9,10 @@ import copy
 
 from guessit.rules.common.validators import int_coercable
 from guessit.rules.properties.title import TitleFromPosition
+import regex as re
 from rebulk import Rebulk, Rule, AppendMatch
 from ..common.formatters import cleanup
-from ..common import seps
+from ..common import seps, dash
 from ..common.comparators import marker_sorted
 
 
@@ -21,7 +22,7 @@ def release_group():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    return Rebulk().rules(SceneReleaseGroup, AnimeReleaseGroup)
+    return Rebulk().rules(SceneReleaseGroup, AnimeReleaseGroup, ExpectedReleaseGroup)
 
 
 forbidden_groupnames = ['rip', 'by', 'for', 'par', 'pour', 'bonus']
@@ -54,18 +55,48 @@ _scene_previous_names = ['video_codec', 'format', 'video_api', 'audio_codec', 'a
 _scene_previous_tags = ['release-group-prefix']
 
 
+class ExpectedReleaseGroup(Rule):
+    """
+    Add release_group match from expected_group option
+    """
+    consequence = AppendMatch
+
+    properties = {'release_group': [None]}
+
+    def enabled(self, context):
+        return context.get('expected_group')
+
+    def when(self, matches, context):
+        expected_rebulk = Rebulk().defaults(name='release_group')
+
+        for expected_group in context.get('expected_group'):
+            if expected_group.startswith('re:'):
+                expected_group = expected_group[3:]
+                expected_group = expected_group.replace(' ', '-')
+                expected_rebulk.regex(expected_group, abbreviations=[dash], flags=re.IGNORECASE)
+            else:
+                expected_rebulk.string(expected_group, ignore_case=True)
+
+        matches = expected_rebulk.matches(matches.input_string, context)
+        return matches
+
+
 class SceneReleaseGroup(Rule):
     """
     Add release_group match in existing matches (scene format).
 
     Something.XViD-ReleaseGroup.mkv
     """
-    dependency = TitleFromPosition
+    dependency = [TitleFromPosition, ExpectedReleaseGroup]
     consequence = AppendMatch
 
     properties = {'release_group': [None]}
 
     def when(self, matches, context):
+        # If a release_group is found before, ignore this kind of release_group rule.
+        if matches.named('release_group'):
+            return
+
         ret = []
 
         for filepart in marker_sorted(matches.markers.named('path'), matches):
@@ -110,7 +141,7 @@ class AnimeReleaseGroup(Rule):
     def when(self, matches, context):
         ret = []
 
-        # If a scene release_group is found, ignore this kind of release_group rule.
+        # If a release_group is found before, ignore this kind of release_group rule.
         if matches.named('release_group'):
             return ret
 
