@@ -101,3 +101,12 @@
 ? Some Series E01-02-E04
 : title: Some Series
   episode: [1, 2, 4]
+
+? Episode 3
+? -Episode III
+: episode: 3
+
+? Episode 3
+? Episode III
+: options: -t episode
+  episode: 3

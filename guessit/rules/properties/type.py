@@ -39,7 +39,11 @@ class TypeProcessor(CustomRule):
 
     properties = {'type': ['episode', 'movie']}
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=too-many-return-statements
+        option_type = context.get('type', None)
+        if option_type:
+            return option_type
+
         episode = matches.named('episode')
         season = matches.named('season')
         episode_details = matches.named('episode_details')

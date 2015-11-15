@@ -59,10 +59,6 @@ Options
 -------
 Some options have been removed.
 
-- ``-t TYPE, --type TYPE``
-
-  GuessIt now guess filetype after all other matches and doesn't require user to specify the filetype in advance.
-
 - ``-X DISABLED_TRANSFORMERS``, ``-s, --transformers``
 
   There's no transformer anymore.

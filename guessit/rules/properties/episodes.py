@@ -69,7 +69,16 @@ def episodes():
                  r'(?:-?\L<of_words>?-?(?P<count>\d+))?',
                  of_words=of_words,
                  episode_words=episode_words,  # Episode 4
-                 abbreviations=[dash], formatter=int)
+                 abbreviations=[dash], formatter=int,
+                 disabled=lambda context: context.get('type') == 'episode')
+
+    rebulk.regex(r'\L<episode_words>-?(?P<episode>' + numeral + ')' +
+                 r'(?:v(?P<version>\d+))?' +
+                 r'(?:-?\L<of_words>?-?(?P<count>\d+))?',
+                 of_words=of_words,
+                 episode_words=episode_words,  # Episode 4
+                 abbreviations=[dash], formatter={'episode': parse_numeral, 'version': int, 'count': int},
+                 disabled=lambda context: context.get('type') != 'episode')
 
     rebulk.regex(r'S?(?P<season>\d+)-?(?:xE|Ex|E|x)-?(?P<other>\L<all_words>)',
                  tags=['SxxExx'],
