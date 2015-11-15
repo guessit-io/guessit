@@ -4,8 +4,9 @@ History
 2.0b3 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Add support for ``part`` with no space before number.
+- Add ``--``type option.
+- Add rebulk implicit option support.
 
 2.0b2 (2015-11-14)
 ------------------
