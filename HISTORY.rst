@@ -1,7 +1,7 @@
 History
 =======
 
-2.0b3 (unreleased)
+2.0b3 (2015-11-15)
 ------------------
 
 - Add support for ``part`` with no space before number.
