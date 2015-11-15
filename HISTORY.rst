@@ -5,7 +5,8 @@ History
 ------------------
 
 - Add support for ``part`` with no space before number.
-- Add ``--``type option.
+- Avoid ``uuid`` and ``crc32`` collision with ``season``/``episode`` properties.
+- Add ``--type`` option.
 - Add rebulk implicit option support.
 
 2.0b2 (2015-11-14)

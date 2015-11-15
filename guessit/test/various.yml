@@ -532,3 +532,14 @@
   format: HDTV
   video_codec: h264
   release_group: DIMENSION
+
+? Test.S01E01E07-FooBar-Group.avi
+: container: avi
+  episode:
+  - 1
+  - 7
+  episode_title: FooBar-Group  # Make sure it doesn't conflict with uuid
+  mimetype: video/x-msvideo
+  season: 1
+  title: Test
+  type: episode

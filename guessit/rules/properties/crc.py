@@ -20,9 +20,15 @@ def crc():
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE)
     rebulk.defaults(validator=seps_surround)
 
-    rebulk.regex('(?:[a-fA-F]|[0-9]){8}', name='crc32')
+    rebulk.regex('(?:[a-fA-F]|[0-9]){8}', name='crc32',
+                 conflict_solver=lambda match, other: match
+                 if other.name in ['episode', 'season']
+                 else '__default__')
 
-    rebulk.functional(guess_idnumber, name='uuid')
+    rebulk.functional(guess_idnumber, name='uuid',
+                      conflict_solver=lambda match, other: match
+                      if other.name in ['episode', 'season']
+                      else '__default__')
     return rebulk
 
 
