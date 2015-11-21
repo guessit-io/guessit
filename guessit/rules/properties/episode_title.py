@@ -86,10 +86,10 @@ class EpisodeTitleFromPosition(TitleBaseRule):
             return True
         return False
 
-    def should_remove(self, match, matches, filepart, hole):
+    def should_remove(self, match, matches, filepart, hole, context):
         if match.name == 'episode_details':
             return False
-        return super(EpisodeTitleFromPosition, self).should_remove(match, matches, filepart, hole)
+        return super(EpisodeTitleFromPosition, self).should_remove(match, matches, filepart, hole, context)
 
     def __init__(self):
         super(EpisodeTitleFromPosition, self).__init__('episode_title', ['title'])

@@ -1661,5 +1661,20 @@
 : options: -E
   episode: 11
 
+? my 720p show S01E02
+: options: -T "my 720p show"
+  title: my 720p show
+  season: 1
+  episode: 2
 
+? my 720p show S01E02 720p
+: options: -T "my 720p show"
+  title: my 720p show
+  season: 1
+  episode: 2
+  screen_size: 720p
+
+? -my 720p show S01E02
+: options: -T "my 720p show"
+  screen_size: 720p
 

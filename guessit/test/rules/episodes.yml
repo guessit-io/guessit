@@ -110,3 +110,10 @@
 ? Episode III
 : options: -t episode
   episode: 3
+
+? -A very special movie
+: episode_details: Special
+
+? A very special episode
+: options: -t episode
+  episode_details: Special

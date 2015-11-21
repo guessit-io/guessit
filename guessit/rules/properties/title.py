@@ -39,7 +39,9 @@ def title():
             for start in find_all(input_string, search, ignore_case=True):
                 return start, len(search)
 
-    rebulk.functional(expected_title, name='title', disabled=lambda context: not context.get('expected_title'))
+    rebulk.functional(expected_title, name='title', tags=['expected'],
+                      conflict_solver=lambda match, other: other,
+                      disabled=lambda context: not context.get('expected_title'))
 
     return rebulk
 
@@ -135,7 +137,7 @@ class TitleBaseRule(Rule):
 
         return False
 
-    def should_remove(self, match, matches, filepart, hole):
+    def should_remove(self, match, matches, filepart, hole, context):
         """
         Check if this match should be removed after beeing ignored.
         :param match:
@@ -144,9 +146,11 @@ class TitleBaseRule(Rule):
         :param hole:
         :return:
         """
+        if context.get('type') == 'episode' and match.name == 'episode_details':
+            return False
         return True
 
-    def check_titles_in_filepart(self, filepart, matches):
+    def check_titles_in_filepart(self, filepart, matches, context):
         """
         Find title in filepart (ignoring language)
         """
@@ -204,7 +208,7 @@ class TitleBaseRule(Rule):
                                     hole.start = ignored_match.end
 
             for match in ignored_matches:
-                if self.should_remove(match, matches, filepart, hole):
+                if self.should_remove(match, matches, filepart, hole, context):
                     to_remove.append(match)
             for keep_match in to_keep:
                 to_remove.remove(keep_match)
@@ -249,7 +253,7 @@ class TitleBaseRule(Rule):
                 years_fileparts.remove(filepart)
             except ValueError:
                 pass
-            titles = self.check_titles_in_filepart(filepart, matches)
+            titles = self.check_titles_in_filepart(filepart, matches, context)
             if titles:
                 titles, to_remove_c = titles
                 ret.extend(titles)
@@ -258,7 +262,7 @@ class TitleBaseRule(Rule):
 
         # Add title match in all fileparts containing the year.
         for filepart in years_fileparts:
-            titles = self.check_titles_in_filepart(filepart, matches)
+            titles = self.check_titles_in_filepart(filepart, matches, context)
             if titles:
                 # pylint:disable=unbalanced-tuple-unpacking
                 titles, to_remove_c = titles

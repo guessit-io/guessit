@@ -104,8 +104,7 @@ def main(args=None):  # pylint:disable=too-many-branches
     else:
         options = argument_parser.parse_args(args)
     if options.verbose:
-        FORMAT = '%(message)s'
-        logging.basicConfig(stream=sys.stdout, format=FORMAT)
+        logging.basicConfig(stream=sys.stdout, format='%(message)s')
         logging.getLogger().setLevel(logging.DEBUG)
 
     help_required = True

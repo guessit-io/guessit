@@ -22,14 +22,14 @@ def screen_size():
         """
         Conflict solver for most screen_size.
         """
-        if other.name in ['episode', 'season']:
-            return '__default__'
-        if other.name == 'screen_size' and 'resolution' in other.tags:
-            # The chtouile to solve conflict in "720 x 432" string matching both 720p pattern (but it's not 720p ...)
-            int_value = _digits_re.findall(match.raw)[-1]
-            if other.value.startswith(int_value):
-                return match
-        return other
+        if other.name == 'screen_size':
+            if 'resolution' in other.tags:
+                # The chtouile to solve conflict in "720 x 432" string matching both 720p pattern
+                int_value = _digits_re.findall(match.raw)[-1]
+                if other.value.startswith(int_value):
+                    return match
+            return other
+        return '__default__'
 
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE)
     rebulk.defaults(name="screen_size", validator=seps_surround, conflict_solver=conflict_solver)
