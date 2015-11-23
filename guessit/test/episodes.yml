@@ -1675,6 +1675,6 @@
   screen_size: 720p
 
 ? -my 720p show S01E02
-: options: -T "my 720p show"
+: options: -T "re:my \d+p show"
   screen_size: 720p
 
