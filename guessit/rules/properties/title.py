@@ -37,7 +37,7 @@ def title():
         """
         for search in context.get('expected_title'):
             for start in find_all(input_string, search, ignore_case=True):
-                return start, len(search)
+                return start, start+len(search)
 
     rebulk.functional(expected_title, name='title', tags=['expected'],
                       conflict_solver=lambda match, other: other,
