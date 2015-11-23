@@ -12,9 +12,9 @@ import six
 import sys
 
 if six.PY2:
-    str_opt_type=lambda s: unicode(s, sys.stdin.encoding)
+    StrOptType = lambda s: unicode(s, sys.stdin.encoding)  # pylint:disable=undefined-variable
 else:
-    str_opt_type=str
+    StrOptType = str
 
 
 def build_argument_parser():
@@ -43,9 +43,9 @@ def build_argument_parser():
                              default=False,
                              help='Guess "serie.213.avi" as the episode 213. Without this option, '
                                   'it will be guessed as season 2, episode 13')
-    naming_opts.add_argument('-T', '--expected-title', action='append', dest='expected_title', type=str_opt_type,
+    naming_opts.add_argument('-T', '--expected-title', action='append', dest='expected_title', type=StrOptType,
                              help='Expected title to parse (can be used multiple times)')
-    naming_opts.add_argument('-G', '--expected-group', action='append', dest='expected_group', type=str_opt_type,
+    naming_opts.add_argument('-G', '--expected-group', action='append', dest='expected_group', type=StrOptType,
                              help='Expected release group (can be used multiple times)')
 
     input_opts = opts.add_argument_group("Input")
