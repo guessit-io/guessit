@@ -1,7 +1,7 @@
 History
 =======
 
-2.0b4 (unreleased)
+2.0b4 (2015-11-24)
 ------------------
 
 - Add ``expected-group`` option.
