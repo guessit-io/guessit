@@ -6,6 +6,9 @@ History
 
 - Add ``expected-group`` option.
 - Add validation rule for single digit ``episode`` to avoid false positives.
+- Add ``verbose`` option.
+- Fix ``expected-title`` option.
+- Better unicode support in ``expected-group``/``expected-title`` option.
 
 
 2.0b3 (2015-11-15)
