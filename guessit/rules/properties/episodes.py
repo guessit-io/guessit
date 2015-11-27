@@ -117,7 +117,7 @@ def episodes():
                  r'(?:v(?P<version>\d+))?' +
                  r'(?:(?P<episodeSeparator>[x-])(?P<episode>\d{1,2}))*',
                  tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int},
-                 disabled=lambda context: not context.get('episode_prefer_number', False))
+                 disabled=lambda context: context.get('type') != 'episode')
 
     # e112, e113
     rebulk.regex(r'e(?P<episode>\d{1,4})' +

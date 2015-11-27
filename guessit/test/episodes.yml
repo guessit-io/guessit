@@ -892,8 +892,15 @@
   title: FooBar 7
   type: movie
 
+? FooBar.7.PDTV-FlexGet
+: options: -t episode
+  episode: 7
+  format: DVB
+  release_group: FlexGet
+  title: FooBar
+
 ? FooBar.7v3.PDTV-FlexGet
-: options: --episode-prefer-number
+: options: -t episode
   episode: 7
   version: 3
   format: DVB
