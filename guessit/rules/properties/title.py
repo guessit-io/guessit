@@ -246,6 +246,9 @@ class TitleBaseRule(Rule):
                 return titles, to_remove
 
     def when(self, matches, context):
+        if matches.named(self.match_name, lambda match: 'expected' in match.tags):
+            return
+
         fileparts = [filepart for filepart in list(marker_sorted(matches.markers.named('path'), matches))
                      if not self.filepart_filter or self.filepart_filter(filepart, matches)]
 
@@ -294,9 +297,6 @@ class TitleFromPosition(TitleBaseRule):
     def __init__(self):
         super(TitleFromPosition, self).__init__('title', ['title'], 'alternativeTitle')
 
-    def enabled(self, context):
-        return not context.get('expected_title')
-
 
 class PreferTitleWithYear(Rule):
     """
@@ -306,9 +306,6 @@ class PreferTitleWithYear(Rule):
     consequence = [RemoveMatch, AppendTags(['equivalent-ignore'])]
 
     properties = {'title': [None]}
-
-    def enabled(self, context):
-        return not context.get('expected_title')
 
     def when(self, matches, context):
         with_year_in_group = []

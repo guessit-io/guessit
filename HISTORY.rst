@@ -4,7 +4,7 @@ History
 2.0b5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fallback to default title guessing when ``expected-title`` is not found.
 
 
 2.0b4 (2015-11-24)
