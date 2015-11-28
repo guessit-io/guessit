@@ -228,7 +228,7 @@ class SeasonSeparatorRange(Rule):
             previous_match = matches.previous(separator, lambda match: match.name == 'season', 0)
             next_match = matches.next(separator, lambda match: match.name == 'season', 0)
 
-            if separator.value == '-':
+            if previous_match and next_match and separator.value == '-':
                 for episode_number in range(previous_match.value + 1, next_match.value):
                     match = copy.copy(separator)
                     match.private = False

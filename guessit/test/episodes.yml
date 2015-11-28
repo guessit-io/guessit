@@ -1700,3 +1700,9 @@
   type: episode
   video_codec: XviD
   year: 2009
+
+? Date.Series.10-11-2008.XViD
+: date: 2008-11-10
+  title: Date
+  type: episode
+  video_codec: XviD
