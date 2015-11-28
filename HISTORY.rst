@@ -5,6 +5,8 @@ History
 -------------------
 
 - Single digit episodes are now guessed for ``--type episode`` instead of ``--episode-prefer-number``.
+- Fix separators that could cause some titles to be splited with & and ;.
+- Avoid possible ``NoneType`` error.
 
 
 2.0rc1 (2015-11-27)
