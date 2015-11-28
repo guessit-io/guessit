@@ -1690,3 +1690,13 @@
   title: Show
   season: 1
   episode: 2
+
+? Foo's &amp; Bars (2009) S01E01 720p XviD-2HD[AOEU]
+: episode: 1
+  release_group: 2HD[AOEU]
+  screen_size: 720p
+  season: 1
+  title: Foo's &amp; Bars
+  type: episode
+  video_codec: XviD
+  year: 2009
