@@ -4,7 +4,7 @@ History
 2.0rc3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add ``__version__`` to main module.
 
 
 2.0rc2 (2015-11-28)
