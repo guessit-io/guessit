@@ -1,7 +1,7 @@
 History
 =======
 
-2.0rc2 (unreleased)
+2.0rc2 (2015-11-28)
 -------------------
 
 - Single digit episodes are now guessed for ``--type episode`` instead of ``--episode-prefer-number``.
