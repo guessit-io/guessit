@@ -4,7 +4,7 @@ History
 2.0rc4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add docs.
 
 
 2.0rc3 (2015-11-29)
@@ -83,4 +83,4 @@ History
 ------------------
 
 - Rewrite from scratch using `Rebulk <https://www.github.com/Toilal/rebulk>`_
-- Read `MIGRATION.rst <https://github.com/wackou/guessit/blob/2.x/MIGRATION.rst>`_ for migration guidelines.
+- Read `MIGRATION.rst <https://github.com/wackou/guessit/blob/master/MIGRATION.rst>`_ for migration guidelines.

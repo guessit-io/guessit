@@ -5,4 +5,6 @@ zest.releaser[recommended]
 pylint
 tox
 pyyaml
+sphinx
+sphinx-autobuild
 -e .

@@ -24,3 +24,6 @@ lastfailed
 *.iml
 .idea/
 
+# docs
+docs/_build/
+

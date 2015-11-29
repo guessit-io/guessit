@@ -1,3 +1,8 @@
+.. GuessIt documentation master file, created by
+   sphinx-quickstart on Sun Nov 29 15:18:07 2015.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
 GuessIt
 =======
 
@@ -17,12 +22,9 @@ GuessIt
     :target: https://coveralls.io/github/wackou/guessit
     :alt: Coveralls
 
-`HuBoard <https://huboard.com/wackou/guessit>`_
-
-
 GuessIt is a python library that extracts as much information as possible from a video filename.
 
-It has a very powerful matcher that allows to guess properties from a video using its filename only.
+It has a very powerful matcher that allows to guess :ref:`properties <properties>` from a video using its filename only.
 This matcher works with both movies and tv shows episodes.
 
 For example, GuessIt can do the following::
@@ -42,15 +44,13 @@ For example, GuessIt can do the following::
         "type": "episode"
     }
 
-More information are available at `ReadTheDocs <http://guessit.readthedocs.org/>`_.
-
 Migration note
 --------------
+
 GuessIt 2 has been rewriten from scratch. GuessIt is now a release name parser only, and support for additional
 features like hashes computations has been dropped.
 
-To migrate from guessit ``0.x`` or ``1.x``, please read
-`migration.rst <https://github.com/wackou/guessit/blob/master/docs/migration.rst>`_.
+To migrate from guessit ``0.x`` or ``1.x``, please read the :ref:`migration page<migration>`.
 
 Install
 -------
@@ -59,7 +59,7 @@ Installing GuessIt is simple with `pip <http://www.pip-installer.org/>`_::
 
     $ pip install guessit
 
-You can also `install GuessIt from sources <https://github.com/wackou/guessit/blob/master/docs/sources.rst>`_
+You can also :ref:`install from sources <sources>`.
 
 Usage
 -----
@@ -135,6 +135,13 @@ It can also be used as a python module::
 Command line options can be given as dict or string to the second argument.
 
 GuessIt only accept unicode string, so you need to use ``u`` prefix for input string on python 2.
+
+REST API
+--------
+
+A REST API will be available soon ...
+
+Sources are available in a dedicated `guessit-rest repository <https://github.com/Toilal/guessit-rest>`_.
 
 Support
 -------

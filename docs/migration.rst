@@ -1,3 +1,5 @@
+.. _migration:
+
 Migration
 =========
 Guessit 2 has been rewritten from scratch. You can find in this file all information required to perform a

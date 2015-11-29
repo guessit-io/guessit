@@ -1,0 +1,96 @@
+/**
+
+Donations welcome:
+	BTC: 122MeuyZpYz4GSHNrF98e6dnQCXZfHJeGS
+	LTC: LY1L6M6yG26b4sRkLv4BbkmHhPn8GR5fFm
+		~ Thank you!
+
+------------
+
+MIT License (MIT)
+
+Copyright (c) 2013 http://coinwidget.com/ 
+Copyright (c) 2013 http://scotty.cc/
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
+
+/* button */
+.COINWIDGETCOM_CONTAINER {height:18px;display:inline-block;font-family:arial;line-height:12px;margin-right:5px;}
+.COINWIDGETCOM_CONTAINER > span {padding:3px;background:#fff;box-shadow:1px 1px 2px rgba(0,0,0,0.05);border:1px solid #ddd;position:relative;min-height:14px;max-height:14px;min-width:14px;text-align:center;font-size:11px;color:#666;margin-left:7px;border-radius:3px 3px 3px 3px;}
+.COINWIDGETCOM_CONTAINER > span:after, .COINWIDGETCOM_CONTAINER > span:before {right: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+.COINWIDGETCOM_CONTAINER > span:after {border-color: rgba(255, 255, 255, 0);border-right-color: #fff;border-width: 5px;top: 50%;margin-top: -5px;}
+.COINWIDGETCOM_CONTAINER > span:before {border-color: rgba(221, 221, 221, 0);border-right-color: #ddd;border-width: 6px;top: 50%;margin-top: -6px;}
+.COINWIDGETCOM_CONTAINER > span, 
+.COINWIDGETCOM_CONTAINER > a {display:inline-block;vertical-align:middle;height:18px;}
+.COINWIDGETCOM_CONTAINER > a {background: #eeeeee;background: -moz-linear-gradient(top,  #eeeeee 0%, #fafafa 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#fafafa));background: -webkit-linear-gradient(top,  #eeeeee 0%,#fafafa 100%);background: -o-linear-gradient(top,  #eeeeee 0%,#fafafa 100%);background: -ms-linear-gradient(top,  #eeeeee 0%,#fafafa 100%);background: linear-gradient(to bottom,  #eeeeee 0%,#fafafa 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#fafafa',GradientType=0 );padding:2px 4px;border:1px solid #ccc;font-size:11px;box-shadow:1px 1px 4px rgba(0,0,0,0.075),inset 1px 1px 0px rgba(255,255,255,0.8);border-radius:2px 2px 2px 2px;}
+.COINWIDGETCOM_CONTAINER > a:hover {background: #fafafa;background: -moz-linear-gradient(top,  #fafafa 0%, #eeeeee 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fafafa), color-stop(100%,#eeeeee));background: -webkit-linear-gradient(top,  #fafafa 0%,#eeeeee 100%);background: -o-linear-gradient(top,  #fafafa 0%,#eeeeee 100%);background: -ms-linear-gradient(top,  #fafafa 0%,#eeeeee 100%);background: linear-gradient(to bottom,  #fafafa 0%,#eeeeee 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#eeeeee',GradientType=0 );}
+.COINWIDGETCOM_CONTAINER > a > img,
+.COINWIDGETCOM_CONTAINER > a > span {display:inline-block;vertical-align:middle;}
+.COINWIDGETCOM_CONTAINER > a > span {margin:0px 3px;color:#444;text-shadow:0px -1px 0px #fff;font-weight:bold;}
+.COINWIDGETCOM_CONTAINER > span > img,
+.COINWIDGETCOM_CONTAINER > a > img {padding:0px;margin:0px!important;border:0px;}
+
+/* window */
+.COINWIDGETCOM_WINDOW {font-family:arial;position:absolute;z-index:99999999998;background:#fff;border:1px solid #ccc;padding:5px 5px 25px 5px;background: #fafafa;background: -moz-linear-gradient(top,  #fafafa 0%, #eeeeee 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fafafa), color-stop(100%,#eeeeee));background: -webkit-linear-gradient(top,  #fafafa 0%,#eeeeee 100%);background: -o-linear-gradient(top,  #fafafa 0%,#eeeeee 100%);background: -ms-linear-gradient(top,  #fafafa 0%,#eeeeee 100%);background: linear-gradient(to bottom,  #fafafa 0%,#eeeeee 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#eeeeee',GradientType=0 );border-radius:2px 2px 2px 2px;top:90%;left:45%;}
+
+/* window alignments */
+.COINWIDGETCOM_WINDOW_BC {box-shadow:0px 3px 4px rgba(0,0,0,0.1),inset 1px 1px 0px #fff;}
+.COINWIDGETCOM_WINDOW_BL {box-shadow:3px 3px 4px rgba(0,0,0,0.1),inset 1px 1px 0px #fff;}
+.COINWIDGETCOM_WINDOW_BR {box-shadow:3px 3px 4px rgba(0,0,0,0.1),inset 1px 1px 0px #fff;}
+.COINWIDGETCOM_WINDOW_AC {box-shadow:0px 3px 4px rgba(0,0,0,0.1),inset 1px 1px 0px #fff;}
+.COINWIDGETCOM_WINDOW_AL {box-shadow:3px 3px 4px rgba(0,0,0,0.1),inset 1px 1px 0px #fff;}
+.COINWIDGETCOM_WINDOW_AR {box-shadow:3px 3px 4px rgba(0,0,0,0.1),inset 1px 1px 0px #fff;}
+
+.COINWIDGETCOM_WINDOW_BC:after, .COINWIDGETCOM_WINDOW_BC:before {bottom: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+.COINWIDGETCOM_WINDOW_BC:after {border-color: rgba(250, 250, 250, 0);border-bottom-color: #fafafa;border-width: 5px;left: 50%;margin-left: -5px;}
+.COINWIDGETCOM_WINDOW_BC:before {border-color: rgba(204, 204, 204, 0);border-bottom-color: #ccc;border-width: 6px;left: 50%;margin-left: -6px;}
+.COINWIDGETCOM_WINDOW_BL:after, .COINWIDGETCOM_WINDOW_BL:before {bottom: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+.COINWIDGETCOM_WINDOW_BL:after {border-color: rgba(250, 250, 250, 0);border-bottom-color: #fafafa;border-width: 5px;left: 10%;margin-left: -5px;}
+.COINWIDGETCOM_WINDOW_BL:before {border-color: rgba(204, 204, 204, 0);border-bottom-color: #ccc;border-width: 6px;left: 10%;margin-left: -6px;}
+.COINWIDGETCOM_WINDOW_BR:after, .COINWIDGETCOM_WINDOW_BR:before {bottom: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+.COINWIDGETCOM_WINDOW_BR:after {border-color: rgba(250, 250, 250, 0);border-bottom-color: #fafafa;border-width: 5px;left: 90%;margin-left: -5px;}
+.COINWIDGETCOM_WINDOW_BR:before {border-color: rgba(204, 204, 204, 0);border-bottom-color: #ccc;border-width: 6px;left: 90%;margin-left: -6px;}
+.COINWIDGETCOM_WINDOW_AC:after, .COINWIDGETCOM_WINDOW_AC:before {top: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+.COINWIDGETCOM_WINDOW_AC:after {border-color: rgba(238, 238, 238, 0);border-top-color: #eeeeee;border-width: 5px;left: 50%;margin-left: -5px;}
+.COINWIDGETCOM_WINDOW_AC:before {border-color: rgba(204, 204, 204, 0);border-top-color: #ccc;border-width: 6px;left: 50%;margin-left: -6px;}
+.COINWIDGETCOM_WINDOW_AL:after, .COINWIDGETCOM_WINDOW_AL:before {top: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+.COINWIDGETCOM_WINDOW_AL:after {border-color: rgba(238, 238, 238, 0);border-top-color: #eeeeee;border-width: 5px;left: 10%;margin-left: -5px;}
+.COINWIDGETCOM_WINDOW_AL:before {border-color: rgba(204, 204, 204, 0);border-top-color: #ccc;border-width: 6px;left: 10%;margin-left: -6px;}
+.COINWIDGETCOM_WINDOW_AR:after, .COINWIDGETCOM_WINDOW_AR:before {top: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+.COINWIDGETCOM_WINDOW_AR:after {border-color: rgba(238, 238, 238, 0);border-top-color: #eeeeee;border-width: 5px;left: 90%;margin-left: -5px;}
+.COINWIDGETCOM_WINDOW_AR:before {border-color: rgba(204, 204, 204, 0);border-top-color: #ccc;border-width: 6px;left: 90%;margin-left: -6px;}
+
+/* window elements */
+.COINWIDGETCOM_WINDOW > label {font-size:12px;font-weight:bold;color:#444;display:block;width:250px;padding:3px;text-shadow:0px -1px 0px #fff;}
+.COINWIDGETCOM_WINDOW > input {padding:4px 3px 4px 20px;border-radius:2px 2px 2px 2px;border:1px solid #ccc;display:block;width:210px;font-size:10px;margin-bottom:5px;}
+.COINWIDGETCOM_WINDOW > a.COINWIDGETCOM_CLOSER {position:absolute;top:3px;right:7px;color:#666;font-weight:bold;text-decoration:none;}
+.COINWIDGETCOM_WINDOW > a.COINWIDGETCOM_CLOSER:hover {color:#aaa;}
+.COINWIDGETCOM_WINDOW > img {position:absolute;border:none;margin:0px;padding:0px;}
+.COINWIDGETCOM_WINDOW > a img {border:none;margin:0px;padding:0px;}
+.COINWIDGETCOM_WINDOW > a.COINWIDGETCOM_WALLETURI {position:absolute;}
+.COINWIDGETCOM_WINDOW > span {float: left;font-size:12px;font-weight:bold;display: block;width: 115px;text-align: left;border: 1px solid #ffeeb3;background: #fff8ef;text-shadow:0px -1px 0px #fffefa;padding: 5px;margin-right: 4px;box-shadow: inset 1px 1px 0px #fff;color:#444!important;}
+.COINWIDGETCOM_WINDOW > span.end {margin-right:0px;}
+.COINWIDGETCOM_WINDOW > span > small {display:block;font-size:11px;font-weight:normal;}
+.COINWIDGETCOM_WINDOW > a.COINWIDGETCOM_CREDITS {position:absolute;bottom:5px;right:5px;font-size:11px;color:#555;text-decoration:none;text-shadow:0px -1px 0px #fff;}
+.COINWIDGETCOM_WINDOW > a.COINWIDGETCOM_CREDITS:hover {color:#111;}
+.COINWIDGETCOM_WINDOW > img.COINWIDGETCOM_QRCODE {position:absolute;bottom:5px;left:6px;}
+.COINWIDGETCOM_WINDOW > img.COINWIDGETCOM_QRCODE_LARGE {position:absolute;bottom:5px;left:30px;display:none;border:1px solid #333;border-radius:4px;z-index:99999999;box-shadow:0px 0px 8px rgba(0,0,0,0.5);}
+

@@ -1,0 +1,17 @@
+{%- extends "basic/layout.html" %}
+{%- block extrahead %}
+  {{ super() }}
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+  {% if theme_touch_icon %}
+    <link rel="apple-touch-icon" href="{{ pathto('_static/' ~ theme_touch_icon, 1) }}" />
+  {% endif %}
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+{% endblock %}
+{%- block relbar2 %}{% endblock %}
+{%- block footer %}
+    <div class="footer">
+      &copy; Copyright {{ copyright }}.
+    </div>
+
+{%- endblock %}
