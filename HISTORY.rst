@@ -1,7 +1,7 @@
 History
 =======
 
-2.0rc3 (unreleased)
+2.0rc3 (2015-11-29)
 -------------------
 
 - Add ``__version__`` to main module.
