@@ -9,9 +9,9 @@ from collections import defaultdict
 import copy
 
 import six
-from guessit.rules.common.words import iter_words
 
 from rebulk import Rebulk, Rule, CustomRule, POST_PROCESS, PRE_PROCESS, AppendMatch, RemoveMatch
+from guessit.rules.common.words import iter_words
 from .common.formatters import cleanup
 from .common.comparators import marker_sorted
 from .common.date import valid_year

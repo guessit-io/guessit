@@ -10,14 +10,14 @@ import os
 import logging
 import json
 import sys
+from io import open  #pylint:disable=redefined-builtin
+
 import six
 from guessit.jsonutils import GuessitEncoder
 
 from guessit.__version__ import __version__
 from guessit.options import argument_parser
 from guessit import api
-
-from io import open  #pylint:disable=redefined-builtin
 
 
 def guess_filename(filename, options):

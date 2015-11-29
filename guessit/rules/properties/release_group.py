@@ -7,10 +7,11 @@ from __future__ import unicode_literals
 
 import copy
 
-from guessit.rules.common.validators import int_coercable
-from guessit.rules.properties.title import TitleFromPosition
 import regex as re
+
 from rebulk import Rebulk, Rule, AppendMatch
+from ..common.validators import int_coercable
+from ..properties.title import TitleFromPosition
 from ..common.formatters import cleanup
 from ..common import seps, dash
 from ..common.comparators import marker_sorted

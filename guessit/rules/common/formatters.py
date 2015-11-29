@@ -5,9 +5,12 @@ Formatters
 """
 from __future__ import unicode_literals
 
-from . import seps
 import regex as re
+
 from rebulk.formatters import formatters
+
+from . import seps
+
 
 _excluded_clean_chars = ',:;-/\\'
 clean_chars = ""

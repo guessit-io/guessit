@@ -2,25 +2,27 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
 import logging
-from guessit.options import parse_options
-from ..yamlutils import OrderedDictYAMLLoader
-
-logger = logging.getLogger(__name__)
-
-import babelfish
-import pytest
-import yaml
 
 # io.open supports encoding= in python 2.7
 from io import open  # pylint: disable=redefined-builtin
+import os
+import yaml
 
 import six
 
+import regex as re
+
+import babelfish
+import pytest
+
+from rebulk.utils import is_iterable
+
+from guessit.options import parse_options
+from ..yamlutils import OrderedDictYAMLLoader
 from .. import guessit
 
-import regex as re
-import os
-from rebulk.utils import is_iterable
+
+logger = logging.getLogger(__name__)
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -222,7 +224,7 @@ class TestYml(object):
         return negates, global_, string
 
     def check_global(self, string, result, entry):
-        global_span = None
+        global_span = []
         for result_matches in result.matches.values():
             for result_match in result_matches:
                 if not global_span:

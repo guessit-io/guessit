@@ -5,16 +5,17 @@ Options
 """
 from __future__ import unicode_literals
 
+import sys
 from argparse import ArgumentParser
 import shlex
 
 import six
-import sys
+
 
 if six.PY2:
     StrOptType = lambda s: unicode(s, sys.stdin.encoding)  # pylint:disable=undefined-variable
 else:
-    StrOptType = str
+    StrOptType = str  # pylint:disable=redefined-variable-type
 
 
 def build_argument_parser():

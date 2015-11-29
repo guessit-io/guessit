@@ -7,16 +7,16 @@ from __future__ import unicode_literals
 
 import re
 
-from guessit.rules.properties.film import FilmTitleRule
-from guessit.rules.properties.language import SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, \
-    SubtitleExtensionRule
 from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch, AppendTags
 from rebulk.formatters import formatters
 from rebulk.pattern import RePattern
+from rebulk.utils import find_all
+
+from .film import FilmTitleRule
+from .language import SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule
 from ..common.formatters import cleanup, reorder_title
 from ..common.comparators import marker_sorted
 from ..common import seps, title_seps, dash
-from rebulk.utils import find_all
 
 
 def title():
@@ -233,7 +233,7 @@ class TitleBaseRule(Rule):
                     for title_match in list(titles[1:]):
                         previous_title = titles[titles.index(title_match) - 1]
                         separator = matches.input_string[previous_title.end:title_match.start]
-                        if len(separator) == 1 and '-' == separator \
+                        if len(separator) == 1 and separator == '-' \
                                 and previous_title.raw[-1] not in seps \
                                 and title_match.raw[0] not in seps:
                             titles[titles.index(title_match) - 1].end = title_match.end

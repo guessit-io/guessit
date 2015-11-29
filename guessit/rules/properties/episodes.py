@@ -10,8 +10,8 @@ import copy
 
 import regex as re
 
-from guessit.rules.properties.title import TitleFromPosition
 from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
+from .title import TitleFromPosition
 from ..common.validators import seps_surround
 from ..common import dash, alt_dash
 from ..common.numeral import numeral, parse_numeral

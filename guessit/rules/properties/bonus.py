@@ -7,8 +7,9 @@ from __future__ import unicode_literals
 
 import regex as re
 
-from guessit.rules.properties.title import TitleFromPosition
 from rebulk import Rebulk, AppendMatch, Rule
+
+from .title import TitleFromPosition
 from ..common.formatters import cleanup
 from ..common.validators import seps_surround
 
