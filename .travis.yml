@@ -12,7 +12,7 @@ install:
   - pip install pytest --upgrade
   - pip install coveralls
 script:
-  - if [ $TRAVIS_PYTHON_VERSION != 2.6 ]; then pylint rebulk; fi
+  - if [ $TRAVIS_PYTHON_VERSION != 2.6 ]; then pylint guessit; fi
   - coverage run --source=guessit setup.py test
   - python setup.py build
 after_success:
