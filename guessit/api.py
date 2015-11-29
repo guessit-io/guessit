@@ -11,9 +11,10 @@ except ImportError:  # pragma: no-cover
 
 import six
 
+from rebulk.introspector import introspect
+
 from .rules import rebulk_builder
 from .options import parse_options
-from rebulk.introspector import introspect
 
 
 def guessit(string, options=None):

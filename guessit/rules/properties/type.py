@@ -4,10 +4,11 @@
 type property
 """
 from __future__ import unicode_literals
-from guessit.rules.processors import Processors
-from rebulk import CustomRule, Rebulk, POST_PROCESS
 
+from rebulk import CustomRule, Rebulk, POST_PROCESS
 from rebulk.match import Match
+
+from ...rules.processors import Processors
 
 
 def _type(matches, value):

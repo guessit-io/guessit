@@ -6,10 +6,11 @@ mimetype property
 from __future__ import unicode_literals
 
 import mimetypes
-from guessit.rules.processors import Processors
-from rebulk import Rebulk, CustomRule, POST_PROCESS
 
+from rebulk import Rebulk, CustomRule, POST_PROCESS
 from rebulk.match import Match
+
+from ...rules.processors import Processors
 
 
 def mimetype():
