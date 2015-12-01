@@ -1,0 +1,13 @@
+build-essential
+curl
+git-core
+libbz2-dev
+libreadline-dev
+libsqlite3-dev
+libssl-dev
+llvm
+make
+python-software-properties
+software-properties-common
+wget
+zlib1g-dev
