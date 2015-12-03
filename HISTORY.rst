@@ -1,7 +1,7 @@
 History
 =======
 
-2.0rc4 (unreleased)
+2.0rc4 (2015-12-03)
 -------------------
 
 - Add docs.
