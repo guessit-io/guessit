@@ -29,7 +29,7 @@ def audio_codec():
     rebulk.regex("AC3", value="AC3")
     rebulk.regex("Flac", value="FLAC")
     rebulk.regex("DTS", value="DTS")
-    rebulk.regex("True-?HD", value="True-HD")
+    rebulk.regex("True-?HD", value="TrueHD")
 
     rebulk.defaults(name="audio_profile")
     rebulk.string("HD", value="HD", tags="DTS")

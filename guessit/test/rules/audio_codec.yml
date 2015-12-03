@@ -27,7 +27,7 @@
 
 ? +True-HD
 ? +trueHD
-: audio_codec: True-HD
+: audio_codec: TrueHD
 
 ? +DTS-HD
 : audio_codec: DTS
