@@ -5,7 +5,5 @@ include *.rst
 include *.ini
 include *.cfg
 include *.txt
-recursive-include docker *
-include Dockerfile
 include .coveragerc
 include pylintrc
