@@ -59,3 +59,7 @@
 ? "+2160"
 ? +4096x2160
 : screen_size: 4K
+
+? Test.File.720hd.bluray
+? Test.File.720p50
+: screen_size: 720p

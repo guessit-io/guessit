@@ -5,6 +5,7 @@ History
 -------------------
 
 - Add docs.
+- Add exotic `screen_size` patterns support like `720hd` and `720p50`.
 
 
 2.0rc3 (2015-11-29)
