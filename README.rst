@@ -136,6 +136,26 @@ Command line options can be given as dict or string to the second argument.
 
 GuessIt only accept unicode string, so you need to use ``u`` prefix for input string on python 2.
 
+Docker
+------
+
+GuessIt is also available on `Docker Hub <https://hub.docker.com/r/toilal/guessit/>`_ as a Docker Image.::
+
+    $ docker run -it toilal/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
+    For: Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
+    GuessIt found: {
+        "title": "Treme",
+        "season": 1,
+        "episode": 3,
+        "episode_title": "Right Place, Wrong Time",
+        "format": "HDTV",
+        "video_codec": "XviD",
+        "release_group": "NoTV",
+        "container": "avi",
+        "mimetype": "video/x-msvideo",
+        "type": "episode"
+    }
+
 Support
 -------
 
