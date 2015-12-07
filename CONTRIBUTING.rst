@@ -11,7 +11,7 @@ GuessIt is under active development, and contributions are more than welcome!
 #. Write a test which shows that the bug was fixed or that the feature works as expected.
 #. Send a pull request and bug the maintainer until it gets merged and published. :)
 
-.. _the repository: https://github.com/wackou/guessit
+.. _the repository: https://github.com/guessit-io/guessit
 
 License
 -------

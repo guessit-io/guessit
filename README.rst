@@ -9,15 +9,15 @@ GuessIt
     :target: https://pypi.python.org/pypi/guessit
     :alt: LGPLv3 License
 
-.. image:: http://img.shields.io/travis/wackou/guessit.svg
-    :target: https://travis-ci.org/wackou/guessit
+.. image:: http://img.shields.io/travis/guessit-io/guessit.svg
+    :target: https://travis-ci.org/guessit-io/guessit
     :alt: Build Status
 
-.. image:: http://img.shields.io/coveralls/wackou/guessit.svg
-    :target: https://coveralls.io/github/wackou/guessit
+.. image:: http://img.shields.io/coveralls/guessit-io/guessit.svg
+    :target: https://coveralls.io/github/guessit-io/guessit
     :alt: Coveralls
 
-`HuBoard <https://huboard.com/wackou/guessit>`_
+`HuBoard <https://huboard.com/guessit-io/guessit>`_
 
 
 GuessIt is a python library that extracts as much information as possible from a video filename.
@@ -50,7 +50,7 @@ GuessIt 2 has been rewriten from scratch. GuessIt is now a release name parser o
 features like hashes computations has been dropped.
 
 To migrate from guessit ``0.x`` or ``1.x``, please read
-`migration.rst <https://github.com/wackou/guessit/blob/master/docs/migration.rst>`_.
+`migration.rst <https://github.com/guessit-io/guessit/blob/master/docs/migration.rst>`_.
 
 Install
 -------
@@ -59,7 +59,7 @@ Installing GuessIt is simple with `pip <http://www.pip-installer.org/>`_::
 
     $ pip install guessit
 
-You can also `install GuessIt from sources <https://github.com/wackou/guessit/blob/master/docs/sources.rst>`_
+You can also `install GuessIt from sources <https://github.com/guessit-io/guessit/blob/master/docs/sources.rst>`_
 
 Usage
 -----
@@ -159,7 +159,7 @@ GuessIt is also available on `Docker Hub <https://hub.docker.com/r/toilal/guessi
 Support
 -------
 
-This project is hosted on `GitHub <https://github.com/wackou/guessit>`_. Feel free to open an issue if you think you
+This project is hosted on `GitHub <https://github.com/guessit-io/guessit>`_. Feel free to open an issue if you think you
 have found a bug or something is missing in guessit.
 
 GuessIt relies on `Rebulk <https://github.com/Toilal/rebulk>`_ project for pattern and rules registration.

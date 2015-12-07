@@ -91,4 +91,4 @@ History
 ------------------
 
 - Rewrite from scratch using `Rebulk <https://www.github.com/Toilal/rebulk>`_
-- Read `MIGRATION.rst <https://github.com/wackou/guessit/blob/master/MIGRATION.rst>`_ for migration guidelines.
+- Read `MIGRATION.rst <https://github.com/guessit-io/guessit/blob/master/MIGRATION.rst>`_ for migration guidelines.
