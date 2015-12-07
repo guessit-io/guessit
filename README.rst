@@ -9,15 +9,15 @@ GuessIt
     :target: https://pypi.python.org/pypi/guessit
     :alt: License
 
-.. image:: http://img.shields.io/travis/wackou/guessit/1.x.svg
-    :target: https://travis-ci.org/wackou/guessit
+.. image:: http://img.shields.io/travis/guessit-io/guessit/1.x.svg
+    :target: https://travis-ci.org/guessit-io/guessit
     :alt: Build Status
 
-.. image:: http://img.shields.io/coveralls/wackou/guessit/1.x.svg
-    :target: https://coveralls.io/github/wackou/guessit?branch=1.x
+.. image:: http://img.shields.io/coveralls/guessit-io/guessit/1.x.svg
+    :target: https://coveralls.io/github/guessit-io/guessit?branch=1.x
     :alt: Coveralls
 
-`HuBoard <https://huboard.com/wackou/guessit>`_
+`HuBoard <https://huboard.com/guessit-io/guessit>`_
 
 
 GuessIt is a python library that extracts as much information as
@@ -50,7 +50,7 @@ GuessIt 2 has been rewriten from scratch and is currently in Alpha. GuessIt is n
 support for additional features like hashes computations has been dropped.
 
 To migrate from guessit ``0.x`` or ``1.x``, please read
-`MIGRATION.rst <https://github.com/wackou/guessit/blob/2.x/MIGRATION.rst>`_.
+`MIGRATION.rst <https://github.com/guessit-io/guessit/blob/master/MIGRATION.rst>`_.
 
 Previous version of GuessIt is still available in ``1.x`` branch and using ``pip install guessit<2``, but won't be
 maintained anymore.
@@ -208,9 +208,9 @@ Support
 The project website for GuessIt is hosted at `ReadTheDocs <http://guessit.readthedocs.org/>`_.
 There you will also find the User guide and Developer documentation.
 
-This project is hosted on GitHub: `<https://github.com/wackou/guessit>`_
+This project is hosted on GitHub: `<https://github.com/guessit-io/guessit>`_
 
-Please report issues and/or feature requests via the `bug tracker <https://github.com/wackou/guessit/issues>`_.
+Please report issues and/or feature requests via the `bug tracker <https://github.com/guessit-io/guessit/issues>`_.
 
 You can also report issues using the command-line tool::
 
@@ -230,7 +230,7 @@ GuessIt is under active development, and contributions are more than welcome!
 #. Write a test which shows that the bug was fixed or that the feature works as expected.
 #. Send a pull request and bug the maintainer until it gets merged and published. :)
 
-.. _the repository: https://github.com/wackou/guessit
+.. _the repository: https://github.com/guessit-io/guessit
 
 License
 -------
