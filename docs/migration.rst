@@ -95,6 +95,9 @@ automatically ordered based on filename, and you can still use this output as a 
 
 If multiple values are available for a property, value in the dict will be a ``list`` instance.
 
+``country`` 2-letter code is not added to the title anymore. As ``country`` is added to the returned guess dict,
+it's up to the user to edit the guessed title.
+
 Advanced display option (``-a, --advanced``) output is also changed. It now list ``Match`` objects from
 `Rebulk <https://github.com/Toilal/rebulk>`_, and may display duplicates that would have been merged in standard
 output.::

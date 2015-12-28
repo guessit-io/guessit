@@ -122,28 +122,6 @@ class RemoveAmbiguous(Rule):
         return to_remove
 
 
-class CountryInTitle(CustomRule):
-    """
-    If country and title are found, append country value to title as 2-letter code
-    :param matches:
-    :type matches:
-    :return:
-    :rtype:
-    """
-    priority = POST_PROCESS
-
-    def when(self, matches, context):
-        country = matches.named('country', index=0)
-        titles = matches.named('title')
-        if country and titles:
-            return country, titles
-
-    def then(self, matches, when_response, context):
-        country, titles = when_response
-        for title in titles:
-            title.value += ' (%s)' % country.value
-
-
 def _preferred_string(value1, value2):  # pylint:disable=too-many-return-statements
     """
     Retrieves preferred title from both values.
@@ -218,4 +196,4 @@ def processors():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    return Rebulk().rules(EnlargeGroupMatches, EquivalentHoles, RemoveAmbiguous, CountryInTitle, SeasonYear, Processors)
+    return Rebulk().rules(EnlargeGroupMatches, EquivalentHoles, RemoveAmbiguous, SeasonYear, Processors)

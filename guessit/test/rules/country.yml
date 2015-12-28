@@ -3,7 +3,7 @@
 ? Us.this.is.title
 ? this.is.title.US
 : country: US
-  title: this is title (US)
+  title: this is title
 
 ? This.is.us.title
 : title: This is us title
