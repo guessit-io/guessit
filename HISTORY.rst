@@ -1,7 +1,7 @@
 History
 =======
 
-2.0rc6 (unreleased)
+2.0rc6 (2016-01-18)
 -------------------
 
 - Fix packaging issues.
