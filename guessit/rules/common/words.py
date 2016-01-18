@@ -34,7 +34,7 @@ COMMON_WORDS = frozenset([
     # french words
     'bas', 'de', 'le', 'son', 'ne', 'ca', 'ce', 'et', 'que',
     'mal', 'est', 'vol', 'or', 'mon', 'se', 'je', 'tu', 'me',
-    'ne', 'ma', 'va', 'au',
+    'ne', 'ma', 'va', 'au', 'lu',
     # japanese words,
     'wa', 'ga', 'ao',
     # spanish words
@@ -57,5 +57,7 @@ COMMON_WORDS = frozenset([
     # part/pt
     'pt',
     # screener
-    'scr'
+    'scr',
+    # quality
+    'sd', 'hr'
 ])
