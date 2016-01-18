@@ -1706,3 +1706,15 @@
   title: Date
   type: episode
   video_codec: XviD
+
+? Scrubs/SEASON-06/Scrubs.S06E09.My.Perspective.DVDRip.XviD-WAT/scrubs.s06e09.dvdrip.xvid-wat.avi
+: container: avi
+  episode: 9
+  episode_title: My Perspective
+  format: DVD
+  mimetype: video/x-msvideo
+  release_group: WAT
+  season: 6
+  title: Scrubs
+  type: episode
+  video_codec: XviD

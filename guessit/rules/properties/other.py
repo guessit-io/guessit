@@ -149,6 +149,7 @@ class ValidateScreenerRule(Rule):
     Validate tag other.validate.screener
     """
     consequence = RemoveMatch
+    priority = 64
 
     def when(self, matches, context):
         ret = []
