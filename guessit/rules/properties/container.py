@@ -41,6 +41,7 @@ def container():
 
     rebulk.defaults(name='container',
                     validator=seps_surround,
+                    formatter=lambda s: s.upper(),
                     conflict_solver=lambda match, other: match
                     if other.name in ['format',
                                       'video_codec'] or other.name == 'container' and 'extension' in other.tags
