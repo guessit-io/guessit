@@ -741,3 +741,12 @@
   title: TEST
   type: movie
   year: 2015
+
+? Gangs of New York 2002 REMASTERED 1080p BluRay x264-AVCHD
+: format: BluRay
+  other: Remastered
+  screen_size: 1080p
+  title: Gangs of New York
+  type: movie
+  video_codec: h264
+  year: 2002

@@ -31,7 +31,7 @@ def other():
     rebulk.regex('ws', 'wide-?screen', value='WideScreen')
     rebulk.string('Netflix', 'NF', value='Netflix')
 
-    rebulk.string('Real', 'Fix', value='Proper', tags=['has-neighbor-before', 'has-neighbor-after'])
+    rebulk.string('Real', 'Fix', 'Fixed', value='Proper', tags=['has-neighbor-before', 'has-neighbor-after'])
     rebulk.string('Proper', 'Repack', 'Rerip', value='Proper')
     rebulk.string('Fansub', value='Fansub', tags='has-neighbor')
     rebulk.string('Fastsub', value='Fastsub', tags='has-neighbor')
@@ -42,11 +42,12 @@ def other():
     rebulk.regex('Pre-?Air', value='Preair')
 
     for value in (
-            'Screener', 'Remux', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC', 'CC', 'LD',
-            'MD', 'XXX'):
+            'Screener', 'Remux', 'Remastered', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC',
+            'CC', 'LD', 'MD', 'XXX'):
         rebulk.string(value, value=value)
 
-    for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL'):
+    for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL', 'Retail', 'Uncut',
+                  'Extended', 'Extended Cut'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
 
     rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')

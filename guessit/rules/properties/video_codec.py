@@ -25,7 +25,7 @@ def video_codec():
     rebulk.regex("Mpeg2", value="Mpeg2")
     rebulk.regex("DVDivX", "DivX", value="DivX")
     rebulk.regex("XviD", value="XviD")
-    rebulk.regex("[hx]-?264(?:-?AVC)?", "MPEG-?4(?:-?AVC)", value="h264")
+    rebulk.regex("[hx]-?264(?:-?AVC(HD)?)?", "MPEG-?4(?:-?AVC(HD)?)", "AVCHD", value="h264")
     rebulk.regex("[hx]-?265(?:-?HEVC)?", "HEVC", value="h265")
 
     # http://blog.mediacoderhq.com/h264-profiles-and-levels/

@@ -1155,11 +1155,23 @@
   audio_codec: AAC
   date: 2015-07-01
   format: WEBRip
+  other: [Extended, CC]
+  release_group: BTW
+  screen_size: 720p
+  title: The Daily Show
+  episode_title: Kirsten Gillibrand
+  video_codec: h264
+
+? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.Interview.720p.CC.WEBRip.AAC2.0.x264-BTW.mkv
+: audio_channels: '2.0'
+  audio_codec: AAC
+  date: 2015-07-01
+  format: WEBRip
   other: CC
   release_group: BTW
   screen_size: 720p
   title: The Daily Show
-  episode_title: Kirsten Gillibrand Extended
+  episode_title: Kirsten Gillibrand Extended Interview
   video_codec: h264
 
 ? The.Daily.Show.2015.07.02.Sarah.Vowell.CC.WEBRip.AAC2.0.x264-BTW.mkv
@@ -1728,3 +1740,11 @@
   screen_size: 720p
   title: Digimon Adventure tri
   type: episode
+
+? Sherlock.S01.720p.BluRay.x264-AVCHD
+: format: BluRay
+  screen_size: 720p
+  season: 1
+  title: Sherlock
+  type: episode
+  video_codec: h264
