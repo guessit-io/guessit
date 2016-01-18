@@ -10,8 +10,14 @@
 
 ? +DolbyDigital
 ? +DD
-? -Dolby Digital
+? +Dolby Digital
 : audio_codec: DolbyDigital
+
+? +DolbyAtmos
+? +Dolby Atmos
+? +Atmos
+? -Atmosphere
+: audio_codec: DolbyAtmos
 
 ? +AAC
 : audio_codec: AAC

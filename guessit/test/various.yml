@@ -543,3 +543,201 @@
   season: 1
   title: Test
   type: episode
+
+? TEST.S01E02.2160p.NF.WEBRip.x264.DD5.1-ABC
+: audio_channels: '5.1'
+  audio_codec: DolbyDigital
+  episode: 2
+  format: WEBRip
+  other: Netflix
+  release_group: ABC
+  screen_size: 4K
+  season: 1
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.2015.12.30.720p.WEBRip.h264-ABC
+: date: 2015-12-30
+  format: WEBRip
+  release_group: ABC
+  screen_size: 720p
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.S01E10.24.1080p.NF.WEBRip.AAC2.0.x264-ABC
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 10
+  episode_title: '24'
+  format: WEBRip
+  other: Netflix
+  release_group: ABC
+  screen_size: 1080p
+  season: 1
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.S01E10.24.1080p.NF.WEBRip.AAC2.0.x264-ABC
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 10
+  episode_title: '24'
+  format: WEBRip
+  other: Netflix
+  release_group: ABC
+  screen_size: 1080p
+  season: 1
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.S01E10.24.1080p.NF.WEBRip.AAC.2.0.x264-ABC
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 10
+  episode_title: '24'
+  format: WEBRip
+  other: Netflix
+  release_group: ABC
+  screen_size: 1080p
+  season: 1
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.S05E02.720p.iP.WEBRip.AAC2.0.H264-ABC
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 2
+  format: WEBRip
+  release_group: ABC
+  screen_size: 720p
+  season: 5
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.S03E07.720p.WEBRip.AAC2.0.x264-ABC
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 7
+  format: WEBRip
+  release_group: ABC
+  screen_size: 720p
+  season: 3
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.S15E15.24.1080p.FREE.WEBRip.AAC2.0.x264-ABC
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 15
+  episode_title: '24'
+  format: WEBRip
+  release_group: ABC
+  screen_size: 1080p
+  season: 15
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.S11E11.24.720p.ETV.WEBRip.AAC2.0.x264-ABC
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 11
+  episode_title: '24'
+  format: WEBRip
+  release_group: ABC
+  screen_size: 720p
+  season: 11
+  title: TEST
+  type: episode
+  video_codec: h264
+
+? TEST.2015.1080p.HC.WEBRip.x264.AAC2.0-ABC
+: audio_channels: '2.0'
+  audio_codec: AAC
+  format: WEBRip
+  release_group: ABC
+  screen_size: 1080p
+  title: TEST
+  type: movie
+  video_codec: h264
+  year: 2015
+
+? TEST.2015.1080p.3D.BluRay.Half-SBS.x264.DTS-HD.MA.7.1-ABC
+: audio_channels: '7.1'
+  audio_codec: DTS
+  audio_profile: HDMA
+  format: BluRay
+  other: 3D
+  release_group: ABC
+  screen_size: 1080p
+  title: TEST
+  type: movie
+  video_codec: h264
+  year: 2015
+
+? TEST.2015.1080p.3D.BluRay.Half-OU.x264.DTS-HD.MA.7.1-ABC
+: audio_channels: '7.1'
+  audio_codec: DTS
+  audio_profile: HDMA
+  format: BluRay
+  other: 3D
+  release_group: ABC
+  screen_size: 1080p
+  title: TEST
+  type: movie
+  video_codec: h264
+  year: 2015
+
+? TEST.2015.1080p.3D.BluRay.Half-OU.x264.DTS-HD.MA.TrueHD.7.1.Atmos-ABC
+: audio_channels: '7.1'
+  audio_codec:
+  - DTS
+  - TrueHD
+  - DolbyAtmos
+  audio_profile: HDMA
+  format: BluRay
+  other: 3D
+  release_group: ABC
+  screen_size: 1080p
+  title: TEST
+  type: movie
+  video_codec: h264
+  year: 2015
+
+? TEST.2015.1080p.3D.BluRay.Half-SBS.x264.DTS-HD.MA.TrueHD.7.1.Atmos-ABC
+: audio_channels: '7.1'
+  audio_codec:
+  - DTS
+  - TrueHD
+  - DolbyAtmos
+  audio_profile: HDMA
+  format: BluRay
+  other: 3D
+  release_group: ABC
+  screen_size: 1080p
+  title: TEST
+  type: movie
+  video_codec: h264
+  year: 2015
+
+? TEST.2015.1080p.BluRay.REMUX.AVC.DTS-HD.MA.TrueHD.7.1.Atmos-ABC
+: audio_channels: '7.1'
+  audio_codec:
+  - DTS
+  - TrueHD
+  - DolbyAtmos
+  audio_profile: HDMA
+  format: BluRay
+  other: Remux
+  release_group: ABC
+  screen_size: 1080p
+  title: TEST
+  type: movie
+  year: 2015
