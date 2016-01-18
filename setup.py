@@ -6,10 +6,12 @@ from setuptools import setup, find_packages
 import sys
 import os
 
+if sys.version < (3,):
+    from codecs import open
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.rst')).read()
-HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
+README = open(os.path.join(here, 'README.rst'), encoding='utf-8').read()
+HISTORY = open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8').read()
 
 install_requires = ['rebulk>=0.6.4', 'regex', 'babelfish>=0.5.5', 'python-dateutil']
 if sys.version_info < (2, 7):
