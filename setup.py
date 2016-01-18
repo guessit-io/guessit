@@ -6,8 +6,7 @@ from setuptools import setup, find_packages
 import sys
 import os
 
-if sys.version < (3,):
-    from codecs import open
+from io import open
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst'), encoding='utf-8').read()
