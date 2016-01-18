@@ -48,7 +48,7 @@ COMMON_WORDS = frozenset([
     'job', 'gag', 'reel', 'www', 'for', 'ayu', 'csi', 'ren', 'moi', 'sur',
     'fer', 'fun', 'two', 'big', 'psy', 'air',
     # movie title
-    'brazil',
+    'brazil', 'jordan',
     # release groups
     'bs',  # Bosnian
     'kz',

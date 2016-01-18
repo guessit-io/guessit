@@ -1709,14 +1709,12 @@
   screen_size: 720p
   season: 1
   title: Foo's &amp; Bars
-  type: episode
   video_codec: XviD
   year: 2009
 
 ? Date.Series.10-11-2008.XViD
 : date: 2008-11-10
   title: Date
-  type: episode
   video_codec: XviD
 
 ? Scrubs/SEASON-06/Scrubs.S06E09.My.Perspective.DVDRip.XviD-WAT/scrubs.s06e09.dvdrip.xvid-wat.avi
@@ -1728,7 +1726,6 @@
   release_group: WAT
   season: 6
   title: Scrubs
-  type: episode
   video_codec: XviD
 
 ? '[PuyaSubs!] Digimon Adventure tri - 01 [720p][F9967949].mkv'
@@ -1739,12 +1736,23 @@
   release_group: PuyaSubs!
   screen_size: 720p
   title: Digimon Adventure tri
-  type: episode
 
 ? Sherlock.S01.720p.BluRay.x264-AVCHD
 : format: BluRay
   screen_size: 720p
   season: 1
   title: Sherlock
-  type: episode
+  video_codec: h264
+
+? Running.Wild.With.Bear.Grylls.S02E07.Michael.B.Jordan.PROPER.HDTV.x264-W4F.avi
+: container: avi
+  episode: 7
+  episode_title: Michael B Jordan
+  format: HDTV
+  mimetype: video/x-msvideo
+  other: Proper
+  proper_count: 1
+  release_group: W4F
+  season: 2
+  title: Running Wild With Bear Grylls
   video_codec: h264
