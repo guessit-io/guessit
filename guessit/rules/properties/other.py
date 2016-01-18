@@ -43,7 +43,7 @@ def other():
 
     for value in (
             'Screener', 'Remux', '3D', 'HD', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC', 'CC', 'LD',
-            'MD'):
+            'MD', 'XXX'):
         rebulk.string(value, value=value)
 
     for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL'):
