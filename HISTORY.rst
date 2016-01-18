@@ -1,7 +1,7 @@
 History
 =======
 
-2.0rc5 (unreleased)
+2.0rc5 (2016-01-18)
 -------------------
 
 - Guessit is now available as a docker container on Docker Hub (https://hub.docker.com/r/toilal/guessit).
