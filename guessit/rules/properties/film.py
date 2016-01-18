@@ -19,7 +19,7 @@ def film():
     """
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE)
 
-    rebulk.regex(r'f(\d+)', name='film', private_parent=True, children=True, formatter=int)
+    rebulk.regex(r'f(\d{1,2})', name='film', private_parent=True, children=True, formatter=int)
 
     rebulk.rules(FilmTitleRule)
 

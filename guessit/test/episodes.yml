@@ -1718,3 +1718,13 @@
   title: Scrubs
   type: episode
   video_codec: XviD
+
+? '[PuyaSubs!] Digimon Adventure tri - 01 [720p][F9967949].mkv'
+: container: mkv
+  crc32: F9967949
+  episode: 1
+  mimetype: video/x-matroska
+  release_group: PuyaSubs!
+  screen_size: 720p
+  title: Digimon Adventure tri
+  type: episode
