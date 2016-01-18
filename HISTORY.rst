@@ -4,7 +4,7 @@ History
 2.0rc6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix packaging issues.
 
 
 2.0rc5 (2016-01-18)
