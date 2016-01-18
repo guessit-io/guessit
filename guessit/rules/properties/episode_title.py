@@ -111,7 +111,7 @@ class AlternativeTitleReplace(Rule):
         if matches.named('episode_title'):
             return
 
-        alternative_title = matches.range(predicate=lambda match: match.name == 'alternativeTitle', index=0)
+        alternative_title = matches.range(predicate=lambda match: match.name == 'alternative_title', index=0)
         if alternative_title:
             main_title = matches.chain_before(alternative_title.start, seps=seps,
                                               predicate=lambda match: 'title' in match.tags, index=0)

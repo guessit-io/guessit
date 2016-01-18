@@ -295,7 +295,7 @@ class TitleFromPosition(TitleBaseRule):
     properties = {'title': [None]}
 
     def __init__(self):
-        super(TitleFromPosition, self).__init__('title', ['title'], 'alternativeTitle')
+        super(TitleFromPosition, self).__init__('title', ['title'], 'alternative_title')
 
 
 class PreferTitleWithYear(Rule):

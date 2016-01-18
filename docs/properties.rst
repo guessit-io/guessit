@@ -27,6 +27,10 @@ Main properties
 
   Title of movie or episode.
 
+- **alternative_title**
+
+  Other titles found for movie.
+
 - **container**
 
   Container of the file.

@@ -16,7 +16,7 @@ def marker_comparator_predicate(match):
     Match predicate used in comparator
     """
     return not match.private and \
-           match.name not in ['proper_count', 'title', 'episode_title', 'alternativeTitle'] and \
+           match.name not in ['proper_count', 'title', 'episode_title', 'alternative_title'] and \
            not (match.name == 'container' and 'extension' in match.tags)
 
 

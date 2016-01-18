@@ -576,7 +576,7 @@
 
 ? "Star Wars: Episode IV - A New Hope (2004) Special Edition.MKV"
 : title: "Star Wars: Episode IV"
-  alternativeTitle: A New Hope
+  alternative_title: A New Hope
   year: 2004
   edition: Special Edition
 
@@ -632,7 +632,7 @@
   release_group: CCATS
   screen_size: 1080p
   title: Echec et Mort
-  alternativeTitle:
+  alternative_title:
     - Hard to Kill
     - Steven Seagal
   video_codec: h264
@@ -640,10 +640,11 @@
 ? Paparazzi - Timsit/Lindon (MKV 1080p tvripHD)
 : options: -n
   title: Paparazzi
-  alternativeTitle:
+  alternative_title:
     - Timsit
     - Lindon
   screen_size: 1080p
+  container: MKV
   format: HDTV
 
 ? some.movie.720p.bluray.x264-mind
