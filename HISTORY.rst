@@ -4,7 +4,15 @@ History
 2.0rc5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Guessit is now available as a docker container on Docker Hub (https://hub.docker.com/r/toilal/guessit).
+- `country` 2-letter code is not added to `title` value anymore.
+- All `container` values are now capitalized.
+- `alternativeTitle` has been renamed to `alternative_title` and added to the docs.
+- `mimetype` property is now in the docs.
+- Add more excluded words for `language` property.
+- Add more possible values for `other` property.
+- Fix an issue occuring with `title` values starting with `Scr`.
+- `film` property is now guessed only if less than `100` to avoid possible conflicts with `crc32`.
 
 
 2.0rc4 (2015-12-03)
