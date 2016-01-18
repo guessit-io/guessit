@@ -4,7 +4,7 @@ History
 2.0rc7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix packaging issues on Python 2.7.
 
 
 2.0rc6 (2016-01-18)
