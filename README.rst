@@ -13,11 +13,13 @@ GuessIt
     :target: https://travis-ci.org/guessit-io/guessit
     :alt: Build Status
 
-.. image:: http://img.shields.io/coveralls/guessit-io/guessit.svg
-    :target: https://coveralls.io/github/guessit-io/guessit
+.. image:: http://img.shields.io/coveralls/guessit-io/guessit/master.svg
+    :target: https://coveralls.io/github/guessit-io/guessit?branch=master
     :alt: Coveralls
 
-`HuBoard <https://huboard.com/guessit-io/guessit>`_
+.. image:: https://img.shields.io/badge/Hu-Board-7965cc.svg
+    :target: https://huboard.com/guessit-io/guessit
+    :alt: HuBoard
 
 
 GuessIt is a python library that extracts as much information as possible from a video filename.
