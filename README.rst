@@ -17,6 +17,10 @@ GuessIt
     :target: https://coveralls.io/github/guessit-io/guessit?branch=1.x
     :alt: Coveralls
 
+.. image:: https://img.shields.io/badge/Hu-Board-7965cc.svg
+    :target: https://huboard.com/guessit-io/guessit
+    :alt: HuBoard
+
 `HuBoard <https://huboard.com/guessit-io/guessit>`_
 
 
