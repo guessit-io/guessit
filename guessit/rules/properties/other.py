@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 
 import copy
 
-import regex as re
+from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch, POST_PROCESS, AppendMatch
 from ..common import dash

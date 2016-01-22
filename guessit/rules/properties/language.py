@@ -8,9 +8,9 @@ from __future__ import unicode_literals
 
 import copy
 
-import regex as re
 import babelfish
 
+from rebulk.remodule import re
 from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
 from ..common.words import iter_words, COMMON_WORDS
 from ..common.validators import seps_surround

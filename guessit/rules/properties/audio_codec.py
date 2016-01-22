@@ -5,7 +5,7 @@ audio_codec, audio_profile and audio_channels property
 """
 from __future__ import unicode_literals
 
-import regex as re
+from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch
 from ..common import dash

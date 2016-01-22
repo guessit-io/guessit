@@ -5,7 +5,7 @@ Formatters
 """
 from __future__ import unicode_literals
 
-import regex as re
+from rebulk.remodule import re
 
 from rebulk.formatters import formatters
 

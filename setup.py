@@ -16,10 +16,12 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
     history = f.read()
 
-install_requires = ['rebulk>=0.6.4', 'regex', 'babelfish>=0.5.5', 'python-dateutil']
+install_requires = ['rebulk>=0.7.0', 'babelfish>=0.5.5', 'python-dateutil']
 if sys.version_info < (2, 7):
     install_requires.extend(['argparse', 'ordereddict'])
 setup_requires = ['pytest-runner']
+
+native_require = ['regex']
 
 dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-autobuild']
 
@@ -68,7 +70,8 @@ args = dict(name='guessit',
             zip_safe=True,
             extras_require={
                 'test': tests_require,
-                'dev': dev_require
+                'dev': dev_require,
+                'native': native_require
             })
 
 setup(**args)

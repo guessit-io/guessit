@@ -5,9 +5,9 @@ Date
 """
 from __future__ import unicode_literals
 
-import regex as re
-
 from dateutil import parser
+
+from rebulk.remodule import re
 
 _dsep = r'[-/ \.]'
 _dsep_bis = r'[-/ \.x]'

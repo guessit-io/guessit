@@ -10,11 +10,10 @@ import yaml
 
 import six
 
-import regex as re
-
 import babelfish
 import pytest
 
+from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
 from guessit.options import parse_options

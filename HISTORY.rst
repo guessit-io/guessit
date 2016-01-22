@@ -4,7 +4,7 @@ History
 2.0rc8 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove regex native module from required dependencies. It will now be used only if present.
 
 
 2.0rc7 (2016-01-18)
