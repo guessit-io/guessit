@@ -1,3 +1,2 @@
 # see https://caremad.io/blog/setup-vs-requirement/
 -e .
-https://github.com/Toilal/rebulk/archive/master.zip

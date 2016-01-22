@@ -5,19 +5,25 @@ from setuptools import setup, find_packages
 
 import sys
 import os
-
+import re
 import io
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = io.open(os.path.join(here, 'README.rst'), encoding='utf-8').read()
-HISTORY = io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8').read()
+
+with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
+    readme = f.read()
+
+with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
+    history = f.read()
 
 install_requires = ['rebulk>=0.6.4', 'regex', 'babelfish>=0.5.5', 'python-dateutil']
 if sys.version_info < (2, 7):
     install_requires.extend(['argparse', 'ordereddict'])
 setup_requires = ['pytest-runner']
 
-tests_require = ['pytest', 'pytest-benchmark', 'PyYAML']
+dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-autobuild']
+
+tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'pytest-capturelog', 'PyYAML']
 
 entry_points = {
     'console_scripts': [
@@ -25,13 +31,13 @@ entry_points = {
     ],
 }
 
-
-exec(open("guessit/__version__.py").read())  # load version without importing guessit
+with io.open('guessit/__version__.py', 'r') as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]$', f.read(), re.MULTILINE).group(1)
 
 args = dict(name='guessit',
-            version=__version__,
+            version=version,
             description='GuessIt - a library for guessing information from video filenames.',
-            long_description=README + '\n\n' + HISTORY,
+            long_description=readme + '\n\n' + history,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
             classifiers=['Development Status :: 4 - Beta',
                          'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
@@ -50,7 +56,7 @@ args = dict(name='guessit',
             author='Rémi Alvergnat',
             author_email='toilal.dev@gmail.com',
             url='http://guessit.readthedocs.org/',
-            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % __version__,
+            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % version,
             license='LGPLv3',
             packages=find_packages(),
             include_package_data=True,
@@ -59,7 +65,10 @@ args = dict(name='guessit',
             tests_require=tests_require,
             entry_points=entry_points,
             test_suite='guessit.test',
-            zip_safe=True
-            )
+            zip_safe=True,
+            extras_require={
+                'test': tests_require,
+                'dev': dev_require
+            })
 
 setup(**args)
