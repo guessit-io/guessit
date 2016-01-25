@@ -1,7 +1,7 @@
 History
 =======
 
-2.0rc8 (unreleased)
+2.0rc8 (2016-01-26)
 -------------------
 
 - Remove regex native module from required dependencies. It will now be used only if present.
