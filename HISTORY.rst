@@ -4,7 +4,7 @@ History
 2.0rc9 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Final release.
 
 
 2.0rc8 (2016-01-26)
@@ -122,5 +122,5 @@ History
 2.0a1 (2015-11-07)
 ------------------
 
-- Rewrite from scratch using `Rebulk <https://www.github.com/Toilal/rebulk>`_
-- Read `MIGRATION.rst <https://github.com/guessit-io/guessit/blob/master/MIGRATION.rst>`_ for migration guidelines.
+- Rewrite from scratch using Rebulk.
+- Read MIGRATION.rst for migration guidelines.
