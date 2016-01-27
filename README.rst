@@ -65,13 +65,7 @@ Install
 
 Installing GuessIt is simple with `pip <http://www.pip-installer.org/>`_::
 
-    $ pip install guessit
-
-or, with `easy_install <http://pypi.python.org/pypi/setuptools>`_::
-
-    $ easy_install guessit
-
-But, you really `shouldn't do that <http://stackoverflow.com/questions/3220404/why-use-pip-over-easy-install>`_.
+    $ pip install "guessit<2"
 
 You can now launch a demo::
 
