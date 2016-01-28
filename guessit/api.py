@@ -68,7 +68,7 @@ class GuessItApi(object):
         result_decode = False
         result_encode = False
         if six.PY2 and isinstance(string, six.text_type):
-            string = string.encode("latin-1")
+            string = string.encode("utf-8")
             result_decode = True
         if six.PY3 and isinstance(string, six.binary_type):
             string = string.decode('ascii')
@@ -77,7 +77,7 @@ class GuessItApi(object):
         if result_decode:
             for match in matches:
                 if isinstance(match.value, six.binary_type):
-                    match.value = match.value.decode("latin-1")
+                    match.value = match.value.decode("utf-8")
         if result_encode:
             for match in matches:
                 if isinstance(match.value, six.text_type):
