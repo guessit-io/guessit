@@ -5,7 +5,7 @@ python:
   - 3.3
   - 3.4
   - 3.5
-#  - pypy (some unicode errors with pypy)
+  - pypy
 env:
   - REGEX_DISABLED=0
   - REGEX_DISABLED=1
