@@ -3,8 +3,6 @@
 """
 Validators
 """
-from __future__ import unicode_literals
-
 from functools import partial
 
 from rebulk.validators import chars_before, chars_after, chars_surround

@@ -4,13 +4,12 @@
 Entry point module
 """
 # pragma: no cover
-from __future__ import print_function, unicode_literals
+from __future__ import print_function
 
 import os
 import logging
 import json
 import sys
-from io import open  #pylint:disable=redefined-builtin
 
 import six
 from guessit.jsonutils import GuessitEncoder
@@ -132,12 +131,12 @@ def main(args=None):  # pylint:disable=too-many-branches
     filenames = []
     if options.filename:
         for filename in options.filename:
-            if not isinstance(filename, six.text_type):  # pragma: no cover
-                encoding = sys.getfilesystemencoding()
-                filename = filename.decode(encoding)
             filenames.append(filename)
     if options.input_file:
-        input_file = open(options.input_file, 'r', encoding='utf-8')
+        if six.PY2:
+            input_file = open(options.input_file, 'r')
+        else:
+            input_file = open(options.input_file, 'r', encoding='utf-8')
         try:
             filenames.extend([line.strip() for line in input_file.readlines()])
         finally:

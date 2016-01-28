@@ -3,8 +3,6 @@
 """
 Date
 """
-from __future__ import unicode_literals
-
 from dateutil import parser
 
 from rebulk.remodule import re

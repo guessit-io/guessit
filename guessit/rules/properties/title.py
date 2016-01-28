@@ -3,8 +3,6 @@
 """
 title property
 """
-from __future__ import unicode_literals
-
 import re
 
 from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch, AppendTags

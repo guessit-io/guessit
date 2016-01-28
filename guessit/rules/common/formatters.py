@@ -3,8 +3,6 @@
 """
 Formatters
 """
-from __future__ import unicode_literals
-
 from rebulk.remodule import re
 
 from rebulk.formatters import formatters

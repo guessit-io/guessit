@@ -4,8 +4,6 @@
 language and subtitle_language properties
 """
 # pylint: disable=no-member
-from __future__ import unicode_literals
-
 import copy
 
 import babelfish
@@ -125,8 +123,8 @@ def find_languages(string, context=None):
 
     matches = []
     for word_match in iter_words(string):
-        word = word_match.group()
-        start, end = word_match.span()
+        word = word_match.value
+        start, end = word_match.span
 
         lang_word = word.lower()
         key = 'language'

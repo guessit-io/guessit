@@ -3,8 +3,6 @@
 """
 mimetype property
 """
-from __future__ import unicode_literals
-
 import mimetypes
 
 from rebulk import Rebulk, CustomRule, POST_PROCESS

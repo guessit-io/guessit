@@ -3,11 +3,11 @@
 """
 Words utils
 """
-from __future__ import unicode_literals
+from collections import namedtuple
 
-from rebulk.remodule import re
+from guessit.rules.common import seps
 
-_words_rexp = re.compile(r'\w+', re.UNICODE)
+_Word = namedtuple('_Word', ['span', 'value'])
 
 
 def iter_words(string):
@@ -18,7 +18,21 @@ def iter_words(string):
     :return:
     :rtype: iterable[str]
     """
-    return _words_rexp.finditer(string.replace('_', ' '))
+    i = 0
+    last_sep_index = -1
+    inside_word = False
+    for char in string:
+        if ord(char) < 128 and char in seps:  # Make sure we don't exclude unicode characters.
+            if inside_word:
+                yield _Word(span=(last_sep_index+1, i), value=string[last_sep_index+1:i])
+            inside_word = False
+            last_sep_index = i
+        else:
+            inside_word = True
+        i += 1
+    if inside_word:
+        yield _Word(span=(last_sep_index+1, i), value=string[last_sep_index+1:i])
+
 
 # list of common words which could be interpreted as properties, but which
 # are far too common to be able to say they represent a property in the

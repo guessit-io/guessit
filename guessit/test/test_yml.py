@@ -169,20 +169,33 @@ class TestYml(object):
 
         for string, expected in data.items():
             TestYml.set_default(expected, default)
-            if not isinstance(string, six.text_type):
-                string = six.text_type(string)
-            if not string_predicate or string_predicate(string):  # pylint: disable=not-callable
-                entry = self.check(string, expected)
-                if entry.ok:
-                    logger.debug(u'[' + filename + '] ' + six.text_type(entry))
-                elif entry.warning:
-                    logger.warning(u'[' + filename + '] ' + six.text_type(entry))
-                elif entry.error:
-                    logger.error(u'[' + filename + '] ' + six.text_type(entry))
-                    for line in entry.details:
-                        logger.error(u'[' + filename + '] ' + ' ' * 4 + line)
-                entries.append(entry)
+            entry = self.check_data(filename, string, expected)
+            entries.append(entry)
         entries.assert_ok()
+
+    def check_data(self, filename, string, expected):
+        if six.PY2 and isinstance(string, six.text_type):
+            string = string.encode('utf-8')
+            converts = []
+            for k, v in expected.items():
+                if isinstance(v, six.text_type):
+                    v = v.encode('utf-8')
+                    converts.append((k, v))
+            for k, v in converts:
+                expected[k] = v
+        if not isinstance(string, str):
+            string = str(string)
+        if not string_predicate or string_predicate(string):  # pylint: disable=not-callable
+            entry = self.check(string, expected)
+            if entry.ok:
+                logger.debug('[' + filename + '] ' + str(entry))
+            elif entry.warning:
+                logger.warning('[' + filename + '] ' + str(entry))
+            elif entry.error:
+                logger.error('[' + filename + '] ' + str(entry))
+                for line in entry.details:
+                    logger.error('[' + filename + '] ' + ' ' * 4 + line)
+        return entry
 
     def check(self, string, expected):
         negates, global_, string = self.parse_token_options(string)

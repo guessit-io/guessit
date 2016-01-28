@@ -3,8 +3,6 @@
 """
 Comparators
 """
-from __future__ import unicode_literals
-
 try:
     from functools import cmp_to_key
 except ImportError:

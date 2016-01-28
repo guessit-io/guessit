@@ -3,8 +3,6 @@
 """
 Processors
 """
-from __future__ import unicode_literals
-
 from collections import defaultdict
 import copy
 
@@ -155,9 +153,10 @@ def _count_title_words(value):
     """
     ret = 0
     for word in iter_words(value):
-        if word.group(0).istitle():
+        if word.value.istitle():
             ret += 1
     return ret
+
 
 class SeasonYear(Rule):
     """

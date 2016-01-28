@@ -3,8 +3,6 @@
 """
 cd and cd_count properties
 """
-from __future__ import unicode_literals
-
 from rebulk.remodule import re
 
 from rebulk import Rebulk

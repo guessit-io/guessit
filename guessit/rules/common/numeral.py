@@ -3,8 +3,6 @@
 """
 parse numeral from various formats
 """
-from __future__ import unicode_literals
-
 from rebulk.remodule import re
 
 digital_numeral = r'\d{1,4}'

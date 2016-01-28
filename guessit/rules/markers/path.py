@@ -3,8 +3,6 @@
 """
 Path markers
 """
-from __future__ import unicode_literals
-
 from rebulk import Rebulk
 
 from rebulk.utils import find_all

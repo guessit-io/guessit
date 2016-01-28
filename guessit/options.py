@@ -3,8 +3,6 @@
 """
 Options
 """
-from __future__ import unicode_literals
-
 import sys
 from argparse import ArgumentParser
 import shlex

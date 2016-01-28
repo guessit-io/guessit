@@ -129,14 +129,12 @@ GuessIt can be used from command line::
 It can also be used as a python module::
 
     >>> from guessit import guessit
-    >>> guessit(u'Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')  # doctest: +ALLOW_UNICODE
+    >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
     MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('video_codec', 'XviD'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
 
 ``MatchesDict`` is a dict that keeps matches ordering.
 
 Command line options can be given as dict or string to the second argument.
-
-GuessIt only accept unicode string, so you need to use ``u`` prefix for input string on python 2.
 
 Docker
 ------

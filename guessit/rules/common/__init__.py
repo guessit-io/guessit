@@ -3,8 +3,6 @@
 """
 Common module
 """
-from __future__ import unicode_literals
-
 seps = r' [](){}+*|=§-_~#/\.,;:'  # list of tags/words separators
 
 title_seps = r'-+/\|'  # separators for title

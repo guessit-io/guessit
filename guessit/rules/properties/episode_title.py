@@ -3,8 +3,6 @@
 """
 Episode title
 """
-from __future__ import unicode_literals
-
 from collections import defaultdict
 
 from rebulk import Rebulk, Rule, AppendMatch, RenameMatch

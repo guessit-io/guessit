@@ -4,8 +4,6 @@
 country property
 """
 # pylint: disable=no-member
-from __future__ import unicode_literals
-
 import babelfish
 
 from rebulk import Rebulk
@@ -99,10 +97,11 @@ def find_countries(string, context=None):
     """
     ret = []
     for word_match in iter_words(string.strip().lower()):
+        word = word_match.value
         try:
-            country_object = babelfish.Country.fromguessit(word_match.group())
+            country_object = babelfish.Country.fromguessit(word)
             if is_valid_country(country_object, context):
-                ret.append((word_match.start(), word_match.end(), {'value': country_object}))
+                ret.append((word_match.span[0], word_match.span[1], {'value': country_object}))
         except babelfish.Error:
             continue
     return ret

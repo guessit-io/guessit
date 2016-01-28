@@ -3,8 +3,6 @@
 """
 type property
 """
-from __future__ import unicode_literals
-
 from rebulk import CustomRule, Rebulk, POST_PROCESS
 from rebulk.match import Match
 

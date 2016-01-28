@@ -3,8 +3,6 @@
 """
 container property
 """
-from __future__ import unicode_literals
-
 from rebulk.remodule import re, REGEX_AVAILABLE
 
 from rebulk import Rebulk

@@ -3,8 +3,6 @@
 """
 episode, season, episode_count, season_count and episode_details properties
 """
-from __future__ import unicode_literals
-
 import copy
 from collections import defaultdict
 

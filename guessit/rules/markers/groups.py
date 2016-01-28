@@ -3,8 +3,6 @@
 """
 Groups markers (...), [...] and {...}
 """
-from __future__ import unicode_literals
-
 from rebulk import Rebulk
 
 

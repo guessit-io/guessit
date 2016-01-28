@@ -3,8 +3,6 @@
 """
 video_codec and video_profile property
 """
-from __future__ import unicode_literals
-
 from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch

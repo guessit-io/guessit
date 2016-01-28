@@ -3,8 +3,6 @@
 """
 other property
 """
-from __future__ import unicode_literals
-
 import copy
 
 from rebulk.remodule import re

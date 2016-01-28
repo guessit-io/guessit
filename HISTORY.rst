@@ -4,7 +4,7 @@ History
 2.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add support for any type of string with python 2 and python 3 (binary, str, unicode).
 
 
 2.0.0 (2016-01-27)

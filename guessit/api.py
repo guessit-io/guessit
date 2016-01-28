@@ -3,7 +3,6 @@
 """
 API functions that can be used by external software
 """
-from __future__ import unicode_literals
 try:
     from collections import OrderedDict
 except ImportError:  # pragma: no-cover
@@ -65,11 +64,25 @@ class GuessItApi(object):
         :return:
         :rtype:
         """
-        if not isinstance(string, six.text_type):
-            raise TypeError("guessit input must be %s." % six.text_type.__name__)
         options = parse_options(options)
-        return self.rebulk.matches(string, options).to_dict(options.get('advanced', False),
-                                                            options.get('implicit', False))
+        result_decode = False
+        result_encode = False
+        if six.PY2 and isinstance(string, six.text_type):
+            string = string.encode("latin-1")
+            result_decode = True
+        if six.PY3 and isinstance(string, six.binary_type):
+            string = string.decode('ascii')
+            result_encode = True
+        matches = self.rebulk.matches(string, options)
+        if result_decode:
+            for match in matches:
+                if isinstance(match.value, six.binary_type):
+                    match.value = match.value.decode("latin-1")
+        if result_encode:
+            for match in matches:
+                if isinstance(match.value, six.text_type):
+                    match.value = match.value.encode("ascii")
+        return matches.to_dict(options.get('advanced', False), options.get('implicit', False))
 
     def properties(self, options=None):
         """

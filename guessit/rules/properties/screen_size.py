@@ -3,8 +3,6 @@
 """
 screen_size property
 """
-from __future__ import unicode_literals
-
 from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch
