@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.0 (unreleased)
+2.0.1 (2016-01-28)
 ------------------
 
 - Add support for any type of string with python 2 and python 3 (binary, str, unicode).
