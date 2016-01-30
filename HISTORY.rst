@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.0 (unreleased)
+2.0.2 (2016-01-30)
 ------------------
 
 - Fix possible issue with unicode characters encoding/decoding.
