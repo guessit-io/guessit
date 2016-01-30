@@ -4,7 +4,8 @@ History
 2.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix possible issue with unicode characters encoding/decoding.
+- Pypy is now supported.
 
 
 2.0.1 (2016-01-28)
