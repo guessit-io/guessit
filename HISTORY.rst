@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.0 (unreleased)
+2.0.3 (2016-01-30)
 ------------------
 
 - Something goes wrong with 2.0.2 release ...
