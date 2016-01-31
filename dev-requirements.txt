@@ -1,6 +1,7 @@
 # Travis-ci pre-installed packages
 # http://docs.travis-ci.com/user/languages/python/#Pre-installed-packages=
 doit
+zest.releaser[recommended]
 # For python 3.5, pytest>=2.7.3 required
 # https://github.com/pytest-dev/pytest/issues/744
 pytest>=2.7.3
