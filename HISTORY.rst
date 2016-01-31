@@ -1,6 +1,12 @@
 History
 =======
 
+1.0.4 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.0.3 (2016-01-31)
 ------------------
 * Fix issue causing a crash with some releaseGroup match (ValueError: ... is not in list).
