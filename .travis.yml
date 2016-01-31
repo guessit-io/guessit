@@ -7,10 +7,9 @@ python:
   - pypy
 install:
   - pip install pip --upgrade
-  - pip install -r requirements.txt
+  - pip install -r dev-requirements.txt
   - pip install pytest --upgrade
-  - pip install pytest-benchmark
-  - pip install PyYAML coveralls
+  - pip install coveralls
 script:
   - coverage run --source=guessit setup.py test
   - python setup.py build

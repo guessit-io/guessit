@@ -19,15 +19,19 @@
 #
 
 from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
 
 import os
 import sys
+import io
+import re
 
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.rst')).read()
-HISTORY = open(os.path.join(here, 'HISTORY.rst')).read()
+with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
+    readme = f.read()
+
+with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
+    history = f.read()
 
 
 install_requires = ['babelfish>=0.5.5', 'stevedore>=0.14', 'requests', 'python-dateutil>=2.1']
@@ -35,12 +39,15 @@ if sys.version_info < (2, 7):
     # argparse is part of the standard library in python 2.7+
     install_requires.append('argparse')
 
-setup_requires=['pytest-runner']
+setup_requires = ['pytest-runner']
 
-tests_require = ['pytest', 'pytest-benchmark', 'PyYAML']  # Fabric not available (yet!) for python3
+dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-autobuild', 'Pygments']
 
-extras_require = {'language_detection': ['guess-language>=0.2'],
-                  'video_metadata': ['enzyme']}
+tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'pytest-capturelog', 'PyYAML']
+
+language_detection_require = ['guess-language>=0.2']
+
+video_metadata_require = ['enzyme']
 
 entry_points = {
     'console_scripts': [
@@ -51,12 +58,13 @@ entry_points = {
 dependency_links = []
 
 
-exec(open("guessit/__version__.py").read())  # load version without importing guessit
+with io.open('guessit/__version__.py', 'r') as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]$', f.read(), re.MULTILINE).group(1)
 
 args = dict(name='guessit',
-            version=__version__,
+            version=version,
             description='GuessIt - a library for guessing information from video filenames.',
-            long_description=README + '\n\n' + HISTORY,
+            long_description=readme + '\n\n' + history,
             # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
             classifiers=['Development Status :: 5 - Production/Stable',
                          'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
@@ -75,7 +83,7 @@ args = dict(name='guessit',
             author='Nicolas Wack',
             author_email='wackou@gmail.com',
             url='http://guessit.readthedocs.org/',
-            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % __version__,
+            download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % version,
             license='LGPLv3',
             packages=find_packages(),
             include_package_data=True,
@@ -83,9 +91,14 @@ args = dict(name='guessit',
             setup_requires=setup_requires,
             tests_require=tests_require,
             entry_points=entry_points,
-            extras_require=extras_require,
             dependency_links=dependency_links,
+            zip_safe=True,
             test_suite='guessit.test',
-            )
+            extras_require={
+                'test': tests_require,
+                'dev': dev_require,
+                'language_detection': language_detection_require,
+                'video_metadata': video_metadata_require
+            })
 
 setup(**args)

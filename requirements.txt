@@ -1,4 +1,2 @@
-# Used during coverage run
-Pygments
 # see https://caremad.io/blog/setup-vs-requirement/
 -e .
