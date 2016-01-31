@@ -3,6 +3,7 @@ History
 
 1.0.3 (unreleased)
 ------------------
+* Fix issue causing a crash with some releaseGroup match (ValueError: ... is not in list).
 
 1.0.2 (2015-11-05)
 ------------------

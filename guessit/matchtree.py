@@ -319,7 +319,10 @@ class BaseMatchTree(UnicodeMixin):
 
     def _other_leaf(self, leaf, offset):
         leaves = list(self.leaves())
-        index = leaves.index(leaf) + offset
+        try:
+            index = leaves.index(leaf) + offset
+        except ValueError:
+            index = -1
         if 0 < index < len(leaves):
             return leaves[index]
         return None
@@ -327,7 +330,10 @@ class BaseMatchTree(UnicodeMixin):
     def previous_leaves(self, leaf):
         """Return previous leaves for this node"""
         leaves = list(self.leaves())
-        index = leaves.index(leaf)
+        try:
+            index = leaves.index(leaf)
+        except ValueError:
+            index = -1
         if 0 < index < len(leaves):
             previous_leaves = leaves[:index]
             previous_leaves.reverse()
@@ -337,7 +343,10 @@ class BaseMatchTree(UnicodeMixin):
     def next_leaves(self, leaf):
         """Return next leaves for this node"""
         leaves = list(self.leaves())
-        index = leaves.index(leaf)
+        try:
+            index = leaves.index(leaf)
+        except ValueError:
+            index = -1
         if 0 < index < len(leaves):
             return leaves[index + 1:len(leaves)]
         return []
