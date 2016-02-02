@@ -4,7 +4,7 @@ History
 2.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add an Exception Report when an unexpected exception occurs.
 
 
 2.0.3 (2016-01-30)
