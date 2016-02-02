@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.0 (unreleased)
+2.0.4 (2016-02-03)
 ------------------
 
 - Add an Exception Report when an unexpected exception occurs.
