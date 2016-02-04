@@ -14,12 +14,12 @@ GuessIt
     :target: https://pypi.python.org/pypi/guessit
     :alt: LGPLv3 License
 
-.. image:: http://img.shields.io/travis/wackou/guessit.svg
-    :target: https://travis-ci.org/wackou/guessit
+.. image:: http://img.shields.io/travis/guessit-io/guessit.svg
+    :target: https://travis-ci.org/guessit-io/guessit
     :alt: Build Status
 
-.. image:: http://img.shields.io/coveralls/wackou/guessit.svg
-    :target: https://coveralls.io/github/wackou/guessit
+.. image:: http://img.shields.io/coveralls/guessit-io/guessit.svg
+    :target: https://coveralls.io/github/guessit-io/guessit
     :alt: Coveralls
 
 GuessIt is a python library that extracts as much information as possible from a video filename.
@@ -144,7 +144,7 @@ Sources are available in a dedicated `guessit-rest repository <https://github.co
 Support
 -------
 
-This project is hosted on `GitHub <https://github.com/wackou/guessit>`_. Feel free to open an issue if you think you
+This project is hosted on `GitHub <https://github.com/guessit-io/guessit>`_. Feel free to open an issue if you think you
 have found a bug or something is missing in guessit.
 
 GuessIt relies on `Rebulk <https://github.com/Toilal/rebulk>`_ project for pattern and rules registration.
