@@ -21,8 +21,6 @@ GuessIt
     :target: https://huboard.com/guessit-io/guessit
     :alt: HuBoard
 
-`HuBoard <https://huboard.com/guessit-io/guessit>`_
-
 
 GuessIt is a python library that extracts as much information as
 possible from a video filenames.
