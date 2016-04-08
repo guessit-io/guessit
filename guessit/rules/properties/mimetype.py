@@ -39,3 +39,7 @@ class Mimetype(CustomRule):
     def then(self, matches, when_response, context):
         mime = when_response
         matches.append(Match(len(matches.input_string), len(matches.input_string), name='mimetype', value=mime))
+
+    @property
+    def properties(self):
+        return {'mimetype': [None]}

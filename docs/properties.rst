@@ -65,11 +65,6 @@ Main properties
 Episode properties
 ------------------
 
-- **series**
-
-  Name of series.
-
-
 - **season**
 
   Season number. (Can be a list if several are found)
@@ -239,6 +234,9 @@ Other properties
 
   Film number of this movie.
 
+- **film_title**
+
+  Film title of this movie.
 
 - **film_series**
 

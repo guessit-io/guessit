@@ -290,7 +290,7 @@ class TitleFromPosition(TitleBaseRule):
     """
     dependency = [FilmTitleRule, SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule]
 
-    properties = {'title': [None]}
+    properties = {'title': [None], 'alternative_title': [None]}
 
     def __init__(self):
         super(TitleFromPosition, self).__init__('title', ['title'], 'alternative_title')
