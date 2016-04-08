@@ -72,6 +72,9 @@ def rebulk_builder():
     rebulk.rebulk(type_())
 
     def customize_properties(properties):
+        """
+        Customize default rebulk properties
+        """
         count = properties['count']
         del properties['count']
 

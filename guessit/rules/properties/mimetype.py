@@ -42,4 +42,7 @@ class Mimetype(CustomRule):
 
     @property
     def properties(self):
+        """
+        Properties for this rule.
+        """
         return {'mimetype': [None]}
