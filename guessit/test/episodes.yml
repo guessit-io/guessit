@@ -447,8 +447,17 @@
   video_codec: h264
   release_group: IMMERSE
 
+? Marvels.Agents.of.S.H.I.E.L.D-S01E06.720p.HDTV.X264-DIMENSION.mkv
+: title: Marvels Agents of S.H.I.E.L.D
+  season: 1
+  episode: 6
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: DIMENSION
+
 ? Marvels.Agents.of.S.H.I.E.L.D.S01E06.720p.HDTV.X264-DIMENSION.mkv
-: title: Marvels Agents of S H I E L D
+: title: Marvels Agents of S.H.I.E.L.D.
   season: 1
   episode: 6
   screen_size: 720p
@@ -457,7 +466,7 @@
   release_group: DIMENSION
 
 ? Marvels.Agents.of.S.H.I.E.L.D..S01E06.720p.HDTV.X264-DIMENSION.mkv
-: title: Marvels Agents of S H I E L D
+: title: Marvels Agents of S.H.I.E.L.D.
   season: 1
   episode: 6
   screen_size: 720p
