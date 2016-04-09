@@ -3,18 +3,44 @@
 """
 Formatters
 """
-from rebulk.remodule import re
-
 from rebulk.formatters import formatters
-
+from rebulk.remodule import re
 from . import seps
-
 
 _excluded_clean_chars = ',:;-/\\'
 clean_chars = ""
 for sep in seps:
     if sep not in _excluded_clean_chars:
         clean_chars += sep
+
+
+def _potential_before(i, input_string):
+    """
+    Check if the character at position i can be a potential single char separator considering what's before it.
+
+    :param i:
+    :type i: int
+    :param input_string:
+    :type input_string: str
+    :return:
+    :rtype: bool
+    """
+    return i - 2 >= 0 and input_string[i] == input_string[i - 2] and input_string[i - 1] not in seps
+
+
+def _potential_after(i, input_string):
+    """
+    Check if the character at position i can be a potential single char separator considering what's after it.
+
+    :param i:
+    :type i: int
+    :param input_string:
+    :type input_string: str
+    :return:
+    :rtype: bool
+    """
+    return i + 2 >= len(input_string) or \
+           input_string[i + 2] == input_string[i] and input_string[i + 1] not in seps
 
 
 def cleanup(input_string):
@@ -24,7 +50,7 @@ def cleanup(input_string):
     It also keep separators for single characters (Mavels Agents of S.H.I.E.L.D.)
 
     :param input_string:
-    :type input_string:
+    :type input_string: str
     :return:
     :rtype:
     """
@@ -45,10 +71,7 @@ def cleanup(input_string):
         potential_indices = []
 
         for i in indices:
-            b = i-2
-            n = i+2
-            if b >= 0 and input_string[i] == input_string[b] and input_string[i-1] not in seps\
-                    and (n >= len(input_string) or input_string[n] == input_string[i] and input_string[n-1] not in seps):
+            if _potential_before(i, input_string) and _potential_after(i, input_string):
                 potential_indices.append(i)
 
         replace_indices = []
@@ -63,7 +86,7 @@ def cleanup(input_string):
                 clean_list[replace_index] = input_string[replace_index]
             clean_string = ''.join(clean_list)
 
-    clean_string = strip(clean_string, ''.join([sep for sep in seps if sep not in dots]))
+    clean_string = strip(clean_string, ''.join([c for c in seps if c not in dots]))
 
     clean_string = re.sub(' +', ' ', clean_string)
     return clean_string
