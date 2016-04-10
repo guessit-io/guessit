@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.0 (unreleased)
+2.0.5 (2016-04-10)
 ------------------
 
 - Fix inconsistent properties returned by guessit -p.
