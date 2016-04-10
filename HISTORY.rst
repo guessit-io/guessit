@@ -4,8 +4,9 @@ History
 2.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix inconsistent properties returned by guessit -p.
+- Add support for titles containing dots.
+- Lock python-dateutil dependency to <2.5.2.
 
 2.0.4 (2016-02-03)
 ------------------
