@@ -787,3 +787,15 @@
 ? "Looney Tunes 1444x866 Porky's Last Stand.mkv"
 : screen_size: 1444x866
   title: Looney Tunes
+
+? Das.Appartement.GERMAN.AC3D.DL.720p.BluRay.x264-TVP
+: audio_codec: AC3
+  format: BluRay
+  language:
+  - de
+  - mul
+  release_group: TVP
+  screen_size: 720p
+  title: Das Appartement
+  type: movie
+  video_codec: h264

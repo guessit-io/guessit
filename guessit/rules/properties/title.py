@@ -110,9 +110,11 @@ class TitleBaseRule(Rule):
 
     def is_ignored(self, match):
         """
-        Ignore matches when scanning for title (hole)
+        Ignore matches when scanning for title (hole).
+
+        Full word language and countries won't be ignored if they are uppercase.
         """
-        return match.name in ['language', 'country', 'episode_details']
+        return not (len(match) > 3 and match.raw.isupper()) and match.name in ['language', 'country', 'episode_details']
 
     def should_keep(self, match, to_keep, matches, filepart, hole, starting):
         """
