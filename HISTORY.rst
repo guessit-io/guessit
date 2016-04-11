@@ -4,7 +4,7 @@ History
 2.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Enhance langage/country guessing in edge cases.
 
 
 2.0.5 (2016-04-10)
