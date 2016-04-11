@@ -134,8 +134,12 @@ class TitleBaseRule(Rule):
         :return:
         :rtype:
         """
-        # Keep language if other languages exists in the filepart.
         if match.name in ['language', 'country']:
+            # Keep language if exactly matching the hole.
+            if len(hole.value) == len(match.raw):
+                return True
+
+            # Keep language if other languages exists in the filepart.
             outside_matches = filepart.crop(hole)
             other_languages = []
             for outside in outside_matches:
@@ -222,7 +226,8 @@ class TitleBaseRule(Rule):
                 if self.should_remove(match, matches, filepart, hole, context):
                     to_remove.append(match)
             for keep_match in to_keep:
-                to_remove.remove(keep_match)
+                if keep_match in to_remove:
+                    to_remove.remove(keep_match)
 
             if hole and hole.value:
                 hole.name = self.match_name
