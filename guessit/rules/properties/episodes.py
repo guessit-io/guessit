@@ -10,7 +10,7 @@ from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
 from rebulk.remodule import re, REGEX_AVAILABLE
 
 from .title import TitleFromPosition
-from ..common import dash, alt_dash
+from ..common import dash, alt_dash, seps
 from ..common.numeral import numeral, parse_numeral
 from ..common.validators import seps_surround
 from ...reutils import build_or_pattern
@@ -47,6 +47,16 @@ def episodes():
                 return other
         return '__default__'
 
+    season_episode_seps = []
+    season_episode_seps.extend(seps)
+    season_episode_seps.extend(['x', 'X', 'e', 'E'])
+
+    def season_episode_validator(m):
+        if m.name in ['season', 'episode'] and m.initiator.start:
+            return m.initiator.input_string[m.initiator.start] in season_episode_seps \
+                   or m.initiator.input_string[m.initiator.start-1] in season_episode_seps
+        return True
+
     # 01x02, 01x02x03x04
     if REGEX_AVAILABLE:
         rebulk.regex(r'(?P<season>\d+)@?x@?(?P<episode>\d+)' +
@@ -62,7 +72,8 @@ def episodes():
                      abbreviations=[alt_dash],
                      children=True,
                      private_parent=True,
-                     conflict_solver=season_episode_conflict_solver)
+                     conflict_solver=season_episode_conflict_solver,
+                     validator=season_episode_validator)
     else:
         rebulk.chain(formatter={'season': int, 'episode': int},
                      tags=['SxxExx'],
@@ -70,7 +81,7 @@ def episodes():
                      children=True,
                      private_parent=True,
                      conflict_solver=season_episode_conflict_solver) \
-            .defaults(validator=None) \
+            .defaults(validator=season_episode_validator) \
             .regex(r'S(?P<season>\d+)@?(?:xE|Ex|E|x)@?(?P<episode>\d+)') \
             .regex(r'(?:(?P<episodeSeparator>xE|Ex|E|x|-|\+|&)(?P<episode>\d+))').repeater('*') \
             .chain() \
@@ -219,6 +230,7 @@ def episodes():
                      r'(?:(?P<episodeSeparator>e|x|-)(?P<episode>\d{1,4}))*',
                      formatter={'episode': int, 'version': int})
     else:
+        # TODO: Enhance rebulk for validator to be used globally (season_episode_validator)
         rebulk.chain(formatter={'episode': int, 'version': int}) \
             .defaults(validator=None) \
             .regex(r'e(?P<episode>\d{1,4})') \
