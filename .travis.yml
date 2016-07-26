@@ -6,9 +6,6 @@ python:
   - 3.4
   - 3.5
   - pypy
-env:
-  - REGEX_DISABLED=0
-  - REGEX_DISABLED=1
 install:
   - pip install pip --upgrade
   - pip install -e .[dev,test]

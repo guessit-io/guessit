@@ -23,8 +23,6 @@ if sys.version_info < (2, 7):
     install_requires.extend(['argparse', 'ordereddict'])
 setup_requires = ['pytest-runner']
 
-native_require = ['regex']
-
 dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-autobuild']
 
 tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'pytest-capturelog', 'PyYAML']
@@ -73,8 +71,7 @@ args = dict(name='guessit',
             zip_safe=True,
             extras_require={
                 'test': tests_require,
-                'dev': dev_require,
-                'native': native_require
+                'dev': dev_require
             })
 
 setup(**args)
