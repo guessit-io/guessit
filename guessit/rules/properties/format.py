@@ -61,7 +61,7 @@ class ValidateFormat(Rule):
             if not seps_after(format_match) and \
                     not matches.range(format_match.end, format_match.end + 1,
                                       lambda match: match.name == 'video_codec' or (
-                                                    match.name == 'other' and match.value == 'Screener')):
+                                          match.name == 'other' and match.value == 'Screener')):
                 ret.append(format_match)
                 continue
         return ret

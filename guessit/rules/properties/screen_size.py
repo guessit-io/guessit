@@ -7,7 +7,7 @@ from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch
 from ..common.validators import seps_surround
-from guessit.rules.common import dash
+from ..common import dash
 
 
 def screen_size():

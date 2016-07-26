@@ -8,7 +8,6 @@ from collections import defaultdict
 
 from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
 from rebulk.remodule import re, REGEX_AVAILABLE
-
 from .title import TitleFromPosition
 from ..common import dash, alt_dash, seps
 from ..common.numeral import numeral, parse_numeral
@@ -39,7 +38,7 @@ def episodes():
                                                                   'audio_codec', 'audio_channels',
                                                                   'container', 'date']:
             return match
-        elif match.name in ['season', 'episode'] and other.name in ['season', 'episode']\
+        elif match.name in ['season', 'episode'] and other.name in ['season', 'episode'] \
                 and match.initiator != other.initiator:
             if 'x' in match.initiator.raw.lower():
                 return match
@@ -51,10 +50,13 @@ def episodes():
     season_episode_seps.extend(seps)
     season_episode_seps.extend(['x', 'X', 'e', 'E'])
 
-    def season_episode_validator(m):
-        if m.name in ['season', 'episode'] and m.initiator.start:
-            return m.initiator.input_string[m.initiator.start] in season_episode_seps \
-                   or m.initiator.input_string[m.initiator.start-1] in season_episode_seps
+    def season_episode_validator(match):
+        """
+        Validator for season/episode matches
+        """
+        if match.name in ['season', 'episode'] and match.initiator.start:
+            return match.initiator.input_string[match.initiator.start] in season_episode_seps \
+                   or match.initiator.input_string[match.initiator.start - 1] in season_episode_seps
         return True
 
     # 01x02, 01x02x03x04

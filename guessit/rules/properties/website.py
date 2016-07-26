@@ -58,14 +58,17 @@ def website():
 
         @staticmethod
         def valid_followers(match):
+            """
+            Validator for next website matches
+            """
             return any(name in ['season', 'episode', 'year'] for name in match.names)
 
         def when(self, matches, context):
             to_remove = []
-            for website in matches.named('website'):
-                suffix = matches.next(website, PreferTitleOverWebsite.valid_followers, 0)
+            for website_match in matches.named('website'):
+                suffix = matches.next(website_match, PreferTitleOverWebsite.valid_followers, 0)
                 if suffix:
-                    to_remove.append(website)
+                    to_remove.append(website_match)
             return to_remove
 
     rebulk.rules(PreferTitleOverWebsite)
