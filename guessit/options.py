@@ -10,7 +10,8 @@ import shlex
 import six
 
 
-if six.PY2: #pylint:disable=redefined-variable-type
+if six.PY2:
+    # pylint:disable=redefined-variable-type,invalid-name
     encoding = sys.stdin.encoding
     if not encoding:
         # This can occur when running guessit in non-interactive shell
