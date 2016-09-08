@@ -5,6 +5,8 @@ History
 ------------------
 
 - Enhance langage/country guessing in edge cases.
+- Remove dependency constraint on `python-dateutil`.
+- Add rebulk version in `--version` option.
 
 
 2.0.5 (2016-04-10)
