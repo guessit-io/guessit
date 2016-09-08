@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.0 (unreleased)
+2.1.0 (2016-09-08)
 ------------------
 
 - Drop support for `regex` native module.
@@ -78,7 +78,7 @@ History
 2.0rc5 (2016-01-18)
 -------------------
 
-- Guessit is now available as a docker container on Docker Hub (https://hub.docker.com/r/toilal/guessit).
+- Guessit isÂ now available as a docker container on Docker Hub (https://hub.docker.com/r/toilal/guessit).
 - `country` 2-letter code is not added to `title` value anymore.
 - All `container` values are now capitalized.
 - `alternativeTitle` has been renamed to `alternative_title` and added to the docs.
