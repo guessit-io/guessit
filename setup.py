@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
-
-import sys
+import io
 import os
 import re
-import io
+import sys
+
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -16,7 +16,7 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
     history = f.read()
 
-install_requires = ['rebulk>=0.7.3', 'babelfish>=0.5.5', 'python-dateutil<2.5.2']
+install_requires = ['rebulk>=0.7.3', 'babelfish>=0.5.5', 'python-dateutil']
 # python-dateutil 2.5.2 introduced a change with month position in ambiguous day/month dates when year is first.
 # https://github.com/dateutil/dateutil/commit/2d42e046d55b9fbbc0a2f41ce83fb8ec5de2d28b#commitcomment-17032106
 if sys.version_info < (2, 7):
