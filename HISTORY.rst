@@ -1,6 +1,12 @@
 History
 =======
 
+2.1.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.1.0 (2016-09-08)
 ------------------
 
@@ -78,7 +84,7 @@ History
 2.0rc5 (2016-01-18)
 -------------------
 
-- Guessit isÂ now available as a docker container on Docker Hub (https://hub.docker.com/r/toilal/guessit).
+- Guessit isĂÂ now available as a docker container on Docker Hub (https://hub.docker.com/r/toilal/guessit).
 - `country` 2-letter code is not added to `title` value anymore.
 - All `container` values are now capitalized.
 - `alternativeTitle` has been renamed to `alternative_title` and added to the docs.
