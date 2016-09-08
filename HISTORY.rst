@@ -4,10 +4,20 @@ History
 2.1.0 (unreleased)
 ------------------
 
-- Enhance langage/country guessing in edge cases.
+- Drop support for `regex` native module.
 - Remove dependency constraint on `python-dateutil`.
+- Enhance langage/country guessing in edge cases.
+- Enhance rule to guess `release_group` in more file templates.
+- Fix edge cases for subtitle language detection.
+- Fix invalid conflict solving in `season`/`episode` occuring between `SssEee` and `ssXee` pattern.
+- Fix issue when running guessit in non-interactive shell with python 2
+- Guess Dolby keyword as DolbyDigital in `audio_codec`.
+- Avoid `title` to be guessed as `website` (Dark.Net)
+- Avoid `season`/`episode` to be guessed when pattern is included inside words.
+- Enhance `screen_size` to detect `720pHD` and `1080pHD`
+- Add support for `format` and `video_codec` when no separators between themselves. (HDTVx264, PDTVx264, ...)
 - Add rebulk version in `--version` option.
-
+- Upgrade rebulk to `0.7.3`.
 
 2.0.5 (2016-04-10)
 ------------------
