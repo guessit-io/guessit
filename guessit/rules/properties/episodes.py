@@ -8,6 +8,7 @@ from collections import defaultdict
 
 from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
 from rebulk.remodule import re
+
 from .title import TitleFromPosition
 from ..common import dash, alt_dash, seps
 from ..common.numeral import numeral, parse_numeral
@@ -40,6 +41,10 @@ def episodes():
             return match
         elif match.name in ['season', 'episode'] and other.name in ['season', 'episode'] \
                 and match.initiator != other.initiator:
+            if 'weak-episode' in match.tags:
+                return match
+            if 'weak-episode' in other.tags:
+                return other
             if 'x' in match.initiator.raw.lower():
                 return match
             if 'x' in other.initiator.raw.lower():
@@ -96,7 +101,6 @@ def episodes():
         .regex(r'@?(?P<seasonSeparator>-)@?(?P<season>\d+)').repeater('*') \
         .regex(r'@?(?P<seasonSeparator>\+|&)@?(?P<season>\d+)').repeater('*')
 
-
     rebulk.regex(build_or_pattern(episode_words) + r'-?(?P<episode>\d+)' +
                  r'(?:v(?P<version>\d+))?' +
                  r'(?:-?' + build_or_pattern(of_words) + r'?-?(?P<count>\d+))?',  # Episode 4
@@ -119,21 +123,21 @@ def episodes():
                     validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
     # 12, 13
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int}) \
+    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode'], formatter={'episode': int, 'version': int}) \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d{2})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
         .regex(r'(?P<episodeSeparator>[x-])(?P<episode>\d{2})').repeater('*')
 
     # 012, 013
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int}) \
+    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode'], formatter={'episode': int, 'version': int}) \
         .defaults(validator=None) \
         .regex(r'0(?P<episode>\d{1,2})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
         .regex(r'(?P<episodeSeparator>[x-])0(?P<episode>\d{1,2})').repeater('*')
 
     # 112, 113
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int},
+    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode'], formatter={'episode': int, 'version': int},
                  disabled=lambda context: not context.get('episode_prefer_number', False)) \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d{3,4})') \
@@ -141,7 +145,7 @@ def episodes():
         .regex(r'(?P<episodeSeparator>[x-])(?P<episode>\d{3,4})').repeater('*')
 
     # 1, 2, 3
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie'], formatter={'episode': int, 'version': int},
+    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode'], formatter={'episode': int, 'version': int},
                  disabled=lambda context: context.get('type') != 'episode') \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d)') \
@@ -164,7 +168,7 @@ def episodes():
         .regex(r'(?P<episodeSeparator>ep|e|x|-)(?P<episode>\d{1,4})').repeater('*')
 
     # 102, 0102
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-duplicate'],
+    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode', 'weak-duplicate'],
                  formatter={'season': int, 'episode': int, 'version': int},
                  conflict_solver=lambda match, other: match if other.name == 'year' else '__default__',
                  disabled=lambda context: context.get('episode_prefer_number', False)) \

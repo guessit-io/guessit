@@ -4,7 +4,7 @@ History
 2.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix invalid guess `1 x 2` with `--type episode`.
 
 
 2.1.0 (2016-09-08)

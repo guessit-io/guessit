@@ -128,3 +128,10 @@
 : episode: 2
   screen_size: 1080p
   season: 3
+
+? Something 1 x 2-FlexGet
+: options: -t episode
+  title: Something
+  season: 1
+  episode: 2
+  episode_title: FlexGet
