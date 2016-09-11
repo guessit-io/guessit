@@ -7,7 +7,9 @@ import copy
 from collections import defaultdict
 
 from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
+from rebulk.match import Matches
 from rebulk.remodule import re
+from rebulk.utils import is_iterable
 
 from .title import TitleFromPosition
 from ..common import dash, alt_dash, seps
@@ -93,13 +95,28 @@ def episodes():
     episode_words = ['episode', 'episodes', 'ep']
     of_words = ['of', 'sur']
     all_words = ['All']
+    range_separators = ['-', 'to', 'a']
+    discrete_separators = [r'\+', '&', '@', 'and', 'et']
 
-    rebulk.chain(abbreviations=[alt_dash], formatter={'season': parse_numeral, 'count': parse_numeral}) \
+    def seasons_ordering_validator(match):
+        """
+        Validator for season list. They should be in natural order to be validated.
+        """
+        if not seps_surround(match):
+            return False
+        values = Matches(match.children).to_dict(implicit=True)
+        if 'season' in values and is_iterable(values['season']):
+            # Season numbers must be in natural order to be validated.
+            return list(sorted(values['season'])) == values['season']
+        return True
+
+    rebulk.chain(abbreviations=[alt_dash], formatter={'season': parse_numeral, 'count': parse_numeral},
+                 validator={'__parent__': seasons_ordering_validator}) \
         .defaults(validator=None) \
         .regex(build_or_pattern(season_words) + '@?(?P<season>' + numeral + ')') \
         .regex(r'' + build_or_pattern(of_words) + '@?(?P<count>' + numeral + ')').repeater('?') \
-        .regex(r'@?(?P<seasonSeparator>-)@?(?P<season>\d+)').repeater('*') \
-        .regex(r'@?(?P<seasonSeparator>\+|&)@?(?P<season>\d+)').repeater('*')
+        .regex(r'@?(?P<seasonSeparator>' + build_or_pattern(range_separators + discrete_separators) +
+               r')@?(?P<season>\d+)').repeater('*')
 
     rebulk.regex(build_or_pattern(episode_words) + r'-?(?P<episode>\d+)' +
                  r'(?:v(?P<version>\d+))?' +
@@ -194,7 +211,8 @@ def episodes():
                  abbreviations=[dash], name="hardcoded-movies", marker=True,
                  conflict_solver=lambda match, other: None)
 
-    rebulk.rules(EpisodeNumberSeparatorRange, SeasonSeparatorRange, RemoveWeakIfMovie, RemoveWeakIfSxxExx,
+    rebulk.rules(EpisodeNumberSeparatorRange(range_separators),
+                 SeasonSeparatorRange(range_separators), RemoveWeakIfMovie, RemoveWeakIfSxxExx,
                  RemoveWeakDuplicate, EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator,
                  CountValidator, EpisodeSingleDigitValidator)
 
@@ -234,6 +252,10 @@ class EpisodeNumberSeparatorRange(Rule):
     priority = 128
     consequence = [RemoveMatch, AppendMatch]
 
+    def __init__(self, season_from_to_separators):
+        super(EpisodeNumberSeparatorRange, self).__init__()
+        self.season_from_to_separators = season_from_to_separators
+
     def when(self, matches, context):
         to_remove = []
         to_append = []
@@ -241,7 +263,7 @@ class EpisodeNumberSeparatorRange(Rule):
             previous_match = matches.previous(separator, lambda match: match.name == 'episode', 0)
             next_match = matches.next(separator, lambda match: match.name == 'episode', 0)
 
-            if previous_match and next_match and separator.value == '-':
+            if previous_match and next_match and separator.value in self.season_from_to_separators:
                 for episode_number in range(previous_match.value + 1, next_match.value):
                     match = copy.copy(separator)
                     match.private = False
@@ -259,6 +281,10 @@ class SeasonSeparatorRange(Rule):
     priority = 128
     consequence = [RemoveMatch, AppendMatch]
 
+    def __init__(self, season_from_to_separators):
+        super(SeasonSeparatorRange, self).__init__()
+        self.season_from_to_separators = season_from_to_separators
+
     def when(self, matches, context):
         to_remove = []
         to_append = []
@@ -266,7 +292,7 @@ class SeasonSeparatorRange(Rule):
             previous_match = matches.previous(separator, lambda match: match.name == 'season', 0)
             next_match = matches.next(separator, lambda match: match.name == 'season', 0)
 
-            if previous_match and next_match and separator.value == '-':
+            if previous_match and next_match and separator.value in self.season_from_to_separators:
                 for episode_number in range(previous_match.value + 1, next_match.value):
                     match = copy.copy(separator)
                     match.private = False
