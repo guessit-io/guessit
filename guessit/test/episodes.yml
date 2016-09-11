@@ -1864,3 +1864,15 @@
   title: Fargo
   type: episode
   video_codec: h264
+
+? Show.Name.S02E02.Episode.Title.1080p.WEB-DL.x264.5.1Ch.-.Group
+: audio_channels: '5.1'
+  episode: 2
+  episode_title: Episode Title
+  format: WEB-DL
+  release_group: Group
+  screen_size: 1080p
+  season: 2
+  title: Show Name
+  type: episode
+  video_codec: h264
