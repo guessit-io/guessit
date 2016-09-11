@@ -1855,3 +1855,12 @@
   title: Game of Thrones
   type: episode
   video_codec: h265
+
+? Fargo.-.Season.1.-.720p.BluRay.-.x264.-.ShAaNiG
+: format: BluRay
+  release_group: ShAaNiG
+  screen_size: 720p
+  season: 1
+  title: Fargo
+  type: episode
+  video_codec: h264

@@ -16,9 +16,7 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
     history = f.read()
 
-install_requires = ['rebulk>=0.7.3', 'babelfish>=0.5.5', 'python-dateutil']
-# python-dateutil 2.5.2 introduced a change with month position in ambiguous day/month dates when year is first.
-# https://github.com/dateutil/dateutil/commit/2d42e046d55b9fbbc0a2f41ce83fb8ec5de2d28b#commitcomment-17032106
+install_requires = ['rebulk>=0.7.4', 'babelfish>=0.5.5', 'python-dateutil']
 if sys.version_info < (2, 7):
     install_requires.extend(['argparse', 'ordereddict'])
 setup_requires = ['pytest-runner']
