@@ -74,8 +74,8 @@ def episodes():
                  private_parent=True,
                  conflict_solver=season_episode_conflict_solver) \
         .defaults(validator=season_episode_validator) \
-        .regex(r'S(?P<season>\d+)@?(?:xE|Ex|E|x)@?(?P<episode>\d+)') \
-        .regex(r'(?:(?P<episodeSeparator>xE|Ex|E|x|-|\+|&)(?P<episode>\d+))').repeater('*') \
+        .regex(r'S(?P<season>\d+)@?(?:xE|Ex|EP|E|x)@?(?P<episode>\d+)') \
+        .regex(r'(?:(?P<episodeSeparator>xE|Ex|EP|E|x|-|\+|&)(?P<episode>\d+))').repeater('*') \
         .chain() \
         .regex(r'(?P<season>\d+)@?x@?(?P<episode>\d+)') \
         .regex(r'(?:(?P<episodeSeparator>x|-|\+|&)(?P<episode>\d+))').repeater('*') \

@@ -9,6 +9,8 @@
 ? s02e05
 ? s02e5
 ? s2e05
+? s02ep05
+? s2EP5
 ? -s03e05
 ? -s02e06
 ? -3x05
@@ -168,5 +170,16 @@
   - 4
   - 5
   title: Show Name
+  type: episode
+  video_codec: XviD
+
+? The.Get.Down.S01EP01.FRENCH.720p.WEBRIP.XVID-STR
+: episode: 1
+  format: WEBRip
+  language: fr
+  release_group: STR
+  screen_size: 720p
+  season: 1
+  title: The Get Down
   type: episode
   video_codec: XviD
