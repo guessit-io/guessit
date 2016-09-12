@@ -1503,7 +1503,9 @@
 ? '[Kaerizaki-Fansub] One Piece 603 VOSTFR PS VITA (960x544) V2.mp4'
 : options: -E
   episode: 603
-  release_group: Kaerizaki-Fansub
+  release_group:
+    - Kaerizaki-Fansub
+    - PS VITA
   screen_size: 960x544
   title: One Piece
   subtitle_language: fr
@@ -1874,5 +1876,90 @@
   screen_size: 1080p
   season: 2
   title: Show Name
+  type: episode
+  video_codec: h264
+
+? Breaking.Bad.S01E01.2008.BluRay.VC1.1080P.5.1.WMV-NOVO
+: audio_channels: '5.1'
+  container: WMV
+  episode: 1
+  format: BluRay
+  release_group: NOVO
+  screen_size: 1080p
+  season: 1
+  title: Breaking Bad
+  type: episode
+  year: 2008
+
+? Cosmos.A.Space.Time.Odyssey.S01E02.HDTV.x264.PROPER-LOL
+: episode: 2
+  format: HDTV
+  other: Proper
+  proper_count: 1
+  release_group: LOL
+  season: 1
+  title: Cosmos A Space Time Odyssey
+  type: episode
+  video_codec: h264
+
+? Elementary.S01E01.Pilot.DVDSCR.x264.PREAiR-NoGRP
+: episode: 1
+  episode_details: Pilot
+  episode_title: Pilot
+  format: DVD
+  other:
+  - Screener
+  - Preair
+  release_group: NoGRP
+  season: 1
+  title: Elementary
+  type: episode
+  video_codec: h264
+
+? Fear.The.Walking.Dead.S02E01.HDTV.x264.AAC.MP4-k3n.mp4
+: audio_codec: AAC
+  container:
+  - MP4
+  - mp4
+  episode: 1
+  format: HDTV
+  mimetype: video/mp4
+  release_group: k3n
+  season: 2
+  title: Fear The Walking Dead
+  type: episode
+  video_codec: h264
+
+? Game.of.Thrones.S03.1080p.BluRay.DTS-HD.MA.5.1.AVC.REMUX-FraMeSToR
+: audio_channels: '5.1'
+  audio_codec: DTS
+  audio_profile: HDMA
+  format: BluRay
+  other: Remux
+  release_group: FraMeSToR
+  screen_size: 1080p
+  season: 3
+  title: Game of Thrones
+  type: episode
+
+? Show.Name.S01E02.HDTV.x264.NL-subs-ABC
+: episode: 2
+  format: HDTV
+  release_group: ABC
+  season: 1
+  subtitle_language: nl
+  title: Show Name
+  type: episode
+  video_codec: h264
+
+? Friends.S01-S10.COMPLETE.720p.BluRay.x264-PtM
+: format: BluRay
+  other: Complete
+  release_group: PtM
+  screen_size: 720p
+  season: # Should it be [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ?
+  - 1
+  - 10
+  title: Friends
   type: episode
   video_codec: h264
