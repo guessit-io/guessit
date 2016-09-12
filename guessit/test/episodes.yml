@@ -1963,3 +1963,28 @@
   title: Friends
   type: episode
   video_codec: h264
+
+? Duck.Dynasty.S02E07.Streik.German.DOKU.DL.WS.DVDRiP.x264-CDP
+: episode: 7
+  episode_title: Streik German DOKU
+  format: DVD
+  language: mul
+  other: WideScreen
+  release_group: CDP
+  season: 2
+  title: Duck Dynasty
+  type: episode
+  video_codec: h264
+
+? Family.Guy.S13E14.JOLO.German.AC3D.DL.720p.WebHD.x264-CDD
+: audio_codec: AC3
+  episode: 14
+  episode_title: JOLO German
+  format: WEB-DL
+  language: mul
+  release_group: CDD
+  screen_size: 720p
+  season: 13
+  title: Family Guy
+  type: episode
+  video_codec: h264
