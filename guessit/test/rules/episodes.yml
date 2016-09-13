@@ -102,7 +102,7 @@
 
 ? Some Series E01-02-E04
 : title: Some Series
-  episode: [1, 2, 4]
+  episode: [1, 2, 3, 4]
 
 ? Episode 3
 ? -Episode III
@@ -183,3 +183,31 @@
   title: The Get Down
   type: episode
   video_codec: XviD
+
+? My.Name.Is.Earl.S01E01-S01E21.SWE-SUB
+: episode:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  season: 1
+  subtitle_language: sv
+  title: My Name Is Earl
+  type: episode

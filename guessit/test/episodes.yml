@@ -1959,6 +1959,14 @@
   screen_size: 720p
   season: # Should it be [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ?
   - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
   - 10
   title: Friends
   type: episode

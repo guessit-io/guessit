@@ -245,62 +245,70 @@ class CountValidator(Rule):
         return to_remove, episode_count, season_count
 
 
-class EpisodeNumberSeparatorRange(Rule):
-    """
-    Remove separator matches and create matches for episoderNumber range.
-    """
-    priority = 128
-    consequence = [RemoveMatch, AppendMatch]
-
-    def __init__(self, season_from_to_separators):
-        super(EpisodeNumberSeparatorRange, self).__init__()
-        self.season_from_to_separators = season_from_to_separators
-
-    def when(self, matches, context):
-        to_remove = []
-        to_append = []
-        for separator in matches.named('episodeSeparator'):
-            previous_match = matches.previous(separator, lambda match: match.name == 'episode', 0)
-            next_match = matches.next(separator, lambda match: match.name == 'episode', 0)
-
-            if previous_match and next_match and separator.value in self.season_from_to_separators:
-                for episode_number in range(previous_match.value + 1, next_match.value):
-                    match = copy.copy(separator)
-                    match.private = False
-                    match.name = 'episode'
-                    match.value = episode_number
-                    to_append.append(match)
-            to_remove.append(separator)
-        return to_remove, to_append
-
-
-class SeasonSeparatorRange(Rule):
+class AbstractSeparatorRange(Rule):
     """
     Remove separator matches and create matches for season range.
     """
     priority = 128
     consequence = [RemoveMatch, AppendMatch]
 
-    def __init__(self, season_from_to_separators):
-        super(SeasonSeparatorRange, self).__init__()
-        self.season_from_to_separators = season_from_to_separators
+    def __init__(self, range_separators, property_name):
+        super(AbstractSeparatorRange, self).__init__()
+        self.range_separators = range_separators
+        self.property_name = property_name
 
     def when(self, matches, context):
         to_remove = []
         to_append = []
-        for separator in matches.named('seasonSeparator'):
-            previous_match = matches.previous(separator, lambda match: match.name == 'season', 0)
-            next_match = matches.next(separator, lambda match: match.name == 'season', 0)
 
-            if previous_match and next_match and separator.value in self.season_from_to_separators:
+        for separator in matches.named(self.property_name + 'Separator'):
+            previous_match = matches.previous(separator, lambda match: match.name == self.property_name, 0)
+            next_match = matches.next(separator, lambda match: match.name == self.property_name, 0)
+
+            if previous_match and next_match and separator.value in self.range_separators:
                 for episode_number in range(previous_match.value + 1, next_match.value):
-                    match = copy.copy(separator)
-                    match.private = False
-                    match.name = 'season'
+                    match = copy.copy(next_match)
                     match.value = episode_number
                     to_append.append(match)
             to_remove.append(separator)
+
+        previous_match = None
+        for next_match in matches.named(self.property_name):
+            if previous_match:
+                separator = matches.input_string[previous_match.initiator.end:next_match.initiator.start]
+                if separator in self.range_separators:
+                    for episode_number in range(previous_match.value + 1, next_match.value):
+                        match = copy.copy(next_match)
+                        match.value = episode_number
+                        to_append.append(match)
+                to_remove.append(next_match) # Remove and append match to support proper ordering
+                to_append.append(next_match)
+
+            previous_match = next_match
+
         return to_remove, to_append
+
+
+class EpisodeNumberSeparatorRange(AbstractSeparatorRange):
+    """
+    Remove separator matches and create matches for episoderNumber range.
+    """
+    priority = 128
+    consequence = [RemoveMatch, AppendMatch]
+
+    def __init__(self, range_separators):
+        super(EpisodeNumberSeparatorRange, self).__init__(range_separators, "episode")
+
+
+class SeasonSeparatorRange(AbstractSeparatorRange):
+    """
+    Remove separator matches and create matches for season range.
+    """
+    priority = 128
+    consequence = [RemoveMatch, AppendMatch]
+
+    def __init__(self, range_separators):
+        super(SeasonSeparatorRange, self).__init__(range_separators, "season")
 
 
 class RemoveWeakIfMovie(Rule):
