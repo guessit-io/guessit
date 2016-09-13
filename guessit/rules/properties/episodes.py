@@ -95,7 +95,7 @@ def episodes():
     episode_words = ['episode', 'episodes', 'ep']
     of_words = ['of', 'sur']
     all_words = ['All']
-    range_separators = ['-', 'to', 'a']
+    range_separators = ['-', '~', 'to', 'a']
     discrete_separators = [r'\+', '&', '@', 'and', 'et']
 
     def seasons_ordering_validator(match):
