@@ -1996,3 +1996,12 @@
   title: Family Guy
   type: episode
   video_codec: h264
+
+? How.I.Met.Your.Mother.COMPLETE.SERIES.DVDRip.XviD-AR
+: options: -L en -C us
+  format: DVD
+  other: Complete
+  release_group: AR
+  title: How I Met Your Mother
+  type: movie
+  video_codec: XviD
