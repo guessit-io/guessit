@@ -7,7 +7,7 @@ import copy
 from collections import defaultdict
 
 from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
-from rebulk.match import Matches
+from rebulk.match import Matches, Match
 from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
@@ -97,7 +97,10 @@ def episodes():
                  children=True,
                  private_parent=True,
                  conflict_solver=season_episode_conflict_solver) \
-        .defaults(validator=season_episode_validator) \
+        .defaults(validate_all=True,
+                  validator={'__parent__': ordering_validator,
+                             'season': season_episode_validator,
+                             'episode': season_episode_validator}) \
         .regex(build_or_pattern(season_markers) + r'(?P<season>\d+)@?' +
                build_or_pattern(episode_markers) + r'@?(?P<episode>\d+)') \
         .regex(r'(?:(?P<episodeSeparator>' +
@@ -297,7 +300,11 @@ class AbstractSeparatorRange(Rule):
                         match = copy.copy(next_match)
                         match.value = episode_number
                         to_append.append(match)
-                to_remove.append(next_match) # Remove and append match to support proper ordering
+                    to_append.append(Match(previous_match.end, next_match.start - 1,
+                                           name=self.property_name + 'Separator',
+                                           private=True,
+                                           input_string=matches.input_string))
+                to_remove.append(next_match)  # Remove and append match to support proper ordering
                 to_append.append(next_match)
 
             previous_match = next_match
