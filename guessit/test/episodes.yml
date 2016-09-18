@@ -2034,3 +2034,15 @@
   title: Fear the Walking Dead
   type: episode
   video_codec: XviD
+
+? Game.Of.Thrones.S06E04.720p.PROPER.HDTV.x264-HDD
+: episode: 4
+  format: HDTV
+  other: Proper
+  proper_count: 1
+  release_group: HDD
+  screen_size: 720p
+  season: 6
+  title: Game Of Thrones
+  type: episode
+  video_codec: h264
