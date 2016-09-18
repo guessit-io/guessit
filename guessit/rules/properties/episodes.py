@@ -7,7 +7,7 @@ import copy
 from collections import defaultdict
 
 from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
-from rebulk.match import Matches, Match
+from rebulk.match import Match
 from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
@@ -81,7 +81,7 @@ def episodes():
         """
         Validator for season list. They should be in natural order to be validated.
         """
-        values = Matches(match.children).to_dict(implicit=True)
+        values = match.children.to_dict(implicit=True)
         if 'season' in values and is_iterable(values['season']):
             # Season numbers must be in natural order to be validated.
             return list(sorted(values['season'])) == values['season']
