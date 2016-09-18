@@ -15,7 +15,7 @@ from .title import TitleFromPosition
 from ..common import dash, alt_dash, seps
 from ..common.formatters import strip
 from ..common.numeral import numeral, parse_numeral
-from ..common.validators import compose, seps_surround, seps_before
+from ..common.validators import compose, seps_surround, seps_before, int_coercable
 from ...reutils import build_or_pattern
 
 
@@ -122,8 +122,23 @@ def episodes():
     rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator'],
                     validate_all=True, validator={'__parent__': seps_surround}, children=True, private_parent=True)
 
-    rebulk.chain(abbreviations=[alt_dash], formatter={'season': parse_numeral, 'count': parse_numeral},
-                 validator={'__parent__': compose(seps_surround, ordering_validator)}) \
+    def validate_roman(match):
+        """
+        Validate a roman match if surrounded by separators
+        :param match:
+        :type match:
+        :return:
+        :rtype:
+        """
+        if int_coercable(match.raw):
+            return True
+        return seps_surround(match)
+
+    rebulk.chain(abbreviations=[alt_dash],
+                 formatter={'season': parse_numeral, 'count': parse_numeral},
+                 validator={'__parent__': compose(seps_surround, ordering_validator),
+                            'season': validate_roman,
+                            'count': validate_roman}) \
         .defaults(validator=None) \
         .regex(build_or_pattern(season_words) + '@?(?P<season>' + numeral + ')') \
         .regex(r'' + build_or_pattern(of_words) + '@?(?P<count>' + numeral + ')').repeater('?') \
@@ -139,7 +154,9 @@ def episodes():
     rebulk.regex(build_or_pattern(episode_words) + r'-?(?P<episode>' + numeral + ')' +
                  r'(?:v(?P<version>\d+))?' +
                  r'(?:-?' + build_or_pattern(of_words) + r'-?(?P<count>\d+))?',  # Episode 4
-                 abbreviations=[dash], formatter={'episode': parse_numeral, 'version': int, 'count': int},
+                 abbreviations=[dash],
+                 validator={'episode': validate_roman},
+                 formatter={'episode': parse_numeral, 'version': int, 'count': int},
                  disabled=lambda context: context.get('type') != 'episode')
 
     rebulk.regex(r'S?(?P<season>\d+)-?(?:xE|Ex|E|x)-?(?P<other>' + build_or_pattern(all_words) + ')',

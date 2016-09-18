@@ -2020,3 +2020,17 @@
   title: Show Name
   type: episode
   video_codec: h265
+
+? Fear.the.Walking.Dead.-.Season.2.epi.02.XviD.Eng.Ac3-5.1.sub.ita.eng.iCV-MIRCrew
+: options: -t episode
+  audio_channels: '5.1'
+  audio_codec: AC3
+  episode: 2
+  episode_title: epi
+  language: en
+  release_group: iCV-MIRCrew
+  season: 2
+  subtitle_language: it
+  title: Fear the Walking Dead
+  type: episode
+  video_codec: XviD

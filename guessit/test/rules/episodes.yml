@@ -240,3 +240,7 @@
   - 4
   title: show name
   type: episode
+
+? epi
+: options: -t episode
+  title: epi
