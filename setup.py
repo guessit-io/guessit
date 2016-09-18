@@ -16,7 +16,7 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
     history = f.read()
 
-install_requires = ['rebulk>=0.7.5', 'babelfish>=0.5.5', 'python-dateutil']
+install_requires = ['rebulk>=0.7.6', 'babelfish>=0.5.5', 'python-dateutil']
 if sys.version_info < (2, 7):
     install_requires.extend(['argparse', 'ordereddict'])
 setup_requires = ['pytest-runner']

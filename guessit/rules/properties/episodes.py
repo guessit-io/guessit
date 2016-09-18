@@ -15,7 +15,7 @@ from .title import TitleFromPosition
 from ..common import dash, alt_dash, seps
 from ..common.formatters import strip
 from ..common.numeral import numeral, parse_numeral
-from ..common.validators import compose, seps_surround
+from ..common.validators import compose, seps_surround, seps_before
 from ...reutils import build_or_pattern
 
 
@@ -58,15 +58,6 @@ def episodes():
     season_episode_seps.extend(seps)
     season_episode_seps.extend(['x', 'X', 'e', 'E'])
 
-    def season_episode_validator(match):
-        """
-        Validator for season/episode matches
-        """
-        if match.name in ['season', 'episode'] and match.initiator.start:
-            return match.initiator.input_string[match.initiator.start] in season_episode_seps \
-                   or match.initiator.input_string[match.initiator.start - 1] in season_episode_seps
-        return True
-
     season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series']
     episode_words = ['episode', 'episodes', 'ep']
     of_words = ['of', 'sur']
@@ -96,25 +87,29 @@ def episodes():
                  abbreviations=[alt_dash],
                  children=True,
                  private_parent=True,
+                 validate_all=True,
+                 validator={'__parent__': ordering_validator},
                  conflict_solver=season_episode_conflict_solver) \
-        .defaults(validate_all=True,
-                  validator={'__parent__': ordering_validator,
-                             'season': season_episode_validator,
-                             'episode': season_episode_validator}) \
         .regex(build_or_pattern(season_markers) + r'(?P<season>\d+)@?' +
-               build_or_pattern(episode_markers) + r'@?(?P<episode>\d+)') \
+               build_or_pattern(episode_markers) + r'@?(?P<episode>\d+)',
+               validate_all=True,
+               validator={'__parent__': seps_before}) \
         .regex(r'(?:(?P<episodeSeparator>' +
                build_or_pattern(episode_markers + discrete_separators + range_separators) + ')' +
                r'(?P<episode>\d+))').repeater('*') \
         .chain() \
         .regex(r'(?P<season>\d+)@?' +
                build_or_pattern(season_ep_markers) +
-               r'@?(?P<episode>\d+)') \
+               r'@?(?P<episode>\d+)',
+               validate_all=True,
+               validator={'__parent__': seps_before}) \
         .regex(r'(?:(?P<episodeSeparator>' +
                build_or_pattern(season_ep_markers + discrete_separators + range_separators) + ')' +
                r'(?P<episode>\d+))').repeater('*') \
         .chain() \
-        .regex(build_or_pattern(season_markers) + r'(?P<season>\d+)') \
+        .regex(build_or_pattern(season_markers) + r'(?P<season>\d+)',
+               validate_all=True,
+               validator={'__parent__': seps_before}) \
         .regex(r'(?:(?P<seasonSeparator>' +
                build_or_pattern(season_markers + discrete_separators + range_separators) + ')' +
                r'(?P<season>\d+))').repeater('*')
