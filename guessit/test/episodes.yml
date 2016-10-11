@@ -2103,3 +2103,13 @@
   title: The B B T
   type: episode
   video_codec: h264
+
+? '[.www.site.com.].-.Snooze.and.Go.Sleep.S03E02.1080p.HEVC.x265-MeGusta'
+: episode: 2
+  release_group: MeGusta
+  screen_size: 1080p
+  season: 3
+  title: Snooze and Go Sleep
+  type: episode
+  video_codec: h265
+  website: www.site.com
