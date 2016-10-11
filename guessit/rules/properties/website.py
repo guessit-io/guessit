@@ -8,7 +8,6 @@ from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch
 from ...reutils import build_or_pattern
-from .title import TitleFromPosition
 
 
 def website():
