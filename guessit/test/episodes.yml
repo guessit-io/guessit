@@ -1503,9 +1503,8 @@
 ? '[Kaerizaki-Fansub] One Piece 603 VOSTFR PS VITA (960x544) V2.mp4'
 : options: -E
   episode: 603
-  release_group:
-    - Kaerizaki-Fansub
-    - PS VITA
+  release_group: Kaerizaki-Fansub
+  other: PS Vita
   screen_size: 960x544
   title: One Piece
   subtitle_language: fr
@@ -2090,5 +2089,17 @@
   season: 2
   subtitle_language: fr
   title: Gotham
+  type: episode
+  video_codec: h264
+
+? /series/The.B*.B*.T*.S10E01.1080p.HDTV.X264-DIMENSION[rarbg]/The.B*.B*.T*.S10E01.1080p.HDTV.X264-DIMENSION.mkv
+: container: mkv
+  episode: 1
+  format: HDTV
+  mimetype: video/x-matroska
+  release_group: DIMENSION[rarbg]
+  screen_size: 1080p
+  season: 10
+  title: The B B T
   type: episode
   video_codec: h264
