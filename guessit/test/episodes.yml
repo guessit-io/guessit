@@ -2003,7 +2003,7 @@
   other: Complete
   release_group: AR
   title: How I Met Your Mother
-  type: movie
+  type: movie # Should be episode
   video_codec: XviD
 
 ? Show Name The Complete Seasons 1 to 5 720p BluRay x265 HEVC-SUJAIDR[UTR]
@@ -2044,5 +2044,51 @@
   screen_size: 720p
   season: 6
   title: Game Of Thrones
+  type: episode
+  video_codec: h264
+
+? Marvels.Daredevil.S02E04.WEBRip.x264-NF69.mkv
+: container: mkv
+  episode: 4
+  format: WEBRip
+  release_group: NF69
+  season: 2
+  title: Marvels Daredevil
+  type: episode
+  video_codec: h264
+
+? The.Walking.Dead.S06E01.FRENCH.1080p.WEB-DL.DD5.1.HEVC.x265-GOLF68
+: audio_channels: '5.1'
+  audio_codec: DolbyDigital
+  episode: 1
+  format: WEB-DL
+  language: fr
+  release_group: GOLF68
+  screen_size: 1080p
+  season: 6
+  title: The Walking Dead
+  type: episode
+  video_codec: h265
+
+? American.Crime.S01E03.FASTSUB.VOSTFR.720p.HDTV.x264-F4ST
+: episode: 3
+  format: HDTV
+  other: Fastsub
+  release_group: F4ST
+  screen_size: 720p
+  season: 1
+  subtitle_language: fr
+  title: American Crime
+  type: episode
+  video_codec: h264
+
+? Gotham.S02E12.FASTSUB.VOSTFR.HDTV.X264-F4ST3R
+: episode: 12
+  format: HDTV
+  other: Fastsub
+  release_group: F4ST3R
+  season: 2
+  subtitle_language: fr
+  title: Gotham
   type: episode
   video_codec: h264
