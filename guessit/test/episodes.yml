@@ -2092,6 +2092,75 @@
   type: episode
   video_codec: h264
 
+# WEBRip + LD
+? Australian.Story.2016.05.23.Into.The.Fog.of.War.Part.1.360p.LDTV.WEBRIP.[MPup]
+: title: Australian Story
+  date: 2016-05-23
+  episode_title: Into The Fog of War
+  part: 1
+  screen_size: 360p
+  other: LD
+  format: WEBRip
+  release_group: MPup
+  type: episode
+
+# AHDTV
+? Show.Name.S04E06.FRENCH.AHDTV.XviD
+: title: Show Name
+  season: 4
+  episode: 6
+  language: fr
+  format: AHDTV
+  video_codec: XviD
+  type: episode
+
+# WEBDLRip
+? Show.Name.s06e14.WEBDLRip.-qqss44.avi
+: title: Show Name
+  season: 6
+  episode: 14
+  format: WEBRip
+  release_group: qqss44
+  container: avi
+  mimetype: video/x-msvideo
+  type: episode
+
+# WEBCap
+? Steven.Universe.S03E06.Steven.Floats.720p.WEBCap.x264-SRS
+: title: Steven Universe
+  season: 3
+  episode: 6
+  episode_title: Steven Floats
+  screen_size: 720p
+  format: WEBRip
+  video_codec: h264
+  release_group: SRS
+  type: episode
+
+# DSR
+? Show.Name.S05E09.Some.Episode.Title.WS.DSR.x264-[NY2]
+: title: Show Name
+  season: 5
+  episode: 9
+  episode_title: Some Episode Title
+  other: WideScreen
+  format: SATRip
+  video_codec: h264
+  release_group: NY2
+  type: episode
+
+# DSRip
+? Squidbillies.S04E05.WS.DSRip.XviD-aAF
+: title: Squidbillies
+  season: 4
+  episode: 5
+  other: WideScreen
+  format: SATRip
+  video_codec: XviD
+  release_group: aAF
+  type: episode
+
+
 ? /series/The.B*.B*.T*.S10E01.1080p.HDTV.X264-DIMENSION[rarbg]/The.B*.B*.T*.S10E01.1080p.HDTV.X264-DIMENSION.mkv
 : container: mkv
   episode: 1
