@@ -2104,6 +2104,15 @@
   type: episode
   video_codec: h264
 
+? '[Y-F] Very long Show Name Here - 03 Vostfr HD 8bits'
+: release_group: Y-F
+  title: Very long Show Name Here
+  episode: 3
+  subtitle_language: fr
+  other: HD
+  video_profile: 8bit
+  type: episode
+
 ? '[.www.site.com.].-.Snooze.and.Go.Sleep.S03E02.1080p.HEVC.x265-MeGusta'
 : episode: 2
   release_group: MeGusta
