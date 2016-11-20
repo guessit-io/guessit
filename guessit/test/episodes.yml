@@ -2113,3 +2113,14 @@
   type: episode
   video_codec: h265
   website: www.site.com
+
+? Vice.News.Tonight.2016.10.10.1080p.HBO.WEBRip.AAC2.0.H.264-monkee
+: title: Vice News Tonight
+  date: 2016-10-10
+  screen_size: 1080p
+  format: WEBRip
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: h264
+  release_group: monkee
+  type: episode
