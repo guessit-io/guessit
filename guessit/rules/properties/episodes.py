@@ -409,8 +409,13 @@ class RemoveWeakIfSxxExx(Rule):
     consequence = RemoveMatch
 
     def when(self, matches, context):
-        if matches.tagged('SxxExx', lambda match: not match.private):
-            return matches.tagged('weak-movie')
+        to_remove = []
+        for filepart in matches.markers.named('path'):
+            if matches.range(filepart.start, filepart.end,
+                             predicate=lambda match: not match.private and 'SxxExx' in match.tags):
+                to_remove.extend(matches.range(
+                    filepart.start, filepart.end, predicate=lambda match: 'weak-movie' in match.tags))
+        return to_remove
 
 
 class RemoveWeakDuplicate(Rule):

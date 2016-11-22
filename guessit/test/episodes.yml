@@ -2191,3 +2191,16 @@
   type: episode
   video_codec: h265
   website: www.site.com
+
+? Show.Name.S01.720p.HDTV.DD5.1.x264-Group/show.name.0106.720p-group.mkv
+: title: Show Name
+  season: 1
+  screen_size: 720p
+  format: HDTV
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  video_codec: h264
+  release_group: Group
+  episode: 6
+  container: mkv
+  type: episode
