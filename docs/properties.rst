@@ -61,6 +61,9 @@ Main properties
 
   Name of website contained in the filename.
 
+- **streaming_service**
+
+  Name of the streaming service (``Netflix``, ``Comedy Central``, ...)
 
 Episode properties
 ------------------
