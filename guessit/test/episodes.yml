@@ -2589,3 +2589,11 @@
   video_codec: h264
   release_group: monkee
   type: episode
+
+? frasier.s8e6-768660.srt
+: container: srt
+  episode: 6
+  episode_title: '768660'
+  season: 8
+  title: frasier
+  type: episode

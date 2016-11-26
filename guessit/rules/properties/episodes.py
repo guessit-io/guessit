@@ -30,6 +30,25 @@ def episodes():
     rebulk.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
     rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator'])
 
+    def episodes_season_chain_breaker(matches):
+        """
+        Break chains if there's more than 100 offset between two neighbor values.
+        :param matches:
+        :type matches:
+        :return:
+        :rtype:
+        """
+        episodes = matches.named('episode')
+        if len(episodes) > 1 and abs(episodes[-1].value - episodes[-2].value) > 100:
+            return True
+
+        seasons = matches.named('season')
+        if len(seasons) > 1 and abs(seasons[-1].value - seasons[-2].value) > 100:
+            return True
+        return False
+
+    rebulk.chain_defaults(chain_breaker=episodes_season_chain_breaker)
+
     def season_episode_conflict_solver(match, other):
         """
         Conflict solver for episode/season patterns
