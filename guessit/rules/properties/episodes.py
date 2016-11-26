@@ -78,7 +78,7 @@ def episodes():
     season_episode_seps.extend(['x', 'X', 'e', 'E'])
 
     season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series']
-    episode_words = ['episode', 'eps', 'ep']
+    episode_words = ['episode', 'episodes', 'eps', 'ep']
     of_words = ['of', 'sur']
     all_words = ['All']
     season_markers = ["S"]
