@@ -612,6 +612,7 @@
   release_group: mSD
 
 ? House.of.Cards.2013.S02E03.1080p.NF.WEBRip.DD5.1.x264-NTb.mkv
+? House.of.Cards.2013.S02E03.1080p.Netflix.WEBRip.DD5.1.x264-NTb.mkv
 : title: House of Cards
   year: 2013
   season: 2
@@ -1160,6 +1161,8 @@
   video_codec: h264
 
 ? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.720p.CC.WEBRip.AAC2.0.x264-BTW.mkv
+? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.720p.ComedyCentral.WEBRip.AAC2.0.x264-BTW.mkv
+? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.720p.Comedy.Central.WEBRip.AAC2.0.x264-BTW.mkv
 : audio_channels: '2.0'
   audio_codec: AAC
   date: 2015-07-01
