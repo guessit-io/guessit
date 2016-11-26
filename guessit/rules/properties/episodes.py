@@ -38,8 +38,8 @@ def episodes():
         :return:
         :rtype:
         """
-        episodes = matches.named('episode')
-        if len(episodes) > 1 and abs(episodes[-1].value - episodes[-2].value) > 100:
+        eps = matches.named('episode')
+        if len(eps) > 1 and abs(eps[-1].value - eps[-2].value) > 100:
             return True
 
         seasons = matches.named('season')
@@ -78,7 +78,7 @@ def episodes():
     season_episode_seps.extend(['x', 'X', 'e', 'E'])
 
     season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series']
-    episode_words = ['episode', 'episodes', 'ep']
+    episode_words = ['episode', 'eps', 'ep']
     of_words = ['of', 'sur']
     all_words = ['All']
     season_markers = ["S"]
@@ -297,7 +297,7 @@ def episodes():
 
     rebulk.regex(r'Minisodes?', name='episode_format', value="Minisode")
 
-    # Harcoded movie to disable weak season/episodes
+    # Harcoded movie to disable weak season/eps
     rebulk.regex('OSS-?117',
                  abbreviations=[dash], name="hardcoded-movies", marker=True,
                  conflict_solver=lambda match, other: None)
