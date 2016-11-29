@@ -2633,3 +2633,18 @@
   season: 8
   title: frasier
   type: episode
+
+# DDP is DD+
+? Show.Name.2016.S01E01.2160p.AMZN.WEBRip.DDP5.1.x264-Group
+: title: Show Name
+  year: 2016
+  season: 1
+  episode: 1
+  screen_size: 4K
+  streaming_service: Amazon Prime
+  format: WEBRip
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  video_codec: h264
+  release_group: Group
+  type: episode
