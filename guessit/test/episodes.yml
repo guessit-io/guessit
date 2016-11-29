@@ -2634,6 +2634,19 @@
   title: frasier
   type: episode
 
+? Some.Show.S02E14.1080p.HDTV.X264-reenc.GROUP
+? Some.Show.S02E14.1080p.HDTV.X264-re-enc.GROUP
+? Some.Show.S02E14.1080p.HDTV.X264-re-encoded.GROUP
+? Some.Show.S02E14.1080p.HDTV.X264-reencoded.GROUP
+: title: Some Show
+  season: 2
+  episode: 14
+  screen_size: 1080p
+  format: HDTV
+  video_codec: h264
+  other: ReEncoded
+  release_group: GROUP
+  type: episode
 # DDP is DD+
 ? Show.Name.2016.S01E01.2160p.AMZN.WEBRip.DDP5.1.x264-Group
 : title: Show Name
