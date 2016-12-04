@@ -139,9 +139,9 @@ Command line options can be given as dict or string to the second argument.
 Docker
 ------
 
-GuessIt is also available on `Docker Hub <https://hub.docker.com/r/toilal/guessit/>`_ as a Docker Image.::
+GuessIt is also available on `Docker Hub <https://hub.docker.com/r/guessit/guessit/>`_ as a Docker Image.::
 
-    $ docker run -it toilal/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
+    $ docker run -it guessit/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
     For: Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi
     GuessIt found: {
         "title": "Treme",
