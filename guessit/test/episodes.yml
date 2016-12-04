@@ -2729,3 +2729,18 @@
   video_codec: h264
   release_group: BTW
   type: episode
+  
+  # Streaming service: RTE
+? Show.Name.S10E01.RTE.576p.WEBRip.AAC2.0.H.264-RTN	
+: title: Show Name
+  season: 10
+  episode: 1
+  screen_size: 576p
+  streaming_service: RTÉ One
+  format: WEBRip
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: h264
+  release_group: RTN
+  type: episode
+
