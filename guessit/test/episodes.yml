@@ -2743,4 +2743,18 @@
   video_codec: h264
   release_group: RTN
   type: episode
+  
+  # Streaming service: AMC
+? Show.Name.S01E01.1080p.AMC.WEBRip.H.264.AAC2.0-CasStudio	
+: title: Show Name
+  season: 1
+  episode: 1
+  screen_size: 1080p
+  streaming_service: AMC
+  format: WEBRip
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: h264
+  release_group: CasStudio
+  type: episode
 
