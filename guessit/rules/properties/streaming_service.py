@@ -23,6 +23,7 @@ def streaming_service():
 
     rebulk.string('AE', 'A&E', value='A&E')
     rebulk.string('AMBC', value='ABC')
+    rebulk.string('AMC', value='AMC')
     rebulk.string('AMZN', 'AmazonPrime', value='Amazon Prime')
     rebulk.regex('Amazon-Prime', value='Amazon Prime')
     rebulk.string('AS', 'AdultSwim', value='Adult Swim')
