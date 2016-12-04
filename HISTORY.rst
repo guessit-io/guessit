@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.1 (unreleased)
+2.1.1 (2016-12-04)
 ------------------
 
 - Add `~` to episode/season separators.
