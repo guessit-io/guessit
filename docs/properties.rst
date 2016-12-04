@@ -120,8 +120,7 @@ Video properties
 
   Format of the initial source
 
-  - ``HDTV`` ``WEB-DL`` ``TV`` ``VOD`` ``BluRay`` ``DVD`` ``WEBRip`` ``Workprint`` ``Telecine`` ``VHS`` ``DVB`` ``Telesync``  ``HD-DVD`` ``PPV`` ``Cam``
-
+  - ``TV`` ``HDTV`` ``AHDTV`` ``HDTC`` ``SATRip`` ``WEB-DL`` ``VOD`` ``BluRay`` ``DVD`` ``WEBRip`` ``Workprint`` ``Telecine`` ``VHS`` ``DVB`` ``Telesync``  ``HD-DVD`` ``PPV`` ``Cam``
 
 - **screen_size**
 

@@ -4,8 +4,29 @@ History
 2.1.1 (unreleased)
 ------------------
 
+- Add `~` to episode/season separators.
+- Add `AHDTV`, `HDTC`, `SATRip` as new `format` possible values.
+- Add `streaming_service` property.
+- Add `DDP` pattern as `audio_codec`=`DolbyDigital`.
+- Add `LDTV` as possible tag for `other`=`LD`.
+- Add `StripSeparators` Post Processor to strip separators from all matches.
 - Fix invalid guess `1 x 2` with `--type episode`.
-
+- Fix `part` property.
+- Fix `cd_count` issue with `x264-CD`.
+- Fix `HDD` group detected as `DolbyDigital`.
+- Fix invalid comparator in `audio_codec` conflict solver.
+- Fix validation of `film` property.
+- Fix `date` followed by `screen_size` invalid guess.
+- Fix `episode` not detected when smaller filepart repeats the `season` and uses `SSEE` pattern.
+- Enhance `season`/`episode` conflict solver to keep most specific value.
+- Enhance `video_profile` detection.
+- Enhance `episode`/`season` range and sequence guessing.
+- Enhance performance with rebulk upgrade to `0.8.2`.
+- Enhance `season`/`episode`.
+- Enhance `other`=`Complete` guessing.
+- Enhance `release_group` guessing.
+- Enhance command line options parsing related to unicode.
+- Ensure roman numbers are surrounded with separators to be guessed as numbers.
 
 2.1.0 (2016-09-08)
 ------------------
