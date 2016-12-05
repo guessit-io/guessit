@@ -3,9 +3,10 @@
 """
 size property
 """
-from rebulk.remodule import re
+import re
 
-from rebulk import Rebulk, Rule, RemoveMatch
+from rebulk import Rebulk
+
 from ..common.validators import seps_surround
 from ..common import dash
 
