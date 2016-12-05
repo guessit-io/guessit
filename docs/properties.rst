@@ -248,8 +248,8 @@ Other properties
 
   Other property will appear under this property.
 
-  - ``Fansub``, ``HR``, ``HQ``, ``Netflix``, ``Screener``, ``Unrated``, ``HD``, ``3D``, ``SyncFix``, ``Bonus``,
+  - ``Fansub``, ``HR``, ``HQ``, ``Screener``, ``Unrated``, ``HD``, ``3D``, ``SyncFix``, ``Bonus``,
   ``WideScreen``, ``Fastsub``, ``R5``, ``AudioFix``, ``DDC``, ``Trailer``, ``Complete``, ``Limited``, ``Classic``,
-  ``Proper``, ``DualAudio``, ``LiNE``, ``CC``, ``LD``, ``MD``, ``XXX``, ``Remastered``, ``Extended``, ``Extended Cut``,
-  ``Uncut``, ``Retail``
+  ``Proper``, ``DualAudio``, ``LiNE``, ``LD``, ``MD``, ``XXX``, ``Remastered``, ``Extended``, ``Extended Cut``,
+  ``Uncut``, ``Retail``, ``ReEncoded``
 
