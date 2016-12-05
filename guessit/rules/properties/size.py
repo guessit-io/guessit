@@ -19,6 +19,7 @@ def size():
     """
 
     def format_size(value):
+        """Format size using uppercase and no space."""
         return re.sub(r'(?<=\d)[.](?=[^\d])', '', value.upper())
 
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
