@@ -225,6 +225,11 @@ Other properties
   Volume identifier (UUID).
 
 
+- **size**
+
+  Size (MB, GB, TB).
+
+
 - **edition**
 
   Edition of the movie.
