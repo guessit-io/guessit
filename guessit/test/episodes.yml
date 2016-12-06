@@ -2634,6 +2634,39 @@
   title: frasier
   type: episode
 
+? Show.Name.S03E15.480p.177mb.Proper.HDTV.x264
+: title: Show Name
+  season: 3
+  episode: 15
+  screen_size: 480p
+  size: 177MB
+  other: Proper
+  proper_count: 1
+  format: HDTV
+  video_codec: h264
+  type: episode
+
+? Show.Name.S03E15.480p.4.8GB.Proper.HDTV.x264
+: title: Show Name
+  season: 3
+  episode: 15
+  screen_size: 480p
+  size: 4.8GB
+  other: Proper
+  proper_count: 1
+  format: HDTV
+  video_codec: h264
+  type: episode
+
+? Show.Name.S03.1.1TB.Proper.HDTV.x264
+: title: Show Name
+  season: 3
+  size: 1.1TB
+  other: Proper
+  proper_count: 1
+  format: HDTV
+  video_codec: h264
+  type: episode
 # DDP is DD+
 ? Show.Name.2016.S01E01.2160p.AMZN.WEBRip.DDP5.1.x264-Group
 : title: Show Name
