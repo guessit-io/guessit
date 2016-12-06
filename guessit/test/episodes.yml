@@ -2717,7 +2717,7 @@
   type: episode
   
 # Streaming service: Investigation Discovery
-? Show.Name.S01E01.720p.ID.WEBRip.AAC2.0.x264-BTW	
+? Show.Name.S01E01.720p.ID.WEBRip.AAC2.0.x264-BTW
 : title: Show Name
   season: 1
   episode: 1
@@ -2731,7 +2731,7 @@
   type: episode
   
 # Streaming service: RTÉ One
-? Show.Name.S10E01.RTE.576p.WEBRip.AAC2.0.H.264-RTN	
+? Show.Name.S10E01.RTE.576p.WEBRip.AAC2.0.H.264-RTN
 : title: Show Name
   season: 10
   episode: 1
@@ -2745,7 +2745,7 @@
   type: episode
   
 # Streaming service: AMC
-? Show.Name.S01E01.1080p.AMC.WEBRip.H.264.AAC2.0-CasStudio	
+? Show.Name.S01E01.1080p.AMC.WEBRip.H.264.AAC2.0-CasStudio
 : title: Show Name
   season: 1
   episode: 1
@@ -2757,4 +2757,3 @@
   video_codec: h264
   release_group: CasStudio
   type: episode
-
