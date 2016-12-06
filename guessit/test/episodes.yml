@@ -2731,10 +2731,11 @@
   type: episode
   
 # Streaming service: RTÉ One
-? Show.Name.S10E01.RTE.WEBRip.AAC2.0.H.264-RTN
+? Show.Name.S10E01.576p.RTE.WEBRip.AAC2.0.H.264-RTN
 : title: Show Name
   season: 10
   episode: 1
+  screen_size: 576p
   streaming_service: RTÉ One
   format: WEBRip
   audio_codec: AAC
