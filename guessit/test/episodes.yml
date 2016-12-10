@@ -2768,3 +2768,18 @@
   title: Show Name
   type: episode
   year: 2016
+
+? Show.Name.-.476-479.(2007).[HorribleSubs][WEBRip]..[HD.720p]
+: options: -t episode -E
+  episode:
+  - 476
+  - 477
+  - 478
+  - 479
+  format: WEBRip
+  other: HD
+  release_group: HorribleSubs
+  screen_size: 720p
+  title: Show Name
+  type: episode
+  year: 2007
