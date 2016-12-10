@@ -19,7 +19,7 @@ def video_codec():
     :rtype: Rebulk
     """
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
-    rebulk.defaults(name="video_codec")
+    rebulk.defaults(name="video_codec", tags='format-suffix')
 
     rebulk.regex(r"Rv\d{2}", value="Real")
     rebulk.regex("Mpeg2", value="Mpeg2")
@@ -60,7 +60,7 @@ class ValidateVideoCodec(Rule):
         ret = []
         for codec in matches.named('video_codec'):
             if not seps_before(codec) and \
-                    not matches.at_index(codec.start - 1, lambda match: match.name == 'format'):
+                    not matches.at_index(codec.start - 1, lambda match: 'video-codec-prefix' in match.tags):
                 ret.append(codec)
                 continue
             if not seps_after(codec):

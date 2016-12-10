@@ -8,6 +8,7 @@ import copy
 from rebulk import Rebulk, Rule, RemoveMatch, POST_PROCESS, AppendMatch
 from rebulk.remodule import re
 
+from guessit.rules.common.validators import seps_after
 from ..common import dash
 from ..common import seps
 from ..common.validators import seps_surround, compose
@@ -74,10 +75,13 @@ def other():
 
     rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')
 
-    rebulk.regex('Scr(?:eener)?', value='Screener', validator=None, tags='other.validate.screener')
+    rebulk.regex('Scr(?:eener)?', value='Screener', validator=None,
+                 tags=['other.validate.screener', 'format-prefix', 'format-suffix'])
+    rebulk.string('Mux', value='Mux', validator=seps_after,
+                  tags=['other.validate.mux', 'video-codec-prefix', 'format-suffix'])
 
     rebulk.rules(ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore, ValidateScreenerRule,
-                 ProperCountRule)
+                 ValidateMuxRule, ProperCountRule)
 
     return rebulk
 
@@ -180,4 +184,20 @@ class ValidateScreenerRule(Rule):
             format_match = matches.previous(screener, lambda match: match.name == 'format', 0)
             if not format_match or matches.input_string[format_match.end:screener.start].strip(seps):
                 ret.append(screener)
+        return ret
+
+
+class ValidateMuxRule(Rule):
+    """
+    Validate tag other.validate.mux
+    """
+    consequence = RemoveMatch
+    priority = 64
+
+    def when(self, matches, context):
+        ret = []
+        for mux in matches.named('other', lambda match: 'other.validate.mux' in match.tags):
+            format_match = matches.previous(mux, lambda match: match.name == 'format', 0)
+            if not format_match:
+                ret.append(mux)
         return ret
