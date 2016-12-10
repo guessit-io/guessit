@@ -2757,3 +2757,14 @@
   audio_codec: DTS
   audio_profile: HDMA
   type: episode
+
+? Show.Name.-.07.(2016).[RH].[English.Dubbed][WEBRip]..[HD.1080p]
+: options: -t episode
+  episode: 7
+  format: WEBRip
+  language: en
+  other: HD
+  screen_size: 1080p
+  title: Show Name
+  type: episode
+  year: 2016

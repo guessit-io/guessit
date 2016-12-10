@@ -415,6 +415,9 @@ class RemoveWeakIfMovie(Rule):
     priority = 64
     consequence = RemoveMatch
 
+    def enabled(self, context):
+        return context.get('type') != 'episode'
+
     def when(self, matches, context):
         if matches.named('year') or matches.markers.named('hardcoded-movies'):
             return matches.tagged('weak-movie')
