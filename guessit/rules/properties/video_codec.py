@@ -7,9 +7,8 @@ from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch
 
-from guessit.rules.common.validators import seps_after, seps_before
 from ..common import dash
-from ..common.validators import seps_surround
+from ..common.validators import seps_after, seps_before, seps_surround
 
 
 def video_codec():

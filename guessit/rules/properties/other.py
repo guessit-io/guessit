@@ -8,10 +8,9 @@ import copy
 from rebulk import Rebulk, Rule, RemoveMatch, POST_PROCESS, AppendMatch
 from rebulk.remodule import re
 
-from guessit.rules.common.validators import seps_after
 from ..common import dash
 from ..common import seps
-from ..common.validators import seps_surround, compose
+from ..common.validators import seps_after, seps_surround, compose
 from ...reutils import build_or_pattern
 from ...rules.common.formatters import raw_cleanup
 
