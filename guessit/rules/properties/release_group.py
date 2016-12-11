@@ -12,7 +12,7 @@ from ..common import seps, dash
 from ..common.expected import build_expected_function
 from ..common.comparators import marker_sorted
 from ..common.formatters import cleanup
-from ..common.validators import int_coercable
+from ..common.validators import int_coercable, seps_surround
 from ..properties.title import TitleFromPosition
 
 
@@ -27,6 +27,7 @@ def release_group():
     expected_group = build_expected_function('expected_group')
 
     rebulk.functional(expected_group, name='release_group', tags=['expected'],
+                      validator=seps_surround,
                       conflict_solver=lambda match, other: other,
                       disabled=lambda context: not context.get('expected_group'))
 

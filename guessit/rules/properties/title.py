@@ -13,6 +13,7 @@ from ..common import seps, title_seps
 from ..common.comparators import marker_sorted
 from ..common.expected import build_expected_function
 from ..common.formatters import cleanup, reorder_title
+from ..common.validators import seps_surround
 
 
 def title():
@@ -26,6 +27,7 @@ def title():
     expected_title = build_expected_function('expected_title')
 
     rebulk.functional(expected_title, name='title', tags=['expected'],
+                      validator=seps_surround,
                       formatter=formatters(cleanup, reorder_title),
                       conflict_solver=lambda match, other: other,
                       disabled=lambda context: not context.get('expected_title'))
