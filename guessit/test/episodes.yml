@@ -2757,3 +2757,12 @@
   audio_codec: DTS
   audio_profile: HDMA
   type: episode
+
+? /11.22.63/Season 1/11.22.63.106.hdtv-abc
+: options: -T 11.22.63
+  title: 11.22.63
+  season: 1
+  episode: 6
+  format: HDTV
+  release_group: abc
+  type: episode
