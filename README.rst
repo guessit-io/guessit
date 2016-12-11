@@ -69,10 +69,10 @@ Usage
 GuessIt can be used from command line::
 
     $ guessit
-    usage: guessit [-h] [-t TYPE] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES]
-                   [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE]
-                   [-G EXPECTED_GROUP] [-f INPUT_FILE] [-v] [-P SHOW_PROPERTY]
-                   [-a] [-j] [-y] [-p] [-V] [--version]
+    usage: guessit [-h] [-c CONFIG] [-t TYPE] [-n] [-Y] [-D]
+                   [-L ALLOWED_LANGUAGES] [-C ALLOWED_COUNTRIES] [-E]
+                   [-T EXPECTED_TITLE] [-G EXPECTED_GROUP] [-f INPUT_FILE] [-v]
+                   [-P SHOW_PROPERTY] [-a] [-j] [-y] [-p] [-V] [--version]
                    [filename [filename ...]]
 
     positional arguments:
@@ -82,6 +82,15 @@ GuessIt can be used from command line::
       -h, --help            show this help message and exit
 
     Naming:
+      -c CONFIG, --config CONFIG
+                            Filepath to the configuration file. Configuration
+                            contains the same options as those command line
+                            options, but option names have "-" characters replaced
+                            with "_". If not defined, guessit tries to read a
+                            configuration default configuration file at
+                            ~/.guessit/options.(json|yml|yaml) and
+                            ~/.config/guessit/options.(json|yml|yaml). Set to
+                            "false" to disable default configuration file loading.
       -t TYPE, --type TYPE  The suggested file type: movie, episode. If undefined,
                             type will be guessed.
       -n, --name-only       Parse files as name only, considering "/" and "\" like
