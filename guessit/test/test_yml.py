@@ -16,7 +16,7 @@ import pytest
 from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
-from ..options import parse_options
+from ..options import parse_options, load_config
 from ..yamlutils import OrderedDictYAMLLoader
 from .. import guessit
 
@@ -209,6 +209,7 @@ class TestYml(object):
         if 'implicit' not in options:
             options['implicit'] = True
         options['config'] = False
+        options = load_config(options)
         try:
             result = guessit(string, options)
         except Exception as exc:

@@ -25,6 +25,8 @@ dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-
 
 tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'pytest-capturelog', 'PyYAML']
 
+package_data = ['config/*']
+
 entry_points = {
     'console_scripts': [
         'guessit = guessit.__main__:main'
@@ -60,6 +62,7 @@ args = dict(name='guessit',
             download_url='https://pypi.python.org/packages/source/g/guessit/guessit-%s.tar.gz' % version,
             license='LGPLv3',
             packages=find_packages(),
+            package_data={'guessit': package_data},
             include_package_data=True,
             install_requires=install_requires,
             setup_requires=setup_requires,
