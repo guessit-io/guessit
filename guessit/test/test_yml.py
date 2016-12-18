@@ -175,8 +175,9 @@ class TestYml(object):
         entries.assert_ok()
 
     def check_data(self, filename, string, expected):
-        if six.PY2 and isinstance(string, six.text_type):
-            string = string.encode('utf-8')
+        if six.PY2:
+            if isinstance(string, six.text_type):
+                string = string.encode('utf-8')
             converts = []
             for k, v in expected.items():
                 if isinstance(v, six.text_type):
