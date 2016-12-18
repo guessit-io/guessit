@@ -201,9 +201,10 @@ class AnimeReleaseGroup(Rule):
 
             # pylint:disable=bad-continuation
             empty_group_marker = matches.markers \
-                .range(filepart.start, filepart.end, lambda marker: marker.name == 'group'
-                                                                    and not matches.range(marker.start, marker.end)
-                                                                    and not int_coercable(marker.value.strip(seps)),
+                .range(filepart.start, filepart.end, lambda marker: (marker.name == 'group'
+                                                                     and not matches.range(marker.start, marker.end)
+                                                                     and marker.value.strip(seps)
+                                                                     and not int_coercable(marker.value.strip(seps))),
                        0)
 
             if empty_group_marker:
