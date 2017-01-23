@@ -2901,3 +2901,11 @@
   video_codec: h264
   release_group: CasStudio
   type: episode
+
+? /tv/Daniel Tiger's Neighborhood/S02E06 - Playtime Is Different.mp4
+: season: 2
+  episode: 6
+  title: Daniel Tiger's Neighborhood
+  episode_title: Playtime Is Different
+  container: mp4
+  type: episode
