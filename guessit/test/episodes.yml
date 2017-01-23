@@ -2901,3 +2901,18 @@
   video_codec: h264
   release_group: CasStudio
   type: episode
+
+? From [ WWW.TORRENTING.COM ] - White.Rabbit.Project.S01E08.1080p.NF.WEBRip.DD5.1.x264-ViSUM/White.Rabbit.Project.S01E08.1080p.NF.WEBRip.DD5.1.x264-ViSUM.mkv
+: title: White Rabbit Project
+  website: WWW.TORRENTING.COM
+  season: 1
+  episode: 8
+  screen_size: 1080p
+  streaming_service: Netflix
+  format: WEBRip
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  video_codec: h264
+  release_group: ViSUM
+  container: mkv
+  type: episode
