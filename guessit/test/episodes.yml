@@ -2901,3 +2901,16 @@
   video_codec: h264
   release_group: CasStudio
   type: episode
+
+? Proof.2015.S01E10.1080p.WEB-DL.DD5.1.H.264-KINGS.mkv
+: title: Proof
+  season: 1
+  episode: 10
+  screen_size: 1080p
+  format: WEB-DL
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  video_codec: h264
+  release_group: KINGS
+  container: mkv
+  type: episode
