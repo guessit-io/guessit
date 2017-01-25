@@ -2914,3 +2914,31 @@
   release_group: HKD
   container: mkv
   type: episode
+
+? We.Bare.Bears.S01E14.Brother.Up.1080p.WEB-DL.AAC2.0.H.264-TVSmash/mxNMuJWeO7PUWCMEwqKSsS6D8Vs9S6V3PHD.mkv
+: title: We Bare Bears
+  season: 1
+  episode: 14
+  episode_title: Brother Up
+  screen_size: 1080p
+  format: WEB-DL
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: h264
+  release_group: TVSmash
+  container: mkv
+  type: episode
+
+? Beyond.S01E02.Tempus.Fugit.720p.FREE.WEBRip.AAC2.0.x264-BTW/gNWDXow11s7E0X7GTDrZ.mkv
+: title: Beyond
+  season: 1
+  episode: 2
+  episode_title: Tempus Fugit
+  screen_size: 720p
+  format: WEBRip
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: h264
+  release_group: BTW
+  container: mkv
+  type: episode
