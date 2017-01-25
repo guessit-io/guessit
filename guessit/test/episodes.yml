@@ -2901,3 +2901,16 @@
   video_codec: h264
   release_group: CasStudio
   type: episode
+
+? Zoo.S02E05.1080p.WEB-DL.DD5.1.H.264.HKD/160725_02.mkv
+: title: Zoo
+  season: 2
+  episode: 5
+  screen_size: 1080p
+  format: WEB-DL
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  video_codec: h264
+  release_group: HKD
+  container: mkv
+  type: episode
