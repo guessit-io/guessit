@@ -71,4 +71,3 @@ def marker_sorted(markers, matches, predicate=marker_comparator_predicate):
     :rtype:
     """
     return sorted(markers, key=cmp_to_key(marker_comparator(matches, markers, predicate=predicate)))
-

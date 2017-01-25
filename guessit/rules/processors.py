@@ -126,7 +126,8 @@ class RemoveAmbiguous(Rule):
 
 class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
     """
-    If multiple season/episodes matches are found with different values, keep the one tagged as 'SxxExx' or in the rightmost filepart.
+    If multiple season/episodes matches are found with different values,
+    keep the one tagged as 'SxxExx' or in the rightmost filepart.
     """
     def __init__(self, name):
         super(RemoveLessSpecificSeasonEpisode, self).__init__(
