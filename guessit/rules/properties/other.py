@@ -211,17 +211,18 @@ class ValidateHardcodedSubs(Rule):
 
     def when(self, matches, context):
         to_remove = []
-        for hc in matches.named('other', predicate=lambda match: match.value == 'Hardcoded Subtitles'):
-            next_match = matches.next(hc, predicate=lambda match: match.name == 'subtitle_language', index=0)
-            if next_match and not matches.holes(hc.end, next_match.start,
+        for hc_match in matches.named('other', predicate=lambda match: match.value == 'Hardcoded Subtitles'):
+            next_match = matches.next(hc_match, predicate=lambda match: match.name == 'subtitle_language', index=0)
+            if next_match and not matches.holes(hc_match.end, next_match.start,
                                                 predicate=lambda match: match.value.strip(seps)):
                 continue
 
-            previous_match = matches.previous(hc, predicate=lambda match: match.name == 'subtitle_language', index=0)
-            if previous_match and not matches.holes(previous_match.end, hc.start,
+            previous_match = matches.previous(hc_match,
+                                              predicate=lambda match: match.name == 'subtitle_language', index=0)
+            if previous_match and not matches.holes(previous_match.end, hc_match.start,
                                                     predicate=lambda match: match.value.strip(seps)):
                 continue
 
-            to_remove.append(hc)
+            to_remove.append(hc_match)
 
         return to_remove
