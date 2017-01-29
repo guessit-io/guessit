@@ -2901,3 +2901,15 @@
   video_codec: h264
   release_group: CasStudio
   type: episode
+
+# Hardcoded subtitles
+? Show.Name.S06E16.HC.SWESUB.HDTV.x264
+: title: Show Name
+  season: 6
+  episode: 16
+  other: Hardcoded Subtitles
+  format: HDTV
+  video_codec: h264
+  subtitle_language: sv
+  type: episode
+

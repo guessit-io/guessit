@@ -78,9 +78,10 @@ def other():
                  tags=['other.validate.screener', 'format-prefix', 'format-suffix'])
     rebulk.string('Mux', value='Mux', validator=seps_after,
                   tags=['other.validate.mux', 'video-codec-prefix', 'format-suffix'])
+    rebulk.string('HC', value='Hardcoded Subtitles')
 
     rebulk.rules(ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore, ValidateScreenerRule,
-                 ValidateMuxRule, ProperCountRule)
+                 ValidateMuxRule, ValidateHardcodedSubs, ProperCountRule)
 
     return rebulk
 
@@ -200,3 +201,27 @@ class ValidateMuxRule(Rule):
             if not format_match:
                 ret.append(mux)
         return ret
+
+
+class ValidateHardcodedSubs(Rule):
+    """Validate HC matches."""
+
+    priority = 32
+    consequence = RemoveMatch
+
+    def when(self, matches, context):
+        to_remove = []
+        for hc in matches.named('other', predicate=lambda match: match.value == 'Hardcoded Subtitles'):
+            next_match = matches.next(hc, predicate=lambda match: match.name == 'subtitle_language', index=0)
+            if next_match and not matches.holes(hc.end, next_match.start,
+                                                predicate=lambda match: match.value.strip(seps)):
+                continue
+
+            previous_match = matches.previous(hc, predicate=lambda match: match.name == 'subtitle_language', index=0)
+            if previous_match and not matches.holes(previous_match.end, hc.start,
+                                                    predicate=lambda match: match.value.strip(seps)):
+                continue
+
+            to_remove.append(hc)
+
+        return to_remove
