@@ -2902,6 +2902,14 @@
   release_group: CasStudio
   type: episode
 
+? /tv/Daniel Tiger's Neighborhood/S02E06 - Playtime Is Different.mp4
+: season: 2
+  episode: 6
+  title: Daniel Tiger's Neighborhood
+  episode_title: Playtime Is Different
+  container: mp4
+  type: episode
+
 ? Zoo.S02E05.1080p.WEB-DL.DD5.1.H.264.HKD/160725_02.mkv
 : title: Zoo
   season: 2
