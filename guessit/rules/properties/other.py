@@ -26,7 +26,7 @@ def other():
 
     rebulk.regex('Audio-?Fix', 'Audio-?Fixed', value='AudioFix')
     rebulk.regex('Sync-?Fix', 'Sync-?Fixed', value='SyncFix')
-    rebulk.regex('Dual-?Audio', value='DualAudio')
+    rebulk.regex('Dual', 'Dual-?Audio', value='DualAudio')
     rebulk.regex('ws', 'wide-?screen', value='WideScreen')
     rebulk.regex('Re-?Enc(?:oded)?', value='ReEncoded')
 
@@ -71,6 +71,7 @@ def other():
     for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL', 'Retail', 'Uncut',
                   'Extended', 'Extended Cut'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
+    rebulk.string('Complet', value='Complete', tags=['has-neighbor', 'release-group-prefix'])
 
     rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')
 
