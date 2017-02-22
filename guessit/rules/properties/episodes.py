@@ -75,8 +75,10 @@ def episodes():
     season_episode_seps.extend(seps)
     season_episode_seps.extend(['x', 'X', 'e', 'E'])
 
-    season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series']
-    episode_words = ['episode', 'episodes', 'eps', 'ep']
+    season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series',
+                    'tem', 'temp', 'temporada', 'temporadas', 'stagione']
+    episode_words = ['episode', 'episodes', 'eps', 'ep', 'episodio',
+                     'episodios', 'capitulo', 'capitulos']
     of_words = ['of', 'sur']
     all_words = ['All']
     season_markers = ["S"]
@@ -274,6 +276,14 @@ def episodes():
         .regex(r'v(?P<version>\d+)').repeater('?') \
         .regex(r'(?P<episodeSeparator>ep|e|x|-)(?P<episode>\d{1,4})').repeater('*')
 
+    # cap 112, cap 112_114
+    rebulk.chain(abbreviations=[dash],
+                 tags=['see-pattern'],
+                 formatter={'season': int, 'episode': int}) \
+        .defaults(validator=None) \
+        .regex(r'cap-?(?P<season>\d{1,2})(?P<episode>\d{2})') \
+        .regex(r'(?P<episodeSeparator>-)(?P<season>\d{1,2})(?P<episode>\d{2})').repeater('?')
+
     # 102, 0102
     rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode', 'weak-duplicate'],
                  formatter={'season': int, 'episode': int, 'version': int},
@@ -296,7 +306,7 @@ def episodes():
 
     rebulk.regex(r'Minisodes?', name='episode_format', value="Minisode")
 
-    rebulk.rules(EpisodeNumberSeparatorRange(range_separators),
+    rebulk.rules(SeePatternRange(range_separators + ['_']), EpisodeNumberSeparatorRange(range_separators),
                  SeasonSeparatorRange(range_separators), RemoveWeakIfMovie, RemoveWeakIfSxxExx,
                  RemoveWeakDuplicate, EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator,
                  CountValidator, EpisodeSingleDigitValidator)
@@ -328,6 +338,41 @@ class CountValidator(Rule):
             else:
                 to_remove.append(count)
         return to_remove, episode_count, season_count
+
+
+class SeePatternRange(Rule):
+    """
+    Create matches for episode range for SEE pattern. E.g.: Cap.102_104
+    """
+    priority = 128
+    consequence = [RemoveMatch, AppendMatch]
+
+    def __init__(self, range_separators):
+        super(SeePatternRange, self).__init__()
+        self.range_separators = range_separators
+
+    def when(self, matches, context):
+        to_remove = []
+        to_append = []
+
+        for separator in matches.tagged('see-pattern', lambda m: m.name == 'episodeSeparator'):
+            previous_match = matches.previous(separator, lambda m: m.name == 'episode' and 'see-pattern' in m.tags, 0)
+            next_match = matches.next(separator, lambda m: m.name == 'season' and 'see-pattern' in m.tags, 0)
+            if not next_match:
+                continue
+
+            next_match = matches.next(next_match, lambda m: m.name == 'episode' and 'see-pattern' in m.tags, 0)
+            if previous_match and next_match and separator.value in self.range_separators:
+                to_remove.append(next_match)
+
+                for episode_number in range(previous_match.value + 1, next_match.value + 1):
+                    match = copy.copy(next_match)
+                    match.value = episode_number
+                    to_append.append(match)
+
+            to_remove.append(separator)
+
+        return to_remove, to_append
 
 
 class AbstractSeparatorRange(Rule):
