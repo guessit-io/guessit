@@ -3482,3 +3482,48 @@
   subtitle_language: he
   type: episode
 
+? Show Name - S02E31 - Episode 55 (720p.HDTV)
+: title: Show Name
+  season: 2
+  episode: 31
+  episode_title: Episode 55
+  screen_size: 720p
+  format: HDTV
+  type: episode
+
+# Scenario: Removing invalid season and episode matches. Correct episode_title match
+? Show.Name.S02E06.eps2.4.m4ster-s1ave.aes.1080p.AMZN.WEBRip.DD5.1.x264-GROUP
+: title: Show Name
+  season: 2
+  episode: 6
+  episode_title: eps2 4 m4ster-s1ave aes
+  screen_size: 1080p
+  streaming_service: Amazon Prime
+  format: WEBRip
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  video_codec: h264
+  release_group: GROUP
+  type: episode
+
+? Show.Name.S01E05.3xpl0its.wmv.720p.WEBdl.EN-SUB.x264-[MULVAcoded].mkv
+: title: Show Name
+  season: 1
+  episode: 5
+  episode_title: 3xpl0its
+  screen_size: 720p
+  format: WEB-DL
+  subtitle_language: en
+  video_codec: h264
+  type: episode
+
+# Regression: S4L release group detected as season 4
+# https://github.com/guessit-io/guessit/issues/352
+? Show Name S01E06 DVD-RIP x264-S4L
+: title: Show Name
+  season: 1
+  episode: 6
+  format: DVD
+  video_codec: h264
+  release_group: S4L
+  type: episode
