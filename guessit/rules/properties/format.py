@@ -26,7 +26,7 @@ def format_():
     rebulk.regex("TELECINE", "TC", value="Telecine")
     rebulk.regex("PPV", "PPV-?Rip", value="PPV")  # Pay Per View
     rebulk.regex("SD-?TV", "SD-?TV-?Rip", "Rip-?SD-?TV", "TV-?Rip",
-                 "Rip-?TV", value="TV")  # TV is too common to allow matching
+                 "Rip-?TV", "TV-?(?=Dub)", value="TV")  # TV is too common to allow matching
     rebulk.regex("DVB-?Rip", "DVB", "PD-?TV", value="DVB")
     rebulk.regex("DVD", "DVD-?Rip", "VIDEO-?TS", "DVD-?R(?:$|(?!E))",  # "DVD-?R(?:$|^E)" => DVD-Real ...
                  "DVD-?9", "DVD-?5", value="DVD")

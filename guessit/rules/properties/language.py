@@ -28,7 +28,7 @@ def language():
     rebulk.string(*subtitle_suffixes, name="subtitle_language.suffix", ignore_case=True, private=True,
                   validator=seps_surround)
     rebulk.string(*lang_suffixes, name="language.suffix", ignore_case=True, private=True,
-                  validator=seps_surround)
+                  validator=seps_surround, tags=['format-suffix'])
     rebulk.functional(find_languages, properties={'language': [None]})
     rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
 
@@ -126,7 +126,7 @@ subtitle_prefixes = sorted(subtitle_both +
                             'soft', 'subtitles'], key=length_comparator)
 subtitle_suffixes = sorted(subtitle_both +
                            ['subforced', 'fansub', 'hardsub'], key=length_comparator)
-lang_both = ['dublado', 'dubbed']
+lang_both = ['dublado', 'dubbed', 'dub']
 lang_suffixes = sorted(lang_both + ['audio'], key=length_comparator)
 lang_prefixes = sorted(lang_both + ['true'], key=length_comparator)
 

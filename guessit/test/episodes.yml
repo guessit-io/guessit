@@ -3527,3 +3527,51 @@
   video_codec: h264
   release_group: S4L
   type: episode
+
+# Corner case with only date and 720p
+? The.Show.Name.2016.05.18.720.HDTV.x264-GROUP.VTV
+: title: The Show Name
+  date: 2016-05-18
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: GROUP.VTV
+  type: episode
+
+# Corner case with only date and 720p
+? -The.Show.Name.2016.05.18.720.HDTV.x264-GROUP.VTV
+: season: 7
+  episode: 20
+
+# https://github.com/guessit-io/guessit/issues/308 (conflict with screen size)
+? "[SuperGroup].Show.Name.-.06.[720.Hi10p][1F5578AC]"
+: title: Show Name
+  episode: 6
+  screen_size: 720p
+  video_profile: 10bit
+  crc32: 1F5578AC
+  release_group: SuperGroup
+  type: episode
+
+# https://github.com/guessit-io/guessit/issues/308 (conflict with screen size)
+? "[SuperGroup].Show.Name.-.06.[1080.Hi10p][1F5578AC]"
+: title: Show Name
+  episode: 6
+  screen_size: 1080p
+  video_profile: 10bit
+  crc32: 1F5578AC
+  release_group: SuperGroup
+  type: episode
+
+? "[MK-Pn8].Dimension.W.-.05.[720p][Hi10][Dual][TV-Dub][EDA6E7F1]"
+: options: -C us -L und
+  release_group: MK-Pn8
+  title: Dimension W
+  episode: 5
+  screen_size: 720p
+  video_profile: 10bit
+  other: DualAudio
+  format: TV
+  language: und
+  crc32: EDA6E7F1
+  type: episode
