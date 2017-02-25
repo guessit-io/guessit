@@ -7,7 +7,7 @@ from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch
 from ..common.validators import seps_surround
-from ..common import dash
+from ..common import dash, seps
 
 
 def screen_size():
@@ -55,7 +55,7 @@ def screen_size():
                  tags=['resolution'],
                  conflict_solver=lambda match, other: '__default__' if other.name == 'screen_size' else other)
 
-    rebulk.rules(ScreenSizeOnlyOne)
+    rebulk.rules(ScreenSizeOnlyOne, RemoveScreenSizeConflicts)
 
     return rebulk
 
@@ -73,5 +73,29 @@ class ScreenSizeOnlyOne(Rule):
                                                      lambda match: match.name == 'screen_size')))
             if len(screensize) > 1:
                 to_remove.extend(screensize[1:])
+
+        return to_remove
+
+
+class RemoveScreenSizeConflicts(Rule):
+    """
+    Remove season and episode matches which conflicts with screen_size match.
+    """
+    consequence = RemoveMatch
+
+    def when(self, matches, context):
+        to_remove = []
+        for filepart in matches.markers.named('path'):
+            screensize = matches.range(filepart.start, filepart.end, lambda match: match.name == 'screen_size', 0)
+            if not screensize:
+                continue
+
+            video_profile = matches.range(screensize.end, filepart.end, lambda match: match.name == 'video_profile', 0)
+            if not video_profile:
+                continue
+
+            if not matches.holes(screensize.end, video_profile.start,
+                                 predicate=lambda h: h.value and h.value.strip(seps)):
+                to_remove.extend(matches.conflicting(screensize, lambda match: match.name in ('season', 'episode')))
 
         return to_remove

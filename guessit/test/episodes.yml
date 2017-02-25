@@ -3527,3 +3527,33 @@
   video_codec: h264
   release_group: S4L
   type: episode
+
+# Corner case with only date and 720p
+? The.Show.Name.2016.05.18.720.HDTV.x264-GROUP.VTV
+: title: The Show Name
+  date: 2016-05-18
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: GROUP.VTV
+  type: episode
+
+# https://github.com/guessit-io/guessit/issues/308 (conflict with screen size)
+? "[SuperGroup].Show.Name.-.06.[720.Hi10p][1F5578AC]"
+: title: Show Name
+  episode: 6
+  screen_size: 720p
+  video_profile: 10bit
+  crc32: 1F5578AC
+  release_group: SuperGroup
+  type: episode
+
+# https://github.com/guessit-io/guessit/issues/308 (conflict with screen size)
+? "[SuperGroup].Show.Name.-.06.[1080.Hi10p][1F5578AC]"
+: title: Show Name
+  episode: 6
+  screen_size: 1080p
+  video_profile: 10bit
+  crc32: 1F5578AC
+  release_group: SuperGroup
+  type: episode
