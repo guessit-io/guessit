@@ -90,12 +90,18 @@ class RemoveScreenSizeConflicts(Rule):
             if not screensize:
                 continue
 
-            video_profile = matches.range(screensize.end, filepart.end, lambda match: match.name == 'video_profile', 0)
-            if not video_profile:
+            conflicts = matches.conflicting(screensize, lambda match: match.name in ('season', 'episode'))
+            if not conflicts:
                 continue
 
-            if not matches.holes(screensize.end, video_profile.start,
-                                 predicate=lambda h: h.value and h.value.strip(seps)):
-                to_remove.extend(matches.conflicting(screensize, lambda match: match.name in ('season', 'episode')))
+            video_profile = matches.range(screensize.end, filepart.end, lambda match: match.name == 'video_profile', 0)
+            if video_profile and not matches.holes(screensize.end, video_profile.start,
+                                                   predicate=lambda h: h.value and h.value.strip(seps)):
+                to_remove.extend(conflicts)
+
+            date = matches.previous(screensize, lambda match: match.name == 'date', 0)
+            if date and not matches.holes(date.end, screensize.start,
+                                          predicate=lambda h: h.value and h.value.strip(seps)):
+                to_remove.extend(conflicts)
 
         return to_remove

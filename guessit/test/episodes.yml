@@ -3538,6 +3538,11 @@
   release_group: GROUP.VTV
   type: episode
 
+# Corner case with only date and 720p
+? -The.Show.Name.2016.05.18.720.HDTV.x264-GROUP.VTV
+: season: 7
+  episode: 20
+
 # https://github.com/guessit-io/guessit/issues/308 (conflict with screen size)
 ? "[SuperGroup].Show.Name.-.06.[720.Hi10p][1F5578AC]"
 : title: Show Name
