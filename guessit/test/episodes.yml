@@ -3557,3 +3557,16 @@
   crc32: 1F5578AC
   release_group: SuperGroup
   type: episode
+
+? "[MK-Pn8].Dimension.W.-.05.[720p][Hi10][Dual][TV-Dub][EDA6E7F1]"
+: options: -C us -L und
+  release_group: MK-Pn8
+  title: Dimension W
+  episode: 5
+  screen_size: 720p
+  video_profile: 10bit
+  other: DualAudio
+  format: TV
+  language: und
+  crc32: EDA6E7F1
+  type: episode
