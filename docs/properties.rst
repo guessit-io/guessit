@@ -120,7 +120,7 @@ Video properties
 
   Format of the initial source
 
-  - ``TV`` ``HDTV`` ``AHDTV`` ``HDTC`` ``SATRip`` ``WEB-DL`` ``VOD`` ``BluRay`` ``DVD`` ``WEBRip`` ``Workprint`` ``Telecine`` ``VHS`` ``DVB`` ``Telesync``  ``HD-DVD`` ``PPV`` ``Cam``
+  - ``TV`` ``HDTV`` ``UHDTV`` ``AHDTV`` ``HDTC`` ``SATRip`` ``WEB-DL`` ``VOD`` ``BluRay`` ``DVD`` ``WEBRip`` ``Workprint`` ``Telecine`` ``VHS`` ``DVB`` ``Telesync``  ``HD-DVD`` ``PPV`` ``Cam``
 
 - **screen_size**
 
@@ -253,7 +253,7 @@ Other properties
 
   Other property will appear under this property.
 
-  - ``Fansub``, ``HR``, ``HQ``, ``Screener``, ``Unrated``, ``HD``, ``3D``, ``SyncFix``, ``Bonus``,
+  - ``Fansub``, ``HR``, ``HQ``, ``Screener``, ``Unrated``, ``HD``, ``UltraHD``, ``3D``, ``SyncFix``, ``Bonus``,
   ``WideScreen``, ``Fastsub``, ``R5``, ``AudioFix``, ``DDC``, ``Trailer``, ``Complete``, ``Limited``, ``Classic``,
   ``Proper``, ``DualAudio``, ``LiNE``, ``LD``, ``MD``, ``XXX``, ``Remastered``, ``Extended``, ``Extended Cut``,
   ``Uncut``, ``Retail``, ``ReEncoded``, ``Mux``, ``Hardcoded Subtitles``
