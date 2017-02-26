@@ -77,7 +77,7 @@ def episodes():
     season_episode_seps.extend(seps)
     season_episode_seps.extend(['x', 'X', 'e', 'E'])
 
-    season_words = ['season', 'saison', 'serie', 'seasons', 'saisons', 'series',
+    season_words = ['season', 'saison', 'seizoen', 'serie', 'seasons', 'saisons', 'series',
                     'tem', 'temp', 'temporada', 'temporadas', 'stagione']
     episode_words = ['episode', 'episodes', 'eps', 'ep', 'episodio',
                      'episodios', 'capitulo', 'capitulos']
