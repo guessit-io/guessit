@@ -87,6 +87,12 @@
 ? HD
 : other: HD
 
+? UHD
+? Ultra
+? UltraHD
+? Ultra HD
+: other: UHD
+
 ? mHD # ??
 : other: mHD
 
