@@ -902,3 +902,20 @@
   audio_channels: '7.1'
   release_group: DDR
   type: movie
+
+? Queen - A Kind of Magic (Alternative Extended Version) 2CD 2014
+: title: Queen
+  alternative_title: A Kind of Magic
+  other: [Alternative Cut, Extended]
+  cd_count: 2
+  year: 2014
+  type: movie
+
+? Jour.de.Fete.1949.ALTERNATiVE.CUT.1080p.BluRay.x264-SADPANDA[rarbg]
+: title: Jour de Fete
+  year: 1949
+  other: Alternative Cut
+  screen_size: 1080p
+  format: BluRay
+  video_codec: h264
+  release_group: SADPANDA[rarbg]

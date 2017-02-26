@@ -76,6 +76,8 @@ def other():
     for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL', 'Retail', 'Uncut',
                   'Extended', 'Extended Cut'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
+    rebulk.regex('Extended-?version', value='Extended', tags=['has-neighbor', 'release-group-prefix'])
+    rebulk.regex('Alternat(e|ive)(?:-?Cut)?', value='Alternative Cut', tags=['has-neighbor', 'release-group-prefix'])
     rebulk.string('Complet', value='Complete', tags=['has-neighbor', 'release-group-prefix'])
 
     rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')

@@ -3649,3 +3649,16 @@
   season: 1
   episode: 50
   type: episode
+
+? Star.Wars.Rebels.S01E01.Spark.of.Rebellion.ALTERNATE.CUT.HDTV.x264-W4F.mp4
+: title: Star Wars Rebels
+  season: 1
+  episode: 1
+  episode_title: Spark of Rebellion
+  other: Alternative Cut
+  format: HDTV
+  video_codec: h264
+  release_group: W4F
+  container: mp4
+  type: episode
+
