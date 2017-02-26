@@ -38,6 +38,7 @@ def format_():
     rebulk.regex("HD-?DVD-?Rip", "HD-?DVD", value="HD-DVD")
     rebulk.regex("Blu-?ray(?:-?Rip)?", "B[DR]", "B[DR]-?Rip", "BD[59]", "BD25", "BD50", value="BluRay")
     rebulk.regex("AHDTV", value="AHDTV")
+    rebulk.regex('UHD-?TV', 'UHD-?Rip', value='UHDTV')
     rebulk.regex("HDTC", value="HDTC")
     rebulk.regex("DSR", "DSR?-?Rip", "SAT-?Rip", "DTH", "DTH-?Rip", value="SATRip")
 
