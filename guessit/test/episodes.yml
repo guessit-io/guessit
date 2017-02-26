@@ -3575,3 +3575,71 @@
   language: und
   crc32: EDA6E7F1
   type: episode
+
+# NetflixUHD
+? Show.Name.S01E06.NetflixUHD
+: title: Show Name
+  season: 1
+  episode: 6
+  streaming_service: Netflix
+  other: UltraHD
+  type: episode
+
+? Show.Name.S04E13.FINAL.MULTI.DD51.2160p.NetflixUHDRip.x265-TVS
+: title: Show Name
+  season: 4
+  episode: 13
+  other: FINAL
+  language: mul
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  screen_size: 4K
+  streaming_service: Netflix
+  format: UHDTV
+  video_codec: h265
+  release_group: TVS
+  type: episode
+
+? Show.Name.S06E11.Of.Late.I.Think.of.Rosewood.iTunesHD.x264
+: title: Show Name
+  season: 6
+  episode: 11
+  episode_title: Of Late I Think of Rosewood
+  streaming_service: iTunes
+  other: HD
+  video_codec: h264
+  type: episode
+
+? Show.Name.S01.720p.iTunes.h264-Group
+: title: Show Name
+  season: 1
+  screen_size: 720p
+  streaming_service: iTunes
+  video_codec: h264
+  release_group: Group
+  type: episode
+
+? Show.Name.1x01.eps1.0.hellofriend.(HDiTunes.Ac3.Esp).(2015).By.Malaguita.avi
+: title: Show Name
+  season: 1
+  episode: 1
+  episode_title: eps1 0 hellofriend
+  other: HD
+  streaming_service: iTunes
+  audio_codec: AC3
+  language: spa
+  year: 2015
+  container: avi
+  type: episode
+
+? "[Hanamaru&LoliHouse] The Dragon Dentist - 01 [WebRip 1920x1080 HEVC-yuv420p10 AAC].mkv"
+: release_group: Hanamaru&LoliHouse
+  title: The Dragon Dentist
+  episode: 1
+  format: WEBRip
+  screen_size: 1080p
+  video_codec: h265
+  video_profile: 10bit
+  audio_codec: AAC
+  container: mkv
+  type: episode

@@ -18,7 +18,7 @@ def video_codec():
     :rtype: Rebulk
     """
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
-    rebulk.defaults(name="video_codec", tags='format-suffix')
+    rebulk.defaults(name="video_codec", tags=['format-suffix', 'streaming_service.suffix'])
 
     rebulk.regex(r"Rv\d{2}", value="Real")
     rebulk.regex("Mpeg2", value="Mpeg2")
