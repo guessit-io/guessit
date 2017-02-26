@@ -9,7 +9,6 @@ from rebulk import Rebulk
 from rebulk.rules import Rule, RemoveMatch
 
 from ...rules.common import seps, dash
-from ...rules.common.validators import seps_before, seps_surround
 
 
 def streaming_service():
@@ -92,8 +91,9 @@ class ValidateStreamingService(Rule):
         for service in matches.named('streaming_service'):
             next_match = matches.next(service, lambda match: 'streaming_service.suffix' in match.tags, 0)
             previous_match = matches.previous(service, lambda match: 'streaming_service.prefix' in match.tags, 0)
+            has_other = service.initiator and service.initiator.children.named('other')
 
-            if (not service.initiator or not service.initiator.children.named('other')) and \
+            if not has_other and \
                 (not next_match or matches.holes(service.end, next_match.start,
                                                  predicate=lambda match: match.value.strip(seps))) and \
                 (not previous_match or matches.holes(previous_match.end, service.start,

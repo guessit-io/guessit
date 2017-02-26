@@ -242,8 +242,8 @@ class ValidateStreamingServiceNeighbor(Rule):
 
     def when(self, matches, context):
         to_remove = []
-        for match in matches.named('other', predicate=lambda m: 'streaming_service.prefix' in m.tags or
-                                                                'streaming_service.suffix' in m.tags):
+        for match in matches.named('other', predicate=lambda m: (
+                        'streaming_service.prefix' in m.tags or 'streaming_service.suffix' in m.tags)):
 
             if not seps_after(match):
                 if 'streaming_service.prefix' in match.tags:
