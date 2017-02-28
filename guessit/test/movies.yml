@@ -955,3 +955,15 @@
   video_codec: h264
   release_group: anoXmous
   type: movie
+
+? Before.the.Flood.2016.DOCU.1080p.WEBRip.x264.DD5.1-FGT
+: title: Before the Flood
+  year: 2016
+  other: Documentary
+  screen_size: 1080p
+  format: WEBRip
+  video_codec: h264
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  release_group: FGT
+  type: movie
