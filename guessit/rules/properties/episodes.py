@@ -57,11 +57,13 @@ def episodes():
         :param other:
         :return:
         """
-        if match.name == 'episode' and 'weak-audio_channels' not in other.tags and other.name in \
-                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date', 'year']:
+        if match.name == 'episode' and other.name in \
+                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date', 'year'] \
+                and 'weak-audio_channels' not in other.tags:
             return match
-        if match.name == 'season' and 'weak-audio_channels' not in other.tags and other.name in \
-                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date']:
+        if match.name == 'season' and other.name in \
+                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date'] \
+                and 'weak-audio_channels' not in other.tags:
             return match
         if match.name in ['season', 'episode'] and other.name in ['season', 'episode'] \
                 and match.initiator != other.initiator:
