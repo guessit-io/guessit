@@ -458,28 +458,28 @@
     - French
     - English
   format: DVD
-  other: NTSC
+  other: [Read NFO, NTSC]
 
 ? Immersion.French.2011.STV.READNFO.QC.FRENCH.NTSC.DVDR.nfo
 : title: Immersion French
   year: 2011
   language: French
   format: DVD
-  other: NTSC
+  other: [Read NFO, NTSC]
 
 ? Immersion.French.2011.STV.READNFO.QC.NTSC.DVDR.nfo
 : title: Immersion
   language: French
   year: 2011
   format: DVD
-  other: NTSC
+  other: [Read NFO, NTSC]
 
 ? French.Immersion.2011.STV.READNFO.QC.ENGLISH.NTSC.DVDR.nfo
 : title: French Immersion
   year: 2011
   language: ENGLISH
   format: DVD
-  other: NTSC
+  other: [Read NFO, NTSC]
 
 ? Howl's_Moving_Castle_(2004)_[720p,HDTV,x264,DTS]-FlexGet.avi
 : video_codec: h264

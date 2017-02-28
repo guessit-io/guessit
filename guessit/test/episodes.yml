@@ -3723,3 +3723,25 @@
   video_codec: XviD
   release_group: AFG
   type: episode
+
+? The.100.S01E13.iNTERNAL.READNFO.720p.HDTV.x264-2HD
+: title: The 100
+  season: 1
+  episode: 13
+  other: [Internal, Read NFO]
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: 2HD
+  type: episode
+
+? The.100.S01E13.READ.NFO.720p.HDTV.x264-2HD
+: title: The 100
+  season: 1
+  episode: 13
+  other: Read NFO
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: 2HD
+  type: episode
