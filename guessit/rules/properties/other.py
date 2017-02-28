@@ -86,6 +86,7 @@ def other():
     rebulk.string('DOCU', value='Documentary', tags='has-neighbor')
     rebulk.string('OM', value='Open Matte', tags='has-neighbor')
     rebulk.string('STV', value='Straight to Video', tags='has-neighbor')
+    rebulk.string('OAR', value='Original Aspect Ratio', tags='has-neighbor')
     rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
     rebulk.string('Complet', value='Complete', tags=['has-neighbor', 'release-group-prefix'])
 

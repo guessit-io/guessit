@@ -1063,3 +1063,14 @@
   format: WEBRip
   video_codec: h264
   type: movie
+
+? Mrs.Doubtfire.1993.720p.OAR.Bluray.DTS.x264-CtrlHD
+: title: Mrs Doubtfire
+  year: 1993
+  screen_size: 720p
+  other: Original Aspect Ratio
+  format: BluRay
+  audio_codec: DTS
+  video_codec: h264
+  release_group: CtrlHD
+  type: movie
