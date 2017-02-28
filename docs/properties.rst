@@ -257,5 +257,6 @@ Other properties
   ``WideScreen``, ``Fastsub``, ``R5``, ``AudioFix``, ``DDC``, ``Trailer``, ``Complete``, ``Limited``, ``Classic``,
   ``Proper``, ``DualAudio``, ``LiNE``, ``LD``, ``MD``, ``XXX``, ``Remastered``, ``Extended``, ``Extended Cut``,
   ``Alternative Cut``, ``Uncut``, ``Retail``, ``ReEncoded``, ``Mux``, ``Hardcoded Subtitles``, ``Converted``,
-  ``Colorized``, ``Documentary``, ``Festival``, ``FINAL``, ``Internal``, ``Open Matte``, ``Read NFO``, ``Uncensored``
+  ``Colorized``, ``Documentary``, ``Festival``, ``FINAL``, ``Internal``, ``Open Matte``, ``Read NFO``, ``Uncensored``,
+  ``Straight to Video``
 

@@ -64,7 +64,6 @@ def streaming_service():
     rebulk.string('TV3', value='TV3 Ireland')
     rebulk.string('TV4', value='TV4 Sweeden')
     rebulk.string('TVL', 'TVLand', 'TV Land', value='TV Land')
-    rebulk.string('STV', value='STV Player')
     rebulk.string('UFC', value='UFC')
     rebulk.string('USAN', value='USA Network')
 
