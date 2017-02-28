@@ -24,6 +24,7 @@ def edition():
                  conflict_solver=lambda match, other: other
                  if other.name == 'episode_details' and other.value == 'Special'
                  else '__default__')
+    rebulk.string('SE', value='Special Edition', tags='has-neighbor')
     rebulk.regex('criterion-edition', 'edition-criterion', value='Criterion Edition')
     rebulk.regex('deluxe', 'deluxe-edition', 'edition-deluxe', value='Deluxe Edition')
     rebulk.regex('limited', 'limited-edition', value='Limited Edition')

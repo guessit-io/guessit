@@ -1074,3 +1074,11 @@
   video_codec: h264
   release_group: CtrlHD
   type: movie
+
+? Aliens.SE.1986.BDRip.1080p
+: title: Aliens
+  edition: Special Edition
+  year: 1986
+  format: BluRay
+  screen_size: 1080p
+  type: movie
