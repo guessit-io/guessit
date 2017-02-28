@@ -3685,3 +3685,14 @@
   season: 2
   episode: 2
   type: episode
+
+? Broadchurch.S01.DIRFIX.720p.BluRay.x264-SHORTBREHD
+: title: Broadchurch
+  season: 1
+  other: Proper
+  screen_size: 720p
+  format: BluRay
+  video_codec: h264
+  release_group: SHORTBREHD
+  proper_count: 1
+  type: episode

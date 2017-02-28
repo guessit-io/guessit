@@ -31,7 +31,7 @@ def other():
     rebulk.regex('Re-?Enc(?:oded)?', value='ReEncoded')
 
     rebulk.string('Real', 'Fix', 'Fixed', value='Proper', tags=['has-neighbor-before', 'has-neighbor-after'])
-    rebulk.string('Proper', 'Repack', 'Rerip', value='Proper')
+    rebulk.string('Proper', 'Repack', 'Rerip', 'Dirfix', value='Proper')
     rebulk.string('Fansub', value='Fansub', tags='has-neighbor')
     rebulk.string('Fastsub', value='Fastsub', tags='has-neighbor')
 
