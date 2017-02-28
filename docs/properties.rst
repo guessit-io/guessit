@@ -234,7 +234,7 @@ Other properties
 
   Edition of the movie.
 
-  - ``Special Edition``, ``Collector Edition``, ``Director's cut``, ``Criterion Edition``, ``Deluxe Edition``
+  - ``Special Edition``, ``Collector Edition``, ``Director's cut``, ``Criterion Edition``, ``Deluxe Edition``, ``Theatrical Edition``
 
 
 - **film**

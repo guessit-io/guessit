@@ -1029,3 +1029,29 @@
   video_codec: h264
   release_group: TOPCAT
   type: movie
+
+? Bad Santa 2 2016 THEATRiCAL FRENCH BDRip XviD-EXTREME
+: title: Bad Santa 2
+  year: 2016
+  edition: Theatrical Edition
+  language: french
+  format: BluRay
+  video_codec: XviD
+  release_group: EXTREME
+  type: movie
+
+? The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]
+: title: The Lord of the Rings The Fellowship of the Ring
+  edition: Theatrical Edition
+  year: 2001
+  screen_size: 1080p
+  type: movie
+
+? World War Z (2013) Theatrical Cut 720p BluRay x264
+: title: World War Z
+  year: 2013
+  edition: Theatrical Edition
+  screen_size: 720p
+  format: BluRay
+  video_codec: h264
+  type: movie
