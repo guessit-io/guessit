@@ -985,3 +985,14 @@
   video_codec: h264
   release_group: IcHoR
   type: movie
+
+? Hardwired.STV.NFOFiX.FRENCH.DVDRiP.XviD-SURViVAL
+: title: Hardwired
+  streaming_service: STV Player
+  other: Proper
+  language: french
+  format: DVD
+  video_codec: XviD
+  release_group: SURViVAL
+  proper_count: 1
+  type: movie
