@@ -1020,3 +1020,12 @@
   release_group: OUTLAWS
   proper_count: 1
   type: movie
+
+? The.Last.Survivors.2014.PROOF.SAMPLE.FiX.BDRip.x264-TOPCAT
+: title: The Last Survivors
+  year: 2014
+  other: Proper
+  format: BluRay
+  video_codec: h264
+  release_group: TOPCAT
+  type: movie

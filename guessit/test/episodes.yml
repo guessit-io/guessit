@@ -3745,3 +3745,14 @@
   video_codec: h264
   release_group: 2HD
   type: episode
+
+? Dr.Ken.S01E21.SAMPLEFIX.720p.HDTV.x264-SVA
+: title: Dr Ken
+  season: 1
+  episode: 21
+  other: Proper
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: SVA
+  type: episode
