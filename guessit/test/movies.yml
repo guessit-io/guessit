@@ -1012,3 +1012,11 @@
   video_codec: h265
   release_group: Lund
   type: movie
+
+? All.Fall.Down.x264.PROOFFIX-OUTLAWS
+: title: All Fall Down
+  video_codec: h264
+  other: Proper
+  release_group: OUTLAWS
+  proper_count: 1
+  type: movie
