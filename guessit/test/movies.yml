@@ -976,3 +976,12 @@
   language: und
   release_group: MegaPeer
   type: movie
+
+? Suntan.2016.FESTiVAL.DVDRip.x264-IcHoR
+: title: Suntan
+  year: 2016
+  other: Festival
+  format: DVD
+  video_codec: h264
+  release_group: IcHoR
+  type: movie
