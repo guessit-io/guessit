@@ -58,10 +58,12 @@ def episodes():
         :return:
         """
         if match.name == 'episode' and other.name in \
-                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date', 'year']:
+                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date', 'year'] \
+                and 'weak-audio_channels' not in other.tags:
             return match
         if match.name == 'season' and other.name in \
-                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date']:
+                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date'] \
+                and 'weak-audio_channels' not in other.tags:
             return match
         if match.name in ['season', 'episode'] and other.name in ['season', 'episode'] \
                 and match.initiator != other.initiator:

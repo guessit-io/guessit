@@ -29,7 +29,7 @@ def screen_size():
             return other
         return '__default__'
 
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE)
+    rebulk = Rebulk().string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE)
     rebulk.defaults(name="screen_size", validator=seps_surround, conflict_solver=conflict_solver)
 
     rebulk.regex(r"(?:\d{3,}(?:x|\*))?360(?:i|p?x?)", value="360p")
@@ -45,6 +45,7 @@ def screen_size():
     rebulk.regex(r"(?:\d{3,}(?:x|\*))?1080(?:p(?:50|60)?x?)", value="1080p")
     rebulk.regex(r"(?:\d{3,}(?:x|\*))?1080p?hd", value="1080p")
     rebulk.regex(r"(?:\d{3,}(?:x|\*))?2160(?:i|p?x?)", value="4K")
+    rebulk.string('4k', value='4K')
 
     _digits_re = re.compile(r'\d+')
 
