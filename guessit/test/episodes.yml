@@ -3670,3 +3670,18 @@
   container: mp4
   type: episode
 
+? DCs.Legends.of.Tomorrow.S02E12.HDTV.XviD-FUM
+: title: DCs Legends of Tomorrow
+  season: 2
+  episode: 12
+  format: HDTV
+  video_codec: XviD
+  release_group: FUM
+  type: episode
+
+? DC's Legends of Tomorrow 2016 - S02E02
+: title: DC's Legends of Tomorrow
+  year: 2016
+  season: 2
+  episode: 2
+  type: episode

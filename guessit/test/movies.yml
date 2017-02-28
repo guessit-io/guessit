@@ -938,3 +938,20 @@
   size: 999MB
   website: MkvCage.com
   type: movie
+
+? Alien DC (1979) [1080p]
+: title: Alien
+  edition: Director's cut
+  year: 1979
+  screen_size: 1080p
+  type: movie
+
+? Requiem.For.A.Dream.2000.DC.1080p.BluRay.x264.anoXmous
+: title: Requiem For A Dream
+  year: 2000
+  edition: Director's cut
+  screen_size: 1080p
+  format: BluRay
+  video_codec: h264
+  release_group: anoXmous
+  type: movie
