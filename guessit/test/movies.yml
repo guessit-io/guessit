@@ -1055,3 +1055,12 @@
   format: BluRay
   video_codec: h264
   type: movie
+
+? The Heartbreak Kid (1993) UNCUT 720p WEBRip x264
+: title: The Heartbreak Kid
+  year: 1993
+  other: Uncut
+  screen_size: 720p
+  format: WEBRip
+  video_codec: h264
+  type: movie
