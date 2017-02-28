@@ -1775,7 +1775,8 @@
 : episode: 11
   episode_title: Our Man in Damascus
   format: HDTV
-  release_group: iNTERNAL-BaCKToRG
+  other: Internal
+  release_group: BaCKToRG
   screen_size: 720p
   season: 5
   subtitle_language: de
@@ -3702,4 +3703,23 @@
   date: 2016-07-08
   episode_title: Montreux Jazz Festival
   screen_size: 720p
+  type: episode
+
+? Ridiculousness.S07E14.iNTERNAL.HDTV.x264-YesTV
+: title: Ridiculousness
+  season: 7
+  episode: 14
+  other: Internal
+  format: HDTV
+  video_codec: h264
+  release_group: YesTV
+  type: episode
+
+? Stephen.Colbert.2016.05.25.James.McAvoy.iNTERNAL.XviD-AFG
+: title: Stephen Colbert
+  date: 2016-05-25
+  episode_title: James McAvoy
+  other: Internal
+  video_codec: XviD
+  release_group: AFG
   type: episode
