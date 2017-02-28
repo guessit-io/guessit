@@ -919,3 +919,12 @@
   format: BluRay
   video_codec: h264
   release_group: SADPANDA[rarbg]
+
+? The.Movie.CONVERT.720p.HDTV.x264-C4TV
+: title: The Movie
+  other: Converted
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: C4TV
+  type: movie
