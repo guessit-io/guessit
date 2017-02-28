@@ -3756,3 +3756,12 @@
   video_codec: h264
   release_group: SVA
   type: episode
+
+? Rick and Morty Season 1 [UNCENSORED] [BDRip] [1080p] [HEVC]
+: title: Rick and Morty
+  season: 1
+  other: Uncensored
+  format: BluRay
+  screen_size: 1080p
+  video_codec: h265
+  type: episode
