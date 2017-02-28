@@ -81,6 +81,7 @@ def other():
     rebulk.regex('Alternat(e|ive)(?:-?Cut)?', value='Alternative Cut', tags=['has-neighbor', 'release-group-prefix'])
     rebulk.string('CONVERT', value='Converted', tags='has-neighbor')
     rebulk.string('DOCU', value='Documentary', tags='has-neighbor')
+    rebulk.string('OM', value='Open Matte', tags='has-neighbor')
     rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
     rebulk.string('Complet', value='Complete', tags=['has-neighbor', 'release-group-prefix'])
 
