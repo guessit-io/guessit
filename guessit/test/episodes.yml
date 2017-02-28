@@ -3765,3 +3765,15 @@
   screen_size: 1080p
   video_codec: h265
   type: episode
+
+? 12.Monkeys.S01E01.LiMiTED.FRENCH.1080p.WEB-DL.H264-AUTHORiTY
+: title: 12 Monkeys
+  season: 1
+  episode: 1
+  edition: Limited Edition
+  language: french
+  screen_size: 1080p
+  format: WEB-DL
+  video_codec: h264
+  release_group: AUTHORiTY
+  type: episode

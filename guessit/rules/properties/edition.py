@@ -26,6 +26,7 @@ def edition():
                  else '__default__')
     rebulk.regex('criterion-edition', 'edition-criterion', value='Criterion Edition')
     rebulk.regex('deluxe', 'deluxe-edition', 'edition-deluxe', value='Deluxe Edition')
+    rebulk.regex('limited', 'limited-edition', value='Limited Edition')
     rebulk.regex(r'theatrical-cut', r'theatrical-edition', r'theatrical', value='Theatrical Edition')
     rebulk.regex(r"director'?s?-cut", r"director'?s?-cut-edition", r"edition-director'?s?-cut", 'DC',
                  value="Director's cut")
