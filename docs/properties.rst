@@ -258,5 +258,5 @@ Other properties
   ``Proper``, ``DualAudio``, ``LiNE``, ``LD``, ``MD``, ``XXX``, ``Remastered``, ``Extended``, ``Extended Cut``,
   ``Alternative Cut``, ``Uncut``, ``Retail``, ``ReEncoded``, ``Mux``, ``Hardcoded Subtitles``, ``Converted``,
   ``Colorized``, ``Documentary``, ``Festival``, ``FINAL``, ``Internal``, ``Open Matte``, ``Read NFO``, ``Uncensored``,
-  ``Straight to Video``, ``Original Aspect Ratio``
+  ``Straight to Video``, ``Original Aspect Ratio``, ``West Coast Feed``, ``East Coast Feed``
 

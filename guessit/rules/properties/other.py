@@ -90,6 +90,9 @@ def other():
     rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
     rebulk.string('Complet', value='Complete', tags=['has-neighbor', 'release-group-prefix'])
 
+    for coast in ('East', 'West'):
+        rebulk.regex(r'(?:Live-)?(?:Episode-)?' + coast + '-?(?:Coast-)?Feed', value=coast + ' Coast Feed')
+
     rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')
 
     rebulk.regex('Scr(?:eener)?', value='Screener', validator=None,

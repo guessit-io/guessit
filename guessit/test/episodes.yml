@@ -3777,3 +3777,61 @@
   video_codec: h264
   release_group: AUTHORiTY
   type: episode
+
+? Undateable.2014.S03E05.West.Feed.HDTV.x264-2HD
+: title: Undateable
+  year: 2014
+  season: 3
+  episode: 5
+  other: West Coast Feed
+  format: HDTV
+  video_codec: h264
+  release_group: 2HD
+  type: episode
+
+? Undateable.2014.S02E07-E08.Live.Episode.West.Coast.Feed.HDTV.x264-2HD
+: title: Undateable
+  year: 2014
+  season: 2
+  episode: [7, 8]
+  other: West Coast Feed
+  format: HDTV
+  video_codec: h264
+  release_group: 2HD
+  type: episode
+
+? Undateable.S03E01-E02.LIVE.EAST.FEED.720p.HDTV.x264-KILLERS
+: title: Undateable
+  season: 3
+  episode: [1, 2]
+  other: East Coast Feed
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: KILLERS
+  type: episode
+
+? Undateable.2014.S02E07.Live.Episode.East.Coast.Feed.HDTV.x264-2HD
+: title: Undateable
+  year: 2014
+  season: 2
+  episode: 7
+  other: East Coast Feed
+  format: HDTV
+  video_codec: h264
+  release_group: 2HD
+  type: episode
+
+? Undateable.2014.S02E07.East.Coast.Feed.720p.WEB-DL.DD5.1.H.264-NTb
+: title: Undateable
+  year: 2014
+  season: 2
+  episode: 7
+  other: East Coast Feed
+  screen_size: 720p
+  format: WEB-DL
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  video_codec: h264
+  release_group: NTb
+  type: episode
