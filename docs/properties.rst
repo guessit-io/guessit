@@ -234,7 +234,7 @@ Other properties
 
   Edition of the movie.
 
-  - ``Special Edition``, ``Collector Edition``, ``Director's cut``, ``Criterion Edition``, ``Deluxe Edition``
+  - ``Special Edition``, ``Collector Edition``, ``Director's cut``, ``Criterion Edition``, ``Deluxe Edition``, ``Theatrical Edition``, ``Limited Edition``
 
 
 - **film**
@@ -256,5 +256,7 @@ Other properties
   - ``Fansub``, ``HR``, ``HQ``, ``Screener``, ``Unrated``, ``HD``, ``UltraHD``, ``3D``, ``SyncFix``, ``Bonus``,
   ``WideScreen``, ``Fastsub``, ``R5``, ``AudioFix``, ``DDC``, ``Trailer``, ``Complete``, ``Limited``, ``Classic``,
   ``Proper``, ``DualAudio``, ``LiNE``, ``LD``, ``MD``, ``XXX``, ``Remastered``, ``Extended``, ``Extended Cut``,
-  ``Uncut``, ``Retail``, ``ReEncoded``, ``Mux``, ``Hardcoded Subtitles``
+  ``Alternative Cut``, ``Uncut``, ``Retail``, ``ReEncoded``, ``Mux``, ``Hardcoded Subtitles``, ``Converted``,
+  ``Colorized``, ``Documentary``, ``Festival``, ``FINAL``, ``Internal``, ``Open Matte``, ``Read NFO``, ``Uncensored``,
+  ``Straight to Video``, ``Original Aspect Ratio``, ``West Coast Feed``, ``East Coast Feed``
 
