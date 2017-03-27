@@ -9,6 +9,8 @@ import copy
 import six
 
 from rebulk import Rebulk, Rule, CustomRule, POST_PROCESS, PRE_PROCESS, AppendMatch, RemoveMatch
+
+from guessit.rules.common import seps_no_groups
 from guessit.rules.common.words import iter_words
 from .common.formatters import cleanup
 from .common.comparators import marker_sorted
@@ -89,21 +91,27 @@ class EquivalentHoles(Rule):
 
 class RemoveAmbiguous(Rule):
     """
-    If multiple match are found with same name and different values, keep the one in the most valuable filepart.
+    If multiple matches are found with same name and different values, keep the one in the most valuable filepart.
     Also keep others match with same name and values than those kept ones.
     """
+
     priority = POST_PROCESS
     consequence = RemoveMatch
 
+    def __init__(self, sort_function=marker_sorted, predicate=None):
+        super(RemoveAmbiguous, self).__init__()
+        self.sort_function = sort_function
+        self.predicate = predicate
+
     def when(self, matches, context):
-        fileparts = marker_sorted(matches.markers.named('path'), matches)
+        fileparts = self.sort_function(matches.markers.named('path'), matches)
 
         previous_fileparts_names = set()
         values = defaultdict(list)
 
         to_remove = []
         for filepart in fileparts:
-            filepart_matches = matches.range(filepart.start, filepart.end)
+            filepart_matches = matches.range(filepart.start, filepart.end, predicate=self.predicate)
 
             filepart_names = set()
             for match in filepart_matches:
@@ -118,6 +126,16 @@ class RemoveAmbiguous(Rule):
             previous_fileparts_names.update(filepart_names)
 
         return to_remove
+
+
+class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
+    """
+    If multiple season/episode matches are found with different values, keep the one in the rightmost filepart.
+    """
+    def __init__(self):
+        super(RemoveLessSpecificSeasonEpisode, self).__init__(
+            sort_function=lambda markers, matches: reversed(markers),
+            predicate=lambda match: match.name in ('episode', 'season'))
 
 
 def _preferred_string(value1, value2):  # pylint:disable=too-many-return-statements
@@ -189,10 +207,31 @@ class Processors(CustomRule):
         pass
 
 
+class StripSeparators(CustomRule):
+    """
+    Strip separators from matches. Keep separators if they are from acronyms, like in ".S.H.I.E.L.D."
+    """
+    priority = POST_PROCESS
+
+    def when(self, matches, context):
+        return matches
+
+    def then(self, matches, when_response, context):  # pragma: no cover
+        for match in matches:
+            for _ in range(0, len(match.span)):
+                if match.raw[0] in seps_no_groups and (len(match.raw) < 3 or match.raw[2] not in seps_no_groups):
+                    match.raw_start += 1
+
+            for _ in reversed(range(0, len(match.span))):
+                if match.raw[-1] in seps_no_groups and (len(match.raw) < 3 or match.raw[-3] not in seps_no_groups):
+                    match.raw_end -= 1
+
+
 def processors():
     """
     Builder for rebulk object.
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    return Rebulk().rules(EnlargeGroupMatches, EquivalentHoles, RemoveAmbiguous, SeasonYear, Processors)
+    return Rebulk().rules(EnlargeGroupMatches, EquivalentHoles, RemoveLessSpecificSeasonEpisode,
+                          RemoveAmbiguous, SeasonYear, Processors, StripSeparators)

@@ -33,10 +33,13 @@ def format_():
 
     rebulk.regex("HD-?TV", "TV-?RIP-?HD", "HD-?TV-?RIP", "HD-?RIP", value="HDTV")
     rebulk.regex("VOD", "VOD-?Rip", value="VOD")
-    rebulk.regex("WEB-?Rip", value="WEBRip")
+    rebulk.regex("WEB-?Rip", "WEB-?DL-?Rip", "WEB-?Cap", value="WEBRip")
     rebulk.regex("WEB-?DL", "WEB-?HD", "WEB", value="WEB-DL")
     rebulk.regex("HD-?DVD-?Rip", "HD-?DVD", value="HD-DVD")
     rebulk.regex("Blu-?ray(?:-?Rip)?", "B[DR]", "B[DR]-?Rip", "BD[59]", "BD25", "BD50", value="BluRay")
+    rebulk.regex("AHDTV", value="AHDTV")
+    rebulk.regex("HDTC", value="HDTC")
+    rebulk.regex("DSR", "DSR?-?Rip", "SAT-?Rip", "DTH", "DTH-?Rip", value="SATRip")
 
     rebulk.rules(ValidateFormat)
 
@@ -45,7 +48,7 @@ def format_():
 
 class ValidateFormat(Rule):
     """
-    Validate format with screener property or separated.
+    Validate format with screener property, with video_codec property or separated
     """
     priority = 64
     consequence = RemoveMatch
@@ -60,7 +63,8 @@ class ValidateFormat(Rule):
                 continue
             if not seps_after(format_match) and \
                     not matches.range(format_match.end, format_match.end + 1,
-                                      lambda match: match.name == 'other' and match.value == 'Screener'):
+                                      lambda match: match.name == 'video_codec' or (
+                                          match.name == 'other' and match.value == 'Screener')):
                 ret.append(format_match)
                 continue
         return ret

@@ -1,11 +1,50 @@
 History
 =======
 
-2.1.0 (unreleased)
+2.1.1 (2016-12-04)
 ------------------
 
-- Enhance langage/country guessing in edge cases.
+- Add `~` to episode/season separators.
+- Add `AHDTV`, `HDTC`, `SATRip` as new `format` possible values.
+- Add `streaming_service` property.
+- Add `DDP` pattern as `audio_codec`=`DolbyDigital`.
+- Add `LDTV` as possible tag for `other`=`LD`.
+- Add `StripSeparators` Post Processor to strip separators from all matches.
+- Fix invalid guess `1 x 2` with `--type episode`.
+- Fix `part` property.
+- Fix `cd_count` issue with `x264-CD`.
+- Fix `HDD` group detected as `DolbyDigital`.
+- Fix invalid comparator in `audio_codec` conflict solver.
+- Fix validation of `film` property.
+- Fix `date` followed by `screen_size` invalid guess.
+- Fix `episode` not detected when smaller filepart repeats the `season` and uses `SSEE` pattern.
+- Enhance `season`/`episode` conflict solver to keep most specific value.
+- Enhance `video_profile` detection.
+- Enhance `episode`/`season` range and sequence guessing.
+- Enhance performance with rebulk upgrade to `0.8.2`.
+- Enhance `season`/`episode`.
+- Enhance `other`=`Complete` guessing.
+- Enhance `release_group` guessing.
+- Enhance command line options parsing related to unicode.
+- Ensure roman numbers are surrounded with separators to be guessed as numbers.
 
+2.1.0 (2016-09-08)
+------------------
+
+- Drop support for `regex` native module.
+- Remove dependency constraint on `python-dateutil`.
+- Enhance langage/country guessing in edge cases.
+- Enhance rule to guess `release_group` in more file templates.
+- Fix edge cases for subtitle language detection.
+- Fix invalid conflict solving in `season`/`episode` occuring between `SssEee` and `ssXee` pattern.
+- Fix issue when running guessit in non-interactive shell with python 2
+- Guess Dolby keyword as DolbyDigital in `audio_codec`.
+- Avoid `title` to be guessed as `website` (Dark.Net)
+- Avoid `season`/`episode` to be guessed when pattern is included inside words.
+- Enhance `screen_size` to detect `720pHD` and `1080pHD`
+- Add support for `format` and `video_codec` when no separators between themselves. (HDTVx264, PDTVx264, ...)
+- Add rebulk version in `--version` option.
+- Upgrade rebulk to `0.7.3`.
 
 2.0.5 (2016-04-10)
 ------------------
@@ -66,7 +105,7 @@ History
 2.0rc5 (2016-01-18)
 -------------------
 
-- Guessit is now available as a docker container on Docker Hub (https://hub.docker.com/r/toilal/guessit).
+- Guessit isĂÂ now available as a docker container on Docker Hub (https://hub.docker.com/r/toilal/guessit).
 - `country` 2-letter code is not added to `title` value anymore.
 - All `container` values are now capitalized.
 - `alternativeTitle` has been renamed to `alternative_title` and added to the docs.

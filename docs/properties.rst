@@ -61,6 +61,9 @@ Main properties
 
   Name of website contained in the filename.
 
+- **streaming_service**
+
+  Name of the streaming service (``Netflix``, ``Comedy Central``, ...)
 
 Episode properties
 ------------------
@@ -117,8 +120,7 @@ Video properties
 
   Format of the initial source
 
-  - ``HDTV`` ``WEB-DL`` ``TV`` ``VOD`` ``BluRay`` ``DVD`` ``WEBRip`` ``Workprint`` ``Telecine`` ``VHS`` ``DVB`` ``Telesync``  ``HD-DVD`` ``PPV`` ``Cam``
-
+  - ``TV`` ``HDTV`` ``AHDTV`` ``HDTC`` ``SATRip`` ``WEB-DL`` ``VOD`` ``BluRay`` ``DVD`` ``WEBRip`` ``Workprint`` ``Telecine`` ``VHS`` ``DVB`` ``Telesync``  ``HD-DVD`` ``PPV`` ``Cam``
 
 - **screen_size**
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
-
-import sys
+import io
 import os
 import re
-import io
+import sys
+
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -16,14 +16,10 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
     history = f.read()
 
-install_requires = ['rebulk>=0.7.1', 'babelfish>=0.5.5', 'python-dateutil<2.5.2']
-# python-dateutil 2.5.2 introduced a change with month position in ambiguous day/month dates when year is first.
-# https://github.com/dateutil/dateutil/commit/2d42e046d55b9fbbc0a2f41ce83fb8ec5de2d28b#commitcomment-17032106
+install_requires = ['rebulk>=0.8.2', 'babelfish>=0.5.5', 'python-dateutil']
 if sys.version_info < (2, 7):
     install_requires.extend(['argparse', 'ordereddict'])
 setup_requires = ['pytest-runner']
-
-native_require = ['regex']
 
 dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-autobuild']
 
@@ -73,8 +69,7 @@ args = dict(name='guessit',
             zip_safe=True,
             extras_require={
                 'test': tests_require,
-                'dev': dev_require,
-                'native': native_require
+                'dev': dev_require
             })
 
 setup(**args)
