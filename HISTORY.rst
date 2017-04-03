@@ -4,8 +4,7 @@ History
 2.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Many fixes, additions and improvements (thanks to @ratoaq2).
 
 2.1.1 (2016-12-04)
 ------------------
