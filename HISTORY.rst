@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.2 (unreleased)
+2.1.2 (2017-04-03)
 ------------------
 
 - Many fixes, additions and improvements (thanks to @ratoaq2).
