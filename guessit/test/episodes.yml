@@ -3835,3 +3835,14 @@
   video_codec: h264
   release_group: NTb
   type: episode
+
+? True Detective S02E04 720p HDTV x264-0SEC [GloDLS].mkv
+: title: True Detective
+  season: 2
+  episode: 4
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: 0SEC [GloDLS]
+  container: mkv
+  type: episode

@@ -130,6 +130,8 @@ lang_both = ['dublado', 'dubbed', 'dub']
 lang_suffixes = sorted(lang_both + ['audio'], key=length_comparator)
 lang_prefixes = sorted(lang_both + ['true'], key=length_comparator)
 
+weak_prefixes = ('audio', 'true')
+
 _LanguageMatch = namedtuple('_LanguageMatch', ['property_name', 'word', 'lang'])
 
 
@@ -293,7 +295,7 @@ class LanguageFinder(object):
                         if fallback_word:
                             match = self.find_language_match_for_word(fallback_word, key=key, force=True)
 
-                        if not match:
+                        if not match and part not in weak_prefixes:
                             match = self.create_language_match(key, LanguageWord(current_word.start, current_word.end,
                                                                                  'und', current_word.input_string))
                     elif value not in self.common_words:
