@@ -76,7 +76,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
     def convert(self, alpha3, country=None, script=None):
         return str(babelfish.Language(alpha3, country, script))
 
-    def reverse(self, name):
+    def reverse(self, name):  # pylint:disable=arguments-differ
         with_country = (GuessitConverter._with_country_regexp.match(name) or
                         GuessitConverter._with_country_regexp2.match(name))
 
