@@ -3846,3 +3846,14 @@
   release_group: 0SEC [GloDLS]
   container: mkv
   type: episode
+
+? Anthony.Bourdain.Parts.Unknown.S09E01.Los.Angeles.720p.HDTV.x264-MiNDTHEGAP
+: title: Anthony Bourdain Parts Unknown
+  season: 9
+  episode: 1
+  episode_title: Los Angeles
+  screen_size: 720p
+  format: HDTV
+  video_codec: h264
+  release_group: MiNDTHEGAP
+  type: episode

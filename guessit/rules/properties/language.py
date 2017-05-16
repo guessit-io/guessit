@@ -39,8 +39,7 @@ COMMON_WORDS_STRICT = frozenset(['brazil'])
 
 UNDETERMINED = babelfish.Language('und')
 
-SYN = {('und', None): ['unknown', 'inconnu', 'unk'],
-       ('ell', None): ['gr', 'greek'],
+SYN = {('ell', None): ['gr', 'greek'],
        ('spa', None): ['esp', 'español', 'espanol'],
        ('fra', None): ['français', 'vf', 'vff', 'vfi', 'vfq'],
        ('swe', None): ['se'],
