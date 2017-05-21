@@ -3943,5 +3943,14 @@
   episode: 11
   episode_title: episode title
   container: avi
-  mimetype: video/x-msvideo
+  type: episode
+
+? the.flash.2014.208.hdtv-lol[ettv].mkv
+: title: the flash
+  year: 2014
+  season: 2
+  episode: 8
+  format: HDTV
+  release_group: lol[ettv]
+  container: mkv
   type: episode
