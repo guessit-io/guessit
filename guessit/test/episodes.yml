@@ -1814,7 +1814,7 @@
   format: HDTV
   video_codec: h264
   audio_codec: AAC
-  container: MP4
+  container: mp4
   release_group: k3n
   type: episode
 
@@ -1885,7 +1885,7 @@
 
 ? Breaking.Bad.S01E01.2008.BluRay.VC1.1080P.5.1.WMV-NOVO
 : audio_channels: '5.1'
-  container: WMV
+  container: wmv
   episode: 1
   format: BluRay
   release_group: NOVO
@@ -1922,9 +1922,7 @@
 
 ? Fear.The.Walking.Dead.S02E01.HDTV.x264.AAC.MP4-k3n.mp4
 : audio_codec: AAC
-  container:
-  - MP4
-  - mp4
+  container: mp4
   episode: 1
   format: HDTV
   mimetype: video/mp4
@@ -3311,7 +3309,7 @@
   screen_size: 720p
   format: WEBRip
   video_codec: h264
-  container: MKV
+  container: mkv
   audio_codec: AC3
   audio_channels: '5.1'
   release_group: Ehhhh
@@ -3914,4 +3912,14 @@
   video_codec: h264
   release_group: ABC
   container: nzb
+  type: episode
+
+? "[SGKK] Bleach 312v1 [720p/mkv]-Group.mkv"
+: title: Bleach
+  season: 3
+  episode: 12
+  version: 1
+  screen_size: 720p
+  release_group: Group
+  container: mkv
   type: episode

@@ -40,11 +40,11 @@ def container():
     rebulk.regex(r'\.'+build_or_pattern(info)+'$', exts=info, tags=['extension', 'info'])
     rebulk.regex(r'\.'+build_or_pattern(videos)+'$', exts=videos, tags=['extension', 'video'])
     rebulk.regex(r'\.'+build_or_pattern(torrent)+'$', exts=torrent, tags=['extension', 'torrent'])
-    rebulk.regex(r'\.' + build_or_pattern(nzb) + '$', exts=nzb, tags=['extension', 'nzb'])
+    rebulk.regex(r'\.'+build_or_pattern(nzb)+'$', exts=nzb, tags=['extension', 'nzb'])
 
     rebulk.defaults(name='container',
                     validator=seps_surround,
-                    formatter=lambda s: s.upper(),
+                    formatter=lambda s: s.lower(),
                     conflict_solver=lambda match, other: match
                     if other.name in ['format',
                                       'video_codec'] or other.name == 'container' and 'extension' in other.tags
