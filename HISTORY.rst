@@ -4,8 +4,9 @@ History
 2.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Dropped python 2.6 support
+- Fix `--type movie` being ignored for movies that starts with numbers
+- Fix invalid `language` detection due the common words `audio`, `true` and `unknown`
 
 2.1.2 (2017-04-03)
 ------------------
