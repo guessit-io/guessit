@@ -4,7 +4,9 @@ History
 2.1.3 (unreleased)
 ------------------
 
+- Add `nzb` as new `container` possible value
 - Dropped python 2.6 support
+- Make `container` values consistent and always lowercase
 - Fix `--type movie` being ignored for movies that starts with numbers
 - Fix invalid `language` detection due the common words `audio`, `true` and `unknown`
 

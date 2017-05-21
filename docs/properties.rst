@@ -35,7 +35,7 @@ Main properties
 
   Container of the file.
 
-  - ``3g2``, ``wmv``, ``webm``, ``mp4``, ``avi``, ``mp4a``, ``mpeg``, ``sub``, ``mka``, ``m4v``, ``ts``, ``mkv``, ``ra``, ``rm``, ``wma``, ``ass``, ``mpg``, ``ram``, ``3gp``, ``ogv``, ``mov``, ``ogm``, ``asf``, ``divx``, ``ogg``, ``ssa``, ``qt``, ``idx``, ``nfo``, ``wav``, ``flv``, ``3gp2``, ``iso``, ``mk2``, ``srt``
+  - ``3g2``, ``wmv``, ``webm``, ``mp4``, ``avi``, ``mp4a``, ``mpeg``, ``sub``, ``mka``, ``m4v``, ``ts``, ``mkv``, ``ra``, ``rm``, ``wma``, ``ass``, ``mpg``, ``ram``, ``3gp``, ``ogv``, ``mov``, ``ogm``, ``asf``, ``divx``, ``ogg``, ``ssa``, ``qt``, ``idx``, ``nfo``, ``wav``, ``flv``, ``3gp2``, ``iso``, ``mk2``, ``srt``, ``vob``, ``torrent``, ``nzb``
 
 - **mimetype**
 
