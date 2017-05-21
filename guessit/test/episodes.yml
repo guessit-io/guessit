@@ -2240,7 +2240,7 @@
   screen_size: 1080p
   streaming_service: Amazon Prime
   format: WEBRip
-  audio_codec: DolbyDigital
+  audio_codec: EAC3
   audio_channels: '5.1'
   video_codec: h264
   type: episode
@@ -2690,7 +2690,7 @@
   screen_size: 4K
   streaming_service: Amazon Prime
   format: WEBRip
-  audio_codec: DolbyDigital
+  audio_codec: EAC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: Group
@@ -3921,5 +3921,17 @@
   version: 1
   screen_size: 720p
   release_group: Group
+  container: mkv
+  type: episode
+
+? The.Expanse.S02E08.720p.WEBRip.x264.EAC3-KiNGS.mkv
+: title: The Expanse
+  season: 2
+  episode: 8
+  screen_size: 720p
+  format: WEBRip
+  video_codec: h264
+  audio_codec: EAC3
+  release_group: KiNGS
   container: mkv
   type: episode
