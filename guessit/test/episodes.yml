@@ -3857,3 +3857,47 @@
   video_codec: h264
   release_group: MiNDTHEGAP
   type: episode
+
+? -feud.s01e05.and.the.winner.is.(the.oscars.of.1963).720p.amzn.webrip.dd5.1.x264-casstudio.mkv
+: year: 1963
+
+? feud.s01e05.and.the.winner.is.(the.oscars.of.1963).720p.amzn.webrip.dd5.1.x264-casstudio.mkv
+: title: feud
+  season: 1
+  episode: 5
+  episode_title: and the winner is
+  screen_size: 720p
+  streaming_service: Amazon Prime
+  format: WEBRip
+  audio_codec: DolbyDigital
+  audio_channels: '5.1'
+  video_codec: h264
+  release_group: casstudio
+  container: mkv
+  type: episode
+
+? Adventure.Time.S08E16.Elements.Part.1.Skyhooks.720p.WEB-DL.AAC2.0.H.264-RTN.mkv
+: title: Adventure Time
+  season: 8
+  episode: 16
+  season: 8
+  episode: 16
+  episode_title: Elements Part 1 Skyhooks
+  screen_size: 720p
+  format: WEB-DL
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: h264
+  release_group: RTN
+  container: mkv
+  type: episode
+
+? D:\TV\SITCOMS (CLASSIC)\That '70s Show\Season 07\That '70s Show - S07E22 - 2000 Light Years from Home.mkv
+: title: That '70s Show
+  season: 7
+  episode: 22
+  episode_title: 2000 Light Years from Home
+  other: Classic
+  container: mkv
+  mimetype: video/x-matroska
+  type: episode
