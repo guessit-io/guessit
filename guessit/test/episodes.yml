@@ -3935,3 +3935,22 @@
   release_group: KiNGS
   container: mkv
   type: episode
+
+? Series_name.2005.211.episode.title.avi
+: title: Series name
+  year: 2005
+  season: 2
+  episode: 11
+  episode_title: episode title
+  container: avi
+  type: episode
+
+? the.flash.2014.208.hdtv-lol[ettv].mkv
+: title: the flash
+  year: 2014
+  season: 2
+  episode: 8
+  format: HDTV
+  release_group: lol[ettv]
+  container: mkv
+  type: episode

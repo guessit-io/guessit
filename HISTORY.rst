@@ -10,6 +10,7 @@ History
 - Make `container` values consistent and always lowercase
 - Fix `--type movie` being ignored for movies that starts with numbers
 - Fix invalid `language` detection due the common words `audio`, `true` and `unknown`
+- Fix `episode` type detection when series name contains `year` followed by SEE pattern
 
 2.1.2 (2017-04-03)
 ------------------
