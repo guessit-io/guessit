@@ -7,6 +7,7 @@ History
 - Add `nzb` as new `container` possible value
 - Add `EAC3` as new `audio_codec` possible value
 - Add `FullHD` as new `other` possible value
+- Added python 3.6 support
 - Dropped python 2.6 support
 - Make `container` values consistent and always lowercase
 - Fix `--type movie` being ignored for movies that starts with numbers
