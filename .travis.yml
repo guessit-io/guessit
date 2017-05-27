@@ -4,6 +4,7 @@ python:
   - 3.3
   - 3.4
   - 3.5
+  - 3.6
   - pypy
 install:
   - pip install pip --upgrade
@@ -11,7 +12,7 @@ install:
   - pip install pytest --upgrade
   - pip install coveralls
 script:
-  - if [ $TRAVIS_PYTHON_VERSION != 2.6 ]; then pylint guessit; fi
+  - pylint guessit
   - coverage run --source=guessit setup.py test
   - python setup.py build
 after_success:
