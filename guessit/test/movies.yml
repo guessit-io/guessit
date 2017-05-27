@@ -439,7 +439,7 @@
   format: BluRay
   video_codec: XviD
   audio_channels: "5.1"
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   uuid: XD607ebb-BRc59935-5155473f-1c5f49
 
 ? Pacific.Rim.3D.2013.COMPLETE.BLURAY-PCH.avi
@@ -963,7 +963,7 @@
   screen_size: 1080p
   format: WEBRip
   video_codec: h264
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   release_group: FGT
   type: movie

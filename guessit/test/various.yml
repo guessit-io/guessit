@@ -191,7 +191,7 @@
   format: WEB-DL
   audio_channels: "5.1"
   video_codec: h264
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   release_group: NTb
 
 ? Despicable.Me.2.2013.1080p.BluRay.x264-VeDeTT.nfo
@@ -546,7 +546,7 @@
 
 ? TEST.S01E02.2160p.NF.WEBRip.x264.DD5.1-ABC
 : audio_channels: '5.1'
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   episode: 2
   format: WEBRip
   release_group: ABC

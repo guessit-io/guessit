@@ -11,7 +11,8 @@
 ? +DolbyDigital
 ? +DD
 ? +Dolby Digital
-: audio_codec: DolbyDigital
+? +AC3
+: audio_codec: AC3
 
 ? +DDP
 ? +DD+
@@ -26,9 +27,6 @@
 
 ? +AAC
 : audio_codec: AAC
-
-? +AC3
-: audio_codec: AC3
 
 ? +Flac
 : audio_codec: FLAC
@@ -92,7 +90,7 @@
 
 ? DD5.1
 ? DD51
-: audio_codec: DolbyDigital
+: audio_codec: AC3
   audio_channels: '5.1'
 
 ? -51

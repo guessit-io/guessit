@@ -330,7 +330,7 @@
   screen_size: 720p
   format: WEB-DL
   audio_channels: "5.1"
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   video_codec: h264
   release_group: CtrlHD
 
@@ -356,7 +356,7 @@
   screen_size: 720p
   format: WEB-DL
   audio_channels: "5.1"
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   video_codec: h264
   release_group: CtrlHD
 
@@ -388,7 +388,7 @@
   screen_size: 720p
   format: WEB-DL
   audio_channels: "5.1"
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   video_codec: h264
 
 ? Game of Thrones S03E06 1080i HDTV DD5.1 MPEG2-TrollHD.ts
@@ -398,7 +398,7 @@
   screen_size: 1080i
   format: HDTV
   audio_channels: "5.1"
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   video_codec: Mpeg2
   release_group: TrollHD
 
@@ -548,7 +548,7 @@
   screen_size: 720p
   season: 1
   video_profile: BP
-  audio_codec: DolbyDigital
+  audio_codec: AC3
 
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BS.mkv
 : episode: 9
@@ -559,7 +559,7 @@
   screen_size: 720p
   season: 1
   release_group: BS
-  audio_codec: DolbyDigital
+  audio_codec: AC3
 
 ? Battlestar.Galactica.S00.Pilot.FRENCH.DVDRip.XviD-NOTAG.avi
 : title: Battlestar Galactica
@@ -621,7 +621,7 @@
   streaming_service: Netflix
   format: WEBRip
   audio_channels: "5.1"
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   video_codec: h264
   release_group: NTb
 
@@ -1130,7 +1130,7 @@
   episode: 21
   episode_title: Al Sah-Him
   screen_size: 1080p
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: "5.1"
   video_codec: h264
   release_group: BS
@@ -1653,7 +1653,7 @@
 
 ? The.Good.Wife.S06E01.E10.720p.WEB-DL.DD5.1.H.264-CtrlHD/The.Good.Wife.S06E09.Trust.Issues.720p.WEB-DL.DD5.1.H.264-CtrlHD.mkv
 : audio_channels: '5.1'
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   episode: 9
   format: WEB-DL
   release_group: CtrlHD
@@ -1853,7 +1853,7 @@
 
 ? Game.of.Thrones.S6.Ep5.X265.Dolby.2.0.KTM3.mp4
 : audio_channels: '2.0'
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   container: mp4
   episode: 5
   release_group: KTM3
@@ -2061,7 +2061,7 @@
 
 ? The.Walking.Dead.S06E01.FRENCH.1080p.WEB-DL.DD5.1.HEVC.x265-GOLF68
 : audio_channels: '5.1'
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   episode: 1
   format: WEB-DL
   language: fr
@@ -2200,7 +2200,7 @@
   season: 1
   screen_size: 720p
   format: HDTV
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: Group
@@ -2401,7 +2401,7 @@
   screen_size: 1080p
   streaming_service: Netflix
   format: WEBRip
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: NTb
@@ -2907,7 +2907,7 @@
   episode: 10
   screen_size: 1080p
   format: WEB-DL
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: KINGS
@@ -2933,7 +2933,7 @@
   screen_size: 1080p
   streaming_service: Netflix
   format: WEBRip
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: ViSUM
@@ -2954,7 +2954,7 @@
   episode: 5
   screen_size: 1080p
   format: WEB-DL
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: HKD
@@ -2996,7 +2996,7 @@
   episode_title: The Brain In The Bot
   screen_size: 1080p
   format: WEB-DL
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: R2D2
@@ -3010,7 +3010,7 @@
   episode: 7
   screen_size: 1080p
   format: WEB-DL
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   subtitle_language: nl
@@ -3038,7 +3038,7 @@
   episode: 12
   screen_size: 1080p
   format: WEB-DL
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   release_group: Het.Robot.Team.OYM
   type: episode
@@ -3499,7 +3499,7 @@
   screen_size: 1080p
   streaming_service: Amazon Prime
   format: WEBRip
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: GROUP
@@ -3590,7 +3590,7 @@
   episode: 13
   other: FINAL
   language: mul
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   screen_size: 4K
   streaming_service: Netflix
@@ -3828,7 +3828,7 @@
   other: East Coast Feed
   screen_size: 720p
   format: WEB-DL
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: NTb
@@ -3867,7 +3867,7 @@
   screen_size: 720p
   streaming_service: Amazon Prime
   format: WEBRip
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: casstudio
@@ -3907,7 +3907,7 @@
   episode_title: Super Title
   screen_size: 720p
   format: WEB-DL
-  audio_codec: DolbyDigital
+  audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
   release_group: ABC
