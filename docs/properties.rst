@@ -20,22 +20,28 @@ Main properties
 
   Type of the file.
 
-  - ``unknown``, ``movie``, ``episode``, ``moviesubtitle``, ``episodesubtitle``
+  - ``episode``, ``movie``
 
 
 - **title**
 
   Title of movie or episode.
 
+
 - **alternative_title**
 
   Other titles found for movie.
+
 
 - **container**
 
   Container of the file.
 
-  - ``3g2``, ``wmv``, ``webm``, ``mp4``, ``avi``, ``mp4a``, ``mpeg``, ``sub``, ``mka``, ``m4v``, ``ts``, ``mkv``, ``ra``, ``rm``, ``wma``, ``ass``, ``mpg``, ``ram``, ``3gp``, ``ogv``, ``mov``, ``ogm``, ``asf``, ``divx``, ``ogg``, ``ssa``, ``qt``, ``idx``, ``nfo``, ``wav``, ``flv``, ``3gp2``, ``iso``, ``mk2``, ``srt``, ``vob``, ``torrent``, ``nzb``
+  - ``3g2``, ``3gp``, ``3gp2``, ``asf``, ``ass``, ``avi``, ``divx``, ``flv``, ``idx``, ``iso``, ``m4v``, ``mk2``,
+    ``mkv``, ``mka``, ``mov``, ``mp4``, ``mp4a``, ``mpeg``, ``mpg``, ``nfo``, ``nzb``, ``ogg``, ``ogm``, ``ogv``,
+    ``qt``, ``ra``, ``ram``, ``rm``, ``srt``, ``ssa``, ``sub`` ``torrent``, ``ts``, ``vob``, ``wav``, ``webm``, ``wma``,
+    ``wmv``
+
 
 - **mimetype**
 
@@ -61,9 +67,17 @@ Main properties
 
   Name of website contained in the filename.
 
+
 - **streaming_service**
 
-  Name of the streaming service (``Netflix``, ``Comedy Central``, ...)
+  Name of the streaming service.
+
+  - ``A&E``, ``ABC``, ``AMC``, ``Amazon Prime``, ``Adult Swim``, ``BBC iPlayer``, ``CBS``, ``Comedy Central``,
+    ``Crunchy Roll``, ``The CW``, ``Discovery``, ``DIY Network``, ``Disney``, ``ePix``, ``HBO Go``, ``History``,
+    ``Investigation Discovery``, ``IFC``, ``PBS``, ``National Geographic``, ``NBA TV``, ``NBC``, ``NFL``,
+    ``Nickelodeon``, ``Netflix``, ``iTunes``, ``RTÉ One``, ``SeeSo``, ``Spike TV``, ``Syfy``, ``TFou``, ``TLC``,
+    ``TV3 Ireland``, ``TV4 Sweeden``, ``TV Land``, ``UFC``, ``USA Network``
+
 
 Episode properties
 ------------------
@@ -92,7 +106,7 @@ Episode properties
 
   Some details about the episode.
 
-  - ``Bonus`` ``Oav`` ``Ova`` ``Omake`` ``Extras`` ``Unaired`` ``Special`` ``Pilot``
+  - ``Bonus``, ``Extras``, ``Oav``, ``Ova``, ``Omake``, ``Pilot``, ``Special``, ``Unaired``
 
 
 - **episode_format**
@@ -100,6 +114,7 @@ Episode properties
   Episode format of the series.
 
   - ``Minisode``
+
 
 - **part**
 
@@ -120,27 +135,33 @@ Video properties
 
   Format of the initial source
 
-  - ``TV`` ``HDTV`` ``UHDTV`` ``AHDTV`` ``HDTC`` ``SATRip`` ``WEB-DL`` ``VOD`` ``BluRay`` ``DVD`` ``WEBRip`` ``Workprint`` ``Telecine`` ``VHS`` ``DVB`` ``Telesync``  ``HD-DVD`` ``PPV`` ``Cam``
+  - ``AHDTV``, ``BluRay``, ``Cam``, ``DVB``, ``DVD``, ``HD-DVD``, ``HDTC``, ``HDTV``, ``PPV``, ``SATRip``, ``Telecine``,
+    ``Telesync``, ``TV``, ``UHDTV``, ``VHS``, ``VOD``, ``WEB-DL``, ``WEBRip``, ``Workprint``
+
 
 - **screen_size**
 
   Resolution of video.
-  - ``720p`` ``1080p`` ``1080i`` ``<width>x<height>`` ``4K`` ``360p`` ``368p`` ``480p`` ``576p`` ``900p``
+
+  - ``<width>x<height>``, ``360p``, ``368p``, ``480p``, ``576p``, ``720p``, ``1080p``, ``1080i``, ``900p``, ``4K``
 
 
 - **video_codec**
+
   Codec used for video.
 
-  - ``h264`` ``h265`` ``DivX`` ``XviD`` ``Real`` ``Mpeg2``
+  - ``DivX``, ``h264``, ``h265``, ``Mpeg2``, ``Real``, ``XviD``
 
 
 - **video_profile**
+
   Codec profile used for video.
 
-  - ``8bit`` ``10bit`` ``HP`` ``BP`` ``MP`` ``XP`` ``Hi422P`` ``Hi444PP``
+  - ``8bit``, ``10bit``, ``BP``, ``Hi422P``, ``Hi444PP``, ``HP``, ``MP``, ``XP``
 
 
 - **video_api**
+
   API used for the video.
 
   - ``DXVA``
@@ -153,19 +174,21 @@ Audio properties
 
   Number of channels for audio.
 
-  - ``1.0`` ``2.0`` ``5.1`` ``7.1``
+  - ``1.0``, ``2.0``, ``5.1``, ``7.1``
 
 
 - **audio_codec**
+
   Codec used for audio.
 
-  - ``DTS`` ``TrueHD`` ``AAC`` ``AC3`` ``EAC3`` ``MP3`` ``Flac`` ``DolbyDigital``  ``DolbyAtmos``
+  - ``AAC``, ``AC3``, ``DolbyAtmos``, ``DolbyDigital``, ``DTS``, ``EAC3``, ``Flac``, ``MP3``, ``TrueHD``
 
 
 - **audio_profile**
+
   The codec profile used for audio.
 
-  - ``LC`` ``HQ`` ``HD`` ``HE`` ``HDMA``
+  - ``HD``, ``HDMA``, ``HE``, ``HQ``, ``LC``
 
 
 Localization properties
@@ -234,29 +257,34 @@ Other properties
 
   Edition of the movie.
 
-  - ``Special Edition``, ``Collector Edition``, ``Director's cut``, ``Criterion Edition``, ``Deluxe Edition``, ``Theatrical Edition``, ``Limited Edition``
+  - ``Collector Edition``, ``Criterion Edition``, ``Deluxe Edition``, ``Director's cut``,  ``Special Edition``,
+    ``Limited Edition``, ``Theatrical Edition``
 
 
 - **film**
 
   Film number of this movie.
 
+
 - **film_title**
 
   Film title of this movie.
+
 
 - **film_series**
 
   Film series of this movie.
 
+
 - **other**
 
   Other property will appear under this property.
 
-  - ``Fansub``, ``HR``, ``HQ``, ``Screener``, ``Unrated``, ``HD``, ``UltraHD``, ``3D``, ``SyncFix``, ``Bonus``,
-  ``WideScreen``, ``Fastsub``, ``R5``, ``AudioFix``, ``DDC``, ``Trailer``, ``Complete``, ``Limited``, ``Classic``,
-  ``Proper``, ``DualAudio``, ``LiNE``, ``LD``, ``MD``, ``XXX``, ``Remastered``, ``Extended``, ``Extended Cut``,
-  ``Alternative Cut``, ``Uncut``, ``Retail``, ``ReEncoded``, ``Mux``, ``Hardcoded Subtitles``, ``Converted``,
-  ``Colorized``, ``Documentary``, ``Festival``, ``FINAL``, ``Internal``, ``Open Matte``, ``Read NFO``, ``Uncensored``,
-  ``Straight to Video``, ``Original Aspect Ratio``, ``West Coast Feed``, ``East Coast Feed``
+  - ``3D``, ``Alternative Cut``, ``AudioFix``, ``Bonus``, ``CC``, ``Classic``, ``Colorized``, ``Complete``,
+    ``Converted``, ``Documentary``, ``DDC``, ``DualAudio``, ``East Coast Feed``, ``Extended``, ``Extended Cut``,
+    ``Fansub``, ``Fastsub``, ``Festival``, ``FINAL``, ``Hardcoded Subtitles``, ``HD``, ``HDLight``, ``HQ``, ``HR``,
+    ``Internal``, ``LD``, ``Limited``, ``LiNE``, ``MD``, ``mHD``, ``Mux``, ``NTSC``, ``Open Matte``,
+    ``Original Aspect Ratio``, ``OV``, ``PAL``, ``Preair``, ``Proper``, ``PS Vita``, ``R5``, ``Read NFO``,
+    ``ReEncoded``, ``Remastered``, ``Remux``, ``Retail``, ``Screener``, ``SECAM``, ``Straight to Video``, ``SyncFix``,
+    ``Trailer``, ``UltraHD``, ``Uncensored``, ``Uncut``, ``Unrated``, ``West Coast Feed``, ``WideScreen``, ``XXX``
 
