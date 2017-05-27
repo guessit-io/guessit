@@ -73,6 +73,8 @@ def other():
     rebulk.string('LDTV', value='LD')
     rebulk.string('HD', value='HD', validator=None,
                   tags=['streaming_service.prefix', 'streaming_service.suffix'])
+    rebulk.regex('Full-?HD', 'FHD', value='FullHD', validator=None,
+                 tags=['streaming_service.prefix', 'streaming_service.suffix'])
     rebulk.regex('Ultra-?(?:HD)?', 'UHD', value='UltraHD', validator=None,
                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
 

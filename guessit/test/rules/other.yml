@@ -87,6 +87,11 @@
 ? HD
 : other: HD
 
+? FHD
+? FullHD
+? Full HD
+: other: FullHD
+
 ? UHD
 ? Ultra
 ? UltraHD
