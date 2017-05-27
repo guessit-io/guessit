@@ -3954,3 +3954,12 @@
   release_group: lol[ettv]
   container: mkv
   type: episode
+
+? "[Despair-Paradise].Kono.Subarashii.Sekai.ni.Shukufuku.wo!.2.-..09.vostfr.FHD"
+: options: -E -t episode
+  release_group: Despair-Paradise
+  title: Kono Subarashii Sekai ni Shukufuku wo! 2
+  episode: 9
+  subtitle_language: fr
+  other: FullHD
+  type: episode

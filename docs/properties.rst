@@ -282,8 +282,8 @@ Other properties
 
   - ``3D``, ``Alternative Cut``, ``AudioFix``, ``Bonus``, ``CC``, ``Classic``, ``Colorized``, ``Complete``,
     ``Converted``, ``Documentary``, ``DDC``, ``DualAudio``, ``East Coast Feed``, ``Extended``, ``Extended Cut``,
-    ``Fansub``, ``Fastsub``, ``Festival``, ``FINAL``, ``Hardcoded Subtitles``, ``HD``, ``HDLight``, ``HQ``, ``HR``,
-    ``Internal``, ``LD``, ``Limited``, ``LiNE``, ``MD``, ``mHD``, ``Mux``, ``NTSC``, ``Open Matte``,
+    ``Fansub``, ``Fastsub``, ``Festival``, ``FINAL``, ``FullHD``, ``Hardcoded Subtitles``, ``HD``, ``HDLight``, ``HQ``,
+    ``HR``, ``Internal``, ``LD``, ``Limited``, ``LiNE``, ``MD``, ``mHD``, ``Mux``, ``NTSC``, ``Open Matte``,
     ``Original Aspect Ratio``, ``OV``, ``PAL``, ``Preair``, ``Proper``, ``PS Vita``, ``R5``, ``Read NFO``,
     ``ReEncoded``, ``Remastered``, ``Remux``, ``Retail``, ``Screener``, ``SECAM``, ``Straight to Video``, ``SyncFix``,
     ``Trailer``, ``UltraHD``, ``Uncensored``, ``Uncut``, ``Unrated``, ``West Coast Feed``, ``WideScreen``, ``XXX``
