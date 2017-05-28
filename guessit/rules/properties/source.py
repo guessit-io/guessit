@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-format property
+source property
 """
 from rebulk.remodule import re
 
@@ -10,7 +10,7 @@ from ..common import dash
 from ..common.validators import seps_before, seps_after
 
 
-def format_():
+def source():
     """
     Builder for rebulk object.
     :return: Created Rebulk object
