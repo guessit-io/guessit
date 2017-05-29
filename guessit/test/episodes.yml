@@ -588,7 +588,7 @@
   format: TV
   video_codec: XviD
   release_group: GIGGITY
-  other: Proper
+  other: [Proper, Rip]
   proper_count: 1
   episode_details: [Unaired, Pilot]
 
@@ -1168,6 +1168,7 @@
   date: 2015-07-01
   format: WEBRip
   edition: Extended
+  other: Rip
   release_group: BTW
   screen_size: 720p
   streaming_service: Comedy Central
@@ -1214,7 +1215,7 @@
   release_group: TRACKS
   season: 4
   title: Doctor Who
-  other: LD
+  other: [LD, Rip]
   video_codec: XviD
   year: 2005
 
@@ -1241,7 +1242,7 @@
 : episode: 2
   format: DVD
   language: fr
-  other: LD
+  other: [LD, Rip]
   release_group: EPZ
   title: Dead Set
   video_codec: XviD
@@ -1979,7 +1980,7 @@
   episode_title: Streik German DOKU
   format: DVD
   language: mul
-  other: WideScreen
+  other: [WideScreen, Rip]
   release_group: CDP
   season: 2
   title: Duck Dynasty
@@ -2002,7 +2003,7 @@
 ? How.I.Met.Your.Mother.COMPLETE.SERIES.DVDRip.XviD-AR
 : options: -L en -C us
   format: DVD
-  other: Complete
+  other: [Complete, Rip]
   release_group: AR
   title: How I Met Your Mother
   type: movie # Should be episode
@@ -2102,7 +2103,7 @@
   episode_title: Into The Fog of War
   part: 1
   screen_size: 360p
-  other: LD
+  other: [LD, Rip]
   format: WEBRip
   release_group: MPup
   type: episode
@@ -2157,7 +2158,7 @@
 : title: Squidbillies
   season: 4
   episode: 5
-  other: WideScreen
+  other: [WideScreen, Rip]
   format: SATRip
   video_codec: XviD
   release_group: aAF
@@ -2211,7 +2212,7 @@
 
 ? Coupling Season 1 - 4 Complete DVDRip/Coupling Season 4/Coupling - (4x03) - Bed Time.mkv
 : title: Coupling
-  other: Complete
+  other: [Complete, Rip]
   format: DVD
   season: 4
   episode: 3
@@ -2251,6 +2252,7 @@
   date: 2016-09-28
   episode_title: Nice Title
   edition: Extended
+  other: Rip
   screen_size: 1080p
   streaming_service: Comedy Central
   format: WEBRip
@@ -2762,7 +2764,7 @@
   episode: 7
   format: WEBRip
   language: en
-  other: HD
+  other: [HD, Rip]
   screen_size: 1080p
   title: Show Name
   type: episode
@@ -2776,7 +2778,7 @@
   - 478
   - 479
   format: WEBRip
-  other: HD
+  other: [Rip, HD]
   release_group: HorribleSubs
   screen_size: 720p
   title: Show Name
@@ -3296,7 +3298,7 @@
 ? Show.Name.S01.Season.Complet.WEBRiP.Ro.Subbed.TM
 : title: Show Name
   season: 1
-  other: Complete
+  other: [Complete, Rip]
   format: WEBRip
   subtitle_language: ro
   type: episode
@@ -3445,7 +3447,7 @@
   episode: 1
   episode_title: Savage Season
   language: de
-  other: WideScreen
+  other: [WideScreen, Rip]
   format: HDTV
   video_codec: h264
   release_group: TVP
@@ -3588,7 +3590,7 @@
 : title: Show Name
   season: 4
   episode: 13
-  other: FINAL
+  other: [FINAL, Rip]
   language: mul
   audio_codec: AC3
   audio_channels: '5.1'
@@ -3759,6 +3761,7 @@
 : title: Rick and Morty
   season: 1
   edition: Uncensored
+  other: Rip
   format: BluRay
   screen_size: 1080p
   video_codec: h265

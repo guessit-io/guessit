@@ -23,7 +23,7 @@ def container():
                     formatter=lambda value: value.strip(seps),
                     tags=['extension'],
                     conflict_solver=lambda match, other: other
-                    if other.name in ['format', 'video_codec'] or
+                    if other.name in ('format', 'source', 'video_codec') or
                     other.name == 'container' and 'extension' not in other.tags
                     else '__default__')
 
@@ -46,8 +46,8 @@ def container():
                     validator=seps_surround,
                     formatter=lambda s: s.lower(),
                     conflict_solver=lambda match, other: match
-                    if other.name in ['format',
-                                      'video_codec'] or other.name == 'container' and 'extension' in other.tags
+                    if other.name in ('format', 'source',
+                                      'video_codec') or other.name == 'container' and 'extension' in other.tags
                     else '__default__')
 
     rebulk.string(*[sub for sub in subtitles if sub not in ['sub']], tags=['subtitle'])

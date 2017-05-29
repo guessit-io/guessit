@@ -61,11 +61,11 @@ def clean_groupname(string):
     return string
 
 
-_scene_previous_names = ['video_codec', 'format', 'video_api', 'audio_codec', 'audio_profile', 'video_profile',
+_scene_previous_names = ('video_codec', 'format', 'video_api', 'audio_codec', 'audio_profile', 'video_profile',
                          'audio_channels', 'screen_size', 'other', 'container', 'language', 'subtitle_language',
-                         'subtitle_language.suffix', 'subtitle_language.prefix', 'language.suffix']
+                         'subtitle_language.suffix', 'subtitle_language.prefix', 'language.suffix', 'source')
 
-_scene_previous_tags = ['release-group-prefix']
+_scene_previous_tags = ('release-group-prefix', )
 
 
 class SceneReleaseGroup(Rule):

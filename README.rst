@@ -36,6 +36,7 @@ For example, GuessIt can do the following::
         "season": 1,
         "episode": 3,
         "episode_title": "Right Place, Wrong Time",
+        "source": "HDTV",
         "format": "HDTV",
         "video_codec": "XviD",
         "release_group": "NoTV",
@@ -145,7 +146,7 @@ It can also be used as a python module::
 
     >>> from guessit import guessit
     >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
-    MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('video_codec', 'XviD'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
+    MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('source', 'HDTV'), ('format', 'HDTV'), ('video_codec', 'XviD'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
 
 ``MatchesDict`` is a dict that keeps matches ordering.
 
@@ -163,6 +164,7 @@ GuessIt is also available on `Docker Hub <https://hub.docker.com/r/guessit/guess
         "season": 1,
         "episode": 3,
         "episode_title": "Right Place, Wrong Time",
+        "source": "HDTV",
         "format": "HDTV",
         "video_codec": "XviD",
         "release_group": "NoTV",

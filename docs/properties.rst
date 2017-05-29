@@ -131,6 +131,15 @@ Episode properties
 Video properties
 ----------------
 
+- **source**
+
+  Source of the release
+
+  - ``Analogue HDTV``, ``BluRay``, ``Camera``, ``Digital TV``, ``DVD``, ``HD Telecine``, ``HD-DVD``, ``HDTV``,
+    ``PPV``, ``Satellite``, ``Telecine``, ``Telesync``, ``TV``, ``Ultra HDTV``, ``VHS``, ``Video on Demand``,
+    ``WEB``, ``Workprint``
+
+
 - **format**
 
   Format of the initial source
@@ -281,10 +290,11 @@ Other properties
 
   Other property will appear under this property.
 
-  - ``3D``, ``AudioFix``, ``Bonus``, ``CC``, ``Classic``, ``Colorized``, ``Complete``, ``Converted``, ``Documentary``,
-    ``DDC``, ``DualAudio``, ``East Coast Feed``, ``Fansub``, ``Fastsub``, ``FINAL``, ``FullHD``,
-    ``Hardcoded Subtitles``, ``HD``, ``HDLight``, ``HQ``, ``HR``, ``Internal``, ``LD``, ``Limited``, ``LiNE``, ``MD``,
-    ``mHD``, ``Mux``, ``NTSC``, ``Open Matte``, ``Original Aspect Ratio``, ``OV``, ``PAL``, ``Preair``, ``Proper``,
-    ``PS Vita``, ``R5``, ``Read NFO``, ``ReEncoded``, ``Remux``, ``Retail``, ``Screener``, ``SECAM``,
-    ``Straight to Video``, ``SyncFix``, ``Trailer``, ``UltraHD``, ``West Coast Feed``, ``WideScreen``, ``XXX``
+  - ``3D``, ``AudioFix``, ``Bonus``, ``Capped``, ``CC``, ``Classic``, ``Colorized``, ``Complete``,
+    ``Converted``, ``Documentary``, ``DDC``, ``DualAudio``, ``East Coast Feed``,
+    ``Fansub``, ``Fastsub``, ``FINAL``, ``FullHD``, ``Hardcoded Subtitles``, ``HD``, ``HDLight``, ``HQ``,
+    ``HR``, ``Internal``, ``LD``, ``LiNE``, ``MD``, ``mHD``, ``Mux``, ``NTSC``, ``Open Matte``,
+    ``Original Aspect Ratio``, ``OV``, ``PAL``, ``Preair``, ``Proper``, ``PS Vita``, ``R5``, ``Read NFO``,
+    ``ReEncoded``, ``Remux``, ``Retail``, ``Rip``, ``Screener``, ``SECAM``, ``Straight to Video``,
+    ``SyncFix``, ``Trailer``, ``UltraHD``, ``West Coast Feed``, ``WideScreen``, ``XXX``
 

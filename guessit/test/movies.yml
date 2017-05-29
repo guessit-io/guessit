@@ -43,7 +43,7 @@
   year: 2006
   proper_count: 2
   format: DVD
-  other: [ R5, Proper ]
+  other: [ R5, Proper, Rip ]
   video_codec: XviD
   release_group: PUKKA
 
@@ -147,7 +147,7 @@
   format: DVD
   video_codec: XviD
   release_group: ARROW
-  other: Proper
+  other: [Proper, Rip]
   edition: Limited Edition
   proper_count: 1
 
@@ -556,20 +556,20 @@
 : title: The Lizzie McGuire Movie
   year: 2003
   format: DVD
-  other: HR
+  other: [HR, Rip]
 
 ? Hua.Mulan.BRRIP.MP4.x264.720p-HR.avi
 : title: Hua Mulan
   video_codec: h264
   format: BluRay
   screen_size: 720p
-  other: HR
+  other: [ReEncoded, Rip, HR]
 
 ? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : video_codec: XviD
   title: Dr Seuss The Lorax
   format: DVD
-  other: LiNE
+  other: [Rip, LiNE]
   year: 2012
   audio_codec: AC3
   audio_profile: HQ
@@ -585,7 +585,7 @@
 : video_codec: XviD
   title: Dr LiNE The Lorax
   format: DVD
-  other: LiNE
+  other: [Rip, LiNE]
   year: 2012
   audio_codec: AC3
   audio_profile: HQ
@@ -837,12 +837,30 @@
   year: 2015
 
 ? Name.BDMux.720p
-? Name.BDRipMux.720p
-? Name.BRMux.720p
-? Name.BRRipMux.720p
 : title: Name
   format: BluRay
   other: Mux
+  screen_size: 720p
+  type: movie
+
+? Name.BRMux.720p
+: title: Name
+  format: BluRay
+  other: [ReEncoded, Mux]
+  screen_size: 720p
+  type: movie
+
+? Name.BDRipMux.720p
+: title: Name
+  format: BluRay
+  other: [Rip, Mux]
+  screen_size: 720p
+  type: movie
+
+? Name.BRRipMux.720p
+: title: Name
+  format: BluRay
+  other: [ReEncoded, Rip, Mux]
   screen_size: 720p
   type: movie
 
@@ -932,7 +950,7 @@
 ? Its.A.Wonderful.Life.1946.Colorized.720p.BRRip.999MB.MkvCage.com
 : title: Its A Wonderful Life
   year: 1946
-  other: Colorized
+  other: [Colorized, ReEncoded, Rip]
   screen_size: 720p
   format: BluRay
   size: 999MB
@@ -959,7 +977,7 @@
 ? Before.the.Flood.2016.DOCU.1080p.WEBRip.x264.DD5.1-FGT
 : title: Before the Flood
   year: 2016
-  other: Documentary
+  other: [Documentary, Rip]
   screen_size: 1080p
   format: WEBRip
   video_codec: h264
@@ -981,6 +999,7 @@
 : title: Suntan
   year: 2016
   edition: Festival
+  other: Rip
   format: DVD
   video_codec: h264
   release_group: IcHoR
@@ -988,7 +1007,7 @@
 
 ? Hardwired.STV.NFOFiX.FRENCH.DVDRiP.XviD-SURViVAL
 : title: Hardwired
-  other: [Straight to Video, Proper]
+  other: [Straight to Video, Proper, Rip]
   language: french
   format: DVD
   video_codec: XviD
@@ -998,7 +1017,7 @@
 
 ? Maze.Runner.The.Scorch.Trials.OM.2015.WEB-DLRip.by.Seven
 : title: Maze Runner The Scorch Trials
-  other: Open Matte
+  other: [Open Matte, Rip]
   year: 2015
   format: WEBRip
   release_group: Seven
@@ -1023,7 +1042,7 @@
 ? The.Last.Survivors.2014.PROOF.SAMPLE.FiX.BDRip.x264-TOPCAT
 : title: The Last Survivors
   year: 2014
-  other: Proper
+  other: [Proper, Rip]
   format: BluRay
   video_codec: h264
   release_group: TOPCAT
@@ -1059,6 +1078,7 @@
 : title: The Heartbreak Kid
   year: 1993
   edition: Uncut
+  other: Rip
   screen_size: 720p
   format: WEBRip
   video_codec: h264
@@ -1106,3 +1126,41 @@
   video_codec: h264
   release_group: BiPOLAR
   type: movie
+
+? The Rack (VHS) [1956] Paul Newman
+: title: The Rack
+  format: VHS
+  source: VHS
+  year: 1956
+  type: movie
+
+? Les.Magiciens.1976.VHSRip.XViD.MKO
+: title: Les Magiciens
+  year: 1976
+  format: VHS
+  source: VHS
+  other: Rip
+  video_codec: XviD
+  release_group: MKO
+  type: movie
+
+? The Boss Baby 2017 720p CAM x264 AC3 TiTAN
+: title: The Boss Baby
+  year: 2017
+  screen_size: 720p
+  format: Cam
+  source: Camera
+  video_codec: h264
+  audio_codec: AC3
+  release_group: TiTAN
+  type: movie
+
+? The.Boss.Baby.2017.HDCAM.XviD-MrGrey
+: title: The Boss Baby
+  year: 2017
+  format: Cam
+  source: Camera
+  video_codec: XviD
+  release_group: MrGrey
+  type: movie
+

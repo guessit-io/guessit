@@ -136,7 +136,7 @@ class TestYml(object):
     Use $ marker to check inputs that should not match results.
     """
 
-    options_re = re.compile(r'^([ \+-]+)(.*)')
+    options_re = re.compile(r'^([ +-]+)(.*)')
 
     files, ids = files_and_ids(filename_predicate)
 
@@ -274,10 +274,10 @@ class TestYml(object):
                             if negates_key:
                                 entry.valid.append((expected_key, expected_value))
                             else:
-                                entry.different.append((expected_key, expected_value, result[expected_key]))
+                                entry.different.append((expected_key, expected_value, result[result_key]))
                         else:
                             if negates_key:
-                                entry.different.append((expected_key, expected_value, result[expected_key]))
+                                entry.different.append((expected_key, expected_value, result[result_key]))
                             else:
                                 entry.valid.append((expected_key, expected_value))
                     elif not negates_key:
