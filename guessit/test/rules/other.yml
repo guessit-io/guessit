@@ -152,3 +152,6 @@
 
 ? CONVERT XViD
 : other: Converted
+
+? +HDRIP  # it's a Rip from non specified HD source
+: other: [HD, Rip]

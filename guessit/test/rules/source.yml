@@ -20,44 +20,60 @@
   other: Rip
 
 ? +Cam
-? +HDCam
-? +HD-Cam
 : source: Camera
   format: Cam
   -other: Rip
 
-? +HDCamRip
-? +HD-Cam.rip
 ? +CamRip
 ? +CaM Rip
 ? +Cam_Rip
 ? +cam.rip
 ? -Cam
+: source: Camera
+  format: Cam
+  other: Rip
+
+? +HDCam
+? +HD-Cam
+: source: HD Camera
+  format: Cam
+  -other: Rip
+
+? +HDCamRip
+? +HD-Cam.rip
 ? -HDCam
 ? -HD-Cam
-: source: Camera
+: source: HD Camera
   format: Cam
   other: Rip
 
 ? +Telesync
 ? +TS
-? +HD TS
-? -Hd.Ts # ts file extension
-? -HD.TS # ts file extension
-? +Hd-Ts
 : source: Telesync
   format: Telesync
   -other: Rip
 
 ? +TelesyncRip
 ? +TSRip
-? +HD TS Rip
-? +Hd-Ts-Rip
 ? -Telesync
 ? -TS
+: source: Telesync
+  format: Telesync
+  other: Rip
+
+? +HD TS
+? -Hd.Ts # ts file extension
+? -HD.TS # ts file extension
+? +Hd-Ts
+: source: HD Telesync
+  format: Telesync
+  -other: Rip
+
+? +HD TS Rip
+? +Hd-Ts-Rip
 ? -HD TS
 ? -Hd-Ts
-: source: Telesync
+: source: HD Telesync
   format: Telesync
   other: Rip
 
@@ -74,8 +90,8 @@
 ? +teleCine
 ? +TC
 ? -Tele Cine
-: format: Telecine
-  source: Telecine
+: source: Telecine
+  format: Telecine
   -other: Rip
 
 ? +Telecine Rip
@@ -83,19 +99,33 @@
 ? +TC-Rip
 ? -Telecine
 ? -TC
-: format: Telecine
-  source: Telecine
+: source: Telecine
+  format: Telecine
+  other: Rip
+
+? +HD-TELECINE
+? +HDTC
+: source: HD Telecine
+  format: HDTC
+  -other: Rip
+
+? +HD-TCRip
+? +HD TELECINE RIP
+? -HD-TELECINE
+? -HDTC
+: source: HD Telecine
+  format: HDTC
   other: Rip
 
 ? +PPV
-: format: PPV
-  source: PPV
+: source: Pay-per-view
+  format: PPV
   -other: Rip
 
 ? +ppv-rip
 ? -PPV
-: format: PPV
-  source: PPV
+: source: Pay-per-view
+  format: PPV
   other: Rip
 
 ? -TV
@@ -161,7 +191,7 @@
 
 ? +tv rip hd
 ? +HDtv Rip
-? +HdRip
+? -HdRip # it's a Rip from non specified HD source
 ? -HDTV
 : source: HDTV
   format: HDTV
@@ -183,21 +213,13 @@
 ? +Web Rip
 ? +webdlrip
 ? +web dl rip
-: source: WEB
-  format: WEBRip
-  other: Rip
-
 ? +webcap
 ? +web cap
-: source: WEB
-  format: WEBRip
-  other: Capped
-
 ? +webcaprip
 ? +web cap rip
 : source: WEB
   format: WEBRip
-  other: [Capped, Rip]
+  other: Rip
 
 ? +webdl
 ? +Web DL
@@ -287,17 +309,6 @@
 ? -dth
 : source: Satellite
   format: SATRip
-  other: Rip
-
-? +HDTC
-: source: HD Telecine
-  format: HDTC
-  -other: Rip
-
-? +HD-TCRip
-? -HDTC
-: source: HD Telecine
-  format: HDTC
   other: Rip
 
 ? +UHDTV

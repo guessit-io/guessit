@@ -989,7 +989,7 @@
 ? Zootopia.2016.HDRip.1.46Gb.Dub.MegaPeer
 : title: Zootopia
   year: 2016
-  format: HDTV
+  other: [HD, Rip]
   size: 1.46GB
   language: und
   release_group: MegaPeer
@@ -1159,7 +1159,7 @@
 : title: The Boss Baby
   year: 2017
   format: Cam
-  source: Camera
+  source: HD Camera
   video_codec: XviD
   release_group: MrGrey
   type: movie

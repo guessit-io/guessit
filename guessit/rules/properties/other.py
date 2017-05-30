@@ -5,7 +5,7 @@ other property
 """
 import copy
 
-from rebulk import Rebulk, Rule, RemoveMatch, POST_PROCESS, AppendMatch
+from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch, POST_PROCESS, AppendMatch
 from rebulk.remodule import re
 
 from ..common import dash
@@ -64,6 +64,8 @@ def other():
     rebulk.string('R5', 'RC', value='R5')
     rebulk.regex('Pre-?Air', value='Preair')
     rebulk.regex('(?:PS-?)?Vita', value='PS Vita')
+    rebulk.regex('(HD)(?P<another>Rip)', value={'other': 'HD', 'another': 'Rip'},
+                 private_parent=True, children=True, validator={'__parent__': seps_surround}, validate_all=True)
 
     for value in (
             'Screener', 'Remux', '3D', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC',
@@ -100,8 +102,9 @@ def other():
                   tags=['other.validate.mux', 'video-codec-prefix', 'source-suffix'])
     rebulk.string('HC', value='Hardcoded Subtitles')
 
-    rebulk.rules(ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore, ValidateScreenerRule,
-                 ValidateMuxRule, ValidateHardcodedSubs, ValidateStreamingServiceNeighbor, ProperCountRule)
+    rebulk.rules(RenameAnotherToOther, ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore,
+                 ValidateScreenerRule, ValidateMuxRule, ValidateHardcodedSubs, ValidateStreamingServiceNeighbor,
+                 ProperCountRule)
 
     return rebulk
 
@@ -126,6 +129,17 @@ class ProperCountRule(Rule):
             proper_count_match.name = 'proper_count'
             proper_count_match.value = len(raws)
             return proper_count_match
+
+
+class RenameAnotherToOther(Rule):
+    """
+    Rename `another` properties to `other`
+    """
+    priority = 32
+    consequence = RenameMatch('other')
+
+    def when(self, matches, context):
+        return matches.named('another')
 
 
 class ValidateHasNeighbor(Rule):

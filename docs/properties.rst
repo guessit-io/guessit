@@ -135,9 +135,9 @@ Video properties
 
   Source of the release
 
-  - ``Analogue HDTV``, ``BluRay``, ``Camera``, ``Digital TV``, ``DVD``, ``HD Telecine``, ``HD-DVD``, ``HDTV``,
-    ``PPV``, ``Satellite``, ``Telecine``, ``Telesync``, ``TV``, ``Ultra HDTV``, ``VHS``, ``Video on Demand``,
-    ``WEB``, ``Workprint``
+  - ``Analogue HDTV``, ``BluRay``, ``Camera``, ``Digital TV``, ``DVD``, ``HD Camera``, ``HD Telecine``, ``HD Telesync``,
+    ``HD-DVD``, ``HDTV``, ``Pay-per-view``, ``Satellite``, ``Telecine``, ``Telesync``, ``TV``, ``Ultra HDTV``, ``VHS``,
+    ``Video on Demand``, ``WEB``, ``Workprint``
 
 
 - **format**
