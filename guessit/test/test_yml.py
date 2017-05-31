@@ -207,8 +207,6 @@ class TestYml(object):
             options = {}
         if not isinstance(options, dict):
             options = parse_options(options)
-        if 'implicit' not in options:
-            options['implicit'] = True
         options['config'] = False
         options = load_config(options)
         try:

@@ -69,11 +69,11 @@ Usage
 GuessIt can be used from command line::
 
     $ guessit
-    usage: guessit [-h] [-c CONFIG] [-t TYPE] [-n] [-Y] [-D]
-                   [-L ALLOWED_LANGUAGES] [-C ALLOWED_COUNTRIES] [-E]
-                   [-T EXPECTED_TITLE] [-G EXPECTED_GROUP] [-f INPUT_FILE] [-v]
-                   [-P SHOW_PROPERTY] [-a] [-j] [-y] [-p] [-V] [--version]
-                   [filename [filename ...]]
+    usage: guessit [-h] [-t TYPE] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES]
+          [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE] [-G EXPECTED_GROUP]
+          [-f INPUT_FILE] [-v] [-P SHOW_PROPERTY] [-a] [-1] [-l] [-j] [-y]
+          [-c CONFIG] [--no-embedded-config] [-p] [-V] [--version]
+          [filename [filename ...]]
 
     positional arguments:
       filename              Filename or release name to guess
@@ -82,15 +82,6 @@ GuessIt can be used from command line::
       -h, --help            show this help message and exit
 
     Naming:
-      -c CONFIG, --config CONFIG
-                            Filepath to the configuration file. Configuration
-                            contains the same options as those command line
-                            options, but option names have "-" characters replaced
-                            with "_". If not defined, guessit tries to read a
-                            configuration default configuration file at
-                            ~/.guessit/options.(json|yml|yaml) and
-                            ~/.config/guessit/options.(json|yml|yaml). Set to
-                            "false" to disable default configuration file loading.
       -t TYPE, --type TYPE  The suggested file type: movie, episode. If undefined,
                             type will be guessed.
       -n, --name-only       Parse files as name only, considering "/" and "\" like
@@ -124,10 +115,25 @@ GuessIt can be used from command line::
                             video_codec, year, ...)
       -a, --advanced        Display advanced information for filename guesses, as
                             json output
+      -s, --first-value     Keep only first found value for each property
+      -l, --enforce-list    Wrap each found value in a list even when property has
+                            a single value
       -j, --json            Display information for filename guesses as json
                             output
       -y, --yaml            Display information for filename guesses as yaml
                             output
+
+    Configuration:
+      -c CONFIG, --config CONFIG
+                            Filepath to the configuration file. Configuration
+                            contains the same options as those command line
+                            options, but option names have "-" characters replaced
+                            with "_". If not defined, guessit tries to read a
+                            configuration default configuration file at
+                            ~/.guessit/options.(json|yml|yaml) and
+                            ~/.config/guessit/options.(json|yml|yaml). Set to
+                            "false" to disable default configuration file loading.
+      --no-embedded-config  Disable default configuration.
 
     Information:
       -p, --properties      Display properties that can be guessed.
