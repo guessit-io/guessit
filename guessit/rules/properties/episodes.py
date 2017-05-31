@@ -98,7 +98,7 @@ def episodes():
         episode/season separated by a weak discrete separator should be consecutive, unless a strong discrete separator
         or a range separator is present in the chain (1.3&5 is valid, but 1.3-5 is not valid and 1.3.5 is not valid)
         """
-        values = match.children.to_dict(implicit=True)
+        values = match.children.to_dict()
         if 'season' in values and is_iterable(values['season']):
             # Season numbers must be in natural order to be validated.
             if not list(sorted(values['season'])) == values['season']:

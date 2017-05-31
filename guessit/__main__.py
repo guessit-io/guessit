@@ -33,8 +33,6 @@ def guess_filename(filename, options):
     if not options.get('yaml') and not options.get('json') and not options.get('show_property'):
         print('For:', filename)
 
-    options['implicit'] = True  # Force implicit option in CLI
-
     guess = api.guessit(filename, options)
 
     if options.get('show_property'):

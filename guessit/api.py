@@ -126,7 +126,8 @@ class GuessItApi(object):
                 for match in matches:
                     if isinstance(match.value, six.text_type):
                         match.value = match.value.encode("ascii")
-            return matches.to_dict(options.get('advanced', False), options.get('implicit', False))
+            return matches.to_dict(options.get('advanced', False), options.get('single_value', False),
+                                   options.get('enforce_list', False))
         except:
             raise GuessitException(string, options)
 
