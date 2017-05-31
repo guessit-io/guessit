@@ -111,7 +111,7 @@
 ? Movies/Blade Runner (1982)/Blade.Runner.(1982).(Director's.Cut).CD1.DVDRip.XviD.AC3-WAF.avi
 : title: Blade Runner
   year: 1982
-  edition: Director's cut
+  edition: Director's Cut
   cd: 1
   format: DVD
   video_codec: XviD
@@ -147,7 +147,8 @@
   format: DVD
   video_codec: XviD
   release_group: ARROW
-  other: ['Proper', 'Limited']
+  other: Proper
+  edition: Limited Edition
   proper_count: 1
 
 ? Movies/Fr - Paris 2054, Renaissance (2005) - De Christian Volckman - (Film Divx Science Fiction Fantastique Thriller Policier N&B).avi
@@ -363,7 +364,7 @@
   video_codec: h264
   release_group: AN0NYM0US[bb]
   format: BluRay
-  other: Limited
+  edition: Limited Edition
 
 ? movies/La Science des Rêves (2006)/La.Science.Des.Reves.FRENCH.DVDRip.XviD-MP-AceBot.avi
 : title: La Science des Rêves
@@ -688,20 +689,18 @@
 
 ? h265 - HEVC Riddick Unrated Director Cut French 1080p DTS.mkv
 : audio_codec: DTS
-  edition: Director's cut
+  edition: [Unrated, Director's Cut]
   language: fr
   screen_size: 1080p
   title: Riddick
-  other: Unrated
   video_codec: h265
 
 ? "[h265 - HEVC] Riddick Unrated Director Cut French [1080p DTS].mkv"
 : audio_codec: DTS
-  edition: Director's cut
+  edition: [Unrated, Director's Cut]
   language: fr
   screen_size: 1080p
   title: Riddick
-  other: Unrated
   video_codec: h265
 
 ? Barbecue-2014-French-mHD-1080p
@@ -892,7 +891,8 @@
 
 ? Suicide Squad EXTENDED (2016) 2160p 4K UltraHD Blu-Ray x265 (HEVC 10bit BT709) Dolby Atmos 7.1 -DDR
 : title: Suicide Squad
-  other: [Extended, UltraHD]
+  edition: Extended
+  other: UltraHD
   year: 2016
   screen_size: 4K
   format: BluRay
@@ -906,7 +906,7 @@
 ? Queen - A Kind of Magic (Alternative Extended Version) 2CD 2014
 : title: Queen
   alternative_title: A Kind of Magic
-  other: [Alternative Cut, Extended]
+  edition: [Alternative Cut, Extended]
   cd_count: 2
   year: 2014
   type: movie
@@ -914,7 +914,7 @@
 ? Jour.de.Fete.1949.ALTERNATiVE.CUT.1080p.BluRay.x264-SADPANDA[rarbg]
 : title: Jour de Fete
   year: 1949
-  other: Alternative Cut
+  edition: Alternative Cut
   screen_size: 1080p
   format: BluRay
   video_codec: h264
@@ -941,7 +941,7 @@
 
 ? Alien DC (1979) [1080p]
 : title: Alien
-  edition: Director's cut
+  edition: Director's Cut
   year: 1979
   screen_size: 1080p
   type: movie
@@ -949,7 +949,7 @@
 ? Requiem.For.A.Dream.2000.DC.1080p.BluRay.x264.anoXmous
 : title: Requiem For A Dream
   year: 2000
-  edition: Director's cut
+  edition: Director's Cut
   screen_size: 1080p
   format: BluRay
   video_codec: h264
@@ -980,7 +980,7 @@
 ? Suntan.2016.FESTiVAL.DVDRip.x264-IcHoR
 : title: Suntan
   year: 2016
-  other: Festival
+  edition: Festival
   format: DVD
   video_codec: h264
   release_group: IcHoR
@@ -1058,7 +1058,7 @@
 ? The Heartbreak Kid (1993) UNCUT 720p WEBRip x264
 : title: The Heartbreak Kid
   year: 1993
-  other: Uncut
+  edition: Uncut
   screen_size: 720p
   format: WEBRip
   video_codec: h264
@@ -1096,4 +1096,13 @@
   title: 007 Spectre
   format: HDTC
   language: French
+  type: movie
+
+? We.Are.X.2016.LIMITED.BDRip.x264-BiPOLAR
+: title: We Are X
+  year: 2016
+  edition: Limited Edition
+  format: BluRay
+  video_codec: h264
+  release_group: BiPOLAR
   type: movie

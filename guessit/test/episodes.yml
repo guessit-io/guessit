@@ -1167,7 +1167,7 @@
   audio_codec: AAC
   date: 2015-07-01
   format: WEBRip
-  other: Extended
+  edition: Extended
   release_group: BTW
   screen_size: 720p
   streaming_service: Comedy Central
@@ -2250,7 +2250,7 @@
 : title: Show Name
   date: 2016-09-28
   episode_title: Nice Title
-  other: Extended
+  edition: Extended
   screen_size: 1080p
   streaming_service: Comedy Central
   format: WEBRip
@@ -3662,7 +3662,7 @@
   season: 1
   episode: 1
   episode_title: Spark of Rebellion
-  other: Alternative Cut
+  edition: Alternative Cut
   format: HDTV
   video_codec: h264
   release_group: W4F
@@ -3758,7 +3758,7 @@
 ? Rick and Morty Season 1 [UNCENSORED] [BDRip] [1080p] [HEVC]
 : title: Rick and Morty
   season: 1
-  other: Uncensored
+  edition: Uncensored
   format: BluRay
   screen_size: 1080p
   video_codec: h265

@@ -66,7 +66,7 @@ def other():
     rebulk.regex('(?:PS-?)?Vita', value='PS Vita')
 
     for value in (
-            'Screener', 'Remux', 'Remastered', '3D', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC',
+            'Screener', 'Remux', '3D', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC',
             'CC', 'LD', 'MD', 'XXX'):
         rebulk.string(value, value=value)
 
@@ -78,18 +78,15 @@ def other():
     rebulk.regex('Ultra-?(?:HD)?', 'UHD', value='UltraHD', validator=None,
                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
 
-    for value in ('Limited', 'Complete', 'Classic', 'Unrated', 'LiNE', 'Bonus', 'Trailer', 'FINAL', 'Retail', 'Uncut',
-                  'Extended', 'Extended Cut', 'Colorized', 'Internal', 'Uncensored'):
+    for value in ('Complete', 'Classic', 'LiNE', 'Bonus', 'Trailer', 'FINAL', 'Retail',
+                  'Colorized', 'Internal'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
-    rebulk.regex('Extended-?version', value='Extended', tags=['has-neighbor', 'release-group-prefix'])
-    rebulk.regex('Alternat(e|ive)(?:-?Cut)?', value='Alternative Cut', tags=['has-neighbor', 'release-group-prefix'])
     rebulk.regex('Read-?NFO', value='Read NFO')
     rebulk.string('CONVERT', value='Converted', tags='has-neighbor')
     rebulk.string('DOCU', value='Documentary', tags='has-neighbor')
     rebulk.string('OM', value='Open Matte', tags='has-neighbor')
     rebulk.string('STV', value='Straight to Video', tags='has-neighbor')
     rebulk.string('OAR', value='Original Aspect Ratio', tags='has-neighbor')
-    rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
     rebulk.string('Complet', value='Complete', tags=['has-neighbor', 'release-group-prefix'])
 
     for coast in ('East', 'West'):
