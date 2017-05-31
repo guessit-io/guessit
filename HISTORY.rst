@@ -1,7 +1,7 @@
 History
 =======
 
-2.1.3 (unreleased)
+2.1.3 (2017-05-31)
 ------------------
 
 - Add `nzb` as new `container` possible value
