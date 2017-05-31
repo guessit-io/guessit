@@ -3,7 +3,7 @@
   title: Fear and Loathing in Las Vegas
   year: 1998
   screen_size: 720p
-  format: HD-DVD
+  source: HD-DVD
   audio_codec: DTS
   video_codec: h264
   release_group: ESiR
@@ -36,7 +36,8 @@
   episode_format: Minisode
   episode: 1
   episode_title: Good Cop Bad Cop
-  format: WEBRip
+  source: WEB
+  other: Rip
   video_codec: XviD
 
 ? Series/Kaamelott/Kaamelott - Livre V - Ep 23 - Le Forfait.avi
@@ -50,7 +51,7 @@
   title: The Doors
   year: 1991
   date: 2008-03-09
-  format: BluRay
+  source: Blu-ray
   screen_size: 720p
   audio_codec: AC3
   video_codec: h264
@@ -63,14 +64,15 @@
   title: MASH
   year: 1970
   video_codec: DivX
-  format: DVD
+  source: DVD
+  other: [DualAudio, Rip]
 
 ? the.mentalist.501.hdtv-lol.mp4
 : type: episode
   title: the mentalist
   season: 5
   episode: 1
-  format: HDTV
+  source: HDTV
   release_group: lol
 
 ? the.simpsons.2401.hdtv-lol.mp4
@@ -78,7 +80,7 @@
   title: the simpsons
   season: 24
   episode: 1
-  format: HDTV
+  source: HDTV
   release_group: lol
 
 ? Homeland.S02E01.HDTV.x264-EVOLVE.mp4
@@ -86,7 +88,7 @@
   title: Homeland
   season: 2
   episode: 1
-  format: HDTV
+  source: HDTV
   video_codec: h264
   release_group: EVOLVE
 
@@ -115,7 +117,7 @@
   title: new girl
   season: 1
   episode: 17
-  format: HDTV
+  source: HDTV
   release_group: lol
 
 ? The.Office.(US).1x03.Health.Care.HDTV.XviD-LOL.avi
@@ -125,7 +127,7 @@
   season: 1
   episode: 3
   episode_title: Health Care
-  format: HDTV
+  source: HDTV
   video_codec: XviD
   release_group: LOL
 
@@ -154,7 +156,7 @@
   season: 56
   episode: 6
   screen_size: 720p
-  format: HDTV
+  source: HDTV
   video_codec: h264
 
 ? White.House.Down.2013.1080p.BluRay.DTS-HD.MA.5.1.x264-PublicHD.mkv
@@ -162,7 +164,7 @@
   title: White House Down
   year: 2013
   screen_size: 1080p
-  format: BluRay
+  source: Blu-ray
   audio_codec: DTS
   audio_profile: HDMA
   video_codec: h264
@@ -174,7 +176,7 @@
   title: White House Down
   year: 2013
   screen_size: 1080p
-  format: BluRay
+  source: Blu-ray
   audio_codec: DTS
   audio_profile: HDMA
   video_codec: h264
@@ -188,7 +190,7 @@
   season: 1
   episode: 1
   screen_size: 720p
-  format: WEB-DL
+  source: WEB
   audio_channels: "5.1"
   video_codec: h264
   audio_codec: AC3
@@ -199,14 +201,15 @@
   title: Despicable Me 2
   year: 2013
   screen_size: 1080p
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   release_group: VeDeTT
 
 ? Le Cinquieme Commando 1971 SUBFORCED FRENCH DVDRiP XViD AC3 Bandix.mkv
 : type: movie
   audio_codec: AC3
-  format: DVD
+  source: DVD
+  other: Rip
   release_group: Bandix
   subtitle_language: French
   title: Le Cinquieme Commando
@@ -215,8 +218,9 @@
 
 ? Le Seigneur des Anneaux - La Communauté de l'Anneau - Version Longue - BDRip.mkv
 : type: movie
-  format: BluRay
   title: Le Seigneur des Anneaux
+  source: Blu-ray
+  other: Rip
 
 ? La petite bande (Michel Deville - 1983) VF PAL MP4 x264 AAC.mkv
 : type: movie
@@ -229,7 +233,7 @@
 
 ? Retour de Flammes (Gregor Schnitzler 2003) FULL DVD.iso
 : type: movie
-  format: DVD
+  source: DVD
   title: Retour de Flammes
   type: movie
   year: 2003
@@ -259,7 +263,7 @@
   episode_title: Christmas Special
   video_codec: h264
   release_group: FoV
-  format: HDTV
+  source: HDTV
   episode_details: Special
 
 ? Doctor_Who_2013_Christmas_Special.The_Time_of_The_Doctor.HD
@@ -280,7 +284,7 @@
 ? Robot Chicken S06-Born Again Virgin Christmas Special HDTV x264.avi
 : type: episode
   title: Robot Chicken
-  format: HDTV
+  source: HDTV
   season: 6
   episode_title: Born Again Virgin Christmas Special
   video_codec: h264
@@ -294,13 +298,13 @@
   season: 3
   episode: 0
   video_codec: h264
-  format: HDTV
+  source: HDTV
   episode_details: Special
 
 ? The.Voice.UK.S03E12.HDTV.x264-C4TV
 : episode: 12
   video_codec: h264
-  format: HDTV
+  source: HDTV
   title: The Voice
   release_group: C4TV
   season: 3
@@ -317,7 +321,7 @@
 
 ? FlexGet.S01E02.TheName.HDTV.xvid
 : episode: 2
-  format: HDTV
+  source: HDTV
   season: 1
   title: FlexGet
   episode_title: TheName
@@ -326,7 +330,7 @@
 
 ? FlexGet.S01E02.TheName.HDTV.xvid
 : episode: 2
-  format: HDTV
+  source: HDTV
   season: 1
   title: FlexGet
   episode_title: TheName
@@ -362,7 +366,7 @@
 ? Something.Season.2.1of4.Ep.Title.HDTV.torrent
 : episode_count: 4
   episode: 1
-  format: HDTV
+  source: HDTV
   season: 2
   title: Something
   episode_title: Title
@@ -372,7 +376,7 @@
 ? Show-A (US) - Episode Title S02E09 hdtv
 : country: US
   episode: 9
-  format: HDTV
+  source: HDTV
   season: 2
   title: Show-A
   type: episode
@@ -402,7 +406,8 @@
   type: movie
 
 ? Movies/El Bosque Animado (1987)/El.Bosque.Animado.[Jose.Luis.Cuerda.1987].[Xvid-Dvdrip-720 * 432].avi
-: format: DVD
+: source: DVD
+  other: Rip
   screen_size: 720x432
   title: El Bosque Animado
   video_codec: XviD
@@ -410,7 +415,8 @@
   type: movie
 
 ? Movies/El Bosque Animado (1987)/El.Bosque.Animado.[Jose.Luis.Cuerda.1987].[Xvid-Dvdrip-720x432].avi
-: format: DVD
+: source: DVD
+  other: Rip
   screen_size: 720x432
   title: El Bosque Animado
   video_codec: XviD
@@ -418,7 +424,7 @@
   type: movie
 
 ? 2009.shoot.fruit.chan.multi.dvd9.pal
-: format: DVD
+: source: DVD
   language: mul
   other: PAL
   title: shoot fruit chan
@@ -426,7 +432,7 @@
   year: 2009
 
 ? 2009.shoot.fruit.chan.multi.dvd5.pal
-: format: DVD
+: source: DVD
   language: mul
   other: PAL
   title: shoot fruit chan
@@ -435,7 +441,7 @@
 
 ? The.Flash.2014.S01E01.PREAIR.WEBRip.XviD-EVO.avi
 : episode: 1
-  format: WEBRip
+  source: WEB
   other: [Preair, Rip]
   release_group: EVO
   season: 1
@@ -446,7 +452,7 @@
 
 ? Ice.Lake.Rebels.S01E06.Ice.Lake.Games.720p.HDTV.x264-DHD
 : episode: 6
-  format: HDTV
+  source: HDTV
   release_group: DHD
   screen_size: 720p
   season: 1
@@ -463,7 +469,7 @@
   type: episode
 
 ? Stay (2005) [1080p]/Stay.2005.1080p.BluRay.x264.YIFY.mp4
-: format: BluRay
+: source: Blu-ray
   release_group: YIFY
   screen_size: 1080p
   title: Stay
@@ -472,7 +478,7 @@
   year: 2005
 
 ? /media/live/A/Anger.Management.S02E82.720p.HDTV.X264-DIMENSION.mkv
-: format: HDTV
+: source: HDTV
   release_group: DIMENSION
   screen_size: 720p
   title: Anger Management
@@ -492,7 +498,7 @@
 ? Game.of.Thrones.S05E07.720p.HDTV-KILLERS.mkv
 : type: episode
   episode: 7
-  format: HDTV
+  source: HDTV
   release_group: KILLERS
   screen_size: 720p
   season: 5
@@ -501,7 +507,7 @@
 ? Game.of.Thrones.S05E07.HDTV.720p-KILLERS.mkv
 : type: episode
   episode: 7
-  format: HDTV
+  source: HDTV
   release_group: KILLERS
   screen_size: 720p
   season: 5
@@ -519,7 +525,7 @@
   title: Star Trek Into Darkness
   year: 2013
   screen_size: 720p
-  format: WEB-DL
+  source: WEB
   video_codec: h264
   release_group: publichd
 
@@ -529,7 +535,7 @@
   season: 2
   episode: 15
   screen_size: 720p
-  format: HDTV
+  source: HDTV
   video_codec: h264
   release_group: DIMENSION
 
@@ -548,7 +554,8 @@
 : audio_channels: '5.1'
   audio_codec: AC3
   episode: 2
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 4K
   season: 1
@@ -559,7 +566,8 @@
 
 ? TEST.2015.12.30.720p.WEBRip.h264-ABC
 : date: 2015-12-30
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 720p
   title: TEST
@@ -571,7 +579,8 @@
   audio_codec: AAC
   episode: 10
   episode_title: '24'
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 1080p
   season: 1
@@ -585,7 +594,8 @@
   audio_codec: AAC
   episode: 10
   episode_title: '24'
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 1080p
   season: 1
@@ -599,7 +609,8 @@
   audio_codec: AAC
   episode: 10
   episode_title: '24'
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 1080p
   season: 1
@@ -612,7 +623,8 @@
 : audio_channels: '2.0'
   audio_codec: AAC
   episode: 2
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 720p
   season: 5
@@ -624,7 +636,8 @@
 : audio_channels: '2.0'
   audio_codec: AAC
   episode: 7
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 720p
   season: 3
@@ -637,7 +650,8 @@
   audio_codec: AAC
   episode: 15
   episode_title: '24'
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 1080p
   season: 15
@@ -650,7 +664,8 @@
   audio_codec: AAC
   episode: 11
   episode_title: '24'
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 720p
   season: 11
@@ -661,7 +676,8 @@
 ? TEST.2015.1080p.HC.WEBRip.x264.AAC2.0-ABC
 : audio_channels: '2.0'
   audio_codec: AAC
-  format: WEBRip
+  source: WEB
+  other: Rip
   release_group: ABC
   screen_size: 1080p
   title: TEST
@@ -673,7 +689,7 @@
 : audio_channels: '7.1'
   audio_codec: DTS
   audio_profile: HDMA
-  format: BluRay
+  source: Blu-ray
   other: 3D
   release_group: ABC
   screen_size: 1080p
@@ -686,7 +702,7 @@
 : audio_channels: '7.1'
   audio_codec: DTS
   audio_profile: HDMA
-  format: BluRay
+  source: Blu-ray
   other: 3D
   release_group: ABC
   screen_size: 1080p
@@ -702,7 +718,7 @@
   - TrueHD
   - DolbyAtmos
   audio_profile: HDMA
-  format: BluRay
+  source: Blu-ray
   other: 3D
   release_group: ABC
   screen_size: 1080p
@@ -718,7 +734,7 @@
   - TrueHD
   - DolbyAtmos
   audio_profile: HDMA
-  format: BluRay
+  source: Blu-ray
   other: 3D
   release_group: ABC
   screen_size: 1080p
@@ -734,7 +750,7 @@
   - TrueHD
   - DolbyAtmos
   audio_profile: HDMA
-  format: BluRay
+  source: Blu-ray
   other: Remux
   release_group: ABC
   screen_size: 1080p
@@ -743,7 +759,7 @@
   year: 2015
 
 ? Gangs of New York 2002 REMASTERED 1080p BluRay x264-AVCHD
-: format: BluRay
+: source: Blu-ray
   edition: Remastered
   screen_size: 1080p
   title: Gangs of New York
@@ -754,7 +770,8 @@
 ? Peep.Show.S06E02.DVDrip.x264-faks86.mkv
 : container: mkv
   episode: 2
-  format: DVD
+  source: DVD
+  other: Rip
   release_group: faks86
   season: 6
   title: Peep Show
@@ -774,7 +791,7 @@
 ? Red.Rock.S02E59.WEB-DLx264-JIVE
 : episode: 59
   season: 2
-  format: WEB-DL
+  source: WEB
   release_group: JIVE
   title: Red Rock
   type: episode
@@ -784,7 +801,7 @@
 : episode: 31
   episode_title: Deals On Wheels
   season: 12
-  format: DVB
+  source: Digital TV
   release_group: JIVE
   title: Pawn Stars
   type: episode
@@ -794,7 +811,7 @@
 : episode: 9
   episode_title: Van He-llsing
   season: 9
-  format: HDTV
+  source: HDTV
   release_group: JIVE
   title: Duck Dynasty
   type: episode

@@ -449,4 +449,4 @@ class SubtitleExtensionRule(Rule):
         if subtitle_extension:
             subtitle_lang = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
             if subtitle_lang:
-                return matches.conflicting(subtitle_lang, lambda m: m.name in ('source', 'format')), subtitle_lang
+                return matches.conflicting(subtitle_lang, lambda m: m.name == 'source'), subtitle_lang

@@ -17,7 +17,7 @@ def source():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash], children=True)
+    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash], private_parent=True, children=True)
     rebulk.defaults(name='source', tags=['video-codec-prefix', 'streaming_service.suffix'])
 
     rip_prefix = '(?P<other>Rip)-?'
@@ -25,12 +25,11 @@ def source():
     rip_optional_suffix = '(?:' + rip_suffix + ')?'
 
     def build_source_pattern(*patterns, **kwargs):
-        """Build source pattern keeping the legacy format property."""
-        source_format = '((?P<format>{0}))'
+        """Helper pattern to build source pattern."""
         prefix_format = kwargs.get('prefix') or ''
         suffix_format = kwargs.get('suffix') or ''
 
-        string_format = prefix_format + source_format + suffix_format
+        string_format = prefix_format + '({0})' + suffix_format
         return [string_format.format(pattern) for pattern in patterns]
 
     def demote_other(match, other):  # pylint: disable=unused-argument
@@ -38,74 +37,74 @@ def source():
         return other if other.name == 'other' else '__default__'
 
     rebulk.regex(*build_source_pattern('VHS', suffix=rip_optional_suffix),
-                 value={'format': 'VHS', 'source': 'VHS', 'other': 'Rip'})
+                 value={'source': 'VHS', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('CAM', suffix=rip_optional_suffix),
-                 value={'format': 'Cam', 'source': 'Camera', 'other': 'Rip'})
+                 value={'source': 'Camera', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('HD-?CAM', suffix=rip_optional_suffix),
-                 value={'format': 'Cam', 'source': 'HD Camera', 'other': 'Rip'})
+                 value={'source': 'HD Camera', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('TELESYNC', 'TS', suffix=rip_optional_suffix),
-                 value={'format': 'Telesync', 'source': 'Telesync', 'other': 'Rip'})
+                 value={'source': 'Telesync', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('HD-?TELESYNC', 'HD-?TS', suffix=rip_optional_suffix),
-                 value={'format': 'Telesync', 'source': 'HD Telesync', 'other': 'Rip'})
+                 value={'source': 'HD Telesync', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('WORKPRINT', 'WP'), value='Workprint')
     rebulk.regex(*build_source_pattern('TELECINE', 'TC', suffix=rip_optional_suffix),
-                 value={'format': 'Telecine', 'source': 'Telecine', 'other': 'Rip'})
+                 value={'source': 'Telecine', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('HD-?TELECINE', 'HD-?TC', suffix=rip_optional_suffix),
-                 value={'format': 'HDTC', 'source': 'HD Telecine', 'other': 'Rip'})
+                 value={'source': 'HD Telecine', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('PPV', suffix=rip_optional_suffix),
-                 value={'format': 'PPV', 'source': 'Pay-per-view', 'other': 'Rip'})
+                 value={'source': 'Pay-per-view', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('SD-?TV', suffix=rip_optional_suffix),
-                 value={'format': 'TV', 'source': 'TV', 'other': 'Rip'})
+                 value={'source': 'TV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('TV', suffix=rip_suffix),  # TV is too common to allow matching
-                 value={'format': 'TV', 'source': 'TV', 'other': 'Rip'})
+                 value={'source': 'TV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('TV', 'SD-?TV', prefix=rip_prefix),
-                 value={'format': 'TV', 'source': 'TV', 'other': 'Rip'})
+                 value={'source': 'TV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('TV-?(?=Dub)'), value='TV')
     rebulk.regex(*build_source_pattern('DVB', 'PD-?TV', suffix=rip_optional_suffix),
-                 value={'format': 'DVB', 'source': 'Digital TV', 'other': 'Rip'})
+                 value={'source': 'Digital TV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('DVD', suffix=rip_optional_suffix),
-                 value={'format': 'DVD', 'source': 'DVD', 'other': 'Rip'})
+                 value={'source': 'DVD', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('VIDEO-?TS', 'DVD-?R(?:$|(?!E))',  # 'DVD-?R(?:$|^E)' => DVD-Real ...
-                                       'DVD-?9', 'DVD-?5'), value={'format': 'DVD', 'source': 'DVD'})
+                                       'DVD-?9', 'DVD-?5'), value='DVD')
 
     rebulk.regex(*build_source_pattern('HD-?TV', suffix=rip_optional_suffix), conflict_solver=demote_other,
-                 value={'format': 'HDTV', 'source': 'HDTV', 'other': 'Rip'})
+                 value={'source': 'HDTV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('TV-?HD', suffix=rip_suffix), conflict_solver=demote_other,
-                 value={'format': 'HDTV', 'source': 'HDTV', 'other': 'Rip'})
+                 value={'source': 'HDTV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('TV', suffix='-?(?P<other>Rip-?HD)'), conflict_solver=demote_other,
-                 value={'format': 'HDTV', 'source': 'HDTV', 'other': 'Rip'})
+                 value={'source': 'HDTV', 'other': 'Rip'})
 
     rebulk.regex(*build_source_pattern('VOD', suffix=rip_optional_suffix),
-                 value={'format': 'VOD', 'source': 'Video on Demand', 'other': 'Rip'})
+                 value={'source': 'Video on Demand', 'other': 'Rip'})
 
     rebulk.regex(*build_source_pattern('WEB', 'WEB-?DL', suffix=rip_suffix),
-                 value={'format': 'WEBRip', 'source': 'WEB', 'other': 'Rip'})
+                 value={'source': 'WEB', 'other': 'Rip'})
     # WEBCap is a synonym to WEBRip, mostly used by non english
     rebulk.regex(*build_source_pattern('WEB-?(?P<another>Cap)', suffix=rip_optional_suffix),
-                 value={'format': 'WEBRip', 'source': 'WEB', 'other': 'Rip', 'another': 'Rip'})
+                 value={'source': 'WEB', 'other': 'Rip', 'another': 'Rip'})
     rebulk.regex(*build_source_pattern('WEB-?DL', 'WEB-?HD', 'WEB', 'DL-?WEB', 'DL(?=-?Mux)'),
-                 value={'format': 'WEB-DL', 'source': 'WEB'})
+                 value={'source': 'WEB'})
 
     rebulk.regex(*build_source_pattern('HD-?DVD', suffix=rip_optional_suffix),
-                 value={'format': 'HD-DVD', 'source': 'HD-DVD', 'other': 'Rip'})
+                 value={'source': 'HD-DVD', 'other': 'Rip'})
 
     rebulk.regex(*build_source_pattern('Blu-?ray', 'BD', 'BD[59]', 'BD25', 'BD50', suffix=rip_optional_suffix),
-                 value={'format': 'BluRay', 'source': 'BluRay', 'other': 'Rip'})
+                 value={'source': 'Blu-ray', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('(?P<another>BR)-?(?=Scr(?:eener)?)', '(?P<another>BR)-?(?=Mux)'),  # BRRip
-                 value={'format': 'BluRay', 'source': 'BluRay', 'another': 'ReEncoded'})
+                 value={'source': 'Blu-ray', 'another': 'ReEncoded'})
     rebulk.regex(*build_source_pattern('(?P<another>BR)', suffix=rip_suffix),  # BRRip
-                 value={'format': 'BluRay', 'source': 'BluRay', 'other': 'Rip', 'another': 'ReEncoded'})
+                 value={'source': 'Blu-ray', 'other': 'Rip', 'another': 'ReEncoded'})
 
-    rebulk.regex(*build_source_pattern('AHDTV'), value={'format': 'AHDTV', 'source': 'Analogue HDTV'})
+    rebulk.regex(*build_source_pattern('AHDTV'), value='Analogue HDTV')
     rebulk.regex(*build_source_pattern('UHD-?TV', suffix=rip_optional_suffix), conflict_solver=demote_other,
-                 value={'format': 'UHDTV', 'source': 'Ultra HDTV', 'other': 'Rip'})
+                 value={'source': 'Ultra HDTV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('UHD', suffix=rip_suffix), conflict_solver=demote_other,
-                 value={'format': 'UHDTV', 'source': 'Ultra HDTV', 'other': 'Rip'})
+                 value={'source': 'Ultra HDTV', 'other': 'Rip'})
 
     rebulk.regex(*build_source_pattern('DSR', 'DTH', suffix=rip_optional_suffix),
-                 value={'format': 'SATRip', 'source': 'Satellite', 'other': 'Rip'})
+                 value={'source': 'Satellite', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('DSR?', 'SAT', suffix=rip_suffix),
-                 value={'format': 'SATRip', 'source': 'Satellite', 'other': 'Rip'})
+                 value={'source': 'Satellite', 'other': 'Rip'})
 
     rebulk.rules(ValidateSource)
 

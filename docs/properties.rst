@@ -140,14 +140,6 @@ Video properties
     ``Video on Demand``, ``WEB``, ``Workprint``
 
 
-- **format**
-
-  Format of the initial source
-
-  - ``AHDTV``, ``BluRay``, ``Cam``, ``DVB``, ``DVD``, ``HD-DVD``, ``HDTC``, ``HDTV``, ``PPV``, ``SATRip``, ``Telecine``,
-    ``Telesync``, ``TV``, ``UHDTV``, ``VHS``, ``VOD``, ``WEB-DL``, ``WEBRip``, ``Workprint``
-
-
 - **screen_size**
 
   Resolution of video.

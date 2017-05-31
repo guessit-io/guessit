@@ -156,7 +156,7 @@
 
 ? Show.Name.Season.1.3&5.HDTV.XviD-GoodGroup[SomeTrash]
 ? Show.Name.Season.1.3 and 5.HDTV.XviD-GoodGroup[SomeTrash]
-: format: HDTV
+: source: HDTV
   release_group: GoodGroup[SomeTrash]
   season:
   - 1
@@ -169,7 +169,7 @@
 ? Show.Name.Season.1.2.3-5.HDTV.XviD-GoodGroup[SomeTrash]
 ? Show.Name.Season.1.2.3~5.HDTV.XviD-GoodGroup[SomeTrash]
 ? Show.Name.Season.1.2.3 to 5.HDTV.XviD-GoodGroup[SomeTrash]
-: format: HDTV
+: source: HDTV
   release_group: GoodGroup[SomeTrash]
   season:
   - 1
@@ -183,7 +183,8 @@
 
 ? The.Get.Down.S01EP01.FRENCH.720p.WEBRIP.XVID-STR
 : episode: 1
-  format: WEBRip
+  source: WEB
+  other: Rip
   language: fr
   release_group: STR
   screen_size: 720p

@@ -215,7 +215,7 @@ class ValidateScreenerRule(Rule):
     def when(self, matches, context):
         ret = []
         for screener in matches.named('other', lambda match: 'other.validate.screener' in match.tags):
-            source_match = matches.previous(screener, lambda match: match.initiator.name in ('source', 'format'), 0)
+            source_match = matches.previous(screener, lambda match: match.initiator.name == 'source', 0)
             if not source_match or matches.input_string[source_match.end:screener.start].strip(seps):
                 ret.append(screener)
         return ret
@@ -231,7 +231,7 @@ class ValidateMuxRule(Rule):
     def when(self, matches, context):
         ret = []
         for mux in matches.named('other', lambda match: 'other.validate.mux' in match.tags):
-            source_match = matches.previous(mux, lambda match: match.initiator.name in ('source', 'format'), 0)
+            source_match = matches.previous(mux, lambda match: match.initiator.name == 'source', 0)
             if not source_match:
                 ret.append(mux)
         return ret

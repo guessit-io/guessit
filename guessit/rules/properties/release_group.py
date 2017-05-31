@@ -61,9 +61,9 @@ def clean_groupname(string):
     return string
 
 
-_scene_previous_names = ('video_codec', 'format', 'video_api', 'audio_codec', 'audio_profile', 'video_profile',
+_scene_previous_names = ('video_codec', 'source', 'video_api', 'audio_codec', 'audio_profile', 'video_profile',
                          'audio_channels', 'screen_size', 'other', 'container', 'language', 'subtitle_language',
-                         'subtitle_language.suffix', 'subtitle_language.prefix', 'language.suffix', 'source')
+                         'subtitle_language.suffix', 'subtitle_language.prefix', 'language.suffix')
 
 _scene_previous_tags = ('release-group-prefix', )
 

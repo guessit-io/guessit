@@ -6,7 +6,6 @@
 ? -VH
 ? -VHx
 : source: VHS
-  format: VHS
   -other: Rip
 
 ? +VHSRip
@@ -16,12 +15,10 @@
 ? -VHS
 ? -VHxRip
 : source: VHS
-  format: VHS
   other: Rip
 
 ? +Cam
 : source: Camera
-  format: Cam
   -other: Rip
 
 ? +CamRip
@@ -30,13 +27,11 @@
 ? +cam.rip
 ? -Cam
 : source: Camera
-  format: Cam
   other: Rip
 
 ? +HDCam
 ? +HD-Cam
 : source: HD Camera
-  format: Cam
   -other: Rip
 
 ? +HDCamRip
@@ -44,13 +39,11 @@
 ? -HDCam
 ? -HD-Cam
 : source: HD Camera
-  format: Cam
   other: Rip
 
 ? +Telesync
 ? +TS
 : source: Telesync
-  format: Telesync
   -other: Rip
 
 ? +TelesyncRip
@@ -58,7 +51,6 @@
 ? -Telesync
 ? -TS
 : source: Telesync
-  format: Telesync
   other: Rip
 
 ? +HD TS
@@ -66,7 +58,6 @@
 ? -HD.TS # ts file extension
 ? +Hd-Ts
 : source: HD Telesync
-  format: Telesync
   -other: Rip
 
 ? +HD TS Rip
@@ -74,7 +65,6 @@
 ? -HD TS
 ? -Hd-Ts
 : source: HD Telesync
-  format: Telesync
   other: Rip
 
 ? +Workprint
@@ -83,7 +73,6 @@
 ? +WP
 ? -Work Print
 : source: Workprint
-  format: Workprint
   -other: Rip
 
 ? +Telecine
@@ -91,7 +80,6 @@
 ? +TC
 ? -Tele Cine
 : source: Telecine
-  format: Telecine
   -other: Rip
 
 ? +Telecine Rip
@@ -100,13 +88,11 @@
 ? -Telecine
 ? -TC
 : source: Telecine
-  format: Telecine
   other: Rip
 
 ? +HD-TELECINE
 ? +HDTC
 : source: HD Telecine
-  format: HDTC
   -other: Rip
 
 ? +HD-TCRip
@@ -114,25 +100,21 @@
 ? -HD-TELECINE
 ? -HDTC
 : source: HD Telecine
-  format: HDTC
   other: Rip
 
 ? +PPV
 : source: Pay-per-view
-  format: PPV
   -other: Rip
 
 ? +ppv-rip
 ? -PPV
 : source: Pay-per-view
-  format: PPV
   other: Rip
 
 ? -TV
 ? +SDTV
 ? +TV-Dub
 : source: TV
-  format: TV
   -other: Rip
 
 ? +SDTVRIP
@@ -142,14 +124,12 @@
 ? -TV
 ? -SDTV
 : source: TV
-  format: TV
   other: Rip
 
 ? +DVB
 ? +pdTV
 ? +Pd Tv
 : source: Digital TV
-  format: DVB
   -other: Rip
 
 ? +DVB-Rip
@@ -160,7 +140,6 @@
 ? -pdTV
 ? -Pd Tv
 : source: Digital TV
-  format: DVB
   other: Rip
 
 ? +DVD
@@ -170,8 +149,7 @@
 ? +dvd 5
 ? -dvd ts
 : source: DVD
-  format: DVD
-  -format: ts
+  -source: Telesync
   -other: Rip
 
 ? +DVD-RIP
@@ -181,12 +159,10 @@
 ? -DVD 9
 ? -dvd 5
 : source: DVD
-  format: DVD
   other: Rip
 
 ? +HDTV
 : source: HDTV
-  format: HDTV
   -other: Rip
 
 ? +tv rip hd
@@ -194,19 +170,16 @@
 ? -HdRip # it's a Rip from non specified HD source
 ? -HDTV
 : source: HDTV
-  format: HDTV
   other: Rip
 
 ? +VOD
 : source: Video on Demand
-  format: VOD
   -other: Rip
 
 ? +VodRip
 ? +vod rip
 ? -VOD
 : source: Video on Demand
-  format: VOD
   other: Rip
 
 ? +webrip
@@ -218,7 +191,6 @@
 ? +webcaprip
 ? +web cap rip
 : source: WEB
-  format: WEBRip
   other: Rip
 
 ? +webdl
@@ -227,20 +199,17 @@
 ? +WEB hd
 ? +web
 : source: WEB
-  format: WEB-DL
   -other: Rip
 
 ? +HDDVD
 ? +hd dvd
 : source: HD-DVD
-  format: HD-DVD
   -other: Rip
 
 ? +hdDvdRip
 ? -HDDVD
 ? -hd dvd
 : source: HD-DVD
-  format: HD-DVD
   other: Rip
 
 ? +BluRay
@@ -249,21 +218,18 @@
 ? +BD9
 ? +BD25
 ? +bd50
-: source: BluRay
-  format: BluRay
+: source: Blu-ray
   -other: Rip
 
 ? +BR-Scr
 ? +BR.Screener
-: source: BluRay
-  format: BluRay
+: source: Blu-ray
   other: [ReEncoded, Screener]
   -language: pt-BR
 
 ? +BR-Rip
 ? +BRRip
-: source: BluRay
-  format: BluRay
+: source: Blu-ray
   other: [ReEncoded, Rip]
   -language: pt-BR
 
@@ -277,24 +243,20 @@
 ? -BD9
 ? -BD25
 ? -bd50
-: source: BluRay
-  format: BluRay
+: source: Blu-ray
   other: Rip
 
 ? XVID.NTSC.DVDR.nfo
 : source: DVD
-  format: DVD
   -other: Rip
 
 ? +AHDTV
 : source: Analogue HDTV
-  format: AHDTV
   -other: Rip
 
 ? +dsr
 ? +dth
 : source: Satellite
-  format: SATRip
   -other: Rip
 
 ? +dsrip
@@ -308,17 +270,14 @@
 ? -dsr
 ? -dth
 : source: Satellite
-  format: SATRip
   other: Rip
 
 ? +UHDTV
 : source: Ultra HDTV
-  format: UHDTV
   -other: Rip
 
 ? +UHDRip
 ? +UHDTV Rip
 ? -UHDTV
 : source: Ultra HDTV
-  format: UHDTV
   other: Rip
