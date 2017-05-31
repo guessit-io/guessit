@@ -113,7 +113,7 @@ GuessIt can be used from command line::
                             video_codec, year, ...)
       -a, --advanced        Display advanced information for filename guesses, as
                             json output
-      -s, --first-value     Keep only first found value for each property
+      -s, --single-value    Keep only first value found for each property
       -l, --enforce-list    Wrap each found value in a list even when property has
                             a single value
       -j, --json            Display information for filename guesses as json

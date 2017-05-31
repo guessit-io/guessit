@@ -55,7 +55,7 @@ def build_argument_parser():
     output_opts.add_argument('-a', '--advanced', dest='advanced', action='store_true', default=None,
                              help='Display advanced information for filename guesses, as json output')
     output_opts.add_argument('-s', '--single-value', dest='single_value', action='store_true', default=None,
-                             help='Keep only first found value for each property')
+                             help='Keep only first value found for each property')
     output_opts.add_argument('-l', '--enforce-list', dest='enforce_list', action='store_true', default=None,
                              help='Wrap each found value in a list even when property has a single value')
     output_opts.add_argument('-j', '--json', dest='json', action='store_true', default=None,
