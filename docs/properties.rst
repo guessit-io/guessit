@@ -10,7 +10,7 @@ So, for instance,
 
 - ``DVDSCR`` will be guessed as ``format`` = ``DVD`` + ``other`` = ``Screener``
 - ``1920x1080`` will be guessed as ``screenSize`` = ``1080p``
-- ``DD5.1`` will be guessed as ``audioCodec`` = ``DolbyDigital`` + ``audioChannel`` = ``5.1``
+- ``DD5.1`` will be guessed as ``audioCodec`` = ``AC3`` + ``audioChannel`` = ``5.1``
 
 
 Main properties
@@ -39,8 +39,8 @@ Main properties
 
   - ``3g2``, ``3gp``, ``3gp2``, ``asf``, ``ass``, ``avi``, ``divx``, ``flv``, ``idx``, ``iso``, ``m4v``, ``mk2``,
     ``mkv``, ``mka``, ``mov``, ``mp4``, ``mp4a``, ``mpeg``, ``mpg``, ``nfo``, ``nzb``, ``ogg``, ``ogm``, ``ogv``,
-    ``qt``, ``ra``, ``ram``, ``rm``, ``srt``, ``ssa``, ``sub``, ``torrent``, ``ts``, ``vob``, ``wav``, ``webm``, ``wma``,
-    ``wmv``
+    ``qt``, ``ra``, ``ram``, ``rm``, ``srt``, ``ssa``, ``sub``, ``torrent``, ``ts``, ``vob``, ``wav``, ``webm``,
+    ``wma``, ``wmv``
 
 
 - **mimetype**
@@ -135,9 +135,9 @@ Video properties
 
   Source of the release
 
-  - ``Analogue HDTV``, ``BluRay``, ``Camera``, ``Digital TV``, ``DVD``, ``HD Camera``, ``HD Telecine``, ``HD Telesync``,
-    ``HD-DVD``, ``HDTV``, ``Pay-per-view``, ``Satellite``, ``Telecine``, ``Telesync``, ``TV``, ``Ultra HDTV``, ``VHS``,
-    ``Video on Demand``, ``WEB``, ``Workprint``
+  - ``Analogue HDTV``, ``Blu-ray``, ``Camera``, ``Digital TV``, ``DVD``, ``HD Camera``, ``HD Telecine``,
+    ``HD Telesync``, ``HD-DVD``, ``HDTV``, ``Pay-per-view``, ``Satellite``, ``Telecine``, ``Telesync``, ``TV``,
+    ``Ultra HDTV``, ``VHS``, ``Video on Demand``, ``Web``, ``Workprint``
 
 
 - **screen_size**
@@ -182,7 +182,7 @@ Audio properties
 
   Codec used for audio.
 
-  - ``DTS`` ``TrueHD`` ``AAC`` ``AC3`` ``EAC3`` ``MP3`` ``Flac`` ``DolbyAtmos``
+  - ``DTS``, ``TrueHD``, ``AAC``, ``AC3``, ``EAC3``, ``MP3``, ``Flac``, ``DolbyAtmos``
 
 
 - **audio_profile**
