@@ -194,7 +194,7 @@
   episode_format: Minisode
   episode: 1
   episode_title: Good Cop Bad Cop
-  source: WEB
+  source: Web
   other: Rip
   video_codec: XviD
 
@@ -332,7 +332,7 @@
   season: 5
   episode: 6
   screen_size: 720p
-  source: WEB
+  source: Web
   audio_channels: "5.1"
   audio_codec: AC3
   video_codec: h264
@@ -358,7 +358,7 @@
   episode: 3
   episode_title: Adventures in Baby-Getting
   screen_size: 720p
-  source: WEB
+  source: Web
   audio_channels: "5.1"
   audio_codec: AC3
   video_codec: h264
@@ -390,7 +390,7 @@
   episode: 18
   episode_title: Sheltered
   screen_size: 720p
-  source: WEB
+  source: Web
   audio_channels: "5.1"
   audio_codec: AC3
   video_codec: h264
@@ -548,7 +548,7 @@
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BP.mkv
 : episode: 9
   video_codec: h264
-  source: WEB
+  source: Web
   title: Sleepy Hollow
   audio_channels: "5.1"
   screen_size: 720p
@@ -559,7 +559,7 @@
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BS.mkv
 : episode: 9
   video_codec: h264
-  source: WEB
+  source: Web
   title: Sleepy Hollow
   audio_channels: "5.1"
   screen_size: 720p
@@ -627,7 +627,7 @@
   episode: 3
   screen_size: 1080p
   streaming_service: Netflix
-  source: WEB
+  source: Web
   other: Rip
   audio_channels: "5.1"
   audio_codec: AC3
@@ -1143,7 +1143,7 @@
   audio_channels: "5.1"
   video_codec: h264
   release_group: BS
-  source: WEB
+  source: Web
 
 ? How to Make It in America - S02E06 - I'm Sorry, Who's Yosi?.mkv
 : title: How to Make It in America
@@ -1178,7 +1178,7 @@
   audio_codec: AAC
   date: 2015-07-01
   edition: Extended
-  source: WEB
+  source: Web
   other: Rip
   release_group: BTW
   screen_size: 720p
@@ -1191,7 +1191,7 @@
 : audio_channels: '2.0'
   audio_codec: AAC
   date: 2015-07-01
-  source: WEB
+  source: Web
   release_group: BTW
   screen_size: 720p
   streaming_service: Comedy Central
@@ -1203,7 +1203,7 @@
 : audio_channels: '2.0'
   audio_codec: AAC
   date: 2015-07-02
-  source: WEB
+  source: Web
   release_group: BTW
   streaming_service: Comedy Central
   title: The Daily Show
@@ -1669,7 +1669,7 @@
 : audio_channels: '5.1'
   audio_codec: AC3
   episode: 9
-  source: WEB
+  source: Web
   release_group: CtrlHD
   screen_size: 720p
   season: 6
@@ -1860,7 +1860,7 @@
 : title: Show Name
   season: 1
   episode: 3
-  source: WEB
+  source: Web
   video_codec: h264
   language: hu
   release_group: nIk
@@ -1890,7 +1890,7 @@
 : audio_channels: '5.1'
   episode: 2
   episode_title: Episode Title
-  source: WEB
+  source: Web
   release_group: Group
   screen_size: 1080p
   season: 2
@@ -2005,7 +2005,7 @@
 : audio_codec: AC3
   episode: 14
   episode_title: JOLO German
-  source: WEB
+  source: Web
   language: mul
   release_group: CDD
   screen_size: 720p
@@ -2067,7 +2067,7 @@
 ? Marvels.Daredevil.S02E04.WEBRip.x264-NF69.mkv
 : container: mkv
   episode: 4
-  source: WEB
+  source: Web
   other: Rip
   release_group: NF69
   season: 2
@@ -2079,7 +2079,7 @@
 : audio_channels: '5.1'
   audio_codec: AC3
   episode: 1
-  source: WEB
+  source: Web
   language: fr
   release_group: GOLF68
   screen_size: 1080p
@@ -2119,7 +2119,7 @@
   part: 1
   screen_size: 360p
   other: [LD, Rip]
-  source: WEB
+  source: Web
   release_group: MPup
   type: episode
 
@@ -2138,7 +2138,7 @@
 : title: Show Name
   season: 6
   episode: 14
-  source: WEB
+  source: Web
   other: Rip
   release_group: qqss44
   container: avi
@@ -2152,7 +2152,7 @@
   episode: 6
   episode_title: Steven Floats
   screen_size: 720p
-  source: WEB
+  source: Web
   other: Rip
   video_codec: h264
   release_group: SRS
@@ -2242,7 +2242,7 @@
 : title: Vice News Tonight
   date: 2016-10-10
   screen_size: 1080p
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2258,7 +2258,7 @@
   episode_title: Service
   screen_size: 1080p
   streaming_service: Amazon Prime
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: EAC3
   audio_channels: '5.1'
@@ -2274,7 +2274,7 @@
   other: Rip
   screen_size: 1080p
   streaming_service: Comedy Central
-  source: WEB
+  source: Web
   audio_codec: AAC
   audio_channels: '2.0'
   video_codec: h264
@@ -2290,7 +2290,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: The CW
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2305,7 +2305,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: ABC
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2319,7 +2319,7 @@
   title: Show Name
   screen_size: 720p
   streaming_service: History
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2335,7 +2335,7 @@
   episode_title: Nice Title
   screen_size: 1080p
   streaming_service: PBS
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2351,7 +2351,7 @@
   episode_title: Nice Title
   screen_size: 1080p
   streaming_service: SeeSo
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2367,7 +2367,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: Discovery
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2382,7 +2382,7 @@
   episode_title: Nice Title
   streaming_service: BBC iPlayer
   screen_size: 720p
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2398,7 +2398,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: A&E
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2414,7 +2414,7 @@
   episode_title: Nice Title
   screen_size: 1080p
   streaming_service: Adult Swim
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2430,7 +2430,7 @@
   episode: 3
   screen_size: 1080p
   streaming_service: Netflix
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AC3
   audio_channels: '5.1'
@@ -2447,7 +2447,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: CBS
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2462,7 +2462,7 @@
   episode_title: Team A vs Team B
   screen_size: 720p
   streaming_service: NBA TV
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2479,7 +2479,7 @@
   part: 4
   screen_size: 720p
   streaming_service: ePix
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2495,7 +2495,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: NBC
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2511,7 +2511,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: Syfy
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2527,7 +2527,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: Spike TV
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2543,7 +2543,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: IFC
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2559,7 +2559,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: National Geographic
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2575,7 +2575,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: NFL
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2591,7 +2591,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: UFC
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2607,7 +2607,7 @@
   episode_title: Nice Title
   screen_size: 720p
   streaming_service: TV Land
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2621,7 +2621,7 @@
   season: 1
   screen_size: 1080p
   streaming_service: Crunchy Roll
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2635,7 +2635,7 @@
   season: 1
   screen_size: 1080p
   streaming_service: Disney
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2649,7 +2649,7 @@
   season: 1
   screen_size: 1080p
   streaming_service: Nickelodeon
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2663,7 +2663,7 @@
   season: 1
   screen_size: 1080p
   streaming_service: TFou
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2735,7 +2735,7 @@
   episode: 1
   screen_size: 4K
   streaming_service: Amazon Prime
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: EAC3
   audio_channels: '5.1'
@@ -2750,7 +2750,7 @@
   video_codec: h264
   language: it
   audio_codec: AAC
-  source: WEB
+  source: Web
   other: Mux
   release_group: UBi
   type: episode
@@ -2762,7 +2762,7 @@
   screen_size: 1080p
   video_codec: h264
   language: [it, en]
-  source: WEB
+  source: Web
   other: Mux
   audio_codec: AC3
   subtitle_language: [it, en]
@@ -2807,7 +2807,7 @@
 ? Show.Name.-.07.(2016).[RH].[English.Dubbed][WEBRip]..[HD.1080p]
 : options: -t episode
   episode: 7
-  source: WEB
+  source: Web
   other: Rip
   language: en
   other: [HD, Rip]
@@ -2823,7 +2823,7 @@
   - 477
   - 478
   - 479
-  source: WEB
+  source: Web
   other: [Rip, HD]
   release_group: HorribleSubs
   screen_size: 720p
@@ -2846,7 +2846,7 @@
   season: 1
   screen_size: 720p
   streaming_service: DIY Network
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2861,7 +2861,7 @@
   episode: 2
   screen_size: 1080p
   streaming_service: USA Network
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2876,7 +2876,7 @@
   episode: 8
   screen_size: 576p
   streaming_service: TV3 Ireland
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2890,7 +2890,7 @@
   season: 5
   screen_size: 720p
   streaming_service: TV4 Sweeden
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2904,7 +2904,7 @@
   season: 2
   screen_size: 720p
   streaming_service: TLC
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2919,7 +2919,7 @@
   episode: 1
   screen_size: 720p
   streaming_service: Investigation Discovery
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2934,7 +2934,7 @@
   episode: 1
   screen_size: 576p
   streaming_service: RTÉ One
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2949,7 +2949,7 @@
   episode: 1
   screen_size: 1080p
   streaming_service: AMC
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -2962,7 +2962,7 @@
   season: 1
   episode: 10
   screen_size: 1080p
-  source: WEB
+  source: Web
   audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
@@ -2988,7 +2988,7 @@
   episode: 8
   screen_size: 1080p
   streaming_service: Netflix
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AC3
   audio_channels: '5.1'
@@ -3010,7 +3010,7 @@
   season: 2
   episode: 5
   screen_size: 1080p
-  source: WEB
+  source: Web
   audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
@@ -3024,7 +3024,7 @@
   episode: 14
   episode_title: Brother Up
   screen_size: 1080p
-  source: WEB
+  source: Web
   audio_codec: AAC
   audio_channels: '2.0'
   video_codec: h264
@@ -3038,7 +3038,7 @@
   episode: 2
   episode_title: Tempus Fugit
   screen_size: 720p
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
@@ -3053,7 +3053,7 @@
   episode: 2
   episode_title: The Brain In The Bot
   screen_size: 1080p
-  source: WEB
+  source: Web
   audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
@@ -3067,7 +3067,7 @@
   season: 1
   episode: 7
   screen_size: 1080p
-  source: WEB
+  source: Web
   audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
@@ -3082,7 +3082,7 @@
   episode: 1
   episode_title: Love the Way You Lie
   screen_size: 1080p
-  source: WEB
+  source: Web
   audio_codec: AAC
   audio_channels: '2.0'
   video_codec: h264
@@ -3095,7 +3095,7 @@
   season: 2
   episode: 12
   screen_size: 1080p
-  source: WEB
+  source: Web
   audio_codec: AC3
   audio_channels: '5.1'
   release_group: Het.Robot.Team.OYM
@@ -3291,7 +3291,7 @@
   season: 6
   episode: 5
   screen_size: 1080p
-  source: WEB
+  source: Web
   other: Rip
   subtitle_language: pt-BR
   type: episode
@@ -3301,7 +3301,7 @@
   season: 1
   episode: 7
   episode_title: Super, Title
-  source: WEB
+  source: Web
   screen_size: 720p
   subtitle_language: pt-BR
   container: srt
@@ -3316,7 +3316,7 @@
   season: 6
   episode: 5
   screen_size: 1080p
-  source: WEB
+  source: Web
   other: Rip
   subtitle_language: pt
   type: episode
@@ -3357,7 +3357,7 @@
 : title: Show Name
   season: 1
   other: [Complete, Rip]
-  source: WEB
+  source: Web
   subtitle_language: ro
   type: episode
 
@@ -3367,7 +3367,7 @@
   season: 3
   subtitle_language: en
   screen_size: 720p
-  source: WEB
+  source: Web
   other: Rip
   video_codec: h264
   container: mkv
@@ -3394,7 +3394,7 @@
   season: 6
   episode: 10
   screen_size: 1080p
-  source: WEB
+  source: Web
   other: DualAudio
   language: und
   release_group: RK
@@ -3405,7 +3405,7 @@
   season: 6
   episode: 12
   screen_size: 720p
-  source: WEB
+  source: Web
   other: DualAudio
   language: und
   type: episode
@@ -3429,7 +3429,7 @@
   episode_title: Shiva
   audio_codec: AC3
   language: und
-  source: WEB
+  source: Web
   other: Rip
   video_codec: h264
   type: episode
@@ -3480,7 +3480,7 @@
   season: 2
   episode: 8
   screen_size: 720p
-  source: WEB
+  source: Web
   subtitle_language: und
   type: episode
 
@@ -3519,7 +3519,7 @@
   episode: 3
   language: en
   screen_size: 720p
-  source: WEB
+  source: Web
   release_group: JRR
   type: episode
 
@@ -3560,7 +3560,7 @@
   episode_title: eps2 4 m4ster-s1ave aes
   screen_size: 1080p
   streaming_service: Amazon Prime
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AC3
   audio_channels: '5.1'
@@ -3574,7 +3574,7 @@
   episode: 5
   episode_title: 3xpl0its
   screen_size: 720p
-  source: WEB
+  source: Web
   subtitle_language: en
   video_codec: h264
   type: episode
@@ -3698,7 +3698,7 @@
 : release_group: Hanamaru&LoliHouse
   title: The Dragon Dentist
   episode: 1
-  source: WEB
+  source: Web
   other: Rip
   screen_size: 1080p
   video_codec: h265
@@ -3717,7 +3717,7 @@
 : title: Vikings
   season: 4
   screen_size: 1080p
-  source: WEB
+  source: Web
   subtitle_language: nl
   type: episode
 
@@ -3836,7 +3836,7 @@
   edition: Limited Edition
   language: french
   screen_size: 1080p
-  source: WEB
+  source: Web
   video_codec: h264
   release_group: AUTHORiTY
   type: episode
@@ -3892,7 +3892,7 @@
   episode: 7
   other: East Coast Feed
   screen_size: 720p
-  source: WEB
+  source: Web
   audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
@@ -3931,7 +3931,7 @@
   episode_title: and the winner is
   screen_size: 720p
   streaming_service: Amazon Prime
-  source: WEB
+  source: Web
   other: Rip
   audio_codec: AC3
   audio_channels: '5.1'
@@ -3948,7 +3948,7 @@
   episode: 16
   episode_title: Elements Part 1 Skyhooks
   screen_size: 720p
-  source: WEB
+  source: Web
   audio_codec: AAC
   audio_channels: '2.0'
   video_codec: h264
@@ -3972,7 +3972,7 @@
   episode: 1
   episode_title: Super Title
   screen_size: 720p
-  source: WEB
+  source: Web
   audio_codec: AC3
   audio_channels: '5.1'
   video_codec: h264
@@ -3995,7 +3995,7 @@
   season: 2
   episode: 8
   screen_size: 720p
-  source: WEB
+  source: Web
   other: Rip
   video_codec: h264
   audio_codec: EAC3

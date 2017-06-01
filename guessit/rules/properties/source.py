@@ -78,12 +78,12 @@ def source():
                  value={'source': 'Video on Demand', 'other': 'Rip'})
 
     rebulk.regex(*build_source_pattern('WEB', 'WEB-?DL', suffix=rip_suffix),
-                 value={'source': 'WEB', 'other': 'Rip'})
+                 value={'source': 'Web', 'other': 'Rip'})
     # WEBCap is a synonym to WEBRip, mostly used by non english
     rebulk.regex(*build_source_pattern('WEB-?(?P<another>Cap)', suffix=rip_optional_suffix),
-                 value={'source': 'WEB', 'other': 'Rip', 'another': 'Rip'})
+                 value={'source': 'Web', 'other': 'Rip', 'another': 'Rip'})
     rebulk.regex(*build_source_pattern('WEB-?DL', 'WEB-?HD', 'WEB', 'DL-?WEB', 'DL(?=-?Mux)'),
-                 value={'source': 'WEB'})
+                 value={'source': 'Web'})
 
     rebulk.regex(*build_source_pattern('HD-?DVD', suffix=rip_optional_suffix),
                  value={'source': 'HD-DVD', 'other': 'Rip'})

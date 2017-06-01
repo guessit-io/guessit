@@ -36,7 +36,7 @@
   episode_format: Minisode
   episode: 1
   episode_title: Good Cop Bad Cop
-  source: WEB
+  source: Web
   other: Rip
   video_codec: XviD
 
@@ -190,7 +190,7 @@
   season: 1
   episode: 1
   screen_size: 720p
-  source: WEB
+  source: Web
   audio_channels: "5.1"
   video_codec: h264
   audio_codec: AC3
@@ -441,7 +441,7 @@
 
 ? The.Flash.2014.S01E01.PREAIR.WEBRip.XviD-EVO.avi
 : episode: 1
-  source: WEB
+  source: Web
   other: [Preair, Rip]
   release_group: EVO
   season: 1
@@ -525,7 +525,7 @@
   title: Star Trek Into Darkness
   year: 2013
   screen_size: 720p
-  source: WEB
+  source: Web
   video_codec: h264
   release_group: publichd
 
@@ -554,7 +554,7 @@
 : audio_channels: '5.1'
   audio_codec: AC3
   episode: 2
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 4K
@@ -566,7 +566,7 @@
 
 ? TEST.2015.12.30.720p.WEBRip.h264-ABC
 : date: 2015-12-30
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 720p
@@ -579,7 +579,7 @@
   audio_codec: AAC
   episode: 10
   episode_title: '24'
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 1080p
@@ -594,7 +594,7 @@
   audio_codec: AAC
   episode: 10
   episode_title: '24'
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 1080p
@@ -609,7 +609,7 @@
   audio_codec: AAC
   episode: 10
   episode_title: '24'
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 1080p
@@ -623,7 +623,7 @@
 : audio_channels: '2.0'
   audio_codec: AAC
   episode: 2
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 720p
@@ -636,7 +636,7 @@
 : audio_channels: '2.0'
   audio_codec: AAC
   episode: 7
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 720p
@@ -650,7 +650,7 @@
   audio_codec: AAC
   episode: 15
   episode_title: '24'
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 1080p
@@ -664,7 +664,7 @@
   audio_codec: AAC
   episode: 11
   episode_title: '24'
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 720p
@@ -676,7 +676,7 @@
 ? TEST.2015.1080p.HC.WEBRip.x264.AAC2.0-ABC
 : audio_channels: '2.0'
   audio_codec: AAC
-  source: WEB
+  source: Web
   other: Rip
   release_group: ABC
   screen_size: 1080p
@@ -791,7 +791,7 @@
 ? Red.Rock.S02E59.WEB-DLx264-JIVE
 : episode: 59
   season: 2
-  source: WEB
+  source: Web
   release_group: JIVE
   title: Red Rock
   type: episode

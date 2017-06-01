@@ -190,7 +190,7 @@
 ? +web cap
 ? +webcaprip
 ? +web cap rip
-: source: WEB
+: source: Web
   other: Rip
 
 ? +webdl
@@ -198,7 +198,7 @@
 ? +webHD
 ? +WEB hd
 ? +web
-: source: WEB
+: source: Web
   -other: Rip
 
 ? +HDDVD

@@ -1008,7 +1008,7 @@
   year: 2016
   other: [Documentary, Rip]
   screen_size: 1080p
-  source: WEB
+  source: Web
   video_codec: h264
   audio_codec: AC3
   audio_channels: '5.1'
@@ -1048,7 +1048,7 @@
 : title: Maze Runner The Scorch Trials
   other: [Open Matte, Rip]
   year: 2015
-  source: WEB
+  source: Web
   release_group: Seven
   type: movie
 
@@ -1110,7 +1110,7 @@
   edition: Uncut
   other: Rip
   screen_size: 720p
-  source: WEB
+  source: Web
   video_codec: h264
   type: movie
 
