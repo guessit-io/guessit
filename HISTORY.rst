@@ -7,6 +7,11 @@ History
 - Nothing changed yet.
 
 
+2.1.4 (2017-06-01)
+------------------
+
+- Fix broken match function when using `rebulk>=0.9.0`.
+
 2.1.3 (2017-05-31)
 ------------------
 
