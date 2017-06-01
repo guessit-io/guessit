@@ -4,8 +4,7 @@ History
 3.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix broken match function when using `rebulk>=0.9.0`.
 
 2.1.3 (2017-05-31)
 ------------------
