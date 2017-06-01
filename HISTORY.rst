@@ -1,7 +1,7 @@
 History
 =======
 
-3.0.0 (unreleased)
+2.1.4 (2017-06-01)
 ------------------
 
 - Fix broken match function when using `rebulk>=0.9.0`.
