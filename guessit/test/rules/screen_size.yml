@@ -2,47 +2,58 @@
 # Use - marker to check inputs that should not match results.
 ? +360p
 ? +360px
-? +360i
 ? "+360"
 ? +500x360
 : screen_size: 360p
 
+? +360i
+: screen_size: 360i
+
 ? +368p
 ? +368px
-? +368i
+? -368i
 ? "+368"
 ? +500x368
 : screen_size: 368p
 
 ? +480p
 ? +480px
-? +480i
+? -480i
 ? "+480"
 ? +500x480
 : screen_size: 480p
 
+? +480i
+: screen_size: 480i
+
 ? +576p
 ? +576px
-? +576i
+? -576i
 ? "+576"
 ? +500x576
 : screen_size: 576p
 
+? +576i
+: screen_size: 576i
+
 ? +720p
 ? +720px
+? -720i
 ? 720hd
 ? 720pHD
-? +720i
 ? "+720"
 ? +500x720
 : screen_size: 720p
 
 ? +900p
 ? +900px
-? +900i
+? -900i
 ? "+900"
 ? +500x900
 : screen_size: 900p
+
+? +900i
+: screen_size: 900i
 
 ? +1080p
 ? +1080px
@@ -59,10 +70,17 @@
 
 ? +2160p
 ? +2160px
-? +2160i
+? -2160i
 ? "+2160"
 ? +4096x2160
-: screen_size: 4K
+: screen_size: 2160p
+
+? +4320p
+? +4320px
+? -4320i
+? "+4320"
+? +7680x4320
+: screen_size: 4320p
 
 ? Test.File.720hd.bluray
 ? Test.File.720p50

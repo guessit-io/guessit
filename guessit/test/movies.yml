@@ -903,7 +903,7 @@
 : title: Hacksaw Ridge
   year: 2016
   language: mul
-  screen_size: 4K
+  screen_size: 2160p
   other: Ultra HD
   source: Blu-ray
   video_codec: h265
@@ -919,7 +919,7 @@
 : title: Special Correspondents
   year: 2016
   language: [it, en]
-  screen_size: 4K
+  screen_size: 2160p
   streaming_service: Netflix
   other: Ultra HD
   release_group: TeamPremium
@@ -937,7 +937,7 @@
   edition: Extended
   other: Ultra HD
   year: 2016
-  screen_size: 4K
+  screen_size: 2160p
   source: Blu-ray
   video_codec: h265
   video_profile: 10bit

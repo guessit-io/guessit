@@ -2731,7 +2731,7 @@
   year: 2016
   season: 1
   episode: 1
-  screen_size: 4K
+  screen_size: 2160p
   streaming_service: Amazon Prime
   source: Web
   other: Rip
@@ -3653,7 +3653,7 @@
   language: mul
   audio_codec: AC3
   audio_channels: '5.1'
-  screen_size: 4K
+  screen_size: 2160p
   streaming_service: Netflix
   source: Ultra HDTV
   other: Rip

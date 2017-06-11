@@ -37,6 +37,15 @@ The following values were changed:
 - ``UHDTV`` is now ``Ultra HDTV``
 - ``HDTC`` is now ``HD Telecine``
 
+``screen_size``
+^^^^^^^^^^^^^^^
+- ``360i`` was added.
+- ``480i`` was added.
+- ``576i`` was added.
+- ``900i`` was added.
+- ``4K`` is now ``2160p``
+- ``4320p`` was added.
+
 ``edition``
 ^^^^^^^^^^^
 - ``Collector Edition`` is now ``Collector``
