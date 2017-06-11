@@ -178,7 +178,7 @@ def episodes():
                r'(?P<season>\d+)').repeater('*')
 
     # episode_details property
-    for episode_detail in ('Special', 'Bonus', 'Pilot', 'Unaired'):
+    for episode_detail in ('Special', 'Bonus', 'Pilot', 'Unaired', 'Final'):
         rebulk.string(episode_detail, value=episode_detail, name='episode_details')
     rebulk.regex(r'Extras?', 'Omake', name='episode_details', value='Extras')
 

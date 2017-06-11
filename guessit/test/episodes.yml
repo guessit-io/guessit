@@ -525,7 +525,7 @@
   season: 8
   source: Blu-ray
   title: Dexter
-  other: FINAL
+  episode_details: Final
   language: Multiple languages
   release_group: MiND
   screen_size: 1080p
@@ -3217,7 +3217,7 @@
   video_codec: h264
   language: es
   release_group: NEWPCT
-  other: FINAL
+  episode_details: Final
   type: episode
 
 ? Mastercook Italia - Stagione 6 (2016) 720p ep13 spyro.mkv
@@ -3651,13 +3651,14 @@
 : title: Show Name
   season: 4
   episode: 13
-  other: [FINAL, Rip]
+  episode_details: Final
   language: mul
   audio_codec: AC3
   audio_channels: '5.1'
   screen_size: 4K
   streaming_service: Netflix
   source: Ultra HDTV
+  other: Rip
   video_codec: h265
   release_group: TVS
   type: episode

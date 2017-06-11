@@ -51,10 +51,12 @@ The following values were changed:
 ^^^^^^^^^^^^^^^^^^^
 - ``Oav`` and ``Ova`` were removed. They are now ``other: Original Animated Video``
 - ``Omake`` is now ``Extras``
+- ``Final`` was added.
 
 ``other``
 ^^^^^^^^^
 - ``Rip`` was added. E.g.: ``DVDRip`` will output ``other: Rip``
 - ``DDC`` was removed. ``DDC`` is now ``edition: Director's Definitive Cut``
 - ``CC`` was removed. ``CC`` is now ``edition: Criterion``
+- ``FINAL`` was removed. ``FINAL`` is now ``episode_details: Final``
 - ``Original Animated Video`` was added.
