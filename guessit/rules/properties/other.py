@@ -94,6 +94,7 @@ def other():
         rebulk.regex(r'(?:Live-)?(?:Episode-)?' + coast + '-?(?:Coast-)?Feed', value=coast + ' Coast Feed')
 
     rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')
+    rebulk.string('Ova', 'Oav', value='Original Animated Video')
 
     rebulk.regex('Scr(?:eener)?', value='Screener', validator=None,
                  tags=['other.validate.screener', 'source-prefix', 'source-suffix'])
