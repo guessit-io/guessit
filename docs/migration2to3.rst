@@ -55,6 +55,17 @@ The following values were changed:
 - ``Hi422P`` is now ``High 4:2:2``.
 - ``Hi444PP`` is now ``High 4:4:4 Predictive``.
 
+``audio_codec``
+^^^^^^^^^^^^^^^
+- ``DTS-HD`` was added.
+
+``audio_profile``
+^^^^^^^^^^^^^^^^^
+- ``HE`` is now ``High Efficiency``.
+- ``LC`` is now ``Low Complexity``.
+- ``HQ`` is now ``High Quality``.
+- ``HDMA`` is now ``Master Audio``.
+
 ``edition``
 ^^^^^^^^^^^
 - ``Collector Edition`` is now ``Collector``

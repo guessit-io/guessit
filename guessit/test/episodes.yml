@@ -1947,8 +1947,8 @@
 
 ? Game.of.Thrones.S03.1080p.BluRay.DTS-HD.MA.5.1.AVC.REMUX-FraMeSToR
 : audio_channels: '5.1'
-  audio_codec: DTS
-  audio_profile: HDMA
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
   source: Blu-ray
   other: Remux
   release_group: FraMeSToR
@@ -2798,8 +2798,8 @@
   source: Blu-ray
   other: Mux
   video_codec: h264
-  audio_codec: DTS
-  audio_profile: HDMA
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
   type: episode
 
 ? Show.Name.-.07.(2016).[RH].[English.Dubbed][WEBRip]..[HD.1080p]

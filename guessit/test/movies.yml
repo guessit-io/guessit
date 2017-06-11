@@ -57,7 +57,7 @@
   video_codec: h264
   video_profile: High
   audio_codec: AAC
-  audio_profile: HE
+  audio_profile: High Efficiency
   language: [ french, english ]
   subtitle_language: [ french, english ]
   release_group: Chaps
@@ -283,7 +283,7 @@
   other: Rip
   video_codec: h264
   audio_codec: AAC
-  audio_profile: LC
+  audio_profile: Low Complexity
   audio_channels: "5.1"
   language: [ french, english ]
   subtitle_language: [ french, english ]
@@ -596,7 +596,7 @@
   other: [Rip, Line Audio]
   year: 2012
   audio_codec: AC3
-  audio_profile: HQ
+  audio_profile: High Quality
   release_group: Hive-CM8
 
 ? "Star Wars: Episode IV - A New Hope (2004) Special Edition.MKV"
@@ -612,7 +612,7 @@
   other: [Rip, Line Audio]
   year: 2012
   audio_codec: AC3
-  audio_profile: HQ
+  audio_profile: High Quality
   release_group: Hive-CM8
 
 ? Dr.LiNE.The.Lorax.2012.DVDRip.XviD.AC3.HQ.Hive-CM8.mp4
@@ -622,7 +622,7 @@
   other: Rip
   year: 2012
   audio_codec: AC3
-  audio_profile: HQ
+  audio_profile: High Quality
   release_group: Hive-CM8
 
 ? Perfect Child-2007-TRUEFRENCH-TVRip.Xvid-h@mster.avi
@@ -834,8 +834,7 @@
   video_codec: h264
 
 ? Hyena.Road.2015.German.1080p.DL.DTSHD.Bluray.x264-pmHD
-: audio_codec: DTS
-  audio_profile: HD
+: audio_codec: DTS-HD
   source: Blu-ray
   language:
   - de
@@ -848,8 +847,7 @@
   year: 2015
 
 ? Hyena.Road.2015.German.1080p.DL.DTSHD.Bluray.x264-pmHD
-: audio_codec: DTS
-  audio_profile: HD
+: audio_codec: DTS-HD
   source: Blu-ray
   language:
   - de
@@ -908,8 +906,7 @@
   source: Blu-ray
   video_codec: h265
   video_profile: 10bit
-  audio_codec: [DTS, DolbyAtmos]
-  audio_profile: HD
+  audio_codec: [DTS-HD, DolbyAtmos]
   audio_channels: '7.1'
   release_group: DDR
   container: mkv

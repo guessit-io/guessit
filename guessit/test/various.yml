@@ -165,8 +165,8 @@
   year: 2013
   screen_size: 1080p
   source: Blu-ray
-  audio_codec: DTS
-  audio_profile: HDMA
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
   video_codec: h264
   release_group: PublicHD
   audio_channels: "5.1"
@@ -177,8 +177,8 @@
   year: 2013
   screen_size: 1080p
   source: Blu-ray
-  audio_codec: DTS
-  audio_profile: HDMA
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
   video_codec: h264
   release_group: PublicHD
   audio_channels: "5.1"
@@ -687,8 +687,8 @@
 
 ? TEST.2015.1080p.3D.BluRay.Half-SBS.x264.DTS-HD.MA.7.1-ABC
 : audio_channels: '7.1'
-  audio_codec: DTS
-  audio_profile: HDMA
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
   source: Blu-ray
   other: 3D
   release_group: ABC
@@ -700,8 +700,8 @@
 
 ? TEST.2015.1080p.3D.BluRay.Half-OU.x264.DTS-HD.MA.7.1-ABC
 : audio_channels: '7.1'
-  audio_codec: DTS
-  audio_profile: HDMA
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
   source: Blu-ray
   other: 3D
   release_group: ABC
@@ -714,10 +714,10 @@
 ? TEST.2015.1080p.3D.BluRay.Half-OU.x264.DTS-HD.MA.TrueHD.7.1.Atmos-ABC
 : audio_channels: '7.1'
   audio_codec:
-  - DTS
+  - DTS-HD
   - TrueHD
   - DolbyAtmos
-  audio_profile: HDMA
+  audio_profile: Master Audio
   source: Blu-ray
   other: 3D
   release_group: ABC
@@ -730,10 +730,10 @@
 ? TEST.2015.1080p.3D.BluRay.Half-SBS.x264.DTS-HD.MA.TrueHD.7.1.Atmos-ABC
 : audio_channels: '7.1'
   audio_codec:
-  - DTS
+  - DTS-HD
   - TrueHD
   - DolbyAtmos
-  audio_profile: HDMA
+  audio_profile: Master Audio
   source: Blu-ray
   other: 3D
   release_group: ABC
@@ -746,10 +746,10 @@
 ? TEST.2015.1080p.BluRay.REMUX.AVC.DTS-HD.MA.TrueHD.7.1.Atmos-ABC
 : audio_channels: '7.1'
   audio_codec:
-  - DTS
+  - DTS-HD
   - TrueHD
   - DolbyAtmos
-  audio_profile: HDMA
+  audio_profile: Master Audio
   source: Blu-ray
   other: Remux
   release_group: ABC

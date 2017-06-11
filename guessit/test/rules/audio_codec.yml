@@ -43,26 +43,26 @@
 : audio_codec: TrueHD
   audio_channels: '5.1'
 
-
+? +DTSHD
+? +DTS HD
 ? +DTS-HD
-: audio_codec: DTS
-  audio_profile: HD
+: audio_codec: DTS-HD
 
 ? +DTS-HDma
-: audio_codec: DTS
-  audio_profile: HDMA
+: audio_codec: DTS-HD
+  audio_profile: Master Audio
 
 ? +AC3-hq
 : audio_codec: AC3
-  audio_profile: HQ
+  audio_profile: High Quality
 
 ? +AAC-HE
 : audio_codec: AAC
-  audio_profile: HE
+  audio_profile: High Efficiency
 
 ? +AAC-LC
 : audio_codec: AAC
-  audio_profile: LC
+  audio_profile: Low Complexity
 
 ? +AAC2.0
 ? +AAC20

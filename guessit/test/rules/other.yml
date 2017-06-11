@@ -135,7 +135,7 @@
 : title: The complete movie
 
 ? +AC3-HQ
-: audio_profile: HQ
+: audio_profile: High Quality
 
 ? Other-HQ
 : other: High Quality
