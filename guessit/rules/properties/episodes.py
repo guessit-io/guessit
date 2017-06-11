@@ -178,9 +178,9 @@ def episodes():
                r'(?P<season>\d+)').repeater('*')
 
     # episode_details property
-    for episode_detail in ('Special', 'Bonus', 'Omake', 'Pilot', 'Unaired'):
+    for episode_detail in ('Special', 'Bonus', 'Pilot', 'Unaired'):
         rebulk.string(episode_detail, value=episode_detail, name='episode_details')
-    rebulk.regex(r'Extras?', name='episode_details', value='Extras')
+    rebulk.regex(r'Extras?', 'Omake', name='episode_details', value='Extras')
 
     def validate_roman(match):
         """

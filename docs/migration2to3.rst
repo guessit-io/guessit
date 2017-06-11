@@ -50,6 +50,7 @@ The following values were changed:
 ``episode_details``
 ^^^^^^^^^^^^^^^^^^^
 - ``Oav`` and ``Ova`` were removed. They are now ``other: Original Animated Video``
+- ``Omake`` is now ``Extras``
 
 ``other``
 ^^^^^^^^^
