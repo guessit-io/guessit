@@ -52,7 +52,7 @@
 ? hevc10
 ? HEVC-YUV420P10
 : video_codec: H.265
-  video_profile: 10bit
+  color_depth: 10-bit
 
 ? h265-HP
 : video_codec: H.265

@@ -62,6 +62,9 @@ The following values were changed:
 - ``MP`` is now ``Main``.
 - ``Hi422P`` is now ``High 4:2:2``.
 - ``Hi444PP`` is now ``High 4:4:4 Predictive``.
+- ``High 10`` was added.
+- ``8bit`` was removed. ``8bit`` is detected as ``color_depth: 8-bit``
+- ``10bit`` was removed. ``10bit`` is detected as ``color_depth: 10-bit``
 
 ``audio_codec``
 ^^^^^^^^^^^^^^^

@@ -693,7 +693,7 @@
   release_group: Daisei
   screen_size: 720p
   title: Free!：Iwatobi Swim Club
-  video_profile: 10bit
+  color_depth: 10-bit
 
 ? '[Tsundere] Boku wa Tomodachi ga Sukunai - 03 [BDRip h264 1920x1080 10bit FLAC][AF0C22CC].mkv'
 : audio_codec: FLAC
@@ -704,7 +704,7 @@
   screen_size: 1080p
   title: Boku wa Tomodachi ga Sukunai
   video_codec: H.264
-  video_profile: 10bit
+  color_depth: 10-bit
 
 ? '[t.3.3.d]_Mikakunin_de_Shinkoukei_-_12_[720p][5DDC1352].mkv'
 : crc32: 5DDC1352
@@ -768,7 +768,7 @@
   release_group: NoobSubs
   screen_size: 720p
   title: Sword Art Online II
-  video_profile: 8bit
+  color_depth: 8-bit
 
 ? '[DeadFish] 01 - Tari Tari [BD][720p][AAC].mp4'
 : audio_codec: AAC
@@ -784,7 +784,7 @@
   release_group: NoobSubs
   screen_size: 720p
   title: Sword Art Online II
-  video_profile: 8bit
+  color_depth: 8-bit
 
 ? '[DeadFish] 12 - Tari Tari [BD][720p][AAC].mp4'
 : audio_codec: AAC
@@ -1465,7 +1465,7 @@
   screen_size: 720p
   title: One Piece
   subtitle_language: fr
-  video_profile: 8bit
+  color_depth: 8-bit
   version: 1
 
 ? '[ISLAND]One_Piece_679_[VOSTFR]_[8bit]_[720p]_[EB7838FC].mp4'
@@ -1476,7 +1476,7 @@
   screen_size: 720p
   title: One Piece
   subtitle_language: fr
-  video_profile: 8bit
+  color_depth: 8-bit
 
 ? '[Kaerizaki-Fansub]_One_Piece_679_[VOSTFR][HD_1280x720].mp4'
 : options: -E
@@ -1647,7 +1647,7 @@
   release_group: Hatsuyuki-Kaitou
   screen_size: 720p
   title: Fairy Tail 2
-  video_profile: 10bit
+  color_depth: 10-bit
 
 ? '[Hatsuyuki-Kaitou]_Fairy_Tail_2_-_16-20_(191-195)_[720p][10bit].torrent'
 : options: -E
@@ -2198,7 +2198,7 @@
   episode: 3
   subtitle_language: fr
   other: HD
-  video_profile: 8bit
+  color_depth: 8-bit
   type: episode
 
 ? '[.www.site.com.].-.Snooze.and.Go.Sleep.S03E02.1080p.HEVC.x265-MeGusta'
@@ -3608,7 +3608,7 @@
 : title: Show Name
   episode: 6
   screen_size: 720p
-  video_profile: 10bit
+  color_depth: 10-bit
   crc32: 1F5578AC
   release_group: SuperGroup
   type: episode
@@ -3618,7 +3618,7 @@
 : title: Show Name
   episode: 6
   screen_size: 1080p
-  video_profile: 10bit
+  color_depth: 10-bit
   crc32: 1F5578AC
   release_group: SuperGroup
   type: episode
@@ -3629,7 +3629,7 @@
   title: Dimension W
   episode: 5
   screen_size: 720p
-  video_profile: 10bit
+  color_depth: 10-bit
   other: Dual Audio
   source: TV
   language: und
@@ -3701,7 +3701,7 @@
   other: Rip
   screen_size: 1080p
   video_codec: H.265
-  video_profile: 10bit
+  color_depth: 10-bit
   audio_codec: AAC
   container: mkv
   type: episode
