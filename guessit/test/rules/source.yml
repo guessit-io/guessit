@@ -224,13 +224,13 @@
 ? +BR-Scr
 ? +BR.Screener
 : source: Blu-ray
-  other: [ReEncoded, Screener]
+  other: [Reencoded, Screener]
   -language: pt-BR
 
 ? +BR-Rip
 ? +BRRip
 : source: Blu-ray
-  other: [ReEncoded, Rip]
+  other: [Reencoded, Rip]
   -language: pt-BR
 
 ? +BluRay rip

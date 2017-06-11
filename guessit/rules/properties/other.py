@@ -24,19 +24,19 @@ def other():
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name="other", validator=seps_surround)
 
-    rebulk.regex('Audio-?Fix', 'Audio-?Fixed', value='AudioFix')
-    rebulk.regex('Sync-?Fix', 'Sync-?Fixed', value='SyncFix')
-    rebulk.regex('Dual', 'Dual-?Audio', value='DualAudio')
-    rebulk.regex('ws', 'wide-?screen', value='WideScreen')
-    rebulk.regex('Re-?Enc(?:oded)?', value='ReEncoded')
+    rebulk.regex('Audio-?Fix', 'Audio-?Fixed', value='Audio Fixed')
+    rebulk.regex('Sync-?Fix', 'Sync-?Fixed', value='Sync Fixed')
+    rebulk.regex('Dual', 'Dual-?Audio', value='Dual Audio')
+    rebulk.regex('ws', 'wide-?screen', value='Widescreen')
+    rebulk.regex('Re-?Enc(?:oded)?', value='Reencoded')
 
     rebulk.string('Real', 'Fix', 'Fixed', value='Proper', tags=['has-neighbor-before', 'has-neighbor-after'])
     rebulk.string('Proper', 'Repack', 'Rerip', 'Dirfix', 'Nfofix', 'Prooffix', value='Proper',
                   tags=['streaming_service.prefix', 'streaming_service.suffix'])
     rebulk.regex('(?:Proof-?)?Sample-?Fix', value='Proper',
                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
-    rebulk.string('Fansub', value='Fansub', tags='has-neighbor')
-    rebulk.string('Fastsub', value='Fastsub', tags='has-neighbor')
+    rebulk.string('Fansub', value='Fan Subtitled', tags='has-neighbor')
+    rebulk.string('Fastsub', value='Fast Subtitled', tags='has-neighbor')
 
     season_words = build_or_pattern(["seasons?", "series?"])
     complete_articles = build_or_pattern(["The"])
@@ -61,27 +61,33 @@ def other():
                  value={'other': 'Complete'},
                  tags=['release-group-prefix'],
                  validator={'__parent__': compose(seps_surround, validate_complete)})
-    rebulk.string('R5', 'RC', value='R5')
+    rebulk.string('R5', value='Region 5')
+    rebulk.string('RC', value='Region C')
     rebulk.regex('Pre-?Air', value='Preair')
     rebulk.regex('(?:PS-?)?Vita', value='PS Vita')
     rebulk.regex('(HD)(?P<another>Rip)', value={'other': 'HD', 'another': 'Rip'},
                  private_parent=True, children=True, validator={'__parent__': seps_surround}, validate_all=True)
 
-    for value in (
-            'Screener', 'Remux', '3D', 'mHD', 'HDLight', 'HQ', 'HR', 'PAL', 'SECAM', 'NTSC', 'LD', 'MD', 'XXX'):
+    for value in ('Screener', 'Remux', '3D', 'PAL', 'SECAM', 'NTSC', 'XXX'):
         rebulk.string(value, value=value)
 
-    rebulk.string('LDTV', value='LD')
+    rebulk.string('HQ', value='High Quality')
+    rebulk.string('HR', value='High Resolution')
+    rebulk.string('LD', value='Line Dubbed')
+    rebulk.string('MD', value='Mic Dubbed')
+    rebulk.string('mHD', 'HDLight', value='Micro HD')
+    rebulk.string('LDTV', value='Low Definition')
     rebulk.string('HD', value='HD', validator=None,
                   tags=['streaming_service.prefix', 'streaming_service.suffix'])
-    rebulk.regex('Full-?HD', 'FHD', value='FullHD', validator=None,
+    rebulk.regex('Full-?HD', 'FHD', value='Full HD', validator=None,
                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
-    rebulk.regex('Ultra-?(?:HD)?', 'UHD', value='UltraHD', validator=None,
+    rebulk.regex('Ultra-?(?:HD)?', 'UHD', value='Ultra HD', validator=None,
                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
 
-    for value in ('Complete', 'Classic', 'LiNE', 'Bonus', 'Trailer', 'Retail',
+    for value in ('Complete', 'Classic', 'Bonus', 'Trailer', 'Retail',
                   'Colorized', 'Internal'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
+    rebulk.regex('LiNE', value='Line Audio', tags=['has-neighbor', 'release-group-prefix'])
     rebulk.regex('Read-?NFO', value='Read NFO')
     rebulk.string('CONVERT', value='Converted', tags='has-neighbor')
     rebulk.string('DOCU', value='Documentary', tags='has-neighbor')
@@ -93,14 +99,14 @@ def other():
     for coast in ('East', 'West'):
         rebulk.regex(r'(?:Live-)?(?:Episode-)?' + coast + '-?(?:Coast-)?Feed', value=coast + ' Coast Feed')
 
-    rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')
+    rebulk.string('VO', 'OV', value='Original Video', tags='has-neighbor')
     rebulk.string('Ova', 'Oav', value='Original Animated Video')
 
     rebulk.regex('Scr(?:eener)?', value='Screener', validator=None,
                  tags=['other.validate.screener', 'source-prefix', 'source-suffix'])
     rebulk.string('Mux', value='Mux', validator=seps_after,
                   tags=['other.validate.mux', 'video-codec-prefix', 'source-suffix'])
-    rebulk.string('HC', value='Hardcoded Subtitles')
+    rebulk.string('HC', 'vost', value='Hardcoded Subtitles')
 
     rebulk.rules(RenameAnotherToOther, ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore,
                  ValidateScreenerRule, ValidateMuxRule, ValidateHardcodedSubs, ValidateStreamingServiceNeighbor,

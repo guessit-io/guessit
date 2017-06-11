@@ -60,3 +60,22 @@ The following values were changed:
 - ``CC`` was removed. ``CC`` is now ``edition: Criterion``
 - ``FINAL`` was removed. ``FINAL`` is now ``episode_details: Final``
 - ``Original Animated Video`` was added.
+- ``OV`` is now ``Original Video``
+- ``AudioFix`` is now ``Audio Fixed``
+- ``SyncFix`` is now ``Sync Fixed``
+- ``DualAudio`` is now ``Dual Audio``
+- ``Fansub`` is now ``Fan Subtitled``
+- ``Fastsub`` is now ``Fast Subtitled``
+- ``FullHD`` is now ``Full HD``
+- ``UltraHD`` is now ``Ultra HD``
+- ``mHD`` and ``HDLight`` are now ``Micro HD``
+- ``HQ`` is now ``High Quality``
+- ``HR`` is now ``High Resolution``
+- ``LD`` is now ``Line Dubbed``
+- ``MD`` is now ``Mic Dubbed``
+- ``Low Definition`` was added.
+- ``LiNE`` is now ``Line Audio``
+- ``R5`` is now ``Region 5``
+- ``Region C`` was added.
+- ``ReEncoded`` is now ``Reencoded``
+- ``WideScreen`` is now ``Widescreen``

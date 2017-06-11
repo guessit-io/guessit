@@ -12,22 +12,22 @@
 ? +AudioFixed
 ? +Audio Fix
 ? +Audio Fixed
-: other: AudioFix
+: other: Audio Fixed
 
 ? +SyncFix
 ? +SyncFixed
 ? +Sync Fix
 ? +Sync Fixed
-: other: SyncFix
+: other: Sync Fixed
 
 ? +DualAudio
 ? +Dual Audio
-: other: DualAudio
+: other: Dual Audio
 
 ? +ws
 ? +WideScreen
 ? +Wide Screen
-: other: WideScreen
+: other: Widescreen
 
 # Fix and Real must be surround by others properties to be matched.
 ? DVD.Real.XViD
@@ -58,18 +58,20 @@
   proper_count: 1
 
 ? XViD.Fansub
-: other: Fansub
+: other: Fan Subtitled
 
 ? XViD.Fastsub
-: other: Fastsub
+: other: Fast Subtitled
 
 ? +Season Complete
 ? -Complete
 : other: Complete
 
 ? R5
+: other: Region 5
+
 ? RC
-: other: R5
+: other: Region C
 
 ? PreAir
 ? Pre Air
@@ -90,25 +92,23 @@
 ? FHD
 ? FullHD
 ? Full HD
-: other: FullHD
+: other: Full HD
 
 ? UHD
 ? Ultra
 ? UltraHD
 ? Ultra HD
-: other: UltraHD
+: other: Ultra HD
 
 ? mHD # ??
-: other: mHD
-
 ? HDLight
-: other: HDLight
+: other: Micro HD
 
 ? HQ
-: other: HQ
+: other: High Quality
 
 ? hr
-: other: HR
+: other: High Resolution
 
 ? PAL
 : other: PAL
@@ -119,12 +119,14 @@
 ? NTSC
 : other: NTSC
 
-? LD
 ? LDTV
-: other: LD
+: other: Low Definition
+
+? LD
+: other: Line Dubbed
 
 ? MD
-: other: MD
+: other: Mic Dubbed
 
 ? -The complete movie
 : other: Complete
@@ -136,13 +138,13 @@
 : audio_profile: HQ
 
 ? Other-HQ
-: other: HQ
+: other: High Quality
 
 ? reenc
 ? re-enc
 ? re-encoded
 ? reencoded
-: other: ReEncoded
+: other: Reencoded
 
 ? CONVERT XViD
 : other: Converted

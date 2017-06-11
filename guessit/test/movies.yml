@@ -46,7 +46,7 @@
   year: 2006
   proper_count: 2
   source: DVD
-  other: [ R5, Proper, Rip ]
+  other: [ Region 5, Proper, Rip ]
   video_codec: XviD
   release_group: PUKKA
 
@@ -98,7 +98,7 @@
 ? Movies/Office Space (1999)/Office.Space.[Dual-DVDRip].[Spanish-English].[XviD-AC3-AC3].[by.Oswald].avi
 : title: Office Space
   year: 1999
-  other: [DualAudio, Rip]
+  other: [Dual Audio, Rip]
   source: DVD
   language: [ english, spanish ]
   video_codec: XviD
@@ -147,7 +147,7 @@
   #film: 1
   year: 2009
   source: Blu-ray
-  other: [ReEncoded, Rip]
+  other: [Reencoded, Rip]
   audio_codec: AAC
   video_codec: h264
   screen_size: 720p
@@ -229,7 +229,7 @@
   year: 1970
   video_codec: DivX
   source: DVD
-  other: [DualAudio, Rip]
+  other: [Dual Audio, Rip]
 
 ? Movies/The Doors (1991)/09.03.08.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv
 : title: The Doors
@@ -460,7 +460,7 @@
 : title: Dead Man Down
   year: 2013
   source: Blu-ray
-  other: [ReEncoded, Rip]
+  other: [Reencoded, Rip]
   video_codec: XviD
   audio_channels: "5.1"
   audio_codec: AC3
@@ -563,7 +563,7 @@
   year: 1976
   subtitle_language: French
   source: Blu-ray
-  other: [ReEncoded, Rip]
+  other: [Reencoded, Rip]
   video_codec: h264
   audio_codec: AC3
   release_group: FUNKY
@@ -580,20 +580,20 @@
 : title: The Lizzie McGuire Movie
   year: 2003
   source: DVD
-  other: [HR, Rip]
+  other: [High Resolution, Rip]
 
 ? Hua.Mulan.BRRIP.MP4.x264.720p-HR.avi
 : title: Hua Mulan
   video_codec: h264
   source: Blu-ray
   screen_size: 720p
-  other: [ReEncoded, Rip, HR]
+  other: [Reencoded, Rip, High Resolution]
 
 ? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : video_codec: XviD
   title: Dr Seuss The Lorax
   source: DVD
-  other: [Rip, LiNE]
+  other: [Rip, Line Audio]
   year: 2012
   audio_codec: AC3
   audio_profile: HQ
@@ -609,7 +609,7 @@
 : video_codec: XviD
   title: Dr LiNE The Lorax
   source: DVD
-  other: [Rip, LiNE]
+  other: [Rip, Line Audio]
   year: 2012
   audio_codec: AC3
   audio_profile: HQ
@@ -646,9 +646,7 @@
 ? Yves.Saint.Laurent.2013.FRENCH.DVDSCR.MD.XviD-ViVARiUM.avi
 : source: DVD
   language: French
-  other:
-      - MD
-      - Screener
+  other: [Screener, Mic Dubbed]
   release_group: ViVARiUM
   title: Yves Saint Laurent
   video_codec: XviD
@@ -733,16 +731,14 @@
 
 ? Barbecue-2014-French-mHD-1080p
 : language: fr
-  other: mHD
+  other: Micro HD
   screen_size: 1080p
   title: Barbecue
   year: 2014
 
 ? Underworld Quadrilogie VO+VFF+VFQ 1080p HDlight.x264~Tonyk~Monde Infernal
 : language: fr
-  other:
-    - HDLight
-    - OV
+  other: [Original Video, Micro HD]
   screen_size: 1080p
   title: Underworld Quadrilogie
   video_codec: h264
@@ -875,7 +871,7 @@
 ? Name.BRMux.720p
 : title: Name
   source: Blu-ray
-  other: [ReEncoded, Mux]
+  other: [Reencoded, Mux]
   screen_size: 720p
   type: movie
 
@@ -889,7 +885,7 @@
 ? Name.BRRipMux.720p
 : title: Name
   source: Blu-ray
-  other: [ReEncoded, Rip, Mux]
+  other: [Reencoded, Rip, Mux]
   screen_size: 720p
   type: movie
 
@@ -908,7 +904,7 @@
   year: 2016
   language: mul
   screen_size: 4K
-  other: UltraHD
+  other: Ultra HD
   source: Blu-ray
   video_codec: h265
   video_profile: 10bit
@@ -925,7 +921,7 @@
   language: [it, en]
   screen_size: 4K
   streaming_service: Netflix
-  other: UltraHD
+  other: Ultra HD
   release_group: TeamPremium
   container: mp4
   type: movie
@@ -939,7 +935,7 @@
 ? Suicide Squad EXTENDED (2016) 2160p 4K UltraHD Blu-Ray x265 (HEVC 10bit BT709) Dolby Atmos 7.1 -DDR
 : title: Suicide Squad
   edition: Extended
-  other: UltraHD
+  other: Ultra HD
   year: 2016
   screen_size: 4K
   source: Blu-ray
@@ -979,7 +975,7 @@
 ? Its.A.Wonderful.Life.1946.Colorized.720p.BRRip.999MB.MkvCage.com
 : title: Its A Wonderful Life
   year: 1946
-  other: [Colorized, ReEncoded, Rip]
+  other: [Colorized, Reencoded, Rip]
   screen_size: 720p
   source: Blu-ray
   size: 999MB

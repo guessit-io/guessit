@@ -543,7 +543,7 @@
   season: 1
   title: Falling Skies
   video_codec: h264
-  other: HDLight
+  other: Micro HD
 
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BP.mkv
 : episode: 9
@@ -1226,7 +1226,7 @@
   release_group: TRACKS
   season: 4
   title: Doctor Who
-  other: [LD, Rip]
+  other: [Line Dubbed, Rip]
   video_codec: XviD
   year: 2005
 
@@ -1255,7 +1255,7 @@
 : episode: 2
   source: DVD
   language: fr
-  other: [LD, Rip]
+  other: [Line Dubbed, Rip]
   release_group: EPZ
   title: Dead Set
   video_codec: XviD
@@ -1490,9 +1490,7 @@
 ? '[Kaerizaki-Fansub]_One_Piece_679_[VOSTFR][FANSUB][HD_1280x720].mp4'
 : options: -E
   episode: 679
-  other:
-  - Fansub
-  - HD
+  other: [Fan Subtitled, HD]
   release_group: Kaerizaki-Fansub
   screen_size: 720p
   title: One Piece
@@ -1994,7 +1992,7 @@
   episode_title: Streik German DOKU
   source: DVD
   language: mul
-  other: [WideScreen, Rip]
+  other: [Widescreen, Rip]
   release_group: CDP
   season: 2
   title: Duck Dynasty
@@ -2091,7 +2089,7 @@
 ? American.Crime.S01E03.FASTSUB.VOSTFR.720p.HDTV.x264-F4ST
 : episode: 3
   source: HDTV
-  other: Fastsub
+  other: Fast Subtitled
   release_group: F4ST
   screen_size: 720p
   season: 1
@@ -2103,7 +2101,7 @@
 ? Gotham.S02E12.FASTSUB.VOSTFR.HDTV.X264-F4ST3R
 : episode: 12
   source: HDTV
-  other: Fastsub
+  other: Fast Subtitled
   release_group: F4ST3R
   season: 2
   subtitle_language: fr
@@ -2118,7 +2116,7 @@
   episode_title: Into The Fog of War
   part: 1
   screen_size: 360p
-  other: [LD, Rip]
+  other: [Low Definition, Rip]
   source: Web
   release_group: MPup
   type: episode
@@ -2164,7 +2162,7 @@
   season: 5
   episode: 9
   episode_title: Some Episode Title
-  other: WideScreen
+  other: Widescreen
   source: Satellite
   video_codec: h264
   release_group: NY2
@@ -2175,7 +2173,7 @@
 : title: Squidbillies
   season: 4
   episode: 5
-  other: [WideScreen, Rip]
+  other: [Widescreen, Rip]
   source: Satellite
   video_codec: XviD
   release_group: aAF
@@ -2723,7 +2721,7 @@
   screen_size: 1080p
   source: HDTV
   video_codec: h264
-  other: ReEncoded
+  other: Reencoded
   release_group: GROUP
   type: episode
 
@@ -3385,7 +3383,7 @@
   source: HDTV
   video_codec: h264
   release_group: Belex
-  other: DualAudio
+  other: Dual Audio
   language: und
   type: episode
 
@@ -3395,7 +3393,7 @@
   episode: 10
   screen_size: 1080p
   source: Web
-  other: DualAudio
+  other: Dual Audio
   language: und
   release_group: RK
   type: episode
@@ -3406,7 +3404,7 @@
   episode: 12
   screen_size: 720p
   source: Web
-  other: DualAudio
+  other: Dual Audio
   language: und
   type: episode
 
@@ -3442,7 +3440,7 @@
   source: Blu-ray
   video_codec: h264
   release_group: Belex
-  other: DualAudio
+  other: Dual Audio
   subtitle_language: und
   type: episode
 
@@ -3455,7 +3453,7 @@
   source: Blu-ray
   video_codec: h264
   release_group: Belex
-  other: DualAudio
+  other: Dual Audio
   subtitle_language: und
   type: episode
 
@@ -3507,7 +3505,7 @@
   episode: 1
   episode_title: Savage Season
   language: de
-  other: [WideScreen, Rip]
+  other: [Widescreen, Rip]
   source: HDTV
   video_codec: h264
   release_group: TVP
@@ -3632,7 +3630,7 @@
   episode: 5
   screen_size: 720p
   video_profile: 10bit
-  other: DualAudio
+  other: Dual Audio
   source: TV
   language: und
   crc32: EDA6E7F1
@@ -3644,7 +3642,7 @@
   season: 1
   episode: 6
   streaming_service: Netflix
-  other: UltraHD
+  other: Ultra HD
   type: episode
 
 ? Show.Name.S04E13.FINAL.MULTI.DD51.2160p.NetflixUHDRip.x265-TVS
@@ -4028,7 +4026,7 @@
   title: Kono Subarashii Sekai ni Shukufuku wo! 2
   episode: 9
   subtitle_language: fr
-  other: FullHD
+  other: Full HD
   type: episode
 
 ? Whose Line is it anyway/Season 01/Whose.Line.is.it.Anyway.US.S13E01.720p.WEB.x264-TBS.mkv
