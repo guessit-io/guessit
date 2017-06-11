@@ -7,7 +7,7 @@
   episode: 5
   episode_title: Vaginatown
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: 0TV
   container: avi
 
@@ -19,7 +19,7 @@
   language: English
   subtitle_language: French
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: AlFleNi-TeaM
   website: tvu.org.ru
   container: avi
@@ -30,7 +30,7 @@
   episode: 3
   episode_title: Right Place, Wrong Time
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: NoTV
 
 ? Series/Duckman/Duckman - S1E13 Joking The Chicken (unedited).avi
@@ -133,7 +133,7 @@
   language: english
   subtitle_language: french
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: AlFleNi-TeaM
   website: tvu.org.ru
 
@@ -196,7 +196,7 @@
   episode_title: Good Cop Bad Cop
   source: Web
   other: Rip
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Series/My Name Is Earl/My.Name.Is.Earl.S01Extras.-.Bad.Karma.DVDRip.XviD.avi
 : title: My Name Is Earl
@@ -205,7 +205,7 @@
   source: DVD
   other: Rip
   episode_details: Extras
-  video_codec: XviD
+  video_codec: Xvid
 
 ? series/Freaks And Geeks/Season 1/Episode 4 - Kim Kelly Is My Friend-eng(1).srt
 : title: Freaks And Geeks
@@ -301,7 +301,7 @@
   episode: 3
   episode_title: Health Care
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: LOL
 
 ? /Volumes/data-1/Series/Futurama/Season 3/Futurama_-_S03_DVD_Bonus_-_Deleted_Scenes_Part_3.ogm
@@ -318,7 +318,7 @@
   episode: 2
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: DIMENSION
 
 ? /volume1/TV Series/Drawn Together/Season 1/Drawn Together 1x04 Requiem for a Reality Show.avi
@@ -335,7 +335,7 @@
   source: Web
   audio_channels: "5.1"
   audio_codec: AC3
-  video_codec: h264
+  video_codec: H.264
   release_group: CtrlHD
 
 ? /media/bdc64bfe-e36f-4af8-b550-e6fd2dfaa507/TV_Shows/Doctor Who (2005)/Saison 6/Doctor Who (2005) - S06E13 - The Wedding of River Song.mkv
@@ -361,7 +361,7 @@
   source: Web
   audio_channels: "5.1"
   audio_codec: AC3
-  video_codec: h264
+  video_codec: H.264
   release_group: CtrlHD
 
 ? /home/disaster/Videos/TV/Merlin/merlin_2008.5x02.arthurs_bane_part_two.repack.720p_hdtv_x264-fov.mkv
@@ -372,7 +372,7 @@
   episode_title: arthurs bane
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: fov
   year: 2008
   other: Proper
@@ -393,7 +393,7 @@
   source: Web
   audio_channels: "5.1"
   audio_codec: AC3
-  video_codec: h264
+  video_codec: H.264
 
 ? Game of Thrones S03E06 1080i HDTV DD5.1 MPEG2-TrollHD.ts
 : title: Game of Thrones
@@ -403,7 +403,7 @@
   source: HDTV
   audio_channels: "5.1"
   audio_codec: AC3
-  video_codec: Mpeg2
+  video_codec: MPEG-2
   release_group: TrollHD
 
 ? gossip.girl.s01e18.hdtv.xvid-2hd.eng.srt
@@ -411,7 +411,7 @@
   season: 1
   episode: 18
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: 2hd
   subtitle_language: english
 
@@ -421,7 +421,7 @@
   episode: [1, 2]
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: IMMERSE
 
 ? Wheels.S03E01-02.720p.HDTV.x264-IMMERSE.mkv
@@ -430,7 +430,7 @@
   episode: [1, 2]
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: IMMERSE
 
 ? Wheels.S03E01-E02.720p.HDTV.x264-IMMERSE.mkv
@@ -439,7 +439,7 @@
   episode: [1, 2]
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: IMMERSE
 
 ? Wheels.S03E01-04.720p.HDTV.x264-IMMERSE.mkv
@@ -448,7 +448,7 @@
   episode: [1, 2, 3, 4]
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: IMMERSE
 
 ? Marvels.Agents.of.S.H.I.E.L.D-S01E06.720p.HDTV.X264-DIMENSION.mkv
@@ -457,7 +457,7 @@
   episode: 6
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: DIMENSION
 
 ? Marvels.Agents.of.S.H.I.E.L.D.S01E06.720p.HDTV.X264-DIMENSION.mkv
@@ -466,7 +466,7 @@
   episode: 6
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: DIMENSION
 
 ? Marvels.Agents.of.S.H.I.E.L.D..S01E06.720p.HDTV.X264-DIMENSION.mkv
@@ -475,7 +475,7 @@
   episode: 6
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: DIMENSION
 
 ? Series/Friday Night Lights/Season 1/Friday Night Lights S01E19 - Ch-Ch-Ch-Ch-Changes.avi
@@ -487,7 +487,7 @@
 ? Dexter Saison VII FRENCH.BDRip.XviD-MiND.nfo
 : title: Dexter
   season: 7
-  video_codec: XviD
+  video_codec: Xvid
   language: French
   source: Blu-ray
   other: Rip
@@ -496,7 +496,7 @@
 ? Dexter Saison sept FRENCH.BDRip.XviD-MiND.nfo
 : title: Dexter
   season: 7
-  video_codec: XviD
+  video_codec: Xvid
   language: French
   source: Blu-ray
   other: Rip
@@ -512,7 +512,7 @@
 
 ? One.Piece.E576.VOSTFR.720p.HDTV.x264-MARINE-FORD.mkv
 : episode: 576
-  video_codec: h264
+  video_codec: H.264
   source: HDTV
   title: One Piece
   release_group: MARINE-FORD
@@ -520,7 +520,7 @@
   screen_size: 720p
 
 ? Dexter.S08E12.FINAL.MULTi.1080p.BluRay.x264-MiND.mkv
-: video_codec: h264
+: video_codec: H.264
   episode: 12
   season: 8
   source: Blu-ray
@@ -542,12 +542,12 @@
   screen_size: 720p
   season: 1
   title: Falling Skies
-  video_codec: h264
+  video_codec: H.264
   other: Micro HD
 
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BP.mkv
 : episode: 9
-  video_codec: h264
+  video_codec: H.264
   source: Web
   title: Sleepy Hollow
   audio_channels: "5.1"
@@ -558,7 +558,7 @@
 
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BS.mkv
 : episode: 9
-  video_codec: h264
+  video_codec: H.264
   source: Web
   title: Sleepy Hollow
   audio_channels: "5.1"
@@ -575,7 +575,7 @@
   language: French
   source: DVD
   other: Rip
-  video_codec: XviD
+  video_codec: Xvid
   release_group: NOTAG
 
 ? The Big Bang Theory S00E00 Unaired Pilot VOSTFR TVRip XviD-VioCs
@@ -585,7 +585,7 @@
   subtitle_language: French
   source: TV
   other: Rip
-  video_codec: XviD
+  video_codec: Xvid
   release_group: VioCs
   episode_details: [Unaired, Pilot]
 
@@ -594,7 +594,7 @@
   season: 1
   episode: 0
   source: TV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: GIGGITY
   other: [Proper, Rip]
   proper_count: 1
@@ -607,7 +607,7 @@
   episode: 18
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: KILLERS
 
 ? 2.Broke.Girls.S03E10.480p.HDTV.x264-mSD.mkv
@@ -616,7 +616,7 @@
   episode: 10
   screen_size: 480p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: mSD
 
 ? House.of.Cards.2013.S02E03.1080p.NF.WEBRip.DD5.1.x264-NTb.mkv
@@ -631,7 +631,7 @@
   other: Rip
   audio_channels: "5.1"
   audio_codec: AC3
-  video_codec: h264
+  video_codec: H.264
   release_group: NTb
 
 ? the.100.109.hdtv-lol.mp4
@@ -647,7 +647,7 @@
   subtitle_language: French
   season: 5
   episode: 3
-  video_codec: XviD
+  video_codec: Xvid
   source: HDTV
   website: tvu.org.ru
   release_group: STi
@@ -703,7 +703,7 @@
   release_group: Tsundere
   screen_size: 1080p
   title: Boku wa Tomodachi ga Sukunai
-  video_codec: h264
+  video_codec: H.264
   video_profile: 10bit
 
 ? '[t.3.3.d]_Mikakunin_de_Shinkoukei_-_12_[720p][5DDC1352].mkv'
@@ -719,7 +719,7 @@
   release_group: Anime-Koi
   screen_size: 720p
   title: Sabagebu!
-  video_codec: h264
+  video_codec: H.264
 
 ? '[aprm-Diogo4D] [BD][1080p] Nagi no Asukara 08 [4D102B7C].mkv'
 : crc32: 4D102B7C
@@ -839,7 +839,7 @@
   source: HDTV
   release_group: FlexGet
   title: W2Test
-  video_codec: XviD
+  video_codec: Xvid
 
 ? W2Test.123.HDTV.XViD-FlexGet
 : options: --episode-prefer-number
@@ -847,7 +847,7 @@
   source: HDTV
   release_group: FlexGet
   title: W2Test
-  video_codec: XviD
+  video_codec: Xvid
 
 ? FooBar.0307.PDTV-FlexGet
 : episode: 7
@@ -971,7 +971,7 @@
   source: HDTV
   release_group: FlexGet
   title: Date Show
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Something.1x5.Season.Complete-FlexGet
 : episode: 5
@@ -1015,7 +1015,7 @@
   season: 2013
   title: FlexGet
   episode_title: Title Here
-  video_codec: h264
+  video_codec: H.264
   year: 2013
 
 ? FlexGet.14.of.21.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
@@ -1028,7 +1028,7 @@
   screen_size: 720p
   title: FlexGet
   episode_title: Title Here
-  video_codec: h264
+  video_codec: H.264
 
 ? FlexGet.Series.2013.14.of.21.Title.Here.720p.HDTV.AAC5.1.x264-NOGRP
 : audio_channels: '5.1'
@@ -1041,7 +1041,7 @@
   season: 2013
   title: FlexGet
   episode_title: Title Here
-  video_codec: h264
+  video_codec: H.264
   year: 2013
 
 ? Something.S04E05E09
@@ -1131,7 +1131,7 @@
   source: HDTV
   release_group: AFG
   title: Real Time With Bill Maher
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Arrow.S03E21.Al.Sah-Him.1080p.WEB-DL.DD5.1.H.264-BS.mkv
 : title: Arrow
@@ -1141,7 +1141,7 @@
   screen_size: 1080p
   audio_codec: AC3
   audio_channels: "5.1"
-  video_codec: h264
+  video_codec: H.264
   release_group: BS
   source: Web
 
@@ -1158,7 +1158,7 @@
   language: fr
   season: 5
   title: '24'
-  video_codec: XviD
+  video_codec: Xvid
   release_group: FiXi0N
 
 ? 12.Monkeys.S01E12.FRENCH.BDRip.x264-VENUE.mkv
@@ -1169,7 +1169,7 @@
   release_group: VENUE
   season: 1
   title: 12 Monkeys
-  video_codec: h264
+  video_codec: H.264
 
 ? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.720p.CC.WEBRip.AAC2.0.x264-BTW.mkv
 ? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.720p.ComedyCentral.WEBRip.AAC2.0.x264-BTW.mkv
@@ -1185,7 +1185,7 @@
   streaming_service: Comedy Central
   title: The Daily Show
   episode_title: Kirsten Gillibrand
-  video_codec: h264
+  video_codec: H.264
 
 ? The.Daily.Show.2015.07.01.Kirsten.Gillibrand.Extended.Interview.720p.CC.WEBRip.AAC2.0.x264-BTW.mkv
 : audio_channels: '2.0'
@@ -1197,7 +1197,7 @@
   streaming_service: Comedy Central
   title: The Daily Show
   episode_title: Kirsten Gillibrand Extended Interview
-  video_codec: h264
+  video_codec: H.264
 
 ? The.Daily.Show.2015.07.02.Sarah.Vowell.CC.WEBRip.AAC2.0.x264-BTW.mkv
 : audio_channels: '2.0'
@@ -1208,7 +1208,7 @@
   streaming_service: Comedy Central
   title: The Daily Show
   episode_title: Sarah Vowell
-  video_codec: h264
+  video_codec: H.264
 
 ? 90.Day.Fiance.S02E07.I.Have.To.Tell.You.Something.720p.HDTV.x264-W4F
 : episode: 7
@@ -1227,7 +1227,7 @@
   season: 4
   title: Doctor Who
   other: [Line Dubbed, Rip]
-  video_codec: XviD
+  video_codec: Xvid
   year: 2005
 
 ? Astro.Le.Petit.Robot.S01E01+02.FRENCH.DVDRiP.X264.INT-BOOLZ.mkv
@@ -1238,7 +1238,7 @@
   release_group: INT-BOOLZ
   season: 1
   title: Astro Le Petit Robot
-  video_codec: h264
+  video_codec: H.264
 
 ? Annika.Bengtzon.2012.E01.Le.Testament.De.Nobel.FRENCH.DVDRiP.XViD-STVFRV.avi
 : episode: 1
@@ -1248,7 +1248,7 @@
   release_group: STVFRV
   title: Annika Bengtzon
   episode_title: Le Testament De Nobel
-  video_codec: XviD
+  video_codec: Xvid
   year: 2012
 
 ? Dead.Set.02.FRENCH.LD.DVDRip.XviD-EPZ.avi
@@ -1258,7 +1258,7 @@
   other: [Line Dubbed, Rip]
   release_group: EPZ
   title: Dead Set
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Phineas and Ferb S01E00 & S01E01 & S01E02
 : episode: [0, 1, 2]
@@ -1271,7 +1271,7 @@
   release_group: Etc-Group
   season: 1
   title: Show Name
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show Name - S01E02 - S01E03 - S01E04 - Ep Name
 : episode: [2, 3, 4]
@@ -1285,7 +1285,7 @@
   release_group: Etc-Group
   season: 1
   title: Show Name
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show Name - 1x02 - 1x03 - 1x04 - Ep Name
 : episode: [2, 3, 4]
@@ -1299,7 +1299,7 @@
   release_group: Etc-Group
   season: 1
   title: Show Name
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show Name - S01E02 - My Ep Name
 : episode: 2
@@ -1319,7 +1319,7 @@
   release_group: Etc-Group
   season: 1
   title: Show Name
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show Name - S01E02-03 - My Ep Name
 : episode: [2, 3]
@@ -1338,7 +1338,7 @@
   release_group: Etc-Group
   season: 1
   title: Show Name
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show Name - 1x02 - My Ep Name
 : episode: 2
@@ -1352,7 +1352,7 @@
   release_group: Etc-Group
   season: 1
   title: Show Name
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show Name - 1x02-03-04 - My Ep Name
 : episode: [2, 3, 4]
@@ -1369,7 +1369,7 @@
   release_group: Etc-Group
   title: Show Name
   episode_title: Event
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show.Name.101.Event.2010.11.23.HDTV.XViD.Etc-Group
 : date: 2010-11-23
@@ -1379,7 +1379,7 @@
   release_group: Etc-Group
   title: Show Name
   episode_title: Event
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show.Name.2010.11.23.HDTV.XViD.Etc-Group
 : date: 2010-11-23
@@ -1403,7 +1403,7 @@
   release_group: Etc-Group
   season: 1
   title: Show Name
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show.Name.E02-03
 : episode: [2, 3]
@@ -1423,7 +1423,7 @@
 : part: 3
   title: Show Name
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: Etc-Group
   type: movie
   # Fallback to movie type because we can't tell it's a series ...
@@ -1449,7 +1449,7 @@
   release_group: Etc-Group
   season: 1
   title: Show Name
-  video_codec: XviD
+  video_codec: Xvid
 
 ? '[HorribleSubs] Maria the Virgin Witch - 01 [720p].mkv'
 : episode: 1
@@ -1552,7 +1552,7 @@
   release_group: Stratos-Subs
   screen_size: 720p
   title: Infinite Stratos
-  video_codec: h264
+  video_codec: H.264
 
 # [ShinBunBu-Subs] Bleach - 02-03 (CX 1280x720 x264 AAC)
 
@@ -1570,7 +1570,7 @@
   release_group: Ayako
   screen_size: 720p
   title: Infinite Stratos
-  video_codec: h264
+  video_codec: H.264
 
 ? '[Ayako] Infinite Stratos - IS - 07v2 [H264][720p][44419534]'
 : crc32: '44419534'
@@ -1578,7 +1578,7 @@
   release_group: Ayako
   screen_size: 720p
   title: Infinite Stratos
-  video_codec: h264
+  video_codec: H.264
   version: 2
 
 ? '[Ayako-Shikkaku] Oniichan no Koto Nanka Zenzen Suki Janain Dakara ne - 10 [LQ][h264][720p] [8853B21C]'
@@ -1587,7 +1587,7 @@
   release_group: Ayako-Shikkaku
   screen_size: 720p
   title: Oniichan no Koto Nanka Zenzen Suki Janain Dakara ne
-  video_codec: h264
+  video_codec: H.264
 
 # TODO: Add support for absolute episodes
 ? Bleach - s16e03-04 - 313-314
@@ -1611,7 +1611,7 @@
   release_group: ShinBunBu-Subs
   screen_size: 720p
   title: Bleach
-  video_codec: h264
+  video_codec: H.264
 
 ? 003. Show Name - Ep Name.avi
 : episode: 3
@@ -1640,7 +1640,7 @@
   season: 14
   title: Project Runway
   subtitle_language: en
-  video_codec: h264
+  video_codec: H.264
 
 ? '[Hatsuyuki-Kaitou]_Fairy_Tail_2_-_16-20_[720p][10bit].torrent'
 : episode: [16, 17, 18, 19, 20]
@@ -1673,7 +1673,7 @@
   season: 6
   title: The Good Wife
   episode_title: Trust Issues
-  video_codec: h264
+  video_codec: H.264
 
 ? Fear the Walking Dead - 01x02 - So Close, Yet So Far.REPACK-KILLERS.French.C.updated.Addic7ed.com.mkv
 : episode: 2
@@ -1700,7 +1700,7 @@
   screen_size: 720p
   title: The Daily Show
   episode_title: Jake Gyllenhaal
-  video_codec: h264
+  video_codec: H.264
 
 ? "[7.1.7.8.5] Foo Bar - 11 (H.264) [5235532D].mkv"
 : options: -E
@@ -1735,13 +1735,13 @@
   screen_size: 720p
   season: 1
   title: Foo's &amp; Bars
-  video_codec: XviD
+  video_codec: Xvid
   year: 2009
 
 ? Date.Series.10-11-2008.XViD
 : date: 2008-11-10
   title: Date
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Scrubs/SEASON-06/Scrubs.S06E09.My.Perspective.DVDRip.XviD-WAT/scrubs.s06e09.dvdrip.xvid-wat.avi
 : container: avi
@@ -1753,7 +1753,7 @@
   release_group: WAT
   season: 6
   title: Scrubs
-  video_codec: XviD
+  video_codec: Xvid
 
 ? '[PuyaSubs!] Digimon Adventure tri - 01 [720p][F9967949].mkv'
 : container: mkv
@@ -1769,7 +1769,7 @@
   screen_size: 720p
   season: 1
   title: Sherlock
-  video_codec: h264
+  video_codec: H.264
 
 ? Running.Wild.With.Bear.Grylls.S02E07.Michael.B.Jordan.PROPER.HDTV.x264-W4F.avi
 : container: avi
@@ -1782,7 +1782,7 @@
   release_group: W4F
   season: 2
   title: Running Wild With Bear Grylls
-  video_codec: h264
+  video_codec: H.264
 
 ? Homeland.S05E11.Our.Man.in.Damascus.German.Sub.720p.HDTV.x264.iNTERNAL-BaCKToRG
 : episode: 11
@@ -1795,7 +1795,7 @@
   subtitle_language: de
   title: Homeland
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Breaking.Bad.S01E01.2008.BluRay.VC1.1080P.5.1.WMV-NOVO
 : title: Breaking Bad
@@ -1814,7 +1814,7 @@
   season: 1
   episode: 2
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   other: Proper
   proper_count: 1
   release_group: LOL
@@ -1825,7 +1825,7 @@
   season: 2
   episode: 1
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   audio_codec: AAC
   container: mp4
   release_group: k3n
@@ -1838,7 +1838,7 @@
   episode_details: Pilot
   episode_title: Pilot
   source: DVD
-  video_codec: h264
+  video_codec: H.264
   other: [Screener, Preair]
   release_group: NoGRP
   type: episode
@@ -1848,7 +1848,7 @@
   season: 5
   episode: 19
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   other: Proper
   proper_count: 1
   release_group: LOL[ettv]
@@ -1859,7 +1859,7 @@
   season: 1
   episode: 3
   source: Web
-  video_codec: h264
+  video_codec: H.264
   language: hu
   release_group: nIk
   type: episode
@@ -1873,7 +1873,7 @@
   season: 6
   title: Game of Thrones
   type: episode
-  video_codec: h265
+  video_codec: H.265
 
 ? Fargo.-.Season.1.-.720p.BluRay.-.x264.-.ShAaNiG
 : source: Blu-ray
@@ -1882,7 +1882,7 @@
   season: 1
   title: Fargo
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Show.Name.S02E02.Episode.Title.1080p.WEB-DL.x264.5.1Ch.-.Group
 : audio_channels: '5.1'
@@ -1894,7 +1894,7 @@
   season: 2
   title: Show Name
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Breaking.Bad.S01E01.2008.BluRay.VC1.1080P.5.1.WMV-NOVO
 : audio_channels: '5.1'
@@ -1917,7 +1917,7 @@
   season: 1
   title: Cosmos A Space Time Odyssey
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Elementary.S01E01.Pilot.DVDSCR.x264.PREAiR-NoGRP
 : episode: 1
@@ -1931,7 +1931,7 @@
   season: 1
   title: Elementary
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Fear.The.Walking.Dead.S02E01.HDTV.x264.AAC.MP4-k3n.mp4
 : audio_codec: AAC
@@ -1943,7 +1943,7 @@
   season: 2
   title: Fear The Walking Dead
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Game.of.Thrones.S03.1080p.BluRay.DTS-HD.MA.5.1.AVC.REMUX-FraMeSToR
 : audio_channels: '5.1'
@@ -1965,7 +1965,7 @@
   subtitle_language: nl
   title: Show Name
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Friends.S01-S10.COMPLETE.720p.BluRay.x264-PtM
 : source: Blu-ray
@@ -1985,7 +1985,7 @@
   - 10
   title: Friends
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Duck.Dynasty.S02E07.Streik.German.DOKU.DL.WS.DVDRiP.x264-CDP
 : episode: 7
@@ -1997,7 +1997,7 @@
   season: 2
   title: Duck Dynasty
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Family.Guy.S13E14.JOLO.German.AC3D.DL.720p.WebHD.x264-CDD
 : audio_codec: AC3
@@ -2010,7 +2010,7 @@
   season: 13
   title: Family Guy
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? How.I.Met.Your.Mother.COMPLETE.SERIES.DVDRip.XviD-AR
 : options: -L en -C us
@@ -2019,7 +2019,7 @@
   release_group: AR
   title: How I Met Your Mother
   type: movie # Should be episode
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show Name The Complete Seasons 1 to 5 720p BluRay x265 HEVC-SUJAIDR[UTR]
 : source: Blu-ray
@@ -2034,7 +2034,7 @@
   - 5
   title: Show Name
   type: episode
-  video_codec: h265
+  video_codec: H.265
 
 ? Fear.the.Walking.Dead.-.Season.2.epi.02.XviD.Eng.Ac3-5.1.sub.ita.eng.iCV-MIRCrew
 : options: -t episode
@@ -2048,7 +2048,7 @@
   subtitle_language: it
   title: Fear the Walking Dead
   type: episode
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Game.Of.Thrones.S06E04.720p.PROPER.HDTV.x264-HDD
 : episode: 4
@@ -2060,7 +2060,7 @@
   season: 6
   title: Game Of Thrones
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Marvels.Daredevil.S02E04.WEBRip.x264-NF69.mkv
 : container: mkv
@@ -2071,7 +2071,7 @@
   season: 2
   title: Marvels Daredevil
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? The.Walking.Dead.S06E01.FRENCH.1080p.WEB-DL.DD5.1.HEVC.x265-GOLF68
 : audio_channels: '5.1'
@@ -2084,7 +2084,7 @@
   season: 6
   title: The Walking Dead
   type: episode
-  video_codec: h265
+  video_codec: H.265
 
 ? American.Crime.S01E03.FASTSUB.VOSTFR.720p.HDTV.x264-F4ST
 : episode: 3
@@ -2096,7 +2096,7 @@
   subtitle_language: fr
   title: American Crime
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? Gotham.S02E12.FASTSUB.VOSTFR.HDTV.X264-F4ST3R
 : episode: 12
@@ -2107,7 +2107,7 @@
   subtitle_language: fr
   title: Gotham
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 # WEBRip + LD
 ? Australian.Story.2016.05.23.Into.The.Fog.of.War.Part.1.360p.LDTV.WEBRIP.[MPup]
@@ -2128,7 +2128,7 @@
   episode: 6
   language: fr
   source: Analogue HDTV
-  video_codec: XviD
+  video_codec: Xvid
   type: episode
 
 # WEBDLRip
@@ -2152,7 +2152,7 @@
   screen_size: 720p
   source: Web
   other: Rip
-  video_codec: h264
+  video_codec: H.264
   release_group: SRS
   type: episode
 
@@ -2164,7 +2164,7 @@
   episode_title: Some Episode Title
   other: Widescreen
   source: Satellite
-  video_codec: h264
+  video_codec: H.264
   release_group: NY2
   type: episode
 
@@ -2175,7 +2175,7 @@
   episode: 5
   other: [Widescreen, Rip]
   source: Satellite
-  video_codec: XviD
+  video_codec: Xvid
   release_group: aAF
   type: episode
 
@@ -2190,7 +2190,7 @@
   season: 10
   title: The B B T
   type: episode
-  video_codec: h264
+  video_codec: H.264
 
 ? '[Y-F] Very long Show Name Here - 03 Vostfr HD 8bits'
 : release_group: Y-F
@@ -2208,7 +2208,7 @@
   season: 3
   title: Snooze and Go Sleep
   type: episode
-  video_codec: h265
+  video_codec: H.265
   website: www.site.com
 
 ? Show.Name.S01.720p.HDTV.DD5.1.x264-Group/show.name.0106.720p-group.mkv
@@ -2218,7 +2218,7 @@
   source: HDTV
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: Group
   episode: 6
   container: mkv
@@ -2244,7 +2244,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2260,7 +2260,7 @@
   other: Rip
   audio_codec: EAC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   type: episode
 
 # Streaming service: Comedy Central
@@ -2275,7 +2275,7 @@
   source: Web
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2292,7 +2292,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2307,7 +2307,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2321,7 +2321,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2337,7 +2337,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2353,7 +2353,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2369,7 +2369,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: NTb
   type: episode
 
@@ -2384,7 +2384,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2400,7 +2400,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2416,7 +2416,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2432,7 +2432,7 @@
   other: Rip
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: NTb
   container: mkv
   mimetype: video/x-matroska
@@ -2449,7 +2449,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2464,7 +2464,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2481,7 +2481,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2497,7 +2497,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2513,7 +2513,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: group
   type: episode
 
@@ -2529,7 +2529,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: group
   type: episode
 
@@ -2545,7 +2545,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: group
   type: episode
 
@@ -2561,7 +2561,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: group
   type: episode
 
@@ -2577,7 +2577,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: group
   type: episode
 
@@ -2593,7 +2593,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: group
   type: episode
 
@@ -2609,7 +2609,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: group
   type: episode
 
@@ -2623,7 +2623,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2637,7 +2637,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2651,7 +2651,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2665,7 +2665,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: monkee
   type: episode
 
@@ -2686,7 +2686,7 @@
   other: Proper
   proper_count: 1
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   type: episode
 
 ? Show.Name.S03E15.480p.4.8GB.Proper.HDTV.x264
@@ -2698,7 +2698,7 @@
   other: Proper
   proper_count: 1
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   type: episode
 
 ? Show.Name.S03.1.1TB.Proper.HDTV.x264
@@ -2708,7 +2708,7 @@
   other: Proper
   proper_count: 1
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   type: episode
 
 ? Some.Show.S02E14.1080p.HDTV.X264-reenc.GROUP
@@ -2720,7 +2720,7 @@
   episode: 14
   screen_size: 1080p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   other: Reencoded
   release_group: GROUP
   type: episode
@@ -2737,7 +2737,7 @@
   other: Rip
   audio_codec: EAC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: Group
   type: episode
 
@@ -2745,7 +2745,7 @@
 : title: Show Name
   season: 2
   episode: 19
-  video_codec: h264
+  video_codec: H.264
   language: it
   audio_codec: AAC
   source: Web
@@ -2758,7 +2758,7 @@
   season: 1
   episode: 10
   screen_size: 1080p
-  video_codec: h264
+  video_codec: H.264
   language: [it, en]
   source: Web
   other: Mux
@@ -2771,7 +2771,7 @@
 : title: Show Name
   season: 4
   episode: [7, 8]
-  video_codec: h264
+  video_codec: H.264
   language: it
   audio_codec: AAC
   source: HDTV
@@ -2787,7 +2787,7 @@
   language: it
   source: HDTV
   other: Mux
-  video_codec: h264
+  video_codec: H.264
   release_group: Group
   type: episode
 
@@ -2797,7 +2797,7 @@
   screen_size: 1080p
   source: Blu-ray
   other: Mux
-  video_codec: h264
+  video_codec: H.264
   audio_codec: DTS-HD
   audio_profile: Master Audio
   type: episode
@@ -2848,7 +2848,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: BTN
   type: episode
 
@@ -2863,7 +2863,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: AJP69
   type: episode
 
@@ -2878,7 +2878,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: HARiKEN
   type: episode
 
@@ -2892,7 +2892,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: BTW
   type: episode
 
@@ -2906,7 +2906,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: BTW
   type: episode
 
@@ -2921,7 +2921,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: BTW
   type: episode
 
@@ -2936,7 +2936,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: RTN
   type: episode
 
@@ -2951,7 +2951,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: CasStudio
   type: episode
 
@@ -2963,7 +2963,7 @@
   source: Web
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: KINGS
   container: mkv
   type: episode
@@ -2975,7 +2975,7 @@
   episode: 16
   other: Hardcoded Subtitles
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   subtitle_language: sv
   type: episode
 
@@ -2990,7 +2990,7 @@
   other: Rip
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: ViSUM
   container: mkv
   type: episode
@@ -3011,7 +3011,7 @@
   source: Web
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: HKD
   container: mkv
   type: episode
@@ -3025,7 +3025,7 @@
   source: Web
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: TVSmash
   container: mkv
   type: episode
@@ -3040,7 +3040,7 @@
   other: Rip
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: BTW
   container: mkv
   type: episode
@@ -3054,7 +3054,7 @@
   source: Web
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: R2D2
   container: mkv
   type: episode
@@ -3068,7 +3068,7 @@
   source: Web
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   subtitle_language: nl
   release_group: Q
   container: mkv
@@ -3083,7 +3083,7 @@
   source: Web
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   language: nl
   container: mkv
   type: episode
@@ -3107,7 +3107,7 @@
   episode: 2
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   language: es
   release_group: NEWPCT
   type: episode
@@ -3152,7 +3152,7 @@
   episode: [2, 3, 4]
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   language: es
   release_group: NEWPCT
   type: episode
@@ -3164,7 +3164,7 @@
   episode: 3
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   language: es
   release_group: NEWPCT
   type: episode
@@ -3176,7 +3176,7 @@
   episode: [3, 4, 5, 6]
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   language: es
   release_group: NEWPCT
   type: episode
@@ -3188,7 +3188,7 @@
   episode: 2
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   language: es
   release_group: NEWPCT
   type: episode
@@ -3200,7 +3200,7 @@
   episode: 2
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   language: es
   release_group: NEWPCT
   type: episode
@@ -3212,7 +3212,7 @@
   episode: [12, 13, 14]
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   language: es
   release_group: NEWPCT
   episode_details: Final
@@ -3247,7 +3247,7 @@
   language: it
   source: HDTV
   other: Mux
-  video_codec: h264
+  video_codec: H.264
   release_group: NovaRip
   type: episode
 
@@ -3261,7 +3261,7 @@
   language: it
   source: HDTV
   other: Mux
-  video_codec: h264
+  video_codec: H.264
   release_group: NovaRip
   type: episode
 
@@ -3277,7 +3277,7 @@
   subtitle_language: und
   screen_size: 1080p
   source: Blu-ray
-  video_codec: h264
+  video_codec: H.264
   release_group: RRH
   type: episode
 
@@ -3326,7 +3326,7 @@
   subtitle_language: spa
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: sPHD
   type: episode
 
@@ -3336,7 +3336,7 @@
   episode: 1
   subtitle_language: deu
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: ASAP
   type: episode
 
@@ -3348,7 +3348,7 @@
   subtitle_language: deu
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   type: episode
 
 ? Show.Name.S01.Season.Complet.WEBRiP.Ro.Subbed.TM
@@ -3367,7 +3367,7 @@
   screen_size: 720p
   source: Web
   other: Rip
-  video_codec: h264
+  video_codec: H.264
   container: mkv
   audio_codec: AC3
   audio_channels: '5.1'
@@ -3381,7 +3381,7 @@
   episode: 3
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: Belex
   other: Dual Audio
   language: und
@@ -3415,7 +3415,7 @@
   screen_size: 720p
   language: und
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: 0SEC-pia
   container: mkv
   type: episode
@@ -3429,7 +3429,7 @@
   language: und
   source: Web
   other: Rip
-  video_codec: h264
+  video_codec: H.264
   type: episode
 
 # Legendas
@@ -3438,7 +3438,7 @@
   season: 5
   screen_size: 1080p
   source: Blu-ray
-  video_codec: h264
+  video_codec: H.264
   release_group: Belex
   other: Dual Audio
   subtitle_language: und
@@ -3451,7 +3451,7 @@
   season: 5
   screen_size: 1080p
   source: Blu-ray
-  video_codec: h264
+  video_codec: H.264
   release_group: Belex
   other: Dual Audio
   subtitle_language: und
@@ -3507,7 +3507,7 @@
   language: de
   other: [Widescreen, Rip]
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: TVP
   type: episode
 
@@ -3536,7 +3536,7 @@
   season: 5
   episode: 5
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: AFG
   subtitle_language: he
   type: episode
@@ -3562,7 +3562,7 @@
   other: Rip
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: GROUP
   type: episode
 
@@ -3574,7 +3574,7 @@
   screen_size: 720p
   source: Web
   subtitle_language: en
-  video_codec: h264
+  video_codec: H.264
   type: episode
 
 # Regression: S4L release group detected as season 4
@@ -3584,7 +3584,7 @@
   season: 1
   episode: 6
   source: DVD
-  video_codec: h264
+  video_codec: H.264
   release_group: S4L
   type: episode
 
@@ -3594,7 +3594,7 @@
   date: 2016-05-18
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: GROUP.VTV
   type: episode
 
@@ -3657,7 +3657,7 @@
   streaming_service: Netflix
   source: Ultra HDTV
   other: Rip
-  video_codec: h265
+  video_codec: H.265
   release_group: TVS
   type: episode
 
@@ -3668,7 +3668,7 @@
   episode_title: Of Late I Think of Rosewood
   streaming_service: iTunes
   other: HD
-  video_codec: h264
+  video_codec: H.264
   type: episode
 
 ? Show.Name.S01.720p.iTunes.h264-Group
@@ -3676,7 +3676,7 @@
   season: 1
   screen_size: 720p
   streaming_service: iTunes
-  video_codec: h264
+  video_codec: H.264
   release_group: Group
   type: episode
 
@@ -3700,7 +3700,7 @@
   source: Web
   other: Rip
   screen_size: 1080p
-  video_codec: h265
+  video_codec: H.265
   video_profile: 10bit
   audio_codec: AAC
   container: mkv
@@ -3727,7 +3727,7 @@
   episode_title: Spark of Rebellion
   edition: Alternative Cut
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: W4F
   container: mp4
   type: episode
@@ -3737,7 +3737,7 @@
   season: 2
   episode: 12
   source: HDTV
-  video_codec: XviD
+  video_codec: Xvid
   release_group: FUM
   type: episode
 
@@ -3754,7 +3754,7 @@
   other: Proper
   screen_size: 720p
   source: Blu-ray
-  video_codec: h264
+  video_codec: H.264
   release_group: SHORTBREHD
   proper_count: 1
   type: episode
@@ -3772,7 +3772,7 @@
   episode: 14
   other: Internal
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: YesTV
   type: episode
 
@@ -3781,7 +3781,7 @@
   date: 2016-05-25
   episode_title: James McAvoy
   other: Internal
-  video_codec: XviD
+  video_codec: Xvid
   release_group: AFG
   type: episode
 
@@ -3792,7 +3792,7 @@
   other: [Internal, Read NFO]
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: 2HD
   type: episode
 
@@ -3803,7 +3803,7 @@
   other: Read NFO
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: 2HD
   type: episode
 
@@ -3814,7 +3814,7 @@
   other: Proper
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: SVA
   type: episode
 
@@ -3825,7 +3825,7 @@
   other: Rip
   source: Blu-ray
   screen_size: 1080p
-  video_codec: h265
+  video_codec: H.265
   type: episode
 
 ? 12.Monkeys.S01E01.LiMiTED.FRENCH.1080p.WEB-DL.H264-AUTHORiTY
@@ -3836,7 +3836,7 @@
   language: french
   screen_size: 1080p
   source: Web
-  video_codec: h264
+  video_codec: H.264
   release_group: AUTHORiTY
   type: episode
 
@@ -3847,7 +3847,7 @@
   episode: 5
   other: West Coast Feed
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: 2HD
   type: episode
 
@@ -3858,7 +3858,7 @@
   episode: [7, 8]
   other: West Coast Feed
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: 2HD
   type: episode
 
@@ -3869,7 +3869,7 @@
   other: East Coast Feed
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: KILLERS
   type: episode
 
@@ -3880,7 +3880,7 @@
   episode: 7
   other: East Coast Feed
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: 2HD
   type: episode
 
@@ -3894,7 +3894,7 @@
   source: Web
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: NTb
   type: episode
 
@@ -3904,7 +3904,7 @@
   episode: 4
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: 0SEC [GloDLS]
   container: mkv
   type: episode
@@ -3916,7 +3916,7 @@
   episode_title: Los Angeles
   screen_size: 720p
   source: HDTV
-  video_codec: h264
+  video_codec: H.264
   release_group: MiNDTHEGAP
   type: episode
 
@@ -3934,7 +3934,7 @@
   other: Rip
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: casstudio
   container: mkv
   type: episode
@@ -3950,7 +3950,7 @@
   source: Web
   audio_codec: AAC
   audio_channels: '2.0'
-  video_codec: h264
+  video_codec: H.264
   release_group: RTN
   container: mkv
   type: episode
@@ -3973,7 +3973,7 @@
   source: Web
   audio_codec: AC3
   audio_channels: '5.1'
-  video_codec: h264
+  video_codec: H.264
   release_group: ABC
   container: nzb
   type: episode
@@ -3995,7 +3995,7 @@
   screen_size: 720p
   source: Web
   other: Rip
-  video_codec: h264
+  video_codec: H.264
   audio_codec: EAC3
   release_group: KiNGS
   container: mkv
@@ -4036,7 +4036,7 @@
   country: US
   screen_size: 720p
   source: Web
-  video_codec: h264
+  video_codec: H.264
   release_group: TBS
   container: mkv
   type: episode

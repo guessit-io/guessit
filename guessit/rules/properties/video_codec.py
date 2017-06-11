@@ -20,13 +20,13 @@ def video_codec():
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name="video_codec", tags=['source-suffix', 'streaming_service.suffix'])
 
-    rebulk.regex(r"Rv\d{2}", value="Real")
-    rebulk.regex("Mpeg2", value="Mpeg2")
+    rebulk.regex(r'Rv\d{2}', value='RealVideo')
+    rebulk.regex('Mpeg2', value='MPEG-2')
     rebulk.regex("DVDivX", "DivX", value="DivX")
-    rebulk.regex("XviD", value="XviD")
-    rebulk.regex("[hx]-?264(?:-?AVC(HD)?)?", "MPEG-?4(?:-?AVC(HD)?)", "AVC(?:HD)?", value="h264")
-    rebulk.regex("[hx]-?265(?:-?HEVC)?", "HEVC", value="h265")
-    rebulk.regex('(?P<video_codec>hevc)(?P<video_profile>10)', value={'video_codec': 'h265', 'video_profile': '10bit'},
+    rebulk.regex('XviD', value='Xvid')
+    rebulk.regex('[hx]-?264(?:-?AVC(?:HD)?)?', 'MPEG-?4(?:-?AVC(?:HD)?)', 'AVC(?:HD)?', value='H.264')
+    rebulk.regex('[hx]-?265(?:-?HEVC)?', 'HEVC', value='H.265')
+    rebulk.regex('(?P<video_codec>hevc)(?P<video_profile>10)', value={'video_codec': 'H.265', 'video_profile': '10bit'},
                  tags=['video-codec-suffix'], children=True)
 
     # http://blog.mediacoderhq.com/h264-profiles-and-levels/

@@ -46,6 +46,14 @@ The following values were changed:
 - ``4K`` is now ``2160p``
 - ``4320p`` was added.
 
+``video_codec``
+^^^^^^^^^^^^^^^
+- ``h264`` is now ``H.264``
+- ``h265`` is now ``H.265``
+- ``Mpeg2`` is now ``MPEG-2``
+- ``Real`` is now ``RealVideo``
+- ``XviD`` is now ``Xvid``
+
 ``video_profile``
 ^^^^^^^^^^^^^^^^^
 - ``BP`` is now ``Baseline``.
