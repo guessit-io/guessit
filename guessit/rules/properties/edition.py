@@ -25,7 +25,8 @@ def edition():
                  if other.name == 'episode_details' and other.value == 'Special'
                  else '__default__')
     rebulk.string('se', value='Special', tags='has-neighbor')
-    rebulk.regex('criterion-edition', 'edition-criterion', value='Criterion')
+    rebulk.string('ddc', value="Director's Definitive Cut")
+    rebulk.regex('criterion-edition', 'edition-criterion', 'CC', value='Criterion')
     rebulk.regex('deluxe', 'deluxe-edition', 'edition-deluxe', value='Deluxe')
     rebulk.regex('limited', 'limited-edition', value='Limited', tags=['has-neighbor', 'release-group-prefix'])
     rebulk.regex(r'theatrical-cut', r'theatrical-edition', r'theatrical', value='Theatrical')
@@ -37,5 +38,6 @@ def edition():
     for value in ('Remastered', 'Uncensored', 'Uncut', 'Unrated'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
     rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
+
 
     return rebulk

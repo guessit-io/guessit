@@ -16,6 +16,7 @@
 
 ? Criterion Edition
 ? Edition Criterion
+? CC
 ? -Criterion
 : edition: Criterion
 
@@ -29,3 +30,6 @@
 ? Super Movie Alternate Cut XViD
 ? Super Movie Alternative Cut XViD
 : edition: Alternative Cut
+
+? ddc
+: edition: Director's Definitive Cut

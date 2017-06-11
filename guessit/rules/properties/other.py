@@ -68,8 +68,7 @@ def other():
                  private_parent=True, children=True, validator={'__parent__': seps_surround}, validate_all=True)
 
     for value in (
-            'Screener', 'Remux', '3D', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC',
-            'CC', 'LD', 'MD', 'XXX'):
+            'Screener', 'Remux', '3D', 'mHD', 'HDLight', 'HQ', 'HR', 'PAL', 'SECAM', 'NTSC', 'LD', 'MD', 'XXX'):
         rebulk.string(value, value=value)
 
     rebulk.string('LDTV', value='LD')

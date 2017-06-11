@@ -102,7 +102,7 @@ class ValidateStreamingService(Rule):
                 continue
 
             if service.value == 'Comedy Central':
-                # Current match is a valid streaming service, removing invalid closed caption (CC) matches
-                to_remove.extend(matches.named('other', predicate=lambda match: match.value == 'CC'))
+                # Current match is a valid streaming service, removing invalid Criterion Collection (CC) matches
+                to_remove.extend(matches.named('edition', predicate=lambda match: match.value == 'Criterion'))
 
         return to_remove

@@ -107,9 +107,6 @@
 ? HQ
 : other: HQ
 
-? ddc
-: other: DDC
-
 ? hr
 : other: HR
 
@@ -121,9 +118,6 @@
 
 ? NTSC
 : other: NTSC
-
-? CC
-: other: CC
 
 ? LD
 ? LDTV

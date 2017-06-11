@@ -37,7 +37,6 @@ The following values were changed:
 - ``UHDTV`` is now ``Ultra HDTV``
 - ``HDTC`` is now ``HD Telecine``
 
-
 ``edition``
 ^^^^^^^^^^^
 - ``Collector Edition`` is now ``Collector``
@@ -46,9 +45,10 @@ The following values were changed:
 - ``Deluxe Edition`` is now ``Deluxe``
 - ``Limited Edition`` is now ``Limited``
 - ``Theatrical Edition`` is now ``Theatrical``
-
+- ``Director's Definitive Cut`` was added.
 
 ``other``
 ^^^^^^^^^
 - ``Rip`` was added. E.g.: ``DVDRip`` will output ``other: Rip``
-
+- ``DDC`` was removed. ``DDC`` is now ``edition: Director's Definitive Cut``
+- ``CC`` was removed. ``CC`` is now ``edition: Criterion``
