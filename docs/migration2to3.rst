@@ -66,6 +66,10 @@ The following values were changed:
 ``audio_codec``
 ^^^^^^^^^^^^^^^
 - ``DTS-HD`` was added.
+- ``AC3`` is now ``Dolby Digital``
+- ``EAC3`` is now ``Dolby Digital Plus``
+- ``TrueHD`` is now ``Dolby TrueHD``
+- ``DolbyAtmos`` is now ``Dolby Atmos``.
 
 ``audio_profile``
 ^^^^^^^^^^^^^^^^^

@@ -334,7 +334,7 @@
   screen_size: 720p
   source: Web
   audio_channels: "5.1"
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: H.264
   release_group: CtrlHD
 
@@ -360,7 +360,7 @@
   screen_size: 720p
   source: Web
   audio_channels: "5.1"
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: H.264
   release_group: CtrlHD
 
@@ -392,7 +392,7 @@
   screen_size: 720p
   source: Web
   audio_channels: "5.1"
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: H.264
 
 ? Game of Thrones S03E06 1080i HDTV DD5.1 MPEG2-TrollHD.ts
@@ -402,7 +402,7 @@
   screen_size: 1080i
   source: HDTV
   audio_channels: "5.1"
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: MPEG-2
   release_group: TrollHD
 
@@ -554,7 +554,7 @@
   screen_size: 720p
   season: 1
 #  video_profile: BP  # TODO: related to https://github.com/guessit-io/guessit/issues/458#issuecomment-305719715
-  audio_codec: AC3
+  audio_codec: Dolby Digital
 
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BS.mkv
 : episode: 9
@@ -565,7 +565,7 @@
   screen_size: 720p
   season: 1
   release_group: BS
-  audio_codec: AC3
+  audio_codec: Dolby Digital
 
 ? Battlestar.Galactica.S00.Pilot.FRENCH.DVDRip.XviD-NOTAG.avi
 : title: Battlestar Galactica
@@ -630,7 +630,7 @@
   source: Web
   other: Rip
   audio_channels: "5.1"
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: H.264
   release_group: NTb
 
@@ -1139,7 +1139,7 @@
   episode: 21
   episode_title: Al Sah-Him
   screen_size: 1080p
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: "5.1"
   video_codec: H.264
   release_group: BS
@@ -1665,7 +1665,7 @@
 
 ? The.Good.Wife.S06E01.E10.720p.WEB-DL.DD5.1.H.264-CtrlHD/The.Good.Wife.S06E09.Trust.Issues.720p.WEB-DL.DD5.1.H.264-CtrlHD.mkv
 : audio_channels: '5.1'
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   episode: 9
   source: Web
   release_group: CtrlHD
@@ -1866,7 +1866,7 @@
 
 ? Game.of.Thrones.S6.Ep5.X265.Dolby.2.0.KTM3.mp4
 : audio_channels: '2.0'
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   container: mp4
   episode: 5
   release_group: KTM3
@@ -2000,7 +2000,7 @@
   video_codec: H.264
 
 ? Family.Guy.S13E14.JOLO.German.AC3D.DL.720p.WebHD.x264-CDD
-: audio_codec: AC3
+: audio_codec: Dolby Digital
   episode: 14
   episode_title: JOLO German
   source: Web
@@ -2039,7 +2039,7 @@
 ? Fear.the.Walking.Dead.-.Season.2.epi.02.XviD.Eng.Ac3-5.1.sub.ita.eng.iCV-MIRCrew
 : options: -t episode
   audio_channels: '5.1'
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   episode: 2
   episode_title: epi
   language: en
@@ -2075,7 +2075,7 @@
 
 ? The.Walking.Dead.S06E01.FRENCH.1080p.WEB-DL.DD5.1.HEVC.x265-GOLF68
 : audio_channels: '5.1'
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   episode: 1
   source: Web
   language: fr
@@ -2216,7 +2216,7 @@
   season: 1
   screen_size: 720p
   source: HDTV
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: Group
@@ -2258,7 +2258,7 @@
   streaming_service: Amazon Prime
   source: Web
   other: Rip
-  audio_codec: EAC3
+  audio_codec: Dolby Digital Plus
   audio_channels: '5.1'
   video_codec: H.264
   type: episode
@@ -2430,7 +2430,7 @@
   streaming_service: Netflix
   source: Web
   other: Rip
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: NTb
@@ -2735,7 +2735,7 @@
   streaming_service: Amazon Prime
   source: Web
   other: Rip
-  audio_codec: EAC3
+  audio_codec: Dolby Digital Plus
   audio_channels: '5.1'
   video_codec: H.264
   release_group: Group
@@ -2762,7 +2762,7 @@
   language: [it, en]
   source: Web
   other: Mux
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   subtitle_language: [it, en]
   release_group: GiuseppeTnT Littlelinx
   type: episode
@@ -2961,7 +2961,7 @@
   episode: 10
   screen_size: 1080p
   source: Web
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: KINGS
@@ -2988,7 +2988,7 @@
   streaming_service: Netflix
   source: Web
   other: Rip
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: ViSUM
@@ -3009,7 +3009,7 @@
   episode: 5
   screen_size: 1080p
   source: Web
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: HKD
@@ -3052,7 +3052,7 @@
   episode_title: The Brain In The Bot
   screen_size: 1080p
   source: Web
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: R2D2
@@ -3066,7 +3066,7 @@
   episode: 7
   screen_size: 1080p
   source: Web
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   subtitle_language: nl
@@ -3094,7 +3094,7 @@
   episode: 12
   screen_size: 1080p
   source: Web
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   release_group: Het.Robot.Team.OYM
   type: episode
@@ -3369,7 +3369,7 @@
   other: Rip
   video_codec: H.264
   container: mkv
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   release_group: Ehhhh
   type: episode
@@ -3425,7 +3425,7 @@
   season: 2
   episode: 7
   episode_title: Shiva
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   language: und
   source: Web
   other: Rip
@@ -3495,7 +3495,7 @@
   season: 6
   episode: 5
   language: de
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   source: HDTV
   type: episode
 
@@ -3560,7 +3560,7 @@
   streaming_service: Amazon Prime
   source: Web
   other: Rip
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: GROUP
@@ -3651,7 +3651,7 @@
   episode: 13
   episode_details: Final
   language: mul
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   screen_size: 2160p
   streaming_service: Netflix
@@ -3687,7 +3687,7 @@
   episode_title: eps1 0 hellofriend
   other: HD
   streaming_service: iTunes
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   language: spa
   year: 2015
   container: avi
@@ -3892,7 +3892,7 @@
   other: East Coast Feed
   screen_size: 720p
   source: Web
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: NTb
@@ -3932,7 +3932,7 @@
   streaming_service: Amazon Prime
   source: Web
   other: Rip
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: casstudio
@@ -3971,7 +3971,7 @@
   episode_title: Super Title
   screen_size: 720p
   source: Web
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
   release_group: ABC
@@ -3996,7 +3996,7 @@
   source: Web
   other: Rip
   video_codec: H.264
-  audio_codec: EAC3
+  audio_codec: Dolby Digital Plus
   release_group: KiNGS
   container: mkv
   type: episode

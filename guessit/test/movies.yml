@@ -38,7 +38,7 @@
   other: Rip
   screen_size: 720p
   video_codec: H.264
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   release_group: SEPTiC
 
 ? Movies/Borat (2006)/Borat.(2006).R5.PROPER.REPACK.DVDRip.XviD-PUKKA.avi
@@ -102,7 +102,7 @@
   source: DVD
   language: [ english, spanish ]
   video_codec: Xvid
-  audio_codec: AC3
+  audio_codec: Dolby Digital
 
 ? Movies/Wild Zero (2000)/Wild.Zero.DVDivX-EPiC.avi
 : title: Wild Zero
@@ -122,7 +122,7 @@
   source: DVD
   other: Rip
   video_codec: Xvid
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   release_group: WAF
 
 ? movies/American.The.Bill.Hicks.Story.2009.DVDRip.XviD-EPiSODE.[UsaBit.com]/UsaBit.com_esd-americanbh.avi
@@ -201,7 +201,7 @@
   source: DVD
   other: Rip
   video_codec: H.264
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   release_group: FtS
   website: sharethefiles.com
 
@@ -220,7 +220,7 @@
   year: 2008
   source: DVD
   other: Rip
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: Xvid
   release_group: CrazyTeam
 
@@ -238,7 +238,7 @@
   source: Blu-ray
   other: Rip
   screen_size: 720p
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: H.264
   release_group: HiS@SiLUHD
   language: english
@@ -252,7 +252,7 @@
   source: Blu-ray
   other: Rip
   screen_size: 720p
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: H.264
   release_group: HiS@SiLUHD
   language: english
@@ -363,7 +363,7 @@
   source: HDTV
   screen_size: 720p
   video_codec: H.264
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: "5.1"
   release_group: REDµX
 
@@ -374,7 +374,7 @@
   video_codec: H.264
   video_api: DXVA
   screen_size: 720p
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   release_group: de[42]
 
 
@@ -463,7 +463,7 @@
   other: [Reencoded, Rip]
   video_codec: Xvid
   audio_channels: "5.1"
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   uuid: XD607ebb-BRc59935-5155473f-1c5f49
 
 ? Pacific.Rim.3D.2013.COMPLETE.BLURAY-PCH.avi
@@ -565,7 +565,7 @@
   source: Blu-ray
   other: [Reencoded, Rip]
   video_codec: H.264
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   release_group: FUNKY
 
 ? REDLINE (BD 1080p H264 10bit FLAC) [3xR].mkv
@@ -595,7 +595,7 @@
   source: DVD
   other: [Rip, Line Audio]
   year: 2012
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_profile: High Quality
   release_group: Hive-CM8
 
@@ -611,7 +611,7 @@
   source: DVD
   other: [Rip, Line Audio]
   year: 2012
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_profile: High Quality
   release_group: Hive-CM8
 
@@ -621,7 +621,7 @@
   source: DVD
   other: Rip
   year: 2012
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_profile: High Quality
   release_group: Hive-CM8
 
@@ -790,7 +790,7 @@
 
 ? '[h265 - hevc] transformers 2 1080p french ac3 6ch.'
 : audio_channels: '5.1'
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   language: fr
   screen_size: 1080p
   title: transformers 2
@@ -813,7 +813,7 @@
   title: Looney Tunes
 
 ? Das.Appartement.German.AC3D.DL.720p.BluRay.x264-TVP
-: audio_codec: AC3
+: audio_codec: Dolby Digital
   source: Blu-ray
   language: mul
   release_group: TVP
@@ -823,7 +823,7 @@
   video_codec: H.264
 
 ? Das.Appartement.GERMAN.AC3D.DL.720p.BluRay.x264-TVP
-: audio_codec: AC3
+: audio_codec: Dolby Digital
   source: Blu-ray
   language:
   - de
@@ -906,7 +906,7 @@
   source: Blu-ray
   video_codec: H.265
   video_profile: 10bit
-  audio_codec: [DTS-HD, DolbyAtmos]
+  audio_codec: [DTS-HD, Dolby Atmos]
   audio_channels: '7.1'
   release_group: DDR
   container: mkv
@@ -938,7 +938,7 @@
   source: Blu-ray
   video_codec: H.265
   video_profile: 10bit
-  audio_codec: DolbyAtmos
+  audio_codec: Dolby Atmos
   audio_channels: '7.1'
   release_group: DDR
   type: movie
@@ -1003,7 +1003,7 @@
   screen_size: 1080p
   source: Web
   video_codec: H.264
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   audio_channels: '5.1'
   release_group: FGT
   type: movie
@@ -1173,7 +1173,7 @@
   screen_size: 720p
   source: Camera
   video_codec: H.264
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   release_group: TiTAN
   type: movie
 

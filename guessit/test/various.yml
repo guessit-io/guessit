@@ -53,7 +53,7 @@
   date: 2008-03-09
   source: Blu-ray
   screen_size: 720p
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   video_codec: H.264
   release_group: HiS@SiLUHD
   language: english
@@ -193,7 +193,7 @@
   source: Web
   audio_channels: "5.1"
   video_codec: H.264
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   release_group: NTb
 
 ? Despicable.Me.2.2013.1080p.BluRay.x264-VeDeTT.nfo
@@ -207,7 +207,7 @@
 
 ? Le Cinquieme Commando 1971 SUBFORCED FRENCH DVDRiP XViD AC3 Bandix.mkv
 : type: movie
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   source: DVD
   other: Rip
   release_group: Bandix
@@ -552,7 +552,7 @@
 
 ? TEST.S01E02.2160p.NF.WEBRip.x264.DD5.1-ABC
 : audio_channels: '5.1'
-  audio_codec: AC3
+  audio_codec: Dolby Digital
   episode: 2
   source: Web
   other: Rip
@@ -715,8 +715,8 @@
 : audio_channels: '7.1'
   audio_codec:
   - DTS-HD
-  - TrueHD
-  - DolbyAtmos
+  - Dolby TrueHD
+  - Dolby Atmos
   audio_profile: Master Audio
   source: Blu-ray
   other: 3D
@@ -731,8 +731,8 @@
 : audio_channels: '7.1'
   audio_codec:
   - DTS-HD
-  - TrueHD
-  - DolbyAtmos
+  - Dolby TrueHD
+  - Dolby Atmos
   audio_profile: Master Audio
   source: Blu-ray
   other: 3D
@@ -747,8 +747,8 @@
 : audio_channels: '7.1'
   audio_codec:
   - DTS-HD
-  - TrueHD
-  - DolbyAtmos
+  - Dolby TrueHD
+  - Dolby Atmos
   audio_profile: Master Audio
   source: Blu-ray
   other: Remux

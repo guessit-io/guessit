@@ -39,20 +39,20 @@ def audio_codec():
     rebulk.defaults(name="audio_codec", conflict_solver=audio_codec_priority)
 
     rebulk.regex("MP3", "LAME", r"LAME(?:\d)+-?(?:\d)+", value="MP3")
-    rebulk.regex('Dolby', 'DolbyDigital', 'Dolby-Digital', 'DD', 'AC3D?', value='AC3')
-    rebulk.regex("DolbyAtmos", "Dolby-Atmos", "Atmos", value="DolbyAtmos")
+    rebulk.regex('Dolby', 'DolbyDigital', 'Dolby-Digital', 'DD', 'AC3D?', value='Dolby Digital')
+    rebulk.regex('Dolby-?Atmos', 'Atmos', value='Dolby Atmos')
     rebulk.string("AAC", value="AAC")
-    rebulk.string('EAC3', 'DDP', 'DD+', value="EAC3")
+    rebulk.string('EAC3', 'DDP', 'DD+', value='Dolby Digital Plus')
     rebulk.string("Flac", value="FLAC")
     rebulk.string("DTS", value="DTS")
     rebulk.regex('DTS-?HD', value='DTS-HD')
-    rebulk.regex("True-?HD", value="TrueHD")
+    rebulk.regex('True-?HD', value='Dolby TrueHD')
 
     rebulk.defaults(name='audio_profile')
     rebulk.string('MA', value='Master Audio', tags='DTS-HD')
     rebulk.string('HE', value='High Efficiency', tags='AAC')
     rebulk.string('LC', value='Low Complexity', tags='AAC')
-    rebulk.string('HQ', value='High Quality', tags='AC3')
+    rebulk.string('HQ', value='High Quality', tags='Dolby Digital')
 
     rebulk.defaults(name="audio_channels")
     rebulk.regex(r'(7[\W_][01](?:ch)?)(?:[^\d]|$)', value='7.1', children=True)
@@ -66,7 +66,7 @@ def audio_codec():
     rebulk.string('2ch', 'stereo', value='2.0')
     rebulk.string('1ch', 'mono', value='1.0')
 
-    rebulk.rules(DtsHDRule, AacRule, Ac3Rule, AudioValidatorRule, HqConflictRule, AudioChannelsValidatorRule)
+    rebulk.rules(DtsHDRule, AacRule, DolbyDigitalRule, AudioValidatorRule, HqConflictRule, AudioChannelsValidatorRule)
 
     return rebulk
 
@@ -141,13 +141,13 @@ class AacRule(AudioProfileRule):
         super(AacRule, self).__init__("AAC")
 
 
-class Ac3Rule(AudioProfileRule):
+class DolbyDigitalRule(AudioProfileRule):
     """
-    Rule to validate AC3 profile
+    Rule to validate Dolby Digital profile
     """
 
     def __init__(self):
-        super(Ac3Rule, self).__init__("AC3")
+        super(DolbyDigitalRule, self).__init__('Dolby Digital')
 
 
 class HqConflictRule(Rule):
@@ -155,7 +155,7 @@ class HqConflictRule(Rule):
     Solve conflict between HQ from other property and from audio_profile.
     """
 
-    dependency = [DtsHDRule, AacRule, Ac3Rule]
+    dependency = [DtsHDRule, AacRule, DolbyDigitalRule]
     consequence = RemoveMatch
 
     def when(self, matches, context):
