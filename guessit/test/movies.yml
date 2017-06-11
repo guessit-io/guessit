@@ -65,7 +65,7 @@
 ? Battle Royale (2000)/Battle.Royale.(Batoru.Rowaiaru).(2000).(Special.Edition).CD1of2.DVDRiP.XviD-[ZeaL].avi
 : title: Battle Royale
   year: 2000
-  edition: Special Edition
+  edition: Special
   cd: 1
   cd_count: 2
   source: DVD
@@ -75,7 +75,7 @@
 
 ? Movies/Brazil (1985)/Brazil_Criterion_Edition_(1985).CD2.avi
 : title: Brazil
-  edition: Criterion Edition
+  edition: Criterion
   year: 1985
   cd: 2
 
@@ -112,7 +112,7 @@
 
 ? movies/Baraka_Edition_Collector.avi
 : title: Baraka
-  edition: Collector Edition
+  edition: Collector
 
 ? Movies/Blade Runner (1982)/Blade.Runner.(1982).(Director's.Cut).CD1.DVDRip.XviD.AC3-WAF.avi
 : title: Blade Runner
@@ -158,7 +158,7 @@
   video_codec: XviD
   release_group: ARROW
   other: [Proper, Rip]
-  edition: Limited Edition
+  edition: Limited
   proper_count: 1
 
 ? Movies/Fr - Paris 2054, Renaissance (2005) - De Christian Volckman - (Film Divx Science Fiction Fantastique Thriller Policier N&B).avi
@@ -385,7 +385,7 @@
   video_codec: h264
   release_group: AN0NYM0US[bb]
   source: Blu-ray
-  edition: Limited Edition
+  edition: Limited
 
 ? movies/La Science des Rêves (2006)/La.Science.Des.Reves.FRENCH.DVDRip.XviD-MP-AceBot.avi
 : title: La Science des Rêves
@@ -603,7 +603,7 @@
 : title: "Star Wars: Episode IV"
   alternative_title: A New Hope
   year: 2004
-  edition: Special Edition
+  edition: Special
 
 ? Dr.LiNE.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : video_codec: XviD
@@ -1080,7 +1080,7 @@
 ? Bad Santa 2 2016 THEATRiCAL FRENCH BDRip XviD-EXTREME
 : title: Bad Santa 2
   year: 2016
-  edition: Theatrical Edition
+  edition: Theatrical
   language: french
   source: Blu-ray
   other: Rip
@@ -1090,7 +1090,7 @@
 
 ? The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]
 : title: The Lord of the Rings The Fellowship of the Ring
-  edition: Theatrical Edition
+  edition: Theatrical
   year: 2001
   screen_size: 1080p
   type: movie
@@ -1098,7 +1098,7 @@
 ? World War Z (2013) Theatrical Cut 720p BluRay x264
 : title: World War Z
   year: 2013
-  edition: Theatrical Edition
+  edition: Theatrical
   screen_size: 720p
   source: Blu-ray
   video_codec: h264
@@ -1127,7 +1127,7 @@
 
 ? Aliens.SE.1986.BDRip.1080p
 : title: Aliens
-  edition: Special Edition
+  edition: Special
   year: 1986
   source: Blu-ray
   other: Rip
@@ -1152,7 +1152,7 @@
 ? We.Are.X.2016.LIMITED.BDRip.x264-BiPOLAR
 : title: We Are X
   year: 2016
-  edition: Limited Edition
+  edition: Limited
   source: Blu-ray
   other: Rip
   video_codec: h264

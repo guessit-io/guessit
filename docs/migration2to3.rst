@@ -38,6 +38,16 @@ The following values were changed:
 - ``HDTC`` is now ``HD Telecine``
 
 
+``edition``
+^^^^^^^^^^^
+- ``Collector Edition`` is now ``Collector``
+- ``Special Edition`` is now ``Special``
+- ``Criterion Edition`` is now ``Criterion``
+- ``Deluxe Edition`` is now ``Deluxe``
+- ``Limited Edition`` is now ``Limited``
+- ``Theatrical Edition`` is now ``Theatrical``
+
+
 ``other``
 ^^^^^^^^^
 - ``Rip`` was added. E.g.: ``DVDRip`` will output ``other: Rip``
