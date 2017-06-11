@@ -56,4 +56,4 @@
 
 ? h265-HP
 : video_codec: h265
-  video_profile: HP
+  video_profile: High

@@ -36,12 +36,12 @@ def video_codec():
     rebulk.regex('10.?bits?', 'Hi10P?', 'YUV420P10', value='10bit')
     rebulk.regex('8.?bits?', value='8bit')
 
-    rebulk.string('BP', value='BP', tags='video_profile.rule')
-    rebulk.string('XP', 'EP', value='XP', tags='video_profile.rule')
-    rebulk.string('MP', value='MP', tags='video_profile.rule')
-    rebulk.string('HP', 'HiP', value='HP', tags='video_profile.rule')
-    rebulk.regex('Hi422P', value='Hi422P', tags='video_profile.rule')
-    rebulk.regex('Hi444PP', value='Hi444PP', tags='video_profile.rule')
+    rebulk.string('BP', value='Baseline', tags='video_profile.rule')
+    rebulk.string('XP', 'EP', value='Extended', tags='video_profile.rule')
+    rebulk.string('MP', value='Main', tags='video_profile.rule')
+    rebulk.string('HP', 'HiP', value='High', tags='video_profile.rule')
+    rebulk.regex('Hi422P', value='High 4:2:2', tags='video_profile.rule')
+    rebulk.regex('Hi444PP', value='High 4:4:4 Predictive', tags='video_profile.rule')
 
     rebulk.string('DXVA', value='DXVA', name='video_api')
 

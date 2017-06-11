@@ -46,6 +46,15 @@ The following values were changed:
 - ``4K`` is now ``2160p``
 - ``4320p`` was added.
 
+``video_profile``
+^^^^^^^^^^^^^^^^^
+- ``BP`` is now ``Baseline``.
+- ``HP`` is now ``High``.
+- ``XP`` is now ``Extended``.
+- ``MP`` is now ``Main``.
+- ``Hi422P`` is now ``High 4:2:2``.
+- ``Hi444PP`` is now ``High 4:4:4 Predictive``.
+
 ``edition``
 ^^^^^^^^^^^
 - ``Collector Edition`` is now ``Collector``

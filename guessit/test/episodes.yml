@@ -553,7 +553,7 @@
   audio_channels: "5.1"
   screen_size: 720p
   season: 1
-  video_profile: BP
+#  video_profile: BP  # TODO: related to https://github.com/guessit-io/guessit/issues/458#issuecomment-305719715
   audio_codec: AC3
 
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BS.mkv

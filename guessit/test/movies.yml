@@ -55,7 +55,7 @@
   source: DVD
   other: Rip
   video_codec: h264
-  video_profile: HP
+  video_profile: High
   audio_codec: AAC
   audio_profile: HE
   language: [ french, english ]
@@ -393,7 +393,7 @@
   source: DVD
   other: Rip
   video_codec: XviD
-  video_profile: MP
+  video_profile: Main
   release_group: AceBot
   language: French
 
