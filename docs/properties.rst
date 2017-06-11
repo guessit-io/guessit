@@ -8,9 +8,9 @@ which may not match exactly the raw filename.
 
 So, for instance,
 
-- ``DVDSCR`` will be guessed as ``format`` = ``DVD`` + ``other`` = ``Screener``
-- ``1920x1080`` will be guessed as ``screenSize`` = ``1080p``
-- ``DD5.1`` will be guessed as ``audioCodec`` = ``AC3`` + ``audioChannel`` = ``5.1``
+- ``DVDSCR`` will be guessed as ``source`` = ``DVD`` + ``other`` = ``Screener``
+- ``1920x1080`` will be guessed as ``screen_size`` = ``1080p``
+- ``DD5.1`` will be guessed as ``audio_codec`` = ``Dolby Digital`` + ``audio_channels`` = ``5.1``
 
 
 Main properties
@@ -106,7 +106,7 @@ Episode properties
 
   Some details about the episode.
 
-  - ``Bonus``, ``Extras``, ``Oav``, ``Ova``, ``Omake``, ``Pilot``, ``Special``, ``Unaired``
+  - ``Bonus``, ``Extras``, ``Final``, ``Pilot``, ``Special``, ``Unaired``
 
 
 - **episode_format**
@@ -144,21 +144,28 @@ Video properties
 
   Resolution of video.
 
-  - ``<width>x<height>``, ``360p``, ``368p``, ``480p``, ``576p``, ``720p``, ``1080p``, ``1080i``, ``900p``, ``4K``
+  - ``<width>x<height>``, ``360i``, ``360p``, ``368p``, ``480i``, ``480p``, ``576i``, ``576p``, ``720p``, ``900i``,
+    ``900p``, ``1080i``, ``1080p``, ``2160p``, ``4320p``
 
 
 - **video_codec**
 
   Codec used for video.
 
-  - ``DivX``, ``h264``, ``h265``, ``Mpeg2``, ``Real``, ``XviD``
+  - ``DivX``, ``H.264``, ``H.265``, ``MPEG-2``, ``RealVideo``, ``Xvid``
 
 
 - **video_profile**
 
   Codec profile used for video.
 
-  - ``8bit``, ``10bit``, ``BP``, ``Hi422P``, ``Hi444PP``, ``HP``, ``MP``, ``XP``
+  - ``Baseline``, ``High``, ``High 10``, ``High 4:2:2``, ``High 4:4:4 Predictive``, ``Main``, ``Extended``
+
+
+- **color_depth**
+
+  Bit depth used for video.
+  - ``8-bit``, ``10-bit``
 
 
 - **video_api**
@@ -182,14 +189,14 @@ Audio properties
 
   Codec used for audio.
 
-  - ``DTS``, ``TrueHD``, ``AAC``, ``AC3``, ``EAC3``, ``MP3``, ``FLAC``, ``DolbyAtmos``
+  - ``AAC``, ``Dolby Atmos``, ``Dolby Digital``, ``Dolby Digital Plus``, ``Dolby TrueHD``, ``DTS``,  ``FLAC``, ``MP3``
 
 
 - **audio_profile**
 
   The codec profile used for audio.
 
-  - ``HD``, ``HDMA``, ``HE``, ``HQ``, ``LC``
+  - ``High Efficiency``, ``High Quality``, ``Low Complexity``, ``Master Audio``
 
 
 Localization properties
@@ -258,9 +265,9 @@ Other properties
 
   Edition of the movie.
 
-  - ``Alternative Cut``, ``Collector Edition``, ``Criterion Edition``, ``Deluxe Edition``, ``Director's Cut``,
-    ``Extended``, ``Festival``, ``Remastered``, ``Special Edition``, ``Limited Edition``, ``Theatrical Edition``,
-    ``Uncensored``, ``Uncut``, ``Unrated``
+  - ``Alternative Cut``, ``Collector``, ``Criterion``, ``Deluxe``, ``Director's Cut``, ``Director's Definitive Cut``,
+    ``Extended``, ``Festival``, ``Remastered``, ``Special``, ``Limited``, ``Theatrical``, ``Uncensored``, ``Uncut``,
+    ``Unrated``
 
 
 - **film**
@@ -282,11 +289,11 @@ Other properties
 
   Other property will appear under this property.
 
-  - ``3D``, ``AudioFix``, ``Bonus``, ``Capped``, ``CC``, ``Classic``, ``Colorized``, ``Complete``,
-    ``Converted``, ``Documentary``, ``DDC``, ``DualAudio``, ``East Coast Feed``,
-    ``Fansub``, ``Fastsub``, ``FINAL``, ``FullHD``, ``Hardcoded Subtitles``, ``HD``, ``HDLight``, ``HQ``,
-    ``HR``, ``Internal``, ``LD``, ``LiNE``, ``MD``, ``mHD``, ``Mux``, ``NTSC``, ``Open Matte``,
-    ``Original Aspect Ratio``, ``OV``, ``PAL``, ``Preair``, ``Proper``, ``PS Vita``, ``R5``, ``Read NFO``,
-    ``ReEncoded``, ``Remux``, ``Retail``, ``Rip``, ``Screener``, ``SECAM``, ``Straight to Video``,
-    ``SyncFix``, ``Trailer``, ``UltraHD``, ``West Coast Feed``, ``WideScreen``, ``XXX``
+  - ``3D``, ``Audio Fixed``, ``Bonus``, ``Classic``, ``Colorized``, ``Complete``, ``Converted``, ``Documentary``,
+    ``Dual Audio``, ``East Coast Feed``, ``Fan Subtitled``, ``Fast Subtitled``, ``Full HD``, ``Hardcoded Subtitles``,
+    ``HD``, ``High Quality``, ``High Resolution``, ``Internal``, ``Line Dubbed``, ``Line Audio``, ``Mic Dubbed``,
+    ``Micro HD``, ``Mux``, ``NTSC``, ``Open Matte``, ``Original Aspect Ratio``, ``Original Video``, ``PAL``, ``Preair``,
+    ``Proper``, ``PS Vita``, ``Read NFO``, ``Region 5``, ``Region C``, ``Reencoded``, ``Remux``, ``Retail``, ``Rip``,
+    ``Screener``, ``SECAM``, ``Straight to Video``, ``Sync Fixed``, ``Trailer``, ``Ultra HD``, ``West Coast Feed``,
+    ``Widescreen``, ``XXX``
 
