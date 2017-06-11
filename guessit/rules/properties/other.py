@@ -147,6 +147,7 @@ class ValidateHasNeighbor(Rule):
     Validate tag has-neighbor
     """
     consequence = RemoveMatch
+    priority = 64
 
     def when(self, matches, context):
         ret = []
@@ -172,6 +173,7 @@ class ValidateHasNeighborBefore(Rule):
     Validate tag has-neighbor-before that previous match exists.
     """
     consequence = RemoveMatch
+    priority = 64
 
     def when(self, matches, context):
         ret = []
@@ -191,6 +193,7 @@ class ValidateHasNeighborAfter(Rule):
     Validate tag has-neighbor-after that next match exists.
     """
     consequence = RemoveMatch
+    priority = 64
 
     def when(self, matches, context):
         ret = []
