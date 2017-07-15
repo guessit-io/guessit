@@ -151,3 +151,17 @@
 
 ? +HDRIP  # it's a Rip from non specified HD source
 : other: [HD, Rip]
+
+? SDR
+: other: Standard Dynamic Range
+
+? HDR
+? HDR10
+? -HDR100
+: other: HDR10
+
+? BT2020
+? BT.2020
+? -BT.20200
+? -BT.2021
+: other: BT.2020

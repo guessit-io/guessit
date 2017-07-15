@@ -4046,7 +4046,7 @@
   season: 1
   screen_size: 2160p
   source: Ultra HD Blu-ray
-#  other: High Dynamic Range
+  other: HDR10
   audio_codec: DTS-HD
   audio_profile: Master Audio
   audio_channels: '5.1'
