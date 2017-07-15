@@ -18,7 +18,7 @@ def streaming_service():
     :rtype: Rebulk
     """
     rebulk = Rebulk().string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
-    rebulk.defaults(name='streaming_service', tags=['format-prefix'])
+    rebulk.defaults(name='streaming_service', tags=['source-prefix'])
 
     rebulk.string('AE', 'A&E', value='A&E')
     rebulk.string('AMBC', value='ABC')
@@ -79,7 +79,7 @@ class ValidateStreamingService(Rule):
     consequence = RemoveMatch
 
     def when(self, matches, context):
-        """Streaming service is always before format.
+        """Streaming service is always before source.
 
         :param matches:
         :type matches: rebulk.match.Matches

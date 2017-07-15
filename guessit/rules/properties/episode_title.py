@@ -43,7 +43,7 @@ class RemoveConflictsWithEpisodeTitle(Rule):
     def __init__(self, previous_names):
         super(RemoveConflictsWithEpisodeTitle, self).__init__()
         self.previous_names = previous_names
-        self.next_names = ('streaming_service', 'screen_size', 'format',
+        self.next_names = ('streaming_service', 'screen_size', 'source',
                            'video_codec', 'audio_codec', 'other', 'container')
         self.affected_if_holes_after = ('part', )
         self.affected_names = ('part', 'year')

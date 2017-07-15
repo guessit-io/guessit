@@ -36,7 +36,7 @@ For example, GuessIt can do the following::
         "season": 1,
         "episode": 3,
         "episode_title": "Right Place, Wrong Time",
-        "format": "HDTV",
+        "source": "HDTV",
         "video_codec": "XviD",
         "release_group": "NoTV",
         "container": "avi",
@@ -47,10 +47,10 @@ For example, GuessIt can do the following::
 Migration note
 --------------
 
-GuessIt 2 has been rewriten from scratch. GuessIt is now a release name parser only, and support for additional
-features like hashes computations has been dropped.
+In GuessIt 3, some properties and values were renamed in order to keep consistency and to be more intuitive.
 
-To migrate from guessit ``0.x`` or ``1.x``, please read the :ref:`migration page<migration>`.
+To migrate from guessit ``2.x`` to guessit ``3.x``, please read the :ref:`migration page<migration2to3>`.
+To migrate from guessit ``0.x`` or ``1.x`` to guessit ``2.x``, please read the :ref:`migration page<migration>`.
 
 Install
 -------
@@ -143,7 +143,7 @@ It can also be used as a python module::
 
     >>> from guessit import guessit
     >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')  # doctest: +ALLOW_UNICODE
-    MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('video_codec', 'XviD'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
+    MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('source', 'HDTV'), ('video_codec', 'XviD'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
 
 ``MatchesDict`` is a dict that keeps matches ordering.
 

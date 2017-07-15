@@ -5,7 +5,7 @@
 : title: Fear and Loathing in Las Vegas
   year: 1998
   screen_size: 720p
-  format: HD-DVD
+  source: HD-DVD
   audio_codec: DTS
   video_codec: h264
   container: mkv
@@ -14,7 +14,8 @@
 ? Movies/El Dia de la Bestia (1995)/El.dia.de.la.bestia.DVDrip.Spanish.DivX.by.Artik[SEDG].avi
 : title: El Dia de la Bestia
   year: 1995
-  format: DVD
+  source: DVD
+  other: Rip
   language: spanish
   video_codec: DivX
   release_group: Artik[SEDG]
@@ -23,7 +24,8 @@
 ? Movies/Dark City (1998)/Dark.City.(1998).DC.BDRip.720p.DTS.X264-CHD.mkv
 : title: Dark City
   year: 1998
-  format: BluRay
+  source: Blu-ray
+  other: Rip
   screen_size: 720p
   audio_codec: DTS
   video_codec: h264
@@ -32,7 +34,8 @@
 ? Movies/Sin City (BluRay) (2005)/Sin.City.2005.BDRip.720p.x264.AC3-SEPTiC.mkv
 : title: Sin City
   year: 2005
-  format: BluRay
+  source: Blu-ray
+  other: Rip
   screen_size: 720p
   video_codec: h264
   audio_codec: AC3
@@ -42,14 +45,15 @@
 : title: Borat
   year: 2006
   proper_count: 2
-  format: DVD
-  other: [ R5, Proper ]
+  source: DVD
+  other: [ R5, Proper, Rip ]
   video_codec: XviD
   release_group: PUKKA
 
 ? "[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv"
 : title: Le Prestige
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: h264
   video_profile: HP
   audio_codec: AAC
@@ -64,7 +68,8 @@
   edition: Special Edition
   cd: 1
   cd_count: 2
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   release_group: ZeaL
 
@@ -86,14 +91,15 @@
 ? Movies/Toy Story (1995)/Toy Story [HDTV 720p English-Spanish].mkv
 : title: Toy Story
   year: 1995
-  format: HDTV
+  source: HDTV
   screen_size: 720p
   language: [ english, spanish ]
 
 ? Movies/Office Space (1999)/Office.Space.[Dual-DVDRip].[Spanish-English].[XviD-AC3-AC3].[by.Oswald].avi
 : title: Office Space
   year: 1999
-  format: DVD
+  other: [DualAudio, Rip]
+  source: DVD
   language: [ english, spanish ]
   video_codec: XviD
   audio_codec: AC3
@@ -113,7 +119,8 @@
   year: 1982
   edition: Director's Cut
   cd: 1
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   audio_codec: AC3
   release_group: WAF
@@ -121,14 +128,16 @@
 ? movies/American.The.Bill.Hicks.Story.2009.DVDRip.XviD-EPiSODE.[UsaBit.com]/UsaBit.com_esd-americanbh.avi
 : title: American The Bill Hicks Story
   year: 2009
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   release_group: EPiSODE
   website: UsaBit.com
 
 ? movies/Charlie.And.Boots.DVDRip.XviD-TheWretched/wthd-cab.avi
 : title: Charlie And Boots
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   release_group: TheWretched
 
@@ -137,17 +146,18 @@
   #film_title: Steig Larsson Millenium Trilogy
   #film: 1
   year: 2009
-  format: BluRay
+  source: Blu-ray
+  other: [ReEncoded, Rip]
   audio_codec: AAC
   video_codec: h264
   screen_size: 720p
 
 ? movies/Greenberg.REPACK.LiMiTED.DVDRip.XviD-ARROW/arw-repack-greenberg.dvdrip.xvid.avi
 : title: Greenberg
-  format: DVD
+  source: DVD
   video_codec: XviD
   release_group: ARROW
-  other: Proper
+  other: [Proper, Rip]
   edition: Limited Edition
   proper_count: 1
 
@@ -161,13 +171,15 @@
 : title: Avida
   year: 2006
   language: french
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   release_group: PROD
 
 ? Movies/Alice in Wonderland DVDRip.XviD-DiAMOND/dmd-aw.avi
 : title: Alice in Wonderland
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   release_group: DiAMOND
 
@@ -180,12 +192,14 @@
 : title: Bunker Palace Hôtel
   year: 1989
   language: french
-  format: VHS
+  source: VHS
+  other: Rip
 
 ? Movies/21 (2008)/21.(2008).DVDRip.x264.AC3-FtS.[sharethefiles.com].mkv
 : title: "21"
   year: 2008
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: h264
   audio_codec: AC3
   release_group: FtS
@@ -194,7 +208,7 @@
 ? Movies/9 (2009)/9.2009.Blu-ray.DTS.720p.x264.HDBRiSe.[sharethefiles.com].mkv
 : title: "9"
   year: 2009
-  format: BluRay
+  source: Blu-ray
   audio_codec: DTS
   screen_size: 720p
   video_codec: h264
@@ -204,7 +218,8 @@
 ? Movies/Mamma.Mia.2008.DVDRip.AC3.XviD-CrazyTeam/Mamma.Mia.2008.DVDRip.AC3.XviD-CrazyTeam.avi
 : title: Mamma Mia
   year: 2008
-  format: DVD
+  source: DVD
+  other: Rip
   audio_codec: AC3
   video_codec: XviD
   release_group: CrazyTeam
@@ -213,13 +228,15 @@
 : title: MASH
   year: 1970
   video_codec: DivX
-  format: DVD
+  source: DVD
+  other: [DualAudio, Rip]
 
 ? Movies/The Doors (1991)/09.03.08.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv
 : title: The Doors
   year: 1991
   date: 2008-03-09
-  format: BluRay
+  source: Blu-ray
+  other: Rip
   screen_size: 720p
   audio_codec: AC3
   video_codec: h264
@@ -232,7 +249,8 @@
   title: The Doors
   year: 1991
   date: 2008-03-09
-  format: BluRay
+  source: Blu-ray
+  other: Rip
   screen_size: 720p
   audio_codec: AC3
   video_codec: h264
@@ -242,7 +260,7 @@
 
 ? Movies/Ratatouille/video_ts-ratatouille.srt
 : title: Ratatouille
-  format: DVD
+  source: DVD
 
 # Removing this one because 001 is guessed as an episode number.
 # ? Movies/001 __ A classer/Fantomas se déchaine - Louis de Funès.avi
@@ -252,7 +270,8 @@
 : title: Comme une Image
   year: 2004
   language: french
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   release_group: NTK
   website: www.divx-overnet.com
@@ -260,7 +279,8 @@
 ? Movies/Fantastic Mr Fox/Fantastic.Mr.Fox.2009.DVDRip.{x264+LC-AAC.5.1}{Fr-Eng}{Sub.Fr-Eng}-™.[sharethefiles.com].mkv
 : title: Fantastic Mr Fox
   year: 2009
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: h264
   audio_codec: AAC
   audio_profile: LC
@@ -272,7 +292,8 @@
 ? Movies/Somewhere.2010.DVDRip.XviD-iLG/i-smwhr.avi
 : title: Somewhere
   year: 2010
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   release_group: iLG
 
@@ -339,7 +360,7 @@
 ? /public/uTorrent/Downloads Finished/Movies/Indiana.Jones.and.the.Temple.of.Doom.1984.HDTV.720p.x264.AC3.5.1-REDµX/Indiana.Jones.and.the.Temple.of.Doom.1984.HDTV.720p.x264.AC3.5.1-REDµX.mkv
 : title: Indiana Jones and the Temple of Doom
   year: 1984
-  format: HDTV
+  source: HDTV
   screen_size: 720p
   video_codec: h264
   audio_codec: AC3
@@ -349,7 +370,7 @@
 ? The.Director’s.Notebook.2006.Blu-Ray.x264.DXVA.720p.AC3-de[42].mkv
 : title: The Director’s Notebook
   year: 2006
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   video_api: DXVA
   screen_size: 720p
@@ -363,13 +384,14 @@
   screen_size: 720p
   video_codec: h264
   release_group: AN0NYM0US[bb]
-  format: BluRay
+  source: Blu-ray
   edition: Limited Edition
 
 ? movies/La Science des Rêves (2006)/La.Science.Des.Reves.FRENCH.DVDRip.XviD-MP-AceBot.avi
 : title: La Science des Rêves
   year: 2006
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: XviD
   video_profile: MP
   release_group: AceBot
@@ -382,7 +404,7 @@
 : title: The Rum Diary
   year: 2011
   screen_size: 1080p
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   audio_codec: DTS
   release_group: D-Z0N3
@@ -391,7 +413,7 @@
 : title: Life Of Pi
   year: 2012
   screen_size: 1080p
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   audio_codec: DTS
   release_group: D-Z0N3
@@ -400,7 +422,7 @@
 : title: The Kings Speech
   year: 2010
   screen_size: 1080p
-  format: BluRay
+  source: Blu-ray
   audio_codec: DTS
   video_codec: h264
   release_group: D Z0N3
@@ -408,7 +430,7 @@
 ? Street.Kings.2008.BluRay.1080p.DTS.x264.dxva EuReKA.mkv
 : title: Street Kings
   year: 2008
-  format: BluRay
+  source: Blu-ray
   screen_size: 1080p
   audio_codec: DTS
   video_codec: h264
@@ -418,7 +440,7 @@
 ? 2001.A.Space.Odyssey.1968.HDDVD.1080p.DTS.x264.dxva EuReKA.mkv
 : title: 2001 A Space Odyssey
   year: 1968
-  format: HD-DVD
+  source: HD-DVD
   screen_size: 1080p
   audio_codec: DTS
   video_codec: h264
@@ -429,7 +451,7 @@
 : title: "2012"
   year: 2009
   screen_size: 720p
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   audio_codec: DTS
   release_group: WiKi
@@ -437,7 +459,8 @@
 ? /share/Download/movie/Dead Man Down (2013) BRRiP XViD DD5_1 Custom NLSubs =-_lt Q_o_Q gt-=_/XD607ebb-BRc59935-5155473f-1c5f49/XD607ebb-BRc59935-5155473f-1c5f49.avi
 : title: Dead Man Down
   year: 2013
-  format: BluRay
+  source: Blu-ray
+  other: [ReEncoded, Rip]
   video_codec: XviD
   audio_channels: "5.1"
   audio_codec: AC3
@@ -446,7 +469,7 @@
 ? Pacific.Rim.3D.2013.COMPLETE.BLURAY-PCH.avi
 : title: Pacific Rim
   year: 2013
-  format: BluRay
+  source: Blu-ray
   other:
    - Complete
    - 3D
@@ -458,33 +481,33 @@
   language:
     - French
     - English
-  format: DVD
+  source: DVD
   other: [Straight to Video, Read NFO, NTSC]
 
 ? Immersion.French.2011.STV.READNFO.QC.FRENCH.NTSC.DVDR.nfo
 : title: Immersion French
   year: 2011
   language: French
-  format: DVD
+  source: DVD
   other: [Straight to Video, Read NFO, NTSC]
 
 ? Immersion.French.2011.STV.READNFO.QC.NTSC.DVDR.nfo
 : title: Immersion
   language: French
   year: 2011
-  format: DVD
+  source: DVD
   other: [Straight to Video, Read NFO, NTSC]
 
 ? French.Immersion.2011.STV.READNFO.QC.ENGLISH.NTSC.DVDR.nfo
 : title: French Immersion
   year: 2011
   language: ENGLISH
-  format: DVD
+  source: DVD
   other: [Straight to Video, Read NFO, NTSC]
 
 ? Howl's_Moving_Castle_(2004)_[720p,HDTV,x264,DTS]-FlexGet.avi
 : video_codec: h264
-  format: HDTV
+  source: HDTV
   title: Howl's Moving Castle
   screen_size: 720p
   year: 2004
@@ -503,7 +526,7 @@
 : year: 2013
   video_codec: XviD
   title: Masala
-  format: HD-DVD
+  source: HD-DVD
   other: Screener
   language: Telugu
   release_group: Exclusive
@@ -514,20 +537,20 @@
   video_codec: h264
   title: Django Unchained
   audio_codec: AAC
-  format: DVD
+  source: DVD
   release_group: P2P
 
 ? Ejecutiva.En.Apuros(2009).BLURAY.SCR.Xvid.Spanish.LanzamientosD.nfo
 : year: 2009
   other: Screener
-  format: BluRay
+  source: Blu-ray
   video_codec: XviD
   language: Spanish
   title: Ejecutiva En Apuros
 
 ? Die.Schluempfe.2.German.DL.1080p.BluRay.x264-EXQUiSiTE.mkv
 : title: Die Schluempfe 2
-  format: BluRay
+  source: Blu-ray
   language:
     - Multiple languages
     - German
@@ -539,14 +562,15 @@
 : title: Rocky
   year: 1976
   subtitle_language: French
-  format: BluRay
+  source: Blu-ray
+  other: [ReEncoded, Rip]
   video_codec: h264
   audio_codec: AC3
   release_group: FUNKY
 
 ? REDLINE (BD 1080p H264 10bit FLAC) [3xR].mkv
 : title: REDLINE
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   video_profile: 10bit
   audio_codec: FLAC
@@ -555,21 +579,21 @@
 ? The.Lizzie.McGuire.Movie.(2003).HR.DVDRiP.avi
 : title: The Lizzie McGuire Movie
   year: 2003
-  format: DVD
-  other: HR
+  source: DVD
+  other: [HR, Rip]
 
 ? Hua.Mulan.BRRIP.MP4.x264.720p-HR.avi
 : title: Hua Mulan
   video_codec: h264
-  format: BluRay
+  source: Blu-ray
   screen_size: 720p
-  other: HR
+  other: [ReEncoded, Rip, HR]
 
 ? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : video_codec: XviD
   title: Dr Seuss The Lorax
-  format: DVD
-  other: LiNE
+  source: DVD
+  other: [Rip, LiNE]
   year: 2012
   audio_codec: AC3
   audio_profile: HQ
@@ -584,8 +608,8 @@
 ? Dr.LiNE.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : video_codec: XviD
   title: Dr LiNE The Lorax
-  format: DVD
-  other: LiNE
+  source: DVD
+  other: [Rip, LiNE]
   year: 2012
   audio_codec: AC3
   audio_profile: HQ
@@ -594,7 +618,8 @@
 ? Dr.LiNE.The.Lorax.2012.DVDRip.XviD.AC3.HQ.Hive-CM8.mp4
 : video_codec: XviD
   title: Dr LiNE The Lorax
-  format: DVD
+  source: DVD
+  other: Rip
   year: 2012
   audio_codec: AC3
   audio_profile: HQ
@@ -605,19 +630,21 @@
   title: Perfect Child
   video_codec: XviD
   language: French
-  format: TV
+  source: TV
+  other: Rip
   year: 2007
 
 ? entre.ciel.et.terre.(1994).dvdrip.h264.aac-psypeon.avi
 : audio_codec: AAC
-  format: DVD
+  source: DVD
+  other: Rip
   release_group: psypeon
   title: entre ciel et terre
   video_codec: h264
   year: 1994
 
 ? Yves.Saint.Laurent.2013.FRENCH.DVDSCR.MD.XviD-ViVARiUM.avi
-: format: DVD
+: source: DVD
   language: French
   other:
       - MD
@@ -628,7 +655,7 @@
   year: 2013
 
 ? Echec et Mort - Hard to Kill - Steven Seagal Multi 1080p BluRay x264 CCATS.avi
-: format: BluRay
+: source: Blu-ray
   language: Multiple languages
   release_group: CCATS
   screen_size: 1080p
@@ -646,31 +673,32 @@
     - Lindon
   screen_size: 1080p
   container: mkv
-  format: HDTV
+  source: HDTV
+  other: Rip
 
 ? some.movie.720p.bluray.x264-mind
 : title: some movie
   screen_size: 720p
   video_codec: h264
   release_group: mind
-  format: BluRay
+  source: Blu-ray
 
 ? Dr LiNE The Lorax 720p h264 BluRay
 : title: Dr LiNE The Lorax
   screen_size: 720p
   video_codec: h264
-  format: BluRay
+  source: Blu-ray
 
 #TODO: Camelcase implementation
 #? BeatdownFrenchDVDRip.mkv
 #: options: -c
 #  title: Beatdown
 #  language: French
-#  format: DVD
+#  source: DVD
 
 #? YvesSaintLaurent2013FrenchDVDScrXvid.avi
 #: options: -c
-#  format: DVD
+#  source: DVD
 #  language: French
 #  other: Screener
 #  title: Yves saint laurent
@@ -683,7 +711,7 @@
   title: Elle s en va
 
 ? FooBar.7.PDTV-FlexGet
-: format: DVB
+: source: Digital TV
   release_group: FlexGet
   title: FooBar 7
 
@@ -720,19 +748,19 @@
   video_codec: h264
 
 ? A Bout Portant (The Killers).PAL.Multi.DVD-R-KZ
-: format: DVD
+: source: DVD
   language: mul
   release_group: KZ
   title: A Bout Portant
 
 ? "Mise à Sac (Alain Cavalier, 1967) [Vhs.Rip.Vff]"
-: format: VHS
+: source: VHS
   language: fr
   title: "Mise à Sac"
   year: 1967
 
 ? A Bout Portant (The Killers).PAL.Multi.DVD-R-KZ
-: format: DVD
+: source: DVD
   other: PAL
   language: mul
   release_group: KZ
@@ -747,7 +775,8 @@
   year: 2009
 
 ? La Defense Lincoln (The Lincoln Lawyer) 2011 [DVDRIP][Vostfr]
-: format: DVD
+: source: DVD
+  other: Rip
   subtitle_language: fr
   title: La Defense Lincoln
   year: 2011
@@ -789,7 +818,7 @@
 
 ? Das.Appartement.German.AC3D.DL.720p.BluRay.x264-TVP
 : audio_codec: AC3
-  format: BluRay
+  source: Blu-ray
   language: mul
   release_group: TVP
   screen_size: 720p
@@ -799,7 +828,7 @@
 
 ? Das.Appartement.GERMAN.AC3D.DL.720p.BluRay.x264-TVP
 : audio_codec: AC3
-  format: BluRay
+  source: Blu-ray
   language:
   - de
   - mul
@@ -811,7 +840,7 @@
 ? Hyena.Road.2015.German.1080p.DL.DTSHD.Bluray.x264-pmHD
 : audio_codec: DTS
   audio_profile: HD
-  format: BluRay
+  source: Blu-ray
   language:
   - de
   - mul
@@ -825,7 +854,7 @@
 ? Hyena.Road.2015.German.1080p.DL.DTSHD.Bluray.x264-pmHD
 : audio_codec: DTS
   audio_profile: HD
-  format: BluRay
+  source: Blu-ray
   language:
   - de
   - mul
@@ -837,12 +866,30 @@
   year: 2015
 
 ? Name.BDMux.720p
-? Name.BDRipMux.720p
+: title: Name
+  source: Blu-ray
+  other: Mux
+  screen_size: 720p
+  type: movie
+
 ? Name.BRMux.720p
+: title: Name
+  source: Blu-ray
+  other: [ReEncoded, Mux]
+  screen_size: 720p
+  type: movie
+
+? Name.BDRipMux.720p
+: title: Name
+  source: Blu-ray
+  other: [Rip, Mux]
+  screen_size: 720p
+  type: movie
+
 ? Name.BRRipMux.720p
 : title: Name
-  format: BluRay
-  other: Mux
+  source: Blu-ray
+  other: [ReEncoded, Rip, Mux]
   screen_size: 720p
   type: movie
 
@@ -862,7 +909,7 @@
   language: mul
   screen_size: 4K
   other: UltraHD
-  format: BluRay
+  source: Blu-ray
   video_codec: h265
   video_profile: 10bit
   audio_codec: [DTS, DolbyAtmos]
@@ -895,7 +942,7 @@
   other: UltraHD
   year: 2016
   screen_size: 4K
-  format: BluRay
+  source: Blu-ray
   video_codec: h265
   video_profile: 10bit
   audio_codec: DolbyAtmos
@@ -916,7 +963,7 @@
   year: 1949
   edition: Alternative Cut
   screen_size: 1080p
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   release_group: SADPANDA[rarbg]
 
@@ -924,7 +971,7 @@
 : title: The Movie
   other: Converted
   screen_size: 720p
-  format: HDTV
+  source: HDTV
   video_codec: h264
   release_group: C4TV
   type: movie
@@ -932,9 +979,9 @@
 ? Its.A.Wonderful.Life.1946.Colorized.720p.BRRip.999MB.MkvCage.com
 : title: Its A Wonderful Life
   year: 1946
-  other: Colorized
+  other: [Colorized, ReEncoded, Rip]
   screen_size: 720p
-  format: BluRay
+  source: Blu-ray
   size: 999MB
   website: MkvCage.com
   type: movie
@@ -951,7 +998,7 @@
   year: 2000
   edition: Director's Cut
   screen_size: 1080p
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   release_group: anoXmous
   type: movie
@@ -959,9 +1006,9 @@
 ? Before.the.Flood.2016.DOCU.1080p.WEBRip.x264.DD5.1-FGT
 : title: Before the Flood
   year: 2016
-  other: Documentary
+  other: [Documentary, Rip]
   screen_size: 1080p
-  format: WEBRip
+  source: Web
   video_codec: h264
   audio_codec: AC3
   audio_channels: '5.1'
@@ -971,7 +1018,7 @@
 ? Zootopia.2016.HDRip.1.46Gb.Dub.MegaPeer
 : title: Zootopia
   year: 2016
-  format: HDTV
+  other: [HD, Rip]
   size: 1.46GB
   language: und
   release_group: MegaPeer
@@ -981,16 +1028,17 @@
 : title: Suntan
   year: 2016
   edition: Festival
-  format: DVD
+  source: DVD
+  other: Rip
   video_codec: h264
   release_group: IcHoR
   type: movie
 
 ? Hardwired.STV.NFOFiX.FRENCH.DVDRiP.XviD-SURViVAL
 : title: Hardwired
-  other: [Straight to Video, Proper]
+  other: [Straight to Video, Proper, Rip]
   language: french
-  format: DVD
+  source: DVD
   video_codec: XviD
   release_group: SURViVAL
   proper_count: 1
@@ -998,9 +1046,9 @@
 
 ? Maze.Runner.The.Scorch.Trials.OM.2015.WEB-DLRip.by.Seven
 : title: Maze Runner The Scorch Trials
-  other: Open Matte
+  other: [Open Matte, Rip]
   year: 2015
-  format: WEBRip
+  source: Web
   release_group: Seven
   type: movie
 
@@ -1023,8 +1071,8 @@
 ? The.Last.Survivors.2014.PROOF.SAMPLE.FiX.BDRip.x264-TOPCAT
 : title: The Last Survivors
   year: 2014
-  other: Proper
-  format: BluRay
+  other: [Proper, Rip]
+  source: Blu-ray
   video_codec: h264
   release_group: TOPCAT
   type: movie
@@ -1034,7 +1082,8 @@
   year: 2016
   edition: Theatrical Edition
   language: french
-  format: BluRay
+  source: Blu-ray
+  other: Rip
   video_codec: XviD
   release_group: EXTREME
   type: movie
@@ -1051,7 +1100,7 @@
   year: 2013
   edition: Theatrical Edition
   screen_size: 720p
-  format: BluRay
+  source: Blu-ray
   video_codec: h264
   type: movie
 
@@ -1059,8 +1108,9 @@
 : title: The Heartbreak Kid
   year: 1993
   edition: Uncut
+  other: Rip
   screen_size: 720p
-  format: WEBRip
+  source: Web
   video_codec: h264
   type: movie
 
@@ -1069,7 +1119,7 @@
   year: 1993
   screen_size: 720p
   other: Original Aspect Ratio
-  format: BluRay
+  source: Blu-ray
   audio_codec: DTS
   video_codec: h264
   release_group: CtrlHD
@@ -1079,14 +1129,15 @@
 : title: Aliens
   edition: Special Edition
   year: 1986
-  format: BluRay
+  source: Blu-ray
+  other: Rip
   screen_size: 1080p
   type: movie
 
 ? 10 Cloverfield Lane.[Blu-Ray 1080p].[MULTI]
 : options: --type movie
   title: 10 Cloverfield Lane
-  format: BluRay
+  source: Blu-ray
   screen_size: 1080p
   language: Multiple languages
   type: movie
@@ -1094,7 +1145,7 @@
 ? 007.Spectre.[HDTC.MD].[TRUEFRENCH]
 : options: --type movie
   title: 007 Spectre
-  format: HDTC
+  source: HD Telecine
   language: French
   type: movie
 
@@ -1102,7 +1153,42 @@
 : title: We Are X
   year: 2016
   edition: Limited Edition
-  format: BluRay
+  source: Blu-ray
+  other: Rip
   video_codec: h264
   release_group: BiPOLAR
   type: movie
+
+? The Rack (VHS) [1956] Paul Newman
+: title: The Rack
+  source: VHS
+  year: 1956
+  type: movie
+
+? Les.Magiciens.1976.VHSRip.XViD.MKO
+: title: Les Magiciens
+  year: 1976
+  source: VHS
+  other: Rip
+  video_codec: XviD
+  release_group: MKO
+  type: movie
+
+? The Boss Baby 2017 720p CAM x264 AC3 TiTAN
+: title: The Boss Baby
+  year: 2017
+  screen_size: 720p
+  source: Camera
+  video_codec: h264
+  audio_codec: AC3
+  release_group: TiTAN
+  type: movie
+
+? The.Boss.Baby.2017.HDCAM.XviD-MrGrey
+: title: The Boss Baby
+  year: 2017
+  source: HD Camera
+  video_codec: XviD
+  release_group: MrGrey
+  type: movie
+

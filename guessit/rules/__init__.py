@@ -10,7 +10,7 @@ from .markers.groups import groups
 
 from .properties.episodes import episodes
 from .properties.container import container
-from .properties.format import format_
+from .properties.source import source
 from .properties.video_codec import video_codec
 from .properties.audio_codec import audio_codec
 from .properties.screen_size import screen_size
@@ -49,7 +49,7 @@ def rebulk_builder():
 
     rebulk.rebulk(episodes())
     rebulk.rebulk(container())
-    rebulk.rebulk(format_())
+    rebulk.rebulk(source())
     rebulk.rebulk(video_codec())
     rebulk.rebulk(audio_codec())
     rebulk.rebulk(screen_size())

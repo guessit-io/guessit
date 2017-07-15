@@ -18,7 +18,7 @@ def video_codec():
     :rtype: Rebulk
     """
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
-    rebulk.defaults(name="video_codec", tags=['format-suffix', 'streaming_service.suffix'])
+    rebulk.defaults(name="video_codec", tags=['source-suffix', 'streaming_service.suffix'])
 
     rebulk.regex(r"Rv\d{2}", value="Real")
     rebulk.regex("Mpeg2", value="Mpeg2")
@@ -52,7 +52,7 @@ def video_codec():
 
 class ValidateVideoCodec(Rule):
     """
-    Validate video_codec with format property or separated
+    Validate video_codec with source property or separated
     """
     priority = 64
     consequence = RemoveMatch

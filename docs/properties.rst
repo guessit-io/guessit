@@ -10,7 +10,7 @@ So, for instance,
 
 - ``DVDSCR`` will be guessed as ``format`` = ``DVD`` + ``other`` = ``Screener``
 - ``1920x1080`` will be guessed as ``screenSize`` = ``1080p``
-- ``DD5.1`` will be guessed as ``audioCodec`` = ``DolbyDigital`` + ``audioChannel`` = ``5.1``
+- ``DD5.1`` will be guessed as ``audioCodec`` = ``AC3`` + ``audioChannel`` = ``5.1``
 
 
 Main properties
@@ -39,8 +39,8 @@ Main properties
 
   - ``3g2``, ``3gp``, ``3gp2``, ``asf``, ``ass``, ``avi``, ``divx``, ``flv``, ``idx``, ``iso``, ``m4v``, ``mk2``,
     ``mkv``, ``mka``, ``mov``, ``mp4``, ``mp4a``, ``mpeg``, ``mpg``, ``nfo``, ``nzb``, ``ogg``, ``ogm``, ``ogv``,
-    ``qt``, ``ra``, ``ram``, ``rm``, ``srt``, ``ssa``, ``sub``, ``torrent``, ``ts``, ``vob``, ``wav``, ``webm``, ``wma``,
-    ``wmv``
+    ``qt``, ``ra``, ``ram``, ``rm``, ``srt``, ``ssa``, ``sub``, ``torrent``, ``ts``, ``vob``, ``wav``, ``webm``,
+    ``wma``, ``wmv``
 
 
 - **mimetype**
@@ -131,12 +131,13 @@ Episode properties
 Video properties
 ----------------
 
-- **format**
+- **source**
 
-  Format of the initial source
+  Source of the release
 
-  - ``AHDTV``, ``BluRay``, ``Cam``, ``DVB``, ``DVD``, ``HD-DVD``, ``HDTC``, ``HDTV``, ``PPV``, ``SATRip``, ``Telecine``,
-    ``Telesync``, ``TV``, ``UHDTV``, ``VHS``, ``VOD``, ``WEB-DL``, ``WEBRip``, ``Workprint``
+  - ``Analogue HDTV``, ``Blu-ray``, ``Camera``, ``Digital TV``, ``DVD``, ``HD Camera``, ``HD Telecine``,
+    ``HD Telesync``, ``HD-DVD``, ``HDTV``, ``Pay-per-view``, ``Satellite``, ``Telecine``, ``Telesync``, ``TV``,
+    ``Ultra HDTV``, ``VHS``, ``Video on Demand``, ``Web``, ``Workprint``
 
 
 - **screen_size**
@@ -181,7 +182,7 @@ Audio properties
 
   Codec used for audio.
 
-  - ``DTS`` ``TrueHD`` ``AAC`` ``AC3`` ``EAC3`` ``MP3`` ``Flac`` ``DolbyAtmos``
+  - ``DTS``, ``TrueHD``, ``AAC``, ``AC3``, ``EAC3``, ``MP3``, ``Flac``, ``DolbyAtmos``
 
 
 - **audio_profile**
@@ -281,10 +282,11 @@ Other properties
 
   Other property will appear under this property.
 
-  - ``3D``, ``AudioFix``, ``Bonus``, ``CC``, ``Classic``, ``Colorized``, ``Complete``, ``Converted``, ``Documentary``,
-    ``DDC``, ``DualAudio``, ``East Coast Feed``, ``Fansub``, ``Fastsub``, ``FINAL``, ``FullHD``,
-    ``Hardcoded Subtitles``, ``HD``, ``HDLight``, ``HQ``, ``HR``, ``Internal``, ``LD``, ``Limited``, ``LiNE``, ``MD``,
-    ``mHD``, ``Mux``, ``NTSC``, ``Open Matte``, ``Original Aspect Ratio``, ``OV``, ``PAL``, ``Preair``, ``Proper``,
-    ``PS Vita``, ``R5``, ``Read NFO``, ``ReEncoded``, ``Remux``, ``Retail``, ``Screener``, ``SECAM``,
-    ``Straight to Video``, ``SyncFix``, ``Trailer``, ``UltraHD``, ``West Coast Feed``, ``WideScreen``, ``XXX``
+  - ``3D``, ``AudioFix``, ``Bonus``, ``Capped``, ``CC``, ``Classic``, ``Colorized``, ``Complete``,
+    ``Converted``, ``Documentary``, ``DDC``, ``DualAudio``, ``East Coast Feed``,
+    ``Fansub``, ``Fastsub``, ``FINAL``, ``FullHD``, ``Hardcoded Subtitles``, ``HD``, ``HDLight``, ``HQ``,
+    ``HR``, ``Internal``, ``LD``, ``LiNE``, ``MD``, ``mHD``, ``Mux``, ``NTSC``, ``Open Matte``,
+    ``Original Aspect Ratio``, ``OV``, ``PAL``, ``Preair``, ``Proper``, ``PS Vita``, ``R5``, ``Read NFO``,
+    ``ReEncoded``, ``Remux``, ``Retail``, ``Rip``, ``Screener``, ``SECAM``, ``Straight to Video``,
+    ``SyncFix``, ``Trailer``, ``UltraHD``, ``West Coast Feed``, ``WideScreen``, ``XXX``
 

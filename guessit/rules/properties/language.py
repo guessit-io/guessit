@@ -28,7 +28,7 @@ def language():
     rebulk.string(*subtitle_suffixes, name="subtitle_language.suffix", ignore_case=True, private=True,
                   validator=seps_surround)
     rebulk.string(*lang_suffixes, name="language.suffix", ignore_case=True, private=True,
-                  validator=seps_surround, tags=['format-suffix'])
+                  validator=seps_surround, tags=['source-suffix'])
     rebulk.functional(find_languages, properties={'language': [None]})
     rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
 
@@ -436,7 +436,7 @@ class SubtitleExtensionRule(Rule):
     """
     Convert language guess as subtitle_language if next match is a subtitle extension.
 
-    Since it's a strong match, it also removes any conflicting format with it.
+    Since it's a strong match, it also removes any conflicting source with it.
     """
     consequence = [RemoveMatch, RenameMatch('subtitle_language')]
 
@@ -449,4 +449,4 @@ class SubtitleExtensionRule(Rule):
         if subtitle_extension:
             subtitle_lang = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
             if subtitle_lang:
-                return matches.conflicting(subtitle_lang, lambda m: m.name == 'format'), subtitle_lang
+                return matches.conflicting(subtitle_lang, lambda m: m.name == 'source'), subtitle_lang

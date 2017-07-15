@@ -5,7 +5,7 @@ other property
 """
 import copy
 
-from rebulk import Rebulk, Rule, RemoveMatch, POST_PROCESS, AppendMatch
+from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch, POST_PROCESS, AppendMatch
 from rebulk.remodule import re
 
 from ..common import dash
@@ -64,6 +64,8 @@ def other():
     rebulk.string('R5', 'RC', value='R5')
     rebulk.regex('Pre-?Air', value='Preair')
     rebulk.regex('(?:PS-?)?Vita', value='PS Vita')
+    rebulk.regex('(HD)(?P<another>Rip)', value={'other': 'HD', 'another': 'Rip'},
+                 private_parent=True, children=True, validator={'__parent__': seps_surround}, validate_all=True)
 
     for value in (
             'Screener', 'Remux', '3D', 'mHD', 'HDLight', 'HQ', 'DDC', 'HR', 'PAL', 'SECAM', 'NTSC',
@@ -95,13 +97,14 @@ def other():
     rebulk.string('VO', 'OV', value='OV', tags='has-neighbor')
 
     rebulk.regex('Scr(?:eener)?', value='Screener', validator=None,
-                 tags=['other.validate.screener', 'format-prefix', 'format-suffix'])
+                 tags=['other.validate.screener', 'source-prefix', 'source-suffix'])
     rebulk.string('Mux', value='Mux', validator=seps_after,
-                  tags=['other.validate.mux', 'video-codec-prefix', 'format-suffix'])
+                  tags=['other.validate.mux', 'video-codec-prefix', 'source-suffix'])
     rebulk.string('HC', value='Hardcoded Subtitles')
 
-    rebulk.rules(ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore, ValidateScreenerRule,
-                 ValidateMuxRule, ValidateHardcodedSubs, ValidateStreamingServiceNeighbor, ProperCountRule)
+    rebulk.rules(RenameAnotherToOther, ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore,
+                 ValidateScreenerRule, ValidateMuxRule, ValidateHardcodedSubs, ValidateStreamingServiceNeighbor,
+                 ProperCountRule)
 
     return rebulk
 
@@ -126,6 +129,17 @@ class ProperCountRule(Rule):
             proper_count_match.name = 'proper_count'
             proper_count_match.value = len(raws)
             return proper_count_match
+
+
+class RenameAnotherToOther(Rule):
+    """
+    Rename `another` properties to `other`
+    """
+    priority = 32
+    consequence = RenameMatch('other')
+
+    def when(self, matches, context):
+        return matches.named('another')
 
 
 class ValidateHasNeighbor(Rule):
@@ -204,8 +218,8 @@ class ValidateScreenerRule(Rule):
     def when(self, matches, context):
         ret = []
         for screener in matches.named('other', lambda match: 'other.validate.screener' in match.tags):
-            format_match = matches.previous(screener, lambda match: match.name == 'format', 0)
-            if not format_match or matches.input_string[format_match.end:screener.start].strip(seps):
+            source_match = matches.previous(screener, lambda match: match.initiator.name == 'source', 0)
+            if not source_match or matches.input_string[source_match.end:screener.start].strip(seps):
                 ret.append(screener)
         return ret
 
@@ -220,8 +234,8 @@ class ValidateMuxRule(Rule):
     def when(self, matches, context):
         ret = []
         for mux in matches.named('other', lambda match: 'other.validate.mux' in match.tags):
-            format_match = matches.previous(mux, lambda match: match.name == 'format', 0)
-            if not format_match:
+            source_match = matches.previous(mux, lambda match: match.initiator.name == 'source', 0)
+            if not source_match:
                 ret.append(mux)
         return ret
 
@@ -260,16 +274,18 @@ class ValidateStreamingServiceNeighbor(Rule):
     def when(self, matches, context):
         to_remove = []
         for match in matches.named('other',
-                                   predicate=lambda m: ('streaming_service.prefix' in m.tags or
-                                                        'streaming_service.suffix' in m.tags)):
-
+                                   predicate=lambda m: (m.initiator.name != 'source'
+                                                        and ('streaming_service.prefix' in m.tags
+                                                             or 'streaming_service.suffix' in m.tags))):
+            match = match.initiator
             if not seps_after(match):
                 if 'streaming_service.prefix' in match.tags:
                     next_match = matches.next(match, lambda m: m.name == 'streaming_service', 0)
                     if next_match and not matches.holes(match.end, next_match.start,
                                                         predicate=lambda m: m.value.strip(seps)):
                         continue
-
+                if match.children:
+                    to_remove.extend(match.children)
                 to_remove.append(match)
 
             elif not seps_before(match):
@@ -279,6 +295,8 @@ class ValidateStreamingServiceNeighbor(Rule):
                                                             predicate=lambda m: m.value.strip(seps)):
                         continue
 
+                if match.children:
+                    to_remove.extend(match.children)
                 to_remove.append(match)
 
         return to_remove
