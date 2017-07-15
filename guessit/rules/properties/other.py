@@ -83,6 +83,7 @@ def other():
                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
     rebulk.regex('Ultra-?(?:HD)?', 'UHD', value='Ultra HD', validator=None,
                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
+    rebulk.regex('Upscaled?', value='Upscaled')
 
     for value in ('Complete', 'Classic', 'Bonus', 'Trailer', 'Retail',
                   'Colorized', 'Internal'):
