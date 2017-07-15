@@ -164,7 +164,7 @@
   - 5
   title: Show Name
   type: episode
-  video_codec: XviD
+  video_codec: Xvid
 
 ? Show.Name.Season.1.2.3-5.HDTV.XviD-GoodGroup[SomeTrash]
 ? Show.Name.Season.1.2.3~5.HDTV.XviD-GoodGroup[SomeTrash]
@@ -179,7 +179,7 @@
   - 5
   title: Show Name
   type: episode
-  video_codec: XviD
+  video_codec: Xvid
 
 ? The.Get.Down.S01EP01.FRENCH.720p.WEBRIP.XVID-STR
 : episode: 1
@@ -191,7 +191,7 @@
   season: 1
   title: The Get Down
   type: episode
-  video_codec: XviD
+  video_codec: Xvid
 
 ? My.Name.Is.Earl.S01E01-S01E21.SWE-SUB
 : episode:

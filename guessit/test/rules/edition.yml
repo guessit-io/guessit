@@ -7,25 +7,29 @@
 ? Collector
 ? Collector Edition
 ? Edition Collector
-: edition: Collector Edition
+: edition: Collector
 
 ? Special Edition
 ? Edition Special
 ? -Special
-: edition: Special Edition
+: edition: Special
 
 ? Criterion Edition
 ? Edition Criterion
+? CC
 ? -Criterion
-: edition: Criterion Edition
+: edition: Criterion
 
 ? Deluxe
 ? Deluxe Edition
 ? Edition Deluxe
-: edition: Deluxe Edition
+: edition: Deluxe
 
 ? Super Movie Alternate XViD
 ? Super Movie Alternative XViD
 ? Super Movie Alternate Cut XViD
 ? Super Movie Alternative Cut XViD
 : edition: Alternative Cut
+
+? ddc
+: edition: Director's Definitive Cut

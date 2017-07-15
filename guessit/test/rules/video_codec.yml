@@ -6,7 +6,7 @@
 ? Rv30
 ? rv40
 ? -xrv40
-: video_codec: Real
+: video_codec: RealVideo
 
 ? mpeg2
 ? MPEG2
@@ -14,7 +14,7 @@
 ? -mpeg 2  # Not sure if we should ignore this one ...
 ? -xmpeg2
 ? -mpeg2x
-: video_codec: Mpeg2
+: video_codec: MPEG-2
 
 ? DivX
 ? -div X
@@ -26,7 +26,7 @@
 ? XviD
 ? xvid
 ? -x vid
-: video_codec: XviD
+: video_codec: Xvid
 
 ? h264
 ? x264
@@ -38,7 +38,7 @@
 ? -mpeg
 ? -h 265
 ? -x265
-: video_codec: h264
+: video_codec: H.264
 
 ? h265
 ? x265
@@ -47,13 +47,13 @@
 ? hevc
 ? -h 264
 ? -x264
-: video_codec: h265
+: video_codec: H.265
 
 ? hevc10
 ? HEVC-YUV420P10
-: video_codec: h265
-  video_profile: 10bit
+: video_codec: H.265
+  color_depth: 10-bit
 
 ? h265-HP
-: video_codec: h265
-  video_profile: HP
+: video_codec: H.265
+  video_profile: High

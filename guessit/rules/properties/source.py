@@ -91,9 +91,9 @@ def source():
     rebulk.regex(*build_source_pattern('Blu-?ray', 'BD', 'BD[59]', 'BD25', 'BD50', suffix=rip_optional_suffix),
                  value={'source': 'Blu-ray', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('(?P<another>BR)-?(?=Scr(?:eener)?)', '(?P<another>BR)-?(?=Mux)'),  # BRRip
-                 value={'source': 'Blu-ray', 'another': 'ReEncoded'})
+                 value={'source': 'Blu-ray', 'another': 'Reencoded'})
     rebulk.regex(*build_source_pattern('(?P<another>BR)', suffix=rip_suffix),  # BRRip
-                 value={'source': 'Blu-ray', 'other': 'Rip', 'another': 'ReEncoded'})
+                 value={'source': 'Blu-ray', 'other': 'Rip', 'another': 'Reencoded'})
 
     rebulk.regex(*build_source_pattern('AHDTV'), value='Analogue HDTV')
     rebulk.regex(*build_source_pattern('UHD-?TV', suffix=rip_optional_suffix), conflict_solver=demote_other,

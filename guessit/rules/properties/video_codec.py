@@ -20,30 +20,32 @@ def video_codec():
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name="video_codec", tags=['source-suffix', 'streaming_service.suffix'])
 
-    rebulk.regex(r"Rv\d{2}", value="Real")
-    rebulk.regex("Mpeg2", value="Mpeg2")
+    rebulk.regex(r'Rv\d{2}', value='RealVideo')
+    rebulk.regex('Mpeg2', value='MPEG-2')
     rebulk.regex("DVDivX", "DivX", value="DivX")
-    rebulk.regex("XviD", value="XviD")
-    rebulk.regex("[hx]-?264(?:-?AVC(HD)?)?", "MPEG-?4(?:-?AVC(HD)?)", "AVC(?:HD)?", value="h264")
-    rebulk.regex("[hx]-?265(?:-?HEVC)?", "HEVC", value="h265")
-    rebulk.regex('(?P<video_codec>hevc)(?P<video_profile>10)', value={'video_codec': 'h265', 'video_profile': '10bit'},
+    rebulk.regex('XviD', value='Xvid')
+    rebulk.regex('[hx]-?264(?:-?AVC(?:HD)?)?', 'MPEG-?4(?:-?AVC(?:HD)?)', 'AVC(?:HD)?', value='H.264')
+    rebulk.regex('[hx]-?265(?:-?HEVC)?', 'HEVC', value='H.265')
+    rebulk.regex('(?P<video_codec>hevc)(?P<color_depth>10)', value={'video_codec': 'H.265', 'color_depth': '10-bit'},
                  tags=['video-codec-suffix'], children=True)
 
     # http://blog.mediacoderhq.com/h264-profiles-and-levels/
     # http://fr.wikipedia.org/wiki/H.264
     rebulk.defaults(name="video_profile", validator=seps_surround)
 
-    rebulk.regex('10.?bits?', 'Hi10P?', 'YUV420P10', value='10bit')
-    rebulk.regex('8.?bits?', value='8bit')
-
-    rebulk.string('BP', value='BP', tags='video_profile.rule')
-    rebulk.string('XP', 'EP', value='XP', tags='video_profile.rule')
-    rebulk.string('MP', value='MP', tags='video_profile.rule')
-    rebulk.string('HP', 'HiP', value='HP', tags='video_profile.rule')
-    rebulk.regex('Hi422P', value='Hi422P', tags='video_profile.rule')
-    rebulk.regex('Hi444PP', value='Hi444PP', tags='video_profile.rule')
+    rebulk.string('BP', value='Baseline', tags='video_profile.rule')
+    rebulk.string('XP', 'EP', value='Extended', tags='video_profile.rule')
+    rebulk.string('MP', value='Main', tags='video_profile.rule')
+    rebulk.string('HP', 'HiP', value='High', tags='video_profile.rule')
+    rebulk.regex('Hi422P', value='High 4:2:2')
+    rebulk.regex('Hi444PP', value='High 4:4:4 Predictive')
+    rebulk.regex('Hi10P?', value='High 10')  # no profile validation is required
 
     rebulk.string('DXVA', value='DXVA', name='video_api')
+
+    rebulk.defaults(name='color_depth', validator=seps_surround)
+    rebulk.regex('10.?bits?', 'YUV420P10', 'Hi10P?', value='10-bit')
+    rebulk.regex('8.?bits?', value='8-bit')
 
     rebulk.rules(ValidateVideoCodec, VideoProfileRule)
 
