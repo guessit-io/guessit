@@ -84,6 +84,7 @@ History
 - Added `Dolby Vision` as new `other` possible value.
 - Added `BT.2020` as new `other` possible value.
 - Added `12-bit` as new `color_depth` possible value.
+- Added `IMAX` as new `edition` possible value.
 
 2.1.4 (2017-06-01)
 ------------------

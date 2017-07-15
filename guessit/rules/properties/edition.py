@@ -38,6 +38,6 @@ def edition():
     for value in ('Remastered', 'Uncensored', 'Uncut', 'Unrated'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
     rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
-
+    rebulk.regex('imax', 'imax-edition', value='IMAX')
 
     return rebulk

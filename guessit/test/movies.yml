@@ -1279,3 +1279,28 @@
   release_group: Hn1Dr2
   container: mkv
   type: movie
+
+? Interstelar.2014.IMAX.RUS.BDRip.x264.-HELLYWOOD.mkv
+: title: Interstelar
+  year: 2014
+  edition: IMAX
+  language: ru
+  source: Blu-ray
+  other: Rip
+  video_codec: H.264
+  release_group: HELLYWOOD
+  container: mkv
+  type: movie
+
+? The.Dark.Knight.IMAX.EDITION.HQ.BluRay.1080p.x264.AC3.Hindi.Eng.ETRG
+: title: The Dark Knight
+  edition: IMAX
+  other: High Quality
+  source: Blu-ray
+  screen_size: 1080p
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  language: [hindi, english]
+  release_group: ETRG
+  type: movie
+
