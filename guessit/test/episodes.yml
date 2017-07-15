@@ -4040,3 +4040,16 @@
   release_group: TBS
   container: mkv
   type: episode
+
+? Planet.Earth.II.S01.2160p.UHD.BluRay.HDR.DTS-HD.MA5.1.x265-ULTRAHDCLUB
+: title: Planet Earth II
+  season: 1
+  screen_size: 2160p
+  source: Ultra HD Blu-ray
+#  other: High Dynamic Range
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
+  audio_channels: '5.1'
+  video_codec: H.265
+  release_group: ULTRAHDCLUB
+  type: episode
