@@ -1371,3 +1371,22 @@
   audio_channels: '5.1'
   release_group: LTT
   type: movie
+
+? Ghost.in.the.Shell.1995.1080p.Bluray.DTSES.x264-SHiTSoNy
+: title: Ghost in the Shell
+  year: 1995
+  screen_size: 1080p
+  source: Blu-ray
+  audio_codec: DTS
+  audio_profile: Extended Surround
+
+? The.Boss.Baby.2017.BluRay.1080p.DTS-ES.x264-PRoDJi
+: title: The Boss Baby
+  year: 2017
+  source: Blu-ray
+  screen_size: 1080p
+  audio_codec: DTS
+  audio_profile: Extended Surround
+  video_codec: H.264
+  release_group: PRoDJi
+  type: movie

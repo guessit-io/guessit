@@ -104,3 +104,9 @@
 ? -HR
 : audio_codec: DTS-HD
   audio_profile: High Resolution Audio
+
+? DTSES
+? DTS-ES
+? -ES
+: audio_codec: DTS
+  audio_profile: Extended Surround

@@ -90,6 +90,7 @@ History
 - Added `Fan` as new `edition` possible value.
 - Added `High Resolution Audio` as new `audio_profile` possible value.
 - Added `Ultimate` as new `edition` possible value.
+- Added `Extended Surround` as new `audio_profile` possible value.
 
 2.1.4 (2017-06-01)
 ------------------
