@@ -85,7 +85,7 @@ def source():
     # WEBCap is a synonym to WEBRip, mostly used by non english
     rebulk.regex(*build_source_pattern('WEB-?(?P<another>Cap)', suffix=rip_optional_suffix),
                  value={'source': 'Web', 'other': 'Rip', 'another': 'Rip'})
-    rebulk.regex(*build_source_pattern('WEB-?DL', 'WEB-?HD', 'WEB', 'DL-?WEB', 'DL(?=-?Mux)'),
+    rebulk.regex(*build_source_pattern('WEB-?DL', 'WEB-?U?HD', 'WEB', 'DL-?WEB', 'DL(?=-?Mux)'),
                  value={'source': 'Web'})
 
     rebulk.regex(*build_source_pattern('HD-?DVD', suffix=rip_optional_suffix),

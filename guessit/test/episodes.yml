@@ -4229,3 +4229,27 @@
   language: uk
   release_group: hurtom
   type: episode
+
+? Goof.Troop.1x24.Waste.Makes.Haste.720p.HDTV.x264.CZ-SDTV
+: title: Goof Troop
+  season: 1
+  episode: 24
+  episode_title: Waste Makes Haste
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  language: cs
+  release_group: SDTV
+  type: episode
+
+? Marvels.Daredevil.S02E11.German.DL.DUBBED.2160p.WebUHD.x264-UHDTV
+: title: Marvels Daredevil
+  season: 2
+  episode: 11
+  language: [de, mul]
+  screen_size: 2160p
+  source: Web
+  video_codec: H.264
+  release_group: UHDTV
+  type: episode
+

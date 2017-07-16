@@ -30,7 +30,7 @@ def release_group():
                       conflict_solver=lambda match, other: other,
                       disabled=lambda context: not context.get('expected_group'))
 
-    return rebulk.rules(ConflictingSceneReleaseGroup, SceneReleaseGroup, AnimeReleaseGroup)
+    return rebulk.rules(ConflictingReleaseGroup, SceneReleaseGroup, AnimeReleaseGroup)
 
 
 forbidden_groupnames = ['rip', 'by', 'for', 'par', 'pour', 'bonus']
@@ -64,13 +64,14 @@ def clean_groupname(string):
 _scene_previous_names = ('video_codec', 'source', 'video_api', 'audio_codec', 'audio_profile', 'video_profile',
                          'audio_channels', 'screen_size', 'other', 'container', 'language', 'subtitle_language',
                          'subtitle_language.suffix', 'subtitle_language.prefix', 'language.suffix')
+_conflicting_names = _scene_previous_names + ('episode_details', )
 
 _scene_previous_tags = ('release-group-prefix', )
 
 
-class ConflictingSceneReleaseGroup(Rule):
+class ConflictingReleaseGroup(Rule):
     """
-    Remove conflicting matches when a scene release group pattern is detected.
+    Remove conflicting matches when a standard release group pattern is detected.
     Release group is the last part of the release name separated by a dash.
     All other matches are separated by spaces or dots.
 
@@ -86,7 +87,7 @@ class ConflictingSceneReleaseGroup(Rule):
         current = match
         while current:
             previous = matches.range(filepart_start, current.start, index=-1, predicate=lambda m: (
-                not m.private and m.name != match.name and m.name in _scene_previous_names))
+                not m.private and m.name in _conflicting_names))
             if not previous:
                 break
 
@@ -109,6 +110,9 @@ class ConflictingSceneReleaseGroup(Rule):
                                                   predicate=lambda m: m.value.strip(seps)):
                     continue
 
+            if matches.markers.at_match(candidate, predicate=lambda m: m.name == 'group'):
+                continue
+
             count = 0
             for previous, separator in self._reverse_iterator(matches, candidate, filepart.start):
                 if not previous:
@@ -126,8 +130,8 @@ class ConflictingSceneReleaseGroup(Rule):
 
                         count += 1
 
-                if count > 3:
-                    ret.append(candidate)
+                if count > 2:
+                    ret.extend(matches.at_match(candidate))
                     break
 
         return ret
