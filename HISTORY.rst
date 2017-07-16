@@ -89,7 +89,6 @@ History
 - Added `Ultimate` as new `edition` possible value.
 - Added `Fan` as new `edition` possible value.
 - Added `High Resolution Audio` as new `audio_profile` possible value.
-- Added `Ultimate` as new `edition` possible value.
 - Added `Extended Surround` as new `audio_profile` possible value.
 - Added `EX` as new `audio_profile` possible value
 - Added `Opus` as new `audio_codec` possible value
