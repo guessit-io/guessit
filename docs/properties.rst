@@ -266,8 +266,8 @@ Other properties
   Edition of the movie.
 
   - ``Alternative Cut``, ``Collector``, ``Criterion``, ``Deluxe``, ``Director's Cut``, ``Director's Definitive Cut``,
-    ``Extended``, ``Festival``, ``Remastered``, ``Special``, ``Limited``, ``Theatrical``, ``Uncensored``, ``Uncut``,
-    ``Unrated``
+    ``Extended``, ``Fan``, ``Festival``, ``IMAX``, ``Remastered``, ``Special``, ``Limited``, ``Theatrical``,
+    ``Ultimate``, ``Uncensored``, ``Uncut``, ``Unrated``
 
 
 - **film**
@@ -295,6 +295,6 @@ Other properties
     ``Line Dubbed``, ``Line Audio``, ``Mic Dubbed``, ``Micro HD``, ``Mux``, ``NTSC``, ``Open Matte``,
     ``Original Aspect Ratio``, ``Original Video``, ``PAL``, ``Preair``, ``Proper``, ``PS Vita``, ``Read NFO``,
     ``Region 5``, ``Region C``, ``Reencoded``, ``Remux``, ``Retail``, ``Rip``, ``Screener``, ``SECAM``,
-    ``Standard Dynamic Range``, ``Straight to Video``, ``Sync Fixed``, ``Trailer``, ``Ultra HD``, ``West Coast Feed``,
-    ``Widescreen``, ``XXX``
+    ``Standard Dynamic Range``, ``Straight to Video``, ``Sync Fixed``, ``Trailer``, ``Ultra HD``, ``Upscaled``,
+    ``West Coast Feed``, ``Widescreen``, ``XXX``
 

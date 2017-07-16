@@ -1279,3 +1279,71 @@
   release_group: Hn1Dr2
   container: mkv
   type: movie
+
+? Interstelar.2014.IMAX.RUS.BDRip.x264.-HELLYWOOD.mkv
+: title: Interstelar
+  year: 2014
+  edition: IMAX
+  language: ru
+  source: Blu-ray
+  other: Rip
+  video_codec: H.264
+  release_group: HELLYWOOD
+  container: mkv
+  type: movie
+
+? The.Dark.Knight.IMAX.EDITION.HQ.BluRay.1080p.x264.AC3.Hindi.Eng.ETRG
+: title: The Dark Knight
+  edition: IMAX
+  other: High Quality
+  source: Blu-ray
+  screen_size: 1080p
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  language: [hindi, english]
+  release_group: ETRG
+  type: movie
+
+? The.Martian.2015.4K.UHD.UPSCALED-ETRG
+: title: The Martian
+  year: 2015
+  screen_size: 2160p
+  other: [Ultra HD, Upscaled]
+  release_group: ETRG
+  type: movie
+
+? Delibal 2015 720p Upscale DVDRip x264 DD5.1 AC3
+: title: Delibal
+  year: 2015
+  screen_size: 720p
+  other: [Upscaled, Rip]
+  source: DVD
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  type: movie
+
+? Casablanca [Ultimate Collector's Edition].1942.BRRip.XviD-VLiS
+: title: Casablanca
+  edition: [Ultimate, Collector]
+  year: 1942
+  source: Blu-ray
+  other: [Reencoded, Rip]
+  video_codec: Xvid
+  release_group: VLiS
+  type: movie
+
+? Batman V Superman Dawn of Justice 2016 Extended Cut Ultimate Edition HDRip x264 AC3-DaDDy
+: title: Batman V Superman Dawn of Justice
+  year: 2016
+  edition: [Extended, Ultimate]
+  other: [HD, Rip]
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  release_group: DaDDy
+  type: movie
+
+? Stargate SG1 Ultimate Fan Collection
+: title: Stargate SG1
+  edition: [Ultimate, Fan]
+  type: movie
