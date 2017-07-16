@@ -189,7 +189,8 @@ Audio properties
 
   Codec used for audio.
 
-  - ``AAC``, ``Dolby Atmos``, ``Dolby Digital``, ``Dolby Digital Plus``, ``Dolby TrueHD``, ``DTS``,  ``FLAC``, ``MP3``
+  - ``AAC``, ``Dolby Atmos``, ``Dolby Digital``, ``Dolby Digital Plus``, ``Dolby TrueHD``, ``DTS``,  ``FLAC``, ``MP3``,
+    ``Opus``
 
 
 - **audio_profile**

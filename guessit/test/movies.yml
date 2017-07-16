@@ -1274,7 +1274,7 @@
   screen_size: 1080p
   color_depth: 12-bit
   video_codec: H.265
-  # audio_codec: Opus
+  audio_codec: Opus
   audio_channels: '5.1'
   release_group: Hn1Dr2
   container: mkv
@@ -1412,4 +1412,17 @@
   audio_profile: EX
   video_codec: H.264
   release_group: BluPanther
+  type: movie
+
+? How To Steal A Dog.2014.BluRay.1080p.12bit.HEVC.OPUS 5.1-Hn1Dr2.mkv
+: title: How To Steal A Dog
+  year: 2014
+  source: Blu-ray
+  screen_size: 1080p
+  color_depth: 12-bit
+  video_codec: H.265
+  audio_codec: Opus
+  audio_channels: '5.1'
+  release_group: Hn1Dr2
+  container: mkv
   type: movie

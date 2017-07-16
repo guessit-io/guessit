@@ -47,6 +47,7 @@ def audio_codec():
     rebulk.string("DTS", value="DTS")
     rebulk.regex('DTS-?HD', value='DTS-HD')
     rebulk.regex('True-?HD', value='Dolby TrueHD')
+    rebulk.string('Opus', value='Opus')
 
     rebulk.defaults(name='audio_profile')
     rebulk.string('MA', value='Master Audio', tags='DTS-HD')

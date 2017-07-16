@@ -116,3 +116,6 @@
 ? -EX
 : audio_codec: Dolby Digital
   audio_profile: EX
+
+? OPUS
+: audio_codec: Opus
