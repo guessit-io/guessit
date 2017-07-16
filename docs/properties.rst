@@ -196,7 +196,7 @@ Audio properties
 
   The codec profile used for audio.
 
-  - ``Extended Surround``, ``High Efficiency``, ``High Quality``, ``High Resolution Audio``, ``Low Complexity``,
+  - ``Extended Surround``, ``EX``, ``High Efficiency``, ``High Quality``, ``High Resolution Audio``, ``Low Complexity``,
     ``Master Audio``
 
 

@@ -1390,3 +1390,26 @@
   video_codec: H.264
   release_group: PRoDJi
   type: movie
+
+? Title.2000.720p.BluRay.DDEX.x264-HDClub.mkv
+: title: Title
+  year: 2000
+  screen_size: 720p
+  source: Blu-ray
+  audio_codec: Dolby Digital
+  audio_profile: EX
+  video_codec: H.264
+  release_group: HDClub
+  container: mkv
+  type: movie
+
+? Jack Reacher Never Go Back 2016 720p Bluray DD-EX x264-BluPanther
+: title: Jack Reacher Never Go Back
+  year: 2016
+  screen_size: 720p
+  source: Blu-ray
+  audio_codec: Dolby Digital
+  audio_profile: EX
+  video_codec: H.264
+  release_group: BluPanther
+  type: movie

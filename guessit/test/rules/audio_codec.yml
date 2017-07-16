@@ -110,3 +110,9 @@
 ? -ES
 : audio_codec: DTS
   audio_profile: Extended Surround
+
+? DD-EX
+? DDEX
+? -EX
+: audio_codec: Dolby Digital
+  audio_profile: EX

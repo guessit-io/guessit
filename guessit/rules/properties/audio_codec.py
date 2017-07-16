@@ -55,6 +55,7 @@ def audio_codec():
     rebulk.string('HE', value='High Efficiency', tags='AAC')
     rebulk.string('LC', value='Low Complexity', tags='AAC')
     rebulk.string('HQ', value='High Quality', tags='Dolby Digital')
+    rebulk.string('EX', value='EX', tags='Dolby Digital')
 
     rebulk.defaults(name="audio_channels")
     rebulk.regex(r'(7[\W_][01](?:ch)?)(?:[^\d]|$)', value='7.1', children=True)
