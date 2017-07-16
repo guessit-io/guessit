@@ -39,7 +39,9 @@ def edition():
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
     rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
     rebulk.regex('imax', 'imax-edition', value='IMAX')
+    rebulk.regex('fan-edit(?:ion)?', 'fan-collection', value='Fan')
     rebulk.regex('ultimate-edition', value='Ultimate')
     rebulk.regex("ultimate-collector'?s?-edition", value=['Ultimate', 'Collector'])
+    rebulk.regex('ultimate-fan-edit(?:ion)?', 'ultimate-fan-collection', value=['Ultimate', 'Fan'])
 
     return rebulk

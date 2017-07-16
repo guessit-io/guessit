@@ -266,8 +266,8 @@ Other properties
   Edition of the movie.
 
   - ``Alternative Cut``, ``Collector``, ``Criterion``, ``Deluxe``, ``Director's Cut``, ``Director's Definitive Cut``,
-    ``Extended``, ``Festival``, ``IMAX``, ``Remastered``, ``Special``, ``Limited``, ``Theatrical``, ``Ultimate``,
-    ``Uncensored``, ``Uncut``, ``Unrated``
+    ``Extended``, ``Fan``, ``Festival``, ``IMAX``, ``Remastered``, ``Special``, ``Limited``, ``Theatrical``,
+    ``Ultimate``, ``Uncensored``, ``Uncut``, ``Unrated``
 
 
 - **film**

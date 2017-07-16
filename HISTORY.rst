@@ -87,6 +87,7 @@ History
 - Added `IMAX` as new `edition` possible value.
 - Added `Upscaled` as new `other` possible value.
 - Added `Ultimate` as new `edition` possible value.
+- Added `Fan` as new `edition` possible value.
 
 2.1.4 (2017-06-01)
 ------------------

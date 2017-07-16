@@ -38,16 +38,26 @@
 ? IMAX Edition
 : edition: IMAX
 
-? ULTIMATE EDITION
-? -ULTIMATE
+? ultimate edition
+? -ultimate
 : edition: Ultimate
 
-? ULTIMATE COLLECTOR EDITION
-? ULTIMATE COLLECTOR'S EDITION
-? ULTIMATE COLLECTORS EDITION
-? -COLLECTORS EDITION
-? -ULTIMATE EDITION
+? ultimate collector edition
+? ultimate collector's edition
+? ultimate collectors edition
+? -collectors edition
+? -ultimate edition
 : edition: [Ultimate, Collector]
 
-? ULTIMATE COLLECTORS EDITION DC
+? ultimate collectors edition dc
 : edition: [Ultimate, Collector, Director's Cut]
+
+? fan edit
+? fan edition
+? fan collection
+: edition: Fan
+
+? ultimate fan edit
+? ultimate fan edition
+? ultimate fan collection
+: edition: [Ultimate, Fan]
