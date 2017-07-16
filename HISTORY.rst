@@ -93,7 +93,8 @@ History
 - Added `EX` as new `audio_profile` possible value
 - Added `Opus` as new `audio_codec` possible value
 - Added `aspect_ratio` as new property. Also used to validate if a screen_size is a standard resolution.
-
+- Fixed unwanted language and country detection for exotic languages.
+- Added default and configurable list of allowed languages and countries
 
 2.1.4 (2017-06-01)
 ------------------
