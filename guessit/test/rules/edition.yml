@@ -37,3 +37,17 @@
 ? IMAX
 ? IMAX Edition
 : edition: IMAX
+
+? ULTIMATE EDITION
+? -ULTIMATE
+: edition: Ultimate
+
+? ULTIMATE COLLECTOR EDITION
+? ULTIMATE COLLECTOR'S EDITION
+? ULTIMATE COLLECTORS EDITION
+? -COLLECTORS EDITION
+? -ULTIMATE EDITION
+: edition: [Ultimate, Collector]
+
+? ULTIMATE COLLECTORS EDITION DC
+: edition: [Ultimate, Collector, Director's Cut]

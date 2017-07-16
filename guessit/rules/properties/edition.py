@@ -19,7 +19,7 @@ def edition():
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name='edition', validator=seps_surround)
 
-    rebulk.regex('collector', 'collector-edition', 'edition-collector', value='Collector')
+    rebulk.regex('collector', "collector'?s?-edition", 'edition-collector', value='Collector')
     rebulk.regex('special-edition', 'edition-special', value='Special',
                  conflict_solver=lambda match, other: other
                  if other.name == 'episode_details' and other.value == 'Special'
@@ -39,5 +39,7 @@ def edition():
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
     rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
     rebulk.regex('imax', 'imax-edition', value='IMAX')
+    rebulk.regex('ultimate-edition', value='Ultimate')
+    rebulk.regex("ultimate-collector'?s?-edition", value=['Ultimate', 'Collector'])
 
     return rebulk

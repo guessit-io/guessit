@@ -1323,3 +1323,22 @@
   audio_channels: '5.1'
   type: movie
 
+? Casablanca [Ultimate Collector's Edition].1942.BRRip.XviD-VLiS
+: title: Casablanca
+  edition: [Ultimate, Collector]
+  year: 1942
+  source: Blu-ray
+  other: [Reencoded, Rip]
+  video_codec: Xvid
+  release_group: VLiS
+  type: movie
+
+? Batman V Superman Dawn of Justice 2016 Extended Cut Ultimate Edition HDRip x264 AC3-DaDDy
+: title: Batman V Superman Dawn of Justice
+  year: 2016
+  edition: [Extended, Ultimate]
+  other: [HD, Rip]
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  release_group: DaDDy
+  type: movie
