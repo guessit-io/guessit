@@ -95,6 +95,7 @@ History
 - Added `aspect_ratio` as new property. Also used to validate if a screen_size is a standard resolution.
 - Fixed unwanted language and country detection for exotic languages.
 - Added default and configurable list of allowed languages and countries
+- Added `VC-1` as new `video_codec` possible value
 
 2.1.4 (2017-06-01)
 ------------------

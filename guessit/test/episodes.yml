@@ -4253,3 +4253,16 @@
   release_group: UHDTV
   type: episode
 
+? BBC The Story of China 1 of 6 - Ancestors CC HDTV x264 AC3 2.0 720p mkv
+: title: BBC The Story of China
+  episode: 1
+  episode_count: 6
+  episode_title: Ancestors
+  source: HDTV
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  audio_channels: '2.0'
+  screen_size: 720p
+  container: mkv
+  type: episode
+

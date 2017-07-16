@@ -24,6 +24,7 @@ def video_codec():
     rebulk.regex('Mpeg2', value='MPEG-2')
     rebulk.regex("DVDivX", "DivX", value="DivX")
     rebulk.regex('XviD', value='Xvid')
+    rebulk.regex('VC-?1', value='VC-1')
     rebulk.regex('[hx]-?264(?:-?AVC(?:HD)?)?', 'MPEG-?4(?:-?AVC(?:HD)?)', 'AVC(?:HD)?', value='H.264')
     rebulk.regex('[hx]-?265(?:-?HEVC)?', 'HEVC', value='H.265')
     rebulk.regex('(?P<video_codec>hevc)(?P<color_depth>10)', value={'video_codec': 'H.265', 'color_depth': '10-bit'},
