@@ -1191,6 +1191,7 @@
   source: Ultra HD Blu-ray
   video_codec: H.265
   color_depth: 10-bit
+  other: Standard Dynamic Range
   audio_codec: DTS-HD
   audio_channels: '7.1'
   release_group: Zeus
@@ -1203,6 +1204,7 @@
   screen_size: 2160p
   source: Ultra HD Blu-ray
   video_codec: H.265
+  other: HDR10
   audio_codec: Dolby Atmos
   audio_channels: '7.1'
   release_group: DDR
@@ -1213,3 +1215,67 @@
   year: 2012
   screen_size: 2160p
   source: Ultra HD Blu-ray
+  other: [HDR10, BT.2020]
+  subtitle_language: und
+  release_group: DDR
+
+? Captain.America.Civil.War.HDR.1080p.HEVC.10bit.BT.2020.DTS-HD.MA.7.1-VISIONPLUSHDR
+: title: Captain America Civil War
+  other: [HDR10, BT.2020]
+  screen_size: 1080p
+  video_codec: H.265
+  color_depth: 10-bit
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
+  audio_channels: '7.1'
+  release_group: VISIONPLUSHDR
+  type: movie
+
+? Deadpool.2016.4K.2160p.UHD.HQ.8bit.BluRay.8CH.x265.HEVC-MZABI.mkv
+: title: Deadpool
+  year: 2016
+  screen_size: 2160p
+  source: Ultra HD Blu-ray
+  other: High Quality
+  color_depth: 8-bit
+  audio_channels: '7.1'
+  video_codec: H.265
+  release_group: MZABI
+  type: movie
+
+? Fantastic.Beasts.and.Where.to.Find.Them.2016.2160p.4K.UHD.10bit.HDR.BluRay.7.1.x265.HEVC-MZABI.mkv
+: title: Fantastic Beasts and Where to Find Them
+  year: 2016
+  screen_size: 2160p
+  source: Ultra HD Blu-ray
+  color_depth: 10-bit
+  other: HDR10
+  audio_channels: '7.1'
+  video_codec: H.265
+  release_group: MZABI
+  container: mkv
+  type: movie
+
+? The.Arrival.4K.HDR.HEVC.10bit.BT2020.DTS.HD-MA-MadVR.HDR10.Dolby.Vision-VISIONPLUSHDR1000
+: title: The Arrival
+  screen_size: 2160p
+  other: [HDR10, BT.2020, Dolby Vision]
+  video_codec: H.265
+  color_depth: 10-bit
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
+  release_group: VISIONPLUSHDR1000
+  type: movie
+
+? How To Steal A Dog.2014.BluRay.1080p.12bit.HEVC.OPUS 5.1-Hn1Dr2.mkv
+: title: How To Steal A Dog
+  year: 2014
+  source: Blu-ray
+  screen_size: 1080p
+  color_depth: 12-bit
+  video_codec: H.265
+  # audio_codec: Opus
+  audio_channels: '5.1'
+  release_group: Hn1Dr2
+  container: mkv
+  type: movie

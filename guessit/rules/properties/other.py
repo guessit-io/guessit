@@ -108,6 +108,11 @@ def other():
                   tags=['other.validate.mux', 'video-codec-prefix', 'source-suffix'])
     rebulk.string('HC', 'vost', value='Hardcoded Subtitles')
 
+    rebulk.string('SDR', value='Standard Dynamic Range', tags='uhdbluray-neighbor')
+    rebulk.regex('HDR(?:10)?', value='HDR10', tags='uhdbluray-neighbor')
+    rebulk.regex('Dolby-?Vision', value='Dolby Vision', tags='uhdbluray-neighbor')
+    rebulk.regex('BT-?2020', value='BT.2020', tags='uhdbluray-neighbor')
+
     rebulk.rules(RenameAnotherToOther, ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore,
                  ValidateScreenerRule, ValidateMuxRule, ValidateHardcodedSubs, ValidateStreamingServiceNeighbor,
                  ProperCountRule)

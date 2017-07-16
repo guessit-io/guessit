@@ -79,7 +79,11 @@ History
 - `other` property `ReEncoded` is now `Reencoded`
 - `other` property `WideScreen` is now `Widescreen`
 - Added `Ultra HD Blu-ray` as new `source` possible value.
-
+- Added `Standard Dynamic Range` as new `other` possible value.
+- Added `HDR10` as new `other` possible value.
+- Added `Dolby Vision` as new `other` possible value.
+- Added `BT.2020` as new `other` possible value.
+- Added `12-bit` as new `color_depth` possible value.
 
 2.1.4 (2017-06-01)
 ------------------

@@ -44,6 +44,7 @@ def video_codec():
     rebulk.string('DXVA', value='DXVA', name='video_api')
 
     rebulk.defaults(name='color_depth', validator=seps_surround)
+    rebulk.regex('12.?bits?', value='12-bit')
     rebulk.regex('10.?bits?', 'YUV420P10', 'Hi10P?', value='10-bit')
     rebulk.regex('8.?bits?', value='8-bit')
 
