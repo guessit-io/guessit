@@ -3,11 +3,14 @@
 """
 source property
 """
+import copy
+
 from rebulk.remodule import re
 
-from rebulk import Rebulk, RemoveMatch, Rule
+from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 
-from ..common import dash
+from .audio_codec import HqConflictRule
+from ..common import dash, seps
 from ..common.validators import seps_before, seps_after
 
 
@@ -95,6 +98,8 @@ def source():
     rebulk.regex(*build_source_pattern('(?P<another>BR)', suffix=rip_suffix),  # BRRip
                  value={'source': 'Blu-ray', 'other': 'Rip', 'another': 'Reencoded'})
 
+    rebulk.regex(*build_source_pattern('Ultra-?Blu-?ray', 'Blu-?ray-?Ultra'), value='Ultra HD Blu-ray')
+
     rebulk.regex(*build_source_pattern('AHDTV'), value='Analogue HDTV')
     rebulk.regex(*build_source_pattern('UHD-?TV', suffix=rip_optional_suffix), conflict_solver=demote_other,
                  value={'source': 'Ultra HDTV', 'other': 'Rip'})
@@ -106,9 +111,59 @@ def source():
     rebulk.regex(*build_source_pattern('DSR?', 'SAT', suffix=rip_suffix),
                  value={'source': 'Satellite', 'other': 'Rip'})
 
-    rebulk.rules(ValidateSource)
+    rebulk.rules(ValidateSource, UltraHdBlurayRule)
 
     return rebulk
+
+
+class UltraHdBlurayRule(Rule):
+    """
+    Replace other:Ultra HD and source:Blu-ray with source:Ultra HD Blu-ray
+    """
+    dependency = HqConflictRule
+    consequence = [RemoveMatch, AppendMatch]
+
+    @classmethod
+    def find_ultrahd(cls, matches, start, end, index):
+        """Find Ultra HD match."""
+        return matches.range(start, end, index=index, predicate=(
+            lambda m: not m.private and m.name == 'other' and m.value == 'Ultra HD'
+        ))
+
+    @classmethod
+    def validate_range(cls, matches, start, end):
+        """Validate no holes or invalid matches exist in the specified range."""
+        return (
+            not matches.holes(start, end, predicate=lambda m: m.value.strip(seps)) and
+            not matches.range(start, end, predicate=(
+                lambda m: not m.private and (
+                    m.name not in ('screen_size', 'color_depth') and (
+                        m.name != 'other' or 'uhdbluray-neighbor' not in m.tags))))
+        )
+
+    def when(self, matches, context):
+        to_remove = []
+        to_append = []
+        for filepart in matches.markers.named('path'):
+            for match in matches.range(filepart.start, filepart.end, predicate=(
+                    lambda m: not m.private and m.name == 'source' and m.value == 'Blu-ray')):
+                other = self.find_ultrahd(matches, filepart.start, match.start, -1)
+                if not other or not self.validate_range(matches, other.end, match.start):
+                    other = self.find_ultrahd(matches, match.end, filepart.end, 0)
+                    if not other or not self.validate_range(matches, match.end, other.start):
+                        if not matches.range(filepart.start, filepart.end, predicate=(
+                                lambda m: m.name == 'screen_size' and m.value == '2160p')):
+                            continue
+
+                if other:
+                    other.private = True
+
+                new_source = copy.copy(match)
+                new_source.value = 'Ultra HD Blu-ray'
+                to_remove.append(match)
+                to_append.append(new_source)
+
+        return to_remove, to_append
 
 
 class ValidateSource(Rule):

@@ -281,3 +281,33 @@
 ? -UHDTV
 : source: Ultra HDTV
   other: Rip
+
+? UHD Bluray
+? UHD 2160p Bluray
+? UHD 8bit Bluray
+? UHD HQ 8bit Bluray
+? Ultra Bluray
+? Ultra HD Bluray
+? Bluray ULTRA
+? Bluray Ultra HD
+? Bluray UHD
+? 4K Bluray
+? 2160p Bluray
+? -HD Bluray
+? -AMERICAN ULTRA (2015) 1080p Bluray
+? -American.Ultra.2015.BRRip
+? -BRRip XviD AC3-ULTRAS
+? -UHD Proper Bluray
+: source: Ultra HD Blu-ray
+
+? UHD.BRRip
+? UHD.2160p.BRRip
+? BRRip.2160p.UHD
+? BRRip.[4K-2160p-UHD]
+: source: Ultra HD Blu-ray
+  other: [Reencoded, Rip]
+
+? UHD.2160p.BDRip
+? BDRip.[4K-2160p-UHD]
+: source: Ultra HD Blu-ray
+  other: Rip

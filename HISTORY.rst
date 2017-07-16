@@ -4,7 +4,81 @@ History
 3.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Renamed `format` property to `source`.
+- `source` property `Cam` is now `Camera` or `HD Camera`
+- `source` property `Telesync` is now `Telesync` or `HD Telesync`
+- `source` property `PPV` is now `Pay-per-view`
+- `source` property `DVB` is now `Digital TV`
+- `source` property `VOD` is now `Video on Demand`
+- `source` property `WEBRip` is now `Web` with additional property `other`: `Rip`
+- `source` property `WEB-DL` is now `Web`
+- `source` property `AHDTV` is now `Analogue HDTV`
+- `source` property `UHDTV` is now `Ultra HDTV`
+- `source` property `HDTC` is now `HD Telecine`
+- `screen_size` property `360i` was added.
+- `screen_size` property `480i` was added.
+- `screen_size` property `576i` was added.
+- `screen_size` property `900i` was added.
+- `screen_size` property `4K` is now `2160p`
+- `screen_size` property `4320p` was added.
+- `video_codec` property `h264` is now `H.264`
+- `video_codec` property `h265` is now `H.265`
+- `video_codec` property `Mpeg2` is now `MPEG-2`
+- `video_codec` property `Real` is now `RealVideo`
+- `video_codec` property `XviD` is now `Xvid`
+- `video_profile` property `BP` is now `Baseline`.
+- `video_profile` property `HP` is now `High`.
+- `video_profile` property `XP` is now `Extended`.
+- `video_profile` property `MP` is now `Main`.
+- `video_profile` property `Hi422P` is now `High 4:2:2`.
+- `video_profile` property `Hi444PP` is now `High 4:4:4 Predictive`.
+- `video_profile` property `High 10` was added.
+- `video_profile` property `8bit` was removed. `8bit` is detected as `color_depth`: `8-bit`
+- `video_profile` property `10bit` was removed. `10bit` is detected as `color_depth`: `10-bit`
+- `audio_codec` property `DTS-HD` was added.
+- `audio_codec` property `AC3` is now `Dolby Digital`
+- `audio_codec` property `EAC3` is now `Dolby Digital Plus`
+- `audio_codec` property `TrueHD` is now `Dolby TrueHD`
+- `audio_codec` property `DolbyAtmos` is now `Dolby Atmos`.
+- `audio_profile` property `HE` is now `High Efficiency`.
+- `audio_profile` property `LC` is now `Low Complexity`.
+- `audio_profile` property `HQ` is now `High Quality`.
+- `audio_profile` property `HDMA` is now `Master Audio`.
+- `edition` property `Collector Edition` is now `Collector`
+- `edition` property `Special Edition` is now `Special`
+- `edition` property `Criterion Edition` is now `Criterion`
+- `edition` property `Deluxe Edition` is now `Deluxe`
+- `edition` property `Limited Edition` is now `Limited`
+- `edition` property `Theatrical Edition` is now `Theatrical`
+- `edition` property `Director's Definitive Cut` was added.
+- `episode_details` property `Oav` and `Ova` were removed. They are now `other: Original Animated Video`
+- `episode_details` property `Omake` is now `Extras`
+- `episode_details` property `Final` was added.
+- `other` property `Rip` was added.
+- `other` property `DDC` was removed. `DDC` is now `edition`: `Director's Definitive Cut`
+- `other` property `CC` was removed. `CC` is now `edition`: `Criterion`
+- `other` property `FINAL` was removed. `FINAL` is now `episode_details`: `Final`
+- `other` property `Original Animated Video` was added.
+- `other` property `OV` is now `Original Video`
+- `other` property `AudioFix` is now `Audio Fixed`
+- `other` property `SyncFix` is now `Sync Fixed`
+- `other` property `DualAudio` is now `Dual Audio`
+- `other` property `Fansub` is now `Fan Subtitled`
+- `other` property `Fastsub` is now `Fast Subtitled`
+- `other` property `FullHD` is now `Full HD`
+- `other` property `UltraHD` is now `Ultra HD`
+- `other` property `mHD` and `HDLight` are now `Micro HD`
+- `other` property `HQ` is now `High Quality`
+- `other` property `HR` is now `High Resolution`
+- `other` property `LD` is now `Line Dubbed`
+- `other` property `MD` is now `Mic Dubbed`
+- `other` property `Low Definition` was added.
+- `other` property `LiNE` is now `Line Audio`
+- `other` property `R5` is now `Region 5`
+- `other` property `Region C` was added.
+- `other` property `ReEncoded` is now `Reencoded`
+- `other` property `WideScreen` is now `Widescreen`
+- Added `Ultra HD Blu-ray` as new `source` possible value.
 
 
 2.1.4 (2017-06-01)

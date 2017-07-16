@@ -71,7 +71,7 @@ def other():
     for value in ('Screener', 'Remux', '3D', 'PAL', 'SECAM', 'NTSC', 'XXX'):
         rebulk.string(value, value=value)
 
-    rebulk.string('HQ', value='High Quality')
+    rebulk.string('HQ', value='High Quality', tags='uhdbluray-neighbor')
     rebulk.string('HR', value='High Resolution')
     rebulk.string('LD', value='Line Dubbed')
     rebulk.string('MD', value='Mic Dubbed')

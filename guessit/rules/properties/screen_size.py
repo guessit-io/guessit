@@ -68,7 +68,7 @@ def screen_size():
 
 class ScreenSizeOnlyOne(Rule):
     """
-    Keep a single screen_size pet filepath part.
+    Keep a single screen_size per filepath part.
     """
     consequence = RemoveMatch
 
@@ -77,7 +77,7 @@ class ScreenSizeOnlyOne(Rule):
         for filepart in matches.markers.named('path'):
             screensize = list(reversed(matches.range(filepart.start, filepart.end,
                                                      lambda match: match.name == 'screen_size')))
-            if len(screensize) > 1:
+            if len(screensize) > 1 and len(set((match.value for match in screensize))) > 1:
                 to_remove.extend(screensize[1:])
 
         return to_remove
