@@ -50,6 +50,7 @@ def audio_codec():
 
     rebulk.defaults(name='audio_profile')
     rebulk.string('MA', value='Master Audio', tags='DTS-HD')
+    rebulk.string('HR', 'HRA', value='High Resolution Audio', tags='DTS-HD')
     rebulk.string('HE', value='High Efficiency', tags='AAC')
     rebulk.string('LC', value='Low Complexity', tags='AAC')
     rebulk.string('HQ', value='High Quality', tags='Dolby Digital')

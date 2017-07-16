@@ -196,7 +196,7 @@ Audio properties
 
   The codec profile used for audio.
 
-  - ``High Efficiency``, ``High Quality``, ``Low Complexity``, ``Master Audio``
+  - ``High Efficiency``, ``High Quality``, ``High Resolution Audio``, ``Low Complexity``, ``Master Audio``
 
 
 Localization properties

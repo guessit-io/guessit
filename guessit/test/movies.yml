@@ -1346,4 +1346,28 @@
 ? Stargate SG1 Ultimate Fan Collection
 : title: Stargate SG1
   edition: [Ultimate, Fan]
+
+? The.Jungle.Book.2016.MULTi.1080p.BluRay.x264.DTS-HD.MA.7.1.DTS-HD.HRA.5.1-LeRalou
+: title: The Jungle Book
+  year: 2016
+  language: mul
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  audio_codec: DTS-HD
+  audio_profile: [Master Audio, High Resolution Audio]
+  audio_channels: ['7.1', '5.1']
+  release_group: LeRalou
+  type: movie
+
+? Terminus.2015.BluRay.1080p.x264.DTS-HD.HRA.5.1-LTT
+: title: Terminus
+  year: 2015
+  source: Blu-ray
+  screen_size: 1080p
+  video_codec: H.264
+  audio_codec: DTS-HD
+  audio_profile: High Resolution Audio
+  audio_channels: '5.1'
+  release_group: LTT
   type: movie

@@ -95,3 +95,12 @@
 
 ? -51
 : audio_channels: '5.1'
+
+? DTS-HD.HRA
+? DTSHD.HRA
+? DTS-HD.HR
+? DTSHD.HR
+? -HRA
+? -HR
+: audio_codec: DTS-HD
+  audio_profile: High Resolution Audio
