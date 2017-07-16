@@ -1,5 +1,31 @@
 {
   "expected_title": [
     "OSS 117"
+  ],
+  "allowed_countries": [
+    "us",
+    "gb"
+  ],
+  "allowed_languages": [
+    "de",
+    "en",
+    "es",
+    "ca",
+    "fr",
+    "he",
+    "hi",
+    "hu",
+    "it",
+    "ja",
+    "nl",
+    "pl",
+    "pt",
+    "ro",
+    "ru",
+    "sv",
+    "te",
+    "uk",
+    "mul",
+    "und"
   ]
 }

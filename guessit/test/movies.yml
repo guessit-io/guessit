@@ -587,7 +587,8 @@
   video_codec: H.264
   source: Blu-ray
   screen_size: 720p
-  other: [Reencoded, Rip, High Resolution]
+  other: [Reencoded, Rip]
+  release_group: HR
 
 ? Dr.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
 : video_codec: Xvid
@@ -1436,3 +1437,23 @@
   release_group: BLOW
   container: mkv
   type: movie
+
+? After.the.Storm.2016.720p.YIFY
+: title: After the Storm
+  year: 2016
+  screen_size: 720p
+  release_group: YIFY
+  type: movie
+
+? Battle Royale 2000 DC (1080p Bluray x265 HEVC 10bit AAC 7.1 Japanese Tigole)
+: title: Battle Royale
+  year: 2000
+  edition: Director's Cut
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.265
+  color_depth: 10-bit
+  audio_codec: AAC
+  audio_channels: '7.1'
+  language: jp
+  release_group: Tigole

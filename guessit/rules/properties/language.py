@@ -35,8 +35,6 @@ def language():
     return rebulk
 
 
-COMMON_WORDS_STRICT = frozenset(['brazil'])
-
 UNDETERMINED = babelfish.Language('und')
 
 SYN = {('ell', None): ['gr', 'greek'],
@@ -175,10 +173,17 @@ def to_rebulk_match(language_match):
     end = word.end
     name = language_match.property_name
     if language_match.lang == UNDETERMINED:
-        return start, end, dict(name=name, value=word.value.lower(),
-                                formatter=babelfish.Language, tags=['weak-language'])
+        return start, end, {
+            'name': name,
+            'value': word.value.lower(),
+            'formatter': babelfish.Language,
+            'tags': ['weak-language']
+        }
 
-    return start, end, dict(name=name, value=language_match.lang)
+    return start, end, {
+        'name': name,
+        'value': language_match.lang
+    }
 
 
 class LanguageFinder(object):
@@ -187,9 +192,8 @@ class LanguageFinder(object):
     """
 
     def __init__(self, allowed_languages):
-        self.parsed = dict()
-        self.allowed_languages = allowed_languages
-        self.common_words = COMMON_WORDS_STRICT if allowed_languages else COMMON_WORDS
+        self.allowed_languages = set([l.lower() for l in allowed_languages or []])
+        self.common_words = COMMON_WORDS
 
     def find(self, string):
         """
@@ -250,11 +254,11 @@ class LanguageFinder(object):
         """
         tuples = [
             (language_word, language_word.next_word,
-             dict(subtitle_language=subtitle_prefixes, language=lang_prefixes),
+             {'subtitle_language': subtitle_prefixes, 'language': lang_prefixes},
              lambda string, prefix: string.startswith(prefix),
              lambda string, prefix: string[len(prefix):]),
             (language_word.next_word, language_word,
-             dict(subtitle_language=subtitle_suffixes, language=lang_suffixes),
+             {'subtitle_language': subtitle_suffixes, 'language': lang_suffixes},
              lambda string, suffix: string.endswith(suffix),
              lambda string, suffix: string[:len(string) - len(suffix)])
         ]
@@ -329,26 +333,20 @@ class LanguageFinder(object):
 
         Multi and Undetermined languages are also valid languages.
         """
-        if lang_word in self.parsed:
-            return self.parsed[lang_word]
-
         try:
             lang = babelfish.Language.fromguessit(lang_word)
             if self.allowed_languages:
                 if (hasattr(lang, 'name') and lang.name.lower() in self.allowed_languages) \
                         or (hasattr(lang, 'alpha2') and lang.alpha2.lower() in self.allowed_languages) \
                         or lang.alpha3.lower() in self.allowed_languages:
-                    self.parsed[lang_word] = lang
                     return lang
             # Keep language with alpha2 equivalent. Others are probably
             # uncommon languages.
             elif lang in ('mul', UNDETERMINED) or hasattr(lang, 'alpha2'):
-                self.parsed[lang_word] = lang
                 return lang
 
-            self.parsed[lang_word] = None
         except babelfish.Error:
-            self.parsed[lang_word] = None
+            pass
 
 
 def find_languages(string, context=None):
@@ -356,7 +354,8 @@ def find_languages(string, context=None):
 
     :return: list of tuple (property, Language, lang_word, word)
     """
-    return LanguageFinder(context.get('allowed_languages')).find(string)
+    allowed_languages = context.get('allowed_languages') if context else None
+    return LanguageFinder(allowed_languages).find(string)
 
 
 class SubtitlePrefixLanguageRule(Rule):

@@ -30,7 +30,7 @@ def release_group():
                       conflict_solver=lambda match, other: other,
                       disabled=lambda context: not context.get('expected_group'))
 
-    return rebulk.rules(SceneReleaseGroup, AnimeReleaseGroup)
+    return rebulk.rules(ConflictingSceneReleaseGroup, SceneReleaseGroup, AnimeReleaseGroup)
 
 
 forbidden_groupnames = ['rip', 'by', 'for', 'par', 'pour', 'bonus']
@@ -66,6 +66,71 @@ _scene_previous_names = ('video_codec', 'source', 'video_api', 'audio_codec', 'a
                          'subtitle_language.suffix', 'subtitle_language.prefix', 'language.suffix')
 
 _scene_previous_tags = ('release-group-prefix', )
+
+
+class ConflictingSceneReleaseGroup(Rule):
+    """
+    Remove conflicting matches when a scene release group pattern is detected.
+    Release group is the last part of the release name separated by a dash.
+    All other matches are separated by spaces or dots.
+
+    Given the following input:
+        Title.S01E02.1080p.WEB-DL.DD5.1.H.264-NL
+    Wrong language Dutch (NL) will be dropped
+    """
+
+    consequence = RemoveMatch
+
+    @classmethod
+    def _reverse_iterator(cls, matches, match, filepart_start):
+        current = match
+        while current:
+            previous = matches.range(filepart_start, current.start, index=-1, predicate=lambda m: (
+                not m.private and m.name != match.name and m.name in _scene_previous_names))
+            if not previous:
+                break
+
+            previous = previous.initiator
+            yield previous, current.input_string[previous.end:current.start]
+            current = previous
+
+    def when(self, matches, context):
+        ret = []
+        for filepart in marker_sorted(matches.markers.named('path'), matches):
+            candidate = matches.range(filepart.start, filepart.end, index=-1)
+            if not candidate or matches.holes(candidate.end, filepart.end,
+                                              predicate=lambda m: m.value.strip(seps)):
+                continue
+
+            if candidate.name == 'container':
+                container = candidate
+                candidate = matches.previous(container, index=0)
+                if not candidate or matches.holes(candidate.end, container.start,
+                                                  predicate=lambda m: m.value.strip(seps)):
+                    continue
+
+            count = 0
+            for previous, separator in self._reverse_iterator(matches, candidate, filepart.start):
+                if not previous:
+                    break
+
+                if count == 0:
+                    if separator != '-':
+                        break
+
+                    count += 1
+                else:
+                    if separator:
+                        if separator not in (' ', '.'):
+                            break
+
+                        count += 1
+
+                if count > 3:
+                    ret.append(candidate)
+                    break
+
+        return ret
 
 
 class SceneReleaseGroup(Rule):

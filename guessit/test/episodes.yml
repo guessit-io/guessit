@@ -3084,7 +3084,7 @@
   audio_codec: AAC
   audio_channels: '2.0'
   video_codec: H.264
-  language: nl
+  release_group: NL
   container: mkv
   type: episode
 
@@ -3253,8 +3253,7 @@
 
 # Italian releases
 ? Show Name 3x18 Un Tuffo Nel Passato ITA HDTVMux x264 NovaRip
-: options: --allowed-languages it
-  title: Show Name
+: title: Show Name
   season: 3
   episode: 18
   episode_title: Un Tuffo Nel Passato
@@ -3446,8 +3445,7 @@
 
 # Legendas
 ? Show.Name.S05.1080p.BluRay.x264-Belex.-.Dual.Audio.+.Legendas
-: options: --allowed-languages und
-  title: Show Name
+: title: Show Name
   season: 5
   screen_size: 1080p
   source: Blu-ray
@@ -3461,9 +3459,7 @@
 ? Show.Name.S01E03.HDTV.Subtitulado.Esp.SC
 ? Show.Name.S01E03.HDTV.Subtitulado.Espanol.SC
 ? Show.Name.S01E03.HDTV.Subtitulado.Español.SC
-# SC is a release group, not a language. To be addressed in #296
-: options: --allowed-languages spa --allowed-countries ESP
-  title: Show Name
+: title: Show Name
   season: 1
   episode: 3
   source: HDTV
@@ -4071,12 +4067,62 @@
   season: 2
   episode: 5
   episode_title: The Atomic Job
+  release_group: Coo7
+  type: episode
+
+? My.Name.Is.Earl.S01-S04.DVDRip.XviD-AR
+: title: My Name Is Earl
+  season: [1, 2, 3, 4]
+  source: DVD
+  other: Rip
+  video_codec: Xvid
+  release_group: AR
+  type: episode
+
+? American.Dad.S01E01.Pilot.DVDRip.x264-CS
+: title: American Dad
+  season: 1
+  episode: 1
+  episode_details: Pilot
+  source: DVD
+  other: Rip
+  video_codec: H.264
+  release_group: CS
+  type: episode
+
+? Black.Sails.S01E01.HDTV.XviD.HebSubs-DR
+: title: Black Sails
+  season: 1
+  episode: 1
+  source: HDTV
+  video_codec: Xvid
+  subtitle_language: he
+  release_group: DR
+  type: episode
+
+? The.West.Wing.S04E06.Game.On.720p.WEB-DL.AAC2.0.H.264-MC
+: title: The West Wing
+  season: 4
+  episode: 6
+  episode_title: Game On
+  screen_size: 720p
+  source: Web
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: MC
+  type: episode
+
+? 12.Monkeys.S02E05.1080p.WEB-DL.DD5.1.H.264-NA
+: title: 12 Monkeys
+  season: 2
+  episode: 5
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
   audio_channels: '5.1'
   video_codec: H.264
-  release_group: Coo7
+  release_group: NA
   type: episode
 
 ? Fear.the.Walking.Dead.S03E07.1080p.AMZN.WEBRip.DD5.1.x264-VLAD[rarbg]/Fear.the.Walking.Dead.S03E07.1080p.AMZN.WEB-DL.DD+5.1.H.264-VLAD.mkv
@@ -4090,4 +4136,96 @@
   video_codec: H.264
   release_group: VLAD
   container: mkv
+  type: episode
+
+? American.Crime.S01E02.1080p.WEB-DL.DD5.1.H.264-NL
+: title: American Crime
+  season: 1
+  episode: 2
+  screen_size: 1080p
+  source: Web
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: NL
+  type: episode
+
+? Better.Call.Saul.S02.720p.HDTV.x264-TL
+: title: Better Call Saul
+  season: 2
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  release_group: TL
+  type: episode
+
+? 60.Minutes.2008.12.14.HDTV.XviD-YT
+: options: -T '60 Minutes'
+  title: 60 Minutes
+  date: 2008-12-14
+  source: HDTV
+  video_codec: Xvid
+  release_group: YT
+  type: episode
+
+? Storm.Chasers.Season.1
+: title: Storm Chasers
+  season: 1
+  type: episode
+
+? Faking.It.2014.S03E08.720p.HDTV.x264-AVS
+: title: Faking It
+  year: 2014
+  season: 3
+  episode: 8
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  release_group: AVS
+  type: episode
+
+? /series/Marvel's Agents of S.H.I.E.L.D/Season 4/Marvels.Agents.of.S.H.I.E.L.D.S04E01.The.Ghost.1080p.WEB-DL.DD5.1.H.264-AG.mkv
+: title: Marvels Agents of S.H.I.E.L.D.
+  season: 4
+  episode: 1
+  episode_title: The Ghost
+  screen_size: 1080p
+  source: Web
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: AG
+  container: mkv
+  type: episode
+
+? "[FASubs & TTF] Inuyasha - 099 [DVD] [B15AA1AC].mkv"
+: release_group: FASubs & TTF
+  title: Inuyasha
+  episode: 99
+  source: DVD
+  crc32: B15AA1AC
+  container: mkv
+  type: episode
+
+? Show.Name.S01E03.PL.SUBBED.480p.WEBRiP.x264
+: title: Show Name
+  season: 1
+  episode: 3
+  subtitle_language: pl
+  screen_size: 480p
+  source: Web
+  other: Rip
+  video_codec: H.264
+  type: episode
+
+? Show.Name.s10e15(233).480p.BDRip-AVC.Ukr.hurtom
+: title: Show Name
+  season: 10
+  episode: 15
+  screen_size: 480p
+  source: Blu-ray
+  other: Rip
+  video_codec: H.264
+  language: uk
+  release_group: hurtom
   type: episode
