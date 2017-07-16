@@ -95,3 +95,27 @@
 
 ? -51
 : audio_channels: '5.1'
+
+? DTS-HD.HRA
+? DTSHD.HRA
+? DTS-HD.HR
+? DTSHD.HR
+? -HRA
+? -HR
+: audio_codec: DTS-HD
+  audio_profile: High Resolution Audio
+
+? DTSES
+? DTS-ES
+? -ES
+: audio_codec: DTS
+  audio_profile: Extended Surround
+
+? DD-EX
+? DDEX
+? -EX
+: audio_codec: Dolby Digital
+  audio_profile: EX
+
+? OPUS
+: audio_codec: Opus

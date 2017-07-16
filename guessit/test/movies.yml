@@ -1274,7 +1274,7 @@
   screen_size: 1080p
   color_depth: 12-bit
   video_codec: H.265
-  # audio_codec: Opus
+  audio_codec: Opus
   audio_channels: '5.1'
   release_group: Hn1Dr2
   container: mkv
@@ -1346,4 +1346,83 @@
 ? Stargate SG1 Ultimate Fan Collection
 : title: Stargate SG1
   edition: [Ultimate, Fan]
+
+? The.Jungle.Book.2016.MULTi.1080p.BluRay.x264.DTS-HD.MA.7.1.DTS-HD.HRA.5.1-LeRalou
+: title: The Jungle Book
+  year: 2016
+  language: mul
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  audio_codec: DTS-HD
+  audio_profile: [Master Audio, High Resolution Audio]
+  audio_channels: ['7.1', '5.1']
+  release_group: LeRalou
+  type: movie
+
+? Terminus.2015.BluRay.1080p.x264.DTS-HD.HRA.5.1-LTT
+: title: Terminus
+  year: 2015
+  source: Blu-ray
+  screen_size: 1080p
+  video_codec: H.264
+  audio_codec: DTS-HD
+  audio_profile: High Resolution Audio
+  audio_channels: '5.1'
+  release_group: LTT
+  type: movie
+
+? Ghost.in.the.Shell.1995.1080p.Bluray.DTSES.x264-SHiTSoNy
+: title: Ghost in the Shell
+  year: 1995
+  screen_size: 1080p
+  source: Blu-ray
+  audio_codec: DTS
+  audio_profile: Extended Surround
+
+? The.Boss.Baby.2017.BluRay.1080p.DTS-ES.x264-PRoDJi
+: title: The Boss Baby
+  year: 2017
+  source: Blu-ray
+  screen_size: 1080p
+  audio_codec: DTS
+  audio_profile: Extended Surround
+  video_codec: H.264
+  release_group: PRoDJi
+  type: movie
+
+? Title.2000.720p.BluRay.DDEX.x264-HDClub.mkv
+: title: Title
+  year: 2000
+  screen_size: 720p
+  source: Blu-ray
+  audio_codec: Dolby Digital
+  audio_profile: EX
+  video_codec: H.264
+  release_group: HDClub
+  container: mkv
+  type: movie
+
+? Jack Reacher Never Go Back 2016 720p Bluray DD-EX x264-BluPanther
+: title: Jack Reacher Never Go Back
+  year: 2016
+  screen_size: 720p
+  source: Blu-ray
+  audio_codec: Dolby Digital
+  audio_profile: EX
+  video_codec: H.264
+  release_group: BluPanther
+  type: movie
+
+? How To Steal A Dog.2014.BluRay.1080p.12bit.HEVC.OPUS 5.1-Hn1Dr2.mkv
+: title: How To Steal A Dog
+  year: 2014
+  source: Blu-ray
+  screen_size: 1080p
+  color_depth: 12-bit
+  video_codec: H.265
+  audio_codec: Opus
+  audio_channels: '5.1'
+  release_group: Hn1Dr2
+  container: mkv
   type: movie
