@@ -33,6 +33,11 @@
 ? h.264
 ? x.264
 ? mpeg4-AVC
+? AVC
+? AVCHD
+? AVCHD-SC
+? H.264-SC
+? H.264-AVCHD-SC
 ? -MPEG-4
 ? -mpeg4
 ? -mpeg

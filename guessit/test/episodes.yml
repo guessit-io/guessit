@@ -4266,3 +4266,55 @@
   container: mkv
   type: episode
 
+? Duck.Dynasty.S09E04.Drone.Survivor.720p.AE.WEBRip.AAC2.0.H264-BTW[rartv]
+: title: Duck Dynasty
+  season: 9
+  episode: 4
+  episode_title: Drone Survivor
+  screen_size: 720p
+  streaming_service: A&E
+  source: Web
+  other: Rip
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: BTW[rartv]
+  type: episode
+
+? Mr.Selfridge.S04E03.720p.WEB-DL.AAC2.0.H264-MS[rartv]
+: title: Mr Selfridge
+  season: 4
+  episode: 3
+  screen_size: 720p
+  source: Web
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: MS[rartv]
+  type: episode
+
+? Second.Chance.S01E02.One.More.Notch.1080p.WEB-DL.DD5.1.H264-SC[rartv]
+: title: Second Chance
+  season: 1
+  episode: 2
+  episode_title: One More Notch
+  screen_size: 1080p
+  source: Web
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: rartv
+  type: episode
+
+? Total.Divas.S05E01.720p.HDTV.AAC2.0.H.264-SC-SDH
+: title: Total Divas
+  season: 5
+  episode: 1
+  screen_size: 720p
+  source: HDTV
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: SDH
+  type: episode
+

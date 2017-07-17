@@ -816,3 +816,23 @@
   title: Duck Dynasty
   type: episode
   video_codec: H.264
+
+? ATKExotics.16.01.24.Ava.Alba.Watersports.XXX.1080p.MP4-KTR
+: options: -Y
+  title: ATKExotics
+  date: 2016-01-24
+  episode_title: Ava Alba Watersports
+  other: XXX
+  screen_size: 1080p
+  container: mp4
+  release_group: KTR
+  type: episode
+
+? TNA Impact Wrestling HDTV 2017-06-22 720p H264 AVCHD-SC-SDH
+: title: TNA Impact Wrestling
+  source: HDTV
+  date: 2017-06-22
+  screen_size: 720p
+  video_codec: H.264
+  release_group: SDH
+  type: episode

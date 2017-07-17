@@ -1487,16 +1487,6 @@
   release_group: RARBG
   type: movie
 
-? Congo.The.Grand.Inga.Project.2013.1080p.BluRay.H264.AAC-RARBG
-: title: Congo The Grand Inga Project
-  year: 2013
-  screen_size: 1080p
-  source: Blu-ray
-  video_codec: H.264
-  audio_codec: AAC
-  release_group: RARBG
-  type: movie
-
 ? InDefinitely.Maybe.2008.1080p.EUR.BluRay.VC-1.DTS-HD.MA.5.1-FGT
 : title: InDefinitely Maybe
   year: 2008
@@ -1506,5 +1496,24 @@
   audio_codec: DTS-HD
   audio_profile: Master Audio
   audio_channels: '5.1'
+  release_group: FGT
+  type: movie
+
+? Bjyukujyo Kyoushi Kan XXX 720P WEBRIP MP4-GUSH
+: title: Bjyukujyo Kyoushi Kan
+  other: [XXX, Rip]
+  screen_size: 720p
+  source: Web
+  container: mp4
+  release_group: GUSH
+  type: movie
+
+? The.Man.With.The.Golden.Arm.1955.1080p.BluRay.x264.DTS-FGT
+: title: The Man With The Golden Arm
+  year: 1955
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  audio_codec: DTS
   release_group: FGT
   type: movie
