@@ -4051,17 +4051,3 @@
   video_codec: H.265
   release_group: ULTRAHDCLUB
   type: episode
-
-? Suits.S07E01.1080p.iT.WEB-DL.DD5.1.H.264-VLAD.mkv
-: title: Suits
-  season: 7
-  episode: 1
-  screen_size: 1080p
-  source: Web
-  streaming_service: iTunes
-  audio_codec: Dolby Digital
-  audio_channels: '5.1'
-  video_codec: H.264
-  release_group: VLAD
-  container: mkv
-  type: episode
