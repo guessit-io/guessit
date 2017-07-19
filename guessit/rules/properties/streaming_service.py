@@ -54,7 +54,7 @@ def streaming_service():
     rebulk.string('NFL', value='NFL')
     rebulk.string('NICK', 'Nickelodeon', value='Nickelodeon')
     rebulk.string('NF', 'Netflix', value='Netflix')
-    rebulk.string('iTunes', value='iTunes')
+    rebulk.string('iTunes', 'iT', value='iTunes')
     rebulk.string('RTE', value='RTÉ One')
     rebulk.string('SESO', 'SeeSo', value='SeeSo')
     rebulk.string('SPKE', 'SpikeTV', 'Spike TV', value='Spike TV')
