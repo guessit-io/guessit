@@ -148,6 +148,11 @@ Video properties
     ``900p``, ``1080i``, ``1080p``, ``2160p``, ``4320p``
 
 
+- **aspect_ratio**
+
+  Aspect ratio of video. Calculated using width and height from ``screen_size``
+
+
 - **video_codec**
 
   Codec used for video.
