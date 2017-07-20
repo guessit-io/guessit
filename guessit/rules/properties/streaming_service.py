@@ -11,7 +11,7 @@ from rebulk.rules import Rule, RemoveMatch
 from ...rules.common import seps, dash
 
 
-def streaming_service():
+def streaming_service():  # pylint: disable=too-many-statements
     """Streaming service property.
 
     :return:
