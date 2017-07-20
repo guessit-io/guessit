@@ -94,7 +94,7 @@ class TitleBaseRule(Rule):
 
         Full word language and countries won't be ignored if they are uppercase.
         """
-        return not (len(match) > 3 and match.raw.isupper()) and match.name in ['language', 'country', 'episode_details']
+        return not (len(match) > 3 and match.raw.isupper()) and match.name in ('language', 'country', 'episode_details')
 
     def should_keep(self, match, to_keep, matches, filepart, hole, starting):
         """
@@ -114,7 +114,7 @@ class TitleBaseRule(Rule):
         :return:
         :rtype:
         """
-        if match.name in ['language', 'country']:
+        if match.name in ('language', 'country'):
             # Keep language if exactly matching the hole.
             if len(hole.value) == len(match.raw):
                 return True
@@ -127,7 +127,7 @@ class TitleBaseRule(Rule):
                                                      lambda c_match: c_match.name == match.name and
                                                      c_match not in to_keep))
 
-            if not other_languages:
+            if not other_languages and (not starting or len(match.raw) <= 3):
                 return True
 
         return False

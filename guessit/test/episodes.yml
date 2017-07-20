@@ -1989,10 +1989,10 @@
 
 ? Duck.Dynasty.S02E07.Streik.German.DOKU.DL.WS.DVDRiP.x264-CDP
 : episode: 7
-  episode_title: Streik German DOKU
+  episode_title: Streik German
   source: DVD
   language: mul
-  other: [Widescreen, Rip]
+  other: [Documentary, Widescreen, Rip]
   release_group: CDP
   season: 2
   title: Duck Dynasty
@@ -4046,6 +4046,19 @@
   audio_channels: '5.1'
   video_codec: H.265
   release_group: ULTRAHDCLUB
+  type: episode
+
+? Reizen.Waes.S03.FLEMISH.1080p.HDTV.MP2.H.264-NOGRP/Reizen.Waes.S03E05.China.PART1.FLEMISH.1080p.HDTV.MP2.H.264-NOGRP.mkv
+: title: Reizen Waes
+  season: 3
+  episode: 5
+  part: 1
+  language: nl-BE
+  screen_size: 1080p
+  source: HDTV
+  video_codec: H.264
+  release_group: NOGRP
+  container: mkv
   type: episode
 
 ? Suits.S07E01.1080p.iT.WEB-DL.DD5.1.H.264-VLAD.mkv

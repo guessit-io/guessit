@@ -528,7 +528,6 @@
   title: Masala
   source: HD-DVD
   other: Screener
-  language: Telugu
   release_group: Exclusive
 
 ? Django Unchained 2012 DVDSCR X264 AAC-P2P.nfo
@@ -1485,6 +1484,15 @@
   video_codec: H.264
   audio_codec: AAC
   release_group: RARBG
+  type: movie
+
+? Mit.dem.Bauch.durch.die.Wand.SWiSSGERMAN.DOKU.DVDRiP.x264-DEFLOW
+: title: Mit dem Bauch durch die Wand
+  language: de-CH
+  other: [Documentary, Rip]
+  source: DVD
+  video_codec: H.264
+  release_group: DEFLOW
   type: movie
 
 ? InDefinitely.Maybe.2008.1080p.EUR.BluRay.VC-1.DTS-HD.MA.5.1-FGT

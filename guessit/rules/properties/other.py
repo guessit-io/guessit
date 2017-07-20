@@ -91,7 +91,7 @@ def other():
     rebulk.regex('LiNE', value='Line Audio', tags=['has-neighbor', 'release-group-prefix'])
     rebulk.regex('Read-?NFO', value='Read NFO')
     rebulk.string('CONVERT', value='Converted', tags='has-neighbor')
-    rebulk.string('DOCU', value='Documentary', tags='has-neighbor')
+    rebulk.string('DOCU', 'DOKU', value='Documentary', tags='has-neighbor')
     rebulk.string('OM', value='Open Matte', tags='has-neighbor')
     rebulk.string('STV', value='Straight to Video', tags='has-neighbor')
     rebulk.string('OAR', value='Original Aspect Ratio', tags='has-neighbor')
