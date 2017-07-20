@@ -1144,3 +1144,30 @@
   title: Graveyard Carz
   type: episode
   video_codec: H.264
+
+? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
+: alternative_title: Olympics CTV Preview Show
+  release_group: 2HD
+  source: HDTV
+  title: London
+  type: movie
+  video_codec: H.264
+  year: 2012
+
+? UFC.on.FOX.24.1080p.HDTV.x264-VERUM
+: episode: 24
+  release_group: VERUM
+  screen_size: 1080p
+  source: HDTV
+  title: UFC on FOX
+  type: episode
+  video_codec: H.264
+
+? ESPN.E.60.2016.10.04.HDTV.x264-LoTV
+: date: 2016-10-04
+  episode: 60
+  release_group: LoTV
+  source: HDTV
+  title: ESPN E
+  type: episode
+  video_codec: H.264
