@@ -74,15 +74,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
         return str(babelfish.Language(alpha3, country, script))
 
     def reverse(self, name):  # pylint:disable=arguments-differ
-        with_country = (GuessitConverter._with_country_regexp.match(name) or
-                        GuessitConverter._with_country_regexp2.match(name))
-
         name = name.lower()
-        if with_country:
-            lang = babelfish.Language.fromguessit(with_country.group(1).strip())
-            lang.country = babelfish.Country.fromguessit(with_country.group(2).strip())
-            return lang.alpha3, lang.country.alpha2 if lang.country else None, lang.script or None
-
         # exceptions come first, as they need to override a potential match
         # with any of the other guessers
         try:
@@ -94,7 +86,8 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
                      babelfish.Language.fromalpha3b,
                      babelfish.Language.fromalpha2,
                      babelfish.Language.fromname,
-                     babelfish.Language.fromopensubtitles]:
+                     babelfish.Language.fromopensubtitles,
+                     babelfish.Language.fromietf]:
             try:
                 reverse = conv(name)
                 return reverse.alpha3, reverse.country, reverse.script
@@ -335,14 +328,9 @@ class LanguageFinder(object):
         """
         try:
             lang = babelfish.Language.fromguessit(lang_word)
-            if self.allowed_languages:
-                if (hasattr(lang, 'name') and lang.name.lower() in self.allowed_languages) \
-                        or (hasattr(lang, 'alpha2') and lang.alpha2.lower() in self.allowed_languages) \
-                        or lang.alpha3.lower() in self.allowed_languages:
-                    return lang
-            # Keep language with alpha2 equivalent. Others are probably
-            # uncommon languages.
-            elif lang in ('mul', UNDETERMINED) or hasattr(lang, 'alpha2'):
+            if ((hasattr(lang, 'name') and lang.name.lower() in self.allowed_languages) or
+                    (hasattr(lang, 'alpha2') and lang.alpha2.lower() in self.allowed_languages) or
+                    lang.alpha3.lower() in self.allowed_languages):
                 return lang
 
         except babelfish.Error:

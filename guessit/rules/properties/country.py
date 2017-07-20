@@ -97,8 +97,7 @@ class CountryFinder(object):
 
             try:
                 country_object = babelfish.Country.fromguessit(word)
-                if (not self.allowed_countries or
-                        country_object.name.lower() in self.allowed_countries or
+                if (country_object.name.lower() in self.allowed_countries or
                         country_object.alpha2.lower() in self.allowed_countries):
                     yield self._to_rebulk_match(word_match, country_object)
             except babelfish.Error:
