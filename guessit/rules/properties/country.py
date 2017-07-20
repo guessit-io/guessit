@@ -24,7 +24,8 @@ def country():
                       if other.name != 'language' or match.value not in (babelfish.Country('US'),
                                                                          babelfish.Country('GB'))
                       else other,
-                      properties={'country': [None]})
+                      properties={'country': [None]},
+                      disabled=lambda context: not context.get('allowed_countries'))
 
     return rebulk
 

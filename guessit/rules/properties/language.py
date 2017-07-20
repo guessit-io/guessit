@@ -29,7 +29,9 @@ def language():
                   validator=seps_surround)
     rebulk.string(*lang_suffixes, name="language.suffix", ignore_case=True, private=True,
                   validator=seps_surround, tags=['source-suffix'])
-    rebulk.functional(find_languages, properties={'language': [None]})
+    rebulk.functional(find_languages,
+                      properties={'language': [None]},
+                      disabled=lambda context: not context.get('allowed_languages'))
     rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
 
     return rebulk
