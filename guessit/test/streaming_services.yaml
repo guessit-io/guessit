@@ -1770,6 +1770,133 @@
   type: episode
   video_codec: H.264
 
+? Americas.Test.Kitchen.S17.720p.ATK.WEB-DL.AAC2.0.x264-BTN
+: audio_channels: '2.0'
+  audio_codec: AAC
+  release_group: BTN
+  screen_size: 720p
+  season: 17
+  source: Web
+  streaming_service: America's Test Kitchen
+  title: Americas Test Kitchen
+  type: episode
+  video_codec: H.264
+
+? Bushwhacked.Bugs.S01.AUBC.WEBRip.AAC2.0.H.264-DAWN
+: audio_channels: '2.0'
+  audio_codec: AAC
+  other: Rip
+  release_group: DAWN
+  season: 1
+  source: Web
+  streaming_service: ABC Australia
+  title: Bushwhacked Bugs
+  type: episode
+  video_codec: H.264
+
+? VICE.S05E12.1080p.HBO.WEB-DL.AAC2.0.H.264-monkee
+? VICE.S05E12.1080p.HBO-Go.WEB-DL.AAC2.0.H.264-monkee
+? VICE.S05E12.1080p.HBOGo.WEB-DL.AAC2.0.H.264-monkee
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 12
+  release_group: monkee
+  screen_size: 1080p
+  season: 5
+  source: Web
+  streaming_service: HBO Go
+  title: VICE
+  type: episode
+  video_codec: H.264
+
+? Dix.Pour.Cent.S02.PLUZ.WEBRip.AAC2.0.H.264-TURTLE
+: audio_channels: '2.0'
+  audio_codec: AAC
+  other: Rip
+  release_group: TURTLE
+  season: 2
+  source: Web
+  streaming_service: Pluzz
+  title: Dix Pour Cent
+  type: episode
+  video_codec: H.264
+
+? Ulveson.och.Herngren.S01.720p.SVT.WEBRip.AAC2.0.H.264-BTN
+: audio_channels: '2.0'
+  audio_codec: AAC
+  other: Rip
+  release_group: BTN
+  screen_size: 720p
+  season: 1
+  source: Web
+  streaming_service: Sveriges Television
+  title: Ulveson och Herngren
+  type: episode
+  video_codec: H.264
+
+? Bravest.Warriors.S03.1080p.VRV.WEBRip.AAC2.0.x264-BTN
+: audio_channels: '2.0'
+  audio_codec: AAC
+  other: Rip
+  release_group: BTN
+  screen_size: 1080p
+  season: 3
+  source: Web
+  streaming_service: VRV
+  title: Bravest Warriors
+  type: episode
+  video_codec: H.264
+
+? The.Late.Night.Big.Breakfast.S02.WME.WEBRip.AAC2.0.x264-BTN
+: audio_channels: '2.0'
+  audio_codec: AAC
+  other: Rip
+  release_group: BTN
+  season: 2
+  source: Web
+  streaming_service: WatchMe
+  title: The Late Night Big Breakfast
+  type: episode
+  video_codec: H.264
+
+? Hockey.Wives.S02.WNET.WEBRip.AAC2.0.H.264-BTW
+: audio_channels: '2.0'
+  audio_codec: AAC
+  other: Rip
+  release_group: BTW
+  season: 2
+  source: Web
+  streaming_service: W Network
+  title: Hockey Wives
+  type: episode
+  video_codec: H.264
+
+? Sin.City.Saints.S01.1080p.YHOO.WEBRip.AAC2.0.x264-NTb
+: audio_channels: '2.0'
+  audio_codec: AAC
+  other: Rip
+  release_group: NTb
+  screen_size: 1080p
+  season: 1
+  source: Web
+  streaming_service: Yahoo
+  title: Sin City Saints
+  type: episode
+  video_codec: H.264
+
+? 555.S01.1080p.VMEO.WEBRip.AAC2.0.x264-BTN
+: audio_channels: '2.0'
+  audio_codec: AAC
+  other: Rip
+  release_group: BTN
+  screen_size: 1080p
+  season: 1
+  source: Web
+  streaming_service: Vimeo
+  title: '555'
+  type: episode
+  video_codec: H.264
+
 # All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
@@ -1795,5 +1922,14 @@
   release_group: LoTV
   source: HDTV
   title: ESPN E
+  type: episode
+  video_codec: H.264
+
+? GTTV.E3.All.Access.Live.Day.1.Xbox.Showcase.Preshow.HDTV.x264-SYS
+: episode: 3
+  episode_title: All Access Live Day 1 Xbox Showcase Preshow
+  release_group: SYS
+  source: HDTV
+  title: GTTV
   type: episode
   video_codec: H.264
