@@ -1756,6 +1756,21 @@
   type: episode
   video_codec: H.264
 
+? Other.Space.S01E01.1080p.YHOO.WEBRip.AAC2.0.x264-BTW
+: audio_channels: '2.0'
+  audio_codec: AAC
+  episode: 1
+  other: Rip
+  release_group: BTW
+  screen_size: 1080p
+  season: 1
+  source: Web
+  streaming_service: Yahoo
+  title: Other Space
+  type: episode
+  video_codec: H.264
+
+# All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
   release_group: 2HD
