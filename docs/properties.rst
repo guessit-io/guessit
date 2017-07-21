@@ -92,6 +92,11 @@ Episode properties
   Episode number. (Can be a list if several are found)
 
 
+- **disc**
+
+  Disc number. (Can be a list if several are found)
+
+
 - **episode_count**
 
   Total number of episodes.

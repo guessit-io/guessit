@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-episode, season, episode_count, season_count and episode_details properties
+episode, season, disc, episode_count, season_count and episode_details properties
 """
 import copy
 from collections import defaultdict
@@ -85,6 +85,7 @@ def episodes():
     all_words = ['All']
     season_markers = ["S"]
     season_ep_markers = ["x"]
+    disc_markers = ['d']
     episode_markers = ["xE", "Ex", "EP", "E", "x"]
     range_separators = ['-', '~', 'to', 'a']
     weak_discrete_separators = list(sep for sep in seps if sep not in range_separators)
@@ -145,10 +146,10 @@ def episodes():
                  validator={'__parent__': ordering_validator},
                  conflict_solver=season_episode_conflict_solver) \
         .regex(build_or_pattern(season_markers, name='seasonMarker') + r'(?P<season>\d+)@?' +
-               build_or_pattern(episode_markers, name='episodeMarker') + r'@?(?P<episode>\d+)',
+               build_or_pattern(episode_markers + disc_markers, name='episodeMarker') + r'@?(?P<episode>\d+)',
                validate_all=True,
                validator={'__parent__': seps_before}).repeater('+') \
-        .regex(build_or_pattern(episode_markers + discrete_separators + range_separators,
+        .regex(build_or_pattern(episode_markers + disc_markers + discrete_separators + range_separators,
                                 name='episodeSeparator',
                                 escape=True) +
                r'(?P<episode>\d+)').repeater('*') \
@@ -313,7 +314,7 @@ def episodes():
                  SeePatternRange(range_separators + ['_']), EpisodeNumberSeparatorRange(range_separators),
                  SeasonSeparatorRange(range_separators), RemoveWeakIfMovie, RemoveWeakIfSxxExx,
                  RemoveWeakDuplicate, EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator,
-                 CountValidator, EpisodeSingleDigitValidator)
+                 CountValidator, EpisodeSingleDigitValidator, RenameToDiscMatch)
 
     return rebulk
 
@@ -398,12 +399,14 @@ class AbstractSeparatorRange(Rule):
         for separator in matches.named(self.property_name + 'Separator'):
             previous_match = matches.previous(separator, lambda match: match.name == self.property_name, 0)
             next_match = matches.next(separator, lambda match: match.name == self.property_name, 0)
+            initiator = separator.initiator
 
             if previous_match and next_match and separator.value in self.range_separators:
                 to_remove.append(next_match)
                 for episode_number in range(previous_match.value + 1, next_match.value):
                     match = copy.copy(next_match)
                     match.value = episode_number
+                    initiator.children.append(match)
                     to_append.append(match)
                 to_append.append(next_match)
             to_remove.append(separator)
@@ -415,9 +418,11 @@ class AbstractSeparatorRange(Rule):
                 if separator not in self.range_separators:
                     separator = strip(separator)
                 if separator in self.range_separators:
+                    initiator = previous_match.initiator
                     for episode_number in range(previous_match.value + 1, next_match.value):
                         match = copy.copy(next_match)
                         match.value = episode_number
+                        initiator.children.append(match)
                         to_append.append(match)
                     to_append.append(Match(previous_match.end, next_match.start - 1,
                                            name=self.property_name + 'Separator',
@@ -664,3 +669,20 @@ class EpisodeSingleDigitValidator(Rule):
                 if not matches.range(*group.span, predicate=lambda match: match.name == 'title'):
                     ret.append(episode)
         return ret
+
+
+class RenameToDiscMatch(Rule):
+    """
+    Rename episodes detected with `d` episodeMarkers to `disc`.
+    """
+
+    consequence = [RenameMatch('disc'), RenameMatch('discMarker')]
+
+    def when(self, matches, context):
+        discs = []
+        markers = []
+        for marker in matches.named('episodeMarker', predicate=lambda m: m.value.lower() == 'd'):
+            markers.append(marker)
+            discs.extend(sorted(marker.initiator.children.named('episode'), key=lambda m: m.value))
+
+        return discs, markers
