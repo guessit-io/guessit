@@ -4387,3 +4387,36 @@
   source: Blu-ray
   release_group: COJONUDO
   type: episode
+
+? The Simpsons - Season 2 Complete [DVDRIP VP7 KEGGERMAN
+: title: The Simpsons
+  season: 2
+  other: [Complete, Rip]
+  source: DVD
+  video_codec: VP7
+  release_group: KEGGERMAN
+  type: episode
+
+? Barney & Friends_ Easy as ABC (Season 9_ Episode 15)_VP8_Vorbis_360p.webm
+: title: Barney & Friends Easy as ABC
+  season: 9
+  episode: 15
+  video_codec: VP8
+  audio_codec: Vorbis
+  screen_size: 360p
+  container: webm
+  type: episode
+
+? Victoria.S01.1080p.BluRay.HEVC.DTSMA.LPCM.PGS-OZM
+: title: Victoria
+  season: 1
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.265
+  audio_codec: [DTS-HD, LPCM]
+  audio_profile: Master Audio
+  # Does it worth to add subtitle_format? Such rare case
+  # subtitle_format: PGS
+  # release_group: OZM
+  type: episode
+

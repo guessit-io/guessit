@@ -162,7 +162,7 @@ Video properties
 
   Codec used for video.
 
-  - ``DivX``, ``H.264``, ``H.265``, ``MPEG-2``, ``RealVideo``, ``Xvid``
+  - ``DivX``, ``H.263``, ``H.264``, ``H.265``, ``MPEG-2``, ``RealVideo``, ``VP7``, ``VP8``, ``VP9``,``Xvid``
 
 
 - **video_profile**
@@ -206,8 +206,8 @@ Audio properties
 
   Codec used for audio.
 
-  - ``AAC``, ``Dolby Atmos``, ``Dolby Digital``, ``Dolby Digital Plus``, ``Dolby TrueHD``, ``DTS``,  ``FLAC``, ``MP3``,
-    ``Opus``
+  - ``AAC``, ``Dolby Atmos``, ``Dolby Digital``, ``Dolby Digital Plus``, ``Dolby TrueHD``, ``DTS``,  ``FLAC``, ``LPCM``,
+    ``MP3``, ``Opus``, ``PCM``, ``Vorbis``
 
 
 - **audio_profile**
