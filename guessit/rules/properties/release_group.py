@@ -6,6 +6,7 @@ release_group property
 import copy
 
 from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch
+from rebulk.match import Match
 
 from ..common import seps
 from ..common.expected import build_expected_function
@@ -30,7 +31,7 @@ def release_group():
                       conflict_solver=lambda match, other: other,
                       disabled=lambda context: not context.get('expected_group'))
 
-    return rebulk.rules(ConflictingReleaseGroup, SceneReleaseGroup, AnimeReleaseGroup)
+    return rebulk.rules(DashSeparatedReleaseGroup, SceneReleaseGroup, AnimeReleaseGroup)
 
 
 forbidden_groupnames = ['rip', 'by', 'for', 'par', 'pour', 'bonus']
@@ -64,77 +65,112 @@ def clean_groupname(string):
 _scene_previous_names = ('video_codec', 'source', 'video_api', 'audio_codec', 'audio_profile', 'video_profile',
                          'audio_channels', 'screen_size', 'other', 'container', 'language', 'subtitle_language',
                          'subtitle_language.suffix', 'subtitle_language.prefix', 'language.suffix')
-_conflicting_names = _scene_previous_names + ('episode_details', )
 
 _scene_previous_tags = ('release-group-prefix', )
 
 
-class ConflictingReleaseGroup(Rule):
+class DashSeparatedReleaseGroup(Rule):
     """
-    Remove conflicting matches when a standard release group pattern is detected.
-    Release group is the last part of the release name separated by a dash.
-    All other matches are separated by spaces or dots.
+    Detect dash separated release groups that might appear at the end or at the beginning of a release name.
 
-    Given the following input:
-        Title.S01E02.1080p.WEB-DL.DD5.1.H.264-NL
-    Wrong language Dutch (NL) will be dropped
+    Series.S01E02.Pilot.DVDRip.x264-CS.mkv
+        release_group: CS
+    abc-the.title.name.1983.1080p.bluray.x264.mkv
+        release_group: abc
+
+    At the end: Release groups should be dash-separated and shouldn't contain spaces nor
+    appear in a group with other matches. The preceding matches should be separated by dot.
+    If a release group is found, the conflicting matches are removed.
+
+    At the beginning: Release groups should be dash-separated and shouldn't contain spaces nor appear in a group.
+    It should be followed by a hole with dot-separated words.
+    Detection only happens if no matches exist at the beginning.
     """
-
-    consequence = RemoveMatch
+    consequence = [RemoveMatch, AppendMatch]
 
     @classmethod
-    def _reverse_iterator(cls, matches, match, filepart_start):
-        current = match
-        while current:
-            previous = matches.range(filepart_start, current.start, index=-1, predicate=lambda m: (
-                not m.private and m.name in _conflicting_names))
-            if not previous:
+    def is_valid(cls, matches, candidate, start, end, at_end):
+        """
+        Whether a candidate is a valid release group.
+        """
+        if not at_end:
+            if matches.markers.at_match(candidate, predicate=lambda m: m.name == 'group'):
+                return False
+
+            first_hole = matches.holes(candidate.end, end, predicate=lambda m: m.start == candidate.end, index=0)
+            if not first_hole:
+                return False
+
+            raw_value = first_hole.raw
+            return raw_value[0] == '-' and '-' not in raw_value[1:] and '.' in raw_value and ' ' not in raw_value
+
+        group = matches.markers.at_match(candidate, predicate=lambda m: m.name == 'group', index=0)
+        if group and matches.at_match(group, predicate=lambda m: not m.private and m.span != candidate.span):
+            return False
+
+        count = 0
+        match = candidate
+        while match:
+            current = matches.range(start, match.start, index=-1, predicate=lambda m: not m.private)
+            if not current:
                 break
 
-            previous = previous.initiator
-            yield previous, current.input_string[previous.end:current.start]
-            current = previous
+            separator = match.input_string[current.end:match.start]
+            match = current
+
+            if count == 0:
+                if separator != '-':
+                    break
+
+                count += 1
+                continue
+
+            if separator == '.':
+                return True
+
+    def detect(self, matches, start, end, at_end):
+        """
+        Detect release group at the end or at the beginning of a filepart.
+        """
+        candidate = None
+        if at_end:
+            container = matches.ending(end, lambda m: m.name == 'container', index=0)
+            if container:
+                end = container.start
+
+            candidate = matches.ending(end, index=0, predicate=(
+                lambda m: not m.private and '-' not in m.raw and m.raw.strip() == m.raw))
+
+        if not candidate:
+            if at_end:
+                candidate = matches.holes(start, end, seps=seps, index=-1,
+                                          predicate=lambda m: m.end == end and m.raw.strip(seps) and m.raw[0] == '-')
+            else:
+                candidate = matches.holes(start, end, seps=seps, index=0,
+                                          predicate=lambda m: m.start == start and m.raw.strip(seps))
+
+        if candidate and self.is_valid(matches, candidate, start, end, at_end):
+            return candidate
 
     def when(self, matches, context):
-        ret = []
-        for filepart in marker_sorted(matches.markers.named('path'), matches):
-            candidate = matches.range(filepart.start, filepart.end, index=-1)
-            if not candidate or matches.holes(candidate.end, filepart.end,
-                                              predicate=lambda m: m.value.strip(seps)):
-                continue
+        if matches.named('release_group'):
+            return
 
-            if candidate.name == 'container':
-                container = candidate
-                candidate = matches.previous(container, index=0)
-                if not candidate or matches.holes(candidate.end, container.start,
-                                                  predicate=lambda m: m.value.strip(seps)):
-                    continue
+        to_remove = []
+        to_append = []
+        for filepart in matches.markers.named('path'):
+            candidate = self.detect(matches, filepart.start, filepart.end, True)
+            if candidate:
+                to_remove.extend(matches.at_match(candidate))
+            else:
+                candidate = self.detect(matches, filepart.start, filepart.end, False)
 
-            if matches.markers.at_match(candidate, predicate=lambda m: m.name == 'group'):
-                continue
+            if candidate:
+                releasegroup = Match(candidate.start, candidate.end, name='release_group', formatter=clean_groupname,
+                                     input_string=candidate.input_string)
 
-            count = 0
-            for previous, separator in self._reverse_iterator(matches, candidate, filepart.start):
-                if not previous:
-                    break
-
-                if count == 0:
-                    if separator != '-':
-                        break
-
-                    count += 1
-                else:
-                    if separator:
-                        if separator not in (' ', '.'):
-                            break
-
-                        count += 1
-
-                if count > 2:
-                    ret.extend(matches.at_match(candidate))
-                    break
-
-        return ret
+                to_append.append(releasegroup)
+                return to_remove, to_append
 
 
 class SceneReleaseGroup(Rule):

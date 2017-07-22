@@ -96,6 +96,7 @@ History
 - Fixed unwanted language and country detection for exotic languages.
 - Added default and configurable list of allowed languages and countries
 - Added `VC-1` as new `video_codec` possible value
+- Enhanced dash-separated `release_group` detection.
 
 2.1.4 (2017-06-01)
 ------------------
