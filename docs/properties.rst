@@ -265,9 +265,9 @@ Other properties
 
 - **size**
 
-  Size (MB, GB, TB). Examples: ``1.2GB`` (``<Quantity [1.2GB]>``), ``430MB`` (``<Quantity [430MB]>``).
+  Size (MB, GB, TB). Examples: ``1.2GB`` (``<Size [1.2GB]>``), ``430MB`` (``<Size [430MB]>``).
 
-  - ``[<guessit.Quantity>]`` (object has ``magnitude`` and ``units``)
+  - ``[<guessit.Size>]`` (object has ``magnitude`` and ``units``)
 
 
 - **edition**

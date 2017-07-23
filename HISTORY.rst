@@ -98,6 +98,7 @@ History
 - Added `VC-1` as new `video_codec` possible value
 - Enhanced dash-separated `release_group` detection.
 - Changed `size` output to return `guessit.Quantity` object.
+- Changed `size` output to return `guessit.Size` object.
 
 2.1.4 (2017-06-01)
 ------------------

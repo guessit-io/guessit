@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Quantity
+Quantities: Size
 """
 import re
 
@@ -33,7 +33,7 @@ class Quantity(object):
             magnitude = float(values['magnitude'])
         units = values['units'].upper()
 
-        return Quantity(magnitude, units)
+        return cls(magnitude, units)
 
     def __hash__(self):
         return hash(str(self))
@@ -41,7 +41,7 @@ class Quantity(object):
     def __eq__(self, other):
         if isinstance(other, six.string_types):
             return str(self) == other
-        if not isinstance(other, Quantity):
+        if not isinstance(other, self.__class__):
             return NotImplemented
         return self.magnitude == other.magnitude and self.units == other.units
 
@@ -49,7 +49,17 @@ class Quantity(object):
         return not self == other
 
     def __repr__(self):
-        return '<Quantity [{0}]>'.format(self)
+        return '<{0} [{1}]>'.format(self.__class__.__name__, self)
 
     def __str__(self):
         return '{0}{1}'.format(self.magnitude, self.units)
+
+
+class Size(Quantity):
+    """
+    Represent size.
+
+    e.g.: 1.1GB, 300MB
+    """
+
+    pass
