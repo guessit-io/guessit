@@ -4,8 +4,11 @@
 Quantities: Size
 """
 import re
+from abc import abstractmethod
 
 import six
+
+from ..common import seps
 
 
 class Quantity(object):
@@ -20,6 +23,14 @@ class Quantity(object):
         self.units = units
 
     @classmethod
+    @abstractmethod
+    def parse_units(cls, value):
+        """
+        Parse a string to a proper unit notation.
+        """
+        raise NotImplementedError
+
+    @classmethod
     def fromstring(cls, string):
         """
         Parse the string into a quantity object.
@@ -31,7 +42,7 @@ class Quantity(object):
             magnitude = int(values['magnitude'])
         except ValueError:
             magnitude = float(values['magnitude'])
-        units = values['units'].upper()
+        units = cls.parse_units(values['units'])
 
         return cls(magnitude, units)
 
@@ -62,4 +73,18 @@ class Size(Quantity):
     e.g.: 1.1GB, 300MB
     """
 
-    pass
+    @classmethod
+    def parse_units(cls, value):
+        return value.strip(seps).upper()
+
+
+class BitRate(Quantity):
+    """
+    Represent bit rate.
+
+    e.g.: 320Kbps, 1.5Mbps
+    """
+
+    @classmethod
+    def parse_units(cls, value):
+        return value.strip(seps).capitalize()
