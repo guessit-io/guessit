@@ -818,14 +818,42 @@
   video_codec: H.264
 
 ? ATKExotics.16.01.24.Ava.Alba.Watersports.XXX.1080p.MP4-KTR
-: options: -Y
-  title: ATKExotics
-  date: 2016-01-24
+: title: ATKExotics
   episode_title: Ava Alba Watersports
   other: XXX
   screen_size: 1080p
   container: mp4
   release_group: KTR
+  type: episode
+
+? PutaLocura.15.12.22.Spanish.Luzzy.XXX.720p.MP4-oRo
+: title: PutaLocura
+  episode_title: Spanish Luzzy
+  other: XXX
+  screen_size: 720p
+  container: mp4
+  release_group: oRo
+  type: episode
+
+? French Maid Services - Lola At Your Service WEB-DL SPLIT SCENES MP4-RARBG
+: title: French Maid Services
+  alternative_title: Lola At Your Service
+  source: Web
+  container: mp4
+  release_group: RARBG
+  type: movie
+
+? French Maid Services - Lola At Your Service - Marc Dorcel WEB-DL SPLIT SCENES MP4-RARBG
+: title: French Maid Services
+  alternative_title: [Lola At Your Service, Marc Dorcel]
+  source: Web
+  container: mp4
+  release_group: RARBG
+  type: movie
+
+? PlayboyPlus.com_16.01.23.Eleni.Corfiate.Playboy.Romania.XXX.iMAGESET-OHRLY
+: episode_title: Eleni Corfiate Playboy Romania
+  other: XXX
   type: episode
 
 ? TNA Impact Wrestling HDTV 2017-06-22 720p H264 AVCHD-SC-SDH
