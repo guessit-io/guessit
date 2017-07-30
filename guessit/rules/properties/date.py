@@ -34,7 +34,7 @@ def date():
 
     rebulk.functional(date_functional, name="date", properties={'date': [None]},
                       conflict_solver=lambda match, other: other
-                      if other.name in ['episode', 'season']
+                      if other.name in ('episode', 'season', 'crc32')
                       else '__default__')
 
     rebulk.rules(KeepMarkedYearInFilepart)

@@ -57,20 +57,22 @@ def episodes():
         :param other:
         :return:
         """
-        if match.name == 'episode' and other.name in \
-                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date', 'year'] \
-                and 'weak-audio_channels' not in other.tags:
-            return match
-        if match.name == 'season' and other.name in \
-                ['screen_size', 'video_codec', 'audio_codec', 'audio_channels', 'container', 'date'] \
-                and 'weak-audio_channels' not in other.tags:
-            return match
-        if match.name in ['season', 'episode'] and other.name in ['season', 'episode'] \
-                and match.initiator != other.initiator:
-            if 'weak-episode' in match.tags or 'x' in match.initiator.raw.lower():
+        if match.name != other.name:
+            if match.name == 'episode' and other.name == 'year':
                 return match
-            if 'weak-episode' in other.tags or 'x' in other.initiator.raw.lower():
-                return other
+            if match.name in ('season', 'episode'):
+                if other.name in ('video_codec', 'audio_codec', 'container', 'date'):
+                    return match
+                if (other.name == 'audio_channels' and 'weak-audio_channels' not in other.tags) or (
+                        other.name == 'screen_size' and not int_coercable(other.raw)):
+                    return match
+                if other.name in ('season', 'episode') and match.initiator != other.initiator:
+                    if (match.initiator.name in ('weak_episode', 'weak_duplicate')
+                            and other.initiator.name in ('weak_episode', 'weak_duplicate')):
+                        return
+                    for current in (match, other):
+                        if 'weak-episode' in current.tags or 'x' in current.initiator.raw.lower():
+                            return current
         return '__default__'
 
     season_episode_seps = []
@@ -232,7 +234,7 @@ def episodes():
                  formatter={'season': int, 'other': lambda match: 'Complete'})
 
     # 12, 13
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode'], formatter={'episode': int, 'version': int},
+    rebulk.chain(tags=['weak-episode'], formatter={'episode': int, 'version': int},
                  disabled=lambda context: context.get('type') == 'movie') \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d{2})') \
@@ -240,7 +242,7 @@ def episodes():
         .regex(r'(?P<episodeSeparator>[x-])(?P<episode>\d{2})').repeater('*')
 
     # 012, 013
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode'], formatter={'episode': int, 'version': int},
+    rebulk.chain(tags=['weak-episode'], formatter={'episode': int, 'version': int},
                  disabled=lambda context: context.get('type') == 'movie') \
         .defaults(validator=None) \
         .regex(r'0(?P<episode>\d{1,2})') \
@@ -248,16 +250,17 @@ def episodes():
         .regex(r'(?P<episodeSeparator>[x-])0(?P<episode>\d{1,2})').repeater('*')
 
     # 112, 113
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode'], formatter={'episode': int, 'version': int},
-                 disabled=lambda context: (not context.get('episode_prefer_number', False) or
-                                           context.get('type') == 'movie')) \
+    rebulk.chain(tags=['weak-episode'],
+                 formatter={'episode': int, 'version': int},
+                 name='weak_episode',
+                 disabled=lambda context: context.get('type') == 'movie') \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d{3,4})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
         .regex(r'(?P<episodeSeparator>[x-])(?P<episode>\d{3,4})').repeater('*')
 
     # 1, 2, 3
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode'], formatter={'episode': int, 'version': int},
+    rebulk.chain(tags=['weak-episode'], formatter={'episode': int, 'version': int},
                  disabled=lambda context: context.get('type') != 'episode') \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d)') \
@@ -288,11 +291,11 @@ def episodes():
         .regex(r'(?P<episodeSeparator>-)(?P<season>\d{1,2})(?P<episode>\d{2})').repeater('?')
 
     # 102, 0102
-    rebulk.chain(tags=['bonus-conflict', 'weak-movie', 'weak-episode', 'weak-duplicate'],
+    rebulk.chain(tags=['weak-episode', 'weak-duplicate'],
                  formatter={'season': int, 'episode': int, 'version': int},
-                 conflict_solver=lambda match, other: match if other.name == 'year' else '__default__',
-                 disabled=lambda context: (context.get('episode_prefer_number', False) or
-                                           context.get('type') == 'movie')) \
+                 name='weak_duplicate',
+                 conflict_solver=season_episode_conflict_solver,
+                 disabled=lambda context: context.get('episode_prefer_number') or context.get('type') == 'movie') \
         .defaults(validator=None) \
         .regex(r'(?P<season>\d{1,2})(?P<episode>\d{2})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
@@ -310,13 +313,90 @@ def episodes():
 
     rebulk.regex(r'Minisodes?', name='episode_format', value="Minisode")
 
-    rebulk.rules(RemoveInvalidSeason, RemoveInvalidEpisode,
-                 SeePatternRange(range_separators + ['_']), EpisodeNumberSeparatorRange(range_separators),
+    rebulk.rules(WeakConflictSolver, RemoveInvalidSeason, RemoveInvalidEpisode,
+                 SeePatternRange(range_separators + ['_']),
+                 EpisodeNumberSeparatorRange(range_separators),
                  SeasonSeparatorRange(range_separators), RemoveWeakIfMovie, RemoveWeakIfSxxExx,
                  RemoveWeakDuplicate, EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator,
-                 CountValidator, EpisodeSingleDigitValidator, RenameToDiscMatch)
+                 RemoveWeak, RenameToAbsoluteEpisode, CountValidator, EpisodeSingleDigitValidator, RenameToDiscMatch)
 
     return rebulk
+
+
+class WeakConflictSolver(Rule):
+    """
+    Rule to decide whether weak-episode or weak-duplicate matches should be kept.
+
+    If an anime is detected:
+        - weak-duplicate matches should be removed
+        - weak-episode matches should be tagged as anime
+    Otherwise:
+        - weak-episode matches are removed unless they're part of an episode range match.
+    """
+    priority = 128
+    consequence = [RemoveMatch, AppendMatch]
+
+    def enabled(self, context):
+        return context.get('type') != 'movie'
+
+    @classmethod
+    def is_anime(cls, matches):
+        """Return True if it seems to be an anime.
+
+        Anime characteristics:
+            - version, crc32 matches
+            - screen_size inside brackets
+            - release_group at start and inside brackets
+        """
+        if matches.named('version') or matches.named('crc32'):
+            return True
+
+        for group in matches.markers.named('group'):
+            if matches.range(group.start, group.end, predicate=lambda m: m.name == 'screen_size'):
+                return True
+            if matches.markers.starting(group.start, predicate=lambda m: m.name == 'path'):
+                hole = matches.holes(group.start, group.end, index=0)
+                if hole and hole.raw == group.raw:
+                    return True
+
+    def when(self, matches, context):
+        to_remove = []
+        to_append = []
+        anime_detected = self.is_anime(matches)
+        for filepart in matches.markers.named('path'):
+            weak_matches = matches.range(filepart.start, filepart.end, predicate=(
+                lambda m: m.initiator.name == 'weak_episode'))
+            weak_dup_matches = matches.range(filepart.start, filepart.end, predicate=(
+                lambda m: m.initiator.name == 'weak_duplicate'))
+            if anime_detected:
+                if weak_matches:
+                    to_remove.extend(weak_dup_matches)
+                    for match in matches.range(filepart.start, filepart.end, predicate=(
+                            lambda m: m.name == 'episode' and m.initiator.name != 'weak_duplicate')):
+                        episode = copy.copy(match)
+                        episode.tags.append('anime')
+                        to_append.append(episode)
+                        to_remove.append(match)
+            elif weak_dup_matches:
+                episodes_in_range = matches.range(filepart.start, filepart.end, predicate=(
+                    lambda m:
+                    m.name == 'episode' and m.initiator.name == 'weak_episode'
+                    and m.initiator.children.named('episodeSeparator')
+                ))
+                if not episodes_in_range and not matches.range(filepart.start, filepart.end,
+                                                               predicate=lambda m: 'SxxExx' in m.tags):
+                    to_remove.extend(weak_matches)
+                else:
+                    for match in episodes_in_range:
+                        episode = copy.copy(match)
+                        episode.tags = []
+                        to_append.append(episode)
+                        to_remove.append(match)
+
+                if to_append:
+                    to_remove.extend(weak_dup_matches)
+
+        return to_remove, to_append
 
 
 class CountValidator(Rule):
@@ -436,12 +516,46 @@ class AbstractSeparatorRange(Rule):
         return to_remove, to_append
 
 
+class RenameToAbsoluteEpisode(Rule):
+    """
+    Rename episode to absolute_episodes.
+
+    Absolute episodes are only used if two groups of episodes are detected:
+        S02E04-06 25-27
+        25-27 S02E04-06
+        2x04-06  25-27
+        28. Anime Name S02E05
+    The matches in the group with higher episode values are renamed to absolute_episode.
+    """
+
+    consequence = RenameMatch('absolute_episode')
+
+    def when(self, matches, context):
+        initiators = set([match.initiator for match in matches.named('episode')
+                          if len(match.initiator.children.named('episode')) > 1])
+        if len(initiators) != 2:
+            ret = []
+            for filepart in matches.markers.named('path'):
+                if matches.range(filepart.start + 1, filepart.end, predicate=lambda m: m.name == 'episode'):
+                    ret.extend(
+                        matches.starting(filepart.start, predicate=lambda m: m.initiator.name == 'weak_episode'))
+            return ret
+
+        initiators = sorted(initiators, key=lambda item: item.end)
+        if not matches.holes(initiators[0].end, initiators[1].start, predicate=lambda m: m.raw.strip(seps)):
+            first_range = matches.named('episode', predicate=lambda m: m.initiator == initiators[0])
+            second_range = matches.named('episode', predicate=lambda m: m.initiator == initiators[1])
+            if len(first_range) == len(second_range):
+                if second_range[0].value > first_range[0].value:
+                    return second_range
+                if first_range[0].value > second_range[0].value:
+                    return first_range
+
+
 class EpisodeNumberSeparatorRange(AbstractSeparatorRange):
     """
     Remove separator matches and create matches for episoderNumber range.
     """
-    priority = 128
-    consequence = [RemoveMatch, AppendMatch]
 
     def __init__(self, range_separators):
         super(EpisodeNumberSeparatorRange, self).__init__(range_separators, "episode")
@@ -451,8 +565,6 @@ class SeasonSeparatorRange(AbstractSeparatorRange):
     """
     Remove separator matches and create matches for season range.
     """
-    priority = 128
-    consequence = [RemoveMatch, AppendMatch]
 
     def __init__(self, range_separators):
         super(SeasonSeparatorRange, self).__init__(range_separators, "season")
@@ -460,7 +572,7 @@ class SeasonSeparatorRange(AbstractSeparatorRange):
 
 class RemoveWeakIfMovie(Rule):
     """
-    Remove weak-movie tagged matches if it seems to be a movie.
+    Remove weak-episode tagged matches if it seems to be a movie.
     """
     priority = 64
     consequence = RemoveMatch
@@ -480,15 +592,43 @@ class RemoveWeakIfMovie(Rule):
                 if next_match and not matches.at_match(next_match, predicate=lambda m: m.name == 'year'):
                     to_ignore.add(next_match.initiator)
 
-        if remove:
-            to_remove.extend(matches.tagged('weak-movie', predicate=lambda m: m.initiator not in to_ignore))
+                to_ignore.update(matches.range(filepart.start, filepart.end,
+                                               predicate=lambda m: len(m.children.named('episode')) > 1))
 
+                to_remove.extend(matches.conflicting(year))
+        if remove:
+            to_remove.extend(matches.tagged('weak-episode', predicate=(
+                lambda m: m.initiator not in to_ignore and 'anime' not in m.tags)))
+
+        return to_remove
+
+
+class RemoveWeak(Rule):
+    """
+    Remove weak-episode matches which appears after video, source, and audio matches.
+    """
+    priority = 16
+    consequence = RemoveMatch
+
+    def when(self, matches, context):
+        to_remove = []
+        for filepart in matches.markers.named('path'):
+            weaks = matches.range(filepart.start, filepart.end, predicate=lambda m: 'weak-episode' in m.tags)
+            if weaks:
+                previous = matches.previous(weaks[0], predicate=lambda m: m.name in (
+                    'audio_codec', 'screen_size', 'streaming_service', 'source', 'video_profile',
+                    'audio_channels', 'audio_profile'), index=0)
+                if previous and not matches.holes(
+                        previous.end, weaks[0].start, predicate=lambda m: m.raw.strip(seps)):
+                    to_remove.extend(weaks)
         return to_remove
 
 
 class RemoveWeakIfSxxExx(Rule):
     """
-    Remove weak-movie tagged matches if SxxExx pattern is matched.
+    Remove weak-episode tagged matches if SxxExx pattern is matched.
+
+    Weak episodes at beginning of filepart are kept.
     """
     priority = 64
     consequence = RemoveMatch
@@ -498,8 +638,9 @@ class RemoveWeakIfSxxExx(Rule):
         for filepart in matches.markers.named('path'):
             if matches.range(filepart.start, filepart.end,
                              predicate=lambda match: not match.private and 'SxxExx' in match.tags):
-                to_remove.extend(matches.range(
-                    filepart.start, filepart.end, predicate=lambda match: 'weak-movie' in match.tags))
+                for match in matches.range(filepart.start, filepart.end, predicate=lambda m: 'weak-episode' in m.tags):
+                    if match.start != filepart.start or match.initiator.name != 'weak_episode':
+                        to_remove.append(match)
         return to_remove
 
 
@@ -620,7 +761,7 @@ class RemoveDetachedEpisodeNumber(Rule):
 
         episode_numbers = []
         episode_values = set()
-        for match in matches.named('episode', lambda match: not match.private and 'weak-movie' in match.tags):
+        for match in matches.named('episode', lambda match: not match.private and 'weak-episode' in match.tags):
             if match.value not in episode_values:
                 episode_numbers.append(match)
                 episode_values.add(match.value)

@@ -123,9 +123,10 @@ class RemoveScreenSizeConflicts(Rule):
                                                    predicate=lambda h: h.value and h.value.strip(seps)):
                 to_remove.extend(conflicts)
 
-            date = matches.previous(screensize, lambda match: match.name == 'date', 0)
-            if date and not matches.holes(date.end, screensize.start,
-                                          predicate=lambda h: h.value and h.value.strip(seps)):
+            previous = matches.previous(screensize, index=0, predicate=(
+                lambda m: m.name in ('date', 'source', 'other', 'streaming_service')))
+            if previous and not matches.holes(previous.end, screensize.start,
+                                              predicate=lambda h: h.value and h.value.strip(seps)):
                 to_remove.extend(conflicts)
 
         return to_remove

@@ -865,15 +865,13 @@
   title: FooBar
 
 ? FooBar.07.PDTV-FlexGet
-: options: --episode-prefer-number
-  episode: 7
+: episode: 7
   source: Digital TV
   release_group: FlexGet
   title: FooBar
 
 ? FooBar.7.PDTV-FlexGet
-: options: --episode-prefer-number
-  episode: 7
+: episode: 7
   source: Digital TV
   release_group: FlexGet
   title: FooBar
@@ -1458,8 +1456,7 @@
   title: Maria the Virgin Witch
 
 ? '[ISLAND]One_Piece_679_[VOSTFR]_[V1]_[8bit]_[720p]_[EB7838FC].mp4'
-: options: -E
-  crc32: EB7838FC
+: crc32: EB7838FC
   episode: 679
   release_group: ISLAND
   screen_size: 720p
@@ -1469,8 +1466,7 @@
   version: 1
 
 ? '[ISLAND]One_Piece_679_[VOSTFR]_[8bit]_[720p]_[EB7838FC].mp4'
-: options: -E
-  crc32: EB7838FC
+: crc32: EB7838FC
   episode: 679
   release_group: ISLAND
   screen_size: 720p
@@ -1479,8 +1475,7 @@
   color_depth: 8-bit
 
 ? '[Kaerizaki-Fansub]_One_Piece_679_[VOSTFR][HD_1280x720].mp4'
-: options: -E
-  episode: 679
+: episode: 679
   other: HD
   release_group: Kaerizaki-Fansub
   screen_size: 720p
@@ -1488,8 +1483,7 @@
   subtitle_language: fr
 
 ? '[Kaerizaki-Fansub]_One_Piece_679_[VOSTFR][FANSUB][HD_1280x720].mp4'
-: options: -E
-  episode: 679
+: episode: 679
   other: [Fan Subtitled, HD]
   release_group: Kaerizaki-Fansub
   screen_size: 720p
@@ -1497,8 +1491,7 @@
   subtitle_language: fr
 
 ? '[Kaerizaki-Fansub]_One_Piece_681_[VOSTFR][HD_1280x720]_V2.mp4'
-: options: -E
-  episode: 681
+: episode: 681
   other: HD
   release_group: Kaerizaki-Fansub
   screen_size: 720p
@@ -1507,8 +1500,7 @@
   version: 2
 
 ? '[Kaerizaki-Fansub] High School DxD New 04 VOSTFR HD (1280x720) V2.mp4'
-: options: -E
-  episode: 4
+: episode: 4
   other: HD
   release_group: Kaerizaki-Fansub
   screen_size: 720p
@@ -1517,8 +1509,7 @@
   version: 2
 
 ? '[Kaerizaki-Fansub] One Piece 603 VOSTFR PS VITA (960x544) V2.mp4'
-: options: -E
-  episode: 603
+: episode: 603
   release_group: Kaerizaki-Fansub
   other: PS Vita
   screen_size: 960x544
@@ -1557,8 +1548,7 @@
 # [ShinBunBu-Subs] Bleach - 02-03 (CX 1280x720 x264 AAC)
 
 ? '[SGKK] Bleach 312v1 [720p/MKV]'
-: options: -E  # guessit 1.x for episode only when version is guessed, but it's doesn't make it consistent.
-  episode: 312
+: episode: 312
   release_group: SGKK
   screen_size: 720p
   title: Bleach
@@ -1589,16 +1579,13 @@
   title: Oniichan no Koto Nanka Zenzen Suki Janain Dakara ne
   video_codec: H.264
 
-# TODO: Add support for absolute episodes
-? Bleach - s16e03-04 - 313-314
-? Bleach.s16e03-04.313-314
-? Bleach.s16e03-04.313-314
 ? Bleach - s16e03-04 - 313-314
 ? Bleach.s16e03-04.313-314
 ? Bleach s16e03e04 313-314
-: episode: [3, 4]
+: title: Bleach
   season: 16
-  title: Bleach
+  episode: [3, 4]
+  absolute_episode: [313, 314]
 
 ? Bleach - 313-314
 : options: -E
@@ -1650,8 +1637,8 @@
   color_depth: 10-bit
 
 ? '[Hatsuyuki-Kaitou]_Fairy_Tail_2_-_16-20_(191-195)_[720p][10bit].torrent'
-: options: -E
-  episode: [16, 17, 18, 19, 20, 191, 192, 193, 194, 195]
+: episode: [16, 17, 18, 19, 20]
+  absolute_episode: [191, 192, 193, 194, 195]
   release_group: Hatsuyuki-Kaitou
   screen_size: 720p
   title: Fairy Tail 2
@@ -1703,8 +1690,7 @@
   video_codec: H.264
 
 ? "[7.1.7.8.5] Foo Bar - 11 (H.264) [5235532D].mkv"
-: options: -E
-  episode: 11
+: episode: 11
 
 ? my 720p show S01E02
 : options: -T "my 720p show"
@@ -2815,7 +2801,7 @@
   year: 2016
 
 ? Show.Name.-.476-479.(2007).[HorribleSubs][WEBRip]..[HD.720p]
-: options: -t episode -E
+: options: -t episode
   episode:
   - 476
   - 477
@@ -3632,6 +3618,16 @@
   crc32: EDA6E7F1
   type: episode
 
+? "[Zero-Raws].Show.Name.493-498.&.500-507.(CX.1280x720.VFR.x264.AAC)"
+: release_group: Zero-Raws
+  title: Show Name
+  episode: [493, 494, 495, 496, 497, 498, 500, 501, 502, 503, 504, 505, 506, 507]
+  screen_size: 720p
+  subtitle_language: fr
+  video_codec: H.264
+  audio_codec: AAC
+  type: episode
+
 # NetflixUHD
 ? Show.Name.S01E06.NetflixUHD
 : title: Show Name
@@ -3974,8 +3970,7 @@
 
 ? "[SGKK] Bleach 312v1 [720p/mkv]-Group.mkv"
 : title: Bleach
-  season: 3
-  episode: 12
+  episode: 312
   version: 1
   screen_size: 720p
   release_group: Group
@@ -4015,8 +4010,7 @@
   type: episode
 
 ? "[Despair-Paradise].Kono.Subarashii.Sekai.ni.Shukufuku.wo!.2.-..09.vostfr.FHD"
-: options: -E -t episode
-  release_group: Despair-Paradise
+: release_group: Despair-Paradise
   title: Kono Subarashii Sekai ni Shukufuku wo! 2
   episode: 9
   subtitle_language: fr
@@ -4075,6 +4069,7 @@
   container: mkv
   type: episode
 
+<<<<<<< HEAD
 ? "/folder/Marvels.Agent.Carter.S02E05.The.Atomic.Job.1080p.WEB-DL.DD5.1.H264-Coo7[rartv]/Marvel's.Agent.Carter.S02E05.The.Atomic.Job.1080p.WEB-DL.DD5.1.H.264-Coo7.mkv"
 : title: Marvel's Agent Carter
   season: 2
@@ -4479,4 +4474,229 @@
   audio_channels: '2.0'
   video_codec: H.264
   release_group: NTb
+  type: episode
+
+? "[SomeGroup-Fansub]_Show_Name_727_[VOSTFR][HD_1280x720]"
+: release_group: SomeGroup-Fansub
+  title: Show Name
+  episode: 727
+  subtitle_language: fr
+  other: HD
+  screen_size: 720p
+  type: episode
+
+? "[GROUP]Show_Name_726_[VOSTFR]_[V1]_[8bit]_[720p]_[2F7B3FA2]"
+: release_group: GROUP
+  title: Show Name
+  episode: 726
+  subtitle_language: fr
+  version: 1
+  color_depth: 8-bit
+  screen_size: 720p
+  crc32: 2F7B3FA2
+  type: episode
+
+? Show Name 445 VOSTFR par Fansub-Resistance (1280*720) - version MQ
+: title: Show Name
+  episode: 445
+  subtitle_language: fr
+  screen_size: 720p
+  type: episode
+
+? Anime Show Episode 159 v2 [VOSTFR][720p][AAC].mp4
+: title: Anime Show
+  episode: 159
+  version: 2
+  subtitle_language: fr
+  screen_size: 720p
+  audio_codec: AAC
+  container: mp4
+  type: episode
+
+? "[Group] Anime Super Episode 161 [VOSTFR][720p].mp4"
+: release_group: Group
+  title: Anime Super
+  episode: 161
+  subtitle_language: fr
+  screen_size: 720p
+  container: mp4
+  type: episode
+
+? Anime Show Episode 59 v2 [VOSTFR][720p][AAC].mp4
+: title: Anime Show
+  episode: 59
+  version: 2
+  subtitle_language: fr
+  screen_size: 720p
+  audio_codec: AAC
+  container: mp4
+  type: episode
+
+? Show.Name.-.476-479.(2007).[HorribleSubs][WEBRip]..[HD.720p]
+: title: Show Name
+  episode: [476, 477, 478, 479]
+  year: 2007
+  release_group: HorribleSubs
+  source: Web
+  other: [Rip, HD]
+  screen_size: 720p
+  type: episode
+
+? Show Name - 722 [HD_1280x720].mp4
+: title: Show Name
+  episode: 722
+  other: HD
+  screen_size: 720p
+  container: mp4
+  type: episode
+
+? Show!.Name.2.-.10.(2016).[HorribleSubs][WEBRip]..[HD.720p]
+: title: Show! Name 2
+  episode: 10
+  year: 2016
+  release_group: HorribleSubs
+  source: Web
+  other: [Rip, HD]
+  screen_size: 720p
+  type: episode
+
+? 'C:\folder\[GROUP]_An_Anime_Show_100_-_10_[1080p]_mkv'
+: options: -T 'An Anime Show 100'
+  release_group: GROUP
+  title: An Anime Show 100
+  episode: 10
+  screen_size: 1080p
+  container: mkv
+  type: episode
+
+? "[Group].Show.Name!.Super!!.-.05.[720p][AAC].mp4"
+: release_group: Group
+  title: Show Name! Super!!
+  episode: 5
+  screen_size: 720p
+  audio_codec: AAC
+  container: mp4
+  type: episode
+
+? "[GROUP].Mobile.Suit.Gundam.Unicorn.RE.0096.-.14.[720p].mkv"
+: options: -T 'Mobile Suit Gundam Unicorn RE 0096'
+  release_group: GROUP
+  title: Mobile Suit Gundam Unicorn RE 0096
+  episode: 14
+  screen_size: 720p
+  container: mkv
+  type: episode
+
+? Show.Name.-.Other Name.-.02.(1280x720.HEVC.AAC)
+: title: Show Name
+  alternative_title: Other Name
+  episode: 2
+  screen_size: 720p
+  video_codec: H.265
+  audio_codec: AAC
+  type: episode
+
+? "[GroupName].Show.Name.-.02.5.(Special).[BD.1080p]"
+: release_group: GroupName
+  title: Show Name
+  episode: 2
+  episode_details: Special
+  screen_size: 1080p
+  source: Blu-ray
+  type: episode
+
+? "[Group].Show.Name.2.The.Big.Show.-.11.[1080p]"
+: title: Show Name 2 The Big Show
+  episode: 11
+  screen_size: 1080p
+  type: episode
+
+? "[SuperGroup].Show.Name.-.Still.Name.-.11.[1080p]"
+: release_group: SuperGroup
+  title: Show Name
+  alternative_title: Still Name
+  episode: 11
+  screen_size: 1080p
+  type: episode
+
+? "[SuperGroup].Show.Name.-.462"
+: release_group: SuperGroup
+  title: Show Name
+  episode: 462
+  type: episode
+
+? Show.Name.10.720p
+: title: Show Name
+  episode: 10
+  screen_size: 720p
+  type: episode
+
+? "[Group].Show.Name.G2.-.19.[1080p]"
+: release_group: Group
+  title: Show Name G2
+  episode: 19
+  screen_size: 1080p
+  type: episode
+
+? "[Group].Show.Name.S2.-.19.[1080p]"
+? /Show.Name.S2/[Group].Show.Name.S2.-.19.[1080p]
+? /Show Name S2/[Group].Show.Name.S2.-.19.[1080p]
+: options: -T 'Show Name S2'
+  release_group: Group
+  title: Show Name S2
+  episode: 19
+  screen_size: 1080p
+  type: episode
+
+? "[ABC]_Show_Name_001.mkv"
+: release_group: ABC
+  title: Show Name
+  episode: 1
+  container: mkv
+  type: episode
+
+? 003-005. Show Name - Ep Name.mkv
+: episode: [3, 4, 5]
+  title: Show Name
+  episode_title: Ep Name
+  container: mkv
+  type: episode
+
+? 003. Show Name - Ep Name.mkv
+: episode: 3
+  title: Show Name
+  episode_title: Ep Name
+  container: mkv
+  type: episode
+
+? 165.Show Name.s08e014
+: absolute_episode: 165
+  title: Show Name
+  season: 8
+  episode: 14
+  type: episode
+
+? Show Name - 16x03-05 - 313-315
+? Show.Name.16x03-05.313-315
+? Show Name 16x03-05 313-315
+? Show Name - 313-315 - s16e03-05
+? Show.Name.313-315.s16e03-05
+? Show Name 313-315 s16e03-05
+: title: Show Name
+  absolute_episode: [313, 314, 315]
+  season: 16
+  episode: [3, 4, 5]
+  type: episode
+
+? Show Name 13-16
+: title: Show Name
+  episode: [13, 14, 15, 16]
+  type: episode
+
+? Show Name 804 vostfr HD
+: options: --episode-prefer-number
+  title: Show Name
+  episode: 804
+  subtitle_language: fr
+  other: HD
   type: episode

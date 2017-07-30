@@ -45,9 +45,10 @@ class TypeProcessor(CustomRule):
 
         episode = matches.named('episode')
         season = matches.named('season')
+        absolute_episode = matches.named('absolute_episode')
         episode_details = matches.named('episode_details')
 
-        if episode or season or episode_details:
+        if episode or season or episode_details or absolute_episode:
             return 'episode'
 
         film = matches.named('film')

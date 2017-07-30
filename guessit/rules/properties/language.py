@@ -115,7 +115,7 @@ subtitle_both = ['sub', 'subs', 'esub', 'esubs', 'subbed', 'custom subbed', 'cus
                  'custom sub', 'customsubbed', 'customsubs', 'customsub',
                  'soft subtitles', 'soft subs']
 subtitle_prefixes = sorted(subtitle_both +
-                           ['st', 'vost', 'subforced', 'fansub', 'hardsub',
+                           ['st', 'v', 'vost', 'subforced', 'fansub', 'hardsub',
                             'legenda', 'legendas', 'legendado', 'subtitulado',
                             'soft', 'subtitles'], key=length_comparator)
 subtitle_suffixes = sorted(subtitle_both +
@@ -124,7 +124,7 @@ lang_both = ['dublado', 'dubbed', 'dub']
 lang_suffixes = sorted(lang_both + ['audio'], key=length_comparator)
 lang_prefixes = sorted(lang_both + ['true'], key=length_comparator)
 
-weak_prefixes = ('audio', 'true')
+weak_prefixes = frozenset(['v', 'audio', 'true'])
 
 _LanguageMatch = namedtuple('_LanguageMatch', ['property_name', 'word', 'lang'])
 
