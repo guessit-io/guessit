@@ -374,7 +374,7 @@ class WeakConflictSolver(Rule):
                     for match in matches.range(filepart.start, filepart.end, predicate=(
                             lambda m: m.name == 'episode' and m.initiator.name != 'weak_duplicate')):
                         episode = copy.copy(match)
-                        episode.tags.append('anime')
+                        episode.tags = episode.tags + ['anime']
                         to_append.append(episode)
                         to_remove.append(match)
             elif weak_dup_matches:
@@ -477,8 +477,8 @@ class AbstractSeparatorRange(Rule):
         to_append = []
 
         for separator in matches.named(self.property_name + 'Separator'):
-            previous_match = matches.previous(separator, lambda match: match.name == self.property_name, 0)
-            next_match = matches.next(separator, lambda match: match.name == self.property_name, 0)
+            previous_match = matches.previous(separator, lambda m: m.name == self.property_name, 0)
+            next_match = matches.next(separator, lambda m: m.name == self.property_name, 0)
             initiator = separator.initiator
 
             if previous_match and next_match and separator.value in self.range_separators:
@@ -588,8 +588,9 @@ class RemoveWeakIfMovie(Rule):
             year = matches.range(filepart.start, filepart.end, predicate=lambda m: m.name == 'year', index=0)
             if year:
                 remove = True
-                next_match = matches.next(year, predicate=lambda m, fp=filepart: m.private and m.end <= fp.end, index=0)
-                if next_match and not matches.at_match(next_match, predicate=lambda m: m.name == 'year'):
+                next_match = matches.range(year.end, filepart.end, predicate=lambda m: m.private, index=0)
+                if (next_match and not matches.holes(year.end, next_match.start, predicate=lambda m: m.raw.strip(seps))
+                        and not matches.at_match(next_match, predicate=lambda m: m.name == 'year')):
                     to_ignore.add(next_match.initiator)
 
                 to_ignore.update(matches.range(filepart.start, filepart.end,
@@ -637,7 +638,7 @@ class RemoveWeakIfSxxExx(Rule):
         to_remove = []
         for filepart in matches.markers.named('path'):
             if matches.range(filepart.start, filepart.end,
-                             predicate=lambda match: not match.private and 'SxxExx' in match.tags):
+                             predicate=lambda m: not m.private and 'SxxExx' in m.tags):
                 for match in matches.range(filepart.start, filepart.end, predicate=lambda m: 'weak-episode' in m.tags):
                     if match.start != filepart.start or match.initiator.name != 'weak_episode':
                         to_remove.append(match)
@@ -721,7 +722,7 @@ class RemoveWeakDuplicate(Rule):
         for filepart in matches.markers.named('path'):
             patterns = defaultdict(list)
             for match in reversed(matches.range(filepart.start, filepart.end,
-                                                predicate=lambda match: 'weak-duplicate' in match.tags)):
+                                                predicate=lambda m: 'weak-duplicate' in m.tags)):
                 if match.pattern in patterns[match.name]:
                     to_remove.append(match)
                 else:
@@ -761,12 +762,12 @@ class RemoveDetachedEpisodeNumber(Rule):
 
         episode_numbers = []
         episode_values = set()
-        for match in matches.named('episode', lambda match: not match.private and 'weak-episode' in match.tags):
+        for match in matches.named('episode', lambda m: not m.private and 'weak-episode' in m.tags):
             if match.value not in episode_values:
                 episode_numbers.append(match)
                 episode_values.add(match.value)
 
-        episode_numbers = list(sorted(episode_numbers, key=lambda match: match.value))
+        episode_numbers = list(sorted(episode_numbers, key=lambda m: m.value))
         if len(episode_numbers) > 1 and \
                         episode_numbers[0].value < 10 and \
                                 episode_numbers[1].value - episode_numbers[0].value != 1:

@@ -167,9 +167,9 @@ class HqConflictRule(Rule):
     consequence = RemoveMatch
 
     def when(self, matches, context):
-        hq_audio = matches.named('audio_profile', lambda match: match.value == 'High Quality')
+        hq_audio = matches.named('audio_profile', lambda m: m.value == 'High Quality')
         hq_audio_spans = [match.span for match in hq_audio]
-        hq_other = matches.named('other', lambda match: match.span in hq_audio_spans)
+        hq_other = matches.named('other', lambda m: m.span in hq_audio_spans)
 
         if hq_other:
             return hq_other

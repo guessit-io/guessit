@@ -53,13 +53,11 @@ class RemoveConflictsWithEpisodeTitle(Rule):
         for filepart in matches.markers.named('path'):
             for match in matches.range(filepart.start, filepart.end,
                                        predicate=lambda m: m.name in self.affected_names):
-                before = matches.previous(match, index=0,
-                                          predicate=lambda m, fp=filepart: not m.private and m.start >= fp.start)
+                before = matches.range(filepart.start, match.start, predicate=lambda m: not m.private, index=-1)
                 if not before or before.name not in self.previous_names:
                     continue
 
-                after = matches.next(match, index=0,
-                                     predicate=lambda m, fp=filepart: not m.private and m.end <= fp.end)
+                after = matches.range(match.end, filepart.end, predicate=lambda m: not m.private, index=0)
                 if not after or after.name not in self.next_names:
                     continue
 

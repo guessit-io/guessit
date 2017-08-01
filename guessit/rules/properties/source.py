@@ -181,14 +181,14 @@ class ValidateSource(Rule):
             match = match.initiator
             if not seps_before(match) and \
                     not matches.range(match.start - 1, match.start - 2,
-                                      lambda match: 'source-prefix' in match.tags):
+                                      lambda m: 'source-prefix' in m.tags):
                 if match.children:
                     ret.extend(match.children)
                 ret.append(match)
                 continue
             if not seps_after(match) and \
                     not matches.range(match.end, match.end + 1,
-                                      lambda match: 'source-suffix' in match.tags):
+                                      lambda m: 'source-suffix' in m.tags):
                 if match.children:
                     ret.extend(match.children)
                 ret.append(match)
