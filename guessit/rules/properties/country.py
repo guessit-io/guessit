@@ -92,6 +92,9 @@ def is_allowed_country(country_object, context=None):
 
 
 def is_ignore_country(string):
+    """
+    Check if to ignore country serach (with no regards to the 'allowed_countries' flag value)
+    """
     # Clean string: replace spaces with dot to allow comparing strings and lowercase
     string = string.replace(' ', '.').lower()
     return 'this.is.us' not in string
