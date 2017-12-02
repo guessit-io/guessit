@@ -59,9 +59,9 @@ def audio_codec():
     rebulk.string('EX', value='EX', tags='Dolby Digital')
 
     rebulk.defaults(name="audio_channels")
-    rebulk.regex(r'(7[\W_][01](?:ch)?)(?:[^\d]|$)', value='7.1', children=True)
-    rebulk.regex(r'(5[\W_][01](?:ch)?)(?:[^\d]|$)', value='5.1', children=True)
-    rebulk.regex(r'(2[\W_]0(?:ch)?)(?:[^\d]|$)', value='2.0', children=True)
+    rebulk.regex(r'(7[\W_][01](?:ch)?)(?=[^\d]|$)', value='7.1', children=True)
+    rebulk.regex(r'(5[\W_][01](?:ch)?)(?=[^\d]|$)', value='5.1', children=True)
+    rebulk.regex(r'(2[\W_]0(?:ch)?)(?=[^\d]|$)', value='2.0', children=True)
     rebulk.regex('7[01]', value='7.1', validator=seps_after, tags='weak-audio_channels')
     rebulk.regex('5[01]', value='5.1', validator=seps_after, tags='weak-audio_channels')
     rebulk.string('20', value='2.0', validator=seps_after, tags='weak-audio_channels')

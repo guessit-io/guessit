@@ -29,13 +29,13 @@ def language():
                   validator=seps_surround)
     rebulk.string(*lang_suffixes, name="language.suffix", ignore_case=True, private=True,
                   validator=seps_surround, tags=['source-suffix'])
-    rebulk.functional(find_languages, properties={'language': [None]})
+    rebulk.functional(find_languages,
+                      properties={'language': [None]},
+                      disabled=lambda context: not context.get('allowed_languages'))
     rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
 
     return rebulk
 
-
-COMMON_WORDS_STRICT = frozenset(['brazil'])
 
 UNDETERMINED = babelfish.Language('und')
 
@@ -44,6 +44,8 @@ SYN = {('ell', None): ['gr', 'greek'],
        ('fra', None): ['français', 'vf', 'vff', 'vfi', 'vfq'],
        ('swe', None): ['se'],
        ('por', 'BR'): ['po', 'pb', 'pob', 'ptbr', 'br', 'brazilian'],
+       ('deu', 'CH'): ['swissgerman', 'swiss german'],
+       ('nld', 'BE'): ['flemish'],
        ('cat', None): ['català', 'castellano', 'espanol castellano', 'español castellano'],
        ('ces', None): ['cz'],
        ('ukr', None): ['ua'],
@@ -76,15 +78,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
         return str(babelfish.Language(alpha3, country, script))
 
     def reverse(self, name):  # pylint:disable=arguments-differ
-        with_country = (GuessitConverter._with_country_regexp.match(name) or
-                        GuessitConverter._with_country_regexp2.match(name))
-
         name = name.lower()
-        if with_country:
-            lang = babelfish.Language.fromguessit(with_country.group(1).strip())
-            lang.country = babelfish.Country.fromguessit(with_country.group(2).strip())
-            return lang.alpha3, lang.country.alpha2 if lang.country else None, lang.script or None
-
         # exceptions come first, as they need to override a potential match
         # with any of the other guessers
         try:
@@ -96,7 +90,8 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
                      babelfish.Language.fromalpha3b,
                      babelfish.Language.fromalpha2,
                      babelfish.Language.fromname,
-                     babelfish.Language.fromopensubtitles]:
+                     babelfish.Language.fromopensubtitles,
+                     babelfish.Language.fromietf]:
             try:
                 reverse = conv(name)
                 return reverse.alpha3, reverse.country, reverse.script
@@ -175,10 +170,17 @@ def to_rebulk_match(language_match):
     end = word.end
     name = language_match.property_name
     if language_match.lang == UNDETERMINED:
-        return start, end, dict(name=name, value=word.value.lower(),
-                                formatter=babelfish.Language, tags=['weak-language'])
+        return start, end, {
+            'name': name,
+            'value': word.value.lower(),
+            'formatter': babelfish.Language,
+            'tags': ['weak-language']
+        }
 
-    return start, end, dict(name=name, value=language_match.lang)
+    return start, end, {
+        'name': name,
+        'value': language_match.lang
+    }
 
 
 class LanguageFinder(object):
@@ -187,9 +189,8 @@ class LanguageFinder(object):
     """
 
     def __init__(self, allowed_languages):
-        self.parsed = dict()
-        self.allowed_languages = allowed_languages
-        self.common_words = COMMON_WORDS_STRICT if allowed_languages else COMMON_WORDS
+        self.allowed_languages = set([l.lower() for l in allowed_languages or []])
+        self.common_words = COMMON_WORDS
 
     def find(self, string):
         """
@@ -250,11 +251,11 @@ class LanguageFinder(object):
         """
         tuples = [
             (language_word, language_word.next_word,
-             dict(subtitle_language=subtitle_prefixes, language=lang_prefixes),
+             {'subtitle_language': subtitle_prefixes, 'language': lang_prefixes},
              lambda string, prefix: string.startswith(prefix),
              lambda string, prefix: string[len(prefix):]),
             (language_word.next_word, language_word,
-             dict(subtitle_language=subtitle_suffixes, language=lang_suffixes),
+             {'subtitle_language': subtitle_suffixes, 'language': lang_suffixes},
              lambda string, suffix: string.endswith(suffix),
              lambda string, suffix: string[:len(string) - len(suffix)])
         ]
@@ -329,26 +330,15 @@ class LanguageFinder(object):
 
         Multi and Undetermined languages are also valid languages.
         """
-        if lang_word in self.parsed:
-            return self.parsed[lang_word]
-
         try:
             lang = babelfish.Language.fromguessit(lang_word)
-            if self.allowed_languages:
-                if (hasattr(lang, 'name') and lang.name.lower() in self.allowed_languages) \
-                        or (hasattr(lang, 'alpha2') and lang.alpha2.lower() in self.allowed_languages) \
-                        or lang.alpha3.lower() in self.allowed_languages:
-                    self.parsed[lang_word] = lang
-                    return lang
-            # Keep language with alpha2 equivalent. Others are probably
-            # uncommon languages.
-            elif lang in ('mul', UNDETERMINED) or hasattr(lang, 'alpha2'):
-                self.parsed[lang_word] = lang
+            if ((hasattr(lang, 'name') and lang.name.lower() in self.allowed_languages) or
+                    (hasattr(lang, 'alpha2') and lang.alpha2.lower() in self.allowed_languages) or
+                    lang.alpha3.lower() in self.allowed_languages):
                 return lang
 
-            self.parsed[lang_word] = None
         except babelfish.Error:
-            self.parsed[lang_word] = None
+            pass
 
 
 def find_languages(string, context=None):
@@ -356,7 +346,8 @@ def find_languages(string, context=None):
 
     :return: list of tuple (property, Language, lang_word, word)
     """
-    return LanguageFinder(context.get('allowed_languages')).find(string)
+    allowed_languages = context.get('allowed_languages') if context else None
+    return LanguageFinder(allowed_languages).find(string)
 
 
 class SubtitlePrefixLanguageRule(Rule):
