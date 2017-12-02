@@ -92,6 +92,8 @@ History
 - Added `Extended Surround` as new `audio_profile` possible value.
 - Added `EX` as new `audio_profile` possible value
 - Added `Opus` as new `audio_codec` possible value
+- Added `aspect_ratio` as new property. Also used to validate if a screen_size is a standard resolution.
+
 
 2.1.4 (2017-06-01)
 ------------------
