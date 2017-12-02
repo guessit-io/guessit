@@ -23,7 +23,7 @@ def bonus():
     rebulk.regex(r'x(\d+)', name='bonus', private_parent=True, children=True, formatter=int,
                  validator={'__parent__': lambda match: seps_surround},
                  conflict_solver=lambda match, conflicting: match
-                 if conflicting.name in ['video_codec', 'episode'] and 'bonus-conflict' not in conflicting.tags
+                 if conflicting.name in ('video_codec', 'episode') and 'weak-episode' not in conflicting.tags
                  else '__default__')
 
     rebulk.rules(BonusTitleRule)

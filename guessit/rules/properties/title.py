@@ -154,7 +154,7 @@ class TitleBaseRule(Rule):
 
         holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
                               ignore=self.is_ignored,
-                              predicate=lambda hole: hole.value)
+                              predicate=lambda m: m.value)
 
         holes = self.holes_process(holes, matches)
 
@@ -171,7 +171,7 @@ class TitleBaseRule(Rule):
             if ignored_matches:
                 for ignored_match in reversed(ignored_matches):
                     # pylint:disable=undefined-loop-variable
-                    trailing = matches.chain_before(hole.end, seps, predicate=lambda match: match == ignored_match)
+                    trailing = matches.chain_before(hole.end, seps, predicate=lambda m: m == ignored_match)
                     if trailing:
                         should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, False)
                         if should_keep:
@@ -188,7 +188,7 @@ class TitleBaseRule(Rule):
                 for ignored_match in ignored_matches:
                     if ignored_match not in to_keep:
                         starting = matches.chain_after(hole.start, seps,
-                                                       predicate=lambda match: match == ignored_match)
+                                                       predicate=lambda m: m == ignored_match)
                         if starting:
                             should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, True)
                             if should_keep:
@@ -214,7 +214,7 @@ class TitleBaseRule(Rule):
                 hole.tags = self.match_tags
                 if self.alternative_match_name:
                     # Split and keep values that can be a title
-                    titles = hole.split(title_seps, lambda match: match.value)
+                    titles = hole.split(title_seps, lambda m: m.value)
                     for title_match in list(titles[1:]):
                         previous_title = titles[titles.index(title_match) - 1]
                         separator = matches.input_string[previous_title.end:title_match.start]
@@ -302,7 +302,7 @@ class PreferTitleWithYear(Rule):
             if filepart:
                 year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
                 if year_match:
-                    group = matches.markers.at_match(year_match, lambda group: group.name == 'group')
+                    group = matches.markers.at_match(year_match, lambda m: m.name == 'group')
                     if group:
                         with_year_in_group.append(title_match)
                     else:
