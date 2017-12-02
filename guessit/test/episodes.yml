@@ -4420,3 +4420,63 @@
   # release_group: OZM
   type: episode
 
+? The.Prisoners.S01E03.1080p.DM.AAC2.0.x264-BTN
+: title: The Prisoners
+  season: 1
+  episode: 3
+  screen_size: 1080p
+  source: Digital Master
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: BTN
+  type: episode
+
+? Panorama.S2013E25.Broken.by.Battle.1080p.DM.AAC2.0.x264-BTN
+: title: Panorama
+  season: 2013
+  episode: 25
+  episode_title: Broken by Battle
+  screen_size: 1080p
+  source: Digital Master
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: BTN
+  type: episode
+
+? Our.World.S2014E11.Chinas.Model.Army.720p.DM.AAC2.0.x264-BTN
+: title: Our World
+  season: 2014
+  episode: 11
+  episode_title: Chinas Model Army
+  screen_size: 720p
+  source: Digital Master
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: BTN
+  type: episode
+
+? Storyville.S2016E08.My.Nazi.Legacy.1080p.DM.x264-BTN
+: title: Storyville
+  season: 2016
+  episode: 8
+  episode_title: My Nazi Legacy
+  screen_size: 1080p
+  source: Digital Master
+  video_codec: H.264
+  release_group: BTN
+  type: episode
+
+? Comedians.in.Cars.Getting.Coffee.S07E01.1080p.DM.FLAC2.0.x264-NTb
+: title: Comedians in Cars Getting Coffee
+  season: 7
+  episode: 1
+  screen_size: 1080p
+  source: Digital Master
+  audio_codec: FLAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: NTb
+  type: episode
