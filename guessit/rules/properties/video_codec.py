@@ -29,7 +29,7 @@ def video_codec():
     rebulk.string('VP8', 'VP80', value='VP8')
     rebulk.string('VP9', value='VP9')
     rebulk.regex('[hx]-?263', value='H.263')
-    rebulk.regex('[hx]-?264(?:-?AVC(?:HD)?)?', 'MPEG-?4(?:-?AVC(?:HD)?)', 'AVC(?:HD)?', value='H.264')
+    rebulk.regex('[hx]-?264(?:-?AVC(?:HD)?)?(?:-?SC)?', 'MPEG-?4(?:-?AVC(?:HD)?)', 'AVC(?:HD)?(?:-?SC)?', value='H.264')
     rebulk.regex('[hx]-?265(?:-?HEVC)?', 'HEVC', value='H.265')
     rebulk.regex('(?P<video_codec>hevc)(?P<color_depth>10)', value={'video_codec': 'H.265', 'color_depth': '10-bit'},
                  tags=['video-codec-suffix'], children=True)

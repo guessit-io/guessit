@@ -94,6 +94,9 @@ class DashSeparatedReleaseGroup(Rule):
         Whether a candidate is a valid release group.
         """
         if not at_end:
+            if len(candidate.value) <= 1:
+                return False
+
             if matches.markers.at_match(candidate, predicate=lambda m: m.name == 'group'):
                 return False
 
