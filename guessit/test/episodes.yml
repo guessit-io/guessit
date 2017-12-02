@@ -4338,3 +4338,14 @@
   episode_title: AKA Sin Bin
   container: mkv
   type: episode
+
+? Hotel.Hell.S01E01.720p.DD5.1.448kbps-ALANiS
+: title: Hotel Hell
+  season: 1
+  episode: 1
+  screen_size: 720p
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  audio_bit_rate: 448Kbps
+  release_group: ALANiS
+  type: episode

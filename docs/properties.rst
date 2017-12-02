@@ -180,6 +180,13 @@ Video properties
   - ``DXVA``
 
 
+- **video_bit_rate**
+
+  Video bit rate (Mbps). Examples: ``25Mbps`` (``<BitRate [25Mbps]>``), ``40Mbps`` (``<BitRate [40Mbps]>``).
+
+  - ``[<guessit.BitRate>]`` (object has ``magnitude`` and ``units``)
+
+
 Audio properties
 ----------------
 
@@ -204,6 +211,13 @@ Audio properties
 
   - ``Extended Surround``, ``EX``, ``High Efficiency``, ``High Quality``, ``High Resolution Audio``, ``Low Complexity``,
     ``Master Audio``
+
+
+- **audio_bit_rate**
+
+  Audio bit rate (Kbps, Mbps). Examples: ``448Kbps`` (``<BitRate [448Kbps]>``), ``1.5Mbps`` (``<BitRate [1.5Mbps]>``).
+
+  - ``[<guessit.BitRate>]`` (object has ``magnitude`` and ``units``)
 
 
 Localization properties
@@ -265,7 +279,9 @@ Other properties
 
 - **size**
 
-  Size (MB, GB, TB).
+  Size (MB, GB, TB). Examples: ``1.2GB`` (``<Size [1.2GB]>``), ``430MB`` (``<Size [430MB]>``).
+
+  - ``[<guessit.Size>]`` (object has ``magnitude`` and ``units``)
 
 
 - **edition**
