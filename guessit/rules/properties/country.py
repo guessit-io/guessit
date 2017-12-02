@@ -91,19 +91,29 @@ def is_allowed_country(country_object, context=None):
     return True
 
 
+def is_ignore_country(string):
+    """
+    Check if to ignore country serach (with no regards to the 'allowed_countries' flag value)
+    """
+    # Clean string: replace spaces with dot to allow comparing strings and lowercase
+    string = string.replace(' ', '.').lower()
+    return 'this.is.us' not in string
+
+
 def find_countries(string, context=None):
     """
     Find countries in given string.
     """
     ret = []
-    for word_match in iter_words(string.strip().lower()):
-        word = word_match.value
-        if word.lower() in COMMON_WORDS:
-            continue
-        try:
-            country_object = babelfish.Country.fromguessit(word)
-            if is_allowed_country(country_object, context):
-                ret.append((word_match.span[0], word_match.span[1], {'value': country_object}))
-        except babelfish.Error:
-            continue
+    if is_ignore_country(string):
+        for word_match in iter_words(string.strip().lower()):
+            word = word_match.value
+            if word.lower() in COMMON_WORDS:
+                continue
+            try:
+                country_object = babelfish.Country.fromguessit(word)
+                if is_allowed_country(country_object, context):
+                    ret.append((word_match.span[0], word_match.span[1], {'value': country_object}))
+            except babelfish.Error:
+                continue
     return ret
