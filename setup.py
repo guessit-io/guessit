@@ -23,7 +23,7 @@ setup_requires = ['pytest-runner']
 
 dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-autobuild']
 
-tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'pytest-capturelog', 'PyYAML']
+tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'PyYAML']
 
 package_data = ['config/*']
 
