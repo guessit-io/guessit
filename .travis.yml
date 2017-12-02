@@ -4,7 +4,6 @@ python:
   - 3.4
   - 3.5
   - 3.6
-  - 3.7
   - pypy-5.4.1
 install:
   - pip install pip --upgrade
