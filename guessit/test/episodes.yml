@@ -2185,7 +2185,7 @@
   episode: 1
   source: HDTV
   mimetype: video/x-matroska
-  release_group: DIMENSION[rarbg]
+  release_group: DIMENSION
   screen_size: 1080p
   season: 10
   title: The B B T
@@ -4060,6 +4060,32 @@
   source: Web
   streaming_service: iTunes
   audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: VLAD
+  container: mkv
+  type: episode
+
+? "/folder/Marvels.Agent.Carter.S02E05.The.Atomic.Job.1080p.WEB-DL.DD5.1.H264-Coo7[rartv]/Marvel's.Agent.Carter.S02E05.The.Atomic.Job.1080p.WEB-DL.DD5.1.H.264-Coo7.mkv"
+: title: Marvel's Agent Carter
+  season: 2
+  episode: 5
+  episode_title: The Atomic Job
+  screen_size: 1080p
+  source: Web
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: Coo7
+  type: episode
+
+? Fear.the.Walking.Dead.S03E07.1080p.AMZN.WEBRip.DD5.1.x264-VLAD[rarbg]/Fear.the.Walking.Dead.S03E07.1080p.AMZN.WEB-DL.DD+5.1.H.264-VLAD.mkv
+: title: Fear the Walking Dead
+  season: 3
+  episode: 7
+  screen_size: 1080p
+  source: Web
+  audio_codec: Dolby Digital Plus
   audio_channels: '5.1'
   video_codec: H.264
   release_group: VLAD
