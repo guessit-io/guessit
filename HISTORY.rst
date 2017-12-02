@@ -102,6 +102,13 @@ History
 - Added `audio_video_rate` as new possible property.
 - Added `video_video_rate` as new possible property.
 - Added `disc` as a new possible property.
+- Added `H.263` as new `video_codec` possible value.
+- Added `VP7` as new `video_codec` possible value.
+- Added `VP8` as new `video_codec` possible value.
+- Added `VP9` as new `video_codec` possible value.
+- Added `Vorbis` as new `audio_codec` possible value.
+- Added `PCM` as new `audio_codec` possible value.
+- Added `LPCM` as new `audio_codec` possible value.
 
 2.1.4 (2017-06-01)
 ------------------

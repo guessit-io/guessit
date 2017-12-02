@@ -45,9 +45,13 @@ def audio_codec():
     rebulk.string('EAC3', 'DDP', 'DD+', value='Dolby Digital Plus')
     rebulk.string("Flac", value="FLAC")
     rebulk.string("DTS", value="DTS")
-    rebulk.regex('DTS-?HD', value='DTS-HD')
+    rebulk.regex('DTS-?HD', 'DTS(?=-?MA)', value='DTS-HD',
+                 conflict_solver=lambda match, other: other if other.name == 'audio_codec' else '__default__')
     rebulk.regex('True-?HD', value='Dolby TrueHD')
     rebulk.string('Opus', value='Opus')
+    rebulk.string('Vorbis', value='Vorbis')
+    rebulk.string('PCM', value='PCM')
+    rebulk.string('LPCM', value='LPCM')
 
     rebulk.defaults(name='audio_profile')
     rebulk.string('MA', value='Master Audio', tags='DTS-HD')

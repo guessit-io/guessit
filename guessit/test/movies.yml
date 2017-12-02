@@ -1546,3 +1546,68 @@
   video_codec: H.264
   container: mkv
   type: movie
+
+? FROZEN [2010] LiMiTED DVDRip H262 AAC[ ENG SUBS]-MANTESH
+: title: FROZEN
+  year: 2010
+  edition: Limited
+  source: DVD
+  other: Rip
+  video_codec: MPEG-2
+  audio_codec: AAC
+  subtitle_language: english
+  release_group: MANTESH
+  type: movie
+
+? Family.Katta.2016.1080p.WEB-DL.H263.DD5.1.ESub-DDR
+: title: Family Katta
+  year: 2016
+  screen_size: 1080p
+  source: Web
+  video_codec: H.263
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  subtitle_language: und
+  release_group: DDR
+  type: movie
+
+? Bad Boys 2 1080i.mpg2.rus.eng.ts
+: title: Bad Boys 2
+  screen_size: 1080i
+  video_codec: MPEG-2
+  language: [russian, english]
+  container: ts
+  type: movie
+
+? Alien.Director.Cut.Ita.Eng.VP9.Opus.AlphaBot.webm
+: title: Alien
+  edition: Director's Cut
+  language: [english, italian]
+  video_codec: VP9
+  audio_codec: Opus
+  release_group: AlphaBot
+  container: webm
+  type: movie
+
+? The.Stranger.1946.US.(Kino.Classics).Bluray.1080p.LPCM.DD-2.0.x264-Grym@BTNET
+: title: The Stranger
+  year: 1946
+  country: US
+  source: Blu-ray
+  screen_size: 1080p
+  audio_codec: [LPCM, Dolby Digital]
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: Grym@BTNET
+  type: movie
+
+? X-Men.Apocalypse.2016.complete.hdts.pcm.TrueFrench-Scarface45.avi
+: title: X-Men Apocalypse
+  year: 2016
+  other: Complete
+  source: HD Telesync
+  audio_codec: PCM
+  language: french
+  release_group: Scarface45
+  container: avi
+  type: movie

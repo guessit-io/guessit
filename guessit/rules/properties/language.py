@@ -111,7 +111,7 @@ def length_comparator(value):
 babelfish.language_converters['guessit'] = GuessitConverter()
 
 
-subtitle_both = ['sub', 'subs', 'subbed', 'custom subbed', 'custom subs',
+subtitle_both = ['sub', 'subs', 'esub', 'esubs', 'subbed', 'custom subbed', 'custom subs',
                  'custom sub', 'customsubbed', 'customsubs', 'customsub',
                  'soft subtitles', 'soft subs']
 subtitle_prefixes = sorted(subtitle_both +
