@@ -9,6 +9,7 @@ from rebulk import Rebulk
 from rebulk.rules import Rule, RemoveMatch
 
 from ...rules.common import seps, dash
+from ...rules.common.validators import seps_before, seps_after
 
 
 def streaming_service():  # pylint: disable=too-many-statements
@@ -174,13 +175,17 @@ class ValidateStreamingService(Rule):
             previous_match = matches.previous(service, lambda match: 'streaming_service.prefix' in match.tags, 0)
             has_other = service.initiator and service.initiator.children.named('other')
 
-            if not has_other and \
-                (not next_match or matches.holes(service.end, next_match.start,
-                                                 predicate=lambda match: match.value.strip(seps))) and \
-                (not previous_match or matches.holes(previous_match.end, service.start,
-                                                     predicate=lambda match: match.value.strip(seps))):
-                to_remove.append(service)
-                continue
+            if not has_other:
+                if (not next_match or
+                        matches.holes(service.end, next_match.start,
+                                      predicate=lambda match: match.value.strip(seps)) or
+                        not seps_before(service)):
+                    if (not previous_match or
+                            matches.holes(previous_match.end, service.start,
+                                          predicate=lambda match: match.value.strip(seps)) or
+                            not seps_after(service)):
+                        to_remove.append(service)
+                        continue
 
             if service.value == 'Comedy Central':
                 # Current match is a valid streaming service, removing invalid Criterion Collection (CC) matches
