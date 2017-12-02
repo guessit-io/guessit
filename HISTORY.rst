@@ -101,6 +101,7 @@ History
 - Changed `size` output to return `guessit.Size` object.
 - Added `audio_video_rate` as new possible property.
 - Added `video_video_rate` as new possible property.
+- Added `disc` as a new possible property.
 
 2.1.4 (2017-06-01)
 ------------------

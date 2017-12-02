@@ -4349,3 +4349,41 @@
   audio_bit_rate: 448Kbps
   release_group: ALANiS
   type: episode
+
+? Greys.Anatomy.S07D1.NTSC.DVDR-ToF
+: title: Greys Anatomy
+  season: 7
+  disc: 1
+  other: NTSC
+  source: DVD
+  release_group: ToF
+  type: episode
+
+? Greys.Anatomy.S07D1.NTSC.DVDR-ToF
+: title: Greys Anatomy
+  season: 7
+  disc: 1
+  other: NTSC
+  source: DVD
+  release_group: ToF
+  type: episode
+
+? Greys.Anatomy.S07D1-3&5.NTSC.DVDR-ToF
+: title: Greys Anatomy
+  season: 7
+  disc: [1, 2, 3, 5]
+  other: NTSC
+  source: DVD
+  release_group: ToF
+  type: episode
+
+? El.Principe.2014.S01D01.SPANiSH.COMPLETE.BLURAY-COJONUDO
+: title: El Principe
+  year: 2014
+  season: 1
+  disc: 1
+  language: spa
+  other: Complete
+  source: Blu-ray
+  release_group: COJONUDO
+  type: episode
