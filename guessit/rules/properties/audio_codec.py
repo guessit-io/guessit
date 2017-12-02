@@ -45,9 +45,13 @@ def audio_codec():
     rebulk.string('EAC3', 'DDP', 'DD+', value='Dolby Digital Plus')
     rebulk.string("Flac", value="FLAC")
     rebulk.string("DTS", value="DTS")
-    rebulk.regex('DTS-?HD', value='DTS-HD')
+    rebulk.regex('DTS-?HD', 'DTS(?=-?MA)', value='DTS-HD',
+                 conflict_solver=lambda match, other: other if other.name == 'audio_codec' else '__default__')
     rebulk.regex('True-?HD', value='Dolby TrueHD')
     rebulk.string('Opus', value='Opus')
+    rebulk.string('Vorbis', value='Vorbis')
+    rebulk.string('PCM', value='PCM')
+    rebulk.string('LPCM', value='LPCM')
 
     rebulk.defaults(name='audio_profile')
     rebulk.string('MA', value='Master Audio', tags='DTS-HD')
@@ -59,9 +63,9 @@ def audio_codec():
     rebulk.string('EX', value='EX', tags='Dolby Digital')
 
     rebulk.defaults(name="audio_channels")
-    rebulk.regex(r'(7[\W_][01](?:ch)?)(?:[^\d]|$)', value='7.1', children=True)
-    rebulk.regex(r'(5[\W_][01](?:ch)?)(?:[^\d]|$)', value='5.1', children=True)
-    rebulk.regex(r'(2[\W_]0(?:ch)?)(?:[^\d]|$)', value='2.0', children=True)
+    rebulk.regex(r'(7[\W_][01](?:ch)?)(?=[^\d]|$)', value='7.1', children=True)
+    rebulk.regex(r'(5[\W_][01](?:ch)?)(?=[^\d]|$)', value='5.1', children=True)
+    rebulk.regex(r'(2[\W_]0(?:ch)?)(?=[^\d]|$)', value='2.0', children=True)
     rebulk.regex('7[01]', value='7.1', validator=seps_after, tags='weak-audio_channels')
     rebulk.regex('5[01]', value='5.1', validator=seps_after, tags='weak-audio_channels')
     rebulk.string('20', value='2.0', validator=seps_after, tags='weak-audio_channels')

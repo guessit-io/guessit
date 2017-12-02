@@ -67,6 +67,8 @@ def source():
                  value={'source': 'Digital TV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('DVD', suffix=rip_optional_suffix),
                  value={'source': 'DVD', 'other': 'Rip'})
+    rebulk.regex(*build_source_pattern('DM', suffix=rip_optional_suffix),
+                 value={'source': 'Digital Master', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('VIDEO-?TS', 'DVD-?R(?:$|(?!E))',  # 'DVD-?R(?:$|^E)' => DVD-Real ...
                                        'DVD-?9', 'DVD-?5'), value='DVD')
 
@@ -85,7 +87,7 @@ def source():
     # WEBCap is a synonym to WEBRip, mostly used by non english
     rebulk.regex(*build_source_pattern('WEB-?(?P<another>Cap)', suffix=rip_optional_suffix),
                  value={'source': 'Web', 'other': 'Rip', 'another': 'Rip'})
-    rebulk.regex(*build_source_pattern('WEB-?DL', 'WEB-?HD', 'WEB', 'DL-?WEB', 'DL(?=-?Mux)'),
+    rebulk.regex(*build_source_pattern('WEB-?DL', 'WEB-?U?HD', 'WEB', 'DL-?WEB', 'DL(?=-?Mux)'),
                  value={'source': 'Web'})
 
     rebulk.regex(*build_source_pattern('HD-?DVD', suffix=rip_optional_suffix),

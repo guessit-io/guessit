@@ -149,7 +149,7 @@ class TestYml(object):
 
     @pytest.mark.parametrize('filename', files, ids=ids)
     def test(self, filename, caplog):
-        caplog.setLevel(logging.INFO)
+        caplog.set_level(logging.INFO)
         with open(os.path.join(__location__, filename), 'r', encoding='utf-8') as infile:
             data = yaml.load(infile, OrderedDictYAMLLoader)
         entries = Results()

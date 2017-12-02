@@ -49,6 +49,7 @@
 : audio_codec: DTS-HD
 
 ? +DTS-HDma
+? +DTSMA
 : audio_codec: DTS-HD
   audio_profile: Master Audio
 
@@ -119,3 +120,12 @@
 
 ? OPUS
 : audio_codec: Opus
+
+? Vorbis
+: audio_codec: Vorbis
+
+? PCM
+: audio_codec: PCM
+
+? LPCM
+: audio_codec: LPCM

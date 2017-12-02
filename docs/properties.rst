@@ -92,6 +92,11 @@ Episode properties
   Episode number. (Can be a list if several are found)
 
 
+- **disc**
+
+  Disc number. (Can be a list if several are found)
+
+
 - **episode_count**
 
   Total number of episodes.
@@ -135,9 +140,9 @@ Video properties
 
   Source of the release
 
-  - ``Analogue HDTV``, ``Blu-ray``, ``Camera``, ``Digital TV``, ``DVD``, ``HD Camera``, ``HD Telecine``,
-    ``HD Telesync``, ``HD-DVD``, ``HDTV``, ``Pay-per-view``, ``Satellite``, ``Telecine``, ``Telesync``, ``TV``,
-    ``Ultra HD Blu-ray``, ``Ultra HDTV``, ``VHS``, ``Video on Demand``, ``Web``, ``Workprint``
+  - ``Analogue HDTV``, ``Blu-ray``, ``Camera``, ``Digital Master``, ``Digital TV``, ``DVD``, ``HD Camera``,
+    ``HD Telecine``, ``HD Telesync``, ``HD-DVD``, ``HDTV``, ``Pay-per-view``, ``Satellite``, ``Telecine``, ``Telesync``,
+    ``TV``, ``Ultra HD Blu-ray``, ``Ultra HDTV``, ``VHS``, ``Video on Demand``, ``Web``, ``Workprint``
 
 
 - **screen_size**
@@ -148,11 +153,16 @@ Video properties
     ``900p``, ``1080i``, ``1080p``, ``2160p``, ``4320p``
 
 
+- **aspect_ratio**
+
+  Aspect ratio of video. Calculated using width and height from ``screen_size``
+
+
 - **video_codec**
 
   Codec used for video.
 
-  - ``DivX``, ``H.264``, ``H.265``, ``MPEG-2``, ``RealVideo``, ``Xvid``
+  - ``DivX``, ``H.263``, ``H.264``, ``H.265``, ``MPEG-2``, ``RealVideo``, ``VP7``, ``VP8``, ``VP9``,``Xvid``
 
 
 - **video_profile**
@@ -175,6 +185,13 @@ Video properties
   - ``DXVA``
 
 
+- **video_bit_rate**
+
+  Video bit rate (Mbps). Examples: ``25Mbps`` (``<BitRate [25Mbps]>``), ``40Mbps`` (``<BitRate [40Mbps]>``).
+
+  - ``[<guessit.BitRate>]`` (object has ``magnitude`` and ``units``)
+
+
 Audio properties
 ----------------
 
@@ -189,8 +206,8 @@ Audio properties
 
   Codec used for audio.
 
-  - ``AAC``, ``Dolby Atmos``, ``Dolby Digital``, ``Dolby Digital Plus``, ``Dolby TrueHD``, ``DTS``,  ``FLAC``, ``MP3``,
-    ``Opus``
+  - ``AAC``, ``Dolby Atmos``, ``Dolby Digital``, ``Dolby Digital Plus``, ``Dolby TrueHD``, ``DTS``,  ``FLAC``, ``LPCM``,
+    ``MP3``, ``Opus``, ``PCM``, ``Vorbis``
 
 
 - **audio_profile**
@@ -199,6 +216,13 @@ Audio properties
 
   - ``Extended Surround``, ``EX``, ``High Efficiency``, ``High Quality``, ``High Resolution Audio``, ``Low Complexity``,
     ``Master Audio``
+
+
+- **audio_bit_rate**
+
+  Audio bit rate (Kbps, Mbps). Examples: ``448Kbps`` (``<BitRate [448Kbps]>``), ``1.5Mbps`` (``<BitRate [1.5Mbps]>``).
+
+  - ``[<guessit.BitRate>]`` (object has ``magnitude`` and ``units``)
 
 
 Localization properties
@@ -260,7 +284,9 @@ Other properties
 
 - **size**
 
-  Size (MB, GB, TB).
+  Size (MB, GB, TB). Examples: ``1.2GB`` (``<Size [1.2GB]>``), ``430MB`` (``<Size [430MB]>``).
+
+  - ``[<guessit.Size>]`` (object has ``magnitude`` and ``units``)
 
 
 - **edition**

@@ -92,6 +92,24 @@ History
 - Added `Extended Surround` as new `audio_profile` possible value.
 - Added `EX` as new `audio_profile` possible value
 - Added `Opus` as new `audio_codec` possible value
+- Added `aspect_ratio` as new property. Also used to validate if a screen_size is a standard resolution.
+- Fixed unwanted language and country detection for exotic languages.
+- Added default and configurable list of allowed languages and countries
+- Added `VC-1` as new `video_codec` possible value
+- Enhanced dash-separated `release_group` detection.
+- Changed `size` output to return `guessit.Quantity` object.
+- Changed `size` output to return `guessit.Size` object.
+- Added `audio_video_rate` as new possible property.
+- Added `video_video_rate` as new possible property.
+- Added `disc` as a new possible property.
+- Added `H.263` as new `video_codec` possible value.
+- Added `VP7` as new `video_codec` possible value.
+- Added `VP8` as new `video_codec` possible value.
+- Added `VP9` as new `video_codec` possible value.
+- Added `Vorbis` as new `audio_codec` possible value.
+- Added `PCM` as new `audio_codec` possible value.
+- Added `LPCM` as new `audio_codec` possible value.
+- Added `Digital Master` as new `source` possible value.
 
 2.1.4 (2017-06-01)
 ------------------

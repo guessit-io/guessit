@@ -313,3 +313,11 @@
 ? BDRip.[4K-2160p-UHD]
 : source: Ultra HD Blu-ray
   other: Rip
+
+? DM
+: source: Digital Master
+
+? DMRIP
+? DM-RIP
+: source: Digital Master
+  other: Rip

@@ -816,3 +816,89 @@
   title: Duck Dynasty
   type: episode
   video_codec: H.264
+
+? ATKExotics.16.01.24.Ava.Alba.Watersports.XXX.1080p.MP4-KTR
+: title: ATKExotics
+  episode_title: Ava Alba Watersports
+  other: XXX
+  screen_size: 1080p
+  container: mp4
+  release_group: KTR
+  type: episode
+
+? PutaLocura.15.12.22.Spanish.Luzzy.XXX.720p.MP4-oRo
+: title: PutaLocura
+  episode_title: Spanish Luzzy
+  other: XXX
+  screen_size: 720p
+  container: mp4
+  release_group: oRo
+  type: episode
+
+? French Maid Services - Lola At Your Service WEB-DL SPLIT SCENES MP4-RARBG
+: title: French Maid Services
+  alternative_title: Lola At Your Service
+  source: Web
+  container: mp4
+  release_group: RARBG
+  type: movie
+
+? French Maid Services - Lola At Your Service - Marc Dorcel WEB-DL SPLIT SCENES MP4-RARBG
+: title: French Maid Services
+  alternative_title: [Lola At Your Service, Marc Dorcel]
+  source: Web
+  container: mp4
+  release_group: RARBG
+  type: movie
+
+? PlayboyPlus.com_16.01.23.Eleni.Corfiate.Playboy.Romania.XXX.iMAGESET-OHRLY
+: episode_title: Eleni Corfiate Playboy Romania
+  other: XXX
+  type: episode
+
+? TNA Impact Wrestling HDTV 2017-06-22 720p H264 AVCHD-SC-SDH
+: title: TNA Impact Wrestling
+  source: HDTV
+  date: 2017-06-22
+  screen_size: 720p
+  video_codec: H.264
+  release_group: SDH
+  type: episode
+
+? Katy Perry - Pepsi & Billboard Summer Beats Concert Series 2012 1080i HDTV 20 Mbps DD2.0 MPEG2-TrollHD.ts
+: title: Katy Perry
+  alternative_title: Pepsi & Billboard Summer Beats Concert
+  year: 2012
+  screen_size: 1080i
+  source: HDTV
+  video_bit_rate: 20Mbps
+  audio_codec: Dolby Digital
+  audio_channels: '2.0'
+  video_codec: MPEG-2
+  release_group: TrollHD
+  container: ts
+
+? Justin Timberlake - MTV Video Music Awards 2013 1080i 32 Mbps DTS-HD 5.1.ts
+: title: Justin Timberlake
+  alternative_title: MTV Video Music Awards
+  year: 2013
+  screen_size: 1080i
+  video_bit_rate: 32Mbps
+  audio_codec: DTS-HD
+  audio_channels: '5.1'
+  container: ts
+  type: movie
+
+? Chuck Berry The Very Best Of Chuck Berry(2010)[320 Kbps]
+: title: Chuck Berry The Very Best Of Chuck Berry
+  year: 2010
+  audio_bit_rate: 320Kbps
+  type: movie
+
+? Title Name [480p][1.5Mbps][.mp4]
+: title: Title Name
+  screen_size: 480p
+  video_bit_rate: 1.5Mbps
+  container: mp4
+  type: movie
+

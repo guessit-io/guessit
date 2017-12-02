@@ -23,7 +23,7 @@ setup_requires = ['pytest-runner']
 
 dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-autobuild']
 
-tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'pytest-capturelog', 'PyYAML']
+tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'PyYAML']
 
 package_data = ['config/*']
 
@@ -48,10 +48,10 @@ args = dict(name='guessit',
                          'Programming Language :: Python :: 2',
                          'Programming Language :: Python :: 2.7',
                          'Programming Language :: Python :: 3',
-                         'Programming Language :: Python :: 3.3',
                          'Programming Language :: Python :: 3.4',
                          'Programming Language :: Python :: 3.5',
                          'Programming Language :: Python :: 3.6',
+                         'Programming Language :: Python :: 3.7',
                          'Topic :: Multimedia',
                          'Topic :: Software Development :: Libraries :: Python Modules'
                          ],
