@@ -1622,3 +1622,14 @@
   release_group: HDCLUB
   container: mkv
   type: movie
+
+? "/Movies/Open Season 2 (2008)/Open Season 2 (2008) - Bluray-1080p.x264.DTS.mkv"
+: options: --type movie
+  title: Open Season 2
+  year: 2008
+  source: Blu-ray
+  screen_size: 1080p
+  video_codec: H.264
+  audio_codec: DTS
+  container: mkv
+  type: movie
