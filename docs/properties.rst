@@ -72,11 +72,22 @@ Main properties
 
   Name of the streaming service.
 
-  - ``A&E``, ``ABC``, ``AMC``, ``Amazon Prime``, ``Adult Swim``, ``BBC iPlayer``, ``CBS``, ``Comedy Central``,
-    ``Crunchy Roll``, ``The CW``, ``Discovery``, ``DIY Network``, ``Disney``, ``ePix``, ``HBO Go``, ``History``,
-    ``Investigation Discovery``, ``IFC``, ``PBS``, ``National Geographic``, ``NBA TV``, ``NBC``, ``NFL``,
-    ``Nickelodeon``, ``Netflix``, ``iTunes``, ``RTÉ One``, ``SeeSo``, ``Spike TV``, ``Syfy``, ``TFou``, ``TLC``,
-    ``TV3 Ireland``, ``TV4 Sweeden``, ``TV Land``, ``UFC``, ``USA Network``
+  - ``A&E``, ``ABC``, ``ABC Australia``, ``Adult Swim``, ``Al Jazeera English``, ``AMC``, ``America's Test Kitchen``,
+    ``Amazon Prime``, ``Animal Planet``, ``AnimeLab``, ``AOL``, ``ARD``, ``BBC iPlayer``, ``BravoTV``, ``Canal+``,
+    ``Cartoon Network``, ``CBC``, ``CBS``, ``Channel 4``, ``CHRGD``, ``Cinemax``, ``CNBC``, ``Comedy Central``,
+    ``Comedians in Cars Getting Coffee``, ``Country Music Television``, ``Crackle``, ``Crunchy Roll``, ``CSpan``,
+    ``CTV``, ``CuriosityStream``, ``CWSeed``, ``Daisuki``, ``Deadhouse Films``, ``Digiturk Diledigin Yerde``,
+    ``Discovery``, ``DIY Network``, ``Disney``, ``Doc Club``, ``DPlay``, ``E!``, ``ePix``, ``El Trece``, ``ESPN``,
+    ``Esquire``, ``Family``, ``Family Jr``, ``Food Network``, ``Fox``, ``Freeform``, ``FYI Network``, ``Global``,
+    ``GloboSat Play``, ``Hallmark``, ``HBO Go``, ``HGTV``, ``History``, ``Hulu``, ``Investigation Discovery``, ``IFC``,
+    ``iTunes``, ``ITV``, ``Knowledge Network``, ``Lifetime``, ``Motor Trend OnDemand``, ``MSNBC``, ``MTV``,
+    ``National Geographic``, ``NBA TV``, ``NBC``, ``Netflix``, ``NFL``, ``NFL Now``, ``NHL GameCenter``,
+    ``Nickelodeon``, ``Norsk Rikskringkasting``, ``PBS``, ``PBS Kids``, ``Playstation Network``, ``Pluzz``, ``RTE One``,
+    ``SBS (AU)``, ``SeeSo``, ``Shomi``, ``Spike``, ``Spike TV``, ``Sportsnet``, ``Sprout``, ``Stan``, ``Starz``,
+    ``Sveriges Television``, ``SwearNet``, ``Syfy``, ``TBS``, ``TFou``, ``The CW``, ``TLC``, ``TubiTV``,
+    ``TV3 Ireland``, ``TV4 Sweeden``, ``TV Land``, ``UFC``, ``UKTV``, ``Univision``, ``USA Network``, ``Velocity``,
+    ``VH1``, ``Viceland``, ``Vimeo``, ``VRV``, ``W Network``, ``WatchMe``, ``WWE Network``, ``Xbox Video``, ``Yahoo``,
+    ``YouTube Red``, ``ZDF``
 
 
 Episode properties

@@ -110,6 +110,7 @@ History
 - Added `PCM` as new `audio_codec` possible value.
 - Added `LPCM` as new `audio_codec` possible value.
 - Added `Digital Master` as new `source` possible value.
+- Added several new values for `streaming_service`.
 
 2.1.4 (2017-06-01)
 ------------------
