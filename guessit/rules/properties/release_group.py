@@ -12,6 +12,7 @@ from ..common import seps
 from ..common.expected import build_expected_function
 from ..common.comparators import marker_sorted
 from ..common.formatters import cleanup
+from ..common.pattern import is_enabled
 from ..common.validators import int_coercable, seps_surround
 from ..properties.title import TitleFromPosition
 
@@ -22,7 +23,7 @@ def release_group():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk()
+    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'release_group'))
 
     expected_group = build_expected_function('expected_group')
 

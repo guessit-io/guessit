@@ -8,9 +8,10 @@ from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch, AppendMatch
 
-from guessit.reutils import build_or_pattern
+from ..common.pattern import is_enabled
 from ..common.validators import seps_surround
 from ..common import dash, seps
+from ...reutils import build_or_pattern
 
 interlaced = frozenset({'360', '480', '576', '900', '1080'})
 progressive = frozenset(interlaced | {'368', '720', '2160', '4320'})
@@ -22,7 +23,8 @@ def screen_size():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE)
+    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'screen_size'))
+    rebulk = rebulk.string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE)
 
     rebulk.defaults(name='screen_size', validator=seps_surround, abbreviations=[dash], private_children=True)
 

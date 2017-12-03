@@ -900,3 +900,13 @@
   video_bit_rate: 1.5Mbps
   container: mp4
   type: movie
+
+? This.is.Us
+: options: --no-embedded-config
+  title: This is Us
+  type: movie
+
+? This.is.Us
+: options: --excludes country
+  title: This is Us
+  type: movie

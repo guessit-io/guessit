@@ -42,6 +42,10 @@ def build_argument_parser():
                              help='Expected title to parse (can be used multiple times)')
     naming_opts.add_argument('-G', '--expected-group', action='append', dest='expected_group', default=None,
                              help='Expected release group (can be used multiple times)')
+    naming_opts.add_argument('--includes', action='append', dest='includes', default=None,
+                             help='List of properties to be detected')
+    naming_opts.add_argument('--excludes', action='append', dest='excludes', default=None,
+                             help='List of properties to be ignored')
 
     input_opts = opts.add_argument_group("Input")
     input_opts.add_argument('-f', '--input-file', dest='input_file', default=None,

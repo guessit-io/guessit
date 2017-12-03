@@ -9,6 +9,7 @@ from rebulk import Rebulk
 
 from ..common import dash
 from ..common.quantity import Size
+from ..common.pattern import is_enabled
 from ..common.validators import seps_surround
 
 
@@ -18,7 +19,12 @@ def size():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
+    def format_size(value):
+        """Format size using uppercase and no space."""
+        return re.sub(r'(?<=\d)[.](?=[^\d])', '', value.upper())
+
+    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'size'))
+    rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
     rebulk.defaults(name='size', validator=seps_surround)
     rebulk.regex(r'\d+-?[mgt]b', r'\d+\.\d+-?[mgt]b', formatter=Size.fromstring, tags=['release-group-prefix'])
 

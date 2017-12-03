@@ -11,6 +11,7 @@ from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 
 from .audio_codec import HqConflictRule
 from ..common import dash, seps
+from ..common.pattern import is_enabled
 from ..common.validators import seps_before, seps_after
 
 
@@ -20,7 +21,8 @@ def source():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash], private_parent=True, children=True)
+    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'source'))
+    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash], private_parent=True, children=True)
     rebulk.defaults(name='source', tags=['video-codec-prefix', 'streaming_service.suffix'])
 
     rip_prefix = '(?P<other>Rip)-?'

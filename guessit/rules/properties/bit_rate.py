@@ -9,6 +9,7 @@ from rebulk import Rebulk
 from rebulk.rules import Rule, RenameMatch
 
 from ..common import dash, seps
+from ..common.pattern import is_enabled
 from ..common.quantity import BitRate
 from ..common.validators import seps_surround
 
@@ -19,7 +20,8 @@ def bit_rate():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
+    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'bit_rate'))
+    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
     rebulk.defaults(name='audio_bit_rate', validator=seps_surround)
     rebulk.regex(r'\d+-?[kmg]bps', r'\d+\.\d+-?[kmg]bps',
                  conflict_solver=(

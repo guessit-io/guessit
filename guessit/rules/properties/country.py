@@ -7,6 +7,7 @@ country property
 import babelfish
 
 from rebulk import Rebulk
+from ..common.pattern import is_enabled
 from ..common.words import COMMON_WORDS, iter_words
 
 
@@ -16,7 +17,8 @@ def country():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().defaults(name='country')
+    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'country'))
+    rebulk = rebulk.defaults(name='country')
 
     rebulk.functional(find_countries,
                       #  Prefer language and any other property over country if not US or GB.

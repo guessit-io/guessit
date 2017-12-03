@@ -11,6 +11,7 @@ import babelfish
 from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
 from rebulk.remodule import re
 
+from ..common.pattern import is_enabled
 from ..common.words import iter_words, COMMON_WORDS
 from ..common.validators import seps_surround
 
@@ -21,14 +22,18 @@ def language():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk()
+    rebulk = Rebulk(disabled=lambda context: (not is_enabled(context, 'language') and
+                                              not is_enabled(context, 'subtitle_language')))
 
     rebulk.string(*subtitle_prefixes, name="subtitle_language.prefix", ignore_case=True, private=True,
-                  validator=seps_surround, tags=['release-group-prefix'])
+                  validator=seps_surround, tags=['release-group-prefix'],
+                  disabled=lambda context: not is_enabled(context, 'subtitle_language'))
     rebulk.string(*subtitle_suffixes, name="subtitle_language.suffix", ignore_case=True, private=True,
-                  validator=seps_surround)
+                  validator=seps_surround,
+                  disabled=lambda context: not is_enabled(context, 'subtitle_language'))
     rebulk.string(*lang_suffixes, name="language.suffix", ignore_case=True, private=True,
-                  validator=seps_surround, tags=['source-suffix'])
+                  validator=seps_surround, tags=['source-suffix'],
+                  disabled=lambda context: not is_enabled(context, 'language'))
     rebulk.functional(find_languages,
                       properties={'language': [None]},
                       disabled=lambda context: not context.get('allowed_languages'))
@@ -358,6 +363,9 @@ class SubtitlePrefixLanguageRule(Rule):
 
     properties = {'subtitle_language': [None]}
 
+    def enabled(self, context):
+        return is_enabled(context, 'subtitle_language')
+
     def when(self, matches, context):
         to_rename = []
         to_remove = matches.named('subtitle_language.prefix')
@@ -403,6 +411,9 @@ class SubtitleSuffixLanguageRule(Rule):
 
     properties = {'subtitle_language': [None]}
 
+    def enabled(self, context):
+        return is_enabled(context, 'subtitle_language')
+
     def when(self, matches, context):
         to_append = []
         to_remove = matches.named('subtitle_language.suffix')
@@ -432,6 +443,9 @@ class SubtitleExtensionRule(Rule):
     consequence = [RemoveMatch, RenameMatch('subtitle_language')]
 
     properties = {'subtitle_language': [None]}
+
+    def enabled(self, context):
+        return is_enabled(context, 'subtitle_language')
 
     def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         subtitle_extension = matches.named('container',

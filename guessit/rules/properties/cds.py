@@ -6,7 +6,9 @@ cd and cd_count properties
 from rebulk.remodule import re
 
 from rebulk import Rebulk
+
 from ..common import dash
+from ..common.pattern import is_enabled
 
 
 def cds():
@@ -15,7 +17,8 @@ def cds():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
+    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'cd'))
+    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
 
     rebulk.regex(r'cd-?(?P<cd>\d+)(?:-?of-?(?P<cd_count>\d+))?',
                  validator={'cd': lambda match: 0 < match.value < 100,

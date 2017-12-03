@@ -9,6 +9,7 @@ from rebulk import Rebulk, AppendMatch, Rule
 
 from .title import TitleFromPosition
 from ..common.formatters import cleanup
+from ..common.pattern import is_enabled
 from ..common.validators import seps_surround
 
 
@@ -18,7 +19,8 @@ def bonus():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE)
+    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'bonus'))
+    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE)
 
     rebulk.regex(r'x(\d+)', name='bonus', private_parent=True, children=True, formatter=int,
                  validator={'__parent__': lambda match: seps_surround},
