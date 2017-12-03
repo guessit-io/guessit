@@ -205,7 +205,8 @@ def episodes():
                  formatter={'season': parse_numeral, 'count': parse_numeral},
                  validator={'__parent__': compose(seps_surround, ordering_validator),
                             'season': validate_roman,
-                            'count': validate_roman}) \
+                            'count': validate_roman},
+                 disabled=lambda context: context.get('type') == 'movie') \
         .defaults(validator=None) \
         .regex(build_or_pattern(season_words, name='seasonMarker') + '@?(?P<season>' + numeral + ')') \
         .regex(r'' + build_or_pattern(of_words) + '@?(?P<count>' + numeral + ')').repeater('?') \
