@@ -1647,3 +1647,27 @@
   audio_channels: '5.1'
   release_group: LAZY
   type: movie
+
+? Test (2013) [WEBDL-1080p] [x264 AC3] [ENG+RU+PT] [NTb].mkv
+: title: Test
+  year: 2013
+  source: Web
+  screen_size: 1080p
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  language: [en, ru, pt]
+  release_group: NTb
+  container: mkv
+  type: movie
+
+? "[nextorrent.org] Bienvenue.Au.Gondwana.2016.FRENCH.DVDRiP.XViD-AViTECH.avi"
+: website: nextorrent.org
+  title: Bienvenue Au Gondwana
+  year: 2016
+  language: french
+  source: DVD
+  other: Rip
+  video_codec: Xvid
+  release_group: AViTECH
+  container: avi
+  type: movie

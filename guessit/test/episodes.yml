@@ -4107,3 +4107,13 @@
   crc32: 7F64383D
   container: mkv
   type: episode
+
+? Shark Tank (AU) - S02E01 - HDTV-720p.mkv
+: title: Shark Tank
+  country: AU
+  season: 2
+  episode: 1
+  source: HDTV
+  screen_size: 720p
+  container: mkv
+  type: episode
