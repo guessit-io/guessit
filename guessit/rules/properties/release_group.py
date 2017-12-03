@@ -119,6 +119,9 @@ class DashSeparatedReleaseGroup(Rule):
                 break
 
             separator = match.input_string[current.end:match.start]
+            if not separator and match.raw[0] == '-':
+                separator = '-'
+
             match = current
 
             if count == 0:
@@ -195,6 +198,8 @@ class SceneReleaseGroup(Rule):
         for filepart in marker_sorted(matches.markers.named('path'), matches):
             # pylint:disable=cell-var-from-loop
             start, end = filepart.span
+            if matches.named('release_group', predicate=lambda m: m.start >= start and m.end <= end):
+                continue
 
             titles = matches.named('title', predicate=lambda m: m.start >= start and m.end <= end)
 

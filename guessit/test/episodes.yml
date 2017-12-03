@@ -4093,3 +4093,17 @@
   subtitle_language: fr
   other: HD
   type: episode
+
+? "[Doki] Re Zero kara Hajimeru Isekai Seikatsu - 01 1920x1080 Hi10P BD FLAC [7F64383D].mkv"
+: release_group: Doki
+  title: Re Zero kara Hajimeru Isekai Seikatsu
+  episode: 1
+  screen_size: 1080p
+  aspect_ratio: 1.778
+  video_profile: High 10
+  color_depth: 10-bit
+  source: Blu-ray
+  audio_codec: FLAC
+  crc32: 7F64383D
+  container: mkv
+  type: episode
