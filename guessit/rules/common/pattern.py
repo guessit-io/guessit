@@ -16,12 +16,12 @@ def is_enabled(context, name):
     :param name:
     :return:
     """
+    if not context:
+        return True
+
     excludes = context.get('excludes')
     if excludes and name in excludes:
         return False
 
     includes = context.get('includes')
-    if includes and name not in includes:
-        return False
-
-    return True
+    return not includes or name in includes

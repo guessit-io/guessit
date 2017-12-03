@@ -19,10 +19,6 @@ def size():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    def format_size(value):
-        """Format size using uppercase and no space."""
-        return re.sub(r'(?<=\d)[.](?=[^\d])', '', value.upper())
-
     rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'size'))
     rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
     rebulk.defaults(name='size', validator=seps_surround)
