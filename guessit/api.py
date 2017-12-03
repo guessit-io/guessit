@@ -3,6 +3,7 @@
 """
 API functions that can be used by external software
 """
+
 try:
     from collections import OrderedDict
 except ImportError:  # pragma: no-cover
@@ -89,7 +90,7 @@ class GuessItApi(object):
             return value.decode('ascii')
         return value
 
-    def guessit(self, string, options=None):
+    def guessit(self, string, options=None):  # pylint: disable=too-many-branches
         """
         Retrieves all matches from string as a dict
         :param string: the filename or release name
@@ -111,12 +112,18 @@ class GuessItApi(object):
                 fixed_options[key] = value
             options = fixed_options
 
-            if six.PY2 and isinstance(string, six.text_type):
-                string = string.encode("utf-8")
-                result_decode = True
-            if six.PY3 and isinstance(string, six.binary_type):
-                string = string.decode('ascii')
-                result_encode = True
+            if six.PY2:
+                if isinstance(string, six.text_type):
+                    string = string.encode("utf-8")
+                    result_decode = True
+                elif isinstance(string, six.binary_type):
+                    string = six.binary_type(string)
+            if six.PY3:
+                if isinstance(string, six.binary_type):
+                    string = string.decode('ascii')
+                    result_encode = True
+                elif isinstance(string, six.text_type):
+                    string = six.text_type(string)
             matches = self.rebulk.matches(string, options)
             if result_decode:
                 for match in matches:
