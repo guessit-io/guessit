@@ -246,7 +246,6 @@
   video_codec: H.264
   release_group: NTb
   container: mkv
-  mimetype: video/x-matroska
   type: episode
 
 # Streaming service: CBS

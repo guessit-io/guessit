@@ -1681,7 +1681,6 @@
   episode_title: My Perspective
   source: DVD
   other: Rip
-  mimetype: video/x-msvideo
   release_group: WAT
   season: 6
   title: Scrubs
@@ -1691,7 +1690,6 @@
 : container: mkv
   crc32: F9967949
   episode: 1
-  mimetype: video/x-matroska
   release_group: PuyaSubs!
   screen_size: 720p
   title: Digimon Adventure tri
@@ -1708,7 +1706,6 @@
   episode: 7
   episode_title: Michael B Jordan
   source: HDTV
-  mimetype: video/x-msvideo
   other: Proper
   proper_count: 1
   release_group: W4F
@@ -1870,7 +1867,6 @@
   container: mp4
   episode: 1
   source: HDTV
-  mimetype: video/mp4
   release_group: k3n
   season: 2
   title: Fear The Walking Dead
@@ -2072,7 +2068,6 @@
   other: Rip
   release_group: qqss44
   container: avi
-  mimetype: video/x-msvideo
   type: episode
 
 # WEBCap
@@ -2116,7 +2111,6 @@
 : container: mkv
   episode: 1
   source: HDTV
-  mimetype: video/x-matroska
   release_group: DIMENSION
   screen_size: 1080p
   season: 10
@@ -3359,7 +3353,6 @@
   episode: 22
   episode_title: 2000 Light Years from Home
   container: mkv
-  mimetype: video/x-matroska
   type: episode
 
 ? Show.Name.S02E01.Super.Title.720p.WEB-DL.DD5.1.H.264-ABC.nzb
