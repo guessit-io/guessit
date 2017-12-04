@@ -6,7 +6,7 @@ date and year properties
 from rebulk import Rebulk, RemoveMatch, Rule
 
 from ..common.date import search_date, valid_year
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
@@ -16,7 +16,7 @@ def date():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'date'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'date'))
     rebulk = rebulk.defaults(validator=seps_surround)
 
     rebulk.regex(r"\d{4}", name="year", formatter=int,

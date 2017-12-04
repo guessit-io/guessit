@@ -6,7 +6,7 @@ crc and uuid properties
 from rebulk.remodule import re
 
 from rebulk import Rebulk
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
@@ -16,7 +16,7 @@ def crc():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'crc'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'crc'))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE)
     rebulk.defaults(validator=seps_surround)
 

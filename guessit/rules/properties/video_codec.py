@@ -8,7 +8,7 @@ from rebulk.remodule import re
 from rebulk import Rebulk, Rule, RemoveMatch
 
 from ..common import dash
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_after, seps_before, seps_surround
 
 
@@ -22,7 +22,7 @@ def video_codec():
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name="video_codec",
                     tags=['source-suffix', 'streaming_service.suffix'],
-                    disabled=lambda context: not is_enabled(context, 'video_codec'))
+                    disabled=lambda context: is_disabled(context, 'video_codec'))
 
     rebulk.regex(r'Rv\d{2}', value='RealVideo')
     rebulk.regex('Mpe?g-?2', '[hx]-?262', value='MPEG-2')
@@ -42,7 +42,7 @@ def video_codec():
     # http://fr.wikipedia.org/wiki/H.264
     rebulk.defaults(name="video_profile",
                     validator=seps_surround,
-                    disabled=lambda context: not is_enabled(context, 'video_profile'))
+                    disabled=lambda context: is_disabled(context, 'video_profile'))
 
     rebulk.string('BP', value='Baseline', tags='video_profile.rule')
     rebulk.string('XP', 'EP', value='Extended', tags='video_profile.rule')
@@ -53,11 +53,11 @@ def video_codec():
     rebulk.regex('Hi10P?', value='High 10')  # no profile validation is required
 
     rebulk.string('DXVA', value='DXVA', name='video_api',
-                  disabled=lambda context: not is_enabled(context, 'video_api'))
+                  disabled=lambda context: is_disabled(context, 'video_api'))
 
     rebulk.defaults(name='color_depth',
                     validator=seps_surround,
-                    disabled=lambda context: not is_enabled(context, 'color_depth'))
+                    disabled=lambda context: is_disabled(context, 'color_depth'))
     rebulk.regex('12.?bits?', value='12-bit')
     rebulk.regex('10.?bits?', 'YUV420P10', 'Hi10P?', value='10-bit')
     rebulk.regex('8.?bits?', value='8-bit')
@@ -75,7 +75,7 @@ class ValidateVideoCodec(Rule):
     consequence = RemoveMatch
 
     def enabled(self, context):
-        return is_enabled(context, 'video_codec')
+        return not is_disabled(context, 'video_codec')
 
     def when(self, matches, context):
         ret = []
@@ -98,7 +98,7 @@ class VideoProfileRule(Rule):
     consequence = RemoveMatch
 
     def enabled(self, context):
-        return is_enabled(context, 'video_profile')
+        return not is_disabled(context, 'video_profile')
 
     def when(self, matches, context):
         profile_list = matches.named('video_profile', lambda match: 'video_profile.rule' in match.tags)

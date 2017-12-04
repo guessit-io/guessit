@@ -15,7 +15,7 @@ from .title import TitleFromPosition
 from ..common import dash, alt_dash, seps
 from ..common.formatters import strip
 from ..common.numeral import numeral, parse_numeral
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import compose, seps_surround, seps_before, int_coercable
 from ...reutils import build_or_pattern
 
@@ -29,7 +29,7 @@ def episodes():
     # pylint: disable=too-many-branches,too-many-statements,too-many-locals
     def is_season_episode_disabled(context):
         """Whether season and episode rules should be enabled."""
-        return not is_enabled(context, 'episode') and not is_enabled(context, 'season')
+        return is_disabled(context, 'episode') and is_disabled(context, 'season')
 
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
     rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator', 'episodeMarker', 'seasonMarker'])
@@ -188,9 +188,9 @@ def episodes():
     # episode_details property
     for episode_detail in ('Special', 'Bonus', 'Pilot', 'Unaired', 'Final'):
         rebulk.string(episode_detail, value=episode_detail, name='episode_details',
-                      disabled=lambda context: not is_enabled(context, 'episode_details'))
+                      disabled=lambda context: is_disabled(context, 'episode_details'))
     rebulk.regex(r'Extras?', 'Omake', name='episode_details', value='Extras',
-                 disabled=lambda context: not is_enabled(context, 'episode_details'))
+                 disabled=lambda context: is_disabled(context, 'episode_details'))
 
     def validate_roman(match):
         """
@@ -213,7 +213,7 @@ def episodes():
                  validator={'__parent__': compose(seps_surround, ordering_validator),
                             'season': validate_roman,
                             'count': validate_roman},
-                 disabled=lambda context: context.get('type') == 'movie' or not is_enabled(context, 'season')) \
+                 disabled=lambda context: context.get('type') == 'movie' or is_disabled(context, 'season')) \
         .defaults(validator=None) \
         .regex(build_or_pattern(season_words, name='seasonMarker') + '@?(?P<season>' + numeral + ')') \
         .regex(r'' + build_or_pattern(of_words) + '@?(?P<count>' + numeral + ')').repeater('?') \
@@ -225,7 +225,7 @@ def episodes():
                  r'(?:v(?P<version>\d+))?' +
                  r'(?:-?' + build_or_pattern(of_words) + r'-?(?P<count>\d+))?',  # Episode 4
                  abbreviations=[dash], formatter={'episode': int, 'version': int, 'count': int},
-                 disabled=lambda context: context.get('type') == 'episode' or not is_enabled(context, 'episode'))
+                 disabled=lambda context: context.get('type') == 'episode' or is_disabled(context, 'episode'))
 
     rebulk.regex(build_or_pattern(episode_words, name='episodeMarker') + r'-?(?P<episode>' + numeral + ')' +
                  r'(?:v(?P<version>\d+))?' +
@@ -233,18 +233,18 @@ def episodes():
                  abbreviations=[dash],
                  validator={'episode': validate_roman},
                  formatter={'episode': parse_numeral, 'version': int, 'count': int},
-                 disabled=lambda context: context.get('type') != 'episode' or not is_enabled(context, 'episode'))
+                 disabled=lambda context: context.get('type') != 'episode' or is_disabled(context, 'episode'))
 
     rebulk.regex(r'S?(?P<season>\d+)-?(?:xE|Ex|E|x)-?(?P<other>' + build_or_pattern(all_words) + ')',
                  tags=['SxxExx'],
                  abbreviations=[dash],
                  validator=None,
                  formatter={'season': int, 'other': lambda match: 'Complete'},
-                 disabled=lambda context: not is_enabled(context, 'season'))
+                 disabled=lambda context: is_disabled(context, 'season'))
 
     # 12, 13
     rebulk.chain(tags=['weak-episode'], formatter={'episode': int, 'version': int},
-                 disabled=lambda context: context.get('type') == 'movie' or not is_enabled(context, 'episode')) \
+                 disabled=lambda context: context.get('type') == 'movie' or is_disabled(context, 'episode')) \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d{2})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
@@ -252,7 +252,7 @@ def episodes():
 
     # 012, 013
     rebulk.chain(tags=['weak-episode'], formatter={'episode': int, 'version': int},
-                 disabled=lambda context: context.get('type') == 'movie' or not is_enabled(context, 'episode')) \
+                 disabled=lambda context: context.get('type') == 'movie' or is_disabled(context, 'episode')) \
         .defaults(validator=None) \
         .regex(r'0(?P<episode>\d{1,2})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
@@ -262,7 +262,7 @@ def episodes():
     rebulk.chain(tags=['weak-episode'],
                  formatter={'episode': int, 'version': int},
                  name='weak_episode',
-                 disabled=lambda context: context.get('type') == 'movie' or not is_enabled(context, 'episode')) \
+                 disabled=lambda context: context.get('type') == 'movie' or is_disabled(context, 'episode')) \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d{3,4})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
@@ -270,7 +270,7 @@ def episodes():
 
     # 1, 2, 3
     rebulk.chain(tags=['weak-episode'], formatter={'episode': int, 'version': int},
-                 disabled=lambda context: context.get('type') != 'episode' or not is_enabled(context, 'episode')) \
+                 disabled=lambda context: context.get('type') != 'episode' or is_disabled(context, 'episode')) \
         .defaults(validator=None) \
         .regex(r'(?P<episode>\d)') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
@@ -279,7 +279,7 @@ def episodes():
     # e112, e113
     # TODO: Enhance rebulk for validator to be used globally (season_episode_validator)
     rebulk.chain(formatter={'episode': int, 'version': int},
-                 disabled=lambda context: not is_enabled(context, 'episode')) \
+                 disabled=lambda context: is_disabled(context, 'episode')) \
         .defaults(validator=None) \
         .regex(r'(?P<episodeMarker>e)(?P<episode>\d{1,4})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
@@ -287,7 +287,7 @@ def episodes():
 
     # ep 112, ep113, ep112, ep113
     rebulk.chain(abbreviations=[dash], formatter={'episode': int, 'version': int},
-                 disabled=lambda context: not is_enabled(context, 'episode')) \
+                 disabled=lambda context: is_disabled(context, 'episode')) \
         .defaults(validator=None) \
         .regex(r'ep-?(?P<episode>\d{1,4})') \
         .regex(r'v(?P<version>\d+)').repeater('?') \
@@ -315,7 +315,7 @@ def episodes():
         .regex(r'(?P<episodeSeparator>x|-)(?P<episode>\d{2})').repeater('*')
 
     rebulk.regex(r'v(?P<version>\d+)', children=True, private_parent=True, formatter=int,
-                 disabled=lambda context: not is_enabled(context, 'version'))
+                 disabled=lambda context: is_disabled(context, 'version'))
 
     rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator'])
 
@@ -324,10 +324,10 @@ def episodes():
     rebulk.regex(r'(?P<episode>\d+)-?' + build_or_pattern(of_words) +
                  r'-?(?P<count>\d+)-?' + build_or_pattern(episode_words) + '?',
                  abbreviations=[dash], children=True, private_parent=True, formatter=int,
-                 disabled=lambda context: not is_enabled(context, 'episode'))
+                 disabled=lambda context: is_disabled(context, 'episode'))
 
     rebulk.regex(r'Minisodes?', name='episode_format', value="Minisode",
-                 disabled=lambda context: not is_enabled(context, 'episode_format'))
+                 disabled=lambda context: is_disabled(context, 'episode_format'))
 
     rebulk.rules(WeakConflictSolver, RemoveInvalidSeason, RemoveInvalidEpisode,
                  SeePatternRange(range_separators + ['_']),

@@ -7,7 +7,7 @@ from rebulk import Rebulk, AppendMatch, Rule
 from rebulk.remodule import re
 
 from ..common.formatters import cleanup
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
@@ -20,7 +20,7 @@ def film():
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, validate_all=True, validator={'__parent__': seps_surround})
 
     rebulk.regex(r'f(\d{1,2})', name='film', private_parent=True, children=True, formatter=int,
-                 disabled=lambda context: not is_enabled(context, 'film'))
+                 disabled=lambda context: is_disabled(context, 'film'))
 
     rebulk.rules(FilmTitleRule)
 
@@ -36,7 +36,7 @@ class FilmTitleRule(Rule):
     properties = {'film_title': [None]}
 
     def enabled(self, context):
-        return is_enabled(context, 'film_title')
+        return not is_disabled(context, 'film_title')
 
     def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         bonus_number = matches.named('film', lambda match: not match.private, index=0)

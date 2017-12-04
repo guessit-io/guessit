@@ -9,7 +9,7 @@ from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch, RenameMatch, POST_PRO
 
 from ..common import seps, title_seps
 from ..common.formatters import cleanup
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..properties.title import TitleFromPosition, TitleBaseRule
 from ..properties.type import TypeProcessor
 
@@ -23,7 +23,7 @@ def episode_title():
     previous_names = ('episode', 'episode_details', 'episode_count',
                       'season', 'season_count', 'date', 'title', 'year')
 
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'episode_title'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'episode_title'))
     rebulk = rebulk.rules(RemoveConflictsWithEpisodeTitle(previous_names),
                           EpisodeTitleFromPosition(previous_names),
                           AlternativeTitleReplace(previous_names),

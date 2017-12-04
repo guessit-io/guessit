@@ -8,7 +8,7 @@ from rebulk.remodule import re
 from rebulk import Rebulk
 
 from ..common import dash
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 
 
 def cds():
@@ -17,7 +17,7 @@ def cds():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'cd'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'cd'))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
 
     rebulk.regex(r'cd-?(?P<cd>\d+)(?:-?of-?(?P<cd_count>\d+))?',

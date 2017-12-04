@@ -7,7 +7,7 @@ from rebulk.remodule import re
 
 from rebulk import Rebulk
 from ..common import dash
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround, int_coercable, compose
 from ..common.numeral import numeral, parse_numeral
 from ...reutils import build_or_pattern
@@ -19,7 +19,7 @@ def part():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'part'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'part'))
     rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash], validator={'__parent__': seps_surround})
 
     prefixes = ['pt', 'part']

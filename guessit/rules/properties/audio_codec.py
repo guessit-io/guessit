@@ -8,7 +8,7 @@ from rebulk.remodule import re
 from rebulk import Rebulk, Rule, RemoveMatch
 
 from ..common import dash
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_before, seps_after
 
 audio_properties = ['audio_codec', 'audio_profile', 'audio_channels']
@@ -40,7 +40,7 @@ def audio_codec():
 
     rebulk.defaults(name='audio_codec',
                     conflict_solver=audio_codec_priority,
-                    disabled=lambda context: not is_enabled(context, 'audio_codec'))
+                    disabled=lambda context: is_disabled(context, 'audio_codec'))
 
     rebulk.regex("MP3", "LAME", r"LAME(?:\d)+-?(?:\d)+", value="MP3")
     rebulk.regex('Dolby', 'DolbyDigital', 'Dolby-Digital', 'DD', 'AC3D?', value='Dolby Digital')
@@ -57,7 +57,7 @@ def audio_codec():
     rebulk.string('PCM', value='PCM')
     rebulk.string('LPCM', value='LPCM')
 
-    rebulk.defaults(name='audio_profile', disabled=lambda context: not is_enabled(context, 'audio_profile'))
+    rebulk.defaults(name='audio_profile', disabled=lambda context: is_disabled(context, 'audio_profile'))
     rebulk.string('MA', value='Master Audio', tags='DTS-HD')
     rebulk.string('HR', 'HRA', value='High Resolution Audio', tags='DTS-HD')
     rebulk.string('ES', value='Extended Surround', tags='DTS')
@@ -66,7 +66,7 @@ def audio_codec():
     rebulk.string('HQ', value='High Quality', tags='Dolby Digital')
     rebulk.string('EX', value='EX', tags='Dolby Digital')
 
-    rebulk.defaults(name="audio_channels", disabled=lambda context: not is_enabled(context, 'audio_channels'))
+    rebulk.defaults(name="audio_channels", disabled=lambda context: is_disabled(context, 'audio_channels'))
     rebulk.regex(r'(7[\W_][01](?:ch)?)(?=[^\d]|$)', value='7.1', children=True)
     rebulk.regex(r'(5[\W_][01](?:ch)?)(?=[^\d]|$)', value='5.1', children=True)
     rebulk.regex(r'(2[\W_]0(?:ch)?)(?=[^\d]|$)', value='2.0', children=True)
@@ -124,7 +124,7 @@ class AudioProfileRule(Rule):
         self.codec = codec
 
     def enabled(self, context):
-        return is_enabled(context, 'audio_profile')
+        return not is_disabled(context, 'audio_profile')
 
     def when(self, matches, context):
         profile_list = matches.named('audio_profile', lambda match: self.codec in match.tags)
@@ -174,7 +174,7 @@ class HqConflictRule(Rule):
     consequence = RemoveMatch
 
     def enabled(self, context):
-        return is_enabled(context, 'audio_profile')
+        return not is_disabled(context, 'audio_profile')
 
     def when(self, matches, context):
         hq_audio = matches.named('audio_profile', lambda m: m.value == 'High Quality')
@@ -190,7 +190,7 @@ class AudioChannelsValidatorRule(Rule):
     consequence = RemoveMatch
 
     def enabled(self, context):
-        return is_enabled(context, 'audio_channels')
+        return not is_disabled(context, 'audio_channels')
 
     def when(self, matches, context):
         ret = []

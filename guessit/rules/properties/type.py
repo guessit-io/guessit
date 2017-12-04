@@ -6,7 +6,7 @@ type property
 from rebulk import CustomRule, Rebulk, POST_PROCESS
 from rebulk.match import Match
 
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ...rules.processors import Processors
 
 
@@ -26,7 +26,7 @@ def type_():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'type'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'type'))
     rebulk = rebulk.rules(TypeProcessor)
 
     return rebulk

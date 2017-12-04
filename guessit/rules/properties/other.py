@@ -10,7 +10,7 @@ from rebulk.remodule import re
 
 from ..common import dash
 from ..common import seps
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_after, seps_before, seps_surround, compose
 from ...reutils import build_or_pattern
 from ...rules.common.formatters import raw_cleanup
@@ -22,7 +22,7 @@ def other():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'other'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'other'))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name="other", validator=seps_surround)
 

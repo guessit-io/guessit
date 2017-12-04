@@ -8,7 +8,7 @@ import mimetypes
 from rebulk import Rebulk, CustomRule, POST_PROCESS
 from rebulk.match import Match
 
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ...rules.processors import Processors
 
 
@@ -18,7 +18,7 @@ def mimetype():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'mimetype'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'mimetype'))
     rebulk.rules(Mimetype)
 
     return rebulk

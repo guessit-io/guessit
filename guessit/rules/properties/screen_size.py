@@ -8,7 +8,7 @@ from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch, AppendMatch
 
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 from ..common import dash, seps
 from ...reutils import build_or_pattern
@@ -23,7 +23,7 @@ def screen_size():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'screen_size'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'screen_size'))
     rebulk = rebulk.string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE)
 
     rebulk.defaults(name='screen_size', validator=seps_surround, abbreviations=[dash], private_children=True)

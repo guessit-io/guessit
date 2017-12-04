@@ -13,7 +13,7 @@ from ..common import seps, title_seps
 from ..common.comparators import marker_sorted
 from ..common.expected import build_expected_function
 from ..common.formatters import cleanup, reorder_title
-from ..common.pattern import is_enabled
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
@@ -23,7 +23,7 @@ def title():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: not is_enabled(context, 'title'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'title'))
     rebulk.rules(TitleFromPosition, PreferTitleWithYear)
 
     expected_title = build_expected_function('expected_title')
@@ -285,7 +285,7 @@ class TitleFromPosition(TitleBaseRule):
         super(TitleFromPosition, self).__init__('title', ['title'], 'alternative_title')
 
     def enabled(self, context):
-        return is_enabled(context, 'alternative_title')
+        return not is_disabled(context, 'alternative_title')
 
 
 class PreferTitleWithYear(Rule):
