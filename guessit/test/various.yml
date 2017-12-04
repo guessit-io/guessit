@@ -545,7 +545,6 @@
   - 1
   - 7
   episode_title: FooBar-Group  # Make sure it doesn't conflict with uuid
-  mimetype: video/x-msvideo
   season: 1
   title: Test
   type: episode
@@ -901,4 +900,3 @@
   video_bit_rate: 1.5Mbps
   container: mp4
   type: movie
-
