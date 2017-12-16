@@ -16,7 +16,7 @@ def crc():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'crc'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'crc32'))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE)
     rebulk.defaults(validator=seps_surround)
 

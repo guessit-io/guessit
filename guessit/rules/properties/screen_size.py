@@ -77,7 +77,10 @@ class PostProcessScreenSize(Rule):
 
             aspect_ratio = Match(match.start, match.end, input_string=match.input_string,
                                  name='aspect_ratio', value=round(calculated_ar, 3))
-            to_append.append(aspect_ratio)
+
+            if not is_disabled(context, 'aspect_ratio'):
+                to_append.append(aspect_ratio)
+
             if height in self.standard_heights and self.min_ar < calculated_ar < self.max_ar:
                 match.value = '{0}{1}'.format(height, scan_type)
             else:

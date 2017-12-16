@@ -29,7 +29,7 @@ def episodes():
     # pylint: disable=too-many-branches,too-many-statements,too-many-locals
     def is_season_episode_disabled(context):
         """Whether season and episode rules should be enabled."""
-        return is_disabled(context, 'episode') and is_disabled(context, 'season')
+        return is_disabled(context, 'episode') or is_disabled(context, 'season')
 
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
     rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator', 'episodeMarker', 'seasonMarker'])
@@ -836,13 +836,22 @@ class RenameToDiscMatch(Rule):
     Rename episodes detected with `d` episodeMarkers to `disc`.
     """
 
-    consequence = [RenameMatch('disc'), RenameMatch('discMarker')]
+    consequence = [RenameMatch('disc'), RenameMatch('discMarker'), RemoveMatch]
 
     def when(self, matches, context):
         discs = []
         markers = []
+        to_remove = []
+
+        disc_disabled = is_disabled(context, 'disc')
+
         for marker in matches.named('episodeMarker', predicate=lambda m: m.value.lower() == 'd'):
+            if disc_disabled:
+                to_remove.append(marker)
+                to_remove.extend(marker.initiator.children)
+                continue
+
             markers.append(marker)
             discs.extend(sorted(marker.initiator.children.named('episode'), key=lambda m: m.value))
 
-        return discs, markers
+        return discs, markers, to_remove

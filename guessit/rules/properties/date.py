@@ -16,10 +16,10 @@ def date():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'date'))
-    rebulk = rebulk.defaults(validator=seps_surround)
+    rebulk = Rebulk().defaults(validator=seps_surround)
 
     rebulk.regex(r"\d{4}", name="year", formatter=int,
+                 disabled=lambda context: is_disabled(context, 'year'),
                  validator=lambda match: seps_surround(match) and valid_year(match.value))
 
     def date_functional(string, context):  # pylint:disable=inconsistent-return-statements
@@ -35,6 +35,7 @@ def date():
             return ret[0], ret[1], {'value': ret[2]}
 
     rebulk.functional(date_functional, name="date", properties={'date': [None]},
+                      disabled=lambda context: is_disabled(context, 'date'),
                       conflict_solver=lambda match, other: other
                       if other.name in ('episode', 'season', 'crc32')
                       else '__default__')
@@ -50,6 +51,9 @@ class KeepMarkedYearInFilepart(Rule):
     """
     priority = 64
     consequence = RemoveMatch
+
+    def enabled(self, context):
+        return not is_disabled(context, 'year')
 
     def when(self, matches, context):
         ret = []
