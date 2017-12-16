@@ -89,7 +89,7 @@ class DashSeparatedReleaseGroup(Rule):
     consequence = [RemoveMatch, AppendMatch]
 
     @classmethod
-    def is_valid(cls, matches, candidate, start, end, at_end):
+    def is_valid(cls, matches, candidate, start, end, at_end):  # pylint:disable=inconsistent-return-statements
         """
         Whether a candidate is a valid release group.
         """
@@ -134,7 +134,7 @@ class DashSeparatedReleaseGroup(Rule):
             if separator == '.':
                 return True
 
-    def detect(self, matches, start, end, at_end):
+    def detect(self, matches, start, end, at_end):  # pylint:disable=inconsistent-return-statements
         """
         Detect release group at the end or at the beginning of a filepart.
         """
@@ -158,7 +158,7 @@ class DashSeparatedReleaseGroup(Rule):
         if candidate and self.is_valid(matches, candidate, start, end, at_end):
             return candidate
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         if matches.named('release_group'):
             return
 
@@ -190,7 +190,7 @@ class SceneReleaseGroup(Rule):
 
     properties = {'release_group': [None]}
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=too-many-locals
         # If a release_group is found before, ignore this kind of release_group rule.
 
         ret = []
@@ -278,11 +278,11 @@ class AnimeReleaseGroup(Rule):
 
         # If a release_group is found before, ignore this kind of release_group rule.
         if matches.named('release_group'):
-            return
+            return to_remove, to_append
 
         if not matches.named('episode') and not matches.named('season') and matches.named('release_group'):
             # This doesn't seems to be an anime, and we already found another release_group.
-            return
+            return to_remove, to_append
 
         for filepart in marker_sorted(matches.markers.named('path'), matches):
 

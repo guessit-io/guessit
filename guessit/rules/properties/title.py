@@ -145,7 +145,7 @@ class TitleBaseRule(Rule):
             return match.start >= hole.start and match.end <= hole.end
         return True
 
-    def check_titles_in_filepart(self, filepart, matches, context):
+    def check_titles_in_filepart(self, filepart, matches, context):  # pylint:disable=inconsistent-return-statements
         """
         Find title in filepart (ignoring language)
         """
@@ -231,13 +231,14 @@ class TitleBaseRule(Rule):
                 return titles, to_remove
 
     def when(self, matches, context):
+        ret = []
+        to_remove = []
+
         if matches.named(self.match_name, lambda match: 'expected' in match.tags):
-            return
+            return ret, to_remove
 
         fileparts = [filepart for filepart in list(marker_sorted(matches.markers.named('path'), matches))
                      if not self.filepart_filter or self.filepart_filter(filepart, matches)]
-
-        to_remove = []
 
         # Priorize fileparts containing the year
         years_fileparts = []
@@ -246,7 +247,6 @@ class TitleBaseRule(Rule):
             if year_match:
                 years_fileparts.append(filepart)
 
-        ret = []
         for filepart in fileparts:
             try:
                 years_fileparts.remove(filepart)

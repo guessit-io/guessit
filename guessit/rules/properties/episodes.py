@@ -69,7 +69,7 @@ def episodes():
                 if other.name in ('season', 'episode') and match.initiator != other.initiator:
                     if (match.initiator.name in ('weak_episode', 'weak_duplicate')
                             and other.initiator.name in ('weak_episode', 'weak_duplicate')):
-                        return
+                        return '__default__'
                     for current in (match, other):
                         if 'weak-episode' in current.tags or 'x' in current.initiator.raw.lower():
                             return current
@@ -360,6 +360,8 @@ class WeakConflictSolver(Rule):
                 if hole and hole.raw == group.raw:
                     return True
 
+        return False
+
     def when(self, matches, context):
         to_remove = []
         to_append = []
@@ -531,7 +533,7 @@ class RenameToAbsoluteEpisode(Rule):
 
     consequence = RenameMatch('absolute_episode')
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         initiators = set([match.initiator for match in matches.named('episode')
                           if len(match.initiator.children.named('episode')) > 1])
         if len(initiators) != 2:

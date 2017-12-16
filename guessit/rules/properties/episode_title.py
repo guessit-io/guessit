@@ -98,16 +98,15 @@ class TitleToEpisodeTitle(Rule):
         for title in titles:
             title_groups[title.value].append(title)
 
-        if len(title_groups) < 2:
-            return
-
         episode_titles = []
+        if len(title_groups) < 2:
+            return episode_titles
+
         for title in titles:
             if matches.previous(title, lambda match: match.name == 'episode'):
                 episode_titles.append(title)
 
-        if episode_titles:
-            return episode_titles
+        return episode_titles
 
     def then(self, matches, when_response, context):
         for title in when_response:
@@ -148,7 +147,7 @@ class EpisodeTitleFromPosition(TitleBaseRule):
             return False
         return super(EpisodeTitleFromPosition, self).should_remove(match, matches, filepart, hole, context)
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         if matches.named('episode_title'):
             return
         return super(EpisodeTitleFromPosition, self).when(matches, context)
@@ -165,7 +164,7 @@ class AlternativeTitleReplace(Rule):
         super(AlternativeTitleReplace, self).__init__()
         self.previous_names = previous_names
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         if matches.named('episode_title'):
             return
 
@@ -200,7 +199,7 @@ class RenameEpisodeTitleWhenMovieType(Rule):
     dependency = TypeProcessor
     consequence = RenameMatch
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         if matches.named('episode_title', lambda m: 'alternative-replaced' not in m.tags) \
                 and not matches.named('type', lambda m: m.value == 'episode'):
             return matches.named('episode_title')
@@ -224,7 +223,7 @@ class Filepart3EpisodeTitle(Rule):
     """
     consequence = AppendMatch('title')
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         fileparts = matches.markers.named('path')
         if len(fileparts) < 3:
             return
@@ -265,7 +264,7 @@ class Filepart2EpisodeTitle(Rule):
     """
     consequence = AppendMatch('title')
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         fileparts = matches.markers.named('path')
         if len(fileparts) < 2:
             return

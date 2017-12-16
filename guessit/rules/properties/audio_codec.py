@@ -169,10 +169,7 @@ class HqConflictRule(Rule):
     def when(self, matches, context):
         hq_audio = matches.named('audio_profile', lambda m: m.value == 'High Quality')
         hq_audio_spans = [match.span for match in hq_audio]
-        hq_other = matches.named('other', lambda m: m.span in hq_audio_spans)
-
-        if hq_other:
-            return hq_other
+        return matches.named('other', lambda m: m.span in hq_audio_spans)
 
 
 class AudioChannelsValidatorRule(Rule):

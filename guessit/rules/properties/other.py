@@ -131,7 +131,7 @@ class ProperCountRule(Rule):
 
     properties = {'proper_count': [None]}
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         propers = matches.named('other', lambda match: match.value == 'Proper')
         if propers:
             raws = {}  # Count distinct raw values
