@@ -190,7 +190,7 @@ class SceneReleaseGroup(Rule):
 
     properties = {'release_group': [None]}
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=too-many-locals
         # If a release_group is found before, ignore this kind of release_group rule.
 
         ret = []
