@@ -33,7 +33,7 @@ class FilmTitleRule(Rule):
 
     properties = {'film_title': [None]}
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         bonus_number = matches.named('film', lambda match: not match.private, index=0)
         if bonus_number:
             filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == 'path', 0)

@@ -20,7 +20,7 @@ def date():
     rebulk.regex(r"\d{4}", name="year", formatter=int,
                  validator=lambda match: seps_surround(match) and valid_year(match.value))
 
-    def date_functional(string, context):
+    def date_functional(string, context):  # pylint:disable=inconsistent-return-statements
         """
         Search for date in the string and retrieves match
 

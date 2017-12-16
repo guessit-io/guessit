@@ -144,7 +144,7 @@ class LanguageWord(object):
         self.next_word = next_word
 
     @property
-    def extended_word(self):
+    def extended_word(self):  # pylint:disable=inconsistent-return-statements
         """
         Return the extended word for this instance, if any.
         """
@@ -272,7 +272,7 @@ class LanguageFinder(object):
         if match:
             yield match
 
-    def find_match_for_word(self, word, fallback_word, affixes, is_affix, strip_affix):
+    def find_match_for_word(self, word, fallback_word, affixes, is_affix, strip_affix):  # pylint:disable=inconsistent-return-statements
         """
         Return the language match for the given word and affixes.
         """
@@ -305,7 +305,7 @@ class LanguageFinder(object):
                     if match:
                         return match
 
-    def find_language_match_for_word(self, word, key='language', force=False):
+    def find_language_match_for_word(self, word, key='language', force=False):  # pylint:disable=inconsistent-return-statements
         """
         Return the language match for the given word.
         """
@@ -315,7 +315,7 @@ class LanguageFinder(object):
                 if match:
                     return match
 
-    def create_language_match(self, key, word):
+    def create_language_match(self, key, word):  # pylint:disable=inconsistent-return-statements
         """
         Create a LanguageMatch for a given word
         """
@@ -324,7 +324,7 @@ class LanguageFinder(object):
         if lang is not None:
             return _LanguageMatch(property_name=key, word=word, lang=lang)
 
-    def parse_language(self, lang_word):
+    def parse_language(self, lang_word):  # pylint:disable=inconsistent-return-statements
         """
         Parse the lang_word into a valid Language.
 
@@ -433,7 +433,7 @@ class SubtitleExtensionRule(Rule):
 
     properties = {'subtitle_language': [None]}
 
-    def when(self, matches, context):
+    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         subtitle_extension = matches.named('container',
                                            lambda match: 'extension' in match.tags and 'subtitle' in match.tags,
                                            0)
