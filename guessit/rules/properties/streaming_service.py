@@ -8,6 +8,7 @@ import re
 from rebulk import Rebulk
 from rebulk.rules import Rule, RemoveMatch
 
+from ..common.pattern import is_disabled
 from ...rules.common import seps, dash
 from ...rules.common.validators import seps_before, seps_after
 
@@ -18,7 +19,8 @@ def streaming_service():  # pylint: disable=too-many-statements
     :return:
     :rtype: Rebulk
     """
-    rebulk = Rebulk().string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'streaming_service'))
+    rebulk = rebulk.string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
     rebulk.defaults(name='streaming_service', tags=['source-prefix'])
 
     rebulk.string('AE', 'A&E', value='A&E')

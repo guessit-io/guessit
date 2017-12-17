@@ -9,6 +9,7 @@ from rebulk.remodule import re
 from rebulk import Rebulk, Rule, RemoveMatch
 from ..common import seps
 from ..common.formatters import cleanup
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 from ...reutils import build_or_pattern
 
@@ -19,7 +20,8 @@ def website():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'website'))
+    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
     rebulk.defaults(name="website")
 
     tlds = [l.strip().decode('utf-8')

@@ -11,6 +11,7 @@ import babelfish
 from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
 from rebulk.remodule import re
 
+from ..common.pattern import is_disabled
 from ..common.words import iter_words, COMMON_WORDS
 from ..common.validators import seps_surround
 
@@ -21,18 +22,22 @@ def language():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk()
+    rebulk = Rebulk(disabled=lambda context: (is_disabled(context, 'language') and
+                                              is_disabled(context, 'subtitle_language')))
 
     rebulk.string(*subtitle_prefixes, name="subtitle_language.prefix", ignore_case=True, private=True,
-                  validator=seps_surround, tags=['release-group-prefix'])
+                  validator=seps_surround, tags=['release-group-prefix'],
+                  disabled=lambda context: is_disabled(context, 'subtitle_language'))
     rebulk.string(*subtitle_suffixes, name="subtitle_language.suffix", ignore_case=True, private=True,
-                  validator=seps_surround)
+                  validator=seps_surround,
+                  disabled=lambda context: is_disabled(context, 'subtitle_language'))
     rebulk.string(*lang_suffixes, name="language.suffix", ignore_case=True, private=True,
-                  validator=seps_surround, tags=['source-suffix'])
+                  validator=seps_surround, tags=['source-suffix'],
+                  disabled=lambda context: is_disabled(context, 'language'))
     rebulk.functional(find_languages,
                       properties={'language': [None]},
                       disabled=lambda context: not context.get('allowed_languages'))
-    rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule)
+    rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule, RemoveLanguage)
 
     return rebulk
 
@@ -188,9 +193,19 @@ class LanguageFinder(object):
     Helper class to search and return language matches: 'language' and 'subtitle_language' properties
     """
 
-    def __init__(self, allowed_languages):
+    def __init__(self, context):
+        allowed_languages = context.get('allowed_languages') if context else None
         self.allowed_languages = set([l.lower() for l in allowed_languages or []])
         self.common_words = COMMON_WORDS
+        self.prefixes_map = {}
+        self.suffixes_map = {}
+
+        if not is_disabled(context, 'subtitle_language'):
+            self.prefixes_map['subtitle_language'] = subtitle_prefixes
+            self.suffixes_map['subtitle_language'] = subtitle_suffixes
+
+        self.prefixes_map['language'] = lang_prefixes
+        self.suffixes_map['language'] = lang_suffixes
 
     def find(self, string):
         """
@@ -251,11 +266,11 @@ class LanguageFinder(object):
         """
         tuples = [
             (language_word, language_word.next_word,
-             {'subtitle_language': subtitle_prefixes, 'language': lang_prefixes},
+             self.prefixes_map,
              lambda string, prefix: string.startswith(prefix),
              lambda string, prefix: string[len(prefix):]),
             (language_word.next_word, language_word,
-             {'subtitle_language': subtitle_suffixes, 'language': lang_suffixes},
+             self.suffixes_map,
              lambda string, suffix: string.endswith(suffix),
              lambda string, suffix: string[:len(string) - len(suffix)])
         ]
@@ -346,8 +361,7 @@ def find_languages(string, context=None):
 
     :return: list of tuple (property, Language, lang_word, word)
     """
-    allowed_languages = context.get('allowed_languages') if context else None
-    return LanguageFinder(allowed_languages).find(string)
+    return LanguageFinder(context).find(string)
 
 
 class SubtitlePrefixLanguageRule(Rule):
@@ -357,6 +371,9 @@ class SubtitlePrefixLanguageRule(Rule):
     consequence = RemoveMatch
 
     properties = {'subtitle_language': [None]}
+
+    def enabled(self, context):
+        return not is_disabled(context, 'subtitle_language')
 
     def when(self, matches, context):
         to_rename = []
@@ -403,6 +420,9 @@ class SubtitleSuffixLanguageRule(Rule):
 
     properties = {'subtitle_language': [None]}
 
+    def enabled(self, context):
+        return not is_disabled(context, 'subtitle_language')
+
     def when(self, matches, context):
         to_append = []
         to_remove = matches.named('subtitle_language.suffix')
@@ -433,6 +453,9 @@ class SubtitleExtensionRule(Rule):
 
     properties = {'subtitle_language': [None]}
 
+    def enabled(self, context):
+        return not is_disabled(context, 'subtitle_language')
+
     def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         subtitle_extension = matches.named('container',
                                            lambda match: 'extension' in match.tags and 'subtitle' in match.tags,
@@ -441,3 +464,15 @@ class SubtitleExtensionRule(Rule):
             subtitle_lang = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
             if subtitle_lang:
                 return matches.conflicting(subtitle_lang, lambda m: m.name == 'source'), subtitle_lang
+
+
+class RemoveLanguage(Rule):
+    """Remove language matches that were not converted to subtitle_language when language is disabled."""
+
+    consequence = RemoveMatch
+
+    def enabled(self, context):
+        return is_disabled(context, 'language')
+
+    def when(self, matches, context):
+        return matches.named('language')

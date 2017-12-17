@@ -111,6 +111,7 @@ History
 - Added `LPCM` as new `audio_codec` possible value.
 - Added `Digital Master` as new `source` possible value.
 - Added several new values for `streaming_service`.
+- Added new options `--includes` and `--excludes`.
 
 2.1.4 (2017-06-01)
 ------------------

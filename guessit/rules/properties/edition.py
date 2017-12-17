@@ -7,6 +7,7 @@ from rebulk.remodule import re
 
 from rebulk import Rebulk
 from ..common import dash
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
@@ -16,7 +17,8 @@ def edition():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'edition'))
+    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name='edition', validator=seps_surround)
 
     rebulk.regex('collector', "collector'?s?-edition", 'edition-collector', value='Collector')

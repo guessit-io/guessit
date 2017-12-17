@@ -8,6 +8,7 @@ from rebulk.remodule import re
 from rebulk import Rebulk
 
 from ..common import seps
+from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 from ...reutils import build_or_pattern
 
@@ -18,7 +19,8 @@ def container():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'container'))
+    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
     rebulk.defaults(name='container',
                     formatter=lambda value: value.strip(seps),
                     tags=['extension'],
