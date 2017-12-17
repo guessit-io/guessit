@@ -20,9 +20,12 @@ def _type(matches, value):
     matches.append(Match(len(matches.input_string), len(matches.input_string), name='type', value=value))
 
 
-def type_():
+def type_(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """

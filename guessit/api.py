@@ -42,6 +42,17 @@ class GuessitException(Exception):
         self.options = options
 
 
+def load_rules(options):
+    """
+    Load rebulk rules according to rules in options dictionary.
+
+    :param options:
+    :type options: dict
+    :return:
+    """
+    default_api.load_rules(options)
+
+
 def guessit(string, options=None):
     """
     Retrieves all matches from string as a dict
@@ -71,24 +82,51 @@ class GuessItApi(object):
     An api class that can be configured with custom Rebulk configuration.
     """
 
-    def __init__(self, rebulk):
-        """
-        :param rebulk: Rebulk instance to use.
-        :type rebulk: Rebulk
-        :return:
-        :rtype:
-        """
-        self.rebulk = rebulk
+    def __init__(self):
+        """Default constructor."""
+        self.rebulk = None
 
-    @staticmethod
-    def _fix_option_encoding(value):
+    @classmethod
+    def _fix_option_encoding(cls, value):
         if isinstance(value, list):
-            return [GuessItApi._fix_option_encoding(item) for item in value]
+            return [cls._fix_option_encoding(item) for item in value]
+        if isinstance(value, dict):
+            return {cls._fix_option_encoding(k): cls._fix_option_encoding(v) for k, v in value.items()}
         if six.PY2 and isinstance(value, six.text_type):
-            return value.encode("utf-8")
+            return value.encode('utf-8')
         if six.PY3 and isinstance(value, six.binary_type):
             return value.decode('ascii')
         return value
+
+    @classmethod
+    def _parse_options(cls, options):
+        options = parse_options(options, True)
+
+        result = {}
+        for (key, value) in options.items():
+            key = cls._fix_option_encoding(key)
+            value = cls._fix_option_encoding(value)
+            result[key] = value
+
+        return result
+
+    def load_rules(self, options, force=True, rules_builder=rebulk_builder):
+        """
+        Load rebulk rules according to rules in options dictionary.
+
+        :param options:
+        :type options: str|dict
+        :param force:
+        :param builder:
+        :type builder:
+        :return:
+        :rtype: dict
+        """
+        options = self._parse_options(options)
+        if force or not self.rebulk:
+            self.rebulk = rules_builder(options.get('rules', {}))
+
+        return options
 
     def guessit(self, string, options=None):  # pylint: disable=too-many-branches
         """
@@ -101,16 +139,9 @@ class GuessItApi(object):
         :rtype:
         """
         try:
-            options = parse_options(options, True)
+            options = self.load_rules(options, force=False)
             result_decode = False
             result_encode = False
-
-            fixed_options = {}
-            for (key, value) in options.items():
-                key = GuessItApi._fix_option_encoding(key)
-                value = GuessItApi._fix_option_encoding(value)
-                fixed_options[key] = value
-            options = fixed_options
 
             if six.PY2:
                 if isinstance(string, six.text_type):
@@ -124,6 +155,7 @@ class GuessItApi(object):
                     result_encode = True
                 elif isinstance(string, six.text_type):
                     string = six.text_type(string)
+
             matches = self.rebulk.matches(string, options)
             if result_decode:
                 for match in matches:
@@ -146,6 +178,7 @@ class GuessItApi(object):
         :return:
         :rtype:
         """
+        options = self.load_rules(options, force=False)
         unordered = introspect(self.rebulk, options).properties
         ordered = OrderedDict()
         for k in sorted(unordered.keys(), key=six.text_type):
@@ -155,4 +188,4 @@ class GuessItApi(object):
         return ordered
 
 
-default_api = GuessItApi(rebulk_builder())
+default_api = GuessItApi()

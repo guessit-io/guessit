@@ -12,9 +12,12 @@ from ..common.pattern import is_disabled
 from ..common.validators import seps_after, seps_before, seps_surround
 
 
-def video_codec():
+def video_codec(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """

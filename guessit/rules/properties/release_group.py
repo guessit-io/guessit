@@ -17,12 +17,41 @@ from ..common.validators import int_coercable, seps_surround
 from ..properties.title import TitleFromPosition
 
 
-def release_group():
+def release_group(config):
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
+    forbidden_groupnames = config['forbidden_names']
+
+    groupname_ignore_seps = config['ignored_seps']
+    groupname_seps = ''.join([c for c in seps if c not in groupname_ignore_seps])
+
+    def clean_groupname(string):
+        """
+        Removes and strip separators from input_string
+        :param string:
+        :type string:
+        :return:
+        :rtype:
+        """
+        string = string.strip(groupname_seps)
+        if not (string.endswith(tuple(groupname_ignore_seps)) and string.startswith(tuple(groupname_ignore_seps))) \
+                and not any(i in string.strip(groupname_ignore_seps) for i in groupname_ignore_seps):
+            string = string.strip(groupname_ignore_seps)
+        for forbidden in forbidden_groupnames:
+            if string.lower().startswith(forbidden) and string[len(forbidden):len(forbidden) + 1] in seps:
+                string = string[len(forbidden):]
+                string = string.strip(groupname_seps)
+            if string.lower().endswith(forbidden) and string[-len(forbidden) - 1:-len(forbidden)] in seps:
+                string = string[:len(forbidden)]
+                string = string.strip(groupname_seps)
+        return string
+
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'release_group'))
 
     expected_group = build_expected_function('expected_group')
@@ -32,35 +61,11 @@ def release_group():
                       conflict_solver=lambda match, other: other,
                       disabled=lambda context: not context.get('expected_group'))
 
-    return rebulk.rules(DashSeparatedReleaseGroup, SceneReleaseGroup, AnimeReleaseGroup)
-
-
-forbidden_groupnames = ['rip', 'by', 'for', 'par', 'pour', 'bonus']
-
-groupname_ignore_seps = '[]{}()'
-groupname_seps = ''.join([c for c in seps if c not in groupname_ignore_seps])
-
-
-def clean_groupname(string):
-    """
-    Removes and strip separators from input_string
-    :param string:
-    :type string:
-    :return:
-    :rtype:
-    """
-    string = string.strip(groupname_seps)
-    if not (string.endswith(tuple(groupname_ignore_seps)) and string.startswith(tuple(groupname_ignore_seps))) \
-            and not any(i in string.strip(groupname_ignore_seps) for i in groupname_ignore_seps):
-        string = string.strip(groupname_ignore_seps)
-    for forbidden in forbidden_groupnames:
-        if string.lower().startswith(forbidden) and string[len(forbidden):len(forbidden)+1] in seps:
-            string = string[len(forbidden):]
-            string = string.strip(groupname_seps)
-        if string.lower().endswith(forbidden) and string[-len(forbidden)-1:-len(forbidden)] in seps:
-            string = string[:len(forbidden)]
-            string = string.strip(groupname_seps)
-    return string
+    return rebulk.rules(
+        DashSeparatedReleaseGroup(clean_groupname),
+        SceneReleaseGroup(clean_groupname),
+        AnimeReleaseGroup
+    )
 
 
 _scene_previous_names = ('video_codec', 'source', 'video_api', 'audio_codec', 'audio_profile', 'video_profile',
@@ -88,6 +93,11 @@ class DashSeparatedReleaseGroup(Rule):
     Detection only happens if no matches exist at the beginning.
     """
     consequence = [RemoveMatch, AppendMatch]
+
+    def __init__(self, value_formatter):
+        """Default constructor."""
+        super(DashSeparatedReleaseGroup, self).__init__()
+        self.value_formatter = value_formatter
 
     @classmethod
     def is_valid(cls, matches, candidate, start, end, at_end):  # pylint:disable=inconsistent-return-statements
@@ -175,8 +185,8 @@ class DashSeparatedReleaseGroup(Rule):
                 candidate = self.detect(matches, filepart.start, filepart.end, False)
 
             if candidate:
-                releasegroup = Match(candidate.start, candidate.end, name='release_group', formatter=clean_groupname,
-                                     input_string=candidate.input_string)
+                releasegroup = Match(candidate.start, candidate.end, name='release_group',
+                                     formatter=self.value_formatter, input_string=candidate.input_string)
 
                 to_append.append(releasegroup)
                 return to_remove, to_append
@@ -192,6 +202,11 @@ class SceneReleaseGroup(Rule):
     consequence = AppendMatch
 
     properties = {'release_group': [None]}
+
+    def __init__(self, value_formatter):
+        """Default constructor."""
+        super(SceneReleaseGroup, self).__init__()
+        self.value_formatter = value_formatter
 
     def when(self, matches, context):  # pylint:disable=too-many-locals
         # If a release_group is found before, ignore this kind of release_group rule.
@@ -217,7 +232,7 @@ class SceneReleaseGroup(Rule):
                 """
                 return match in titles[1:]
 
-            last_hole = matches.holes(start, end + 1, formatter=clean_groupname,
+            last_hole = matches.holes(start, end + 1, formatter=self.value_formatter,
                                       ignore=keep_only_first_title,
                                       predicate=lambda hole: cleanup(hole.value), index=-1)
 
@@ -250,7 +265,7 @@ class SceneReleaseGroup(Rule):
                     # if hole is inside a group marker with same value, remove [](){} ...
                     group = matches.markers.at_match(last_hole, lambda marker: marker.name == 'group', 0)
                     if group:
-                        group.formatter = clean_groupname
+                        group.formatter = self.value_formatter
                         if group.value == last_hole.value:
                             last_hole.start = group.start + 1
                             last_hole.end = group.end - 1

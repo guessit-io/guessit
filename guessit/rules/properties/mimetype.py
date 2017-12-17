@@ -12,9 +12,12 @@ from ..common.pattern import is_disabled
 from ...rules.processors import Processors
 
 
-def mimetype():
+def mimetype(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """

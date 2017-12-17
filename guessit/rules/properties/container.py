@@ -13,9 +13,12 @@ from ..common.validators import seps_surround
 from ...reutils import build_or_pattern
 
 
-def container():
+def container(config):
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
@@ -29,14 +32,11 @@ def container():
                     other.name == 'container' and 'extension' not in other.tags
                     else '__default__')
 
-    subtitles = ['srt', 'idx', 'sub', 'ssa', 'ass']
-    info = ['nfo']
-    videos = ['3g2', '3gp', '3gp2', 'asf', 'avi', 'divx', 'flv', 'm4v', 'mk2',
-              'mka', 'mkv', 'mov', 'mp4', 'mp4a', 'mpeg', 'mpg', 'ogg', 'ogm',
-              'ogv', 'qt', 'ra', 'ram', 'rm', 'ts', 'wav', 'webm', 'wma', 'wmv',
-              'iso', 'vob']
-    torrent = ['torrent']
-    nzb = ['nzb']
+    subtitles = config['subtitles']
+    info = config['info']
+    videos = config['videos']
+    torrent = config['torrent']
+    nzb = config['nzb']
 
     rebulk.regex(r'\.'+build_or_pattern(subtitles)+'$', exts=subtitles, tags=['extension', 'subtitle'])
     rebulk.regex(r'\.'+build_or_pattern(info)+'$', exts=info, tags=['extension', 'info'])

@@ -13,9 +13,11 @@ from ...rules.common import seps, dash
 from ...rules.common.validators import seps_before, seps_after
 
 
-def streaming_service():  # pylint: disable=too-many-statements
+def streaming_service(config):  # pylint: disable=too-many-statements,unused-argument
     """Streaming service property.
 
+    :param config: rule configuration
+    :type config: dict
     :return:
     :rtype: Rebulk
     """

@@ -225,9 +225,12 @@ class StripSeparators(CustomRule):
                     match.raw_end -= 1
 
 
-def processors():
+def processors(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """

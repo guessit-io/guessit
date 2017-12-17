@@ -11,9 +11,12 @@ from ..common.pattern import is_disabled
 from ..common.words import COMMON_WORDS, iter_words
 
 
-def country():
+def country(config):
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
@@ -29,22 +32,16 @@ def country():
                       properties={'country': [None]},
                       disabled=lambda context: not context.get('allowed_countries'))
 
+    babelfish.country_converters['guessit'] = GuessitCountryConverter(config['synonyms'])
+
     return rebulk
 
 
-COUNTRIES_SYN = {'ES': ['españa'],
-                 'GB': ['UK'],
-                 'BR': ['brazilian', 'bra'],
-                 'CA': ['québec', 'quebec', 'qc'],
-                 # FIXME: this one is a bit of a stretch, not sure how to do it properly, though...
-                 'MX': ['Latinoamérica', 'latin america']}
-
-
 class GuessitCountryConverter(babelfish.CountryReverseConverter):  # pylint: disable=missing-docstring
-    def __init__(self):
+    def __init__(self, synonyms):
         self.guessit_exceptions = {}
 
-        for alpha2, synlist in COUNTRIES_SYN.items():
+        for alpha2, synlist in synonyms.items():
             for syn in synlist:
                 self.guessit_exceptions[syn.lower()] = alpha2
 
@@ -79,9 +76,6 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):  # pylint: dis
                 pass
 
         raise babelfish.CountryReverseError(name)
-
-
-babelfish.country_converters['guessit'] = GuessitCountryConverter()
 
 
 class CountryFinder(object):
