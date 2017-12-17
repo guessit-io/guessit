@@ -100,6 +100,8 @@ GuessIt can be used from command line::
                             Expected title to parse (can be used multiple times)
       -G EXPECTED_GROUP, --expected-group EXPECTED_GROUP
                             Expected release group (can be used multiple times)
+      --includes INCLUDES   List of properties to be detected
+      --excludes EXCLUDES   List of properties to be ignored
 
     Input:
       -f INPUT_FILE, --input-file INPUT_FILE
