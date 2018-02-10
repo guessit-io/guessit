@@ -12,7 +12,7 @@ from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
 from .title import TitleFromPosition
-from ..common import dash, alt_dash, seps
+from ..common import dash, alt_dash, seps, seps_no_fs
 from ..common.formatters import strip
 from ..common.numeral import numeral, parse_numeral
 from ..common.pattern import is_disabled
@@ -80,7 +80,7 @@ def episodes():
         return '__default__'
 
     season_episode_seps = []
-    season_episode_seps.extend(seps)
+    season_episode_seps.extend(seps_no_fs)
     season_episode_seps.extend(['x', 'X', 'e', 'E'])
 
     season_words = ['season', 'saison', 'seizoen', 'serie', 'seasons', 'saisons', 'series',
@@ -94,7 +94,7 @@ def episodes():
     disc_markers = ['d']
     episode_markers = ["xE", "Ex", "EP", "E", "x"]
     range_separators = ['-', '~', 'to', 'a']
-    weak_discrete_separators = list(sep for sep in seps if sep not in range_separators)
+    weak_discrete_separators = list(sep for sep in seps_no_fs if sep not in range_separators)
     strong_discrete_separators = ['+', '&', 'and', 'et']
     discrete_separators = strong_discrete_separators + weak_discrete_separators
 

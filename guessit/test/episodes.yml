@@ -4128,3 +4128,17 @@
   screen_size: 1080p
   container: mkv
   type: episode
+
+? c:\Temp\autosubliminal\completed\2 Broke Girls\Season 01\2 Broke Girls - S01E01 - HDTV-720p Proper - x264 AC3 - IMMERSE - [2011-09-19].mkv
+: title: 2 Broke Girls
+  season: 1
+  episode: 1
+  source: HDTV
+  screen_size: 720p
+  other: Proper
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  release_group: IMMERSE
+  date: 2011-09-19
+  container: mkv
+  type: episode
