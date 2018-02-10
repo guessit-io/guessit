@@ -24,7 +24,7 @@ def bit_rate():
                                               and is_disabled(context, 'video_bit_rate')))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
     rebulk.defaults(name='audio_bit_rate', validator=seps_surround)
-    rebulk.regex(r'\d+-?[kmg]bps', r'\d+\.\d+-?[kmg]bps',
+    rebulk.regex(r'\d+-?[kmg]b(ps|it)', r'\d+\.\d+-?[kmg]b(ps|it)',
                  conflict_solver=(
                      lambda match, other: match
                      if other.name == 'audio_channels' and 'weak-audio_channels' not in other.tags
@@ -55,6 +55,12 @@ class BitRateTypeRule(Rule):
                 previous = matches.previous(match, index=0,
                                             predicate=lambda m: m.name in ('source', 'screen_size', 'video_codec'))
                 if previous and not matches.holes(previous.end, match.start, predicate=lambda m: m.value.strip(seps)):
+                    after = matches.next(match, index=0, predicate=lambda m: m.name == 'audio_codec')
+                    if after and not matches.holes(match.end, after.start, predicate=lambda m: m.value.strip(seps)):
+                        bitrate = match.value
+                        if bitrate.units == 'Kbps' or (bitrate.units == 'Mbps' and bitrate.magnitude < 10):
+                            continue
+
                     if video_bit_rate_disabled:
                         to_remove.append(match)
                     else:

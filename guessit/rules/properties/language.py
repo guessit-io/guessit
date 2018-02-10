@@ -37,7 +37,7 @@ def language():
     rebulk.functional(find_languages,
                       properties={'language': [None]},
                       disabled=lambda context: not context.get('allowed_languages'))
-    rebulk.rules(SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule, RemoveLanguage)
+    rebulk.rules(SubtitleExtensionRule, SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, RemoveLanguage)
 
     return rebulk
 
@@ -463,6 +463,9 @@ class SubtitleExtensionRule(Rule):
         if subtitle_extension:
             subtitle_lang = matches.previous(subtitle_extension, lambda match: match.name == 'language', 0)
             if subtitle_lang:
+                for weak in matches.named('subtitle_language', predicate=lambda m: 'weak-language' in m.tags):
+                    weak.private = True
+
                 return matches.conflicting(subtitle_lang, lambda m: m.name == 'source'), subtitle_lang
 
 

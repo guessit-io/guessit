@@ -194,6 +194,9 @@
 ? -1080p
 : screen_size: 1080i
 
+? 1440p
+: screen_size: 1440p
+
 ? +500x1080
 : screen_size: 500x1080
   aspect_ratio: 0.463

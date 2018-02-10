@@ -4152,3 +4152,66 @@
   source: Web
   container: mkv
   type: episode
+
+? Mind.Field.S02E06.The.Power.of.Suggestion.1440p.H264.WEBDL.Subtitles
+: title: Mind Field
+  season: 2
+  episode: 6
+  episode_title: The Power of Suggestion
+  screen_size: 1440p
+  video_codec: H.264
+  source: Web
+  subtitle_language: und
+  type: episode
+
+? The Power of Suggestion - Mind Field S2 (Ep 6) (1440p_24fps_H264-384kbit_AAC 6Ch).mp4
+: title: The Power of Suggestion
+  alternative_title: Mind Field
+  season: 2
+  episode: 6
+  screen_size: 1440p
+  video_codec: H.264
+  audio_bit_rate: 384Kbps
+  audio_codec: AAC
+  audio_channels: '5.1'
+  container: mp4
+  type: episode
+
+? Mind.Field.S02E06.The.Power.of.Suggestion.1440p.H264.WEBDL.Subtitles/The Power of Suggestion - Mind Field S2 (Ep 6) (1440p_24fps_H264-384kbit_AAC 6Ch).mp4
+: season: 2
+  episode: 6
+  title: The Power of Suggestion
+  alternative_title: Mind Field
+  screen_size: 1440p
+  video_codec: H.264
+  source: Web
+  subtitle_language: und
+  audio_bit_rate: 384Kbps
+  audio_codec: AAC
+  audio_channels: '5.1'
+  container: mp4
+  type: episode
+
+? Mind.Field.S02E06.The.Power.of.Suggestion.1440p.H264.WEBDL.Subtitles/The Power of Suggestion - Mind Field S2 (Ep 6) (English).srt
+: title: Mind Field
+  season: 2
+  episode: 6
+  episode_title: The Power of Suggestion
+  screen_size: 1440p
+  video_codec: H.264
+  source: Web
+  subtitle_language: en
+  container: srt
+  type: episode
+
+? Mind.Field.S02E06.The.Power.of.Suggestion.1440p.H264.WEBDL.Subtitles/The Power of Suggestion - Mind Field S2 (Ep 6) (Korean).srt
+: title: Mind Field
+  season: 2
+  episode: 6
+  episode_title: The Power of Suggestion
+  screen_size: 1440p
+  video_codec: H.264
+  source: Web
+  subtitle_language: ko
+  container: srt
+  type: episode

@@ -14,7 +14,7 @@ from ..common import dash, seps
 from ...reutils import build_or_pattern
 
 interlaced = frozenset({'360', '480', '576', '900', '1080'})
-progressive = frozenset(interlaced | {'368', '720', '2160', '4320'})
+progressive = frozenset(interlaced | {'368', '720', '1440', '2160', '4320'})
 
 
 def screen_size():

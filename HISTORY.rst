@@ -19,6 +19,7 @@ History
 - `screen_size` property `480i` was added.
 - `screen_size` property `576i` was added.
 - `screen_size` property `900i` was added.
+- `screen_size` property `1440p` was added.
 - `screen_size` property `4K` is now `2160p`
 - `screen_size` property `4320p` was added.
 - `video_codec` property `h264` is now `H.264`
