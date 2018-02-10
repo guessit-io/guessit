@@ -67,8 +67,10 @@ def episodes():
             if match.name in ('season', 'episode'):
                 if other.name in ('video_codec', 'audio_codec', 'container', 'date'):
                     return match
-                if (other.name == 'audio_channels' and 'weak-audio_channels' not in other.tags) or (
-                        other.name == 'screen_size' and not int_coercable(other.raw)):
+                if (other.name == 'audio_channels' and 'weak-audio_channels' not in other.tags
+                        and not match.initiator.children.named(match.name + 'Marker')) or (
+                            other.name == 'screen_size' and not int_coercable(other.raw)):
+
                     return match
                 if other.name in ('season', 'episode') and match.initiator != other.initiator:
                     if (match.initiator.name in ('weak_episode', 'weak_duplicate')
