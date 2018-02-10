@@ -272,7 +272,57 @@
           "multi",
           "dl"
         ]
-      }
+      },
+      "subtitle_affixes": [
+        "sub",
+        "subs",
+        "esub",
+        "esubs",
+        "subbed",
+        "custom subbed",
+        "custom subs",
+        "custom sub",
+        "customsubbed",
+        "customsubs",
+        "customsub",
+        "soft subtitles",
+        "soft subs"
+      ],
+      "subtitle_prefixes": [
+        "st",
+        "v",
+        "vost",
+        "subforced",
+        "fansub",
+        "hardsub",
+        "legenda",
+        "legendas",
+        "legendado",
+        "subtitulado",
+        "soft",
+        "subtitles"
+      ],
+      "subtitle_suffixes": [
+        "subforced",
+        "fansub",
+        "hardsub"
+      ],
+      "language_affixes": [
+        "dublado",
+        "dubbed",
+        "dub"
+      ],
+      "language_prefixes": [
+        "true"
+      ],
+      "language_suffixes": [
+        "audio"
+      ],
+      "weak_affixes": [
+        "v",
+        "audio",
+        "true"
+      ]
     },
     "part": {
       "prefixes": [

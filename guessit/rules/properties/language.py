@@ -27,20 +27,13 @@ def language(config, common_words):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    subtitle_both = ['sub', 'subs', 'esub', 'esubs', 'subbed', 'custom subbed', 'custom subs',
-                     'custom sub', 'customsubbed', 'customsubs', 'customsub',
-                     'soft subtitles', 'soft subs']
-    subtitle_prefixes = sorted(subtitle_both +
-                               ['st', 'v', 'vost', 'subforced', 'fansub', 'hardsub',
-                                'legenda', 'legendas', 'legendado', 'subtitulado',
-                                'soft', 'subtitles'], key=length_comparator)
-    subtitle_suffixes = sorted(subtitle_both +
-                               ['subforced', 'fansub', 'hardsub'], key=length_comparator)
-    lang_both = ['dublado', 'dubbed', 'dub']
-    lang_suffixes = sorted(lang_both + ['audio'], key=length_comparator)
-    lang_prefixes = sorted(lang_both + ['true'], key=length_comparator)
-
-    weak_prefixes = frozenset(['v', 'audio', 'true'])
+    subtitle_both = config['subtitle_affixes']
+    subtitle_prefixes = sorted(subtitle_both + config['subtitle_prefixes'], key=length_comparator)
+    subtitle_suffixes = sorted(subtitle_both + config['subtitle_suffixes'], key=length_comparator)
+    lang_both = config['language_affixes']
+    lang_prefixes = sorted(lang_both + config['language_prefixes'], key=length_comparator)
+    lang_suffixes = sorted(lang_both + config['language_suffixes'], key=length_comparator)
+    weak_affixes = frozenset(config['weak_affixes'])
 
     rebulk = Rebulk(disabled=lambda context: (is_disabled(context, 'language') and
                                               is_disabled(context, 'subtitle_language')))
@@ -61,7 +54,7 @@ def language(config, common_words):
         :return: list of tuple (property, Language, lang_word, word)
         """
         return LanguageFinder(context, common_words, subtitle_prefixes, subtitle_suffixes,
-                              lang_prefixes, lang_suffixes, weak_prefixes).find(string)
+                              lang_prefixes, lang_suffixes, weak_affixes).find(string)
 
     rebulk.functional(find_languages,
                       properties={'language': [None]},
@@ -197,11 +190,11 @@ class LanguageFinder(object):
 
     def __init__(self, context, common_words,
                  subtitle_prefixes, subtitle_suffixes,
-                 lang_prefixes, lang_suffixes, weak_prefixes):
+                 lang_prefixes, lang_suffixes, weak_affixes):
         allowed_languages = context.get('allowed_languages') if context else None
         self.allowed_languages = set([l.lower() for l in allowed_languages or []])
         self.common_words = common_words
-        self.weak_prefixes = weak_prefixes
+        self.weak_affixes = weak_affixes
         self.prefixes_map = {}
         self.suffixes_map = {}
 
@@ -315,7 +308,7 @@ class LanguageFinder(object):
                         if fallback_word:
                             match = self.find_language_match_for_word(fallback_word, key=key, force=True)
 
-                        if not match and part not in self.weak_prefixes:
+                        if not match and part not in self.weak_affixes:
                             match = self.create_language_match(key, LanguageWord(current_word.start, current_word.end,
                                                                                  'und', current_word.input_string))
                     elif value not in self.common_words:
