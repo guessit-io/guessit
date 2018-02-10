@@ -48,6 +48,8 @@ def rebulk_builder(config):
 
     rebulk = Rebulk()
 
+    common_words = frozenset(_config('common_words'))
+
     rebulk.rebulk(path(_config('path')))
     rebulk.rebulk(groups(_config('groups')))
 
@@ -61,8 +63,8 @@ def rebulk_builder(config):
     rebulk.rebulk(date(_config('date')))
     rebulk.rebulk(title(_config('title')))
     rebulk.rebulk(episode_title(_config('episode_title')))
-    rebulk.rebulk(language(_config('language')))
-    rebulk.rebulk(country(_config('country')))
+    rebulk.rebulk(language(_config('language'), common_words))
+    rebulk.rebulk(country(_config('country'), common_words))
     rebulk.rebulk(release_group(_config('release_group')))
     rebulk.rebulk(streaming_service(_config('streaming_service')))
     rebulk.rebulk(other(_config('other')))

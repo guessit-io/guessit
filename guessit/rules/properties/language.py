@@ -12,16 +12,18 @@ from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
 from rebulk.remodule import re
 
 from ..common.pattern import is_disabled
-from ..common.words import iter_words, COMMON_WORDS
+from ..common.words import iter_words
 from ..common.validators import seps_surround
 
 
-def language(config):
+def language(config, common_words):
     """
     Builder for rebulk object.
 
     :param config: rule configuration
     :type config: dict
+    :param common_words: common words
+    :type common_words: set
     :return: Created Rebulk object
     :rtype: Rebulk
     """
@@ -58,7 +60,7 @@ def language(config):
 
         :return: list of tuple (property, Language, lang_word, word)
         """
-        return LanguageFinder(context, subtitle_prefixes, subtitle_suffixes,
+        return LanguageFinder(context, common_words, subtitle_prefixes, subtitle_suffixes,
                               lang_prefixes, lang_suffixes, weak_prefixes).find(string)
 
     rebulk.functional(find_languages,
@@ -193,12 +195,12 @@ class LanguageFinder(object):
     Helper class to search and return language matches: 'language' and 'subtitle_language' properties
     """
 
-    def __init__(self, context,
+    def __init__(self, context, common_words,
                  subtitle_prefixes, subtitle_suffixes,
                  lang_prefixes, lang_suffixes, weak_prefixes):
         allowed_languages = context.get('allowed_languages') if context else None
         self.allowed_languages = set([l.lower() for l in allowed_languages or []])
-        self.common_words = COMMON_WORDS
+        self.common_words = common_words
         self.weak_prefixes = weak_prefixes
         self.prefixes_map = {}
         self.suffixes_map = {}
