@@ -119,6 +119,7 @@ History
 - Added `Obfuscated` as new `other` possible value.
 - Added `Proof` as new `other` possible value.
 - Added `Repost` as new `other` possible value.
+- Added advanced guessit configuration to config files.
 
 2.1.4 (2017-06-01)
 ------------------
