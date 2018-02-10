@@ -4110,3 +4110,21 @@
   screen_size: 720p
   container: mkv
   type: episode
+
+? "[HorribleSubs] Garo - Vanishing Line - 01 [1080p].mkv"
+: release_group: HorribleSubs
+  title: Garo
+  alternative_title: Vanishing Line
+  episode: 1
+  screen_size: 1080p
+  container: mkv
+  type: episode
+
+? "[HorribleSubs] Yowamushi Pedal - Glory Line - 01 [1080p].mkv"
+: release_group: HorribleSubs
+  title: Yowamushi Pedal
+  alternative_title: Glory Line
+  episode: 1
+  screen_size: 1080p
+  container: mkv
+  type: episode

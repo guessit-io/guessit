@@ -90,7 +90,7 @@ def other():
     for value in ('Complete', 'Classic', 'Bonus', 'Trailer', 'Retail',
                   'Colorized', 'Internal'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
-    rebulk.regex('LiNE', value='Line Audio', tags=['has-neighbor', 'release-group-prefix'])
+    rebulk.regex('LiNE', value='Line Audio', tags=['has-neighbor-before', 'has-neighbor-after', 'release-group-prefix'])
     rebulk.regex('Read-?NFO', value='Read NFO')
     rebulk.string('CONVERT', value='Converted', tags='has-neighbor')
     rebulk.string('DOCU', 'DOKU', value='Documentary', tags='has-neighbor')
