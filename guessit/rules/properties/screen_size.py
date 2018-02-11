@@ -9,6 +9,7 @@ from rebulk.remodule import re
 from rebulk import Rebulk, Rule, RemoveMatch, AppendMatch
 
 from ..common.pattern import is_disabled
+from ..common.quantity import FrameRate
 from ..common.validators import seps_surround
 from ..common import dash, seps
 from ...reutils import build_or_pattern
@@ -23,19 +24,28 @@ def screen_size():
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'screen_size'))
+    rebulk = Rebulk()
     rebulk = rebulk.string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE)
 
-    rebulk.defaults(name='screen_size', validator=seps_surround, abbreviations=[dash], private_children=True)
+    rebulk.defaults(name='screen_size', validator=seps_surround, abbreviations=[dash],
+                    disabled=lambda context: is_disabled(context, 'screen_size'))
+
+    frame_rates = [re.escape('23.976'), '24', '25', '30', '48', '50', '60', '120']
+    frame_rate_pattern = build_or_pattern(frame_rates, name='frame_rate')
+    interlaced_pattern = build_or_pattern(interlaced, name='height')
+    progressive_pattern = build_or_pattern(progressive, name='height')
 
     res_pattern = r'(?:(?P<width>\d{3,4})(?:x|\*))?'
-    rebulk.regex(res_pattern + build_or_pattern(interlaced, name='height') + r'(?P<scan_type>i)(?:24|30|50|60|120)?')
-    rebulk.regex(res_pattern + build_or_pattern(progressive, name='height') + r'(?P<scan_type>p)(?:24|30|50|60|120)?')
-    rebulk.regex(res_pattern + build_or_pattern(progressive, name='height') + r'(?P<scan_type>p)?(?:hd)')
-    rebulk.regex(res_pattern + build_or_pattern(progressive, name='height') + r'(?P<scan_type>p)?x?')
+    rebulk.regex(res_pattern + interlaced_pattern + r'(?P<scan_type>i)' + frame_rate_pattern + '?')
+    rebulk.regex(res_pattern + progressive_pattern + r'(?P<scan_type>p)' + frame_rate_pattern + '?')
+    rebulk.regex(res_pattern + progressive_pattern + r'(?P<scan_type>p)?(?:hd)')
+    rebulk.regex(res_pattern + progressive_pattern + r'(?P<scan_type>p)?x?')
     rebulk.string('4k', value='2160p')
     rebulk.regex(r'(?P<width>\d{3,4})-?(?:x|\*)-?(?P<height>\d{3,4})',
                  conflict_solver=lambda match, other: '__default__' if other.name == 'screen_size' else other)
+
+    rebulk.regex(frame_rate_pattern + '(p|fps)', name='frame_rate',
+                 formatter=FrameRate.fromstring, disabled=lambda context: is_disabled(context, 'frame_rate'))
 
     rebulk.rules(PostProcessScreenSize(progressive), ScreenSizeOnlyOne, RemoveScreenSizeConflicts)
 
@@ -62,6 +72,11 @@ class PostProcessScreenSize(Rule):
     def when(self, matches, context):
         to_append = []
         for match in matches.named('screen_size'):
+            if not is_disabled(context, 'frame_rate'):
+                for frame_rate in match.children.named('frame_rate'):
+                    frame_rate.formatter = FrameRate.fromstring
+                    to_append.append(frame_rate)
+
             values = match.children.to_dict()
             if 'height' not in values:
                 continue

@@ -16,7 +16,7 @@ class Quantity(object):
     Represent a quantity object with magnitude and units.
     """
 
-    parser_re = re.compile(r'(?P<magnitude>\d+(?:[.]\d+)?)(?P<units>[^\d]+)')
+    parser_re = re.compile(r'(?P<magnitude>\d+(?:[.]\d+)?)(?P<units>[^\d]+)?')
 
     def __init__(self, magnitude, units):
         self.magnitude = magnitude
@@ -92,3 +92,15 @@ class BitRate(Quantity):
             value = value.replace(token, 'bps')
 
         return value
+
+
+class FrameRate(Quantity):
+    """
+    Represent frame rate.
+
+    e.g.: 24fps, 60fps
+    """
+
+    @classmethod
+    def parse_units(cls, value):
+        return 'fps'

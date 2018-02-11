@@ -161,7 +161,7 @@ Video properties
   Resolution of video.
 
   - ``<width>x<height>``, ``360i``, ``360p``, ``368p``, ``480i``, ``480p``, ``576i``, ``576p``, ``720p``, ``900i``,
-    ``900p``, ``1080i``, ``1080p``, ``2160p``, ``4320p``
+    ``900p``, ``1080i``, ``1080p``, ``1440p``, ``2160p``, ``4320p``
 
 
 - **aspect_ratio**
@@ -330,8 +330,8 @@ Other properties
 
   - ``3D``, ``Audio Fixed``, ``Bonus``, ``BT.2020``, ``Classic``, ``Colorized``, ``Complete``, ``Converted``,
     ``Documentary``, ``Dolby Vision``, ``Dual Audio``, ``East Coast Feed``, ``Fan Subtitled``, ``Fast Subtitled``,
-    ``Full HD``, ``Hardcoded Subtitles``, ``HD``, ``HDR10``, ``High Quality``, ``High Resolution``, ``Internal``,
-    ``Line Dubbed``, ``Line Audio``, ``Mic Dubbed``, ``Micro HD``, ``Mux``, ``NTSC``, ``Open Matte``,
+    ``Full HD``, ``Hardcoded Subtitles``, ``HD``, ``HDR10``, ``High Frame Rate``, ``High Quality``, ``High Resolution``,
+    ``Internal``, ``Line Dubbed``, ``Line Audio``, ``Mic Dubbed``, ``Micro HD``, ``Mux``, ``NTSC``, ``Open Matte``,
     ``Original Aspect Ratio``, ``Original Video``, ``PAL``, ``Preair``, ``Proper``, ``PS Vita``, ``Read NFO``,
     ``Region 5``, ``Region C``, ``Reencoded``, ``Remux``, ``Retail``, ``Rip``, ``Screener``, ``SECAM``,
     ``Standard Dynamic Range``, ``Straight to Video``, ``Sync Fixed``, ``Trailer``, ``Ultra HD``, ``Upscaled``,
