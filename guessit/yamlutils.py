@@ -3,6 +3,7 @@
 """
 Options
 """
+
 try:
     from collections import OrderedDict
 except ImportError:  # pragma: no-cover
@@ -10,6 +11,8 @@ except ImportError:  # pragma: no-cover
 import babelfish
 
 import yaml
+
+from .rules.common.quantity import BitRate, Size
 
 
 class OrderedDictYAMLLoader(yaml.Loader):
@@ -65,6 +68,8 @@ def default_representer(dumper, data):
 
 CustomDumper.add_representer(babelfish.Language, default_representer)
 CustomDumper.add_representer(babelfish.Country, default_representer)
+CustomDumper.add_representer(BitRate, default_representer)
+CustomDumper.add_representer(Size, default_representer)
 
 
 def ordered_dict_representer(dumper, data):

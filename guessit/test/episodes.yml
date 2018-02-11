@@ -4215,3 +4215,11 @@
   subtitle_language: ko
   container: srt
   type: episode
+
+? '[HorribleSubs] Overlord II - 01 [1080p] 19.1mbits - 120fps.mkv'
+: title: Overlord II
+  episode: 1
+  screen_size: 1080p
+  video_bit_rate: 19.1Mbps
+  container: mkv
+  type: episode

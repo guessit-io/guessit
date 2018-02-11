@@ -87,4 +87,8 @@ class BitRate(Quantity):
 
     @classmethod
     def parse_units(cls, value):
-        return value.strip(seps).capitalize().replace('bit', 'bps')
+        value = value.strip(seps).capitalize()
+        for token in ('bits', 'bit'):
+            value = value.replace(token, 'bps')
+
+        return value

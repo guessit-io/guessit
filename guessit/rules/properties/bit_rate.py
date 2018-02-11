@@ -24,7 +24,7 @@ def bit_rate():
                                               and is_disabled(context, 'video_bit_rate')))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
     rebulk.defaults(name='audio_bit_rate', validator=seps_surround)
-    rebulk.regex(r'\d+-?[kmg]b(ps|it)', r'\d+\.\d+-?[kmg]b(ps|it)',
+    rebulk.regex(r'\d+-?[kmg]b(ps|its?)', r'\d+\.\d+-?[kmg]b(ps|its?)',
                  conflict_solver=(
                      lambda match, other: match
                      if other.name == 'audio_channels' and 'weak-audio_channels' not in other.tags
