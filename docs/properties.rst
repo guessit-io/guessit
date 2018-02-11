@@ -203,6 +203,14 @@ Video properties
   - ``[<guessit.BitRate>]`` (object has ``magnitude`` and ``units``)
 
 
+- **frame_rate**
+
+  Video frame rate (frames per second).
+  Examples: ``25fps`` (``<FrameRate [25fps]>``), ``60fps`` (``<FrameRate [60fps]>``).
+
+  - ``[<guessit.FrameRate>]`` (object has ``magnitude`` and ``units``)
+
+
 Audio properties
 ----------------
 

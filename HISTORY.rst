@@ -103,6 +103,7 @@ History
 - Changed `size` output to return `guessit.Size` object.
 - Added `audio_video_rate` as new possible property.
 - Added `video_video_rate` as new possible property.
+- Added `frame_rate` as new possible property.
 - Added `disc` as a new possible property.
 - Added `H.263` as new `video_codec` possible value.
 - Added `VP7` as new `video_codec` possible value.
