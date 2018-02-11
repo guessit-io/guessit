@@ -12,7 +12,7 @@ import babelfish
 
 import yaml
 
-from .rules.common.quantity import BitRate, Size
+from .rules.common.quantity import BitRate, FrameRate, Size
 
 
 class OrderedDictYAMLLoader(yaml.Loader):
@@ -69,6 +69,7 @@ def default_representer(dumper, data):
 CustomDumper.add_representer(babelfish.Language, default_representer)
 CustomDumper.add_representer(babelfish.Country, default_representer)
 CustomDumper.add_representer(BitRate, default_representer)
+CustomDumper.add_representer(FrameRate, default_representer)
 CustomDumper.add_representer(Size, default_representer)
 
 

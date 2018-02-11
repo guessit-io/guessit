@@ -924,3 +924,21 @@
 : options: --excludes country
   title: This is Us
   type: movie
+
+? MotoGP.2016x03.USA.Race.BTSportHD.1080p25
+: title: MotoGP
+  season: 2016
+  year: 2016
+  episode: 3
+  screen_size: 1080p
+  frame_rate: 25fps
+  type: episode
+
+? BBC.Earth.South.Pacific.2010.D2.1080p.24p.BD25.DTS-HD
+: title: BBC Earth South Pacific
+  year: 2010
+  screen_size: 1080p
+  frame_rate: 24fps
+  source: Blu-ray
+  audio_codec: DTS-HD
+  type: movie

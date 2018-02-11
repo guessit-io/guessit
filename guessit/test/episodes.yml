@@ -4170,6 +4170,7 @@
   season: 2
   episode: 6
   screen_size: 1440p
+  frame_rate: 24fps
   video_codec: H.264
   audio_bit_rate: 384Kbps
   audio_codec: AAC
@@ -4183,6 +4184,7 @@
   title: The Power of Suggestion
   alternative_title: Mind Field
   screen_size: 1440p
+  frame_rate: 24fps
   video_codec: H.264
   source: Web
   subtitle_language: und
@@ -4217,9 +4219,11 @@
   type: episode
 
 ? '[HorribleSubs] Overlord II - 01 [1080p] 19.1mbits - 120fps.mkv'
-: title: Overlord II
+: release_group: HorribleSubs
+  title: Overlord II
   episode: 1
   screen_size: 1080p
   video_bit_rate: 19.1Mbps
+  frame_rate: 120fps
   container: mkv
   type: episode

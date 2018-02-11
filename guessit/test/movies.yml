@@ -1671,3 +1671,29 @@
   release_group: AViTECH
   container: avi
   type: movie
+
+? Star Trek First Contact (1996) Blu-Ray 1080p24 H.264 TrueHD 5.1 CtrlHD
+: title: Star Trek First Contact
+  year: 1996
+  source: Blu-ray
+  screen_size: 1080p
+  frame_rate: 24fps
+  video_codec: H.264
+  audio_codec: Dolby TrueHD
+  audio_channels: '5.1'
+  release_group: CtrlHD
+  type: movie
+
+? The.Hobbit.The.Desolation.of.Smaug.Extended.HFR.48fps.ITA.ENG.AC3.BDRip.1080p.x264_ZMachine.mkv
+: title: The Hobbit The Desolation of Smaug
+  edition: Extended
+  other: [High Frame Rate, Rip]
+  frame_rate: 48fps
+  language: [it, en]
+  audio_codec: Dolby Digital
+  source: Blu-ray
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: ZMachine
+  container: mkv
+  type: movie
