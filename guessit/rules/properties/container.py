@@ -52,7 +52,7 @@ def container():
                                       'video_codec') or other.name == 'container' and 'extension' in other.tags
                     else '__default__')
 
-    rebulk.string(*[sub for sub in subtitles if sub not in ['sub']], tags=['subtitle'])
+    rebulk.string(*[sub for sub in subtitles if sub not in ('sub', 'ass')], tags=['subtitle'])
     rebulk.string(*videos, tags=['video'])
     rebulk.string(*torrent, tags=['torrent'])
     rebulk.string(*nzb, tags=['nzb'])
