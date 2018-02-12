@@ -2,6 +2,7 @@ FROM ubuntu
 
 MAINTAINER Rémi Alvergnat <toilal.dev@gmail.com>
 
+ENV LANG C.UTF-8
 ENV PYENV_ROOT /root/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
