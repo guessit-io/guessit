@@ -305,7 +305,8 @@ class LanguageFinder(object):
                     match = None
                     value = strip_affix(word_lang, part)
                     if not value:
-                        if fallback_word:
+                        if fallback_word and (
+                                abs(fallback_word.start - word.end) <= 1 or abs(word.start - fallback_word.end) <= 1):
                             match = self.find_language_match_for_word(fallback_word, key=key, force=True)
 
                         if not match and part not in self.weak_affixes:

@@ -138,6 +138,8 @@ class AudioProfileRule(Rule):
                 codec = matches.next(profile, lambda match: match.name == 'audio_codec' and match.value == self.codec)
             if not codec:
                 ret.append(profile)
+            if codec:
+                ret.extend(matches.conflicting(profile))
         return ret
 
 
