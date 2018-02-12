@@ -1697,3 +1697,25 @@
   release_group: ZMachine
   container: mkv
   type: movie
+
+? Test (2013) [WEBDL-1080p] [x264 AC3] [ENG+PT+DE] [STANDARD]
+: title: Test
+  year: 2013
+  source: Web
+  screen_size: 1080p
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  language: [en, pt, de]
+  release_group: STANDARD
+  type: movie
+
+? Test (2013) [WEBDL-1080p] [x264 AC3] [ENG+DE+IT] [STANDARD]
+: title: Test
+  year: 2013
+  source: Web
+  screen_size: 1080p
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  language: [en, de, it]
+  release_group: STANDARD
+  type: movie
