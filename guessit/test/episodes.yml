@@ -1047,8 +1047,10 @@
   title: FooBar
 
 ? FooBar 360
-: screen_size: 360p
+: season: 3
+  episode: 60
   title: FooBar
+  -screen_size: 360p
 
 ? BarFood christmas special HDTV
 : options: --expected-title BarFood
@@ -4226,4 +4228,25 @@
   video_bit_rate: 19.1Mbps
   frame_rate: 120fps
   container: mkv
+  type: episode
+
+? One Piece - 720
+: title: One Piece
+  season: 7
+  episode: 20
+  type: episode
+
+? foobar.213.avi
+: options: -E
+  title: foobar
+  episode: 213
+  container: avi
+  type: episode
+
+? FooBar - 360 368p-Grp
+: options: -E
+  title: FooBar
+  episode: 360
+  screen_size: 368p
+  release_group: Grp
   type: episode
