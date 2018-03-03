@@ -115,6 +115,10 @@ History
 - Added `Digital Master` as new `source` possible value.
 - Added several new values for `streaming_service`.
 - Added new options `--includes` and `--excludes`.
+- Added `Sample` as new `other` possible value.
+- Added `Obfuscated` as new `other` possible value.
+- Added `Proof` as new `other` possible value.
+- Added `Repost` as new `other` possible value.
 
 2.1.4 (2017-06-01)
 ------------------
