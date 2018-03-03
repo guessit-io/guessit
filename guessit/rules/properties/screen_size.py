@@ -47,7 +47,7 @@ def screen_size():
     rebulk.regex(frame_rate_pattern + '(p|fps)', name='frame_rate',
                  formatter=FrameRate.fromstring, disabled=lambda context: is_disabled(context, 'frame_rate'))
 
-    rebulk.rules(PostProcessScreenSize(progressive), ScreenSizeOnlyOne, RemoveScreenSizeConflicts)
+    rebulk.rules(PostProcessScreenSize(progressive), ScreenSizeOnlyOne, ResolveScreenSizeConflicts)
 
     return rebulk
 
@@ -121,9 +121,9 @@ class ScreenSizeOnlyOne(Rule):
         return to_remove
 
 
-class RemoveScreenSizeConflicts(Rule):
+class ResolveScreenSizeConflicts(Rule):
     """
-    Remove season and episode matches which conflicts with screen_size match.
+    Resolve screen_size conflicts with season and episode matches.
     """
     consequence = RemoveMatch
 
@@ -138,15 +138,21 @@ class RemoveScreenSizeConflicts(Rule):
             if not conflicts:
                 continue
 
+            has_neighbor = False
             video_profile = matches.range(screensize.end, filepart.end, lambda match: match.name == 'video_profile', 0)
             if video_profile and not matches.holes(screensize.end, video_profile.start,
                                                    predicate=lambda h: h.value and h.value.strip(seps)):
                 to_remove.extend(conflicts)
+                has_neighbor = True
 
             previous = matches.previous(screensize, index=0, predicate=(
                 lambda m: m.name in ('date', 'source', 'other', 'streaming_service')))
             if previous and not matches.holes(previous.end, screensize.start,
                                               predicate=lambda h: h.value and h.value.strip(seps)):
                 to_remove.extend(conflicts)
+                has_neighbor = True
+
+            if not has_neighbor:
+                to_remove.append(screensize)
 
         return to_remove
