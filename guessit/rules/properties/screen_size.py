@@ -52,7 +52,7 @@ def screen_size(config):
     rebulk.regex(frame_rate_pattern + '(p|fps)', name='frame_rate',
                  formatter=FrameRate.fromstring, disabled=lambda context: is_disabled(context, 'frame_rate'))
 
-    rebulk.rules(PostProcessScreenSize(progressive, min_ar, max_ar), ScreenSizeOnlyOne, RemoveScreenSizeConflicts)
+    rebulk.rules(PostProcessScreenSize(progressive, min_ar, max_ar), ScreenSizeOnlyOne, ResolveScreenSizeConflicts)
 
     return rebulk
 
