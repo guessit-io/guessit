@@ -349,5 +349,5 @@ Find bellow the internal advanced configuration parameters and their values:
 Backwards Compatibility
 -----------------------
 This is an advanced feature which exposes Guessit internal parameters. These parameters are exposed to help you
-tweak Guessit results to fit your needs. We're willing to keep it backwards compatible, but in other to enhance Guessit,
+tweak Guessit results to fit your needs. We're willing to keep it backwards compatible, but in order to enhance Guessit,
 these parameters might change without prior notice.
