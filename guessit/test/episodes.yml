@@ -4250,3 +4250,240 @@
   screen_size: 368p
   release_group: Grp
   type: episode
+
+? wwiis.most.daring.raids.s01e04.storming.mussolinis.island.1080p.web.h.264-edhd-sample.mkv
+: title: wwiis most daring raids
+  season: 1
+  episode: 4
+  episode_title: storming mussolinis island
+  screen_size: 1080p
+  source: Web
+  video_codec: H.264
+  release_group: edhd
+  other: Sample
+  container: mkv
+  type: episode
+
+? WWIIs.Most.Daring.Raids.S01E04.Storming.Mussolinis.Island.1080p.WEB.h264-EDHD/wwiis.most.daring.raids.s01e04.storming.mussolinis.island.1080p.web.h.264-edhd-sample.mkv
+: title: wwiis most daring raids
+  season: 1
+  episode: 4
+  episode_title: Storming Mussolinis Island
+  screen_size: 1080p
+  source: Web
+  video_codec: H.264
+  release_group: edhd
+  other: Sample
+  container: mkv
+  type: episode
+
+? dcs.legends.of.tomorrow.s02e01.1080p.bluray.x264-rovers.proof
+: title: dcs legends of tomorrow
+  season: 2
+  episode: 1
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: rovers
+  other: Proof
+  type: episode
+
+? dcs.legends.of.tomorrow.s02e01.720p.bluray.x264-demand.sample.mkv
+: title: dcs legends of tomorrow
+  season: 2
+  episode: 1
+  screen_size: 720p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: demand
+  other: Sample
+  container: mkv
+  type: episode
+
+? Season 06/e01.1080p.bluray.x264-wavey-obfuscated.mkv
+: season: 6
+  episode: 1
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  title: wavey
+  other: Obfuscated
+  container: mkv
+  type: episode
+
+? Hells.Kitchen.US.S17E08.1080p.HEVC.x265-MeGusta-Obfuscated/c48db7d2aeb040e8a920a9fd6effcbf4.mkv
+: title: Hells Kitchen
+  country: US
+  season: 17
+  episode: 8
+  screen_size: 1080p
+  video_codec: H.265
+  release_group: MeGusta
+  other: Obfuscated
+  uuid: c48db7d2aeb040e8a920a9fd6effcbf4
+  container: mkv
+  type: episode
+
+? Blue.Bloods.S08E09.1080p.HEVC.x265-MeGusta-Obfuscated/afaae96ae7a140e0981ced2a79221751.mkv
+: title: Blue Bloods
+  season: 8
+  episode: 9
+  screen_size: 1080p
+  video_codec: H.265
+  release_group: MeGusta
+  other: Obfuscated
+  container: mkv
+  type: episode
+
+? MacGyver.2016.S02E09.CD-ROM.and.Hoagie.Foil.1080p.AMZN.WEBRip.DDP5.1.x264-NTb-Scrambled/c329b27187d44a94b4a25b21502db552.mkv
+: title: MacGyver
+  year: 2016
+  season: 2
+  episode: 9
+  screen_size: 1080p
+  streaming_service: Amazon Prime
+  source: Web
+  other: [Rip, Obfuscated]
+  audio_codec: Dolby Digital Plus
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: NTb
+  uuid: c329b27187d44a94b4a25b21502db552
+  container: mkv
+  type: episode
+
+? The.Late.Late.Show.with.James.Corden.2017.11.27.Armie.Hammer.Juno.Temple.Charlie.Puth.1080p.AMZN.WEB-DL.DDP2.0.H.264-monkee-Scrambled/42e7e8a48eb7454aaebebcf49705ce41.mkv
+: title: The Late Late Show with James Corden
+  date: 2017-11-27
+  episode_title: Armie Hammer Juno Temple Charlie Puth
+  screen_size: 1080p
+  streaming_service: Amazon Prime
+  source: Web
+  audio_codec: Dolby Digital Plus
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: monkee
+  other: Obfuscated
+  uuid: 42e7e8a48eb7454aaebebcf49705ce41
+  container: mkv
+  type: episode
+
+? Educating Greater Manchester S01E07 720p HDTV x264-PLUTONiUM-AsRequested
+: title: Educating Greater Manchester
+  season: 1
+  episode: 7
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  release_group: PLUTONiUM
+  other: Repost
+  type: episode
+
+? Im A Celebrity Get Me Out Of Here S17E14 HDTV x264-PLUTONiUM-xpost
+: title: Im A Celebrity Get Me Out Of Here
+  season: 17
+  episode: 14
+  source: HDTV
+  video_codec: H.264
+  release_group: PLUTONiUM
+  other: Repost
+  type: episode
+
+? Tales S01E08 All I Need Method Man Featuring Mary J Blige 720p BET WEBRip AAC2 0 x264-RTN-xpost
+: title: Tales
+  season: 1
+  episode: 8
+  episode_title: All I Need Method Man Featuring Mary J Blige
+  screen_size: 720p
+  source: Web
+  other: [Rip, Repost]
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: RTN
+  type: episode
+
+? This is Us S01E11 Herzensangelegenheiten German DL WS DVDRip x264-CDP-xpost
+: options: --exclude country
+  title: This is Us
+  season: 1
+  episode: 11
+  episode_title: Herzensangelegenheiten
+  language:
+  - de
+  - mul
+  other:
+  - Widescreen
+  - Rip
+  - Repost
+  source: DVD
+  video_codec: H.264
+  release_group: CDP
+  type: episode
+
+? The Girlfriend Experience S02E10 1080p WEB H264-STRiFE-postbot
+: title: The Girlfriend Experience
+  season: 2
+  episode: 10
+  screen_size: 1080p
+  source: Web
+  video_codec: H.264
+  release_group: STRiFE
+  other: Repost
+  type: episode
+
+? The.Girlfriend.Experience.S02E10.1080p.WEB.H264-STRiFE-postbot/90550c1adaf44c47b60d24f59603bb98.mkv
+: title: The Girlfriend Experience
+  season: 2
+  episode: 10
+  screen_size: 1080p
+  source: Web
+  video_codec: H.264
+  release_group: STRiFE
+  other: Repost
+  uuid: 90550c1adaf44c47b60d24f59603bb98
+  container: mkv
+  type: episode
+
+? 24.S01E02.1080p.BluRay.REMUX.AVC.DD.2.0-EPSiLON-xpost/eb518eaf33f641a1a8c6e0973a67aec2.mkv
+: title: '24'
+  season: 1
+  episode: 2
+  screen_size: 1080p
+  source: Blu-ray
+  other: [Remux, Repost]
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  audio_channels: '2.0'
+  release_group: EPSiLON
+  uuid: eb518eaf33f641a1a8c6e0973a67aec2
+  container: mkv
+  type: episode
+
+? Educating.Greater.Manchester.S01E02.720p.HDTV.x264-PLUTONiUM-AsRequested/47fbcb2393aa4b5cbbb340d3173ca1a9.mkv
+: title: Educating Greater Manchester
+  season: 1
+  episode: 2
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  release_group: PLUTONiUM
+  other: Repost
+  uuid: 47fbcb2393aa4b5cbbb340d3173ca1a9
+  container: mkv
+  type: episode
+
+? Stranger.Things.S02E05.Chapter.Five.Dig.Dug.720p.NF.WEBRip.DD5.1.x264-PSYPHER-AsRequested-Obfuscated
+: title: Stranger Things
+  season: 2
+  episode: 5
+  episode_title: Chapter Five Dig Dug
+  screen_size: 720p
+  streaming_service: Netflix
+  source: Web
+  other: [Rip, Repost, Obfuscated]
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: PSYPHER
+  type: episode

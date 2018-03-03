@@ -146,7 +146,9 @@ class DashSeparatedReleaseGroup(Rule):
                 end = container.start
 
             candidate = matches.ending(end, index=0, predicate=(
-                lambda m: not m.private and '-' not in m.raw and m.raw.strip() == m.raw))
+                lambda m: not m.private and not (
+                    m.name == 'other' and 'not-a-release-group' in m.tags
+                ) and '-' not in m.raw and m.raw.strip() == m.raw))
 
         if not candidate:
             if at_end:

@@ -117,9 +117,14 @@ def other():
     rebulk.regex('Dolby-?Vision', value='Dolby Vision', tags='uhdbluray-neighbor')
     rebulk.regex('BT-?2020', value='BT.2020', tags='uhdbluray-neighbor')
 
+    rebulk.string('Sample', value='Sample', tags=['at-end', 'not-a-release-group'])
+    rebulk.string('Proof', value='Proof', tags=['at-end', 'not-a-release-group'])
+    rebulk.string('Obfuscated', 'Scrambled', value='Obfuscated', tags=['at-end', 'not-a-release-group'])
+    rebulk.string('xpost', 'postbot', 'asrequested', value='Repost', tags='not-a-release-group')
+
     rebulk.rules(RenameAnotherToOther, ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore,
                  ValidateScreenerRule, ValidateMuxRule, ValidateHardcodedSubs, ValidateStreamingServiceNeighbor,
-                 ProperCountRule)
+                 ValidateAtEnd, ProperCountRule)
 
     return rebulk
 
@@ -313,5 +318,24 @@ class ValidateStreamingServiceNeighbor(Rule):
                 if match.children:
                     to_remove.extend(match.children)
                 to_remove.append(match)
+
+        return to_remove
+
+
+class ValidateAtEnd(Rule):
+    """Validate other which should occur at the end of a filepart."""
+
+    priority = 32
+    consequence = RemoveMatch
+
+    def when(self, matches, context):
+        to_remove = []
+        for filepart in matches.markers.named('path'):
+            for match in matches.range(filepart.start, filepart.end,
+                                       predicate=lambda m: m.name == 'other' and 'at-end' in m.tags):
+                if (matches.holes(match.end, filepart.end, predicate=lambda m: m.value.strip(seps)) or
+                        matches.range(match.end, filepart.end, predicate=lambda m: m.name not in (
+                            'other', 'container'))):
+                    to_remove.append(match)
 
         return to_remove
