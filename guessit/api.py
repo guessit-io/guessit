@@ -103,9 +103,9 @@ class GuessItApi(object):
         try:
             # Handle path-like object
             string = string.__fspath__()
-        except AttributeError():
+        except AttributeError:
             pass
-        
+
         try:
             options = parse_options(options, True)
             result_decode = False
