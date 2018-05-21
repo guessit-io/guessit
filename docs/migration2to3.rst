@@ -33,7 +33,7 @@ The following values were changed:
 - ``VOD`` is now ``Video on Demand``
 - ``WEBRip`` is now ``Web`` with additional property ``other: Rip``
 - ``WEB-DL`` is now ``Web``
-- ``AHDTV`` is now ``Analogue HDTV``
+- ``AHDTV`` is now ``Analog HDTV``
 - ``UHDTV`` is now ``Ultra HDTV``
 - ``HDTC`` is now ``HD Telecine``
 

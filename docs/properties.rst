@@ -151,7 +151,7 @@ Video properties
 
   Source of the release
 
-  - ``Analogue HDTV``, ``Blu-ray``, ``Camera``, ``Digital Master``, ``Digital TV``, ``DVD``, ``HD Camera``,
+  - ``Analog HDTV``, ``Blu-ray``, ``Camera``, ``Digital Master``, ``Digital TV``, ``DVD``, ``HD Camera``,
     ``HD Telecine``, ``HD Telesync``, ``HD-DVD``, ``HDTV``, ``Pay-per-view``, ``Satellite``, ``Telecine``, ``Telesync``,
     ``TV``, ``Ultra HD Blu-ray``, ``Ultra HDTV``, ``VHS``, ``Video on Demand``, ``Web``, ``Workprint``
 

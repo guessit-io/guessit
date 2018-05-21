@@ -107,7 +107,7 @@ def source(config):  # pylint:disable=unused-argument
 
     rebulk.regex(*build_source_pattern('Ultra-?Blu-?ray', 'Blu-?ray-?Ultra'), value='Ultra HD Blu-ray')
 
-    rebulk.regex(*build_source_pattern('AHDTV'), value='Analogue HDTV')
+    rebulk.regex(*build_source_pattern('AHDTV'), value='Analog HDTV')
     rebulk.regex(*build_source_pattern('UHD-?TV', suffix=rip_optional_suffix), conflict_solver=demote_other,
                  value={'source': 'Ultra HDTV', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('UHD', suffix=rip_suffix), conflict_solver=demote_other,

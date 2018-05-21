@@ -51,8 +51,10 @@ Migration note
 GuessIt 2 has been rewriten from scratch. GuessIt is now a release name parser only, and support for additional
 features like hashes computations has been dropped.
 
-To migrate from guessit ``0.x`` or ``1.x``, please read
+To migrate from guessit ``0.x`` or ``1.x`` to ``guessit 2.x``, please read
 `migration.rst <https://github.com/guessit-io/guessit/blob/master/docs/migration.rst>`_.
+
+To migrate from guessit ``2.x`` to ``3.x``, please read `migration2to3.rst <https://github.com/guessit-io/guessit/blob/master/docs/migration2to3.rst>`_.
 
 Install
 -------

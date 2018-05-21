@@ -12,7 +12,7 @@ History
 - `source` property `VOD` is now `Video on Demand`
 - `source` property `WEBRip` is now `Web` with additional property `other`: `Rip`
 - `source` property `WEB-DL` is now `Web`
-- `source` property `AHDTV` is now `Analogue HDTV`
+- `source` property `AHDTV` is now `Analog HDTV`
 - `source` property `UHDTV` is now `Ultra HDTV`
 - `source` property `HDTC` is now `HD Telecine`
 - `screen_size` property `360i` was added.
