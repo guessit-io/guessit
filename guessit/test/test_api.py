@@ -27,6 +27,22 @@ def test_forced_binary():
     assert ret and 'title' in ret and isinstance(ret['title'], six.binary_type)
 
 
+def test_pathlike_object():
+    try:
+        from pathlib import Path
+    except ImportError:
+        class Path(object):
+            """A generic path-like object"""
+            def __init__(self, string):
+                self.fspath = string
+
+            def __fspath__(self):
+                return self.fspath
+    path = Path('Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
+    ret = guessit(path)
+    assert ret and 'title' in ret
+
+
 def test_unicode_japanese():
     ret = guessit('[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi')
     assert ret and 'title' in ret
