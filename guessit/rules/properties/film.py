@@ -11,7 +11,7 @@ from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
-def film():
+def film(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
     :return: Created Rebulk object

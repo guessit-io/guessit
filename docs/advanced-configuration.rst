@@ -1,36 +1,20 @@
-{
-  "expected_title": [
-    "OSS 117"
-  ],
-  "allowed_countries": [
-    "au",
-    "us",
-    "gb"
-  ],
-  "allowed_languages": [
-    "de",
-    "en",
-    "es",
-    "ca",
-    "cs",
-    "fr",
-    "he",
-    "hi",
-    "hu",
-    "it",
-    "ja",
-    "ko",
-    "nl",
-    "pl",
-    "pt",
-    "ro",
-    "ru",
-    "sv",
-    "te",
-    "uk",
-    "mul",
-    "und"
-  ],
+.. _advanced-configuration:
+
+Advanced Configuration
+======================
+Guessit 3 supports advanced configuration of its internal parameters. This can be done using the
+``-c``/``--config`` option. The provided config file should contain a section called ``advanced_config`` with all
+parameters and values to be overridden.
+
+
+Default Advanced Configuration
+------------------------------
+It's not possible to disable the default advanced configuration (``--no-embedded-config`` won't work for that).
+This is by design since Guessit needs all these parameters in order to compile its internal rules and execute them.
+Find bellow the internal advanced configuration parameters and their values:
+
+.. code-block:: json
+
   "advanced_config": {
     "common_words": [
       "de",
@@ -360,4 +344,10 @@
       ]
     }
   }
-}
+
+
+Backwards Compatibility
+-----------------------
+This is an advanced feature which exposes Guessit internal parameters. These parameters are exposed to help you
+tweak Guessit results to fit your needs. We're willing to keep it backwards compatible, but in order to enhance Guessit,
+these parameters might change without prior notice.

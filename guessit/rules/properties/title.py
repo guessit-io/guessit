@@ -17,9 +17,12 @@ from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
-def title():
+def title(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
@@ -161,7 +164,6 @@ class TitleBaseRule(Rule):
         holes = self.holes_process(holes, matches)
 
         for hole in holes:
-            # pylint:disable=cell-var-from-loop
             if not hole or (self.hole_filter and not self.hole_filter(hole, matches)):
                 continue
 
@@ -172,7 +174,7 @@ class TitleBaseRule(Rule):
 
             if ignored_matches:
                 for ignored_match in reversed(ignored_matches):
-                    # pylint:disable=undefined-loop-variable
+                    # pylint:disable=undefined-loop-variable, cell-var-from-loop
                     trailing = matches.chain_before(hole.end, seps, predicate=lambda m: m == ignored_match)
                     if trailing:
                         should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, False)

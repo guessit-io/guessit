@@ -13,16 +13,19 @@ from ..common.numeral import numeral, parse_numeral
 from ...reutils import build_or_pattern
 
 
-def part():
+def part(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'part'))
     rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash], validator={'__parent__': seps_surround})
 
-    prefixes = ['pt', 'part']
+    prefixes = config['prefixes']
 
     def validate_roman(match):
         """

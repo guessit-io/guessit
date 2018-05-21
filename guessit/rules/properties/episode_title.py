@@ -14,9 +14,12 @@ from ..properties.title import TitleFromPosition, TitleBaseRule
 from ..properties.type import TypeProcessor
 
 
-def episode_title():
+def episode_title(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """

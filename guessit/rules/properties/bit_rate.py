@@ -14,9 +14,12 @@ from ..common.quantity import BitRate
 from ..common.validators import seps_surround
 
 
-def bit_rate():
+def bit_rate(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """

@@ -14,9 +14,12 @@ from ..common.validators import seps_before, seps_after
 audio_properties = ['audio_codec', 'audio_profile', 'audio_channels']
 
 
-def audio_codec():
+def audio_codec(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
@@ -135,6 +138,8 @@ class AudioProfileRule(Rule):
                 codec = matches.next(profile, lambda match: match.name == 'audio_codec' and match.value == self.codec)
             if not codec:
                 ret.append(profile)
+            if codec:
+                ret.extend(matches.conflicting(profile))
         return ret
 
 

@@ -96,7 +96,7 @@ def parse_options(options=None, api=False):
     :param options:
     :type options:
     :param api
-    :type boolean
+    :type api: boolean
     :return:
     :rtype:
     """
@@ -161,10 +161,12 @@ def load_config(options):
             if config_file_options:
                 configurations.append(config_file_options)
 
+    embedded_options_data = pkgutil.get_data('guessit', 'config/options.json').decode("utf-8")
+    embedded_options = json.loads(embedded_options_data)
     if not options.get('no_embedded_config'):
-        embedded_options_data = pkgutil.get_data('guessit', 'config/options.json').decode("utf-8")
-        embedded_options = json.loads(embedded_options_data)
         configurations.append(embedded_options)
+    else:
+        configurations.append({'advanced_config': embedded_options['advanced_config']})
 
     if configurations:
         configurations.append(options)

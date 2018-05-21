@@ -20,9 +20,12 @@ from ..common.validators import compose, seps_surround, seps_before, int_coercab
 from ...reutils import build_or_pattern
 
 
-def episodes():
+def episodes(config):
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
@@ -34,6 +37,9 @@ def episodes():
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
     rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator', 'episodeMarker', 'seasonMarker'])
 
+    episode_max_range = config['episode_max_range']
+    season_max_range = config['season_max_range']
+
     def episodes_season_chain_breaker(matches):
         """
         Break chains if there's more than 100 offset between two neighbor values.
@@ -43,11 +49,11 @@ def episodes():
         :rtype:
         """
         eps = matches.named('episode')
-        if len(eps) > 1 and abs(eps[-1].value - eps[-2].value) > 100:
+        if len(eps) > 1 and abs(eps[-1].value - eps[-2].value) > episode_max_range:
             return True
 
         seasons = matches.named('season')
-        if len(seasons) > 1 and abs(seasons[-1].value - seasons[-2].value) > 100:
+        if len(seasons) > 1 and abs(seasons[-1].value - seasons[-2].value) > season_max_range:
             return True
         return False
 
@@ -81,24 +87,20 @@ def episodes():
                             return current
         return '__default__'
 
-    season_episode_seps = []
-    season_episode_seps.extend(seps_no_fs)
-    season_episode_seps.extend(['x', 'X', 'e', 'E'])
-
-    season_words = ['season', 'saison', 'seizoen', 'serie', 'seasons', 'saisons', 'series',
-                    'tem', 'temp', 'temporada', 'temporadas', 'stagione']
-    episode_words = ['episode', 'episodes', 'eps', 'ep', 'episodio',
-                     'episodios', 'capitulo', 'capitulos']
-    of_words = ['of', 'sur']
-    all_words = ['All']
-    season_markers = ["S"]
-    season_ep_markers = ["x"]
-    disc_markers = ['d']
-    episode_markers = ["xE", "Ex", "EP", "E", "x"]
-    range_separators = ['-', '~', 'to', 'a']
+    season_words = config['season_words']
+    episode_words = config['episode_words']
+    of_words = config['of_words']
+    all_words = config['all_words']
+    season_markers = config['season_markers']
+    season_ep_markers = config['season_ep_markers']
+    disc_markers = config['disc_markers']
+    episode_markers = config['episode_markers']
+    range_separators = config['range_separators']
     weak_discrete_separators = list(sep for sep in seps_no_fs if sep not in range_separators)
-    strong_discrete_separators = ['+', '&', 'and', 'et']
+    strong_discrete_separators = config['discrete_separators']
     discrete_separators = strong_discrete_separators + weak_discrete_separators
+
+    max_range_gap = config['max_range_gap']
 
     def ordering_validator(match):
         """
@@ -134,7 +136,7 @@ def episodes():
                     separator = match.children.previous(current_match,
                                                         lambda m: m.name == property_name + 'Separator', 0)
                     if separator.raw not in range_separators and separator.raw in weak_discrete_separators:
-                        if not current_match.value - previous_match.value == 1:
+                        if not 0 < current_match.value - previous_match.value <= max_range_gap + 1:
                             valid = False
                     if separator.raw in strong_discrete_separators:
                         valid = True

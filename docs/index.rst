@@ -151,6 +151,12 @@ It can also be used as a python module::
 
 Command line options can be given as dict or string to the second argument.
 
+Advanced Configuration
+----------------------
+
+Find more about Guessit advanced configuration at :ref:`advanced configuration page<advanced-configuration>`.
+
+
 REST API
 --------
 

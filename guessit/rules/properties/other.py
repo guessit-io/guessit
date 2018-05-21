@@ -16,9 +16,12 @@ from ...reutils import build_or_pattern
 from ...rules.common.formatters import raw_cleanup
 
 
-def other():
+def other(config):  # pylint:disable=unused-argument
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """

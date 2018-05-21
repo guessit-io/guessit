@@ -14,23 +14,28 @@ from ..common.validators import seps_surround
 from ..common import dash, seps
 from ...reutils import build_or_pattern
 
-interlaced = frozenset({'360', '480', '576', '900', '1080'})
-progressive = frozenset(interlaced | {'368', '720', '1440', '2160', '4320'})
 
-
-def screen_size():
+def screen_size(config):
     """
     Builder for rebulk object.
+
+    :param config: rule configuration
+    :type config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
+    interlaced = frozenset({res for res in config['interlaced']})
+    progressive = frozenset({res for res in config['progressive']})
+    frame_rates = [re.escape(rate) for rate in config['frame_rates']]
+    min_ar = config['min_ar']
+    max_ar = config['max_ar']
+
     rebulk = Rebulk()
     rebulk = rebulk.string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE)
 
     rebulk.defaults(name='screen_size', validator=seps_surround, abbreviations=[dash],
                     disabled=lambda context: is_disabled(context, 'screen_size'))
 
-    frame_rates = [re.escape('23.976'), '24', '25', '30', '48', '50', '60', '120']
     frame_rate_pattern = build_or_pattern(frame_rates, name='frame_rate')
     interlaced_pattern = build_or_pattern(interlaced, name='height')
     progressive_pattern = build_or_pattern(progressive, name='height')
@@ -47,7 +52,7 @@ def screen_size():
     rebulk.regex(frame_rate_pattern + '(p|fps)', name='frame_rate',
                  formatter=FrameRate.fromstring, disabled=lambda context: is_disabled(context, 'frame_rate'))
 
-    rebulk.rules(PostProcessScreenSize(progressive), ScreenSizeOnlyOne, ResolveScreenSizeConflicts)
+    rebulk.rules(PostProcessScreenSize(progressive, min_ar, max_ar), ScreenSizeOnlyOne, ResolveScreenSizeConflicts)
 
     return rebulk
 
@@ -63,7 +68,7 @@ class PostProcessScreenSize(Rule):
     """
     consequence = AppendMatch
 
-    def __init__(self, standard_heights, min_ar=1.333, max_ar=1.898):
+    def __init__(self, standard_heights, min_ar, max_ar):
         super(PostProcessScreenSize, self).__init__()
         self.standard_heights = standard_heights
         self.min_ar = min_ar
