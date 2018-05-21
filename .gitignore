@@ -19,6 +19,7 @@ build/
 
 # py.test
 lastfailed
+.pytest_cache/
 
 # Jetbrain
 *.iml
