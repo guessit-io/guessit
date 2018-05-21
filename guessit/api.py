@@ -9,6 +9,7 @@ try:
 except ImportError:  # pragma: no-cover
     from ordereddict import OrderedDict  # pylint:disable=import-error
 
+import os
 import traceback
 
 import six
@@ -131,16 +132,21 @@ class GuessItApi(object):
         """
         Retrieves all matches from string as a dict
         :param string: the filename or release name
-        :type string: str
+        :type string: str|Path
         :param options:
         :type options: str|dict
         :return:
         :rtype:
         """
         try:
-            # Handle path-like object
-            string = string.__fspath__()
-        except AttributeError:
+            from pathlib import Path
+            if isinstance(string, Path):
+                try:
+                    # Handle path-like object
+                    string = os.fspath(string)
+                except AttributeError:
+                    string = str(string)
+        except ImportError:
             pass
 
         try:
