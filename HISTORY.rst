@@ -120,6 +120,7 @@ History
 - Added `Proof` as new `other` possible value.
 - Added `Repost` as new `other` possible value.
 - Added advanced guessit configuration to config files.
+- Add support for `pathlib.Path` objects on guessit API input.
 
 2.1.4 (2017-06-01)
 ------------------
