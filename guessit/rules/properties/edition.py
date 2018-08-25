@@ -39,6 +39,7 @@ def edition(config):  # pylint:disable=unused-argument
                  value="Director's Cut")
     rebulk.regex('extended', 'extended-?cut', 'extended-?version',
                  value='Extended', tags=['has-neighbor', 'release-group-prefix'])
+    rebulk.regex(r'super-duper-cut', value='Super Duper Cut')
     rebulk.regex('alternat(e|ive)(?:-?Cut)?', value='Alternative Cut', tags=['has-neighbor', 'release-group-prefix'])
     for value in ('Remastered', 'Uncensored', 'Uncut', 'Unrated'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])

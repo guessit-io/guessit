@@ -1719,3 +1719,14 @@
   language: [en, de, it]
   release_group: STANDARD
   type: movie
+
+? Deadpool.2.Super.Duper.Cut.2018.German.DL.DTS.1080p.BluRay.x265-SHOWEHD
+: title: Deadpool 2
+  edition: Super Duper Cut
+  year: 2018
+  language: [de, mul]
+  audio_codec: DTS
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.265
+  release_group: SHOWEHD
