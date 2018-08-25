@@ -64,10 +64,10 @@ class EntryResult(object):
     def __repr__(self):
         if self.ok:
             return self.string + ': OK!'
-        elif self.warning:
+        if self.warning:
             return '%s%s: WARNING! (valid=%i, extra=%i)' % ('-' if self.negates else '', self.string, len(self.valid),
                                                             len(self.extra))
-        elif self.error:
+        if self.error:
             return '%s%s: ERROR! (valid=%i, missing=%i, different=%i, extra=%i, others=%i)' % \
                    ('-' if self.negates else '', self.string, len(self.valid), len(self.missing), len(self.different),
                     len(self.extra), len(self.others))
@@ -189,12 +189,13 @@ class TestYml(object):
             string = str(string)
         if not string_predicate or string_predicate(string):  # pylint: disable=not-callable
             entry = self.check(string, expected)
+            msg = '[{filename}] {entry}'.format(filename=filename, entry=str(entry))
             if entry.ok:
-                logger.debug('[' + filename + '] ' + str(entry))
+                logger.debug(msg)
             elif entry.warning:
-                logger.warning('[' + filename + '] ' + str(entry))
+                logger.warning(msg)
             elif entry.error:
-                logger.error('[' + filename + '] ' + str(entry))
+                logger.error(msg)
                 for line in entry.details:
                     logger.error('[' + filename + '] ' + ' ' * 4 + line)
         return entry
@@ -212,7 +213,8 @@ class TestYml(object):
         try:
             result = guessit(string, options)
         except Exception as exc:
-            logger.error('[' + string + '] Exception: ' + str(exc))
+            msg = '[{string}] Exception: {exception}'.format(string=string, exception=str(exc))
+            logger.error(msg)
             raise exc
 
         entry = EntryResult(string, negates)

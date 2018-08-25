@@ -6,6 +6,9 @@ python:
   - 3.6
   - pypy
   - pypy3
+env:
+  global:
+    - DISABLE_PYTHON3_WARN="--disable=consider-using-set-comprehension,useless-object-inheritance"
 matrix:
   include:
   - python: 3.7
@@ -17,7 +20,8 @@ install:
   - pip install pytest --upgrade
   - pip install coveralls
 script:
-  - pylint guessit
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then DISABLE_PYTHON3_WARN=; fi
+  - pylint guessit $DISABLE_PYTHON3_WARN
   - coverage run --source=guessit setup.py test
   - python setup.py build
 after_success:
