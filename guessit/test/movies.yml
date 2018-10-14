@@ -1744,3 +1744,19 @@
   video_codec: H.264
   release_group: NTG
   type: movie
+
+? Avengers.Infinity.War.2018.3D.Hybrid.REPACK.1080p.BluRay.REMUX.AVC.Atmos-EPSiLON.mk3d
+: title: Avengers Infinity War
+  year: 2018
+  other:
+  - 3D
+  - Proper
+  - Remux
+  proper_count: 1
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  audio_codec: Dolby Atmos
+  release_group: EPSiLON
+  container: mk3d
+  type: movie
