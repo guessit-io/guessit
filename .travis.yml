@@ -6,11 +6,17 @@ python:
   - 3.6
   - pypy
   - pypy3
+matrix:
+  include:
+    - python: 3.7
+      dist: xenial
+      sudo: true
 install:
   - pip install pip --upgrade
-  - pip install -e .[dev,test]
+  - pip install -e .[dev,test] --upgrade
   - pip install pytest --upgrade
   - pip install coveralls
+  - pytest --version
 script:
   - pylint guessit
   - coverage run --source=guessit setup.py test

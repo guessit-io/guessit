@@ -16,14 +16,13 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
     history = f.read()
 
-install_requires = ['rebulk>=0.9.0', 'babelfish>=0.5.5', 'python-dateutil']
-if sys.version_info < (2, 7):
-    install_requires.extend(['argparse', 'ordereddict'])
+install_requires = ['rebulk', 'babelfish', 'python-dateutil']
+
 setup_requires = ['pytest-runner']
 
 dev_require = ['zest.releaser[recommended]', 'pylint', 'tox', 'sphinx', 'sphinx-autobuild']
 
-tests_require = ['pytest>=2.7.3', 'pytest-benchmark', 'PyYAML']
+tests_require = ['pytest>=3.3', 'pytest-benchmark', 'PyYAML']
 
 package_data = ['config/*']
 
