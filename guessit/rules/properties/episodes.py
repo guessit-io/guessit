@@ -190,11 +190,9 @@ def episodes(config):
                r'(?P<season>\d+)').repeater('*')
 
     # episode_details property
-    for episode_detail in ('Special', 'Bonus', 'Pilot', 'Unaired', 'Final'):
+    for episode_detail in ('Special', 'Pilot', 'Unaired', 'Final'):
         rebulk.string(episode_detail, value=episode_detail, name='episode_details',
                       disabled=lambda context: is_disabled(context, 'episode_details'))
-    rebulk.regex(r'Extras?', 'Omake', name='episode_details', value='Extras',
-                 disabled=lambda context: is_disabled(context, 'episode_details'))
 
     def validate_roman(match):
         """

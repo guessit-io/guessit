@@ -204,7 +204,6 @@
   episode_title: Extras - Bad Karma
   source: DVD
   other: Rip
-  episode_details: Extras
   video_codec: Xvid
 
 ? series/Freaks And Geeks/Season 1/Episode 4 - Kim Kelly Is My Friend-eng(1).srt
@@ -308,9 +307,8 @@
 : title: Futurama
   season: 3
   part: 3
-  other: Bonus
-  episode_title: Deleted Scenes
   source: DVD
+  other: Bonus
 
 ? Ben.and.Kate.S01E02.720p.HDTV.X264-DIMENSION.mkv
 : title: Ben and Kate

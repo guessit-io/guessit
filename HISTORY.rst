@@ -4,7 +4,8 @@ History
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Removed `Extras` and `Bonus` values from `episode_details` property as those tags may also appear in movies.
+- Add support for Python 3.7
 
 
 3.0.0 (2018-05-22)

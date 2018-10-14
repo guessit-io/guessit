@@ -122,7 +122,7 @@ Episode properties
 
   Some details about the episode.
 
-  - ``Bonus``, ``Extras``, ``Final``, ``Pilot``, ``Special``, ``Unaired``
+  - ``Final``, ``Pilot``, ``Special``, ``Unaired``
 
 
 - **episode_format**
