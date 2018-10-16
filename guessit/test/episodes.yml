@@ -4502,3 +4502,13 @@
   video_codec: H.264
   release_group: SCENE
   type: episode
+
+? shes.gotta.have.it.s01e08.720p.web.x264-strife.mkv
+: title: shes gotta have it
+  season: 1
+  episode: 8
+  screen_size: 720p
+  source: Web
+  video_codec: H.264
+  release_group: strife
+  type: episode

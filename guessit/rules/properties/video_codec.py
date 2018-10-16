@@ -115,7 +115,7 @@ class VideoProfileRule(Rule):
         profile_list = matches.named('video_profile', lambda match: 'video_profile.rule' in match.tags)
         ret = []
         for profile in profile_list:
-            codec = matches.at_span(profile.span, lambda m: m.name == 'video_codec', 0)
+            codec = matches.at_span(profile.span, lambda match: match.name == 'video_codec', 0)
             if not codec:
                 codec = matches.previous(profile, lambda match: match.name == 'video_codec')
             if not codec:
