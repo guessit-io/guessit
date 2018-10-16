@@ -1,7 +1,7 @@
 History
 =======
 
-3.0.1 (unreleased)
+3.0.1 (2018-10-17)
 ------------------
 
 - Removed `Extras` and `Bonus` values from `episode_details` property as those tags may also appear in movies
