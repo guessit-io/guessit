@@ -5,6 +5,8 @@ History
 ------------------
 
 - Removed `Extras` and `Bonus` values from `episode_details` property as those tags may also appear in movies.
+- Add `Scalable Video Coding`, `Advanced Video Codec High Definition` and `High Efficiency Video Coding` values to
+`video_profile`.
 - Add support for Python 3.7
 
 

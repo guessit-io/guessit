@@ -180,8 +180,8 @@ Video properties
 
   Codec profile used for video.
 
-  - ``Baseline``, ``High``, ``High 10``, ``High 4:2:2``, ``High 4:4:4 Predictive``, ``Main``, ``Extended``
-
+  - ``Baseline``, ``High``, ``High 10``, ``High 4:2:2``, ``High 4:4:4 Predictive``, ``Main``, ``Extended``,
+  ``Scalable Video Coding``, ``Advanced Video Codec High Definition``, ``High Efficiency Video Coding``
 
 - **color_depth**
 

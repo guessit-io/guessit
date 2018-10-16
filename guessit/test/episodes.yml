@@ -3709,6 +3709,7 @@
   audio_codec: AAC
   audio_channels: '2.0'
   video_codec: H.264
+  video_profile: Scalable Video Coding
   release_group: SDH
   type: episode
 
@@ -4491,4 +4492,13 @@
   season: [1, 3, 4]
   container: mp4
   screen_size: 1080p
+  type: episode
+
+? Bones.S03.720p.HDTV.x264-SCENE
+: title: Bones
+  season: 3
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  release_group: SCENE
   type: episode
