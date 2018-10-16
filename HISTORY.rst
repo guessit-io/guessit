@@ -4,10 +4,14 @@ History
 3.0.1 (unreleased)
 ------------------
 
-- Removed `Extras` and `Bonus` values from `episode_details` property as those tags may also appear in movies.
+- Removed `Extras` and `Bonus` values from `episode_details` property as those tags may also appear in movies
 - Add `Scalable Video Coding`, `Advanced Video Codec High Definition` and `High Efficiency Video Coding` values to
-`video_profile`.
+`video_profile`
 - Add support for Python 3.7
+- Add `mk3d` value to `container`
+- Better title cleanup containing acronyms (like `Marvel's Agents of S.H.I.E.L.D`)
+- Fix issue with ES audio_profile breaking titles
+- Fix crash for files ending with `Rip`
 
 
 3.0.0 (2018-05-22)
