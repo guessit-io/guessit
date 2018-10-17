@@ -4,8 +4,11 @@ History
 3.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Ensure consistent behavior between CLI and Python module. It's now possible to override `advanced_configuration` at
+runtime through options dict. Rebulk rules are lazily rebuilt when `advanced_configuration` is changed since previous
+call.
+- Refactored command line options and loading behavior related to configuration files (see `-c CONFIG`,
+`--config CONFIG`, `--no-user-config`, `--no-default-config`)
 
 3.0.1 (2018-10-17)
 ------------------

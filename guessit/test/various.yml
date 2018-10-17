@@ -920,7 +920,7 @@
   type: movie
 
 ? This.is.Us
-: options: --no-embedded-config
+: options: --no-default-config
   title: This is Us
   type: movie
 
