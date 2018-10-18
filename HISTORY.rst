@@ -1,7 +1,7 @@
 History
 =======
 
-3.0.2 (unreleased)
+3.0.2 (2018-10-18)
 ------------------
 
 - Ensure consistent behavior between CLI and Python module. It's now possible to override `advanced_configuration` at
