@@ -113,7 +113,7 @@ class GuessItApi(object):
                 return False
         return True
 
-    def configure(self, options=None, rules_builder=rebulk_builder, force=False):
+    def configure(self, options=None, rules_builder=rebulk_builder, force=False, sanitize_options=True):
         """
         Load configuration files and initialize rebulk rules if required.
 
@@ -126,8 +126,9 @@ class GuessItApi(object):
         :return:
         :rtype: dict
         """
-        options = parse_options(options, True)
-        options = self._fix_encoding(options)
+        if sanitize_options:
+            options = parse_options(options, True)
+            options = self._fix_encoding(options)
 
         if self.config is None or self.load_config_options is None or force or \
                 not self._has_same_properties(self.load_config_options,
@@ -173,8 +174,9 @@ class GuessItApi(object):
             pass
 
         try:
+            options = parse_options(options, True)
             options = self._fix_encoding(options)
-            config = self.configure(options)
+            config = self.configure(options, sanitize_options=False)
             options = merge_options(config, options)
             result_decode = False
             result_encode = False
@@ -214,8 +216,9 @@ class GuessItApi(object):
         :return:
         :rtype:
         """
+        options = parse_options(options, True)
         options = self._fix_encoding(options)
-        config = self.configure(options)
+        config = self.configure(options, sanitize_options=False)
         options = merge_options(config, options)
         unordered = introspect(self.rebulk, options).properties
         ordered = OrderedDict()
