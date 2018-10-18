@@ -72,10 +72,13 @@ GuessIt can be used from command line::
 
     $ guessit
     usage: guessit [-h] [-t TYPE] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES]
-          [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE] [-G EXPECTED_GROUP]
-          [-f INPUT_FILE] [-v] [-P SHOW_PROPERTY] [-a] [-1] [-l] [-j] [-y]
-          [-c CONFIG] [--no-embedded-config] [-p] [-V] [--version]
-          [filename [filename ...]]
+                   [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE]
+                   [-G EXPECTED_GROUP] [--includes INCLUDES]
+                   [--excludes EXCLUDES] [-f INPUT_FILE] [-v]
+                   [-P SHOW_PROPERTY] [-a] [-s] [-l] [-j] [-y] [-c CONFIG]
+                   [--no-user-config] [--no-default-config] [-p] [-V]
+                   [--version]
+                   [filename [filename ...]]
 
     positional arguments:
       filename              Filename or release name to guess
@@ -104,6 +107,8 @@ GuessIt can be used from command line::
                             Expected title to parse (can be used multiple times)
       -G EXPECTED_GROUP, --expected-group EXPECTED_GROUP
                             Expected release group (can be used multiple times)
+      --includes INCLUDES   List of properties to be detected
+      --excludes EXCLUDES   List of properties to be ignored
 
     Input:
       -f INPUT_FILE, --input-file INPUT_FILE
@@ -127,15 +132,21 @@ GuessIt can be used from command line::
 
     Configuration:
       -c CONFIG, --config CONFIG
-                            Filepath to the configuration file. Configuration
-                            contains the same options as those command line
+                            Filepath to configuration file. Configuration file
+                            contains the same options as those from command line
                             options, but option names have "-" characters replaced
-                            with "_". If not defined, guessit tries to read a
-                            configuration default configuration file at
+                            with "_". This configuration will be merged with
+                            default and user configuration files.
+      --no-user-config      Disable user configuration. If not defined, guessit
+                            tries to read configuration files at
                             ~/.guessit/options.(json|yml|yaml) and
-                            ~/.config/guessit/options.(json|yml|yaml). Set to
-                            "false" to disable default configuration file loading.
-      --no-embedded-config  Disable default configuration.
+                            ~/.config/guessit/options.(json|yml|yaml)
+      --no-default-config   Disable default configuration. This should be done
+                            only if you are providing a full configuration through
+                            user configuration or --config option. If no
+                            "advanced_config" is provided by another configuration
+                            file, it will still be loaded from default
+                            configuration.
 
     Information:
       -p, --properties      Display properties that can be guessed.
