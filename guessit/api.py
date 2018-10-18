@@ -134,6 +134,7 @@ class GuessItApi(object):
                                               options,
                                               ['config', 'no_user_config', 'no_default_config']):
             config = load_config(options)
+            config = self._fix_encoding(config)
             self.load_config_options = options
         else:
             config = self.config
