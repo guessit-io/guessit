@@ -277,3 +277,27 @@
 
 ? S01D02&4-6&8
 : disc: [2, 4, 5, 6, 8]
+
+? Something.4x05-06
+? Something - 4x05-06
+? Something:4x05-06
+? Something 4x05-06
+? Something-4x05-06
+: title: Something
+  season: 4
+  episode:
+  - 5
+  - 6
+
+? Something.4x05-06
+? Something - 4x05-06
+? Something:4x05-06
+? Something 4x05-06
+? Something-4x05-06
+: options: -T something
+  title: something
+  season: 4
+  episode:
+  - 5
+  - 6
+
