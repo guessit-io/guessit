@@ -226,7 +226,7 @@ Audio properties
   Codec used for audio.
 
   - ``AAC``, ``Dolby Atmos``, ``Dolby Digital``, ``Dolby Digital Plus``, ``Dolby TrueHD``, ``DTS``,  ``FLAC``, ``LPCM``,
-    ``MP3``, ``Opus``, ``PCM``, ``Vorbis``
+    ``MP2``, ``MP3``, ``Opus``, ``PCM``, ``Vorbis``
 
 
 - **audio_profile**

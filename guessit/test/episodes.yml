@@ -3452,6 +3452,7 @@
   screen_size: 1080p
   source: HDTV
   video_codec: H.264
+  audio_codec: MP2
   release_group: NOGRP
   container: mkv
   type: episode
@@ -4511,4 +4512,16 @@
   source: Web
   video_codec: H.264
   release_group: strife
+  type: episode
+
+? DuckTales.2017.S01E10.The.Missing.Links.of.Moorshire.PDTV.H.264.MP2-KIDKAT
+: title: DuckTales
+  year: 2017
+  season: 1
+  episode: 10
+  episode_title: The Missing Links of Moorshire
+  source: Digital TV
+  video_codec: H.264
+  audio_codec: MP2
+  release_group: KIDKAT
   type: episode
