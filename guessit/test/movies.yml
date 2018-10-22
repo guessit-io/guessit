@@ -1027,12 +1027,12 @@
 
 ? Hardwired.STV.NFOFiX.FRENCH.DVDRiP.XviD-SURViVAL
 : title: Hardwired
-  other: [Straight to Video, Proper, Rip]
+  other: [Straight to Video, Fix, Rip]
   language: french
   source: DVD
   video_codec: Xvid
   release_group: SURViVAL
-  proper_count: 1
+  -proper_count: 1
   type: movie
 
 ? Maze.Runner.The.Scorch.Trials.OM.2015.WEB-DLRip.by.Seven
@@ -1054,15 +1054,15 @@
 ? All.Fall.Down.x264.PROOFFIX-OUTLAWS
 : title: All Fall Down
   video_codec: H.264
-  other: Proper
+  other: Fix
   release_group: OUTLAWS
-  proper_count: 1
+  -proper_count: 1
   type: movie
 
 ? The.Last.Survivors.2014.PROOF.SAMPLE.FiX.BDRip.x264-TOPCAT
 : title: The Last Survivors
   year: 2014
-  other: [Proper, Rip]
+  other: [Fix, Rip]
   source: Blu-ray
   video_codec: H.264
   release_group: TOPCAT

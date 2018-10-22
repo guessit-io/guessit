@@ -3145,12 +3145,12 @@
 ? Broadchurch.S01.DIRFIX.720p.BluRay.x264-SHORTBREHD
 : title: Broadchurch
   season: 1
-  other: Proper
+  other: Fix
   screen_size: 720p
   source: Blu-ray
   video_codec: H.264
   release_group: SHORTBREHD
-  proper_count: 1
+  -proper_count: 1
   type: episode
 
 ? Simply Red - 2016-07-08 Montreux Jazz Festival 720p
@@ -3205,7 +3205,7 @@
 : title: Dr Ken
   season: 1
   episode: 21
-  other: Proper
+  other: Fix
   screen_size: 720p
   source: HDTV
   video_codec: H.264
