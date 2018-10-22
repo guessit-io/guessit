@@ -23,7 +23,7 @@ def episode_title(config):  # pylint:disable=unused-argument
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    previous_names = ('episode', 'episode_details', 'episode_count',
+    previous_names = ('episode', 'episode_count',
                       'season', 'season_count', 'date', 'title', 'year')
 
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'episode_title'))

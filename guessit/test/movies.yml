@@ -1760,3 +1760,14 @@
   release_group: EPSiLON
   container: mk3d
   type: movie
+
+? Ouija.Seance.The.Final.Game.2018.1080p.WEB-DL.DD5.1.H264-CMRG
+: title: Ouija Seance The Final Game
+  year: 2018
+  screen_size: 1080p
+  source: Web
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: CMRG
+  type: movie
