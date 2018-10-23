@@ -1,7 +1,7 @@
 History
 =======
 
-3.0.3 (unreleased)
+3.0.3 (2018-10-23)
 ------------------
 
 - Add ``MP2`` ``audio_codec`` value.
