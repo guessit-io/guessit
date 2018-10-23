@@ -4,7 +4,13 @@ History
 3.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``MP2`` ``audio_codec`` value.
+- ``Proper`` and ``Fix`` have been separated in two distinct ``other`` values.
+- Add ``1e18`` ``season``/``episode`` pattern.
+- Fix false ``release_group`` matches with ``--expected-title`` option.
+- Fix parent folder ending with a digit detected as title
+- Fix wrong season/year with ``--type episode `` option. Serie(s) keyword has been removed from default configuration.
+- Fix missing property when ``episode_details`` pattern appears in title.
 
 
 3.0.2 (2018-10-18)
