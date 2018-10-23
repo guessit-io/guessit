@@ -39,9 +39,9 @@ def other(config):  # pylint:disable=unused-argument,too-many-statements
                   tags=['streaming_service.prefix', 'streaming_service.suffix'])
 
     rebulk.regex('Real-Proper', 'Real-Repack', 'Real-Rerip', value='Proper',
-                  tags=['streaming_service.prefix', 'streaming_service.suffix', 'real'])
+                 tags=['streaming_service.prefix', 'streaming_service.suffix', 'real'])
     rebulk.string('Fix', 'Fixed', value='Fix', tags=['has-neighbor-before', 'has-neighbor-after',
-                                                             'streaming_service.prefix', 'streaming_service.suffix'])
+                                                     'streaming_service.prefix', 'streaming_service.suffix'])
     rebulk.string('Dirfix', 'Nfofix', 'Prooffix', value='Fix',
                   tags=['streaming_service.prefix', 'streaming_service.suffix'])
     rebulk.regex('(?:Proof-?)?Sample-?Fix', value='Fix',
