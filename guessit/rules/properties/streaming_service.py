@@ -62,6 +62,7 @@ def streaming_service(config):  # pylint: disable=too-many-statements,unused-arg
     rebulk.string('CUR', value='CuriosityStream')
     rebulk.string('CWS', value='CWSeed')
     rebulk.string('DSKI', value='Daisuki')
+    rebulk.string('DCU', value='DC Universe')
     rebulk.string('DHF', value='Deadhouse Films')
     rebulk.string('DDY', value='Digiturk Diledigin Yerde')
     rebulk.string('DISC', 'Discovery', value='Discovery')
