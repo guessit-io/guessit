@@ -946,3 +946,20 @@
   source: Blu-ray
   audio_codec: DTS-HD
   type: movie
+
+? Mr Robot - S03E01 - eps3 0 power-saver-mode h (1080p AMZN WEB-DL x265 HEVC 10bit EAC3 6.0 RCVR).mkv
+: title: Mr Robot
+  season: 3
+  episode: 1
+  episode_title: eps3 0 power-saver-mode h
+  screen_size: 1080p
+  streaming_service: Amazon Prime
+  source: Web
+  video_codec: H.265
+  video_profile: High Efficiency Video Coding
+  color_depth: 10-bit
+  audio_codec: Dolby Digital Plus
+  audio_channels: '5.1'
+  release_group: RCVR
+  container: mkv
+  type: episode
