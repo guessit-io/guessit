@@ -4552,3 +4552,22 @@
   - Catalan
   container: mkv
   type: episode
+
+? Show.Name.S01E01.St.Patricks.Day.1080p.mkv
+: title: Show Name
+  season: 1
+  episode: 1
+  episode_title: St Patricks Day
+  screen_size: 1080p
+  container: mkv
+  type: episode
+
+? Show.Name.S01E01.St.Patricks.Day.1080p-grp.mkv
+: title: Show Name
+  season: 1
+  episode: 1
+  episode_title: St Patricks Day
+  screen_size: 1080p
+  release_group: grp
+  container: mkv
+  type: episode
