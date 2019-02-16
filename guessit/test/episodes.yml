@@ -4571,3 +4571,18 @@
   release_group: grp
   container: mkv
   type: episode
+
+? Titans.2018.S01E09.Hank.And.Dawn.720p.DCU.WEB-DL.AAC2.0.H264-NTb
+: title: Titans
+  year: 2018
+  season: 1
+  episode: 9
+  episode_title: Hank And Dawn
+  screen_size: 720p
+  streaming_service: DC Universe
+  source: Web
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: NTb
+  type: episode
