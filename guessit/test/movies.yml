@@ -815,10 +815,12 @@
 ? Das.Appartement.German.AC3D.DL.720p.BluRay.x264-TVP
 : audio_codec: Dolby Digital
   source: Blu-ray
-  language: mul
+  language:
+    - German
+    - Multi
   release_group: TVP
   screen_size: 720p
-  title: Das Appartement German
+  title: Das Appartement
   type: movie
   video_codec: H.264
 

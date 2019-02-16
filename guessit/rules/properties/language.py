@@ -72,6 +72,8 @@ def language(config, common_words):
 
 
 UNDETERMINED = babelfish.Language('und')
+MULTIPLE = babelfish.Language('mul')
+NON_SPECIFIC_LANGUAGES = frozenset([UNDETERMINED, MULTIPLE])
 
 
 class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=missing-docstring

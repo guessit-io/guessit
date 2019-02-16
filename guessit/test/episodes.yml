@@ -1917,9 +1917,11 @@
 
 ? Duck.Dynasty.S02E07.Streik.German.DOKU.DL.WS.DVDRiP.x264-CDP
 : episode: 7
-  episode_title: Streik German
+  episode_title: Streik
   source: DVD
-  language: mul
+  language:
+    - German
+    - Multi
   other: [Documentary, Widescreen, Rip]
   release_group: CDP
   season: 2
@@ -1930,9 +1932,11 @@
 ? Family.Guy.S13E14.JOLO.German.AC3D.DL.720p.WebHD.x264-CDD
 : audio_codec: Dolby Digital
   episode: 14
-  episode_title: JOLO German
+  episode_title: JOLO
   source: Web
-  language: mul
+  language:
+    - German
+    - Multi
   release_group: CDD
   screen_size: 720p
   season: 13
@@ -4585,4 +4589,19 @@
   audio_channels: '2.0'
   video_codec: H.264
   release_group: NTb
+  type: episode
+
+? S.W.A.T.2017.S01E21.Treibjagd.German.Dubbed.DL.AmazonHD.x264-TVS
+: title: S W.A.T.
+  year: 2017
+  season: 1
+  episode: 21
+  episode_title: Treibjagd
+  language:
+  - German
+  - Multi
+  streaming_service: Amazon Prime
+  other: HD
+  video_codec: H.264
+  release_group: TVS
   type: episode
