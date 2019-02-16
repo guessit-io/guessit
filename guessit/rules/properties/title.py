@@ -90,6 +90,10 @@ class TitleBaseRule(Rule):
         cropped_holes = []
         for hole in holes:
             group_markers = matches.markers.named('group')
+            for group_marker in group_markers:
+                if matches.markers.named(
+                        'path', predicate=lambda m: m.start == group_marker.start and m.end == group_marker.end):
+                    group_markers.remove(group_marker)
             cropped_holes.extend(hole.crop(group_markers))
         return cropped_holes
 

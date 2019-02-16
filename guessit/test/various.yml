@@ -984,3 +984,16 @@
   release_group: x0r
   container: mkv
   type: movie
+
+? '[ Engineering Catastrophes S02E10 1080p AMZN WEB-DL DD+ 2.0 x264-TrollHD ]'
+: title: Engineering Catastrophes
+  season: 2
+  episode: 10
+  screen_size: 1080p
+  streaming_service: Amazon Prime
+  source: Web
+  audio_codec: Dolby Digital Plus
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: TrollHD
+  type: episode

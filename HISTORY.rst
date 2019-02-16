@@ -9,6 +9,7 @@ History
 - Fix common words being detected as language
 - `streaming_service` is now configurable in advanced options
 - Add `DC Universe` to `streaming_service`
+- Improve detection when release name in between brackets
 
 
 3.0.3 (2018-10-23)
