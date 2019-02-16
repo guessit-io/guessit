@@ -4,7 +4,9 @@ History
 3.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- `screen_size` property `540p` was added.
+- Fix `audio_channel` detection for `6.0`
+- Fix common words being detected as language
 
 
 3.0.3 (2018-10-23)
