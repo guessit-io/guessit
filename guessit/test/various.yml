@@ -997,3 +997,9 @@
   video_codec: H.264
   release_group: TrollHD
   type: episode
+
+? A Very Harold & Kumar 3D Christmas (2011).mkv
+: title: A Very Harold & Kumar 3D Christmas
+  year: 2011
+  container: mkv
+  type: movie

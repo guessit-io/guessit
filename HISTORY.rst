@@ -10,6 +10,8 @@ History
 - `streaming_service` is now configurable in advanced options
 - Add `DC Universe` to `streaming_service`
 - Improve detection when release name in between brackets
+- Improve language detection
+- Fix wrong 3D detection
 
 
 3.0.3 (2018-10-23)
