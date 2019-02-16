@@ -974,3 +974,13 @@
   subtitle_language: und
   container: mp4
   type: episode
+
+? Shaolin 2011.720p.BluRay.x264-x0r.mkv
+: title: Shaolin
+  year: 2011
+  screen_size: 720p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: x0r
+  container: mkv
+  type: movie
