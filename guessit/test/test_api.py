@@ -3,6 +3,7 @@
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name, pointless-string-statement
 
 import os
+import sys
 
 import pytest
 import six
@@ -27,7 +28,7 @@ def test_forced_binary():
     assert ret and 'title' in ret and isinstance(ret['title'], six.binary_type)
 
 
-@pytest.mark.skipif('sys.version_info < (3, 4)', reason="Path is not available")
+@pytest.mark.skipif(sys.version_info < (3, 4), reason="Path is not available")
 def test_pathlike_object():
     from pathlib import Path
     path = Path('Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
