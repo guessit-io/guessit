@@ -4525,3 +4525,30 @@
   audio_codec: MP2
   release_group: KIDKAT
   type: episode
+
+? Por Trece Razones - Temporada 2 [HDTV 720p][Cap.201][AC3 5.1 Castellano]/Por Trece Razones 2x01 [des202].mkv
+: title: Por Trece Razones
+  season: 2
+  source: HDTV
+  screen_size: 720p
+  episode: 1
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  language: Catalan
+  release_group: des202
+  container: mkv
+  type: episode
+
+? Cuerpo de Elite  - Temporada 1 [HDTV 720p][Cap.113][AC3 5.1 Esp Castellano]\CuerpoDeElite720p_113_desca202.mkv
+: title: Cuerpo de Elite
+  season: 1
+  source: HDTV
+  screen_size: 720p
+  episode: 13
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  language:
+  - Spanish
+  - Catalan
+  container: mkv
+  type: episode

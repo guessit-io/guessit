@@ -478,6 +478,7 @@ class RemoveInvalidLanguages(Rule):
     """Remove language matches that matches the blacklisted common words."""
 
     consequence = RemoveMatch
+    priority = 32
 
     def __init__(self, common_words):
         """Constructor."""
