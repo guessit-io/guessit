@@ -88,13 +88,15 @@ class TitleBaseRule(Rule):
         :rtype:
         """
         cropped_holes = []
+        group_markers = matches.markers.named('group')
+        for group_marker in group_markers:
+            path_marker = matches.markers.at_match(group_marker, predicate=lambda m: m.name == 'path', index=0)
+            if path_marker and path_marker.span == group_marker.span:
+                group_markers.remove(group_marker)
+
         for hole in holes:
-            group_markers = matches.markers.named('group')
-            for group_marker in group_markers:
-                if matches.markers.named(
-                        'path', predicate=lambda m: m.start == group_marker.start and m.end == group_marker.end):
-                    group_markers.remove(group_marker)
             cropped_holes.extend(hole.crop(group_markers))
+
         return cropped_holes
 
     def is_ignored(self, match):
