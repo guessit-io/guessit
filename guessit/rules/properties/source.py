@@ -205,8 +205,8 @@ class ValidateSource(Rule):
                 # most likely the source is part of the title
                 if 'weak.source' in match.tags \
                         and matches.range(match.end, filepart.end, predicate=lambda m: m.name == 'source') \
-                        and matches.holes(
-                            filepart.start, match.start, predicate=lambda m: m.value.strip(seps), index=-1):
+                        and matches.holes(filepart.start, match.start,
+                                          predicate=lambda m: m.value.strip(seps), index=-1):
                     if match.children:
                         ret.extend(match.children)
                     ret.append(match)
