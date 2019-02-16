@@ -30,10 +30,14 @@ def test_forced_binary():
 
 @pytest.mark.skipif(sys.version_info < (3, 4), reason="Path is not available")
 def test_pathlike_object():
-    from pathlib import Path
-    path = Path('Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
-    ret = guessit(path)
-    assert ret and 'title' in ret
+    try:
+        from pathlib import Path
+
+        path = Path('Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
+        ret = guessit(path)
+        assert ret and 'title' in ret
+    except ImportError:  # pragma: no-cover
+        pass
 
 
 def test_unicode_japanese():

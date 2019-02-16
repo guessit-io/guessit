@@ -153,7 +153,7 @@ def load_config(options):
         cwd = os.getcwd()
         yaml_supported = False
         try:
-            import yaml  # pylint: disable=unused-variable  # pylint:disable=unused-import
+            import yaml  # pylint:disable=unused-variable,unused-import
             yaml_supported = True
         except ImportError:
             pass
