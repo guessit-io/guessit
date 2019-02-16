@@ -1771,3 +1771,14 @@
   video_codec: H.264
   release_group: CMRG
   type: movie
+
+? The.Girl.in.the.Spiders.Web.2019.1080p.WEB-DL.x264.AC3-EVO.mkv
+: title: The Girl in the Spiders Web
+  year: 2019
+  screen_size: 1080p
+  source: Web
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  release_group: EVO
+  container: mkv
+  type: movie
