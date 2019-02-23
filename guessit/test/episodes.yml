@@ -4624,3 +4624,14 @@
   episode: 2
   episode_title: Soul Hunter
   type: episode
+
+? This.is.Us.S01E01.HDTV.x264-KILLERS.mkv
+: title: This is Us
+  season: 1
+  episode: 1
+  source: HDTV
+  video_codec: H.264
+  release_group: KILLERS
+  container: mkv
+  type: episode
+
