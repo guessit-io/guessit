@@ -4592,7 +4592,7 @@
   type: episode
 
 ? S.W.A.T.2017.S01E21.Treibjagd.German.Dubbed.DL.AmazonHD.x264-TVS
-: title: S W.A.T.
+: title: S.W.A.T.
   year: 2017
   season: 1
   episode: 21
@@ -4604,4 +4604,16 @@
   other: HD
   video_codec: H.264
   release_group: TVS
+  type: episode
+
+? S.W.A.T.2017.S01E16.READNFO.720p.HDTV.x264-KILLERS
+: title: S.W.A.T.
+  year: 2017
+  season: 1
+  episode: 16
+  other: Read NFO
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  release_group: KILLERS
   type: episode
