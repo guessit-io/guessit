@@ -4617,3 +4617,10 @@
   video_codec: H.264
   release_group: KILLERS
   type: episode
+
+? /mnt/NAS/NoSubsTVShows/Babylon 5/Season 01/Ep. 02 - Soul Hunter
+: title: Babylon 5
+  season: 1
+  episode: 2
+  episode_title: Soul Hunter
+  type: episode
