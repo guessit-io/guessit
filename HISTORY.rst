@@ -12,6 +12,11 @@ History
 - Improve detection when release name in between brackets
 - Improve language detection
 - Fix wrong 3D detection
+- Fix to keep separators for single characters. E.g.: S.W.A.T.
+- Fix `Show Name/Season SS/Ep. EE - Title`
+- Added `This is Us` to default expected titles
+- Added `suggested_expected` to the api to support apps that uses guessit as a library
+- Added `Extras` detection as `other` property
 
 
 3.0.3 (2018-10-23)

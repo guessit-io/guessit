@@ -134,6 +134,8 @@ def other(config):  # pylint:disable=unused-argument,too-many-statements
     rebulk.regex('BT-?2020', value='BT.2020', tags='uhdbluray-neighbor')
 
     rebulk.string('Sample', value='Sample', tags=['at-end', 'not-a-release-group'])
+    rebulk.string('Extras', value='Extras', tags='has-neighbor')
+    rebulk.regex('Digital-?Extras?', value='Extras')
     rebulk.string('Proof', value='Proof', tags=['at-end', 'not-a-release-group'])
     rebulk.string('Obfuscated', 'Scrambled', value='Obfuscated', tags=['at-end', 'not-a-release-group'])
     rebulk.string('xpost', 'postbot', 'asrequested', value='Repost', tags='not-a-release-group')

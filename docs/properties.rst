@@ -337,11 +337,11 @@ Other properties
   Other property will appear under this property.
 
   - ``3D``, ``Audio Fixed``, ``Bonus``, ``BT.2020``, ``Classic``, ``Colorized``, ``Complete``, ``Converted``,
-    ``Documentary``, ``Dolby Vision``, ``Dual Audio``, ``East Coast Feed``, ``Fan Subtitled``, ``Fast Subtitled``,
-    ``Full HD``, ``Hardcoded Subtitles``, ``HD``, ``HDR10``, ``High Frame Rate``, ``High Quality``, ``High Resolution``,
-    ``Internal``, ``Line Dubbed``, ``Line Audio``, ``Mic Dubbed``, ``Micro HD``, ``Mux``, ``NTSC``, ``Obfuscated``,
-    ``Open Matte``, ``Original Aspect Ratio``, ``Original Video``, ``PAL``, ``Preair``, ``Proof``, ``Proper``,
-    ``PS Vita``, ``Read NFO``, ``Region 5``, ``Region C``, ``Reencoded``, ``Remux``, ``Repost``, ``Retail``, ``Rip``,
-    ``Sample``, ``Screener``, ``SECAM``, ``Standard Dynamic Range``, ``Straight to Video``, ``Sync Fixed``, ``Trailer``,
-    ``Ultra HD``, ``Upscaled``, ``West Coast Feed``, ``Widescreen``, ``XXX``
+    ``Documentary``, ``Dolby Vision``, ``Dual Audio``, ``East Coast Feed``, ``Extras``, ``Fan Subtitled``,
+    ``Fast Subtitled``, ``Full HD``, ``Hardcoded Subtitles``, ``HD``, ``HDR10``, ``High Frame Rate``, ``High Quality``,
+    ``High Resolution``, ``Internal``, ``Line Dubbed``, ``Line Audio``, ``Mic Dubbed``, ``Micro HD``, ``Mux``, ``NTSC``,
+    ``Obfuscated``, ``Open Matte``, ``Original Aspect Ratio``, ``Original Video``, ``PAL``, ``Preair``, ``Proof``,
+    ``Proper``, ``PS Vita``, ``Read NFO``, ``Region 5``, ``Region C``, ``Reencoded``, ``Remux``, ``Repost``, ``Retail``,
+    ``Rip``, ``Sample``, ``Screener``, ``SECAM``, ``Standard Dynamic Range``, ``Straight to Video``, ``Sync Fixed``,
+    ``Trailer``, ``Ultra HD``, ``Upscaled``, ``West Coast Feed``, ``Widescreen``, ``XXX``
 
