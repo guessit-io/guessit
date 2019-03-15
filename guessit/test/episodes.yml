@@ -4667,32 +4667,6 @@
   mimetype: video/mp4
   type: episode
 
-
-? The.Crowned.Clown.E00.1080p.TVING.WEB-DL.AAC2.0.H.264-DUALiTY.mkv
-: title: The Crowned Clown
-  episode: 0
-  screen_size: 1080p
-  streaming_service: TVING
-  source: Web
-  audio_codec: AAC
-  audio_channels: 2.0
-  video_codec: H.264
-  release_group: DUALiTY
-  container: mkv
-  mimetype: video/x-matroska
-  type: episode
-
-? About.Time.E01.1080p.VIKI.WEB-DL-BLUEBERRY.mkv
-: title: About Time
-  episode: 1
-  screen_size: 1080p
-  streaming_service: Viki
-  source: Web 
-  release_group: BLUEBERRY
-  container: mkv
-  mimetype: video/x-matroska
-  type: episode
-
 ? About.Time.E01.1080p.VIKI.WEB-DL-BLUEBERRY.mkv
 : title: About Time
   episode: 1
