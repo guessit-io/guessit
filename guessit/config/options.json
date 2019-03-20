@@ -5,15 +5,15 @@
   ],
   "allowed_countries": [
     "au",
-    "us",
     "gb"
+    "us",
   ],
   "allowed_languages": [
+    "ca",
+    "cs",
     "de",
     "en",
     "es",
-    "ca",
-    "cs",
     "fr",
     "he",
     "hi",
@@ -21,6 +21,7 @@
     "it",
     "ja",
     "ko",
+    "mul",
     "nl",
     "no",
     "pl",
@@ -30,7 +31,6 @@
     "sv",
     "te",
     "uk",
-    "mul",
     "und"
   ],
   "advanced_config": {
@@ -94,9 +94,10 @@
         "avi",
         "divx",
         "flv",
-        "mk3d",
+        "iso",
         "m4v",
         "mk2",
+        "mk3d",
         "mka",
         "mkv",
         "mov",
@@ -112,12 +113,11 @@
         "ram",
         "rm",
         "ts",
+        "vob"
         "wav",
         "webm",
         "wma",
         "wmv",
-        "iso",
-        "vob"
       ],
       "torrent": [
         "torrent"
@@ -332,12 +332,12 @@
     },
     "release_group": {
       "forbidden_names": [
-        "rip",
+        "bonus"
         "by",
         "for",
         "par",
         "pour",
-        "bonus"
+        "rip",
       ],
       "ignored_seps": "[]{}()"
     },
@@ -346,6 +346,7 @@
         "23.976",
         "24",
         "25",
+        "29.970",
         "30",
         "48",
         "50",
@@ -378,8 +379,8 @@
     "website": {
       "safe_tlds": [
         "com",
-        "org",
         "net"
+        "org",
       ],
       "safe_subdomains": [
         "www"
@@ -387,8 +388,8 @@
       "safe_prefixes": [
         "co",
         "com",
-        "org",
         "net"
+        "org",
       ],
       "prefixes": [
         "from"
