@@ -332,12 +332,12 @@
     },
     "release_group": {
       "forbidden_names": [
-        "bonus"
+        "bonus",
         "by",
         "for",
         "par",
         "pour",
-        "rip",
+        "rip"
       ],
       "ignored_seps": "[]{}()"
     },
@@ -379,8 +379,8 @@
     "website": {
       "safe_tlds": [
         "com",
-        "net"
-        "org",
+        "net",
+        "org"
       ],
       "safe_subdomains": [
         "www"
@@ -388,8 +388,8 @@
       "safe_prefixes": [
         "co",
         "com",
-        "net"
-        "org",
+        "net",
+        "org"
       ],
       "prefixes": [
         "from"
