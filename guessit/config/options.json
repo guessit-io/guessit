@@ -5,8 +5,8 @@
   ],
   "allowed_countries": [
     "au",
-    "gb"
-    "us",
+    "gb",
+    "us"
   ],
   "allowed_languages": [
     "ca",
@@ -113,11 +113,11 @@
         "ram",
         "rm",
         "ts",
-        "vob"
+        "vob",
         "wav",
         "webm",
         "wma",
-        "wmv",
+        "wmv"
       ],
       "torrent": [
         "torrent"
