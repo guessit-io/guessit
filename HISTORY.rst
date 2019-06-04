@@ -1,7 +1,7 @@
 History
 =======
 
-3.0.4 (unreleased)
+3.0.4 (2019-06-04)
 ------------------
 
 - `screen_size` property `540p` was added.
