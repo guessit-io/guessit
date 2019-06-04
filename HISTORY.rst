@@ -17,6 +17,7 @@ History
 - Added `This is Us` to default expected titles
 - Added `suggested_expected` to the api to support apps that uses guessit as a library
 - Added `Extras` detection as `other` property
+- Add more streaming sites
 
 
 3.0.3 (2018-10-23)
