@@ -19,34 +19,30 @@ History
 - Added `Extras` detection as `other` property
 - Add more streaming sites
 
-
 3.0.3 (2018-10-23)
 ------------------
 
-- Add ``MP2`` ``audio_codec`` value.
-- ``Proper`` and ``Fix`` have been separated in two distinct ``other`` values.
-- Add ``1e18`` ``season``/``episode`` pattern.
-- Fix false ``release_group`` matches with ``--expected-title`` option.
+- Add `MP2` `audio_codec` value.
+- `Proper` and `Fix` have been separated in two distinct `other` values.
+- Add `1e18` `season`/`episode` pattern.
+- Fix false `release_group` matches with `--expected-title` option.
 - Fix parent folder ending with a digit detected as title
-- Fix wrong season/year with ``--type episode `` option. Serie(s) keyword has been removed from default configuration.
-- Fix missing property when ``episode_details`` pattern appears in title.
-
+- Fix wrong season/year with `--type episode` option. Serie(s) keyword has been removed from default configuration.
+- Fix missing property when `episode_details` pattern appears in title.
 
 3.0.2 (2018-10-18)
 ------------------
 
-- Ensure consistent behavior between CLI and Python module. It's now possible to override `advanced_config` at
-runtime through options dict. Rebulk rules are lazily rebuilt when `advanced_config` is changed since previous
-call.
+- Ensure consistent behavior between CLI and Python module. It's now possible to override `advanced_config` at runtime
+  through options dict. Rebulk rules are lazily rebuilt when `advanced_config` is changed since previous call.
 - Refactored command line options and loading behavior related to configuration files (see `-c CONFIG`,
-`--config CONFIG`, `--no-user-config`, `--no-default-config`)
+  `--config CONFIG`, `--no-user-config`, `--no-default-config`)
 
 3.0.1 (2018-10-17)
 ------------------
 
 - Removed `Extras` and `Bonus` values from `episode_details` property as those tags may also appear in movies
-- Add `Scalable Video Coding`, `Advanced Video Codec High Definition` and `High Efficiency Video Coding` values to
-`video_profile`
+- Add `Scalable Video Coding`, `Advanced Video Codec High Definition` and `High Efficiency Video Coding` values to `video_profile`
 - Add support for Python 3.7
 - Add `mk3d` value to `container`
 - Better title cleanup containing acronyms (like `Marvel's Agents of S.H.I.E.L.D`)
@@ -324,42 +320,42 @@ call.
 2.0rc3 (2015-11-29)
 -------------------
 
-- Add ``__version__`` to main module.
+- Add `__version__` to main module.
 
 
 2.0rc2 (2015-11-28)
 -------------------
 
-- Single digit episodes are now guessed for ``--type episode`` instead of ``--episode-prefer-number``.
+- Single digit episodes are now guessed for `--type episode` instead of `--episode-prefer-number`.
 - Fix separators that could cause some titles to be splited with & and ;.
-- Avoid possible ``NoneType`` error.
+- Avoid possible `NoneType` error.
 
 
 2.0rc1 (2015-11-27)
 -------------------
 
-- Fallback to default title guessing when ``expected-title`` is not found.
+- Fallback to default title guessing when `expected-title` is not found.
 
 
 2.0b4 (2015-11-24)
 ------------------
 
-- Add ``expected-group`` option.
-- Add validation rule for single digit ``episode`` to avoid false positives.
-- Add ``verbose`` option.
-- Fix ``expected-title`` option.
-- Better unicode support in ``expected-group``/``expected-title`` option.
+- Add `expected-group` option.
+- Add validation rule for single digit `episode` to avoid false positives.
+- Add `verbose` option.
+- Fix `expected-title` option.
+- Better unicode support in `expected-group`/`expected-title` option.
 
 
 2.0b3 (2015-11-15)
 ------------------
 
-- Add support for ``part`` with no space before number.
-- Avoid ``uuid`` and ``crc32`` collision with ``season``/``episode`` properties.
-- Add better space support for ``season``/``episode`` properties.
-- Ensure ``date`` property is found when conflicting with ``season``/``episode`` properties.
-- Fix ``IndexError`` when input has a closing group character with no opening one before.
-- Add ``--type`` option.
+- Add support for `part` with no space before number.
+- Avoid `uuid` and `crc32` collision with `season`/`episode` properties.
+- Add better space support for `season`/`episode` properties.
+- Ensure `date` property is found when conflicting with `season`/`episode` properties.
+- Fix `IndexError` when input has a closing group character with no opening one before.
+- Add `--type` option.
 - Add rebulk implicit option support.
 
 2.0b2 (2015-11-14)
@@ -372,14 +368,14 @@ call.
 ------------------
 
 - Enhance title guessing.
-- Upgrade rebulk to ``0.6.1``.
-- Rename ``properCount`` to ``proper_count``
-- Avoid crash when using ``-p``/``-V`` option with ``--yaml`` and ``yaml`` module is not available.
+- Upgrade rebulk to `0.6.1`.
+- Rename `properCount` to `proper_count`
+- Avoid crash when using `-p`/`-V` option with `--yaml` and `yaml` module is not available.
 
 2.0a4 (2015-11-09)
 ------------------
 
-- Add ``-p``/``-V`` options to display properties and values that can be guessed.
+- Add `-p`/`-V` options to display properties and values that can be guessed.
 
 
 2.0a3 (2015-11-08)
