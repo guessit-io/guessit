@@ -67,7 +67,7 @@ def website(config):
             """
             Validator for next website matches
             """
-            return any(name in ['season', 'episode', 'year'] for name in match.names)
+            return match.named('season', 'episode', 'year')
 
         def when(self, matches, context):
             to_remove = []

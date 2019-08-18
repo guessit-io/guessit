@@ -1114,3 +1114,20 @@
   video_codec: H.264
   release_group: W4F
   type: episode
+
+? NOS4A2.S01E01.The.Shorter.Way.REPACK.720p.AMZN.WEB-DL.DDP5.1.H.264-NTG.mkv
+: title: NOS4A2
+  season: 1
+  episode: 1
+  episode_title: The Shorter Way
+  other: Proper
+  proper_count: 1
+  screen_size: 720p
+  streaming_service: Amazon Prime
+  source: Web
+  audio_codec: Dolby Digital Plus
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: NTG
+  container: mkv
+  type: episode

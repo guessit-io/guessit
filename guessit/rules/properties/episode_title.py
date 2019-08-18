@@ -133,8 +133,7 @@ class EpisodeTitleFromPosition(TitleBaseRule):
 
     def hole_filter(self, hole, matches):
         episode = matches.previous(hole,
-                                   lambda previous: any(name in previous.names
-                                                        for name in self.previous_names),
+                                   lambda previous: previous.named(*self.previous_names),
                                    0)
 
         crc32 = matches.named('crc32')
@@ -179,8 +178,7 @@ class AlternativeTitleReplace(Rule):
                                               predicate=lambda match: 'title' in match.tags, index=0)
             if main_title:
                 episode = matches.previous(main_title,
-                                           lambda previous: any(name in previous.names
-                                                                for name in self.previous_names),
+                                           lambda previous: previous.named(*self.previous_names),
                                            0)
 
                 crc32 = matches.named('crc32')
