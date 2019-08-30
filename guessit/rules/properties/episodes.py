@@ -655,7 +655,7 @@ class RemoveWeak(Rule):
 
     def __init__(self, episode_words):
         super(RemoveWeak, self).__init__()
-        self.episode_words = ['ep']
+        self.episode_words = episode_words
 
     def when(self, matches, context):
         to_remove = []
