@@ -10,6 +10,7 @@ from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch, RenameMatch, POST_PRO
 from ..common import seps, title_seps
 from ..common.formatters import cleanup
 from ..common.pattern import is_disabled
+from ..common.validators import or_
 from ..properties.title import TitleFromPosition, TitleBaseRule
 from ..properties.type import TypeProcessor
 
@@ -290,7 +291,8 @@ class Filepart2EpisodeTitle(Rule):
             season = (matches.range(directory.start, directory.end, lambda match: match.name == 'season', 0) or
                       matches.range(filename.start, filename.end, lambda match: match.name == 'season', 0))
             if season:
-                hole = matches.holes(directory.start, directory.end, ignore=lambda match: 'weak-episode' in match.tags,
+                hole = matches.holes(directory.start, directory.end,
+                                     ignore=or_(lambda match: 'weak-episode' in match.tags, TitleBaseRule.is_ignored),
                                      formatter=cleanup, seps=title_seps,
                                      predicate=lambda match: match.value, index=0)
                 if hole:

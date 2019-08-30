@@ -104,7 +104,8 @@ class TitleBaseRule(Rule):
 
         return cropped_holes
 
-    def is_ignored(self, match):
+    @staticmethod
+    def is_ignored(match):
         """
         Ignore matches when scanning for title (hole).
 
