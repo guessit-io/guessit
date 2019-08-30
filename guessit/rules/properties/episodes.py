@@ -356,9 +356,9 @@ def episodes(config):
     rebulk.rules(WeakConflictSolver, RemoveInvalidSeason, RemoveInvalidEpisode,
                  SeePatternRange(range_separators + ['_']),
                  EpisodeNumberSeparatorRange(range_separators),
-                 SeasonSeparatorRange(range_separators), RemoveWeakIfMovie, RemoveWeakIfSxxExx,
-                 RemoveWeakDuplicate, EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator,
-                 RemoveWeak(episode_words), RenameToAbsoluteEpisode, CountValidator, EpisodeSingleDigitValidator, RenameToDiscMatch)
+                 SeasonSeparatorRange(range_separators), RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate,
+                 EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator, RemoveWeak(episode_words),
+                 RenameToAbsoluteEpisode, CountValidator, EpisodeSingleDigitValidator, RenameToDiscMatch)
 
     return rebulk
 
