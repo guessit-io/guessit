@@ -1131,3 +1131,11 @@
   release_group: NTG
   container: mkv
   type: episode
+
+? Star Trek DS9 Ep 2x03 The Siege (Part III)
+: title: Star Trek DS9
+  season: 2
+  episode: 3
+  episode_title: The Siege
+  part: 3
+  type: episode

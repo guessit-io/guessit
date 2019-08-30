@@ -358,7 +358,7 @@ def episodes(config):
                  EpisodeNumberSeparatorRange(range_separators),
                  SeasonSeparatorRange(range_separators), RemoveWeakIfMovie, RemoveWeakIfSxxExx,
                  RemoveWeakDuplicate, EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator,
-                 RemoveWeak, RenameToAbsoluteEpisode, CountValidator, EpisodeSingleDigitValidator, RenameToDiscMatch)
+                 RemoveWeak(episode_words), RenameToAbsoluteEpisode, CountValidator, EpisodeSingleDigitValidator, RenameToDiscMatch)
 
     return rebulk
 
@@ -653,26 +653,34 @@ class RemoveWeak(Rule):
     priority = 16
     consequence = RemoveMatch, AppendMatch
 
+    def __init__(self, episode_words):
+        super(RemoveWeak, self).__init__()
+        self.episode_words = ['ep']
+
     def when(self, matches, context):
         to_remove = []
         to_append = []
         for filepart in matches.markers.named('path'):
             weaks = matches.range(filepart.start, filepart.end, predicate=lambda m: 'weak-episode' in m.tags)
             if weaks:
-                previous = matches.previous(weaks[0], predicate=lambda m: m.name in (
+                weak = weaks[0]
+                previous = matches.previous(weak, predicate=lambda m: m.name in (
                     'audio_codec', 'screen_size', 'streaming_service', 'source', 'video_profile',
                     'audio_channels', 'audio_profile'), index=0)
                 if previous and not matches.holes(
-                        previous.end, weaks[0].start, predicate=lambda m: m.raw.strip(seps)):
-                    if previous.raw.lower() == 'ep':
-                        episode = copy.copy(weaks[0])
-                        episode.name = 'episode'
-                        episode.value = int(weaks[0].value)
-                        episode.start = previous.start
-                        episode.private = False
-                        episode.tags = []
+                        previous.end, weak.start, predicate=lambda m: m.raw.strip(seps)):
+                    if previous.raw.lower() in self.episode_words:
+                        try:
+                            episode = copy.copy(weak)
+                            episode.name = 'episode'
+                            episode.value = int(weak.value)
+                            episode.start = previous.start
+                            episode.private = False
+                            episode.tags = []
 
-                        to_append.append(episode)
+                            to_append.append(episode)
+                        except ValueError:
+                            pass
 
                     to_remove.extend(weaks)
         return to_remove, to_append
