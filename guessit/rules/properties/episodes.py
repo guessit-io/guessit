@@ -166,6 +166,7 @@ def episodes(config):
 
     # S01E02, 01x02, S01S02S03
     rebulk.chain(
+        tags=['SxxExx'],
         validate_all=True,
         validator={'__parent__': compose(seps_surround, ordering_validator)},
         disabled=is_season_episode_disabled) \
@@ -178,7 +179,8 @@ def episodes(config):
                                 escape=True) +
                r'(?P<episode>\d+)').repeater('*')
 
-    rebulk.chain(validate_all=True,
+    rebulk.chain(tags=['SxxExx'],
+                 validate_all=True,
                  validator={'__parent__': compose(seps_surround, ordering_validator)},
                  disabled=is_season_episode_disabled) \
         .defaults(tags=['SxxExx']) \
@@ -186,7 +188,8 @@ def episodes(config):
                build_or_pattern(season_ep_markers, name='episodeMarker') +
                r'@?(?P<episode>\d+)').repeater('+') \
 
-    rebulk.chain(validate_all=True,
+    rebulk.chain(tags=['SxxExx'],
+                 validate_all=True,
                  validator={'__parent__': compose(seps_surround, ordering_validator)},
                  disabled=is_season_episode_disabled) \
         .defaults(tags=['SxxExx']) \
@@ -198,7 +201,8 @@ def episodes(config):
                                 escape=True) +
                r'(?P<episode>\d+)').repeater('*')
 
-    rebulk.chain(validate_all=True,
+    rebulk.chain(tags=['SxxExx'],
+                 validate_all=True,
                  validator={'__parent__': compose(seps_surround, ordering_validator)},
                  disabled=is_season_episode_disabled) \
         .defaults(tags=['SxxExx']) \
