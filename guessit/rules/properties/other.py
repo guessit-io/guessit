@@ -11,7 +11,7 @@ from rebulk.remodule import re
 from ..common import dash
 from ..common import seps
 from ..common.pattern import is_disabled
-from ..common.validators import seps_after, seps_before, seps_surround, compose
+from ..common.validators import seps_after, seps_before, seps_surround, and_
 from ...reutils import build_or_pattern
 from ...rules.common.formatters import raw_cleanup
 
@@ -77,7 +77,7 @@ def other(config):  # pylint:disable=unused-argument,too-many-statements
                  private_names=['completeArticle', 'completeWordsBefore', 'completeWordsAfter'],
                  value={'other': 'Complete'},
                  tags=['release-group-prefix'],
-                 validator={'__parent__': compose(seps_surround, validate_complete)})
+                 validator={'__parent__': and_(seps_surround, validate_complete)})
     rebulk.string('R5', value='Region 5')
     rebulk.string('RC', value='Region C')
     rebulk.regex('Pre-?Air', value='Preair')

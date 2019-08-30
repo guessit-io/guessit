@@ -1145,3 +1145,33 @@
   season: 1
   episode: 1
   type: episode
+
+? Show.S01E01.WEB.x264-METCON.mkv
+: title: Show
+  season: 1
+  episode: 1
+  source: Web
+  video_codec: H.264
+  release_group: METCON
+  container: mkv
+  type: episode
+
+? Show.S01E01.WEB.x264-TCMEON.mkv
+: title: Show
+  season: 1
+  episode: 1
+  source: Web
+  video_codec: H.264
+  release_group: TCMEON
+  container: mkv
+  type: episode
+
+? Show.S01E01.WEB.x264-MEONTC.mkv
+: title: Show
+  season: 1
+  episode: 1
+  source: Web
+  video_codec: H.264
+  release_group: MEONTC
+  container: mkv
+  type: episode

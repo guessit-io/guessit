@@ -17,7 +17,7 @@ from .title import TitleFromPosition
 from ..common import dash, alt_dash, seps, seps_no_fs
 from ..common.formatters import strip
 from ..common.pattern import is_disabled
-from ..common.validators import seps_surround, int_coercable, compose
+from ..common.validators import seps_surround, int_coercable, and_
 from ...reutils import build_or_pattern
 
 
@@ -168,7 +168,7 @@ def episodes(config):
     rebulk.chain(
         tags=['SxxExx'],
         validate_all=True,
-        validator={'__parent__': compose(seps_surround, ordering_validator)},
+        validator={'__parent__': and_(seps_surround, ordering_validator)},
         disabled=is_season_episode_disabled) \
         .defaults(tags=['SxxExx']) \
         .regex(build_or_pattern(season_markers, name='seasonMarker') + r'(?P<season>\d+)@?' +
@@ -181,7 +181,7 @@ def episodes(config):
 
     rebulk.chain(tags=['SxxExx'],
                  validate_all=True,
-                 validator={'__parent__': compose(seps_surround, ordering_validator)},
+                 validator={'__parent__': and_(seps_surround, ordering_validator)},
                  disabled=is_season_episode_disabled) \
         .defaults(tags=['SxxExx']) \
         .regex(r'(?P<season>\d+)@?' +
@@ -190,7 +190,7 @@ def episodes(config):
 
     rebulk.chain(tags=['SxxExx'],
                  validate_all=True,
-                 validator={'__parent__': compose(seps_surround, ordering_validator)},
+                 validator={'__parent__': and_(seps_surround, ordering_validator)},
                  disabled=is_season_episode_disabled) \
         .defaults(tags=['SxxExx']) \
         .regex(r'(?P<season>\d+)@?' +
@@ -203,7 +203,7 @@ def episodes(config):
 
     rebulk.chain(tags=['SxxExx'],
                  validate_all=True,
-                 validator={'__parent__': compose(seps_surround, ordering_validator)},
+                 validator={'__parent__': and_(seps_surround, ordering_validator)},
                  disabled=is_season_episode_disabled) \
         .defaults(tags=['SxxExx']) \
         .regex(build_or_pattern(season_markers, name='seasonMarker') + r'(?P<season>\d+)') \
@@ -224,7 +224,7 @@ def episodes(config):
 
     rebulk.defaults(private_names=['episodeSeparator', 'seasonSeparator', 'episodeMarker', 'seasonMarker'],
                     validate_all=True,
-                    validator={'__parent__': compose(seps_surround, ordering_validator)},
+                    validator={'__parent__': and_(seps_surround, ordering_validator)},
                     children=True,
                     private_parent=True,
                     conflict_solver=season_episode_conflict_solver)
@@ -232,7 +232,7 @@ def episodes(config):
     rebulk.chain(validate_all=True,
                  conflict_solver=season_episode_conflict_solver,
                  formatter={'season': parse_numeral, 'count': parse_numeral},
-                 validator={'__parent__': compose(seps_surround, ordering_validator),
+                 validator={'__parent__': and_(seps_surround, ordering_validator),
                             'season': validate_roman,
                             'count': validate_roman},
                  disabled=lambda context: context.get('type') == 'movie' or is_disabled(context, 'season')) \
