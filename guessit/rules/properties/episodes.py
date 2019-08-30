@@ -438,7 +438,9 @@ class WeakConflictSolver(Rule):
                 if to_append:
                     to_remove.extend(weak_dup_matches)
 
-        return to_remove, to_append
+        if to_remove or to_append:
+            return to_remove, to_append
+        return False
 
 
 class CountValidator(Rule):
@@ -464,7 +466,9 @@ class CountValidator(Rule):
                     season_count.append(count)
             else:
                 to_remove.append(count)
-        return to_remove, episode_count, season_count
+        if to_remove or episode_count or season_count:
+            return to_remove, episode_count, season_count
+        return False
 
 
 class SeePatternRange(Rule):
@@ -499,7 +503,9 @@ class SeePatternRange(Rule):
 
             to_remove.append(separator)
 
-        return to_remove, to_append
+        if to_remove or to_append:
+            return to_remove, to_append
+        return False
 
 
 class AbstractSeparatorRange(Rule):
@@ -555,7 +561,9 @@ class AbstractSeparatorRange(Rule):
 
             previous_match = next_match
 
-        return to_remove, to_append
+        if to_remove or to_append:
+            return to_remove, to_append
+        return False
 
 
 class RenameToAbsoluteEpisode(Rule):
@@ -683,7 +691,9 @@ class RemoveWeak(Rule):
                             pass
 
                     to_remove.extend(weaks)
-        return to_remove, to_append
+        if to_remove or to_append:
+            return to_remove, to_append
+        return False
 
 
 class RemoveWeakIfSxxExx(Rule):
@@ -897,4 +907,6 @@ class RenameToDiscMatch(Rule):
             markers.append(marker)
             discs.extend(sorted(marker.initiator.children.named('episode'), key=lambda m: m.value))
 
-        return discs, markers, to_remove
+        if discs or markers or to_remove:
+            return discs, markers, to_remove
+        return False

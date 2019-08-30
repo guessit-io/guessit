@@ -171,7 +171,9 @@ class UltraHdBlurayRule(Rule):
                 to_remove.append(match)
                 to_append.append(new_source)
 
-        return to_remove, to_append
+        if to_remove or to_append:
+            return to_remove, to_append
+        return False
 
 
 class ValidateSource(Rule):

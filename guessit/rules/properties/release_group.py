@@ -195,7 +195,8 @@ class DashSeparatedReleaseGroup(Rule):
 
                 if releasegroup.value:
                     to_append.append(releasegroup)
-                return to_remove, to_append
+                if to_remove or to_append:
+                    return to_remove, to_append
 
 
 class SceneReleaseGroup(Rule):
@@ -312,11 +313,11 @@ class AnimeReleaseGroup(Rule):
 
         # If a release_group is found before, ignore this kind of release_group rule.
         if matches.named('release_group'):
-            return to_remove, to_append
+            return False
 
         if not matches.named('episode') and not matches.named('season') and matches.named('release_group'):
             # This doesn't seems to be an anime, and we already found another release_group.
-            return to_remove, to_append
+            return False
 
         for filepart in marker_sorted(matches.markers.named('path'), matches):
 
@@ -340,4 +341,7 @@ class AnimeReleaseGroup(Rule):
                 to_append.append(group)
                 to_remove.extend(matches.range(empty_group.start, empty_group.end,
                                                lambda m: 'weak-language' in m.tags))
-        return to_remove, to_append
+
+        if to_remove or to_append:
+            return to_remove, to_append
+        return False

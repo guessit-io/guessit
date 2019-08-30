@@ -251,7 +251,7 @@ class TitleBaseRule(Rule):
         to_remove = []
 
         if matches.named(self.match_name, lambda match: 'expected' in match.tags):
-            return ret, to_remove
+            return False
 
         fileparts = [filepart for filepart in list(marker_sorted(matches.markers.named('path'), matches))
                      if not self.filepart_filter or self.filepart_filter(filepart, matches)]
@@ -284,7 +284,9 @@ class TitleBaseRule(Rule):
                 ret.extend(titles)
                 to_remove.extend(to_remove_c)
 
-        return ret, to_remove
+        if ret or to_remove:
+            return ret, to_remove
+        return False
 
 
 class TitleFromPosition(TitleBaseRule):
@@ -341,4 +343,6 @@ class PreferTitleWithYear(Rule):
         for title_match in titles:
             if title_match.value not in title_values:
                 to_remove.append(title_match)
-        return to_remove, to_tag
+        if to_remove or to_tag:
+            return to_remove, to_tag
+        return False
