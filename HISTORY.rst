@@ -1,7 +1,7 @@
 History
 =======
 
-3.0.5 (unreleased)
+3.0.5 (2019-08-31)
 ------------------
 
 - Lock rebulk to version `<2`
