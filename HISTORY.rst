@@ -4,7 +4,7 @@ History
 3.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Lock rebulk to version `<2`
 
 
 3.0.4 (2019-06-04)

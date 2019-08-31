@@ -16,7 +16,7 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
     history = f.read()
 
-install_requires = ['rebulk', 'babelfish', 'python-dateutil']
+install_requires = ['rebulk<2', 'babelfish', 'python-dateutil']
 
 setup_requires = ['pytest-runner']
 
