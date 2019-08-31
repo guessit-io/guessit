@@ -248,7 +248,7 @@ class Filepart3EpisodeTitle(Rule):
 
             if season:
                 hole = matches.holes(subdirectory.start, subdirectory.end,
-                                     ignore=lambda match: 'weak-episode' in match.tags,
+                                     ignore=or_(lambda match: 'weak-episode' in match.tags, TitleBaseRule.is_ignored),
                                      formatter=cleanup, seps=title_seps, predicate=lambda match: match.value,
                                      index=0)
                 if hole:
