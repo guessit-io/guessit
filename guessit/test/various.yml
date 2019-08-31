@@ -1175,3 +1175,16 @@
   release_group: MEONTC
   container: mkv
   type: episode
+
+? '[TorrentCouch.com].Westworld.S02.Complete.720p.WEB-DL.x264.[MP4].[5.3GB].[Season.2.Full]/[TorrentCouch.com].Westworld.S02E03.720p.WEB-DL.x264.mp4'
+: website: TorrentCouch.com
+  title: Westworld
+  season: 2
+  other: Complete
+  screen_size: 720p
+  source: Web
+  video_codec: H.264
+  container: mp4
+  size: 5.3GB
+  episode: 3
+  type: episode

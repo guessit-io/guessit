@@ -80,7 +80,9 @@ def website(config):
                 if not safe:
                     suffix = matches.next(website_match, PreferTitleOverWebsite.valid_followers, 0)
                     if suffix:
-                        to_remove.append(website_match)
+                        group = matches.markers.at_match(website_match, lambda marker: marker.name == 'group', 0)
+                        if not group:
+                            to_remove.append(website_match)
             return to_remove
 
     rebulk.rules(PreferTitleOverWebsite, ValidateWebsitePrefix)
