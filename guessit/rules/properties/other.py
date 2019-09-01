@@ -81,7 +81,8 @@ def other(config):  # pylint:disable=unused-argument,too-many-statements
     rebulk.string('R5', value='Region 5')
     rebulk.string('RC', value='Region C')
     rebulk.regex('Pre-?Air', value='Preair')
-    rebulk.regex('(?:PS-?)?Vita', value='PS Vita')
+    rebulk.regex('(?:PS-?)Vita', value='PS Vita')
+    rebulk.regex('Vita', value='PS Vita', tags='has-neighbor')
     rebulk.regex('(HD)(?P<another>Rip)', value={'other': 'HD', 'another': 'Rip'},
                  private_parent=True, children=True, validator={'__parent__': seps_surround}, validate_all=True)
 

@@ -226,6 +226,7 @@
           "français",
           "vf",
           "vff",
+          "vfr",
           "vfi",
           "vfq"
         ],
@@ -290,7 +291,6 @@
       ],
       "subtitle_prefixes": [
         "st",
-        "v",
         "vost",
         "subforced",
         "fansub",

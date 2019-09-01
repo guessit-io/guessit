@@ -1188,3 +1188,12 @@
   size: 5.3GB
   episode: 3
   type: episode
+
+? Vita.&.Virginia.2018.720p.H.264.YTS.LT.mp4
+: title: Vita & Virginia
+  year: 2018
+  screen_size: 720p
+  video_codec: H.264
+  release_group: YTS.LT
+  container: mp4
+  type: movie
