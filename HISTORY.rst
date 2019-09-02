@@ -1,7 +1,7 @@
 History
 =======
 
-3.0.5 (unreleased)
+3.1.0 (2019-09-02)
 ------------------
 
 - Add python `3.8` support
