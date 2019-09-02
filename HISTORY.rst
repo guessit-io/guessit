@@ -4,7 +4,17 @@ History
 3.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add python `3.8` support
+- Use rebulk `2.*`
+- Remove `v` from `subtitle_language` prefix in default configuration
+- Add `Variable Frame Rate` value to `other` property (VFR tag)
+- Use episode words defined in configuration in a rebulk rule
+- Avoid trigger of useless rules consequences
+- Fix possible crash in weak episode removal
+- Fix issue caused by `streaming_service` property conflicts
+- Fix source validation when more than one pattern match
+- Fix issue with some titles on multiple fileparts
+- Fix issue related to website exclusion inside title
 
 
 3.0.4 (2019-06-04)
