@@ -3029,7 +3029,7 @@
   title: Show Name
   episode: [493, 494, 495, 496, 497, 498, 500, 501, 502, 503, 504, 505, 506, 507]
   screen_size: 720p
-  language: fr
+  other: Variable Frame Rate
   video_codec: H.264
   audio_codec: AAC
   type: episode

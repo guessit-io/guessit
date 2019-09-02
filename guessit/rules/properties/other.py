@@ -97,6 +97,7 @@ def other(config):  # pylint:disable=unused-argument,too-many-statements
     rebulk.string('mHD', 'HDLight', value='Micro HD')
     rebulk.string('LDTV', value='Low Definition')
     rebulk.string('HFR', value='High Frame Rate')
+    rebulk.string('VFR', value='Variable Frame Rate')
     rebulk.string('HD', value='HD', validator=None,
                   tags=['streaming_service.prefix', 'streaming_service.suffix'])
     rebulk.regex('Full-?HD', 'FHD', value='Full HD', validator=None,
