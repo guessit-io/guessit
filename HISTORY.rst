@@ -4,7 +4,8 @@ History
 3.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Drop python `3.4` support
+- Use SafeLoader with `yaml.load()`
 
 
 3.1.0 (2019-09-02)
