@@ -1,7 +1,7 @@
 History
 =======
 
-3.1.1 (unreleased)
+3.1.1 (2020-05-03)
 ------------------
 
 - Drop python `3.4` support
