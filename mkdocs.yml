@@ -1,0 +1,31 @@
+site_name: GuessIt
+
+site_url: https://guessit.io
+site_description: GuessIt is a python library that extracts as much information as possible from a video filename.
+site_author: Rémi Alvergnat <toilal.dev@gmail.com>
+
+repo_url: https://github.com/guessit-io/guessit
+edit_uri: https://github.com/guessit-io/guessit/blob/develop/docs
+
+theme:
+  language: 'en'
+  name: 'material'
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Properties: properties.md
+  - Sources: sources.md
+  - Configuration: configuration.md
+  - Migration (2.x to 3.x): migration2to3.md
+  - Migration (1.x to 2.x): migration.md
+
+plugins:
+  - search

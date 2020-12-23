@@ -321,7 +321,6 @@ class AnimeReleaseGroup(Rule):
 
         for filepart in marker_sorted(matches.markers.named('path'), matches):
 
-            # pylint:disable=bad-continuation
             empty_group = matches.markers.range(filepart.start,
                                                 filepart.end,
                                                 lambda marker: (marker.name == 'group'
