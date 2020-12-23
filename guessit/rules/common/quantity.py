@@ -3,8 +3,9 @@
 """
 Quantities: Size
 """
-import re
 from abc import abstractmethod
+
+from rebulk.remodule import re
 
 from ..common import seps
 
