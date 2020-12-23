@@ -3,6 +3,13 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.2.0 (2020-12-23)
+### Feature
+* Add python 3.9 support, drop python 2.7 support ([`2c8b25e`](https://github.com/guessit-io/guessit/commit/2c8b25e77fb424d63f9f73318e85dd96cef865e0))
+
+### Fix
+* **regex:** Use rebulk 3+ to have regex module disabled by default ([`28658b2`](https://github.com/guessit-io/guessit/commit/28658b27720d9eb48c9f9f0edfadb3247910de43))
+
 ## 3.1.1 (2020-05-03)
 
 -   Drop python 3.4 support
