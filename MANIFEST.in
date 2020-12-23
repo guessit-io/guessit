@@ -1,7 +1,8 @@
 recursive-include guessit *.py *.yml *.txt *.ini *.json *.yaml *.yml
 recursive-exclude guessit *.pyc
 include LICENSE
-include *.rst
+include *.md
+include *.yml
 include *.ini
 include *.cfg
 include *.txt
