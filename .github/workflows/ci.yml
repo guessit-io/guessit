@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ 2.7, 3.5, 3.6, 3.7, 3.8 ]
+        python-version: [ 3.5, 3.6, 3.7, 3.8, 3.9, pypy-3.6 ]
 
     steps:
       - name: Setup python ${{ matrix.python-version }}
@@ -28,11 +28,8 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install pip --upgrade
-          pip install -e .[dev,test] --upgrade
-          pip install pytest --upgrade
+          pip install -e .[dev,test]
           pip install coveralls
-          pytest --version
 
       - run: pylint guessit
         if: matrix.python-version != '3.9'
@@ -74,7 +71,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Install Dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -e .[test]
 
       - name: Install python-semantic-release
         run: pip install python-semantic-release

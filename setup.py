@@ -16,13 +16,13 @@ with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'CHANGELOG.md'), encoding='utf-8') as f:
     changelog = f.read()
 
-install_requires = ['rebulk==2.*', 'babelfish', 'python-dateutil', 'six']
+install_requires = ['rebulk==2.*', 'babelfish', 'python-dateutil']
 
 setup_requires = ['pytest-runner']
 
-dev_require = ['pylint', 'mkdocs', 'mkdocs-material']
+dev_require = ['tox', 'mkdocs', 'mkdocs-material']
 
-tests_require = ['pytest>=3.3', 'pytest-benchmark', 'PyYAML']
+tests_require = ['pytest', 'pytest-benchmark', 'pylint', 'PyYAML']
 
 package_data = ['config/*']
 
