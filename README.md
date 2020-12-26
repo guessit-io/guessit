@@ -1,10 +1,10 @@
 GuessIt
 =======
 
-[![Latest Version](http://img.shields.io/pypi/v/guessit.svg)](https://pypi.python.org/pypi/guessit)
-[![LGPLv3 License](http://img.shields.io/badge/license-LGPLv3-blue.svg)]()
+[![Latest Version](https://img.shields.io/pypi/v/guessit.svg)](https://pypi.python.org/pypi/guessit)
+[![LGPLv3 License](https://img.shields.io/badge/license-LGPLv3-blue.svg)]()
 [![Build Status](https://img.shields.io/github/workflow/status/guessit-io/guessit/ci)](https://github.com/guessit-io/guessit/actions?query=workflow%3Aci)
-[![Coveralls](http://img.shields.io/coveralls/guessit-io/guessit/master.svg)](https://coveralls.io/github/guessit-io/guessit?branch=master)
+[![Coveralls](https://img.shields.io/coveralls/guessit-io/guessit/master.svg)](https://coveralls.io/github/guessit-io/guessit?branch=master)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/relekang/python-semantic-release)
 
 GuessIt is a python library that extracts as much information as
