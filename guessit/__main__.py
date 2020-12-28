@@ -32,6 +32,7 @@ def guess_filename(filename, options):
         print('For:', filename)
 
     guess = api.guessit(filename, options)
+    guess["raw_input"] = filename
 
     if options.get('show_property'):
         print(guess.get(options.get('show_property'), ''))
