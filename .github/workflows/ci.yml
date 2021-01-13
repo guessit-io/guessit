@@ -106,8 +106,7 @@ jobs:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
       - name: Merge master to develop
-        # uses: robotology/gh-action-nightly-merge@v1.3.1  # Wait PR merge https://github.com/robotology/gh-action-nightly-merge/pull/5
-        uses: Toilal/gh-action-nightly-merge@master
+        uses: robotology/gh-action-nightly-merge@v1.3.2
         with:
           stable_branch: 'master'
           development_branch: 'develop'
