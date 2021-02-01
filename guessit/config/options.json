@@ -490,7 +490,10 @@
       "Hulu": "HULU",
       "Investigation Discovery": "ID",
       "IFC": "IFC",
-      "iTunes": "iTunes",
+      "iTunes": [
+        "iT",
+        "iTunes"
+      ],
       "ITV": "ITV",
       "Knowledge Network": "KNOW",
       "Lifetime": "LIFE",
