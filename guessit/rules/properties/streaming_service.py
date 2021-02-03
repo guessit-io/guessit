@@ -25,11 +25,13 @@ def streaming_service(config):  # pylint: disable=too-many-statements,unused-arg
     rebulk = rebulk.string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
     rebulk.defaults(name='streaming_service', tags=['source-prefix'])
 
+    regex_prefix = 're:'
+
     for value, items in config.items():
         patterns = items if isinstance(items, list) else [items]
         for pattern in patterns:
-            if pattern.startswith('re:'):
-                rebulk.regex(pattern, value=value)
+            if pattern.startswith(regex_prefix):
+                rebulk.regex(pattern[len(regex_prefix):], value=value)
             else:
                 rebulk.string(pattern, value=value)
 
