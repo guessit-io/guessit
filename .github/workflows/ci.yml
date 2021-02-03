@@ -10,13 +10,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ 3.5, 3.6, 3.7, 3.8, 3.9, pypy-3.6, pypy-3.7 ]
+        python-version: [ 3.5, 3.6, 3.7, 3.8, 3.9 ]  # pypy-3.6, pypy-3.7 are supported but a bit slow.
         regex: [ "0", "1" ]
         exclude:
           # regex module doesn't play well with pypy and unicode.
           - python-version: pypy-3.6
             regex: "1"
           - python-version: pypy-3.7
+            regex: "1"
+          # test regex module only with Python 3.8.
+          - python-version: 3.5
+            regex: "1"
+          - python-version: 3.6
+            regex: "1"
+          - python-version: 3.7
+            regex: "1"
+          - python-version: 3.9
             regex: "1"
 
     steps:
@@ -41,25 +50,44 @@ jobs:
       - name: Install regex
         run: |
           pip install regex
-        if: ${{ matrix.regex == '1' }}
+        if: matrix.regex == '1'
 
-      - run: pylint guessit
+      - name: Pylint
+        run: pylint guessit
         if: matrix.python-version != '3.9'
 
-      - run: coverage run --source=guessit setup.py test
+      - name: Test
+        run: coverage run --source=guessit setup.py test
         env:
           REBULK_REGEX_ENABLED: ${{ matrix.regex }}
-
-      - run: python setup.py build
 
       - name: Coveralls
         run: coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
+      - name: Build
+        run: python setup.py build
+
+      - name: Binary
+        run: pyinstaller --dist ./dist guessit.spec
+        if: matrix.python-version != 'pypy-3.7'
+
+      - name: Check binary
+        run: ./dist/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
+        if: matrix.python-version != 'pypy-3.7'
+
+      - uses: actions/upload-artifact@v2
+        if: matrix.regex == '0'
+        with:
+          name: guessit-dist-${{matrix.python-version}}
+          path: ./dist
+
   commitlint:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -67,21 +95,16 @@ jobs:
       - uses: wagoid/commitlint-github-action@v2
 
   release:
-    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     needs: build
 
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [ 3.8 ]
-
     steps:
-      - name: Setup python ${{ matrix.python-version }}
+      - name: Setup python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -92,9 +115,6 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "github-actions"
-
-      - name: Install Dependencies
-        run: pip install -e .[test]
 
       - name: Install python-semantic-release
         run: pip install python-semantic-release

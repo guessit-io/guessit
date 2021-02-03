@@ -6,7 +6,6 @@ from setuptools import setup, find_packages
 import io
 import os
 import re
-import sys
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,11 +19,11 @@ install_requires = ['rebulk>=3', 'babelfish', 'python-dateutil']
 
 setup_requires = ['pytest-runner']
 
-dev_require = ['tox', 'mkdocs', 'mkdocs-material']
+dev_require = ['tox', 'mkdocs', 'mkdocs-material', 'pyinstaller']
 
 tests_require = ['pytest', 'pytest-benchmark', 'pylint', 'PyYAML']
 
-package_data = ['config/*']
+package_data = ['config/*', 'data/*']
 
 entry_points = {
     'console_scripts': [
