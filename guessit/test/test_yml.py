@@ -109,7 +109,7 @@ def files_and_ids(predicate=None):
         for filename in filenames:
             name, ext = os.path.splitext(filename)
             filepath = os.path.join(dirpath_rel, filename)
-            if ext == '.yml' and (not predicate or predicate(filepath)):
+            if ext in ['.yml', '.yaml'] and (not predicate or predicate(filepath)):
                 files.append(filepath)
                 ids.append(os.path.join(dirpath_rel, name))
 
