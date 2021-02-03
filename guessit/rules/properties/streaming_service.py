@@ -30,10 +30,17 @@ def streaming_service(config):  # pylint: disable=too-many-statements,unused-arg
     for value, items in config.items():
         patterns = items if isinstance(items, list) else [items]
         for pattern in patterns:
-            if pattern.startswith(regex_prefix):
-                rebulk.regex(pattern[len(regex_prefix):], value=value)
+            if isinstance(pattern, dict):
+                pattern_value = pattern.pop('pattern')
+                kwargs = pattern
+                pattern = pattern_value
             else:
-                rebulk.string(pattern, value=value)
+                kwargs = {}
+            regex = kwargs.pop('regex', False)
+            if regex or pattern.startswith(regex_prefix):
+                rebulk.regex(pattern[len(regex_prefix):], value=value, **kwargs)
+            else:
+                rebulk.string(pattern, value=value, **kwargs)
 
     rebulk.rules(ValidateStreamingService)
 
