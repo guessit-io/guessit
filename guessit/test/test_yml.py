@@ -52,16 +52,16 @@ class EntryResult(object):
         if self.ok:
             return self.string + ': OK!'
         if self.warning:
-            return '%s%s: WARNING! (valid=%i, extra=%i)' % ('-' if self.negates else '', self.string, len(self.valid),
-                                                            len(self.extra))
+            return '%s%s: WARNING! (valid=%i, extra=%s)' % ('-' if self.negates else '', self.string, len(self.valid),
+                                                            self.extra)
         if self.error:
-            return '%s%s: ERROR! (valid=%i, missing=%i, different=%i, extra=%i, others=%i)' % \
-                   ('-' if self.negates else '', self.string, len(self.valid), len(self.missing), len(self.different),
-                    len(self.extra), len(self.others))
+            return '%s%s: ERROR! (valid=%i, extra=%s, missing=%s, different=%s, others=%s)' % \
+                   ('-' if self.negates else '', self.string, len(self.valid), self.extra, self.missing,
+                    self.different, self.others)
 
-        return '%s%s: UNKOWN! (valid=%i, missing=%i, different=%i, extra=%i, others=%i)' % \
-               ('-' if self.negates else '', self.string, len(self.valid), len(self.missing), len(self.different),
-                len(self.extra), len(self.others))
+        return '%s%s: UNKOWN! (valid=%i, extra=%s, missing=%s, different=%s, others=%s)' % \
+               ('-' if self.negates else '', self.string, len(self.valid), self.extra, self.missing, self.different,
+                self.others)
 
     @property
     def details(self):
