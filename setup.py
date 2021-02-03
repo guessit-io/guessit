@@ -19,7 +19,7 @@ install_requires = ['rebulk>=3', 'babelfish', 'python-dateutil']
 
 setup_requires = ['pytest-runner']
 
-dev_require = ['tox', 'mkdocs', 'mkdocs-material', 'pyinstaller']
+dev_require = ['tox', 'mkdocs', 'mkdocs-material', 'pyinstaller', 'python-semantic-release']
 
 tests_require = ['pytest', 'pytest-benchmark', 'pylint', 'PyYAML']
 
