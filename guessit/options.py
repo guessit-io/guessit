@@ -223,7 +223,7 @@ def merge_option_value(option, value, merged):
     if value is not None and option != 'pristine':
         if option in merged.keys() and isinstance(merged[option], list):
             for val in value:
-                if val not in merged[option]:
+                if val not in merged[option] and val is not None:
                     merged[option].append(val)
         elif option in merged.keys() and isinstance(merged[option], dict):
             merged[option] = merge_options(merged[option], value)
