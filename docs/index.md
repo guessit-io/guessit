@@ -54,19 +54,18 @@ GuessIt can be used from command line:
     $ guessit
     usage: guessit [-h] [-t TYPE] [-n] [-Y] [-D] [-L ALLOWED_LANGUAGES]
                    [-C ALLOWED_COUNTRIES] [-E] [-T EXPECTED_TITLE]
-                   [-G EXPECTED_GROUP] [--includes INCLUDES]
-                   [--excludes EXCLUDES] [-f INPUT_FILE] [-v]
-                   [-P SHOW_PROPERTY] [-a] [-s] [-l] [-j] [-y] [-c CONFIG]
-                   [--no-user-config] [--no-default-config] [-p] [-V]
-                   [--version]
+                   [-G EXPECTED_GROUP] [--includes INCLUDES] [--excludes EXCLUDES]
+                   [-f INPUT_FILE] [-v] [-P SHOW_PROPERTY] [-a] [-s] [-l] [-j]
+                   [-y] [-i] [-c CONFIG] [--no-user-config] [--no-default-config]
+                   [-p] [-V] [--version]
                    [filename [filename ...]]
-
+    
     positional arguments:
       filename              Filename or release name to guess
-
+    
     optional arguments:
       -h, --help            show this help message and exit
-
+    
     Naming:
       -t TYPE, --type TYPE  The suggested file type: movie, episode. If undefined,
                             type will be guessed.
@@ -90,12 +89,12 @@ GuessIt can be used from command line:
                             Expected release group (can be used multiple times)
       --includes INCLUDES   List of properties to be detected
       --excludes EXCLUDES   List of properties to be ignored
-
+    
     Input:
       -f INPUT_FILE, --input-file INPUT_FILE
                             Read filenames from an input text file. File should
                             use UTF-8 charset.
-
+    
     Output:
       -v, --verbose         Display debug output
       -P SHOW_PROPERTY, --show-property SHOW_PROPERTY
@@ -110,7 +109,9 @@ GuessIt can be used from command line:
                             output
       -y, --yaml            Display information for filename guesses as yaml
                             output
-
+      -i, --output-input-string
+                            Add input_string property in the output
+    
     Configuration:
       -c CONFIG, --config CONFIG
                             Filepath to configuration file. Configuration file
@@ -124,8 +125,11 @@ GuessIt can be used from command line:
                             ~/.config/guessit/options.(json|yml|yaml)
       --no-default-config   Disable default configuration. This should be done
                             only if you are providing a full configuration through
-                            user configuration or --config option.
-
+                            user configuration or --config option. If no
+                            "advanced_config" is provided by another configuration
+                            file, it will still be loaded from default
+                            configuration.
+    
     Information:
       -p, --properties      Display properties that can be guessed.
       -V, --values          Display property values that can be guessed.

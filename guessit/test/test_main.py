@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
-
+import json
 import os
 
 import pytest
+from _pytest.capture import CaptureFixture
 
 from ..__main__ import main
 
@@ -70,3 +71,22 @@ def test_main_help():
 
 def test_main_version():
     main(['--version'])
+
+
+def test_json_output_input_string(capsys: CaptureFixture):
+    main(['--json', '--output-input-string', 'test.avi'])
+
+    outerr = capsys.readouterr()
+    data = json.loads(outerr.out)
+
+    assert 'input_string' in data
+    assert data['input_string'] == 'test.avi'
+
+
+def test_json_no_output_input_string(capsys: CaptureFixture):
+    main(['--json', 'test.avi'])
+
+    outerr = capsys.readouterr()
+    data = json.loads(outerr.out)
+
+    assert 'input_string' not in data
