@@ -3,6 +3,7 @@
 # pylint: disable=no-self-use, pointless-statement, missing-docstring, invalid-name
 import json
 import os
+import sys
 
 import pytest
 from _pytest.capture import CaptureFixture
@@ -11,6 +12,13 @@ from ..__main__ import main
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+
+# Prevent output from spamming the console
+@pytest.fixture(scope="function", autouse=True)
+def no_stdout(monkeypatch):
+    with open(os.devnull, "w") as f:
+        monkeypatch.setattr(sys, "stdout", f)
+        yield
 
 def test_main_no_args():
     main([])
