@@ -3,6 +3,20 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.3.0 (2021-02-03)
+### Feature
+* Add `--output-input-string` option ([#665](https://github.com/guessit-io/guessit/issues/665)) ([`bac6143`](https://github.com/guessit-io/guessit/commit/bac6143559d437edc34e2fde0b77172567e4451d))
+* **streaming_service:** Add `Showtime`, `HBO` and `AppleTV` ([#661](https://github.com/guessit-io/guessit/issues/661)) ([`dc55eaa`](https://github.com/guessit-io/guessit/commit/dc55eaa6d0cdf9d5552c4dbaaa29c8df8365691c))
+* **other:** Add `Hybrid` support ([#669](https://github.com/guessit-io/guessit/issues/669)) ([`522af53`](https://github.com/guessit-io/guessit/commit/522af5371cac467dd1f03abb08df9cbf5b409126))
+
+### Fix
+* **options:** Avoid appending `None` values to list when merging options ([#658](https://github.com/guessit-io/guessit/issues/658)) ([`42978c9`](https://github.com/guessit-io/guessit/commit/42978c909c4e5ebb2cc95b94583f80d73759f29a))
+* **streaming_service:** Add iT keyword support for iTunes ([#669](https://github.com/guessit-io/guessit/issues/669)) ([`51e0021`](https://github.com/guessit-io/guessit/commit/51e00217947d8b993bcfb091b012da803245f698))
+* **streaming_service:** Fix regex patterns declared with `re:` prefix ([`e02323f`](https://github.com/guessit-io/guessit/commit/e02323f6c1d1e74ef32dfbcfb3ab69e367d11a00))
+
+### Documentation
+* **readme:** Avoid mixed-content in github pages ([`2e1f29c`](https://github.com/guessit-io/guessit/commit/2e1f29ca47f8586930ca092b31f2431a1f3df52f))
+
 ## v3.2.0 (2020-12-23)
 ### Feature
 * Add python 3.9 support, drop python 2.7 support ([`2c8b25e`](https://github.com/guessit-io/guessit/commit/2c8b25e77fb424d63f9f73318e85dd96cef865e0))
