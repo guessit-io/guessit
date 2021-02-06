@@ -93,6 +93,11 @@ jobs:
         run: |
           pip install -e .[dev]
 
+      - name: Git User config
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions"
+
       - name: Bump version
         run: semantic-release -v DEBUG version
 
@@ -124,6 +129,11 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -e .[dev]
+
+      - name: Git User config
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions"
 
       - name: Bump version
         run: semantic-release -v DEBUG version
@@ -161,6 +171,11 @@ jobs:
         run: |
           pip install -e .[dev]
 
+      - name: Git User config
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions"
+
       - name: Bump version
         run: semantic-release -v DEBUG version
 
@@ -195,6 +210,11 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -e .[dev]
+
+      - name: Git User config
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions"
 
       - name: Bump version
         run: semantic-release -v DEBUG version
@@ -231,8 +251,6 @@ jobs:
         with:
           path: artifacts
 
-      - run: ls -alR artifacts
-
       - name: Copy artifacts to ./dist
         run: |
           mkdir -p ./dist
@@ -240,8 +258,6 @@ jobs:
           mv artifacts/guessit-bin-macos/guessit ./dist/guessit-macos
           mv artifacts/guessit-bin-windows/guessit.exe ./dist/guessit-windows.exe
           mv artifacts/guessit-python/* ./dist
-
-      - run: ls -al ./dist
 
       - name: Git User config
         run: |
