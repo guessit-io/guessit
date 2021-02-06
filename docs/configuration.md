@@ -38,4 +38,4 @@ used.
 We're willing to keep it backwards compatible, but in order to enhance
 Guessit, these parameters might change without prior notice.
 
-  [config/options.json]: https://github.com/guessit-io/guessit/blob/develop/guessit/config/options.json/
+  [config/options.json]: https://github.com/guessit-io/guessit/blob/master/guessit/config/options.json/
