@@ -40,15 +40,15 @@ def website(config):
     website_prefixes = config['prefixes']
 
     rebulk.regex(r'(?:[^a-z0-9]|^)((?:'+build_or_pattern(safe_subdomains) +
-                 r'\.)+(?:[a-z-]+\.)+(?:'+build_or_pattern(tlds) +
+                 r'\.)+(?:[a-z-0-9-]+\.)+(?:'+build_or_pattern(tlds) +
                  r'))(?:[^a-z0-9]|$)',
                  children=True)
     rebulk.regex(r'(?:[^a-z0-9]|^)((?:'+build_or_pattern(safe_subdomains) +
-                 r'\.)*[a-z-]+\.(?:'+build_or_pattern(safe_tlds) +
+                 r'\.)*[a-z0-9-]+\.(?:'+build_or_pattern(safe_tlds) +
                  r'))(?:[^a-z0-9]|$)',
                  safe_subdomains=safe_subdomains, safe_tlds=safe_tlds, children=True)
     rebulk.regex(r'(?:[^a-z0-9]|^)((?:'+build_or_pattern(safe_subdomains) +
-                 r'\.)*[a-z-]+\.(?:'+build_or_pattern(safe_prefix) +
+                 r'\.)*[a-z0-9-]+\.(?:'+build_or_pattern(safe_prefix) +
                  r'\.)+(?:'+build_or_pattern(tlds) +
                  r'))(?:[^a-z0-9]|$)',
                  safe_subdomains=safe_subdomains, safe_prefix=safe_prefix, tlds=tlds, children=True)
