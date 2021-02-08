@@ -3,9 +3,9 @@
 """
 other property
 """
-import copy
 
 from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch, POST_PROCESS, AppendMatch
+from rebulk.match import Match
 from rebulk.remodule import re
 
 from ..common import dash
@@ -35,7 +35,7 @@ def other(config):  # pylint:disable=unused-argument,too-many-statements
     rebulk.regex('ws', 'wide-?screen', value='Widescreen')
     rebulk.regex('Re-?Enc(?:oded)?', value='Reencoded')
 
-    rebulk.regex('Repack(?P<proper_count>\d*)', 'Rerip(?P<proper_count>\d*)', value={'other': 'Proper'},
+    rebulk.regex(r'Repack(?P<proper_count>\d*)', r'Rerip(?P<proper_count>\d*)', value={'other': 'Proper'},
                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
     rebulk.string('Proper', value='Proper',
                   tags=['has-neighbor', 'streaming_service.prefix', 'streaming_service.suffix'])
@@ -165,20 +165,30 @@ class ProperCountRule(Rule):
             raws = {}  # Count distinct raw values
             for proper in propers:
                 raws[raw_cleanup(proper.raw)] = proper
-            proper_count_match = copy.copy(propers[-1])
-            proper_count_match.name = 'proper_count'
 
             value = 0
-            for raw in raws.values():
-                if raw.children.named('proper_count', 0):
-                    value += int(raw.children.named('proper_count', 0).value)
-                elif 'real' in raw.tags:
+            start = None
+            end = None
+
+            proper_count_matches = []
+
+            for proper in raws.values():
+                if not start or start > proper.start:
+                    start = proper.start
+                if not end or end < proper.end:
+                    end = proper.end
+                if proper.children.named('proper_count', 0):
+                    value += int(proper.children.named('proper_count', 0).value)
+                elif 'real' in proper.tags:
                     value += 2
                 else:
                     value += 1
 
+            proper_count_match = Match(name='proper_count', start=start, end=end, input_string=matches.input_string)
             proper_count_match.value = value
-            return proper_count_match
+            proper_count_matches.append(proper_count_match)
+
+            return proper_count_matches
 
 
 class RenameAnotherToOther(Rule):
