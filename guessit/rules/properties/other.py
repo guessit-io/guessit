@@ -35,8 +35,8 @@ def other(config):  # pylint:disable=unused-argument,too-many-statements
     rebulk.regex('ws', 'wide-?screen', value='Widescreen')
     rebulk.regex('Re-?Enc(?:oded)?', value='Reencoded')
 
-    rebulk.string('Repack', 'Rerip', value='Proper',
-                  tags=['streaming_service.prefix', 'streaming_service.suffix'])
+    rebulk.regex('Repack(?P<proper_count>\d*)', 'Rerip(?P<proper_count>\d*)', value={'other': 'Proper'},
+                 tags=['streaming_service.prefix', 'streaming_service.suffix'])
     rebulk.string('Proper', value='Proper',
                   tags=['has-neighbor', 'streaming_service.prefix', 'streaming_service.suffix'])
 
@@ -170,7 +170,12 @@ class ProperCountRule(Rule):
 
             value = 0
             for raw in raws.values():
-                value += 2 if 'real' in raw.tags else 1
+                if raw.children.named('proper_count', 0):
+                    value += int(raw.children.named('proper_count', 0).value)
+                elif 'real' in raw.tags:
+                    value += 2
+                else:
+                    value += 1
 
             proper_count_match.value = value
             return proper_count_match
@@ -360,7 +365,7 @@ class ValidateAtEnd(Rule):
                                        predicate=lambda m: m.name == 'other' and 'at-end' in m.tags):
                 if (matches.holes(match.end, filepart.end, predicate=lambda m: m.value.strip(seps)) or
                         matches.range(match.end, filepart.end, predicate=lambda m: m.name not in (
-                            'other', 'container'))):
+                                'other', 'container'))):
                     to_remove.append(match)
 
         return to_remove
