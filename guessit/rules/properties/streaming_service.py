@@ -31,9 +31,8 @@ def streaming_service(config):  # pylint: disable=too-many-statements,unused-arg
         patterns = items if isinstance(items, list) else [items]
         for pattern in patterns:
             if isinstance(pattern, dict):
-                pattern_value = pattern.pop('pattern')
-                kwargs = pattern
-                pattern = pattern_value
+                kwargs = dict(pattern)
+                pattern = kwargs.pop('pattern')
             else:
                 kwargs = {}
             regex = kwargs.pop('regex', False)
