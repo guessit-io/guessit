@@ -21,7 +21,7 @@ setup_requires = ['pytest-runner']
 
 dev_require = ['tox', 'mkdocs', 'mkdocs-material', 'pyinstaller', 'python-semantic-release']
 
-tests_require = ['pytest', 'pytest-benchmark', 'pylint', 'PyYAML']
+tests_require = ['pytest', 'pytest-benchmark', 'pytest-cov', 'pylint', 'PyYAML']
 
 package_data = ['config/*', 'data/*']
 

@@ -53,17 +53,15 @@ jobs:
 
       - name: Test
         run: |
-          pip install coveralls
-          coverage run --source=guessit setup.py test
+          pytest --cov=guessit
         env:
           REBULK_REGEX_ENABLED: ${{ matrix.regex }}
 
-      - name: Coveralls
-        run: |
-          coveralls
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: codecov/codecov-action@v1
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          fail_ci_if_error: true
+          verbose: true
 
   commitlint:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -78,7 +76,7 @@ jobs:
 
   build-setuptools:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    needs: [ci]
+    needs: [ ci ]
 
     runs-on: ubuntu-latest
 
@@ -115,7 +113,7 @@ jobs:
 
   build-bin-linux:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    needs: [ci]
+    needs: [ ci ]
 
     runs-on: ubuntu-latest
 
@@ -156,7 +154,7 @@ jobs:
 
   build-bin-windows:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    needs: [ci]
+    needs: [ ci ]
 
     runs-on: windows-latest
 
@@ -196,7 +194,7 @@ jobs:
 
   build-bin-macos:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    needs: [ci]
+    needs: [ ci ]
 
     runs-on: macos-latest
 
@@ -236,7 +234,7 @@ jobs:
 
   release:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    needs: [commitlint, build-setuptools, build-bin-linux, build-bin-windows, build-bin-macos]
+    needs: [ commitlint, build-setuptools, build-bin-linux, build-bin-windows, build-bin-macos ]
 
     runs-on: ubuntu-latest
 
