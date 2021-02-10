@@ -58,10 +58,6 @@ jobs:
         env:
           REBULK_REGEX_ENABLED: ${{ matrix.regex }}
 
-      - name: List files
-        run: |
-          ls -alR
-
       - name: Coveralls
         run: |
           coveralls
