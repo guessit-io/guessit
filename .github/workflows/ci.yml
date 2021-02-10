@@ -7,8 +7,9 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
 
+    name: Python ${{ matrix.python-version }}${{ fromJSON('["", " (regex)"]')[matrix.regex == '1'] }}
+
     strategy:
-      fail-fast: true
       matrix:
         python-version: [ 3.5, 3.6, 3.7, 3.8, 3.9 ]  # pypy-3.6, pypy-3.7 are supported but a bit slow.
         regex: [ "0", "1" ]
@@ -40,7 +41,6 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -e .[dev,test]
-          pip install coveralls
 
       - name: Install regex
         run: |
@@ -52,12 +52,19 @@ jobs:
         if: matrix.python-version != '3.9'
 
       - name: Test
-        run: coverage run --source=guessit setup.py test
+        run: |
+          pip install coveralls
+          coverage run --source=guessit setup.py test
         env:
           REBULK_REGEX_ENABLED: ${{ matrix.regex }}
 
+      - name: List files
+        run: |
+          ls -alR
+
       - name: Coveralls
-        run: coveralls
+        run: |
+          coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
