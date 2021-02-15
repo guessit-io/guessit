@@ -123,6 +123,8 @@ def other(config):  # pylint:disable=unused-argument,too-many-statements
 
     rebulk.string('VO', 'OV', value='Original Video', tags='has-neighbor')
     rebulk.string('Ova', 'Oav', value='Original Animated Video')
+    rebulk.string('Ona', value='Original Net Animation')
+    rebulk.string('Oad', value='Original Animation DVD')
 
     rebulk.regex('Scr(?:eener)?', value='Screener', validator=None,
                  tags=['other.validate.screener', 'source-prefix', 'source-suffix'])
