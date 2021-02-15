@@ -4691,3 +4691,27 @@
   container: mp4
   mimetype: video/mp4
   type: episode
+
+? "Seitokai Yakuindomo - 14 OAD [BDRip 1920x1080 x264 FLAC].mkv"
+: title: Seitokai Yakuindomo
+  episode: 14
+  source: Blu-ray
+  other: [Original Animation DVD, Rip]
+  screen_size: 1080p
+  aspect_ratio: 1.778
+  video_codec: H.264
+  audio_codec: FLAC
+  container: mkv
+  mimetype: video/x-matroska
+  type: episode
+
+? "[EveTaku] Kyouso Giga ONA v2 [540p][128BAC43].mkv"
+: release_group: EveTaku
+  title: Kyouso Giga
+  other: Original Net Animation
+  version: 2
+  screen_size: 540p
+  crc32: 128BAC43
+  container: mkv
+  mimetype: video/x-matroska
+  type: episode
