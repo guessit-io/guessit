@@ -60,18 +60,21 @@
         "2.0": [
           "2ch",
           "stereo",
-          "re:(2[\\W_]0(?:ch)?)(?=[^\\d]|$)"
+          {"pattern": "re:(2[\\W_]0(?:ch)?)(?=[^\\d]|$)", "children":  true},
+          {"pattern": "20", "validator": "fn:seps_after", "tags": "weak-audio_channels"}
         ],
         "5.1": [
           "5ch",
           "6ch",
-          "re:(5[\\W_][01](?:ch)?)(?=[^\\d]|$)",
-          "re:(6[\\W_]0(?:ch)?)(?=[^\\d]|$)"
+          {"pattern": "re:(5[\\W_][01](?:ch)?)(?=[^\\d]|$)", "children":  true},
+          {"pattern": "re:(6[\\W_]0(?:ch)?)(?=[^\\d]|$)", "children":  true},
+          {"pattern": "re:5[01]", "validator": "fn:seps_after", "tags": "weak-audio_channels"}
         ],
         "7.1": [
           "7ch",
           "8ch",
-          "re:(7[\\W_][01](?:ch)?)(?=[^\\d]|$)"
+          {"pattern": "re:(7[\\W_][01](?:ch)?)(?=[^\\d]|$)", "children":  true},
+          {"pattern": "re:7[01]", "validator": "fn:seps_after", "tags": "weak-audio_channels"}
         ]
       }
     },
