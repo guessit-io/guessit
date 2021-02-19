@@ -1893,6 +1893,17 @@
   type: episode
   video_codec: H.264
 
+? Virgin.S01E01.Birthday.Party.1440p.BKPL.WEB-DL.H.264-LiGHT
+: title: Virgin
+  season: 1
+  episode: 1
+  episode_title: Birthday Party
+  screen_size: 1440p
+  streaming_service: Blackpills
+  source: Web
+  video_codec: H.264
+  release_group: LiGHT
+
 # All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
