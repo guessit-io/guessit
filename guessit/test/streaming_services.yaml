@@ -1893,6 +1893,19 @@
   type: episode
   video_codec: H.264
 
+? Rio.Heroes.S01E01.Sem.Regras.720p.FOXP.WEB-DL.AAC2.0.x264-BTW
+: title: Rio Heroes
+  season: 1
+  episode: 1
+  episode_title: Sem Regras
+  screen_size: 720p
+  streaming_service: Fox Premium
+  source: Web
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: BTW
+
 # All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
