@@ -1893,6 +1893,19 @@
   type: episode
   video_codec: H.264
 
+? Satisfaction.S01E01.Running.Girl.1080p.BNGE.WEB-DL.DD5.1.H.264-NTb
+: title: Satisfaction
+  season: 1
+  episode: 1
+  episode_title: Running Girl
+  screen_size: 1080p
+  streaming_service: Binge
+  source: Web
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: NTb
+
 # All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
