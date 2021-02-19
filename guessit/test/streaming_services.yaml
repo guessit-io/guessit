@@ -1893,6 +1893,19 @@
   type: episode
   video_codec: H.264
 
+? Ciplak S01E05 1080p BLU WEBRip AAC2.0 H.264 TURG
+: title: Ciplak
+  season: 1
+  episode: 5
+  screen_size: 1080p
+  streaming_service: BluTV
+  source: Web
+  other: Rip
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: TURG
+
 # All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
