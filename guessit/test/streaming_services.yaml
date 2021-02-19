@@ -1893,6 +1893,18 @@
   type: episode
   video_codec: H.264
 
+? Deadline.Gallipoli.S01E01.1080p.FXTL.WEB-DL.DDP5.1.H.264-NTb
+: title: Deadline Gallipoli
+  season: 1
+  episode: 1
+  screen_size: 1080p
+  streaming_service: Foxtel
+  source: Web
+  audio_codec: Dolby Digital Plus
+  audio_channels: '5.1'
+  video_codec: 'H.264'
+  release_group: NTb
+
 # All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
