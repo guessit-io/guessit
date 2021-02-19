@@ -60,22 +60,31 @@
         "2.0": [
           "2ch",
           "stereo",
-          {"pattern": "re:(2[\\W_]0(?:ch)?)(?=[^\\d]|$)", "children":  true},
-          {"pattern": "20", "validator": "fn:seps_after", "tags": "weak-audio_channels"}
+          {"regex": "(2[\\W_]0(?:ch)?)(?=[^\\d]|$)", "children":  true},
+          {"string": "20", "validator": "import:seps_after", "tags": "weak-audio_channels"}
         ],
         "5.1": [
           "5ch",
           "6ch",
-          {"pattern": "re:(5[\\W_][01](?:ch)?)(?=[^\\d]|$)", "children":  true},
-          {"pattern": "re:(6[\\W_]0(?:ch)?)(?=[^\\d]|$)", "children":  true},
-          {"pattern": "re:5[01]", "validator": "fn:seps_after", "tags": "weak-audio_channels"}
+          {"regex": "(5[\\W_][01](?:ch)?)(?=[^\\d]|$)", "children":  true},
+          {"regex": "(6[\\W_]0(?:ch)?)(?=[^\\d]|$)", "children":  true},
+          {"regex": "5[01]", "validator": "import:seps_after", "tags": "weak-audio_channels"}
         ],
         "7.1": [
           "7ch",
           "8ch",
-          {"pattern": "re:(7[\\W_][01](?:ch)?)(?=[^\\d]|$)", "children":  true},
-          {"pattern": "re:7[01]", "validator": "fn:seps_after", "tags": "weak-audio_channels"}
+          {"regex": "(7[\\W_][01](?:ch)?)(?=[^\\d]|$)", "children":  true},
+          {"regex": "7[01]", "validator": "import:seps_after", "tags": "weak-audio_channels"}
         ]
+      },
+      "audio_profile": {
+        "Master Audio": {"string": "MA", "tags": ["audio_profile.rule", "DTS-HD"]},
+        "High Resolution Audio": {"string": ["HR", "HRA"], "tags": ["audio_profile.rule", "DTS-HD"]},
+        "Extended Surround": {"string": "ES", "tags": ["audio_profile.rule", "DTS"]},
+        "High Efficiency": {"string": "HE", "tags": ["audio_profile.rule", "AAC"]},
+        "Low Complexity": {"string": "LC", "tags": ["audio_profile.rule", "AAC"]},
+        "High Quality": {"string": "HQ", "tags": ["audio_profile.rule", "Dolby Digital"]},
+        "EX": {"string": "EX", "tags": ["audio_profile.rule", "Dolby Digital"]}
       }
     },
     "container": {

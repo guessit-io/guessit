@@ -2,77 +2,118 @@
 Config module.
 """
 from importlib import import_module
+from typing import Any, List
 
 from rebulk import Rebulk
 
 _regex_prefix = 're:'
-_function_prefix = 'fn:'
+_import_prefix = 'import:'
+_import_cache = {}
+_pattern_types = ('regex', 'string')
 
-_function_cache = {}
 
-
-def _process_option(name, value):
+def _process_option(name: str, value: Any):
     if name == 'validator':
         return _process_option_validator(value)
     return value
 
 
-def _process_option_validator(value):
-    if value.startswith(_function_prefix):
-        function_id = value[len(_function_prefix):]
-        if function_id in _function_cache:
-            return _function_cache[function_id]
-        if '.' in function_id:
-            module_name, func_name = function_id.rsplit('.', 1)
-        else:
-            module_name = "guessit.rules.common.validators"
-            func_name = function_id
-        mod = import_module(module_name)
-        func = getattr(mod, func_name)
-        _function_cache[function_id] = func
-        return func
+def _import_function(value: str):
+    function_id = value[len(_import_prefix):]
+    if '.' in function_id:
+        module_name, func_name = function_id.rsplit('.', 1)
+    else:
+        module_name = "guessit.rules.common.validators"
+        func_name = function_id
+    function_id = f"{module_name}.{func_name}"
+    if function_id in _import_cache:
+        return _import_cache[function_id]
+
+    mod = import_module(module_name)
+    func = getattr(mod, func_name)
+    _import_cache[function_id] = func
+
+    return func
+
+
+def _process_option_validator(value: str):
+    if value.startswith(_import_prefix):
+        return _import_function(value)
     return value
+
+
+def _build_entry_decl(entry, options, value):
+    entry_decl = dict(options.get(None, {}))
+    entry_decl['value'] = value
+    if isinstance(entry, str):
+        if entry.startswith(_regex_prefix):
+            entry_decl["regex"] = [entry[len(_regex_prefix):]]
+        else:
+            entry_decl["string"] = [entry]
+    else:
+        entry_decl.update(entry)
+    if "pattern" in entry_decl:
+        legacy_pattern = entry.pop("pattern")
+        if legacy_pattern.startswith(_regex_prefix):
+            entry_decl["regex"] = [legacy_pattern[len(_regex_prefix):]]
+        else:
+            entry_decl["string"] = [legacy_pattern]
+    return entry_decl
+
+
+def load_patterns(rebulk: Rebulk,
+                  pattern_type: str,
+                  patterns: List[str],
+                  options: dict = None):
+    """
+    Load patterns for a prepared config entry
+    :param rebulk: Rebulk builder to use.
+    :param pattern_type: Pattern type.
+    :param patterns: Patterns
+    :param options: kwargs options to pass to rebulk pattern function.
+    :return:
+    """
+    default_options = options.get(None) if options else None
+    item_options = dict(default_options) if default_options else {}
+    pattern_type_option = options.get(pattern_type)
+    if pattern_type_option:
+        item_options.update(pattern_type_option)
+    item_options = {name: _process_option(name, value) for name, value in item_options.items()}
+    getattr(rebulk, pattern_type)(*patterns, **item_options)
 
 
 def load_config_patterns(rebulk: Rebulk,
                          config: dict,
-                         pattern_options: dict = None,
-                         regex_options: dict = None,
-                         string_options: dict = None):
+                         options: dict = None):
     """
     Load patterns defined in given config.
     :param rebulk: Rebulk builder to use.
     :param config: dict containing pattern definition.
+    :param options: Additional pattern options to use.
+    :type options: Dict[Dict[str, str]] A dict where key is the pattern type (regex, string, functional) and value is
+    the default kwargs options to pass.
     :return:
     """
-    for value, items in config.items():
-        patterns = items if isinstance(items, list) else [items]
-        for pattern in patterns:
-            options = dict(pattern_options) if pattern_options else {}
-            if isinstance(pattern, dict):
-                options.update(pattern)
-                pattern = options.get('pattern')
-            else:
-                options = {}
-            regex = options.get('regex', False)
+    if options is None:
+        options = {}
 
-            if not regex and pattern.startswith(_regex_prefix):
-                regex = True
-                pattern = pattern[len(_regex_prefix):]
+    for value, raw_entries in config.items():
+        entries = raw_entries if isinstance(raw_entries, list) else [raw_entries]
+        for entry in entries:
+            entry_decl = _build_entry_decl(entry, options, value)
 
-            if regex and regex_options:
-                options.update(regex_options)
-            elif not regex and string_options:
-                options.update(string_options)
-            if isinstance(pattern, dict):
-                options.update(pattern)
+            for pattern_type in _pattern_types:
+                patterns = entry_decl.get(pattern_type)
+                if not patterns:
+                    continue
+                if not isinstance(patterns, list):
+                    patterns = [patterns]
+                patterns_entry_decl = dict(entry_decl)
 
-            options.pop('pattern', None)
-            options.pop('regex', None)
+                for pattern_type_to_remove in _pattern_types:
+                    patterns_entry_decl.pop(pattern_type_to_remove, None)
 
-            options = {name: _process_option(name, value) for name, value in options.items()}
+                current_pattern_options = dict(options)
+                current_pattern_options[None] = patterns_entry_decl
 
-            if regex:
-                rebulk.regex(pattern, value=value, **options)
-            else:
-                rebulk.string(pattern, value=value, **options)
+                load_patterns(rebulk, pattern_type, patterns, current_pattern_options)

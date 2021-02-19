@@ -66,13 +66,8 @@ def audio_codec(config):  # pylint:disable=unused-argument
     rebulk.defaults(clear=True,
                     name='audio_profile',
                     disabled=lambda context: is_disabled(context, 'audio_profile'))
-    rebulk.string('MA', value='Master Audio', tags=['audio_profile.rule', 'DTS-HD'])
-    rebulk.string('HR', 'HRA', value='High Resolution Audio', tags=['audio_profile.rule', 'DTS-HD'])
-    rebulk.string('ES', value='Extended Surround', tags=['audio_profile.rule', 'DTS'])
-    rebulk.string('HE', value='High Efficiency', tags=['audio_profile.rule', 'AAC'])
-    rebulk.string('LC', value='Low Complexity', tags=['audio_profile.rule', 'AAC'])
-    rebulk.string('HQ', value='High Quality', tags=['audio_profile.rule', 'Dolby Digital'])
-    rebulk.string('EX', value='EX', tags=['audio_profile.rule', 'Dolby Digital'])
+
+    load_config_patterns(rebulk, config.get('audio_profile'))
 
     rebulk.defaults(clear=True,
                     name="audio_channels",
