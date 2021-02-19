@@ -13,28 +13,33 @@ _eval_prefix = 'eval:'
 _eval_cache = {}
 _pattern_types = ('regex', 'string')
 _default_module_names = {
-    'validator': 'guessit.rules.common.validators'
+    'validator': 'guessit.rules.common.validators',
+    'formatter': 'guessit.rules.common.formatters'
 }
 
 
 def _process_option(name: str, value: Any):
-    if name in ('validator', 'conflict_solver'):
+    if name in ('validator', 'conflict_solver', 'formatter'):
         return _process_option_executable(value, _default_module_names.get(name))
     return value
 
 
 def _import(value: str, default_module_name=None):
     if '.' in value:
-        module_name, func_name = value.rsplit('.', 1)
+        module_name, target = value.rsplit(':', 1)
     else:
         module_name = default_module_name
-        func_name = value
-    import_id = f"{module_name}.{func_name}"
+        target = value
+    import_id = f"{module_name}:{target}"
     if import_id in _import_cache:
         return _import_cache[import_id]
 
     mod = import_module(module_name)
-    imported = getattr(mod, func_name)
+
+    imported = mod
+    for item in target.split("."):
+        imported = getattr(imported, item)
+
     _import_cache[import_id] = imported
 
     return imported
@@ -61,7 +66,8 @@ def _process_option_executable(value: str, default_module_name=None):
 
 def _build_entry_decl(entry, options, value):
     entry_decl = dict(options.get(None, {}))
-    entry_decl['value'] = value
+    if not value.startswith('_'):
+        entry_decl['value'] = value
     if isinstance(entry, str):
         if entry.startswith(_regex_prefix):
             entry_decl["regex"] = [entry[len(_regex_prefix):]]

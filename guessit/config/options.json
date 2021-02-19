@@ -103,6 +103,16 @@
         "EX": {"string": "EX", "tags": ["audio_profile.rule", "Dolby Digital"]}
       }
     },
+    "bit_rate": {
+      "bit_rate": {
+        "_": {
+          "regex": ["\\d+-?[kmg]b(ps|its?)", "\\d+\\.\\d+-?[kmg]b(ps|its?)"],
+          "conflict_solver": "lambda match, other: match if other.name == 'audio_channels' and 'weak-audio_channels' not in other.tags else other",
+          "formatter": "import:guessit.rules.common.quantity:BitRate.fromstring",
+          "tags": ["release-group-prefix"]
+        }
+      }
+    },
     "container": {
       "subtitles": [
         "srt",
