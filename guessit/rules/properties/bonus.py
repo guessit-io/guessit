@@ -22,7 +22,7 @@ def bonus(config):  # pylint:disable=unused-argument
     :rtype: Rebulk
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'bonus'))
-    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE)
+    rebulk = rebulk.regex_defaults(name='bonus', flags=re.IGNORECASE)
 
     load_config_patterns(rebulk, config.get('bonus'))
 
