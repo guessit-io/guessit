@@ -1893,6 +1893,19 @@
   type: episode
   video_codec: H.264
 
+? Cold.Case.S01E01.Look.Again.1080p.ROKU.WEB-DL.AAC2.0.H.264-ETHiCS
+: title: Cold Case
+  season: 1
+  episode: 1
+  episode_title: Look Again
+  screen_size: 1080p
+  streaming_service: The Roku Channel
+  source: Web
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: ETHiCS
+
 # All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
