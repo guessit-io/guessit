@@ -20,6 +20,8 @@ _default_module_names = {
 
 def _process_option(name: str, value: Any):
     if name in ('validator', 'conflict_solver', 'formatter'):
+        if isinstance(value, dict):
+            return {item_key: _process_option(name, item_value) for item_key, item_value in value.items()}
         return _process_option_executable(value, _default_module_names.get(name))
     return value
 
