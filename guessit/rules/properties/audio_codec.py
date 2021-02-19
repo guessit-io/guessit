@@ -47,21 +47,7 @@ def audio_codec(config):  # pylint:disable=unused-argument
                     conflict_solver=audio_codec_priority,
                     disabled=lambda context: is_disabled(context, 'audio_codec'))
 
-    rebulk.regex("MP3", "LAME", r"LAME(?:\d)+-?(?:\d)+", value="MP3")
-    rebulk.string("MP2", value="MP2")
-    rebulk.regex('Dolby', 'DolbyDigital', 'Dolby-Digital', 'DD', 'AC3D?', value='Dolby Digital')
-    rebulk.regex('Dolby-?Atmos', 'Atmos', value='Dolby Atmos')
-    rebulk.string("AAC", value="AAC")
-    rebulk.string('EAC3', 'DDP', 'DD+', value='Dolby Digital Plus')
-    rebulk.string("Flac", value="FLAC")
-    rebulk.string("DTS", value="DTS")
-    rebulk.regex('DTS-?HD', 'DTS(?=-?MA)', value='DTS-HD',
-                 conflict_solver=lambda match, other: other if other.name == 'audio_codec' else '__default__')
-    rebulk.regex('True-?HD', value='Dolby TrueHD')
-    rebulk.string('Opus', value='Opus')
-    rebulk.string('Vorbis', value='Vorbis')
-    rebulk.string('PCM', value='PCM')
-    rebulk.string('LPCM', value='LPCM')
+    load_config_patterns(rebulk, config.get('audio_codec'))
 
     rebulk.defaults(clear=True,
                     name='audio_profile',

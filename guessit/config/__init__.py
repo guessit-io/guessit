@@ -9,36 +9,53 @@ from rebulk import Rebulk
 _regex_prefix = 're:'
 _import_prefix = 'import:'
 _import_cache = {}
+_eval_prefix = 'eval:'
+_eval_cache = {}
 _pattern_types = ('regex', 'string')
+_default_module_names = {
+    'validator': 'guessit.rules.common.validators'
+}
 
 
 def _process_option(name: str, value: Any):
-    if name == 'validator':
-        return _process_option_validator(value)
+    if name in ('validator', 'conflict_solver'):
+        return _process_option_executable(value, _default_module_names.get(name))
     return value
 
 
-def _import_function(value: str):
-    function_id = value[len(_import_prefix):]
-    if '.' in function_id:
-        module_name, func_name = function_id.rsplit('.', 1)
+def _import(value: str, default_module_name=None):
+    if '.' in value:
+        module_name, func_name = value.rsplit('.', 1)
     else:
-        module_name = "guessit.rules.common.validators"
-        func_name = function_id
-    function_id = f"{module_name}.{func_name}"
-    if function_id in _import_cache:
-        return _import_cache[function_id]
+        module_name = default_module_name
+        func_name = value
+    import_id = f"{module_name}.{func_name}"
+    if import_id in _import_cache:
+        return _import_cache[import_id]
 
     mod = import_module(module_name)
-    func = getattr(mod, func_name)
-    _import_cache[function_id] = func
+    imported = getattr(mod, func_name)
+    _import_cache[import_id] = imported
 
-    return func
+    return imported
 
 
-def _process_option_validator(value: str):
+def _eval(value: str):
+    compiled = _eval_cache.get(value)
+    if not compiled:
+        compiled = compile(value, '<string>', 'eval')
+    return eval(compiled)  # pylint:disable=eval-used
+
+
+def _process_option_executable(value: str, default_module_name=None):
     if value.startswith(_import_prefix):
-        return _import_function(value)
+        value = value[len(_import_prefix):]
+        return _import(value, default_module_name)
+    if value.startswith(_eval_prefix):
+        value = value[len(_eval_prefix):]
+        return _eval(value)
+    if value.startswith('lambda ') or value.startswith('lambda:'):
+        return _eval(value)
     return value
 
 
