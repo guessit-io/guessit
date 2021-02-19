@@ -127,6 +127,30 @@
         }
       }
     },
+    "cd": {
+      "_cd_of_cd_count": {
+        "regex": "cd-?(?P<cd>\\d+)(?:-?of-?(?P<cd_count>\\d+))?",
+        "validator": {
+          "cd": "lambda match: 0 < match.value < 100",
+          "cd_count": "lambda match: 0 < match.value < 100"
+        },
+        "formatter": {"cd": "eval:int", "cd_count": "eval:int"},
+        "children": true,
+        "private_parent": true,
+        "properties": {"cd": [null], "cd_count": [null]}
+      },
+      "_cd_count": {
+        "regex": "(?P<cd_count>\\d+)-?cds?",
+        "validator": {
+          "cd": "lambda match: 0 < match.value < 100",
+          "cd_count": "lambda match: 0 < match.value < 100"
+        },
+        "formatter": {"cd_count": "eval:int"},
+        "children": true,
+        "private_parent": true,
+        "properties": {"cd": [null], "cd_count": [null]}
+      }
+    },
     "container": {
       "subtitles": [
         "srt",
