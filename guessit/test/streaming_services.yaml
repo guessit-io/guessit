@@ -1893,6 +1893,22 @@
   type: episode
   video_codec: H.264
 
+? Powers (2015) S01E01 Pilot 2160p Sony WEBRip DTS-HD MA 5.1 x264-TrollUHD
+: title: Powers
+  year: 2015
+  season: 1
+  episode: 1
+  episode_title: Pilot
+  screen_size: 2160p
+  streaming_service: Sony
+  source: Web
+  other: Rip
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: TrollUHD
+
 # All this below shouldn't match any streaming services
 ? London.2012.Olympics.CTV.Preview.Show.HDTV.x264-2HD
 : alternative_title: Olympics CTV Preview Show
