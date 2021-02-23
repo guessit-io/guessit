@@ -470,6 +470,7 @@
       ]
     },
     "streaming_service": {
+      "9Now": "9NOW",
       "A&E": [
         "AE",
         "A&E"
@@ -493,13 +494,19 @@
       "AOL": "AOL",
       "AppleTV": [
         "ATVP",
-        "ATV+"
+        "ATV+",
+        "APTV"
       ],
       "ARD": "ARD",
       "BBC iPlayer": [
         "iP",
         "re:BBC-?iPlayer"
       ],
+      "Binge": "BNGE",
+      "Blackpills": "BKPL",
+      "BluTV": "BLU",
+      "Boomerang": "BOOM",
+      "Disney+": "DSNP",
       "BravoTV": "BRAV",
       "Canal+": "CNLP",
       "Cartoon Network": "CN",
@@ -510,11 +517,15 @@
         "CC",
         "re:Comedy-?Central"
       ],
-      "Channel 4": "4OD",
+      "Channel 4": [
+        "ALL4",
+        "4OD"
+      ],
       "CHRGD": "CHGD",
       "Cinemax": "CMAX",
       "Country Music Television": "CMT",
       "Comedians in Cars Getting Coffee": "CCGC",
+      "Crave": "CRAV",
       "Crunchy Roll": [
         "CR",
         "re:Crunchy-?Roll"
@@ -536,6 +547,7 @@
         "DISC",
         "Discovery"
       ],
+      "Discovery Plus": "DSCP",
       "Disney": [
         "DSNY",
         "Disney"
@@ -548,12 +560,17 @@
       "El Trece": "ETTV",
       "ESPN": "ESPN",
       "Esquire": "ESQ",
+      "Facebook Watch": "FBWatch",
       "Family": "FAM",
       "Family Jr": "FJR",
+      "Fandor": "FANDOR",
       "Food Network": "FOOD",
       "Fox": "FOX",
+      "Fox Premium": "FOXP",
+      "Foxtel": "FXTL",
       "Freeform": "FREE",
       "FYI Network": "FYI",
+      "GagaOOLala": "Gaga",
       "Global": "GLBL",
       "GloboSat Play": "GLOB",
       "Hallmark": "HLMK",
@@ -570,6 +587,9 @@
       "Hulu": "HULU",
       "Investigation Discovery": "ID",
       "IFC": "IFC",
+      "hoichoi": "HoiChoi",
+      "iflix": "IFX",
+      "iQIYI": "iQIYI",
       "iTunes": [
         "iTunes",
         {"pattern": "iT", "ignore_case": false}
@@ -584,6 +604,9 @@
       ],
       "MSNBC": "MNBC",
       "MTV": "MTV",
+      "MUBI": "MUBI",
+      "National Audiovisual Institute": "INA",
+      "National Film Board": "NFB",
       "National Geographic": [
         "NATG",
         "re:National-?Geographic"
@@ -602,25 +625,38 @@
       "NHL GameCenter": "GC",
       "Nickelodeon": [
         "NICK",
-        "Nickelodeon"
+        "Nickelodeon",
+        "NICKAPP"
       ],
       "Norsk Rikskringkasting": "NRK",
       "OnDemandKorea": [
         "ODK",
         "OnDemandKorea"
       ],
+      "Opto": "OPTO",
+      "Oprah Winfrey Network": "OWN",
       "PBS": "PBS",
       "PBS Kids": "PBSK",
+      "Peacock": [
+        "PCOK",
+        "Peacock"
+      ],
       "Playstation Network": "PSN",
       "Pluzz": "PLUZ",
+      "PokerGO": "POGO",
+      "Rakuten TV": "RKTN",
+      "The Roku Channel": "ROKU",
       "RTE One": "RTE",
+      "RUUTU": "RUUTU",
       "SBS (AU)": "SBS",
+      "Science Channel": "SCI",
       "SeeSo": [
         "SESO",
         "SeeSo"
       ],
       "Shomi": "SHMI",
       "Showtime": "SHO",
+      "Sony": "SONY",
       "Spike": "SPIK",
       "Spike TV": [
         "SPKE",
@@ -648,7 +684,9 @@
         "TVL",
         "re:TV-?Land"
       ],
+      "TVNZ": "TVNZ",
       "UFC": "UFC",
+      "UFC Fight Pass": "FP",
       "UKTV": "UKTV",
       "Univision": "UNIV",
       "USA Network": "USAN",
