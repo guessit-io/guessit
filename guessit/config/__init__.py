@@ -32,7 +32,7 @@ def _import(value: str, default_module_name=None):
     else:
         module_name = default_module_name
         target = value
-    import_id = f"{module_name}:{target}"
+    import_id = module_name + ":" + target
     if import_id in _import_cache:
         return _import_cache[import_id]
 
