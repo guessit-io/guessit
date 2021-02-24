@@ -22,7 +22,8 @@ def _process_option(name: str, value: Any):
     if name in ('validator', 'conflict_solver', 'formatter'):
         if isinstance(value, dict):
             return {item_key: _process_option(name, item_value) for item_key, item_value in value.items()}
-        return _process_option_executable(value, _default_module_names.get(name))
+        if value is not None:
+            return _process_option_executable(value, _default_module_names.get(name))
     return value
 
 
@@ -64,6 +65,10 @@ def _process_option_executable(value: str, default_module_name=None):
     if value.startswith('lambda ') or value.startswith('lambda:'):
         return _eval(value)
     return value
+
+
+def _process_callable_entry(callable_spec: str, rebulk: Rebulk, entry: dict):
+    _process_option_executable(callable_spec)(rebulk, **entry)
 
 
 def _build_entry_decl(entry, options, value):
@@ -125,6 +130,9 @@ def load_config_patterns(rebulk: Rebulk,
     for value, raw_entries in config.items():
         entries = raw_entries if isinstance(raw_entries, list) else [raw_entries]
         for entry in entries:
+            if isinstance(entry, dict) and "callable" in entry.keys():
+                _process_callable_entry(entry.pop("callable"), rebulk, entry)
+                continue
             entry_decl = _build_entry_decl(entry, options, value)
 
             for pattern_type in _pattern_types:

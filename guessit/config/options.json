@@ -430,6 +430,94 @@
         "true"
       ]
     },
+    "other": {
+      "other": {
+        "Audio Fixed": {"regex": ["Audio-?Fix", "Audio-?Fixed"]},
+        "Sync Fixed": {"regex": ["Sync-?Fix", "Sync-?Fixed"]},
+        "Dual Audio": {"string": ["Dual"], "regex": ["Dual-?Audio"]},
+        "Widescreen": {"string": ["ws"], "regex": ["wide-?screen"]},
+        "Reencoded": {"regex": ["Re-?Enc(?:oded)?"]},
+        "_repack_with_count": {"regex": ["Repack(?P<proper_count>\\d*)", "Rerip(?P<proper_count>\\d*)"], "value": {"other": "Proper"}, "tags": ["streaming_service.prefix", "streaming_service.suffix"]},
+        "Proper": [
+          {"string": "Proper", "tags": ["has-neighbor", "streaming_service.prefix", "streaming_service.suffix"]},
+          {"regex": ["Real-Proper", "Real-Repack", "Real-Rerip"], "tags": ["streaming_service.prefix", "streaming_service.suffix", "real"]},
+          {"string": "Real", "tags": ["has-neighbor", "streaming_service.prefix", "streaming_service.suffix", "real"]}
+        ],
+        "Fix": [
+          {"string": ["Fix", "Fixed"], "tags": ["has-neighbor-before", "has-neighbor-after", "streaming_service.prefix", "streaming_service.suffix"]},
+          {"string": ["Dirfix", "Nfofix", "Prooffix"], "tags": ["streaming_service.prefix", "streaming_service.suffix"]},
+          {"regex": ["(?:Proof-?)?Sample-?Fix"], "tags": ["streaming_service.prefix", "streaming_service.suffix"]}
+        ],
+        "Fan Subtitled": {"string": "Fansub", "tags": "has-neighbor"},
+        "Fast Subtitled": {"string": "Fastsub", "tags": "has-neighbor"},
+        "Region 5": "R5",
+        "Region C": "RC",
+        "Preair": {"regex": "Pre-?Air"},
+        "PS Vita": [
+          {"regex": "(?:PS-?)Vita"},
+          {"string": "Vita", "tags": "has-neighbor"}
+        ],
+        "_HdRip": {"value": {"other": "HD", "another": "Rip"}, "regex": ["(HD)(?P<another>Rip)"], "private_parent": true, "children": true, "validator":{"__parent__": "import:seps_surround"}, "validate_all": true},
+        "Screener": [
+          "Screener",
+          {"regex": "Scr(?:eener)?", "validator": null, "tags": ["other.validate.screener", "source-prefix", "source-suffix"]}
+        ],
+        "Remux": "Remux",
+        "Hybrid": "Hybrid",
+        "PAL": "PAL",
+        "SECAM": "SECAM",
+        "NTSC": "NTSC",
+        "XXX": "XXX",
+        "3D": {"string": "3D", "tags": "has-neighbor"},
+        "High Quality": {"string": "HQ", "tags": "uhdbluray-neighbor"},
+        "High Resolution": "HR",
+        "Line Dubbed": "LD",
+        "Mic Dubbed": "MD",
+        "Micro HD": ["mHD", "HDLight"],
+        "Low Definition": "LDTV",
+        "High Frame Rate": "HFR",
+        "Variable Frame Rate": "VFR",
+        "HD": {"string": "HD", "validator": null, "tags": ["streaming_service.prefix", "streaming_service.suffix"]},
+        "Full HD": {"string": ["FHD"],"regex": ["Full-?HD"], "validator": null, "tags": ["streaming_service.prefix", "streaming_service.suffix"]},
+        "Ultra HD": {"string": ["UHD"],"regex": ["Ultra-?(?:HD)?"], "validator": null, "tags": ["streaming_service.prefix", "streaming_service.suffix"]},
+        "Upscaled": {"regex": "Upscaled?"},
+        "Complete": {"string": ["Complet", "Complete"], "tags": ["has-neighbor", "release-group-prefix"]},
+        "Classic": {"string": "Classic", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Bonus": {"string": "Bonus", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Trailer": {"string": "Trailer", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Retail": {"string": "Retail", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Colorized": {"string": "Colorized", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Internal": {"string": "Internal", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Line Audio": {"string": "LiNE", "tags": ["has-neighbor-before", "has-neighbor-after", "release-group-prefix"]},
+        "Read NFO": {"regex": "Read-?NFO"},
+        "Converted": {"string": "CONVERT", "tags": "has-neighbor"},
+        "Documentary": {"string": ["DOCU", "DOKU"], "tags": "has-neighbor"},
+        "Open Matte": {"string": "OM", "tags": "has-neighbor"},
+        "Straight to Video": {"string": "STV", "tags": "has-neighbor"},
+        "Original Aspect Ratio": {"string": "OAR", "tags": "has-neighbor"},
+        "East Coast Feed": {"regex": "(?:Live-)?(?:Episode-)?East-?(?:Coast-)?Feed"},
+        "West Coast Feed": {"regex": "(?:Live-)?(?:Episode-)?West-?(?:Coast-)?Feed"},
+        "Original Video": {"string": ["VO", "OV"], "tags": "has-neighbor"},
+        "Original Animated Video": {"string": ["Ova", "Oav"]},
+        "Original Net Animation": "Ona",
+        "Original Animation DVD": "Oad",
+        "Mux": {"string": "Mux", "validator": "import:seps_after", "tags": ["other.validate.mux", "video-codec-prefix", "source-suffix"]},
+        "Hardcoded Subtitles": ["HC", "vost"],
+        "Standard Dynamic Range": {"string": "SDR", "tags": "uhdbluray-neighbor"},
+        "HDR10": {"regex": "HDR(?:10)?", "tags": "uhdbluray-neighbor"},
+        "Dolby Vision": {"regex": "Dolby-?Vision", "tags": "uhdbluray-neighbor"},
+        "BT.2020": {"regex": "BT-?2020","tags": "uhdbluray-neighbor"},
+        "Sample": {"string": "Sample", "tags": ["at-end", "not-a-release-group"]},
+        "Extras": [
+          {"string": "Extras", "tags": "has-neighbor"},
+          {"regex": "Digital-?Extras?"}
+        ],
+        "Proof": {"string": "Proof", "tags": ["at-end", "not-a-release-group"]},
+        "Obfuscated": {"string": ["Obfuscated", "Scrambled"], "tags": ["at-end", "not-a-release-group"]},
+        "Repost": {"string": ["xpost", "postbot", "asrequested"], "tags": "not-a-release-group"},
+        "_complete_words": {"callable": "import:guessit.rules.properties.other:complete_words", "season_words": ["seasons?", "series?"], "complete_article_words": ["The"]}
+      }
+    },
     "part": {
       "prefixes": [
         "pt",
