@@ -313,6 +313,11 @@
         "All"
       ]
     },
+    "film": {
+      "film": {
+        "_f": {"regex": "f(\\d{1,2})", "name": "film", "validate_all": true, "validator": {"__parent__": "import:seps_surround"}, "private_parent": true, "children": true, "formatter": "eval:int"}
+      }
+    },
     "language": {
       "synonyms": {
         "ell": [

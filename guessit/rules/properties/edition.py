@@ -22,7 +22,7 @@ def edition(config):  # pylint:disable=unused-argument
     :rtype: Rebulk
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'edition'))
-    rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
+    rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name='edition', validator=seps_surround)
 
     load_config_patterns(rebulk, config.get('edition'))
