@@ -224,6 +224,33 @@
         ]
       }
     },
+    "edition": {
+      "edition": {
+        "Collector": {"string": ["collector"], "regex": ["collector'?s?-edition", "edition-collector"]},
+        "Special": [
+          {"regex": ["special-edition", "edition-special"], "conflict_solver": "lambda match, other: other if other.name == 'episode_details' and other.value == 'Special' else '__default__'"},
+          {"string": "se", "tags": "has-neighbor"}
+        ],
+        "Director's Definitive Cut": "ddc",
+        "Criterion": {"string": ["CC"], "regex": ["criterion-edition", "edition-criterion"] },
+        "Deluxe": {"string": ["deluxe"], "regex": ["deluxe-edition", "edition-deluxe"] },
+        "Limited": {"string": ["limited"], "regex": ["limited-edition"], "tags": ["has-neighbor", "release-group-prefix"]},
+        "Theatrical": {"string": ["theatrical"], "regex": ["theatrical-cut", "theatrical-edition"]},
+        "Director's Cut": {"string": ["DC"], "regex": ["director'?s?-cut", "director'?s?-cut-edition", "edition-director'?s?-cut"]},
+        "Extended": {"string": ["extended"], "regex": ["extended-?cut", "extended-?version"], "tags": ["has-neighbor", "release-group-prefix"]},
+        "Alternative Cut": {"regex": ["alternat(e|ive)(?:-?Cut)?"], "tags": ["has-neighbor", "release-group-prefix"]},
+        "Remastered": {"string": "Remastered", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Uncensored": {"string": "Uncensored", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Uncut": {"string": "Uncut", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Unrated": {"string": "Unrated", "tags": ["has-neighbor", "release-group-prefix"]},
+        "Festival": {"string": "Festival", "tags": ["has-neighbor-before", "has-neighbor-after"]},
+        "IMAX": {"string": ["imax"], "regex": ["imax-edition"]},
+        "Fan": {"regex": ["fan-edit(?:ion)?", "fan-collection"]},
+        "Ultimate": {"regex": ["ultimate-edition"]},
+        "_Ultimate_Collector": {"regex": ["ultimate-collector'?s?-edition"], "value": ["Ultimate", "Collector"]},
+        "_Ultimate_Fan": {"regex": ["ultimate-fan-edit(?:ion)?", "ultimate-fan-collection"], "value": ["Ultimate", "Fan"]}
+      }
+    },
     "episodes": {
       "season_max_range": 100,
       "episode_max_range": 100,
