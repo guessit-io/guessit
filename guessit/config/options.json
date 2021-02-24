@@ -571,6 +571,10 @@
         "4320"
       ]
     },
+    "source": {
+      "rip_prefix": "(?P<other>Rip)-?",
+      "rip_suffix": "-?(?P<other>Rip)"
+    },
     "website": {
       "safe_tlds": [
         "com",
