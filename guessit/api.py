@@ -4,11 +4,11 @@
 API functions that can be used by external software
 """
 
-from collections import OrderedDict
-
-from pathlib import Path
 import os
 import traceback
+from collections import OrderedDict
+from copy import deepcopy
+from pathlib import Path
 
 from rebulk.introspector import introspect
 
@@ -40,7 +40,7 @@ class GuessitException(Exception):
         self.options = options
 
 
-def configure(options=None, rules_builder=rebulk_builder, force=False):
+def configure(options=None, rules_builder=None, force=False):
     """
     Load configuration files and initialize rebulk rules if required.
 
@@ -53,6 +53,13 @@ def configure(options=None, rules_builder=rebulk_builder, force=False):
     :return:
     """
     default_api.configure(options, rules_builder=rules_builder, force=force)
+
+
+def reset():
+    """
+    Reset api internal state.
+    """
+    default_api.reset()
 
 
 def guessit(string, options=None):
@@ -104,6 +111,12 @@ class GuessItApi(object):
         self.load_config_options = None
         self.advanced_config = None
 
+    def reset(self):
+        """
+        Reset api internal state.
+        """
+        self.__init__()
+
     @classmethod
     def _fix_encoding(cls, value):
         if isinstance(value, list):
@@ -121,7 +134,7 @@ class GuessItApi(object):
                 return False
         return True
 
-    def configure(self, options=None, rules_builder=rebulk_builder, force=False, sanitize_options=True):
+    def configure(self, options=None, rules_builder=None, force=False, sanitize_options=True):
         """
         Load configuration files and initialize rebulk rules if required.
 
@@ -131,9 +144,14 @@ class GuessItApi(object):
         :type rules_builder:
         :param force:
         :type force: bool
+        :param sanitize_options:
+        :type force: bool
         :return:
         :rtype: dict
         """
+        if not rules_builder:
+            rules_builder = rebulk_builder
+
         if sanitize_options:
             options = parse_options(options, True)
             options = self._fix_encoding(options)
@@ -154,7 +172,7 @@ class GuessItApi(object):
                               self.advanced_config != advanced_config
 
         if should_build_rebulk:
-            self.advanced_config = advanced_config
+            self.advanced_config = deepcopy(advanced_config)
             self.rebulk = rules_builder(advanced_config)
 
         self.config = config

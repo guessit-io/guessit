@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
-
 import io
 import os
 import re
+
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,7 +21,7 @@ setup_requires = ['pytest-runner']
 
 dev_require = ['tox', 'mkdocs', 'mkdocs-material', 'pyinstaller', 'python-semantic-release']
 
-tests_require = ['pytest', 'pytest-benchmark', 'pytest-cov', 'pylint', 'PyYAML']
+tests_require = ['pytest', 'pytest-mock', 'pytest-benchmark', 'pytest-cov', 'pylint', 'PyYAML']
 
 package_data = ['config/*', 'data/*']
 
