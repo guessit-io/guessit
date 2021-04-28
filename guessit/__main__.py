@@ -136,11 +136,8 @@ def main(args=None):  # pylint:disable=too-many-branches
         for filename in options.get('filename'):
             filenames.append(filename)
     if options.get('input_file'):
-        input_file = open(options.get('input_file'), 'r', encoding='utf-8')
-        try:
+        with open(options.get('input_file'), 'r', encoding='utf-8') as input_file:
             filenames.extend([line.strip() for line in input_file.readlines()])
-        finally:
-            input_file.close()
 
     filenames = list(filter(lambda f: f, filenames))
 
