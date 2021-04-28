@@ -233,7 +233,7 @@
           {"string": "se", "tags": "has-neighbor"}
         ],
         "Director's Definitive Cut": "ddc",
-        "Criterion": {"string": ["CC"], "regex": ["criterion-edition", "edition-criterion"] },
+        "Criterion": {"string": ["CC", "Criterion"], "regex": ["criterion-edition", "edition-criterion"] },
         "Deluxe": {"string": ["deluxe"], "regex": ["deluxe-edition", "edition-deluxe"] },
         "Limited": {"string": ["limited"], "regex": ["limited-edition"], "tags": ["has-neighbor", "release-group-prefix"]},
         "Theatrical": {"string": ["theatrical"], "regex": ["theatrical-cut", "theatrical-edition"]},
