@@ -1050,6 +1050,25 @@
   release_group: Seven
   type: movie
 
+? Maze.Runner.The.Scorch.Trials.OM.2015.WEB-DLRip.by.Seven
+: title: Maze Runner The Scorch Trials
+  other: [Open Matte, Rip]
+  year: 2015
+  source: Web
+  release_group: Seven
+  type: movie
+
+? Foo Bar 2015 Open Matte 1080p WEB-DL DD+5.1 H.264
+: title: Foo Bar
+  year: 2015
+  other: Open Matte
+  screen_size: 1080p
+  source: Web
+  audio_codec: Dolby Digital Plus
+  audio_channels: '5.1'
+  video_codec: H.264
+  type: movie
+
 ? Kampen Om Tungtvannet aka The Heavy Water War COMPLETE 720p x265 HEVC-Lund
 : title: Kampen Om Tungtvannet aka The Heavy Water War
   other: Complete
