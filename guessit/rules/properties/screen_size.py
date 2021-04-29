@@ -26,7 +26,7 @@ def screen_size(config):
     """
     interlaced = frozenset(config['interlaced'])
     progressive = frozenset(config['progressive'])
-    frame_rates = [re.escape(rate) for rate in config['frame_rates']]
+    frame_rates = frozenset(config['frame_rates'])
     min_ar = config['min_ar']
     max_ar = config['max_ar']
 
@@ -49,7 +49,7 @@ def screen_size(config):
     rebulk.regex(r'(?P<width>\d{3,4})-?(?:x|\*)-?(?P<height>\d{3,4})',
                  conflict_solver=lambda match, other: '__default__' if other.name == 'screen_size' else other)
 
-    rebulk.regex(frame_rate_pattern + '(p|fps)', name='frame_rate',
+    rebulk.regex(frame_rate_pattern + '-?(?:p|fps)', name='frame_rate',
                  formatter=FrameRate.fromstring, disabled=lambda context: is_disabled(context, 'frame_rate'))
 
     rebulk.rules(PostProcessScreenSize(progressive, min_ar, max_ar), ScreenSizeOnlyOne, ResolveScreenSizeConflicts)
