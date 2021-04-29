@@ -3,7 +3,7 @@
 """
 Website property.
 """
-from pkg_resources import resource_stream  # @UnresolvedImport
+from importlib_resources import open_text  # @UnresolvedImport
 from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch
@@ -27,11 +27,11 @@ def website(config):
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
     rebulk.defaults(name="website")
 
-    with resource_stream('guessit', 'data/tlds-alpha-by-domain.txt') as tld_file:
+    with open_text('guessit.data', 'tlds-alpha-by-domain.txt') as tld_file:
         tlds = [
-            tld.strip().decode('utf-8')
+            tld.strip()
             for tld in tld_file.readlines()
-            if b'--' not in tld
+            if '--' not in tld
         ][1:]  # All registered domain extension
 
     safe_tlds = config['safe_tlds']  # For sure a website extension
