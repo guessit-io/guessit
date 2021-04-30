@@ -6,10 +6,10 @@ Options
 import copy
 import json
 import os
-import pkgutil
 import shlex
 
 from argparse import ArgumentParser
+from importlib_resources import read_text
 
 
 def build_argument_parser():
@@ -142,7 +142,7 @@ def load_config(options):
     configurations = []
 
     if not options.get('no_default_config'):
-        default_options_data = pkgutil.get_data('guessit', 'config/options.json').decode('utf-8')
+        default_options_data = read_text('guessit.config', 'options.json')
         default_options = json.loads(default_options_data)
         configurations.append(default_options)
 
@@ -176,7 +176,7 @@ def load_config(options):
 
     if 'advanced_config' not in config:
         # Guessit doesn't work without advanced_config, so we use default if no configuration files provides it.
-        default_options_data = pkgutil.get_data('guessit', 'config/options.json').decode('utf-8')
+        default_options_data = read_text('guessit.config', 'options.json')
         default_options = json.loads(default_options_data)
         config['advanced_config'] = default_options['advanced_config']
 
