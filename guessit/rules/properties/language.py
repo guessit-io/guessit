@@ -13,8 +13,8 @@ from rebulk.remodule import re
 
 from ..common import seps
 from ..common.pattern import is_disabled
-from ..common.words import iter_words
 from ..common.validators import seps_surround
+from ..common.words import iter_words
 
 
 def language(config, common_words):
@@ -64,7 +64,8 @@ def language(config, common_words):
                  SubtitlePrefixLanguageRule,
                  SubtitleSuffixLanguageRule,
                  RemoveLanguage,
-                 RemoveInvalidLanguages(common_words))
+                 RemoveInvalidLanguages(common_words),
+                 RemoveUndeterminedLanguages)
 
     babelfish.language_converters['guessit'] = GuessitConverter(config['synonyms'])
 
@@ -226,7 +227,7 @@ class LanguageFinder(object):
             key = match.property_name
             if match.lang == UNDETERMINED:
                 undetermined_map[key].add(match)
-            elif match.lang == 'mul':
+            elif match.lang == MULTIPLE:
                 multi_map[key].add(match)
             else:
                 regular_lang_map[key].add(match)
@@ -291,7 +292,7 @@ class LanguageFinder(object):
         if match:
             yield match
 
-    def find_match_for_word(self, word, fallback_word, affixes, is_affix, strip_affix):  # pylint:disable=inconsistent-return-statements
+    def find_match_for_word(self, word, fallback_word, affixes, is_affix, strip_affix):
         """
         Return the language match for the given word and affixes.
         """
@@ -322,6 +323,7 @@ class LanguageFinder(object):
 
                     if match:
                         return match
+        return None
 
     def find_language_match_for_word(self, word, key='language'):  # pylint:disable=inconsistent-return-statements
         """
@@ -506,5 +508,24 @@ class RemoveInvalidLanguages(Rule):
                 continue
 
             to_remove.append(match)
+
+        return to_remove
+
+
+class RemoveUndeterminedLanguages(Rule):
+    """Remove "und" language matches when next other language if found."""
+
+    consequence = RemoveMatch
+    priority = 32
+
+    def when(self, matches, context):
+        to_remove = []
+        for match in matches.range(0, len(matches.input_string),
+                                   predicate=lambda m: m.name in ('language', 'subtitle_language')):
+            if match.value == "und":
+                previous = matches.previous(match, index=0)
+                next_ = matches.next(match, index=0)
+                if previous and previous.name == 'language' or next_ and next_.name == 'language':
+                    to_remove.append(match)
 
         return to_remove

@@ -378,12 +378,15 @@
         ],
         "mul": [
           "multi",
+          "multiple",
           "dl"
         ]
       },
       "subtitle_affixes": [
         "sub",
         "subs",
+        "subtitle",
+        "subtitles",
         "esub",
         "esubs",
         "subbed",
@@ -406,8 +409,7 @@
         "legendas",
         "legendado",
         "subtitulado",
-        "soft",
-        "subtitles"
+        "soft"
       ],
       "subtitle_suffixes": [
         "subforced",

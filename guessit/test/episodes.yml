@@ -4715,3 +4715,13 @@
   container: mkv
   mimetype: video/x-matroska
   type: episode
+
+? '[Erai-raws] Fumetsu no Anata e - 03 [720p][Multiple Subtitle].mkv'
+: release_group: Erai-raws
+  title: Fumetsu no Anata e
+  episode: 3
+  screen_size: 720p
+  subtitle_language: mul
+  container: mkv
+  mimetype: video/x-matroska
+  type: episode
