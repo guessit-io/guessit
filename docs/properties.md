@@ -111,7 +111,7 @@ Video properties
 
     Resolution of video.
 
-    -   `<width>x<height>`, `360i`, `360p`, `368p`, `480i`, `480p`, `540p`, `576i`, `576p`, `720p`, `900i`, `900p`, `1080i`, `1080p`, `1440p`, `2160p`, `4320p`
+    -   `<width>x<height>`, `360i`, `360p`, `368p`, `480i`, `480p`, `540i`, `540p`, `576i`, `576p`, `720p`, `900i`, `900p`, `1080i`, `1080p`, `1440p`, `2160p`, `4320p`
 -   **aspect\_ratio**
 
     Aspect ratio of video. Calculated using width and height from `screen_size`
