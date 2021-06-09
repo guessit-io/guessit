@@ -40,6 +40,8 @@ def edition(config):  # pylint:disable=unused-argument
     rebulk.regex('extended', 'extended-?cut', 'extended-?version',
                  value='Extended', tags=['has-neighbor', 'release-group-prefix'])
     rebulk.regex('alternat(e|ive)(?:-?Cut)?', value='Alternative Cut', tags=['has-neighbor', 'release-group-prefix'])
+    rebulk.regex(r'(?i:4k[ \.]?(remaster(ed|)))', value='4k Remastered', tags=['release-group-prefix'])
+    rebulk.regex(r'(?i:4k[ \.]?restored)', value='4k Restored', tags=['release-group-prefix'])
     for value in ('Remastered', 'Uncensored', 'Uncut', 'Unrated'):
         rebulk.string(value, value=value, tags=['has-neighbor', 'release-group-prefix'])
     rebulk.string('Festival', value='Festival', tags=['has-neighbor-before', 'has-neighbor-after'])
