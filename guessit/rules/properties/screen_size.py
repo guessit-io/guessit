@@ -45,7 +45,7 @@ def screen_size(config):
     rebulk.regex(res_pattern + progressive_pattern + r'(?P<scan_type>p)' + frame_rate_pattern + '?')
     rebulk.regex(res_pattern + progressive_pattern + r'(?P<scan_type>p)?(?:hd)')
     rebulk.regex(res_pattern + progressive_pattern + r'(?P<scan_type>p)?x?')
-    rebulk.string('4k', value='2160p')
+    rebulk.regex('4k(?![ \.]?(?i:restored|remaster(ed|)))', value='2160p')
     rebulk.regex(r'(?P<width>\d{3,4})-?(?:x|\*)-?(?P<height>\d{3,4})',
                  conflict_solver=lambda match, other: '__default__' if other.name == 'screen_size' else other)
 
