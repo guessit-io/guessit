@@ -47,8 +47,9 @@ def source(config):  # pylint:disable=unused-argument
                  value={'source': 'Camera', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('HD-?CAM', suffix=optional(rip_suffix)),
                  value={'source': 'HD Camera', 'other': 'Rip'})
+    # For TS, we remove 'streaming_service.suffix' tag to avoid "Shots" being guessed as Showtime and TS.
     rebulk.regex(*build_source_pattern('TELESYNC', 'TS', suffix=optional(rip_suffix)),
-                 value={'source': 'Telesync', 'other': 'Rip'})
+                 value={'source': 'Telesync', 'other': 'Rip'}, tags=['video-codec-prefix'], overrides=["tags"])
     rebulk.regex(*build_source_pattern('HD-?TELESYNC', 'HD-?TS', suffix=optional(rip_suffix)),
                  value={'source': 'HD Telesync', 'other': 'Rip'})
     rebulk.regex(*build_source_pattern('WORKPRINT', 'WP'), value='Workprint')
