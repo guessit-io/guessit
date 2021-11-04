@@ -3,6 +3,34 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.4.0 (2021-11-04)
+### Feature
+* **other:** Add restored support and match 4k-* patterns ([`99c30eb`](https://github.com/guessit-io/guessit/commit/99c30eb3876a4947ff9a4f5126b70195452a64c7))
+* **other:** Add 2in1 support ([`0cf07f4`](https://github.com/guessit-io/guessit/commit/0cf07f47559e0061a6df8437510e98e6afe69747))
+* **python:** Add python 3.10 support, drop python 3.5 support ([`a8ea88d`](https://github.com/guessit-io/guessit/commit/a8ea88de31dcf642434fa4ab1315df2467a443ca))
+* **audio_channels:** Add support for "1.0" audio channels ([`f22e33d`](https://github.com/guessit-io/guessit/commit/f22e33daada06956c085a5784387e5a4527417e6))
+* **streaming_service:** Add more streaming services ([`40ce483`](https://github.com/guessit-io/guessit/commit/40ce4831600f915a91cea1e6aba4bcb4cfbc35f0))
+* **other:** Add ONA/OAD support ([`0823e37`](https://github.com/guessit-io/guessit/commit/0823e37b382ed3470924a11a5024c0a9a383df30))
+* **other:** Add Repack and ReRip followed by a digit support ([#653](https://github.com/guessit-io/guessit/issues/653)) ([`997c5c2`](https://github.com/guessit-io/guessit/commit/997c5c29f4adedcd7568a22b38155e2a8c83bf10))
+
+### Fix
+* **source:** Avoid Shots to be guessed as Showtime and TS ([`de85403`](https://github.com/guessit-io/guessit/commit/de85403dd40b120a3dc52f26960986a2fb482e64))
+* **screen_size:** Add 540i ([`1a7db40`](https://github.com/guessit-io/guessit/commit/1a7db40a1f7d06f49db2ac116a1de074049334c0))
+* **language:** Fix `language` and `subtitle_languages` in some situations ([#696](https://github.com/guessit-io/guessit/issues/696)) ([`f19cfda`](https://github.com/guessit-io/guessit/commit/f19cfda856958c4aa81dde36ecbb3df66cdd4b48))
+* **packaging:** Use importlib-resources instead of pkgutil ([`a679a6c`](https://github.com/guessit-io/guessit/commit/a679a6c2b05607029a1267b0b217c5696f85df5f))
+* **other:** Fix Open Matte when written as is ([#689](https://github.com/guessit-io/guessit/issues/689)) ([`ddf8e77`](https://github.com/guessit-io/guessit/commit/ddf8e772d735bc80940ba3068c5014d79499a618))
+* **frame_rate:** Enhance `frame_rate` when ending with `.000` or space separated ([#693](https://github.com/guessit-io/guessit/issues/693)) ([`dba9cef`](https://github.com/guessit-io/guessit/commit/dba9cef859cb548988e411c2a9d537914da14f4e))
+* **packaging:** Use importlib-resources instead of pkg_resources ([`6ef222e`](https://github.com/guessit-io/guessit/commit/6ef222ea2879343c7c3dd04dd081a2ce88a327aa))
+* **edition:** Better support for "Criterion" ([`85ac52a`](https://github.com/guessit-io/guessit/commit/85ac52a771f53cc6e44bc48a0c3a017e971c0d71))
+* **advanced-config:** Fix removal of custom rebulk rules ([#692](https://github.com/guessit-io/guessit/issues/692)) ([`c2bc1ea`](https://github.com/guessit-io/guessit/commit/c2bc1ea3809626442374f35d018b43e6c775758f))
+* **streaming_service:** Make SBS ambiguous ([`777d2b5`](https://github.com/guessit-io/guessit/commit/777d2b56764d14431125cccb092978fa726c2453))
+* **streaming_service:** Keep pattern to avoid rebuilding rules ([`62f0c0e`](https://github.com/guessit-io/guessit/commit/62f0c0ec5d43074175fffc2aff611b178ddb95a0))
+* **proper_count:** Fix proper_count raw output to include all matches ([#626](https://github.com/guessit-io/guessit/issues/626)) ([`1faea7e`](https://github.com/guessit-io/guessit/commit/1faea7e9c8bc9ace9d343976ea1987a5f2628a4f))
+* **website:** Fix website when it contains a digit ([#659](https://github.com/guessit-io/guessit/issues/659)) ([`9e39b7e`](https://github.com/guessit-io/guessit/commit/9e39b7e659e87dc3f71b1449a8994ef898212b0e))
+
+### Documentation
+* Add new properties ([`f1d8f61`](https://github.com/guessit-io/guessit/commit/f1d8f61fb6d326092e6caaf6419696e9419e8a73))
+
 ## v3.3.1 (2021-02-06)
 ### Fix
 * **options:** Fix custom options.json groups starting/ending ([#671](https://github.com/guessit-io/guessit/issues/671)) ([`40f43b1`](https://github.com/guessit-io/guessit/commit/40f43b133cf5fb43d79c1e2b886a3620830a4a37))
