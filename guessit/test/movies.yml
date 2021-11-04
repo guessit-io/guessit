@@ -1348,6 +1348,22 @@
   release_group: ETRG
   type: movie
 
+? Heathers.1988.1080p.BluRay.ARROW.4K.RESTORED.Plus.Comm.DTS.x264-MaG
+: title: Heathers
+  edition: Restored
+  year: 1988
+  screen_size: 1080p
+  release_group: MaG
+  type: movie
+
+? The.Woman.2011.1080p.BluRay.4K.REMASTERED.Remux.AVC.DTS-HD.MA.5.1-PTP.mkv
+: title: The Woman
+  edition: Remastered
+  year: 2011
+  screen_size: 1080p
+  release_group: PTP
+  type: movie
+
 ? Delibal 2015 720p Upscale DVDRip x264 DD5.1 AC3
 : title: Delibal
   year: 2015
