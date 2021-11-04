@@ -50,6 +50,16 @@
   video_codec: Xvid
   release_group: PUKKA
 
+? Enter.the.Void.2009.2in1.1080p.BluRay.DD5.1.x264-EbP.mkv
+: title: Enter the Void
+  year: 2009
+  other: 2in1
+  screen_size: 1080p
+  source: Blu-ray
+  audio_codec: Dolby Digital
+  video_codec: H.264
+  release_group: EbP
+
 ? "[XCT].Le.Prestige.(The.Prestige).DVDRip.[x264.HP.He-Aac.{Fr-Eng}.St{Fr-Eng}.Chaps].mkv"
 : title: Le Prestige
   source: DVD

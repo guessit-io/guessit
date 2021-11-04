@@ -471,6 +471,7 @@
         "SECAM": "SECAM",
         "NTSC": "NTSC",
         "XXX": "XXX",
+        "2in1": "2in1",
         "3D": {"string": "3D", "tags": "has-neighbor"},
         "High Quality": {"string": "HQ", "tags": "uhdbluray-neighbor"},
         "High Resolution": "HR",
