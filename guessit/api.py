@@ -25,16 +25,15 @@ class GuessitException(Exception):
     def __init__(self, string, options):
         super().__init__("An internal error has occured in guessit.\n"
                          "===================== Guessit Exception Report =====================\n"
-                         "version=%s\n"
-                         "string=%s\n"
-                         "options=%s\n"
+                         f"version={__version__}\n"
+                         f"string={str(string)}\n"
+                         f"options={str(options)}\n"
                          "--------------------------------------------------------------------\n"
-                         "%s"
+                         f"{traceback.format_exc()}"
                          "--------------------------------------------------------------------\n"
                          "Please report at "
                          "https://github.com/guessit-io/guessit/issues.\n"
-                         "====================================================================" %
-                         (__version__, str(string), str(options), traceback.format_exc()))
+                         "====================================================================")
 
         self.string = string
         self.options = options

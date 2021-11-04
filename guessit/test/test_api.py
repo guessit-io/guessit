@@ -64,7 +64,7 @@ def test_exception():
 
 
 def test_suggested_expected():
-    with open(os.path.join(__location__, 'suggested.json'), 'r') as f:
+    with open(os.path.join(__location__, 'suggested.json'), 'r', encoding='utf-8') as f:
         content = json.load(f)
     actual = suggested_expected(content['titles'])
     assert actual == content['suggested']

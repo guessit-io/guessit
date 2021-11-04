@@ -103,7 +103,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
     def convert(self, alpha3, country=None, script=None):
         return str(babelfish.Language(alpha3, country, script))
 
-    def reverse(self, name):  # pylint:disable=arguments-differ
+    def reverse(self, name):  # pylint:disable=arguments-renamed
         name = name.lower()
         # exceptions come first, as they need to override a potential match
         # with any of the other guessers
@@ -166,7 +166,7 @@ class LanguageWord(object):
                 return LanguageWord(self.start, self.next_word.end, value, self.input_string, self.next_word.next_word)
 
     def __repr__(self):
-        return '<({start},{end}): {value}'.format(start=self.start, end=self.end, value=self.value)
+        return f'<({self.start},{self.end}): {self.value}'
 
 
 def to_rebulk_match(language_match):

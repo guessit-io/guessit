@@ -68,7 +68,7 @@ disable=unichr-builtin,backtick,delslice-method,indexing-exception,execfile-buil
     unpacking-in-except,import-star-module-level,buffer-builtin,round-builtin,file-builtin,reload-builtin,old-division,
     apply-builtin,oct-method,nonzero-method,basestring-builtin,raising-string,too-few-public-methods,too-many-arguments,
     too-many-instance-attributes,bad-builtin,too-many-ancestors,too-few-format-args,fixme,duplicate-code,
-    deprecated-lambda,too-many-nested-blocks,useless-object-inheritance,import-outside-toplevel
+    deprecated-lambda,too-many-nested-blocks,useless-object-inheritance,import-outside-toplevel,
     I
 
 

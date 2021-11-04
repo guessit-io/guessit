@@ -35,11 +35,11 @@ def source(config):  # pylint:disable=unused-argument
 
     def build_source_pattern(*patterns, prefix='', suffix=''):
         """Helper pattern to build source pattern."""
-        return [prefix + '({0})'.format(pattern) + suffix for pattern in patterns]
+        return [prefix + f'({pattern})' + suffix for pattern in patterns]
 
     def demote_other(match, other):  # pylint: disable=unused-argument
         """Default conflict solver with 'other' property."""
-        return other if other.name == 'other' or other.name == 'release_group' else '__default__'
+        return other if other.name in ['other', 'release_group'] else '__default__'
 
     rebulk.regex(*build_source_pattern('VHS', suffix=optional(rip_suffix)),
                  value={'source': 'VHS', 'other': 'Rip'})

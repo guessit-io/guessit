@@ -7,8 +7,8 @@ import copy
 import json
 import os
 import shlex
-
 from argparse import ArgumentParser
+
 from importlib_resources import read_text
 
 
@@ -246,17 +246,16 @@ def load_config_file(filepath):
     :rtype:
     """
     if filepath.endswith('.json'):
-        with open(filepath) as config_file_data:
+        with open(filepath, encoding='utf-8') as config_file_data:
             return json.load(config_file_data)
     if filepath.endswith('.yaml') or filepath.endswith('.yml'):
         try:
             import yaml  # pylint:disable=import-outside-toplevel
-            with open(filepath) as config_file_data:
+            with open(filepath, encoding='utf-8') as config_file_data:
                 return yaml.load(config_file_data, yaml.SafeLoader)
         except ImportError as err:  # pragma: no cover
             raise ConfigurationException('Configuration file extension is not supported. '
-                                         'PyYAML should be installed to support "%s" file' % (
-                                             filepath,)) from err
+                                         f'PyYAML should be installed to support "{filepath}" file') from err
 
     try:
         # Try to load input as JSON
@@ -264,7 +263,7 @@ def load_config_file(filepath):
     except:  # pylint: disable=bare-except
         pass
 
-    raise ConfigurationException('Configuration file extension is not supported for "%s" file.' % (filepath,))
+    raise ConfigurationException(f'Configuration file extension is not supported for "{filepath}" file.')
 
 
 def get_options_file_locations(homedir, cwd, yaml_supported=False):

@@ -89,7 +89,7 @@ class PostProcessScreenSize(Rule):
             scan_type = (values.get('scan_type') or 'p').lower()
             height = values['height']
             if 'width' not in values:
-                match.value = '{0}{1}'.format(height, scan_type)
+                match.value = f'{height}{scan_type}'
                 continue
 
             width = values['width']
@@ -102,9 +102,9 @@ class PostProcessScreenSize(Rule):
                 to_append.append(aspect_ratio)
 
             if height in self.standard_heights and self.min_ar < calculated_ar < self.max_ar:
-                match.value = '{0}{1}'.format(height, scan_type)
+                match.value = f'{height}{scan_type}'
             else:
-                match.value = '{0}x{1}'.format(width, height)
+                match.value = f'{width}x{height}'
 
         return to_append
 

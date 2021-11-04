@@ -11,22 +11,22 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [ 3.5, 3.6, 3.7, 3.8, 3.9 ]  # pypy-3.6, pypy-3.7 are supported but a bit slow.
+        python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10" ]  # pypy-3.6, pypy-3.7 are supported but a bit slow.
         regex: [ "0", "1" ]
         exclude:
           # regex module doesn't play well with pypy and unicode.
-          - python-version: pypy-3.6
+          - python-version: "pypy-3.6"
             regex: "1"
-          - python-version: pypy-3.7
+          - python-version: "pypy-3.7"
             regex: "1"
-          # test regex module only with Python 3.8.
-          - python-version: 3.5
+          # test regex module only with Python 3.9.
+          - python-version: "3.6"
             regex: "1"
-          - python-version: 3.6
+          - python-version: "3.7"
             regex: "1"
-          - python-version: 3.7
+          - python-version: "3.8"
             regex: "1"
-          - python-version: 3.9
+          - python-version: "3.10"
             regex: "1"
 
     steps:
@@ -34,11 +34,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Upgrade setuptools
-        run: |
-          pip install --upgrade setuptools
-        if: matrix.python-version == '3.5'
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -82,10 +77,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup python 3.8
+      - name: Setup python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -119,10 +114,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup python 3.8
+      - name: Setup python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -160,10 +155,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Setup python 3.8
+      - name: Setup python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -200,10 +195,10 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Setup python 3.8
+      - name: Setup python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -240,10 +235,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup python 3.8
+      - name: Setup python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Checkout
         uses: actions/checkout@v2
