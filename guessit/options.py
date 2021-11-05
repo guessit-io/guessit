@@ -9,7 +9,10 @@ import os
 import shlex
 from argparse import ArgumentParser
 
-from importlib_resources import read_text
+try:
+    from importlib.resources import read_text
+except ImportError:
+    from importlib_resources import read_text
 
 
 def build_argument_parser():

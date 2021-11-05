@@ -3,7 +3,11 @@
 """
 Website property.
 """
-from importlib_resources import open_text  # @UnresolvedImport
+try:
+    from importlib.resources import open_text  # @UnresolvedImport
+except ImportError:
+    from importlib_resources import open_text  # @UnresolvedImport
+
 from rebulk.remodule import re
 
 from rebulk import Rebulk, Rule, RemoveMatch
