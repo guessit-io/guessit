@@ -503,7 +503,7 @@
         "Read NFO": {"regex": "Read-?NFO"},
         "Converted": {"string": "CONVERT", "tags": "has-neighbor"},
         "Documentary": {"string": ["DOCU", "DOKU"], "tags": "has-neighbor"},
-        "Open Matte": {"string": ["OM", "Open Matte"], "tags": "has-neighbor"},
+        "Open Matte": {"regex": "(?:OM|Open-?Matte)", "tags": "has-neighbor"},
         "Straight to Video": {"string": "STV", "tags": "has-neighbor"},
         "Original Aspect Ratio": {"string": "OAR", "tags": "has-neighbor"},
         "East Coast Feed": {"regex": "(?:Live-)?(?:Episode-)?East-?(?:Coast-)?Feed"},
