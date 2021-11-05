@@ -3,6 +3,11 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.4.1 (2021-11-05)
+### Fix
+* **other:** Detect "Open Matte" with non-space separator ([`b52a9d9`](https://github.com/guessit-io/guessit/commit/b52a9d9f0315af68d41c22772d35488d00c4f04e))
+* **packaging:** Use stdlib importlib.resources in py 3.7+ ([`1e7b000`](https://github.com/guessit-io/guessit/commit/1e7b0008232e306478d15f7a78d093804d56df3a))
+
 ## v3.4.0 (2021-11-04)
 ### Feature
 * **other:** Add restored support and match 4k-* patterns ([`99c30eb`](https://github.com/guessit-io/guessit/commit/99c30eb3876a4947ff9a4f5126b70195452a64c7))
