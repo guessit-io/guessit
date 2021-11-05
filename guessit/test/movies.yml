@@ -1079,6 +1079,17 @@
   video_codec: H.264
   type: movie
 
+? foo.bar.2015.open.matte.1080p.web-dl.dd+5.1.h.264
+: title: foo bar
+  year: 2015
+  other: Open Matte
+  screen_size: 1080p
+  source: Web
+  audio_codec: Dolby Digital Plus
+  audio_channels: '5.1'
+  video_codec: H.264
+  type: movie
+
 ? Kampen Om Tungtvannet aka The Heavy Water War COMPLETE 720p x265 HEVC-Lund
 : title: Kampen Om Tungtvannet aka The Heavy Water War
   other: Complete
