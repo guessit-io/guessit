@@ -3,6 +3,10 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.4.2 (2021-11-08)
+### Fix
+* **dependencies:** Use babelfish>=0.6.0 ([#711](https://github.com/guessit-io/guessit/issues/711)) ([`d2c1b01`](https://github.com/guessit-io/guessit/commit/d2c1b010ed0025d62322e681471abe948c923a1d))
+
 ## v3.4.1 (2021-11-05)
 ### Fix
 * **other:** Detect "Open Matte" with non-space separator ([`b52a9d9`](https://github.com/guessit-io/guessit/commit/b52a9d9f0315af68d41c22772d35488d00c4f04e))
