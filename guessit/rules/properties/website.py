@@ -4,9 +4,9 @@
 Website property.
 """
 try:
-    from importlib.resources import open_text  # @UnresolvedImport
+    from importlib.resources import files  # @UnresolvedImport
 except ImportError:
-    from importlib_resources import open_text  # @UnresolvedImport
+    from importlib_resources import files  # @UnresolvedImport
 
 from rebulk.remodule import re
 
@@ -31,10 +31,11 @@ def website(config):
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE).string_defaults(ignore_case=True)
     rebulk.defaults(name="website")
 
-    with open_text('guessit.data', 'tlds-alpha-by-domain.txt') as tld_file:
+    with files('guessit.data') as data_files:
+        tld_file = data_files.joinpath('tlds-alpha-by-domain.txt').read_text(encoding='utf-8')
         tlds = [
             tld.strip()
-            for tld in tld_file.readlines()
+            for tld in tld_file.split('\n')
             if '--' not in tld
         ][1:]  # All registered domain extension
 

@@ -15,7 +15,7 @@ with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 with io.open(os.path.join(here, 'CHANGELOG.md'), encoding='utf-8') as f:
     changelog = f.read()
 
-install_requires = ['rebulk>=3.1.0', 'babelfish>=0.6.0', 'python-dateutil', 'importlib-resources;python_version<"3.7"']
+install_requires = ['rebulk>=3.1.0', 'babelfish>=0.6.0', 'python-dateutil', 'importlib-resources;python_version<"3.9"']
 
 setup_requires = ['pytest-runner']
 
