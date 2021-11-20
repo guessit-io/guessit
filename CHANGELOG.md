@@ -3,6 +3,10 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.4.3 (2021-11-20)
+### Fix
+* **setuptools:** Drop usage of test_requires and setup_requires ([#720](https://github.com/guessit-io/guessit/issues/720)) ([`324b38c`](https://github.com/guessit-io/guessit/commit/324b38ce62cd43efc51074dbd8c5e2ed64fc7573))
+
 ## v3.4.2 (2021-11-08)
 ### Fix
 * **dependencies:** Use babelfish>=0.6.0 ([#711](https://github.com/guessit-io/guessit/issues/711)) ([`d2c1b01`](https://github.com/guessit-io/guessit/commit/d2c1b010ed0025d62322e681471abe948c923a1d))
