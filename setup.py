@@ -17,8 +17,6 @@ with io.open(os.path.join(here, 'CHANGELOG.md'), encoding='utf-8') as f:
 
 install_requires = ['rebulk>=3.1.0', 'babelfish>=0.6.0', 'python-dateutil', 'importlib-resources;python_version<"3.9"']
 
-setup_requires = ['pytest-runner']
-
 dev_require = ['tox', 'mkdocs', 'mkdocs-material', 'pyinstaller', 'python-semantic-release']
 
 tests_require = ['pytest', 'pytest-mock', 'pytest-benchmark', 'pytest-cov', 'pylint', 'PyYAML']
@@ -63,8 +61,6 @@ args = dict(name='guessit',
             package_data={'guessit': package_data},
             include_package_data=True,
             install_requires=install_requires,
-            setup_requires=setup_requires,
-            tests_require=tests_require,
             entry_points=entry_points,
             test_suite='guessit.test',
             zip_safe=True,
