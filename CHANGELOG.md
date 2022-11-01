@@ -3,6 +3,14 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.5.0 (2022-11-01)
+### Feature
+* **dependencies:** Drop Python 3.6 support ([`47f5718`](https://github.com/guessit-io/guessit/commit/47f57184a9d0a25c1b415638d0b003dad88ce607))
+
+### Fix
+* **audio_codec:** Detect "E-AC-3" and "AC-3" ([`72dc12e`](https://github.com/guessit-io/guessit/commit/72dc12e2489d240839a216041ffe47e9dd128b0f))
+* **typo:** Fix common typo ([`42a80f0`](https://github.com/guessit-io/guessit/commit/42a80f0992387c96fc120480aaea35e4b3d9f5b8))
+
 ## v3.4.3 (2021-11-20)
 ### Fix
 * **setuptools:** Drop usage of test_requires and setup_requires ([#720](https://github.com/guessit-io/guessit/issues/720)) ([`324b38c`](https://github.com/guessit-io/guessit/commit/324b38ce62cd43efc51074dbd8c5e2ed64fc7573))
