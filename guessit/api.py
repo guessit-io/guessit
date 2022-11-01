@@ -98,7 +98,7 @@ def suggested_expected(titles, options=None):
     return default_api.suggested_expected(titles, options)
 
 
-class GuessItApi(object):
+class GuessItApi:
     """
     An api class that can be configured with custom Rebulk configuration.
     """
@@ -114,7 +114,7 @@ class GuessItApi(object):
         """
         Reset api internal state.
         """
-        self.__init__()
+        self.__init__()  # pylint:disable=unnecessary-dunder-call
 
     @classmethod
     def _fix_encoding(cls, value):
