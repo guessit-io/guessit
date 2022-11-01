@@ -11,32 +11,30 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10" ]  # pypy-3.6, pypy-3.7 are supported but a bit slow.
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]  # pypy-3.7 is supported but a bit slow.
         regex: [ "0", "1" ]
         exclude:
           # regex module doesn't play well with pypy and unicode.
-          - python-version: "pypy-3.6"
-            regex: "1"
           - python-version: "pypy-3.7"
             regex: "1"
           # test regex module only with Python 3.9.
-          - python-version: "3.6"
-            regex: "1"
           - python-version: "3.7"
             regex: "1"
           - python-version: "3.8"
             regex: "1"
           - python-version: "3.10"
             regex: "1"
+          - python-version: "3.11"
+            regex: "1"
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Setup python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Checkout
-        uses: actions/checkout@v2
 
       - name: Install Dependencies
         run: |
@@ -65,10 +63,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v2
+
+      - uses: wagoid/commitlint-github-action@v5
 
   build-setuptools:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -77,15 +76,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Setup python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
       - name: Install Dependencies
         run: |
@@ -102,7 +101,7 @@ jobs:
       - name: Build
         run: python setup.py sdist bdist_wheel
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: guessit-python
           path: ./dist
@@ -114,15 +113,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Setup python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
       - name: Install Dependencies
         run: |
@@ -142,7 +141,7 @@ jobs:
       - name: Check binary
         run: ./dist/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: matrix.regex == '0'
         with:
           name: guessit-bin-linux
@@ -155,15 +154,15 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Setup python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Setup python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
       - name: Install Dependencies
         run: |
@@ -183,7 +182,7 @@ jobs:
       - name: Check binary
         run: ./dist/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: guessit-bin-windows
           path: ./dist
@@ -195,15 +194,15 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Setup python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Setup python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
       - name: Install Dependencies
         run: |
@@ -223,7 +222,7 @@ jobs:
       - name: Check binary
         run: ./dist/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: guessit-bin-macos
           path: ./dist
@@ -235,17 +234,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v2
+      - name: Setup python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - uses: actions/download-artifact@v3
         with:
           path: artifacts
 
@@ -272,7 +271,7 @@ jobs:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
       - name: Merge master to develop
-        uses: robotology/gh-action-nightly-merge@v1.3.2
+        uses: robotology/gh-action-nightly-merge@v1.3.3
         with:
           stable_branch: 'master'
           development_branch: 'develop'
