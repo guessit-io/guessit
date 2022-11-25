@@ -1,6 +1,6 @@
 site_name: GuessIt
 
-site_url: https://guessit.io
+site_url: https://guessit-io.github.io/guessit
 site_description: GuessIt is a python library that extracts as much information as possible from a video filename.
 site_author: Rémi Alvergnat <toilal.dev@gmail.com>
 

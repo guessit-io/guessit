@@ -30,7 +30,7 @@ For example, GuessIt can do the following:
         "type": "episode"
     }
 
-More information are available at [guessit.io](http://guessit.io/).
+More information is available at [guessit-io.github.io/guessit](https://guessit-io.github.io/guessit).
 
 Support
 -------
