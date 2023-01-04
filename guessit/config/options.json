@@ -242,12 +242,10 @@
         "Extended": {"string": ["extended"], "regex": ["extended-?cut", "extended-?version"], "tags": ["has-neighbor", "release-group-prefix"]},
         "Alternative Cut": {"regex": ["alternat(e|ive)(?:-?Cut)?"], "tags": ["has-neighbor", "release-group-prefix"]},
         "Remastered": [
-          {"string": "Remastered", "tags": ["has-neighbor", "release-group-prefix"]},
-          {"regex": "4k-remaster(?:ed)?", "tags": ["release-group-prefix"]}
+          {"regex": "(?:4k.)?remaster(?:ed)?", "tags": ["release-group-prefix"]}
         ],
         "Restored": [
-          {"string": "Restored", "tags": ["has-neighbor", "release-group-prefix"]},
-          {"regex": "4k-restore(?:d)?", "tags": ["release-group-prefix"]}
+          {"regex": "(?:4k.)?restore(?:d)?", "tags": ["release-group-prefix"]}
         ],
         "Uncensored": {"string": "Uncensored", "tags": ["has-neighbor", "release-group-prefix"]},
         "Uncut": {"string": "Uncut", "tags": ["has-neighbor", "release-group-prefix"]},
