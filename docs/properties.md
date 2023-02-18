@@ -42,6 +42,10 @@ Main properties
 
     Year of movie (or episode).
 
+-   **week**
+
+    Week number, from 1 to 52, of episode.
+
 -   **release\_group**
 
     Name of (non)scene group that released the file.

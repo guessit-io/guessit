@@ -330,7 +330,14 @@
   season: 2010
   episode: 2
 
+? Show Name - S32-Dummy 45-Ep 6478
+: title: Show Name
+  episode_title: Dummy 45
+  season: 32
+  episode: 6478
+
 ? Show Name - S32-Week 45-Ep 6478
 : title: Show Name
   season: 32
+  week: 45
   episode: 6478

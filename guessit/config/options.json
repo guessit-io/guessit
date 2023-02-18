@@ -839,6 +839,9 @@
       "Yahoo": "YHOO",
       "YouTube Red": "RED",
       "ZDF": "ZDF"
+    },
+    "date": {
+      "week_words": ["week"]
     }
   }
 }
