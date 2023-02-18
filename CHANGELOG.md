@@ -3,6 +3,20 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.7.0 (2023-02-18)
+### Feature
+* **week:** Add week property ([`8309bf1`](https://github.com/guessit-io/guessit/commit/8309bf14e34e17a871e0f496c27cf431aaba18e1))
+
+### Fix
+* **episode:** Fix invalid episode range when a weak episode is present before the match ([`ff0a327`](https://github.com/guessit-io/guessit/commit/ff0a3271af736f67e7a6a5fd12b92152035ea57b))
+* **expected:** Build output from input string for expected_title/expected_group ([`90cc215`](https://github.com/guessit-io/guessit/commit/90cc2156aafee39ef20c3cb3aaf0e26ddcb83933))
+* **release_group:** Properly extract group name from format "Title (MediaInfo Individual) [Group]" ([`25bd367`](https://github.com/guessit-io/guessit/commit/25bd367032262dc2a0ee06852c21846202413823))
+* **edition:** Improve remastered/restored detection ([`c3611b9`](https://github.com/guessit-io/guessit/commit/c3611b9b26e7f6c1b6bb2d0e9a708843f3242084))
+* **container:** Add m2ts to container extensions ([`05cca80`](https://github.com/guessit-io/guessit/commit/05cca806530302733377a278c4bb8c200b6a502c))
+
+### Documentation
+* **contributing:** Update branch name ([`4af631d`](https://github.com/guessit-io/guessit/commit/4af631df7a7945a7d229919d56c7f4d874750a4a))
+
 ## v3.6.0 (2023-02-18)
 ### Feature
 * **audio_codec:** Detect "DTS:X" (closes #728) ([`2bdd8f5`](https://github.com/guessit-io/guessit/commit/2bdd8f568a0fa6c5eb97e1f29d5e4d488d86a2aa))
