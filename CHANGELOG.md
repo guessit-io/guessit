@@ -3,6 +3,10 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.6.0 (2023-02-18)
+### Feature
+* **audio_codec:** Detect "DTS:X" (closes #728) ([`2bdd8f5`](https://github.com/guessit-io/guessit/commit/2bdd8f568a0fa6c5eb97e1f29d5e4d488d86a2aa))
+
 ## v3.5.0 (2022-11-01)
 ### Feature
 * **dependencies:** Drop Python 3.6 support ([`47f5718`](https://github.com/guessit-io/guessit/commit/47f57184a9d0a25c1b415638d0b003dad88ce607))
