@@ -4760,3 +4760,13 @@
   screen_size: 1080p
   container: mp4
   type: episode
+
+? 4400.S01E01.1080p.WEB.H264-NOGRP
+: title: '4400'
+  season: 1
+  episode: 1
+  screen_size: 1080p
+  source: Web
+  video_codec: H.264
+  release_group: NOGRP
+  type: episode
