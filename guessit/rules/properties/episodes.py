@@ -582,17 +582,25 @@ class RenameToAbsoluteEpisode(Rule):
     The matches in the group with higher episode values are renamed to absolute_episode.
     """
 
-    consequence = RenameMatch('absolute_episode')
+    consequence = [RenameMatch('absolute_episode'), RemoveMatch]
 
     def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
         initiators = {match.initiator for match in matches.named('episode')
                       if len(match.initiator.children.named('episode')) > 1}
         if len(initiators) != 2:
-            ret = []
+            ret = ([], [])
             for filepart in matches.markers.named('path'):
+                sxxexx_episode_matches = matches.range(filepart.start + 1, filepart.end,
+                                                       predicate=lambda m: m.name == 'episode' and
+                                                                           'SxxExx' in m.tags)
                 if matches.range(filepart.start + 1, filepart.end, predicate=lambda m: m.name == 'episode'):
-                    ret.extend(
-                        matches.starting(filepart.start, predicate=lambda m: m.initiator.name == 'weak_episode'))
+                    absolute_episode_candidate = matches.starting(filepart.start,
+                                                                  predicate=lambda
+                                                                      m: m.initiator.name == 'weak_episode')
+                    if sxxexx_episode_matches:
+                        ret[1].extend(absolute_episode_candidate)
+                    else:
+                        ret[0].extend(absolute_episode_candidate)
             return ret
 
         initiators = sorted(initiators, key=lambda item: item.end)
@@ -601,9 +609,9 @@ class RenameToAbsoluteEpisode(Rule):
             second_range = matches.named('episode', predicate=lambda m: m.initiator == initiators[1])
             if len(first_range) == len(second_range):
                 if second_range[0].value > first_range[0].value:
-                    return second_range
+                    return second_range, []
                 if first_range[0].value > second_range[0].value:
-                    return first_range
+                    return first_range, []
 
 
 class EpisodeNumberSeparatorRange(AbstractSeparatorRange):
