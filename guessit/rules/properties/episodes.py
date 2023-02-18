@@ -68,8 +68,8 @@ def episodes(config):
                 if other.name in ('video_codec', 'audio_codec', 'container', 'date'):
                     return match
                 if (other.name == 'audio_channels' and 'weak-audio_channels' not in other.tags
-                        and not match.initiator.children.named(match.name + 'Marker')) or (
-                            other.name == 'screen_size' and not int_coercable(other.raw)):
+                    and not match.initiator.children.named(match.name + 'Marker')) or (
+                        other.name == 'screen_size' and not int_coercable(other.raw)):
                     return match
                 if other.name in ('season', 'episode') and match.initiator != other.initiator:
                     if (match.initiator.name in ('weak_episode', 'weak_duplicate')
@@ -172,7 +172,7 @@ def episodes(config):
         disabled=is_season_episode_disabled) \
         .defaults(tags=['SxxExx']) \
         .regex(build_or_pattern(season_markers, name='seasonMarker') + r'(?P<season>\d+)@?' +
-               build_or_pattern(episode_markers + disc_markers, name='episodeMarker') + r'@?(?P<episode>\d+)')\
+               build_or_pattern(episode_markers + disc_markers, name='episodeMarker') + r'@?(?P<episode>\d+)') \
         .repeater('+') \
         .regex(build_or_pattern(episode_markers + disc_markers + discrete_separators + range_separators,
                                 name='episodeSeparator',
@@ -186,7 +186,7 @@ def episodes(config):
         .defaults(tags=['SxxExx']) \
         .regex(r'(?P<season>\d+)@?' +
                build_or_pattern(season_ep_markers, name='episodeMarker') +
-               r'@?(?P<episode>\d+)').repeater('+') \
+               r'@?(?P<episode>\d+)').repeater('+')
 
     rebulk.chain(tags=['SxxExx'],
                  validate_all=True,
@@ -511,13 +511,15 @@ class AbstractSeparatorRange(Rule):
     """
     Remove separator matches and create matches for season range.
     """
-    priority = 128
     consequence = [RemoveMatch, AppendMatch]
 
     def __init__(self, range_separators, property_name):
         super().__init__()
         self.range_separators = range_separators
         self.property_name = property_name
+
+    def _can_start_range(self, match):  # pylint: disable=unused-argument
+        return True
 
     def when(self, matches, context):
         to_remove = []
@@ -539,7 +541,10 @@ class AbstractSeparatorRange(Rule):
             to_remove.append(separator)
 
         previous_match = None
-        for next_match in matches.named(self.property_name):
+        sorted_matches = sorted(matches.named(self.property_name), key=lambda x: x.span[0])
+        for next_match in sorted_matches:
+            if not previous_match and not self._can_start_range(next_match):
+                continue
             if previous_match:
                 separator = matches.input_string[previous_match.initiator.end:next_match.initiator.start]
                 if separator not in self.range_separators:
@@ -605,15 +610,20 @@ class EpisodeNumberSeparatorRange(AbstractSeparatorRange):
     """
     Remove separator matches and create matches for episoderNumber range.
     """
+    priority = 128
 
     def __init__(self, range_separators):
         super().__init__(range_separators, "episode")
+
+    def _can_start_range(self, match):
+        return 'weak-episode' not in match.tags
 
 
 class SeasonSeparatorRange(AbstractSeparatorRange):
     """
     Remove separator matches and create matches for season range.
     """
+    priority = 128
 
     def __init__(self, range_separators):
         super().__init__(range_separators, "season")
@@ -727,7 +737,7 @@ class RemoveInvalidSeason(Rule):
         for filepart in matches.markers.named('path'):
             strong_season = matches.range(filepart.start, filepart.end, index=0,
                                           predicate=lambda m: m.name == 'season'
-                                          and not m.private and 'SxxExx' in m.tags)
+                                                              and not m.private and 'SxxExx' in m.tags)
             if strong_season:
                 if strong_season.initiator.children.named('episode'):
                     for season in matches.range(strong_season.end, filepart.end,
@@ -755,7 +765,7 @@ class RemoveInvalidEpisode(Rule):
         for filepart in matches.markers.named('path'):
             strong_episode = matches.range(filepart.start, filepart.end, index=0,
                                            predicate=lambda m: m.name == 'episode'
-                                           and not m.private and 'SxxExx' in m.tags)
+                                                               and not m.private and 'SxxExx' in m.tags)
             if strong_episode:
                 strong_ep_marker = RemoveInvalidEpisode.get_episode_prefix(matches, strong_episode)
                 for episode in matches.range(strong_episode.end, filepart.end,
