@@ -4752,3 +4752,12 @@
   video_codec: H.264
   release_group: NOGRP
   type: episode
+
+? /mydatapool/mydata/Videos/Shows/C/Caprica (2008)/Season 1/Apotheosis_1920x1080.mp4
+: title: Caprica
+  year: 2008
+  season: 1
+  episode_title: Apotheosis
+  screen_size: 1080p
+  container: mp4
+  type: episode

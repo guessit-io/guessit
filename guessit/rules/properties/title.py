@@ -142,8 +142,8 @@ class TitleBaseRule(Rule):
             for outside in outside_matches:
                 other_languages.extend(matches.range(outside.start, outside.end,
                                                      lambda c_match: c_match.name == match.name and
-                                                     c_match not in to_keep and
-                                                     c_match.value not in NON_SPECIFIC_LANGUAGES))
+                                                                     c_match not in to_keep and
+                                                                     c_match.value not in NON_SPECIFIC_LANGUAGES))
 
             if not other_languages and (not starting or len(match.raw) <= 3):
                 return True
@@ -163,7 +163,8 @@ class TitleBaseRule(Rule):
             return match.start >= hole.start and match.end <= hole.end
         return True
 
-    def check_titles_in_filepart(self, filepart, matches, context):  # pylint:disable=inconsistent-return-statements
+    def check_titles_in_filepart(self, filepart, matches, context,
+                                 additional_ignored=None):  # pylint:disable=inconsistent-return-statements
         """
         Find title in filepart (ignoring language)
         """
@@ -171,7 +172,8 @@ class TitleBaseRule(Rule):
         start, end = filepart.span
 
         holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
-                              ignore=self.is_ignored,
+                              ignore=self.is_ignored if additional_ignored is None else lambda m: self.is_ignored(
+                                  m) or additional_ignored(m),
                               predicate=lambda m: m.value)
 
         holes = self.holes_process(holes, matches)
@@ -257,27 +259,61 @@ class TitleBaseRule(Rule):
         fileparts = [filepart for filepart in list(marker_sorted(matches.markers.named('path'), matches))
                      if not self.filepart_filter or self.filepart_filter(filepart, matches)]
 
-        # Priorize fileparts containing the year
-        years_fileparts = []
+        # Try to get show title from subdirectory of a season only directory (Show Name/Season 1/episode_title.avi)
+        serie_name_filepart = None
+        for index in range(len(fileparts) - 1):
+            if index == 0:
+                continue
+            filepart = fileparts[index]
+            filepart_matches = [m for m in matches.range(filepart.start, filepart.end) if not m.private]
+            if len(filepart_matches) == 1 and filepart_matches[0].name == 'season' and \
+                    (filepart_matches[0].span == filepart.span or
+                     filepart_matches[0].parent and filepart_matches[0].parent.span == filepart.span):
+                # Filepath match season match exactly
+                serie_name_filepart = fileparts[index + 1]
+                break
+
+        serie_name_filepath_match = None
+        if serie_name_filepart:
+            def serie_name_filepart_ignored(match):
+                for tag in match.tags:
+                    if tag == 'weak' or tag.startswith('weak-'):
+                        return True
+                return False
+
+            titles = self.check_titles_in_filepart(serie_name_filepart, matches, context, serie_name_filepart_ignored)
+            if titles:
+                titles, to_remove_c = titles
+                if len(titles) == 1:
+                    ret.extend(titles)
+                    to_remove.extend(to_remove_c)
+                    serie_name_filepath_match = titles[0]
+
+        # Force inclusion of fileparts containing the year
+        included_fileparts = []
         for filepart in fileparts:
             year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
             if year_match:
-                years_fileparts.append(filepart)
+                included_fileparts.append(filepart)
 
         for filepart in fileparts:
             try:
-                years_fileparts.remove(filepart)
+                included_fileparts.remove(filepart)
             except ValueError:
                 pass
             titles = self.check_titles_in_filepart(filepart, matches, context)
             if titles:
                 titles, to_remove_c = titles
+                if serie_name_filepath_match:
+                    for title in titles:
+                        if title.value != serie_name_filepath_match.value:
+                            title.name = 'episode_title'
                 ret.extend(titles)
                 to_remove.extend(to_remove_c)
                 break
 
         # Add title match in all fileparts containing the year.
-        for filepart in years_fileparts:
+        for filepart in included_fileparts:
             titles = self.check_titles_in_filepart(filepart, matches, context)
             if titles:
                 # pylint:disable=unbalanced-tuple-unpacking
