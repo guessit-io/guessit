@@ -2340,7 +2340,7 @@
 
 ? /11.22.63/Season 1/11.22.63.106.hdtv-abc
 : options: -T 11.22.63
-  title: 11.22.63
+  title: 11 22 63
   season: 1
   episode: 6
   source: HDTV
@@ -4672,7 +4672,7 @@
   episode: 1
   screen_size: 1080p
   streaming_service: Viki
-  source: Web 
+  source: Web
   release_group: BLUEBERRY
   container: mp4
   mimetype: video/mp4
