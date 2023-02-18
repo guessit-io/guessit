@@ -1871,5 +1871,4 @@
   video_codec: H.264
   release_group: DON
   container: mkv
-  mimetype: video/x-matroska
   type: movie

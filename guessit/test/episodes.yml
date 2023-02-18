@@ -4702,7 +4702,6 @@
   video_codec: H.264
   audio_codec: FLAC
   container: mkv
-  mimetype: video/x-matroska
   type: episode
 
 ? "[EveTaku] Kyouso Giga ONA v2 [540p][128BAC43].mkv"
@@ -4713,7 +4712,6 @@
   screen_size: 540p
   crc32: 128BAC43
   container: mkv
-  mimetype: video/x-matroska
   type: episode
 
 ? '[Erai-raws] Fumetsu no Anata e - 03 [720p][Multiple Subtitle].mkv'
@@ -4723,7 +4721,6 @@
   screen_size: 720p
   subtitle_language: mul
   container: mkv
-  mimetype: video/x-matroska
   type: episode
 
 ? Mom.S06E08.Jell-O.Shots.and.the.Truth.About.Santa.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb.mkv
@@ -4739,7 +4736,6 @@
   video_codec: H.264
   release_group: NTb
   container: mkv
-  mimetype: video/x-matroska
   type: episode
 
 ? Archer.2009.S12E05.Shots.720p.HULU.WEB-DL.DDP5.1.H.264-NOGRP
