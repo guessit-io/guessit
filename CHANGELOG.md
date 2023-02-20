@@ -3,6 +3,11 @@ Changelog
 
 <!--next-version-placeholder-->
 
+## v3.7.1 (2023-02-20)
+### Fix
+* **episode:** Ignore absolute_episode guess when SxxExx match is available in filepart ([`4aa5012`](https://github.com/guessit-io/guessit/commit/4aa5012edbf9f2898a417baec2c301859f5bcd92))
+* **title:** Fix title guessing for `Show Name/Season XX/episode.mkv` directories pattern ([`e717928`](https://github.com/guessit-io/guessit/commit/e717928b8544489bf8aa4f6b2866c0c10f3a7a88))
+
 ## v3.7.0 (2023-02-18)
 ### Feature
 * **week:** Add week property ([`8309bf1`](https://github.com/guessit-io/guessit/commit/8309bf14e34e17a871e0f496c27cf431aaba18e1))
