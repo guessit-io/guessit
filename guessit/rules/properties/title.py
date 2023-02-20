@@ -163,8 +163,8 @@ class TitleBaseRule(Rule):
             return match.start >= hole.start and match.end <= hole.end
         return True
 
-    def check_titles_in_filepart(self, filepart, matches, context,
-                                 additional_ignored=None):  # pylint:disable=inconsistent-return-statements
+    def check_titles_in_filepart(self, filepart, matches, context,  # pylint:disable=inconsistent-return-statements
+                                 additional_ignored=None):
         """
         Find title in filepart (ignoring language)
         """
@@ -249,18 +249,8 @@ class TitleBaseRule(Rule):
                     titles = [hole]
                 return titles, to_remove
 
-    def when(self, matches, context):
-        ret = []
-        to_remove = []
-
-        if matches.named(self.match_name, lambda match: 'expected' in match.tags):
-            return False
-
-        fileparts = [filepart for filepart in list(marker_sorted(matches.markers.named('path'), matches))
-                     if not self.filepart_filter or self.filepart_filter(filepart, matches)]
-
+    def _serie_name_filepart(self, matches, fileparts):
         # Try to get show title from subdirectory of a season only directory (Show Name/Season 1/episode_title.avi)
-        serie_name_filepart = None
         for index in range(len(fileparts) - 1):
             if index == 0:
                 continue
@@ -270,59 +260,80 @@ class TitleBaseRule(Rule):
                     (filepart_matches[0].span == filepart.span or
                      filepart_matches[0].parent and filepart_matches[0].parent.span == filepart.span):
                 # Filepath match season match exactly
-                serie_name_filepart = fileparts[index + 1]
-                break
+                return fileparts[index + 1]
+        return None
 
-        serie_name_filepath_match = None
-        if serie_name_filepart:
-            def serie_name_filepart_ignored(match):
-                for tag in match.tags:
-                    if tag == 'weak' or tag.startswith('weak-'):
-                        return True
-                return False
+    def _serie_name_filepart_match(self, matches, context, serie_name_filepart, to_append, to_remove):
+        def serie_name_filepart_ignored(match):
+            for tag in match.tags:
+                if tag == 'weak' or tag.startswith('weak-'):
+                    return True
+            return False
 
-            titles = self.check_titles_in_filepart(serie_name_filepart, matches, context, serie_name_filepart_ignored)
-            if titles:
-                titles, to_remove_c = titles
-                if len(titles) == 1:
-                    ret.extend(titles)
-                    to_remove.extend(to_remove_c)
-                    serie_name_filepath_match = titles[0]
+        titles = self.check_titles_in_filepart(serie_name_filepart, matches, context, serie_name_filepart_ignored)
+        if titles:
+            titles, to_remove_c = titles
+            if len(titles) == 1:
+                to_append.extend(titles)
+                to_remove.extend(to_remove_c)
+                return titles[0]
+        return None
 
-        # Force inclusion of fileparts containing the year
-        included_fileparts = []
+    def _year_fileparts(self, matches, fileparts):
+        year_fileparts = []
         for filepart in fileparts:
             year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
             if year_match:
-                included_fileparts.append(filepart)
+                year_fileparts.append(filepart)
+        return year_fileparts
+
+    def when(self, matches, context):
+        to_append = []
+        to_remove = []
+
+        if matches.named(self.match_name, lambda match: 'expected' in match.tags):
+            return False
+
+        fileparts = [filepart for filepart in list(marker_sorted(matches.markers.named('path'), matches))
+                     if not self.filepart_filter or self.filepart_filter(filepart, matches)]
+
+        serie_name_filepart = self._serie_name_filepart(matches, fileparts)
+
+        serie_name_filepath_match = None
+        if serie_name_filepart:
+            serie_name_filepath_match = self._serie_name_filepart_match(matches, context, serie_name_filepart,
+                                                                        to_append, to_remove)
+
+        # Force inclusion of fileparts containing the year
+        year_fileparts = self._year_fileparts(matches, fileparts)
 
         for filepart in fileparts:
             try:
-                included_fileparts.remove(filepart)
+                year_fileparts.remove(filepart)
             except ValueError:
                 pass
             titles = self.check_titles_in_filepart(filepart, matches, context)
             if titles:
                 titles, to_remove_c = titles
                 if serie_name_filepath_match:
-                    for title in titles:
-                        if title.value != serie_name_filepath_match.value:
-                            title.name = 'episode_title'
-                ret.extend(titles)
+                    for title_match in titles:
+                        if title_match.value != serie_name_filepath_match.value:
+                            title_match.name = 'episode_title'
+                to_append.extend(titles)
                 to_remove.extend(to_remove_c)
                 break
 
         # Add title match in all fileparts containing the year.
-        for filepart in included_fileparts:
+        for filepart in year_fileparts:
             titles = self.check_titles_in_filepart(filepart, matches, context)
             if titles:
                 # pylint:disable=unbalanced-tuple-unpacking
                 titles, to_remove_c = titles
-                ret.extend(titles)
+                to_append.extend(titles)
                 to_remove.extend(to_remove_c)
 
-        if ret or to_remove:
-            return ret, to_remove
+        if to_append or to_remove:
+            return to_append, to_remove
         return False
 
 
