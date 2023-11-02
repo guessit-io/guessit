@@ -846,7 +846,7 @@
       "WWE Network": "WWEN",
       "Xbox Video": "XBOX",
       "Yahoo": "YHOO",
-      "YouTube Red": "RED",
+      "YouTube Red":  {"pattern": "RED", "ignore_case": false},
       "ZDF": "ZDF"
     },
     "date": {
