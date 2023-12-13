@@ -617,6 +617,7 @@
       "AMC": "AMC",
       "Amazon Prime": [
         "AMZN",
+        "AMZN-CBR",
         "Amazon",
         "re:Amazon-?Prime"
       ],
