@@ -19,7 +19,7 @@ if sys.version_info >= (3, 9, 0):
         """
         Should behave like deprecated importlib.resources.read_text()
         """
-        return files(package).joinpath(filename).read_text()
+        return files(package).joinpath(filename).read_text()  # pylint:disable=unspecified-encoding
 else:
     try:
         from importlib.resources import read_text
