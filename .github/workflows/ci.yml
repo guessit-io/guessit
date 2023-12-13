@@ -11,13 +11,15 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11", "pypy-3.8", "pypy-3.9" ]
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "pypy-3.8", "pypy-3.9", "pypy-3.10" ]
         regex: [ "0", "1" ]
         exclude:
           # regex module doesn't play well with pypy and unicode.
           - python-version: "pypy-3.8"
             regex: "1"
           - python-version: "pypy-3.9"
+            regex: "1"
+          - python-version: "pypy-3.10"
             regex: "1"
           # test regex module only with Python 3.9.
           - python-version: "3.7"
@@ -28,10 +30,12 @@ jobs:
             regex: "1"
           - python-version: "3.11"
             regex: "1"
+          - python-version: "3.12"
+            regex: "1"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
@@ -65,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -79,14 +83,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.9
+      - name: Setup python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.12
 
       - name: Install Dependencies
         run: |
@@ -98,7 +102,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release -v DEBUG version
+        run: semantic-release version
 
       - name: Build
         run: python setup.py sdist bdist_wheel
@@ -116,14 +120,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.9
+      - name: Setup python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.12
 
       - name: Install Dependencies
         run: |
@@ -135,7 +139,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release -v DEBUG version
+        run: semantic-release version
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
@@ -157,14 +161,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.9
+      - name: Setup python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.12
 
       - name: Install Dependencies
         run: |
@@ -176,7 +180,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release -v DEBUG version
+        run: semantic-release version -v DEBUG
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
@@ -197,14 +201,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.9
+      - name: Setup python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.12
 
       - name: Install Dependencies
         run: |
@@ -216,7 +220,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release -v DEBUG version
+        run: semantic-release version -v DEBUG
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
@@ -237,14 +241,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.9
+      - name: Setup python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.12
 
       - uses: actions/download-artifact@v3
         with:
@@ -267,7 +271,7 @@ jobs:
         run: pip install python-semantic-release
 
       - name: Publish release
-        run: semantic-release -v DEBUG publish
+        run: semantic-release publish -v DEBUG
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
