@@ -102,7 +102,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release -v DEBUG version
+        run: semantic-release version
 
       - name: Build
         run: python setup.py sdist bdist_wheel
@@ -139,7 +139,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release -v DEBUG version
+        run: semantic-release version
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
@@ -180,7 +180,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release -v DEBUG version
+        run: semantic-release version -v DEBUG
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
@@ -220,7 +220,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release -v DEBUG version
+        run: semantic-release version -v DEBUG
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
@@ -271,7 +271,7 @@ jobs:
         run: pip install python-semantic-release
 
       - name: Publish release
-        run: semantic-release -v DEBUG publish
+        run: semantic-release publish -v DEBUG
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
