@@ -767,7 +767,7 @@
         "NICKAPP"
       ],
       "Norsk Rikskringkasting": "NRK",
-      "NowTV": {"pattern": "NOW", "ignore_case": false}
+      "NowTV": {"pattern": "NOW", "ignore_case": false},
       "OnDemandKorea": [
         "ODK",
         "OnDemandKorea"
