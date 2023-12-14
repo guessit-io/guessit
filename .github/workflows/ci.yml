@@ -103,6 +103,8 @@ jobs:
 
       - name: Bump version
         run: semantic-release version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
         run: python setup.py sdist bdist_wheel
@@ -140,6 +142,8 @@ jobs:
 
       - name: Bump version
         run: semantic-release version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
@@ -181,6 +185,8 @@ jobs:
 
       - name: Bump version
         run: semantic-release version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
@@ -221,6 +227,8 @@ jobs:
 
       - name: Bump version
         run: semantic-release version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Binary
         run: pyinstaller --dist ./dist guessit.spec
