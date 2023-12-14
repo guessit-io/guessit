@@ -2,7 +2,6 @@ GuessIt
 
 [![Latest Version](https://img.shields.io/pypi/v/guessit.svg)](https://pypi.python.org/pypi/guessit)
 [![LGPLv3 License](https://img.shields.io/badge/license-LGPLv3-blue.svg)]()
-[![Build Status](https://img.shields.io/github/workflow/status/guessit-io/guessit/ci)](https://github.com/guessit-io/guessit/actions?query=workflow%3Aci)
 [![Codecov](https://img.shields.io/codecov/c/github/guessit-io/guessit)](https://codecov.io/gh/guessit-io/guessit)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/relekang/python-semantic-release)
 
