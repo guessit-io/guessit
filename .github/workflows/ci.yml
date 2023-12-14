@@ -278,6 +278,11 @@ jobs:
       - name: Install python-semantic-release
         run: pip install python-semantic-release
 
+      - name: Bump version
+        run: semantic-release version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish release
         run: semantic-release publish
         env:
