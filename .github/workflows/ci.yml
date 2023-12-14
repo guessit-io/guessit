@@ -102,7 +102,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release version
+        run: semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -141,7 +141,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release version
+        run: semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -184,7 +184,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release version
+        run: semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -226,7 +226,7 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release version
+        run: semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
