@@ -1,6 +1,6 @@
 [tool.semantic_release]
 version_variables = ["guessit/__version__.py:__version__"]
-commit_subject = "chore(release): release v{version}"
+commit_message = "chore(release): release v{version}"
 commit_author = "github-actions <actions@github.com>"
 build_command = ""
 
