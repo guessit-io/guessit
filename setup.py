@@ -17,7 +17,7 @@ with io.open(os.path.join(here, 'CHANGELOG.md'), encoding='utf-8') as f:
 
 install_requires = ['rebulk>=3.2.0', 'babelfish>=0.6.0', 'python-dateutil', 'importlib-resources;python_version<"3.9"']
 
-dev_require = ['tox', 'mkdocs', 'mkdocs-material', 'pyinstaller', 'python-semantic-release', 'wheel']
+dev_require = ['tox', 'mkdocs', 'mkdocs-material', 'pyinstaller', 'wheel', 'python-semantic-release', 'twine']
 
 tests_require = ['pytest', 'pytest-mock', 'pytest-benchmark', 'pytest-cov', 'pylint', 'PyYAML']
 
