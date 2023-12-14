@@ -1,0 +1,814 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="GuessIt is a python library that extracts as much information as possible from a video filename.">
+      
+      
+        <meta name="author" content="Rémi Alvergnat <toilal.dev@gmail.com>">
+      
+      
+        <link rel="canonical" href="https://guessit-io.github.io/guessit/migration2to3/">
+      
+      
+        <link rel="prev" href="../configuration/">
+      
+      
+        <link rel="next" href="../migration/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+    
+    
+      
+        <title>Migration (2.x to 3.x) - GuessIt</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#migration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GuessIt" class="md-header__button md-logo" aria-label="GuessIt" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GuessIt
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Migration (2.x to 3.x)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/guessit-io/guessit" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GuessIt" class="md-nav__button md-logo" aria-label="GuessIt" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    GuessIt
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/guessit-io/guessit" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Migration (2.x to 3.x)
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Migration (2.x to 3.x)
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      API
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Values
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Values">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-former-format-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      source (former format property)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#screen_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      screen_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video_codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      video_codec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video_profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      video_profile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audio_codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      audio_codec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audio_profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      audio_profile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edition" class="md-nav__link">
+    <span class="md-ellipsis">
+      edition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#episode_details" class="md-nav__link">
+    <span class="md-ellipsis">
+      episode_details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other" class="md-nav__link">
+    <span class="md-ellipsis">
+      other
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration (1.x to 2.x)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      API
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Values
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Values">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-former-format-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      source (former format property)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#screen_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      screen_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video_codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      video_codec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video_profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      video_profile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audio_codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      audio_codec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audio_profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      audio_profile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edition" class="md-nav__link">
+    <span class="md-ellipsis">
+      edition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#episode_details" class="md-nav__link">
+    <span class="md-ellipsis">
+      episode_details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other" class="md-nav__link">
+    <span class="md-ellipsis">
+      other
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="migration">Migration<a class="headerlink" href="#migration" title="Permanent link">&para;</a></h1>
+<p>Guessit 3 has introduced breaking changes from previous versions. You can find in this file all information required to perform a migration from previous version <code>2.x</code>.</p>
+<h2 id="api">API<a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
+<p>No changes.</p>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<p>Some properties have been renamed.</p>
+<ul>
+<li><code>format</code> is now <code>source</code>.</li>
+</ul>
+<h2 id="values">Values<a class="headerlink" href="#values" title="Permanent link">&para;</a></h2>
+<p>The major changes in GuessIt 3 are around the values. Values were renamed in order to keep consistency and to be more intuitive. Acronyms are uppercase (e.g.: <code>HDTV</code>). Names follow the official name (e.g.: <code>Blu-ray</code>). Words have only the first letter capitalized (e.g.: <code>Camera</code>) except prepositions (e.g.: <code>on</code>) which are all lowercase.</p>
+<p>The following values were changed:</p>
+<h3 id="source-former-format-property"><code>source</code> (former <code>format</code> property)<a class="headerlink" href="#source-former-format-property" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>Cam</code> is now <code>Camera</code> or <code>HD Camera</code></li>
+<li><code>Telesync</code> is now <code>Telesync</code> or <code>HD Telesync</code></li>
+<li><code>PPV</code> is now <code>Pay-per-view</code></li>
+<li><code>DVB</code> is now <code>Digital TV</code></li>
+<li><code>VOD</code> is now <code>Video on Demand</code></li>
+<li><code>WEBRip</code> is now <code>Web</code> with additional property <code>other: Rip</code></li>
+<li><code>WEB-DL</code> is now <code>Web</code></li>
+<li><code>AHDTV</code> is now <code>Analog HDTV</code></li>
+<li><code>UHDTV</code> is now <code>Ultra HDTV</code></li>
+<li><code>HDTC</code> is now <code>HD Telecine</code></li>
+</ul>
+<h3 id="screen_size"><code>screen_size</code><a class="headerlink" href="#screen_size" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>360i</code> was added.</li>
+<li><code>480i</code> was added.</li>
+<li><code>576i</code> was added.</li>
+<li><code>900i</code> was added.</li>
+<li><code>4K</code> is now <code>2160p</code></li>
+<li><code>4320p</code> was added.</li>
+</ul>
+<h3 id="video_codec"><code>video_codec</code><a class="headerlink" href="#video_codec" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>h264</code> is now <code>H.264</code></li>
+<li><code>h265</code> is now <code>H.265</code></li>
+<li><code>Mpeg2</code> is now <code>MPEG-2</code></li>
+<li><code>Real</code> is now <code>RealVideo</code></li>
+<li><code>XviD</code> is now <code>Xvid</code></li>
+</ul>
+<h3 id="video_profile"><code>video_profile</code><a class="headerlink" href="#video_profile" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>BP</code> is now <code>Baseline</code>.</li>
+<li><code>HP</code> is now <code>High</code>.</li>
+<li><code>XP</code> is now <code>Extended</code>.</li>
+<li><code>MP</code> is now <code>Main</code>.</li>
+<li><code>Hi422P</code> is now <code>High 4:2:2</code>.</li>
+<li><code>Hi444PP</code> is now <code>High 4:4:4 Predictive</code>.</li>
+<li><code>High 10</code> was added.</li>
+<li><code>8bit</code> was removed. <code>8bit</code> is detected as <code>color_depth: 8-bit</code></li>
+<li><code>10bit</code> was removed. <code>10bit</code> is detected as <code>color_depth: 10-bit</code></li>
+</ul>
+<h3 id="audio_codec"><code>audio_codec</code><a class="headerlink" href="#audio_codec" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>DTS-HD</code> was added.</li>
+<li><code>AC3</code> is now <code>Dolby Digital</code></li>
+<li><code>EAC3</code> is now <code>Dolby Digital Plus</code></li>
+<li><code>TrueHD</code> is now <code>Dolby TrueHD</code></li>
+<li><code>DolbyAtmos</code> is now <code>Dolby Atmos</code>.</li>
+</ul>
+<h3 id="audio_profile"><code>audio_profile</code><a class="headerlink" href="#audio_profile" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>HE</code> is now <code>High Efficiency</code>.</li>
+<li><code>LC</code> is now <code>Low Complexity</code>.</li>
+<li><code>HQ</code> is now <code>High Quality</code>.</li>
+<li><code>HDMA</code> is now <code>Master Audio</code>.</li>
+</ul>
+<h3 id="edition"><code>edition</code><a class="headerlink" href="#edition" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>Collector Edition</code> is now <code>Collector</code></li>
+<li><code>Special Edition</code> is now <code>Special</code></li>
+<li><code>Criterion Edition</code> is now <code>Criterion</code></li>
+<li><code>Deluxe Edition</code> is now <code>Deluxe</code></li>
+<li><code>Limited Edition</code> is now <code>Limited</code></li>
+<li><code>Theatrical Edition</code> is now <code>Theatrical</code></li>
+<li><code>Director's Definitive Cut</code> was added.</li>
+</ul>
+<h3 id="episode_details"><code>episode_details</code><a class="headerlink" href="#episode_details" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>Oav</code> and <code>Ova</code> were removed. They are now <code>other: Original Animated Video</code></li>
+<li><code>Omake</code> is now <code>Extras</code></li>
+<li><code>Final</code> was added.</li>
+</ul>
+<h3 id="other"><code>other</code><a class="headerlink" href="#other" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>Rip</code> was added. E.g.: <code>DVDRip</code> will output <code>other: Rip</code></li>
+<li><code>DDC</code> was removed. <code>DDC</code> is now <code>edition: Director's Definitive Cut</code></li>
+<li><code>CC</code> was removed. <code>CC</code> is now <code>edition: Criterion</code></li>
+<li><code>FINAL</code> was removed. <code>FINAL</code> is now <code>episode_details: Final</code></li>
+<li><code>Original Animated Video</code> was added.</li>
+<li><code>OV</code> is now <code>Original Video</code></li>
+<li><code>AudioFix</code> is now <code>Audio Fixed</code></li>
+<li><code>SyncFix</code> is now <code>Sync Fixed</code></li>
+<li><code>DualAudio</code> is now <code>Dual Audio</code></li>
+<li><code>Fansub</code> is now <code>Fan Subtitled</code></li>
+<li><code>Fastsub</code> is now <code>Fast Subtitled</code></li>
+<li><code>FullHD</code> is now <code>Full HD</code></li>
+<li><code>UltraHD</code> is now <code>Ultra HD</code></li>
+<li><code>mHD</code> and <code>HDLight</code> are now <code>Micro HD</code></li>
+<li><code>HQ</code> is now <code>High Quality</code></li>
+<li><code>HR</code> is now <code>High Resolution</code></li>
+<li><code>LD</code> is now <code>Line Dubbed</code></li>
+<li><code>MD</code> is now <code>Mic Dubbed</code></li>
+<li><code>Low Definition</code> was added.</li>
+<li><code>LiNE</code> is now <code>Line Audio</code></li>
+<li><code>R5</code> is now <code>Region 5</code></li>
+<li><code>Region C</code> was added.</li>
+<li><code>ReEncoded</code> is now <code>Reencoded</code></li>
+<li><code>WideScreen</code> is now <code>Widescreen</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+    
+  </body>
+</html>

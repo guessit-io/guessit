@@ -1,0 +1,836 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="GuessIt is a python library that extracts as much information as possible from a video filename.">
+      
+      
+        <meta name="author" content="Rémi Alvergnat <toilal.dev@gmail.com>">
+      
+      
+        <link rel="canonical" href="https://guessit-io.github.io/guessit/properties/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../sources/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+    
+    
+      
+        <title>Properties - GuessIt</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#properties" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GuessIt" class="md-header__button md-logo" aria-label="GuessIt" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GuessIt
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Properties
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/guessit-io/guessit" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GuessIt" class="md-nav__button md-logo" aria-label="GuessIt" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    GuessIt
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/guessit-io/guessit" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Properties
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Properties
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#main-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Main properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#episode-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Episode properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#video-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Video properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audio-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Audio properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#localization-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Localization properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other properties
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration2to3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration (2.x to 3.x)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration (1.x to 2.x)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#main-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Main properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#episode-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Episode properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#video-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Video properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audio-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Audio properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#localization-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Localization properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other properties
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h1>
+<p>Guessed values are cleaned up and given in a readable format which may not match exactly the raw filename.</p>
+<p>So, for instance,</p>
+<ul>
+<li><code>DVDSCR</code> will be guessed as <code>source</code> = <code>DVD</code> + <code>other</code> = <code>Screener</code></li>
+<li><code>1920x1080</code> will be guessed as <code>screen_size</code> = <code>1080p</code></li>
+<li><code>DD5.1</code> will be guessed as <code>audio_codec</code> = <code>Dolby Digital</code> + <code>audio_channels</code> = <code>5.1</code></li>
+</ul>
+<h2 id="main-properties">Main properties<a class="headerlink" href="#main-properties" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>type</strong></p>
+<p>Type of the file.</p>
+<ul>
+<li><code>episode</code>, <code>movie</code></li>
+<li><strong>title</strong></li>
+</ul>
+<p>Title of movie or episode.</p>
+</li>
+<li>
+<p><strong>alternative_title</strong></p>
+<p>Other titles found for movie.</p>
+</li>
+<li>
+<p><strong>container</strong></p>
+<p>Container of the file.</p>
+<ul>
+<li><code>3g2</code>, <code>3gp</code>, <code>3gp2</code>, <code>asf</code>, <code>ass</code>, <code>avi</code>, <code>divx</code>, <code>flv</code>, <code>idx</code>, <code>iso</code>, <code>m4v</code>, <code>mk2</code>, <code>mk3d</code>, <code>mkv</code>, <code>mka</code>, <code>mov</code>, <code>mp4</code>, <code>mp4a</code>, <code>mpeg</code>, <code>mpg</code>, <code>nfo</code>, <code>nzb</code>, <code>ogg</code>, <code>ogm</code>, <code>ogv</code>, <code>qt</code>, <code>ra</code>, <code>ram</code>, <code>rm</code>, <code>srt</code>, <code>ssa</code>, <code>sub</code>, <code>torrent</code>, <code>ts</code>, <code>vob</code>, <code>wav</code>, <code>webm</code>, <code>wma</code>, <code>wmv</code></li>
+<li><strong>mimetype</strong></li>
+</ul>
+<p>Mime type of the related container. Guessed values may vary based on OS native support of mime type.</p>
+</li>
+<li>
+<p><strong>date</strong></p>
+<p>Date found in filename.</p>
+</li>
+<li>
+<p><strong>year</strong></p>
+<p>Year of movie (or episode).</p>
+</li>
+<li>
+<p><strong>week</strong></p>
+<p>Week number, from 1 to 52, of episode.</p>
+</li>
+<li>
+<p><strong>release_group</strong></p>
+<p>Name of (non)scene group that released the file.</p>
+</li>
+<li>
+<p><strong>website</strong></p>
+<p>Name of website contained in the filename.</p>
+</li>
+<li>
+<p><strong>streaming_service</strong></p>
+<p>Name of the streaming service.</p>
+<ul>
+<li><code>A&amp;E</code>, <code>ABC</code>, <code>ABC Australia</code>, <code>Adult Swim</code>, <code>Al Jazeera English</code>, <code>AMC</code>, <code>America's Test Kitchen</code>, <code>Amazon Prime</code>, <code>Animal Planet</code>, <code>AnimeLab</code>, <code>AOL</code>, <code>AppleTV</code>, <code>ARD</code>, <code>BBC iPlayer</code>, <code>BravoTV</code>, <code>Canal+</code>, <code>Cartoon Network</code>, <code>CBC</code>, <code>CBS</code>, <code>Channel 4</code>, <code>CHRGD</code>, <code>Cinemax</code>, <code>CNBC</code>, <code>Comedy Central</code>, <code>Comedians in Cars Getting Coffee</code>, <code>Country Music Television</code>, <code>Crackle</code>, <code>Crunchy Roll</code>, <code>CSpan</code>, <code>CTV</code>, <code>CuriosityStream</code>, <code>CWSeed</code>, <code>Daisuki</code>, <code>DC Universe</code>, <code>Deadhouse Films</code>, <code>DramaFever</code>, <code>Digiturk Diledigin Yerde</code>, <code>Discovery</code>, <code>DIY Network</code>, <code>Disney</code>, <code>Doc Club</code>, <code>DPlay</code>, <code>E!</code>, <code>ePix</code>, <code>El Trece</code>, <code>ESPN</code>, <code>Esquire</code>, <code>Family</code>, <code>Family Jr</code>, <code>Food Network</code>, <code>Fox</code>, <code>Freeform</code>, <code>FYI Network</code>, <code>Global</code>, <code>GloboSat Play</code>, <code>Hallmark</code>, <code>HBO Go</code>, <code>HBO Max</code>, <code>HGTV</code>, <code>History</code>, <code>Hulu</code>, <code>Investigation Discovery</code>, <code>IFC</code>, <code>iTunes</code>, <code>ITV</code>, <code>Knowledge Network</code>, <code>Lifetime</code>, <code>Motor Trend OnDemand</code>, <code>MBC</code>, <code>MSNBC</code>, <code>MTV</code>, <code>National Geographic</code>, <code>NBA TV</code>, <code>NBC</code>, <code>Netflix</code>, <code>NFL</code>, <code>NFL Now</code>, <code>NHL GameCenter</code>, <code>Nickelodeon</code>, <code>Norsk Rikskringkasting</code>, <code>OnDemandKorea</code>, <code>PBS</code>, <code>PBS Kids</code>, <code>Playstation Network</code>, <code>Pluzz</code>, <code>RTE One</code>, <code>SBS (AU)</code>, <code>SeeSo</code>, <code>Shomi</code>, <code>Showtime</code>, <code>Spike</code>, <code>Spike TV</code>, <code>Sportsnet</code>, <code>Sprout</code>, <code>Stan</code>, <code>Starz</code>, <code>Sveriges Television</code>, <code>SwearNet</code>, <code>Syfy</code>, <code>TBS</code>, <code>TFou</code>, <code>The CW</code>, <code>TLC</code>, <code>TubiTV</code>, <code>TV3 Ireland</code>, <code>TV4 Sweeden</code>, <code>TVING</code>, <code>TV Land</code>, <code>UFC</code>, <code>UKTV</code>, <code>Univision</code>, <code>USA Network</code>, <code>Velocity</code>, <code>VH1</code>, <code>Viceland</code>, <code>Viki</code>, <code>Vimeo</code>, <code>VRV</code>, <code>W Network</code>, <code>WatchMe</code>, <code>WWE Network</code>, <code>Xbox Video</code>, <code>Yahoo</code>, <code>YouTube Red</code>, <code>ZDF</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="episode-properties">Episode properties<a class="headerlink" href="#episode-properties" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>season</strong></p>
+<p>Season number. (Can be a list if several are found)</p>
+</li>
+<li>
+<p><strong>episode</strong></p>
+<p>Episode number. (Can be a list if several are found)</p>
+</li>
+<li>
+<p><strong>disc</strong></p>
+<p>Disc number. (Can be a list if several are found)</p>
+</li>
+<li>
+<p><strong>episode_count</strong></p>
+<p>Total number of episodes.</p>
+</li>
+<li>
+<p><strong>season_count</strong></p>
+<p>Total number of seasons.</p>
+</li>
+<li>
+<p><strong>episode_details</strong></p>
+<p>Some details about the episode.</p>
+<ul>
+<li><code>Final</code>, <code>Pilot</code>, <code>Special</code>, <code>Unaired</code></li>
+<li><strong>episode_format</strong></li>
+</ul>
+<p>Episode format of the series.</p>
+<ul>
+<li><code>Minisode</code></li>
+<li><strong>part</strong></li>
+</ul>
+<p>Part number of the video. (Can be a list if several are found)</p>
+</li>
+<li>
+<p><strong>version</strong></p>
+<p>Version of the episode.</p>
+<ul>
+<li>In anime fansub scene, new versions are released with tag <code>&lt;episode&gt;v[0-9]</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="video-properties">Video properties<a class="headerlink" href="#video-properties" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>source</strong></p>
+<p>Source of the release</p>
+<ul>
+<li><code>Analog HDTV</code>, <code>Blu-ray</code>, <code>Camera</code>, <code>Digital Master</code>, <code>Digital TV</code>, <code>DVD</code>, <code>HD Camera</code>, <code>HD Telecine</code>, <code>HD Telesync</code>, <code>HD-DVD</code>, <code>HDTV</code>, <code>Pay-per-view</code>, <code>Satellite</code>, <code>Telecine</code>, <code>Telesync</code>, <code>TV</code>, <code>Ultra HD Blu-ray</code>, <code>Ultra HDTV</code>, <code>VHS</code>, <code>Video on Demand</code>, <code>Web</code>, <code>Workprint</code></li>
+<li><strong>screen_size</strong></li>
+</ul>
+<p>Resolution of video.</p>
+<ul>
+<li><code>&lt;width&gt;x&lt;height&gt;</code>, <code>360i</code>, <code>360p</code>, <code>368p</code>, <code>480i</code>, <code>480p</code>, <code>540i</code>, <code>540p</code>, <code>576i</code>, <code>576p</code>, <code>720p</code>, <code>900i</code>, <code>900p</code>, <code>1080i</code>, <code>1080p</code>, <code>1440p</code>, <code>2160p</code>, <code>4320p</code></li>
+<li><strong>aspect_ratio</strong></li>
+</ul>
+<p>Aspect ratio of video. Calculated using width and height from <code>screen_size</code></p>
+</li>
+<li>
+<p><strong>video_codec</strong></p>
+<p>Codec used for video.</p>
+<ul>
+<li><code>DivX</code>, <code>H.263</code>, <code>H.264</code>, <code>H.265</code>, <code>MPEG-2</code>, <code>RealVideo</code>, <code>VP7</code>, <code>VP8</code>, <code>VP9</code>,<code>Xvid</code></li>
+<li><strong>video_profile</strong></li>
+</ul>
+<p>Codec profile used for video.</p>
+<ul>
+<li><code>Baseline</code>, <code>High</code>, <code>High 10</code>, <code>High 4:2:2</code>, <code>High 4:4:4 Predictive</code>, <code>Main</code>, <code>Extended</code>, <code>Scalable Video Coding</code>, <code>Advanced Video Codec High Definition</code>, <code>High Efficiency Video Coding</code></li>
+</ul>
+</li>
+<li>
+<p><strong>color_depth</strong></p>
+<p>Bit depth used for video.
+-   <code>8-bit</code>, <code>10-bit</code>, <code>12-bit</code>
+-   <strong>video_api</strong></p>
+<p>API used for the video.</p>
+<ul>
+<li><code>DXVA</code></li>
+<li><strong>video_bit_rate</strong></li>
+</ul>
+<p>Video bit rate (Mbps). Examples: <code>25Mbps</code> (<code>&lt;BitRate [25Mbps]&gt;</code>), <code>40Mbps</code> (<code>&lt;BitRate [40Mbps]&gt;</code>).</p>
+<ul>
+<li><code>[&lt;guessit.BitRate&gt;]</code> (object has <code>magnitude</code> and <code>units</code>)</li>
+<li><strong>frame_rate</strong></li>
+</ul>
+<p>Video frame rate (frames per second). Examples: <code>25fps</code> (<code>&lt;FrameRate [25fps]&gt;</code>), <code>60fps</code> (<code>&lt;FrameRate [60fps]&gt;</code>).</p>
+<ul>
+<li><code>[&lt;guessit.FrameRate&gt;]</code> (object has <code>magnitude</code> and <code>units</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="audio-properties">Audio properties<a class="headerlink" href="#audio-properties" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>audio_channels</strong></p>
+<p>Number of channels for audio.</p>
+<ul>
+<li><code>1.0</code>, <code>2.0</code>, <code>5.1</code>, <code>7.1</code></li>
+<li><strong>audio_codec</strong></li>
+</ul>
+<p>Codec used for audio.</p>
+<ul>
+<li><code>AAC</code>, <code>Dolby Atmos</code>, <code>Dolby Digital</code>, <code>Dolby Digital Plus</code>, <code>Dolby TrueHD</code>, <code>DTS</code>, <code>FLAC</code>, <code>LPCM</code>, <code>MP2</code>, <code>MP3</code>, <code>Opus</code>, <code>PCM</code>, <code>Vorbis</code></li>
+<li><strong>audio_profile</strong></li>
+</ul>
+<p>The codec profile used for audio.</p>
+<ul>
+<li><code>Extended Surround</code>, <code>EX</code>, <code>High Efficiency</code>, <code>High Quality</code>, <code>High Resolution Audio</code>, <code>Low Complexity</code>, <code>Master Audio</code></li>
+<li><strong>audio_bit_rate</strong></li>
+</ul>
+<p>Audio bit rate (Kbps, Mbps). Examples: <code>448Kbps</code> (<code>&lt;BitRate [448Kbps]&gt;</code>), <code>1.5Mbps</code> (<code>&lt;BitRate [1.5Mbps]&gt;</code>).</p>
+<ul>
+<li><code>[&lt;guessit.BitRate&gt;]</code> (object has <code>magnitude</code> and <code>units</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="localization-properties">Localization properties<a class="headerlink" href="#localization-properties" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>country</strong></p>
+<p>Country(ies) of content. Often found in series, <code>Shameless (US)</code> for instance.</p>
+<ul>
+<li><code>[&lt;babelfish.Country&gt;]</code> (This class equals name and iso code)</li>
+<li><strong>language</strong></li>
+</ul>
+<p>Language(s) of the audio soundtrack.</p>
+<ul>
+<li><code>[&lt;babelfish.Language&gt;]</code> (This class equals name and iso code)</li>
+<li><strong>subtitle_language</strong></li>
+</ul>
+<p>Language(s) of the subtitles.</p>
+<ul>
+<li><code>[&lt;babelfish.Language&gt;]</code> (This class equals name and iso code)</li>
+</ul>
+</li>
+</ul>
+<h2 id="other-properties">Other properties<a class="headerlink" href="#other-properties" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>bonus</strong></p>
+<p>Bonus number.</p>
+</li>
+<li>
+<p><strong>bonus_title</strong></p>
+<p>Bonus title.</p>
+</li>
+<li>
+<p><strong>cd</strong></p>
+<p>CD number.</p>
+</li>
+<li>
+<p><strong>cd_count</strong></p>
+<p>Total count of CD.</p>
+</li>
+<li>
+<p><strong>crc32</strong></p>
+<p>CRC32 of the file.</p>
+</li>
+<li>
+<p><strong>uuid</strong></p>
+<p>Volume identifier (UUID).</p>
+</li>
+<li>
+<p><strong>size</strong></p>
+<p>Size (MB, GB, TB). Examples: <code>1.2GB</code> (<code>&lt;Size [1.2GB]&gt;</code>), <code>430MB</code> (<code>&lt;Size [430MB]&gt;</code>).</p>
+<ul>
+<li><code>[&lt;guessit.Size&gt;]</code> (object has <code>magnitude</code> and <code>units</code>)</li>
+<li><strong>edition</strong></li>
+</ul>
+<p>Edition of the movie.</p>
+<ul>
+<li><code>Alternative Cut</code>, <code>Collector</code>, <code>Criterion</code>, <code>Deluxe</code>, <code>Director's Cut</code>, <code>Director's Definitive Cut</code>, <code>Extended</code>, <code>Fan</code>, <code>Festival</code>, <code>IMAX</code>, <code>Remastered</code>, <code>Restored</code>, <code>Special</code>, <code>Limited</code>, <code>Theatrical</code>, <code>Ultimate</code>, <code>Uncensored</code>, <code>Uncut</code>, <code>Unrated</code></li>
+<li><strong>film</strong></li>
+</ul>
+<p>Film number of this movie.</p>
+</li>
+<li>
+<p><strong>film_title</strong></p>
+<p>Film title of this movie.</p>
+</li>
+<li>
+<p><strong>film_series</strong></p>
+<p>Film series of this movie.</p>
+</li>
+<li>
+<p><strong>other</strong></p>
+<p>Other property will appear under this property.</p>
+<ul>
+<li><code>2in1</code>, <code>3D</code>, <code>Audio Fixed</code>, <code>Bonus</code>, <code>BT.2020</code>, <code>Classic</code>, <code>Colorized</code>, <code>Complete</code>, <code>Converted</code>, <code>Documentary</code>, <code>Dolby Vision</code>, <code>Dual Audio</code>, <code>East Coast Feed</code>, <code>Extras</code>, <code>Fan Subtitled</code>, <code>Fast Subtitled</code>, <code>Full HD</code>, <code>Hardcoded Subtitles</code>, <code>HD</code>, <code>HDR10</code>, <code>High Frame Rate</code>, <code>Hybrid</code>, <code>Variable Frame Rate</code>, <code>High Quality</code>, <code>High Resolution</code>, <code>Internal</code>, <code>Line Dubbed</code>, <code>Line Audio</code>, <code>Mic Dubbed</code>, <code>Micro HD</code>, <code>Mux</code>, <code>NTSC</code>, <code>Obfuscated</code>, <code>Open Matte</code>, <code>Original Aspect Ratio</code>, <code>Original Video</code>, <code>PAL</code>, <code>Preair</code>, <code>Proof</code>, <code>Proper</code>, <code>PS Vita</code>, <code>Read NFO</code>, <code>Region 5</code>, <code>Region C</code>, <code>Reencoded</code>, <code>Remux</code>, <code>Repost</code>, <code>Retail</code>, <code>Rip</code>, <code>Sample</code>, <code>Screener</code>, <code>SECAM</code>, <code>Standard Dynamic Range</code>, <code>Straight to Video</code>, <code>Sync Fixed</code>, <code>Trailer</code>, <code>Ultra HD</code>, <code>Upscaled</code>, <code>West Coast Feed</code>, <code>Widescreen</code>, <code>XXX</code></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+    
+  </body>
+</html>
