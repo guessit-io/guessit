@@ -68,6 +68,8 @@ dev = [
     "mkdocs-material",
     "pyinstaller",
     "python-semantic-release",
+    "tox",
+    "tox-uv",
 ]
 
 [build-system]

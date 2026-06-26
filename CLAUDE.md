@@ -8,7 +8,7 @@ GuessIt is a Python library that extracts metadata (title, season, episode, code
 
 ## Common Commands
 
-This project uses **uv** for packaging, dependencies, and builds (PEP 621 `pyproject.toml` + `uv.lock`, native `uv_build` backend). There is no `setup.py`, `requirements.txt`, or `tox.ini`.
+This project uses **uv** for packaging, dependencies, and builds (PEP 621 `pyproject.toml` + `uv.lock`, hatchling backend). There is no `setup.py` or `requirements.txt`. Multi-version testing uses `tox` (with `tox-uv`, see `tox.ini`).
 
 ```bash
 # Create the dev environment (virtualenv + dev/test dependencies, from uv.lock)
@@ -36,8 +36,12 @@ uv run pre-commit install
 # Run all file hooks manually (what the CI `pre-commit` job runs)
 uv run pre-commit run --all-files
 
-# Run tests on a specific Python version (replaces tox)
+# Run tests on a specific Python version
 uv run --python 3.11 pytest
+# Run the full multi-version test matrix locally (tox-uv)
+uv run tox
+# ... or a single environment
+uv run tox -e py312
 
 # Build the sdist + wheel
 uv build
