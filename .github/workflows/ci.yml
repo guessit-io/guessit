@@ -58,7 +58,8 @@ jobs:
         uses: codecov/codecov-action@v7
 
   pre-commit:
-    # Runs the file hooks (ruff) once, instead of once per matrix entry.
+    # Runs the file hooks (ruff) once, instead of once per matrix entry, through
+    # the same .pre-commit-config.yaml developers use locally (all local + uvx).
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
     runs-on: ubuntu-latest
@@ -66,11 +67,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
-      - uses: pre-commit/action@v3.0.1
+      - name: Run pre-commit
+        run: uvx pre-commit run --all-files --show-diff-on-failure
 
   commitizen:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -85,7 +88,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Check commit messages
         # PR: validate the PR commits; push: validate the pushed range
@@ -117,7 +120,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           enable-cache: true
 
       - name: Git User config
@@ -153,7 +156,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           enable-cache: true
 
       - name: Install Dependencies
@@ -195,7 +198,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           enable-cache: true
 
       - name: Install Dependencies
@@ -237,7 +240,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           enable-cache: true
 
       - name: Install Dependencies
@@ -279,7 +282,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           enable-cache: true
 
       - uses: actions/download-artifact@v8

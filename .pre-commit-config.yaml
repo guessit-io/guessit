@@ -1,19 +1,21 @@
-# Local setup: `uv run pre-commit install` (installs both the pre-commit and the
-# commit-msg hooks, thanks to default_install_hook_types below).
-# CI runs the file hooks through pre-commit/action, and the commit-msg rule
-# through `cz check` (see .github/workflows/ci.yml).
+# Install the git hooks with:  uvx pre-commit install
+# Run the file hooks manually with:  uvx pre-commit run --all-files
+#
+# All hooks are `local` + `language: system` so pre-commit never manages its own
+# hook environments; every tool runs through `uvx`.
 default_install_hook_types: [pre-commit, commit-msg]
 
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.20
+  - repo: local
     hooks:
       - id: ruff-check
-        args: [--fix]
-        files: ^guessit/
-
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.16.4
-    hooks:
+        name: ruff check
+        entry: uvx ruff check --fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
       - id: commitizen
+        name: commitizen check
+        entry: uvx --from commitizen cz check --commit-msg-file
+        language: system
         stages: [commit-msg]

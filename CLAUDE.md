@@ -32,9 +32,9 @@ uv run ruff check guessit
 uv run ruff check guessit --fix
 
 # Install the git hooks (pre-commit: ruff; commit-msg: commitizen)
-uv run pre-commit install
+uvx pre-commit install
 # Run all file hooks manually (what the CI `pre-commit` job runs)
-uv run pre-commit run --all-files
+uvx pre-commit run --all-files
 
 # Run tests on a specific Python version (replaces tox)
 uv run --python 3.11 pytest
