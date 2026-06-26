@@ -152,6 +152,7 @@ class DashSeparatedReleaseGroup(Rule):
 
             if separator == '.':
                 return True
+        return None
 
     def detect(self, matches, start, end, at_end):
         """
@@ -178,10 +179,11 @@ class DashSeparatedReleaseGroup(Rule):
 
         if candidate and self.is_valid(matches, candidate, start, end, at_end):
             return candidate
+        return None
 
     def when(self, matches, context):
         if matches.named('release_group'):
-            return
+            return None
 
         to_remove = []
         to_append = []
@@ -200,6 +202,7 @@ class DashSeparatedReleaseGroup(Rule):
                     to_append.append(releasegroup)
                 if to_remove or to_append:
                     return to_remove, to_append
+        return None
 
 
 class SceneReleaseGroup(Rule):
@@ -271,7 +274,7 @@ class SceneReleaseGroup(Rule):
 
                     if match.start < filepart.start:  # noqa: B023
                         return False
-                    return not match.private or self.is_previous_match(match)  # noqa: B023
+                    return not match.private or self.is_previous_match(match)
 
                 previous_match = matches.previous(last_hole,
                                                   previous_match_filter,

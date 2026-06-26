@@ -245,6 +245,7 @@ class TitleBaseRule(Rule):
                 else:
                     titles = [hole]
                 return titles, to_remove
+        return None
 
     def _serie_name_filepart(self, matches, fileparts):
         # Try to get show title from subdirectory of a season only directory (Show Name/Season 1/episode_title.avi)
@@ -255,7 +256,7 @@ class TitleBaseRule(Rule):
             filepart_matches = [m for m in matches.range(filepart.start, filepart.end) if not m.private]
             if len(filepart_matches) == 1 and filepart_matches[0].name == 'season' and \
                     (filepart_matches[0].span == filepart.span or
-                     filepart_matches[0].parent and filepart_matches[0].parent.span == filepart.span):
+                     (filepart_matches[0].parent and filepart_matches[0].parent.span == filepart.span)):
                 # Filepath match season match exactly
                 return fileparts[index + 1]
         return None

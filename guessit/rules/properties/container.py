@@ -27,7 +27,7 @@ def container(config):
                     tags=['extension'],
                     conflict_solver=lambda match, other: other
                     if other.name in ('source', 'video_codec') or
-                    other.name == 'container' and 'extension' not in other.tags
+                    (other.name == 'container' and 'extension' not in other.tags)
                     else '__default__')
 
     subtitles = config['subtitles']
@@ -48,7 +48,7 @@ def container(config):
                     formatter=lambda s: s.lower(),
                     conflict_solver=lambda match, other: match
                     if other.name in ('source',
-                                      'video_codec') or other.name == 'container' and 'extension' in other.tags
+                                      'video_codec') or (other.name == 'container' and 'extension' in other.tags)
                     else '__default__')
 
     rebulk.string(*[sub for sub in subtitles if sub not in ('sub', 'ass')], tags=['subtitle'])

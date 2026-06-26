@@ -40,7 +40,7 @@ def _potential_after(i, input_string):
     :rtype: bool
     """
     return i + 2 >= len(input_string) or \
-           input_string[i + 2] == input_string[i] and input_string[i + 1] not in seps
+           (input_string[i + 2] == input_string[i] and input_string[i + 1] not in seps)
 
 
 def cleanup(input_string):
@@ -88,8 +88,7 @@ def cleanup(input_string):
 
     clean_string = strip(clean_string, ''.join([c for c in seps if c not in dots]))
 
-    clean_string = re.sub(' +', ' ', clean_string)
-    return clean_string
+    return re.sub(' +', ' ', clean_string)
 
 
 def strip(input_string, chars=seps):

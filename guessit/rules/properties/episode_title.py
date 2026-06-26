@@ -27,14 +27,13 @@ def episode_title(config):
                       'season', 'season_count', 'date', 'title', 'year')
 
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'episode_title'))
-    rebulk = rebulk.rules(RemoveConflictsWithEpisodeTitle(previous_names),
+    return rebulk.rules(RemoveConflictsWithEpisodeTitle(previous_names),
                           EpisodeTitleFromPosition(previous_names),
                           AlternativeTitleReplace(previous_names),
                           TitleToEpisodeTitle,
                           Filepart3EpisodeTitle,
                           Filepart2EpisodeTitle,
                           RenameEpisodeTitleWhenMovieType)
-    return rebulk
 
 
 class RemoveConflictsWithEpisodeTitle(Rule):
@@ -151,7 +150,7 @@ class EpisodeTitleFromPosition(TitleBaseRule):
 
     def when(self, matches, context):
         if matches.named('episode_title'):
-            return
+            return None
         return super().when(matches, context)
 
 
@@ -168,7 +167,7 @@ class AlternativeTitleReplace(Rule):
 
     def when(self, matches, context):
         if matches.named('episode_title'):
-            return
+            return None
 
         alternative_title = matches.range(predicate=lambda match: match.name == 'alternative_title', index=0)
         if alternative_title:
@@ -183,6 +182,7 @@ class AlternativeTitleReplace(Rule):
 
                 if episode or crc32:
                     return alternative_title
+        return None
 
     def then(self, matches, when_response, context):
         matches.remove(when_response)
@@ -204,6 +204,7 @@ class RenameEpisodeTitleWhenMovieType(Rule):
         if matches.named('episode_title', lambda m: 'alternative-replaced' not in m.tags) \
                 and not matches.named('type', lambda m: m.value == 'episode'):
             return matches.named('episode_title')
+        return None
 
     def then(self, matches, when_response, context):
         for match in when_response:
@@ -229,11 +230,11 @@ class Filepart3EpisodeTitle(Rule):
 
     def when(self, matches, context):
         if matches.tagged('filepart-title'):
-            return
+            return None
 
         fileparts = matches.markers.named('path')
         if len(fileparts) < 3:
-            return
+            return None
 
         filename = fileparts[-1]
         directory = fileparts[-2]
@@ -250,6 +251,7 @@ class Filepart3EpisodeTitle(Rule):
                                      index=0)
                 if hole:
                     return hole
+        return None
 
 
 class Filepart2EpisodeTitle(Rule):
@@ -274,11 +276,11 @@ class Filepart2EpisodeTitle(Rule):
 
     def when(self, matches, context):
         if matches.tagged('filepart-title'):
-            return
+            return None
 
         fileparts = matches.markers.named('path')
         if len(fileparts) < 2:
-            return
+            return None
 
         filename = fileparts[-1]
         directory = fileparts[-2]
@@ -295,3 +297,4 @@ class Filepart2EpisodeTitle(Rule):
                 if hole:
                     hole.tags.append('filepart-title')
                     return hole
+        return None

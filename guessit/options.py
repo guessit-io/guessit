@@ -131,7 +131,6 @@ class ConfigurationException(Exception):
     """
     Exception related to configuration file.
     """
-    pass
 
 
 def load_config(options):
@@ -251,7 +250,7 @@ def load_config_file(filepath):
     if filepath.endswith('.json'):
         with open(filepath, encoding='utf-8') as config_file_data:
             return json.load(config_file_data)
-    if filepath.endswith('.yaml') or filepath.endswith('.yml'):
+    if filepath.endswith(('.yaml', '.yml')):
         try:
             import yaml
             with open(filepath, encoding='utf-8') as config_file_data:

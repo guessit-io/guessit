@@ -47,3 +47,4 @@ class BonusTitleRule(Rule):
             if hole and hole.value:
                 hole.name = 'bonus_title'
                 return hole
+        return None

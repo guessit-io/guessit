@@ -47,17 +47,14 @@ class EntryResult:
     def __repr__(self):
         if self.ok:
             return self.string + ': OK!'
+        neg = '-' if self.negates else ''
         if self.warning:
-            return f'{"-" if self.negates else ""}{self.string}: ' \
-                   f'WARNING! (valid={len(self.valid)}, extra={self.extra})'
+            return f'{neg}{self.string}: WARNING! (valid={len(self.valid)}, extra={self.extra})'
+        head = f'valid={len(self.valid)}, extra={self.extra}, missing={self.missing}'
+        tail = f'different={self.different}, others={self.others}'
         if self.error:
-            return f'{"-" if self.negates else ""}{self.string}: ' \
-                   f'ERROR! (valid={len(self.valid)}, extra={self.extra}, ' \
-                   f'missing={self.missing}, different={self.different}, others={self.others})'
-
-        return f'{"-" if self.negates else ""}{self.string}: ' \
-               f'UNKOWN! (valid={len(self.valid)}, extra={self.extra}, ' \
-               f'missing={self.missing}, different={self.different}, others={self.others})'
+            return f'{neg}{self.string}: ERROR! ({head}, {tail})'
+        return f'{neg}{self.string}: UNKOWN! ({head}, {tail})'
 
     @property
     def details(self):

@@ -68,6 +68,7 @@ def _guess_day_first_parameter(groups):
     # If match ends with a short year, then day_first is force to true.
     if _is_int(groups[-1]) and int(groups[-1][-2:]) > 31:
         return True
+    return None
 
 
 def search_date(string, year_first=None, day_first=None):
@@ -126,3 +127,4 @@ def search_date(string, year_first=None, day_first=None):
             # check date plausibility
             if date and valid_year(date.year):
                 return start, end, date.date()
+    return None

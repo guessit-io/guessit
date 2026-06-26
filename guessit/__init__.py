@@ -8,6 +8,6 @@ from .api import GuessItApi, guessit
 from .options import ConfigurationException
 from .rules.common.quantity import Size
 
-__all__ = ['__version__', 'GuessItApi', 'guessit', 'ConfigurationException', 'Size']
+__all__ = ['ConfigurationException', 'GuessItApi', 'Size', '__version__', 'guessit']
 
 _monkeypatch.monkeypatch_rebulk()

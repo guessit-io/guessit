@@ -51,6 +51,7 @@ def date(config):
         ret = search_date(string, context.get('date_year_first'), context.get('date_day_first'))
         if ret:
             return ret[0], ret[1], {'value': ret[2]}
+        return None
 
     rebulk.functional(date_functional, name="date", properties={'date': [None]},
                       disabled=lambda context: is_disabled(context, 'date'),

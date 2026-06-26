@@ -54,7 +54,6 @@ class CustomDumper(yaml.SafeDumper):
     """
     Custom YAML Dumper.
     """
-    pass
 
 
 def default_representer(dumper, data):

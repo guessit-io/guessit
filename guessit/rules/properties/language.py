@@ -162,6 +162,7 @@ class LanguageWord:
                 value = self.input_string[self.start:self.next_word.end].replace('.', ' ')
 
                 return LanguageWord(self.start, self.next_word.end, value, self.input_string, self.next_word.next_word)
+        return None
 
     def __repr__(self):
         return f'<({self.start},{self.end}): {self.value}'
@@ -331,6 +332,7 @@ class LanguageFinder:
                 match = self.create_language_match(key, current_word)
                 if match:
                     return match
+        return None
 
     def create_language_match(self, key, word):
         """
@@ -340,6 +342,7 @@ class LanguageFinder:
 
         if lang is not None:
             return _LanguageMatch(property_name=key, word=word, lang=lang)
+        return None
 
     def parse_language(self, lang_word):
         """
@@ -465,6 +468,7 @@ class SubtitleExtensionRule(Rule):
                     weak.private = True
 
                 return matches.conflicting(subtitle_lang, lambda m: m.name == 'source'), subtitle_lang
+        return None
 
 
 class RemoveLanguage(Rule):
@@ -522,7 +526,7 @@ class RemoveUndeterminedLanguages(Rule):
             if match.value == "und":
                 previous = matches.previous(match, index=0)
                 next_ = matches.next(match, index=0)
-                if previous and previous.name == 'language' or next_ and next_.name == 'language':
+                if (previous and previous.name == 'language') or (next_ and next_.name == 'language'):
                     to_remove.append(match)
 
         return to_remove

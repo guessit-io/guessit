@@ -104,6 +104,7 @@ class ProperCountRule(Rule):
             proper_count_matches.append(proper_count_match)
 
             return proper_count_matches
+        return None
 
 
 class RenameAnotherToOther(Rule):

@@ -36,7 +36,7 @@ def path(config):
 
             indices.sort()
 
-            for i in range(0, len(indices) - 1):
+            for i in range(len(indices) - 1):
                 ret.append((indices[i] + 1, indices[i + 1]))
 
         return ret

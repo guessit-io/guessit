@@ -31,7 +31,7 @@ def country(config, common_words):
         return CountryFinder(allowed_countries, common_words).find(string)
 
     rebulk.functional(find_countries,
-                      #  Prefer language and any other property over country if not US or GB.
+                      #  Prefer language and any other property over country if not US or GB.
                       conflict_solver=lambda match, other: match
                       if other.name != 'language' or match.value not in (babelfish.Country('US'),
                                                                          babelfish.Country('GB'))

@@ -48,3 +48,4 @@ class FilmTitleRule(Rule):
             if hole and hole.value:
                 hole.name = 'film_title'
                 return hole
+        return None

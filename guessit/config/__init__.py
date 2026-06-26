@@ -62,7 +62,7 @@ def _process_option_executable(value: str, default_module_name=None):
     if value.startswith(_eval_prefix):
         value = value[len(_eval_prefix):]
         return _eval(value)
-    if value.startswith('lambda ') or value.startswith('lambda:'):
+    if value.startswith(('lambda ', 'lambda:')):
         return _eval(value)
     return value
 

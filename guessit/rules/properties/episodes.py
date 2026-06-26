@@ -350,7 +350,7 @@ def episodes(config):
                  disabled=lambda context: is_disabled(context, 'episode_format'))
 
     rebulk.rules(WeakConflictSolver, RemoveInvalidSeason, RemoveInvalidEpisode,
-                 SeePatternRange(range_separators + ['_']),
+                 SeePatternRange([*range_separators, '_']),
                  EpisodeNumberSeparatorRange(range_separators),
                  SeasonSeparatorRange(range_separators), RemoveWeakIfMovie, RemoveWeakIfSxxExx, RemoveWeakDuplicate,
                  EpisodeDetailValidator, RemoveDetachedEpisodeNumber, VersionValidator, RemoveWeak(episode_words),
@@ -412,7 +412,7 @@ class WeakConflictSolver(Rule):
                     for match in matches.range(filepart.start, filepart.end, predicate=(
                             lambda m: m.name == 'episode' and m.initiator.name != 'weak_duplicate')):
                         episode = copy.copy(match)
-                        episode.tags = episode.tags + ['anime']
+                        episode.tags = [*episode.tags, 'anime']
                         to_append.append(episode)
                         to_remove.append(match)
             elif weak_dup_matches:
@@ -609,6 +609,7 @@ class RenameToAbsoluteEpisode(Rule):
                     return second_range, []
                 if first_range[0].value > second_range[0].value:
                     return first_range, []
+        return None
 
 
 class EpisodeNumberSeparatorRange(AbstractSeparatorRange):

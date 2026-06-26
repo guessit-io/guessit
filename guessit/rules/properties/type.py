@@ -29,9 +29,8 @@ def type_(config):
     :rtype: Rebulk
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'type'))
-    rebulk = rebulk.rules(TypeProcessor)
+    return rebulk.rules(TypeProcessor)
 
-    return rebulk
 
 
 class TypeProcessor(CustomRule):
