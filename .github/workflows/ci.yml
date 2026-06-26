@@ -73,7 +73,7 @@ jobs:
           python-version: "3.14"
 
       - name: Run pre-commit
-        run: uvx pre-commit run --all-files --show-diff-on-failure
+        run: uv run pre-commit run --all-files --show-diff-on-failure
 
   commitizen:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -103,7 +103,7 @@ jobs:
             RANGE="${{ github.event.before }}..${{ github.event.after }}"
           fi
           echo "Checking commit range: ${RANGE}"
-          uvx --from commitizen cz check --rev-range "${RANGE}"
+          uv run cz check --rev-range "${RANGE}"
 
   build:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository

@@ -1,8 +1,8 @@
-# Install the git hooks with:  uvx pre-commit install
-# Run the file hooks manually with:  uvx pre-commit run --all-files
+# Install the git hooks with:  uv run pre-commit install
+# Run the file hooks manually with:  uv run pre-commit run --all-files
 #
-# All hooks are `local` + `language: system` so pre-commit never manages its own
-# hook environments; every tool runs through `uvx`.
+# All hooks are `local` + `language: system` and run the tools through `uv run`,
+# so they use the exact versions locked in uv.lock (declared in the dev group).
 default_install_hook_types: [pre-commit, commit-msg]
 
 repos:
@@ -10,12 +10,18 @@ repos:
     hooks:
       - id: ruff-check
         name: ruff check
-        entry: uvx ruff check --fix
+        entry: uv run ruff check --fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
         language: system
         types_or: [python, pyi]
         require_serial: true
       - id: commitizen
         name: commitizen check
-        entry: uvx --from commitizen cz check --commit-msg-file
+        entry: uv run cz check --commit-msg-file
         language: system
         stages: [commit-msg]

@@ -58,9 +58,9 @@ lint = [
 dev = [
     { include-group = "test" },
     { include-group = "lint" },
-    # Tooling driven by .pre-commit-config.yaml (hooks call these via uvx, but
-    # they are declared here so the dev env / uv.lock track them): pre-commit
-    # itself, ruff (via the lint group above) and commitizen.
+    # Tooling driven by .pre-commit-config.yaml: the hooks run via `uv run`, so
+    # these must be in the dev env / uv.lock — pre-commit itself, ruff (via the
+    # lint group above) and commitizen.
     "pre-commit",
     "commitizen",
     "mkdocs",
