@@ -628,10 +628,10 @@ class AbstractSeparatorRange(Rule):
             if not previous_match and not self._can_start_range(next_match):
                 continue
             if previous_match:
-                separator = (matches.input_string or "")[previous_match.initiator.end : next_match.initiator.start]
-                if separator not in self.range_separators:
-                    separator = strip(separator)
-                if separator in self.range_separators:
+                gap = (matches.input_string or "")[previous_match.initiator.end : next_match.initiator.start]
+                if gap not in self.range_separators:
+                    gap = strip(gap)
+                if gap in self.range_separators:
                     initiator = previous_match.initiator
                     for episode_number in range(previous_match.value + 1, next_match.value):
                         match = copy.copy(next_match)

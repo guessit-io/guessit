@@ -52,8 +52,9 @@ class BonusTitleRule(Rule):
         bonus_number = matches.named("bonus", lambda match: not match.private, index=0)
         if bonus_number:
             filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == "path", 0)
-            hole = matches.holes(bonus_number.end, filepath.end + 1, formatter=cleanup, index=0)
-            if hole and hole.value:
-                hole.name = "bonus_title"
-                return hole
+            if filepath:
+                hole = matches.holes(bonus_number.end, filepath.end + 1, formatter=cleanup, index=0)
+                if hole and hole.value:
+                    hole.name = "bonus_title"
+                    return hole
         return None

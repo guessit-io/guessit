@@ -276,7 +276,9 @@ class TitleBaseRule(Rule):
                         if (
                             len(separator) == 1
                             and separator == "-"
+                            and previous_title.raw is not None
                             and previous_title.raw[-1] not in seps
+                            and title_match.raw is not None
                             and title_match.raw[0] not in seps
                         ):
                             titles[titles.index(title_match) - 1].end = title_match.end

@@ -125,10 +125,12 @@ class AudioProfileRule(Rule):
             )
             if not codec:
                 codec = matches.previous(
-                    profile, lambda match: match.name == "audio_codec" and match.value == self.codec
+                    profile, lambda match: match.name == "audio_codec" and match.value == self.codec, 0
                 )
             if not codec:
-                codec = matches.next(profile, lambda match: match.name == "audio_codec" and match.value == self.codec)
+                codec = matches.next(
+                    profile, lambda match: match.name == "audio_codec" and match.value == self.codec, 0
+                )
             if not codec:
                 ret.append(profile)
             if codec:
