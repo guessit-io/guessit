@@ -75,7 +75,7 @@ Tests live in `guessit/test/`. The YAML files (`episodes.yml`, `movies.yml`, `va
 ## Branch Strategy
 
 - **develop**: main development branch (PR target)
-- **master**: release branch (triggers semantic-release automation)
+- **main**: release branch (triggers semantic-release automation)
 - Conventional commits required — enforced locally by the commitizen commit-msg
   hook (`.pre-commit-config.yaml`) and in CI by the `commitizen` job (`cz check`).
   Config: `[tool.commitizen]` in `pyproject.toml`. Versioning/releases stay owned
