@@ -3,6 +3,8 @@
 Common module
 """
 
+from __future__ import annotations
+
 from rebulk.remodule import re
 
 seps = r" [](){}+*|=-_~#/\\.,;:"  # list of tags/words separators
@@ -15,7 +17,7 @@ dash = (r"-", r"[" + re.escape(seps_no_fs) + "]")  # abbreviation used by many r
 alt_dash = (r"@", r"[" + re.escape(seps_no_fs) + "]")  # abbreviation used by many rebulk objects.
 
 
-def optional(pattern):
+def optional(pattern: str) -> str:
     """
     Make a regex pattern optional
     """

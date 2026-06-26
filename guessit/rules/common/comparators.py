@@ -3,10 +3,18 @@
 Comparators
 """
 
+from __future__ import annotations
+
 from functools import cmp_to_key
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from rebulk.match import Match, Matches
 
 
-def marker_comparator_predicate(match):
+def marker_comparator_predicate(match: Match) -> bool:
     """
     Match predicate used in comparator
     """
@@ -18,7 +26,7 @@ def marker_comparator_predicate(match):
     )
 
 
-def marker_weight(matches, marker, predicate):
+def marker_weight(matches: Matches, marker: Match, predicate: Callable[[Match], bool]) -> int:
     """
     Compute the comparator weight of a marker
     :param matches:
@@ -29,7 +37,9 @@ def marker_weight(matches, marker, predicate):
     return len({match.name for match in matches.range(*marker.span, predicate=predicate)})
 
 
-def marker_comparator(matches, markers, predicate):
+def marker_comparator(
+    matches: Matches, markers: list[Match], predicate: Callable[[Match], bool]
+) -> Callable[[Match, Match], int]:
     """
     Builds a comparator that returns markers sorted from the most valuable to the less.
 
@@ -43,7 +53,7 @@ def marker_comparator(matches, markers, predicate):
     :rtype:
     """
 
-    def comparator(marker1, marker2):
+    def comparator(marker1: Match, marker2: Match) -> int:
         """
         The actual comparator function.
         """
@@ -57,7 +67,11 @@ def marker_comparator(matches, markers, predicate):
     return comparator
 
 
-def marker_sorted(markers, matches, predicate=marker_comparator_predicate):
+def marker_sorted(
+    markers: list[Match],
+    matches: Matches,
+    predicate: Callable[[Match], bool] = marker_comparator_predicate,
+) -> list[Match]:
     """
     Sort markers from matches, from the most valuable to the less.
 

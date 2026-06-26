@@ -3,6 +3,8 @@
 parse numeral from various formats
 """
 
+from __future__ import annotations
+
 from rebulk.remodule import re
 
 digital_numeral = r"\d{1,4}"
@@ -82,7 +84,7 @@ french_alt_word_numeral_list = [
 ]
 
 
-def __build_word_numeral(*args):
+def __build_word_numeral(*args: list[str]) -> str:
     """
     Build word numeral regexp from list.
 
@@ -93,7 +95,7 @@ def __build_word_numeral(*args):
     :return:
     :rtype:
     """
-    re_ = None
+    re_: str | None = None
     for word_list in args:
         for word in word_list:
             if not re_:
@@ -101,6 +103,7 @@ def __build_word_numeral(*args):
             else:
                 re_ += "|"
             re_ += word
+    assert re_ is not None
     re_ += ")"
     return re_
 
@@ -128,7 +131,7 @@ _roman_numeral_map = (
 __romanNumeralPattern = re.compile("^" + roman_numeral + "$")
 
 
-def __parse_roman(value):
+def __parse_roman(value: str) -> int:
     """
     convert Roman numeral to integer
 
@@ -149,7 +152,7 @@ def __parse_roman(value):
     return result
 
 
-def __parse_word(value):
+def __parse_word(value: str) -> int:
     """
     Convert Word numeral to integer
 
@@ -169,7 +172,13 @@ def __parse_word(value):
 _clean_re = re.compile(r"[^\d]*(\d+)[^\d]*")
 
 
-def parse_numeral(value, int_enabled=True, roman_enabled=True, word_enabled=True, clean=True):
+def parse_numeral(
+    value: str,
+    int_enabled: bool = True,
+    roman_enabled: bool = True,
+    word_enabled: bool = True,
+    clean: bool = True,
+) -> int:
     """
     Parse a numeric value into integer.
 

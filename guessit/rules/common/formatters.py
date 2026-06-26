@@ -3,6 +3,10 @@
 Formatters
 """
 
+from __future__ import annotations
+
+from typing import cast
+
 from rebulk.formatters import formatters
 from rebulk.remodule import re
 
@@ -15,7 +19,7 @@ for sep in seps:
         clean_chars += sep
 
 
-def _potential_before(i, input_string):
+def _potential_before(i: int, input_string: str) -> bool:
     """
     Check if the character at position i can be a potential single char separator considering what's before it.
 
@@ -29,7 +33,7 @@ def _potential_before(i, input_string):
     return i - 1 >= 0 and input_string[i] in seps and input_string[i - 2] in seps and input_string[i - 1] not in seps
 
 
-def _potential_after(i, input_string):
+def _potential_after(i: int, input_string: str) -> bool:
     """
     Check if the character at position i can be a potential single char separator considering what's after it.
 
@@ -43,7 +47,7 @@ def _potential_after(i, input_string):
     return i + 2 >= len(input_string) or (input_string[i + 2] == input_string[i] and input_string[i + 1] not in seps)
 
 
-def cleanup(input_string):
+def cleanup(input_string: str) -> str:
     """
     Removes and strip separators from input_string (but keep ',;' characters)
 
@@ -64,7 +68,7 @@ def cleanup(input_string):
 
     indices = [i for i, letter in enumerate(clean_string) if letter in seps]
 
-    dots = set()
+    dots: set[str] = set()
     if indices:
         clean_list = list(clean_string)
 
@@ -88,10 +92,10 @@ def cleanup(input_string):
 
     clean_string = strip(clean_string, "".join([c for c in seps if c not in dots]))
 
-    return re.sub(" +", " ", clean_string)
+    return cast("str", re.sub(" +", " ", clean_string))
 
 
-def strip(input_string, chars=seps):
+def strip(input_string: str, chars: str = seps) -> str:
     """
     Strip separators from input_string
     :param input_string:
@@ -103,7 +107,7 @@ def strip(input_string, chars=seps):
     return input_string.strip(chars)
 
 
-def raw_cleanup(raw):
+def raw_cleanup(raw: str) -> str:
     """
     Cleanup a raw value to perform raw comparison
     :param raw:
@@ -111,10 +115,10 @@ def raw_cleanup(raw):
     :return:
     :rtype:
     """
-    return formatters(cleanup, strip)(raw.lower())
+    return cast("str", formatters(cleanup, strip)(raw.lower()))
 
 
-def reorder_title(title, articles=("the",), separators=(",", ", ")):
+def reorder_title(title: str, articles: tuple[str, ...] = ("the",), separators: tuple[str, ...] = (",", ", ")) -> str:
     """
     Reorder the title
     :param title:

@@ -3,18 +3,24 @@
 Validators
 """
 
+from __future__ import annotations
+
 from functools import partial
+from typing import TYPE_CHECKING
 
 from rebulk.validators import chars_after, chars_before, chars_surround
 
 from . import seps
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 seps_before = partial(chars_before, seps)
 seps_after = partial(chars_after, seps)
 seps_surround = partial(chars_surround, seps)
 
 
-def int_coercable(string):
+def int_coercable(string: str) -> bool:
     """
     Check if string can be coerced to int
     :param string:
@@ -29,7 +35,7 @@ def int_coercable(string):
         return False
 
 
-def and_(*validators):
+def and_(*validators: Callable[[str], bool]) -> Callable[[str], bool]:
     """
     Compose validators functions
     :param validators:
@@ -38,7 +44,7 @@ def and_(*validators):
     :rtype:
     """
 
-    def composed(string):
+    def composed(string: str) -> bool:
         """
         Composed validators function
         :param string:
@@ -51,7 +57,7 @@ def and_(*validators):
     return composed
 
 
-def or_(*validators):
+def or_(*validators: Callable[[str], bool]) -> Callable[[str], bool]:
     """
     Compose validators functions
     :param validators:
@@ -60,7 +66,7 @@ def or_(*validators):
     :rtype:
     """
 
-    def composed(string):
+    def composed(string: str) -> bool:
         """
         Composed validators function
         :param string:

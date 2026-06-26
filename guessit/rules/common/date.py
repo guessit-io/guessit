@@ -3,8 +3,15 @@
 Date
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from dateutil import parser
 from rebulk.remodule import re
+
+if TYPE_CHECKING:
+    from datetime import date
 
 _dsep = r"[-/ \.]"
 _dsep_bis = r"[-/ \.x]"
@@ -22,17 +29,17 @@ date_regexps = [
 ]
 
 
-def valid_year(year):
+def valid_year(year: int) -> bool:
     """Check if number is a valid year"""
     return 1920 <= year < 2030
 
 
-def valid_week(week):
+def valid_week(week: int) -> bool:
     """Check if number is a valid week"""
     return 1 <= week < 53
 
 
-def _is_int(string):
+def _is_int(string: str) -> bool:
     """
     Check if the input string is an integer
 
@@ -48,7 +55,7 @@ def _is_int(string):
         return False
 
 
-def _guess_day_first_parameter(groups):
+def _guess_day_first_parameter(groups: tuple[Any, ...]) -> bool | None:
     """
     If day_first is not defined, use some heuristic to fix it.
     It helps to solve issues with python dateutils 2.5.3 parser changes.
@@ -74,7 +81,9 @@ def _guess_day_first_parameter(groups):
     return None
 
 
-def search_date(string, year_first=None, day_first=None):
+def search_date(
+    string: str, year_first: bool | None = None, day_first: bool | None = None
+) -> tuple[int, int, date] | None:
     """Looks for date patterns, and if found return the date and group span.
 
     Assumes there are sentinels at the beginning and end of the string that

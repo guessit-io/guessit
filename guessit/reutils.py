@@ -3,10 +3,17 @@
 Utils for re module
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from rebulk.remodule import re
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
-def build_or_pattern(patterns, name=None, escape=False):
+
+def build_or_pattern(patterns: Iterable[str], name: str | None = None, escape: bool = False) -> str:
     """
     Build a or pattern string from a list of possible patterns
 
@@ -19,7 +26,7 @@ def build_or_pattern(patterns, name=None, escape=False):
     :return:
     :rtype:
     """
-    or_pattern = []
+    or_pattern: list[str] = []
     for pattern in patterns:
         if not or_pattern:
             or_pattern.append("(?")

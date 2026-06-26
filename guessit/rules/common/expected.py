@@ -3,14 +3,21 @@
 Expected property factory
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 from rebulk.utils import find_all
 
 from . import dash, seps
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
-def build_expected_function(context_key):
+
+def build_expected_function(context_key: str) -> Callable[[str, dict[str, Any]], list[Any]]:
     """
     Creates a expected property function
     :param context_key:
@@ -21,7 +28,7 @@ def build_expected_function(context_key):
     :rtype:
     """
 
-    def expected(input_string, context):
+    def expected(input_string: str, context: dict[str, Any]) -> list[Any]:
         """
         Expected property functional pattern.
         :param input_string:
@@ -31,8 +38,8 @@ def build_expected_function(context_key):
         :return:
         :rtype:
         """
-        ret = []
-        for search in context.get(context_key):
+        ret: list[Any] = []
+        for search in context.get(context_key) or ():
             if search.startswith("re:"):
                 search = search[3:]
                 search = search.replace(" ", "-")

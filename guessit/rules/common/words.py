@@ -3,14 +3,22 @@
 Words utils
 """
 
-from collections import namedtuple
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, NamedTuple
 
 from . import seps
 
-_Word = namedtuple("_Word", ["span", "value"])
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
-def iter_words(string):
+class _Word(NamedTuple):
+    span: tuple[int, int]
+    value: str
+
+
+def iter_words(string: str) -> Iterator[_Word]:
     """
     Iterate on all words in a string
     :param string:

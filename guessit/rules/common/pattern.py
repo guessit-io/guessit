@@ -3,8 +3,12 @@
 Pattern utility functions
 """
 
+from __future__ import annotations
 
-def is_disabled(context, name):
+from typing import Any
+
+
+def is_disabled(context: dict[str, Any] | None, name: str) -> bool:
     """Whether a specific pattern is disabled.
 
     The context object might define an inclusion list (includes) or an exclusion list (excludes)
@@ -23,4 +27,6 @@ def is_disabled(context, name):
         return True
 
     includes = context.get("includes")
-    return includes and name not in includes
+    if includes:
+        return name not in includes
+    return False
