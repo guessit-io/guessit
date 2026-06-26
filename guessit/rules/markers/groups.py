@@ -3,12 +3,16 @@
 Groups markers (...), [...] and {...}
 """
 
+from __future__ import annotations
+
+from typing import Any
+
 from rebulk import Rebulk
 
 from ...options import ConfigurationException
 
 
-def groups(config):
+def groups(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -26,16 +30,16 @@ def groups(config):
     if len(starting) != len(ending):
         raise ConfigurationException("Starting and ending groups must have the same length")
 
-    def mark_groups(input_string):
+    def mark_groups(input_string: str) -> list[tuple[int, int]]:
         """
         Functional pattern to mark groups (...), [...] and {...}.
 
         :param input_string:
         :return:
         """
-        openings = ([],) * len(starting)
+        openings: tuple[list[int], ...] = ([],) * len(starting)
 
-        ret = []
+        ret: list[tuple[int, int]] = []
         for i, char in enumerate(input_string):
             start_type = starting.find(char)
             if start_type > -1:

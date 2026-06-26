@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator
 
 
-def country(config: dict[str, Any], common_words: set[str]) -> Rebulk:
+def country(config: dict[str, Any], common_words: frozenset[str]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -101,7 +101,7 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):  # type: ignor
 class CountryFinder:
     """Helper class to search and return country matches."""
 
-    def __init__(self, allowed_countries: Iterable[str] | None, common_words: set[str]) -> None:
+    def __init__(self, allowed_countries: Iterable[str] | None, common_words: frozenset[str]) -> None:
         self.allowed_countries = {country.lower() for country in allowed_countries or []}
         self.common_words = common_words
 

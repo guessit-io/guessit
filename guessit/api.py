@@ -3,11 +3,14 @@
 API functions that can be used by external software
 """
 
+from __future__ import annotations
+
 import os
 import traceback
 from collections import OrderedDict
 from copy import deepcopy
 from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 from rebulk.introspector import introspect
 
@@ -15,13 +18,18 @@ from .__version__ import __version__
 from .options import load_config, merge_options, parse_options
 from .rules import rebulk_builder
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from rebulk import Rebulk
+
 
 class GuessitException(Exception):
     """
     Exception raised when guessit fails to perform a guess because of an internal error.
     """
 
-    def __init__(self, string, options):
+    def __init__(self, string: Any, options: Any) -> None:
         super().__init__(
             "An internal error has occurred in guessit.\n"
             "===================== Guessit Exception Report =====================\n"
@@ -40,7 +48,7 @@ class GuessitException(Exception):
         self.options = options
 
 
-def configure(options=None, rules_builder=None, force=False):
+def configure(options: Any = None, rules_builder: Callable[..., Rebulk] | None = None, force: bool = False) -> None:
     """
     Load configuration files and initialize rebulk rules if required.
 
@@ -55,14 +63,14 @@ def configure(options=None, rules_builder=None, force=False):
     default_api.configure(options, rules_builder=rules_builder, force=force)
 
 
-def reset():
+def reset() -> None:
     """
     Reset api internal state.
     """
     default_api.reset()
 
 
-def guessit(string, options=None):
+def guessit(string: str | Path | bytes, options: Any = None) -> dict[str, Any]:
     """
     Retrieves all matches from string as a dict
     :param string: the filename or release name
@@ -75,7 +83,7 @@ def guessit(string, options=None):
     return default_api.guessit(string, options)
 
 
-def properties(options=None):
+def properties(options: Any = None) -> dict[str, Any]:
     """
     Retrieves all properties with possible values that can be guessed
     :param options:
@@ -86,7 +94,7 @@ def properties(options=None):
     return default_api.properties(options)
 
 
-def suggested_expected(titles, options=None):
+def suggested_expected(titles: Any, options: Any = None) -> list[Any]:
     """
     Return a list of suggested titles to be used as `expected_title` based on the list of titles
     :param titles: the filename or release name
@@ -104,21 +112,21 @@ class GuessItApi:
     An api class that can be configured with custom Rebulk configuration.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Default constructor."""
-        self.rebulk = None
-        self.config = None
-        self.load_config_options = None
-        self.advanced_config = None
+        self.rebulk: Rebulk | None = None
+        self.config: dict[str, Any] | None = None
+        self.load_config_options: Any = None
+        self.advanced_config: Any = None
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Reset api internal state.
         """
-        self.__init__()
+        self.__init__()  # type: ignore[misc]
 
     @classmethod
-    def _fix_encoding(cls, value):
+    def _fix_encoding(cls, value: Any) -> Any:
         if isinstance(value, list):
             return [cls._fix_encoding(item) for item in value]
         if isinstance(value, dict):
@@ -128,10 +136,16 @@ class GuessItApi:
         return value
 
     @classmethod
-    def _has_same_properties(cls, dic1, dic2, values):
+    def _has_same_properties(cls, dic1: dict[str, Any], dic2: dict[str, Any], values: list[str]) -> bool:
         return all(dic1.get(value) == dic2.get(value) for value in values)
 
-    def configure(self, options=None, rules_builder=None, force=False, sanitize_options=True):
+    def configure(
+        self,
+        options: Any = None,
+        rules_builder: Callable[..., Rebulk] | None = None,
+        force: bool = False,
+        sanitize_options: bool = True,
+    ) -> dict[str, Any]:
         """
         Load configuration files and initialize rebulk rules if required.
 
@@ -180,7 +194,7 @@ class GuessItApi:
         self.config = config
         return self.config
 
-    def guessit(self, string, options=None):
+    def guessit(self, string: str | Path | bytes, options: Any = None) -> dict[str, Any]:
         """
         Retrieves all matches from string as a dict
         :param string: the filename or release name
@@ -209,6 +223,7 @@ class GuessItApi:
                 string = string.decode("ascii")
                 result_encode = True
 
+            assert self.rebulk is not None
             matches = self.rebulk.matches(string, options)
             if result_decode:
                 for match in matches:
@@ -228,7 +243,7 @@ class GuessItApi:
         except Exception as err:
             raise GuessitException(string, options) from err
 
-    def properties(self, options=None):
+    def properties(self, options: Any = None) -> dict[str, Any]:
         """
         Grab properties and values that can be generated.
         :param options:
@@ -240,6 +255,7 @@ class GuessItApi:
         options = self._fix_encoding(options)
         config = self.configure(options, sanitize_options=False)
         options = merge_options(config, options)
+        assert self.rebulk is not None
         unordered = introspect(self.rebulk, options).properties
         ordered = OrderedDict()
         for k in sorted(unordered.keys(), key=str):
@@ -248,7 +264,7 @@ class GuessItApi:
             ordered = self.rebulk.customize_properties(ordered)
         return ordered
 
-    def suggested_expected(self, titles, options=None):
+    def suggested_expected(self, titles: Any, options: Any = None) -> list[Any]:
         """
         Return a list of suggested titles to be used as `expected_title` based on the list of titles
         :param titles: the filename or release name
@@ -258,7 +274,7 @@ class GuessItApi:
         :return:
         :rtype: list of str
         """
-        suggested = []
+        suggested: list[Any] = []
         for title in titles:
             guess = self.guessit(title, options)
             if len(guess) != 2 or "title" not in guess:

@@ -3,6 +3,10 @@
 Rebulk object default builder
 """
 
+from __future__ import annotations
+
+from typing import Any
+
 from rebulk import Rebulk
 
 from .markers.groups import groups
@@ -35,14 +39,14 @@ from .properties.video_codec import video_codec
 from .properties.website import website
 
 
-def rebulk_builder(config):
+def rebulk_builder(config: dict[str, Any]) -> Rebulk:
     """
     Default builder for main Rebulk object used by api.
     :return: Main Rebulk object
     :rtype: Rebulk
     """
 
-    def _config(name):
+    def _config(name: str) -> Any:
         return config.get(name, {})
 
     rebulk = Rebulk()
@@ -81,7 +85,7 @@ def rebulk_builder(config):
     rebulk.rebulk(mimetype(_config("mimetype")))
     rebulk.rebulk(type_(_config("type")))
 
-    def customize_properties(properties):
+    def customize_properties(properties: dict[str, Any]) -> dict[str, Any]:
         """
         Customize default rebulk properties
         """
@@ -93,6 +97,6 @@ def rebulk_builder(config):
 
         return properties
 
-    rebulk.customize_properties = customize_properties
+    rebulk.customize_properties = customize_properties  # type: ignore[attr-defined]
 
     return rebulk

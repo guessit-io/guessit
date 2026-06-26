@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from rebulk.match import Match, Matches
 
 
-def language(config: dict[str, Any], common_words: set[str]) -> Rebulk:
+def language(config: dict[str, Any], common_words: frozenset[str]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -549,7 +549,7 @@ class RemoveInvalidLanguages(Rule):
     consequence = RemoveMatch
     priority = 32
 
-    def __init__(self, common_words: set[str]) -> None:
+    def __init__(self, common_words: frozenset[str]) -> None:
         """Constructor."""
         super().__init__()
         self.common_words = common_words

@@ -3,11 +3,15 @@
 Path markers
 """
 
+from __future__ import annotations
+
+from typing import Any
+
 from rebulk import Rebulk
 from rebulk.utils import find_all
 
 
-def path(config):
+def path(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -19,7 +23,7 @@ def path(config):
     rebulk = Rebulk()
     rebulk.defaults(name="path", marker=True)
 
-    def mark_path(input_string, context):
+    def mark_path(input_string: str, context: dict[str, Any]) -> list[tuple[int, int]]:
         """
         Functional pattern to mark path elements.
 
@@ -27,7 +31,7 @@ def path(config):
         :param context:
         :return:
         """
-        ret = []
+        ret: list[tuple[int, int]] = []
         if context.get("name_only", False):
             ret.append((0, len(input_string)))
         else:

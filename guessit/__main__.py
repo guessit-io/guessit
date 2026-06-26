@@ -3,11 +3,14 @@
 Entry point module
 """
 
+from __future__ import annotations
+
 # pragma: no cover
 import json
 import logging
 import sys
 from collections import OrderedDict
+from typing import Any
 
 from rebulk.__version__ import __version__ as __rebulk_version__
 
@@ -17,7 +20,7 @@ from guessit.jsonutils import GuessitEncoder
 from guessit.options import argument_parser, load_config, merge_options, parse_options
 
 
-def guess_filename(filename, options):
+def guess_filename(filename: str, options: dict[str, Any]) -> None:
     """
     Guess a single filename using given options
     :param filename: filename to parse
@@ -32,8 +35,9 @@ def guess_filename(filename, options):
 
     guess = api.guessit(filename, options)
 
-    if options.get("show_property"):
-        print(guess.get(options.get("show_property"), ""))
+    show_property = options.get("show_property")
+    if show_property:
+        print(guess.get(show_property, ""))
         return
 
     if options.get("json"):
@@ -57,7 +61,7 @@ def guess_filename(filename, options):
         print("GuessIt found:", json.dumps(guess, cls=GuessitEncoder, indent=4, ensure_ascii=False))
 
 
-def display_properties(options):
+def display_properties(options: dict[str, Any]) -> None:
     """
     Display properties
     """
@@ -93,7 +97,7 @@ def display_properties(options):
                     print(4 * " " + f"[!] {property_value}")
 
 
-def main(args=None):
+def main(args: list[str] | None = None) -> None:
     """
     Main function for entry point
     """
@@ -130,12 +134,14 @@ def main(args=None):
         display_properties(options)
         help_required = False
 
-    filenames = []
-    if options.get("filename"):
-        for filename in options.get("filename"):
+    filenames: list[str] = []
+    filename_option = options.get("filename")
+    if filename_option:
+        for filename in filename_option:
             filenames.append(filename)
-    if options.get("input_file"):
-        with open(options.get("input_file"), encoding="utf-8") as input_file:
+    input_file_option = options.get("input_file")
+    if input_file_option:
+        with open(input_file_option, encoding="utf-8") as input_file:
             filenames.extend([line.strip() for line in input_file.readlines()])
 
     filenames = list(filter(lambda f: f, filenames))

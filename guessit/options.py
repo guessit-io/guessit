@@ -3,23 +3,26 @@
 Options
 """
 
+from __future__ import annotations
+
 import copy
 import json
 import os
 import shlex
 from argparse import ArgumentParser
 from importlib.resources import files
+from typing import Any, cast
 
 
 # importlib.resources.read_text() is deprecated since Python 3.11.
-def read_text(package, filename):
+def read_text(package: str, filename: str) -> str:
     """
     Should behave like deprecated importlib.resources.read_text()
     """
-    return files(package).joinpath(filename).read_text()
+    return str(files(package).joinpath(filename).read_text())
 
 
-def build_argument_parser():
+def build_argument_parser() -> ArgumentParser:
     """
     Builds the argument parser
     :return: the argument parser
@@ -232,7 +235,7 @@ def build_argument_parser():
     return opts
 
 
-def parse_options(options=None, api=False):
+def parse_options(options: Any = None, api: bool = False) -> dict[str, Any]:
     """
     Parse given option string
 
@@ -250,7 +253,7 @@ def parse_options(options=None, api=False):
         options = {} if api else vars(argument_parser.parse_args())
     elif not isinstance(options, dict):
         options = vars(argument_parser.parse_args(options))
-    return options
+    return cast("dict[str, Any]", options)
 
 
 argument_parser = build_argument_parser()
@@ -262,7 +265,7 @@ class ConfigurationException(Exception):
     """
 
 
-def load_config(options):
+def load_config(options: dict[str, Any]) -> dict[str, Any]:
     """
     Load options from configuration files, if defined and present.
     :param options:
@@ -270,14 +273,14 @@ def load_config(options):
     :return:
     :rtype:
     """
-    configurations = []
+    configurations: list[Any] = []
 
     if not options.get("no_default_config"):
         default_options_data = read_text("guessit.config", "options.json")
         default_options = json.loads(default_options_data)
         configurations.append(default_options)
 
-    config_files = []
+    config_files: list[str] = []
 
     if not options.get("no_user_config"):
         home_directory = os.path.expanduser("~")
@@ -302,7 +305,7 @@ def load_config(options):
         if config_file_options:
             configurations.append(config_file_options)
 
-    config = {}
+    config: dict[str, Any] = {}
     if configurations:
         config = merge_options(*configurations)
 
@@ -315,7 +318,7 @@ def load_config(options):
     return config
 
 
-def merge_options(*options):
+def merge_options(*options: Any) -> dict[str, Any]:
     """
     Merge options into a single options dict.
     :param options:
@@ -324,7 +327,7 @@ def merge_options(*options):
     :rtype:
     """
 
-    merged = {}
+    merged: dict[str, Any] = {}
     if options:
         if options[0]:
             merged.update(copy.deepcopy(options[0]))
@@ -346,7 +349,7 @@ def merge_options(*options):
     return merged
 
 
-def merge_option_value(option, value, merged):
+def merge_option_value(option: str, value: Any, merged: dict[str, Any]) -> None:
     """
     Merge option value
     :param option:
@@ -367,7 +370,7 @@ def merge_option_value(option, value, merged):
             merged[option] = value
 
 
-def load_config_file(filepath):
+def load_config_file(filepath: str) -> Any:
     """
     Load a configuration as an options dict.
 
@@ -401,7 +404,7 @@ def load_config_file(filepath):
     raise ConfigurationException(f'Configuration file extension is not supported for "{filepath}" file.')
 
 
-def get_options_file_locations(homedir, cwd, yaml_supported=False):
+def get_options_file_locations(homedir: str, cwd: str, yaml_supported: bool = False) -> list[str]:
     """
     Get all possible locations for options file.
     :param homedir: user home directory
@@ -411,7 +414,7 @@ def get_options_file_locations(homedir, cwd, yaml_supported=False):
     :return:
     :rtype: list
     """
-    locations = []
+    locations: list[str] = []
 
     configdirs = [
         (os.path.join(homedir, ".guessit"), "options"),
