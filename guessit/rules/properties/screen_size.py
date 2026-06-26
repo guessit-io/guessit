@@ -3,6 +3,10 @@
 screen_size property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 from rebulk.match import Match
 from rebulk.remodule import re
@@ -13,8 +17,11 @@ from ..common.pattern import is_disabled
 from ..common.quantity import FrameRate
 from ..common.validators import seps_surround
 
+if TYPE_CHECKING:
+    from rebulk.match import Matches
 
-def screen_size(config):
+
+def screen_size(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -82,14 +89,14 @@ class PostProcessScreenSize(Rule):
 
     consequence = AppendMatch
 
-    def __init__(self, standard_heights, min_ar, max_ar):
+    def __init__(self, standard_heights: frozenset[str], min_ar: float, max_ar: float) -> None:
         super().__init__()
         self.standard_heights = standard_heights
         self.min_ar = min_ar
         self.max_ar = max_ar
 
-    def when(self, matches, context):
-        to_append = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_append: list[Match] = []
         for match in matches.named("screen_size"):
             if not is_disabled(context, "frame_rate"):
                 for frame_rate in match.children.named("frame_rate"):
@@ -135,8 +142,8 @@ class ScreenSizeOnlyOne(Rule):
 
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
             screensize = list(
                 reversed(matches.range(filepart.start, filepart.end, lambda match: match.name == "screen_size"))
@@ -154,8 +161,8 @@ class ResolveScreenSizeConflicts(Rule):
 
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
             screensize = matches.range(filepart.start, filepart.end, lambda match: match.name == "screen_size", 0)
             if not screensize:

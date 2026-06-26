@@ -3,7 +3,10 @@
 date, week and year properties
 """
 
+from __future__ import annotations
+
 import re
+from typing import TYPE_CHECKING, Any
 
 from rebulk import Rebulk, RemoveMatch, Rule
 
@@ -13,8 +16,11 @@ from ..common.date import search_date, valid_week, valid_year
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
 
-def date(config):
+
+def date(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -37,7 +43,7 @@ def date(config):
     )
 
     rebulk.regex(
-        build_or_pattern(config.get("week_words")) + r"-?(\d{1,2})",
+        build_or_pattern(config["week_words"]) + r"-?(\d{1,2})",
         name="week",
         formatter=int,
         children=True,
@@ -49,7 +55,7 @@ def date(config):
         validator=lambda match: seps_surround(match) and valid_week(match.value),
     )
 
-    def date_functional(string, context):
+    def date_functional(string: str, context: dict[str, Any]) -> tuple[int, int, dict[str, Any]] | None:
         """
         Search for date in the string and retrieves match
 
@@ -83,17 +89,17 @@ class KeepMarkedYearInFilepart(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def enabled(self, context):
+    def enabled(self, context: dict[str, Any] | None) -> bool:
         return not is_disabled(context, "year")
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         if len(matches.named("year")) > 1:
             for filepart in matches.markers.named("path"):
                 years = matches.range(filepart.start, filepart.end, lambda match: match.name == "year")
                 if len(years) > 1:
-                    group_years = []
-                    ungroup_years = []
+                    group_years: list[Match] = []
+                    ungroup_years: list[Match] = []
                     for year in years:
                         if matches.markers.at_match(year, lambda marker: marker.name == "group"):
                             group_years.append(year)
