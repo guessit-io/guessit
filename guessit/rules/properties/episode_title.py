@@ -3,7 +3,10 @@
 Episode title
 """
 
+from __future__ import annotations
+
 from collections import defaultdict
+from typing import TYPE_CHECKING, Any
 
 from rebulk import POST_PROCESS, AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
 
@@ -14,8 +17,11 @@ from ..common.validators import or_
 from ..properties.title import TitleBaseRule, TitleFromPosition
 from ..properties.type import TypeProcessor
 
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
 
-def episode_title(config):
+
+def episode_title(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -46,7 +52,7 @@ class RemoveConflictsWithEpisodeTitle(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def __init__(self, previous_names):
+    def __init__(self, previous_names: tuple[str, ...]) -> None:
         super().__init__()
         self.previous_names = previous_names
         self.next_names = (
@@ -61,8 +67,8 @@ class RemoveConflictsWithEpisodeTitle(Rule):
         self.affected_if_holes_after = ("part",)
         self.affected_names = ("part", "year")
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
             for match in matches.range(filepart.start, filepart.end, predicate=lambda m: m.name in self.affected_names):
                 before = matches.range(filepart.start, match.start, predicate=lambda m: not m.private, index=-1)
@@ -75,7 +81,7 @@ class RemoveConflictsWithEpisodeTitle(Rule):
 
                 group = matches.markers.at_match(match, predicate=lambda m: m.name == "group", index=0)
 
-                def has_value_in_same_group(current_match, current_group=group):
+                def has_value_in_same_group(current_match: Match, current_group: Any = group) -> Any:
                     """Return true if current match has value and belongs to the current group."""
                     return current_match.value.strip(seps) and (
                         current_group
@@ -105,13 +111,13 @@ class TitleToEpisodeTitle(Rule):
 
     dependency = TitleFromPosition
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         titles = matches.named("title")
-        title_groups = defaultdict(list)
+        title_groups: defaultdict[Any, list[Match]] = defaultdict(list)
         for title in titles:
             title_groups[title.value].append(title)
 
-        episode_titles = []
+        episode_titles: list[Match] = []
         if len(title_groups) < 2:
             return episode_titles
 
@@ -121,7 +127,7 @@ class TitleToEpisodeTitle(Rule):
 
         return episode_titles
 
-    def then(self, matches, when_response, context):
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
         for title in when_response:
             matches.remove(title)
             title.name = "episode_title"
@@ -136,27 +142,29 @@ class EpisodeTitleFromPosition(TitleBaseRule):
 
     dependency = TitleToEpisodeTitle
 
-    def __init__(self, previous_names):
+    def __init__(self, previous_names: tuple[str, ...]) -> None:
         super().__init__("episode_title", ["title"])
         self.previous_names = previous_names
 
-    def hole_filter(self, hole, matches):
+    def hole_filter(self, hole: Match, matches: Matches) -> bool:
         episode = matches.previous(hole, lambda previous: previous.named(*self.previous_names), 0)
 
         crc32 = matches.named("crc32")
 
-        return episode or crc32
+        return bool(episode or crc32)
 
-    def filepart_filter(self, filepart, matches):
+    def filepart_filter(self, filepart: Match, matches: Matches) -> bool:
         # Filepart where title was found.
         return bool(matches.range(filepart.start, filepart.end, lambda match: match.name == "title"))
 
-    def should_remove(self, match, matches, filepart, hole, context):
+    def should_remove(
+        self, match: Match, matches: Matches, filepart: Match, hole: Match, context: dict[str, Any] | None
+    ) -> bool:
         if match.name == "episode_details":
             return False
         return super().should_remove(match, matches, filepart, hole, context)
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         if matches.named("episode_title"):
             return None
         return super().when(matches, context)
@@ -170,11 +178,11 @@ class AlternativeTitleReplace(Rule):
     dependency = EpisodeTitleFromPosition
     consequence = RenameMatch
 
-    def __init__(self, previous_names):
+    def __init__(self, previous_names: tuple[str, ...]) -> None:
         super().__init__()
         self.previous_names = previous_names
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         if matches.named("episode_title"):
             return None
 
@@ -192,7 +200,7 @@ class AlternativeTitleReplace(Rule):
                     return alternative_title
         return None
 
-    def then(self, matches, when_response, context):
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
         matches.remove(when_response)
         when_response.name = "episode_title"
         when_response.tags.append("alternative-replaced")
@@ -209,14 +217,14 @@ class RenameEpisodeTitleWhenMovieType(Rule):
     dependency = TypeProcessor
     consequence = RenameMatch
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         if matches.named("episode_title", lambda m: "alternative-replaced" not in m.tags) and not matches.named(
             "type", lambda m: m.value == "episode"
         ):
             return matches.named("episode_title")
         return None
 
-    def then(self, matches, when_response, context):
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
         for match in when_response:
             matches.remove(match)
             match.name = "alternative_title"
@@ -239,7 +247,7 @@ class Filepart3EpisodeTitle(Rule):
 
     consequence = AppendMatch("title")
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         if matches.tagged("filepart-title"):
             return None
 
@@ -291,7 +299,7 @@ class Filepart2EpisodeTitle(Rule):
 
     consequence = AppendMatch("title")
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         if matches.tagged("filepart-title"):
             return None
 
