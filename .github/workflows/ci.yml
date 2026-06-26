@@ -91,14 +91,15 @@ jobs:
           python-version: "3.14"
 
       - name: Check commit messages
-        # PR: validate the PR commits; push: validate the pushed range
-        # (skipped when pushing a brand-new branch with no "before" ref).
+        # PR: validate the PR commits; push: validate the pushed range. On a
+        # brand-new branch (no "before" ref) fall back to the last commit rather
+        # than skipping, so a uv command always runs (an empty run would make
+        # setup-uv's cache step error with "Cache path does not exist").
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
           elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
-            echo "New branch push, no previous ref to compare against; skipping."
-            exit 0
+            RANGE="HEAD~1..HEAD"
           else
             RANGE="${{ github.event.before }}..${{ github.event.after }}"
           fi
