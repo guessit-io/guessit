@@ -1,31 +1,33 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Monkeypatch initialisation functions
 """
 
+from __future__ import annotations
+
 from collections import OrderedDict
+from typing import Any
 
 from rebulk.match import Match
 
 
-def monkeypatch_rebulk():
+def monkeypatch_rebulk() -> None:
     """Monkeypatch rebulk classes"""
 
-    @property
-    def match_advanced(self):
+    @property  # type: ignore[misc]
+    def match_advanced(self: Match) -> OrderedDict[str, Any]:
         """
         Build advanced dict from match
         :param self:
         :return:
         """
 
-        ret = OrderedDict()
-        ret['value'] = self.value
+        ret: OrderedDict[str, Any] = OrderedDict()
+        ret["value"] = self.value
         if self.raw:
-            ret['raw'] = self.raw
-        ret['start'] = self.start
-        ret['end'] = self.end
+            ret["raw"] = self.raw
+        ret["start"] = self.start
+        ret["end"] = self.end
         return ret
 
-    Match.advanced = match_advanced
+    Match.advanced = match_advanced  # type: ignore[attr-defined]

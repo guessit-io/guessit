@@ -1,20 +1,26 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 date, week and year properties
 """
+
+from __future__ import annotations
+
 import re
+from typing import TYPE_CHECKING, Any
 
 from rebulk import Rebulk, RemoveMatch, Rule
 
+from ...reutils import build_or_pattern
 from ..common import dash
-from ..common.date import search_date, valid_year, valid_week
+from ..common.date import search_date, valid_week, valid_year
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-from ...reutils import build_or_pattern
+
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
 
 
-def date(config):  # pylint:disable=unused-argument
+def date(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -25,23 +31,31 @@ def date(config):  # pylint:disable=unused-argument
     """
     rebulk = Rebulk().defaults(validator=seps_surround)
 
-    rebulk.regex(r"\d{4}", name="year", formatter=int,
-                 disabled=lambda context: is_disabled(context, 'year'),
-                 conflict_solver=lambda match, other: other
-                 if other.name in ('episode', 'season') and len(other.raw) < len(match.raw)
-                 else '__default__',
-                 validator=lambda match: seps_surround(match) and valid_year(match.value))
+    rebulk.regex(
+        r"\d{4}",
+        name="year",
+        formatter=int,
+        disabled=lambda context: is_disabled(context, "year"),
+        conflict_solver=lambda match, other: (
+            other if other.name in ("episode", "season") and len(other.raw) < len(match.raw) else "__default__"
+        ),
+        validator=lambda match: seps_surround(match) and valid_year(match.value),
+    )
 
-    rebulk.regex(build_or_pattern(config.get('week_words')) + r"-?(\d{1,2})",
-                 name="week", formatter=int,
-                 children=True,
-                 flags=re.IGNORECASE, abbreviations=[dash],
-                 conflict_solver=lambda match, other: other
-                 if other.name in ('episode', 'season') and len(other.raw) < len(match.raw)
-                 else '__default__',
-                 validator=lambda match: seps_surround(match) and valid_week(match.value))
+    rebulk.regex(
+        build_or_pattern(config["week_words"]) + r"-?(\d{1,2})",
+        name="week",
+        formatter=int,
+        children=True,
+        flags=re.IGNORECASE,
+        abbreviations=[dash],
+        conflict_solver=lambda match, other: (
+            other if other.name in ("episode", "season") and len(other.raw) < len(match.raw) else "__default__"
+        ),
+        validator=lambda match: seps_surround(match) and valid_week(match.value),
+    )
 
-    def date_functional(string, context):  # pylint:disable=inconsistent-return-statements
+    def date_functional(string: str, context: dict[str, Any]) -> tuple[int, int, dict[str, Any]] | None:
         """
         Search for date in the string and retrieves match
 
@@ -49,15 +63,18 @@ def date(config):  # pylint:disable=unused-argument
         :return:
         """
 
-        ret = search_date(string, context.get('date_year_first'), context.get('date_day_first'))
+        ret = search_date(string, context.get("date_year_first"), context.get("date_day_first"))
         if ret:
-            return ret[0], ret[1], {'value': ret[2]}
+            return ret[0], ret[1], {"value": ret[2]}
+        return None
 
-    rebulk.functional(date_functional, name="date", properties={'date': [None]},
-                      disabled=lambda context: is_disabled(context, 'date'),
-                      conflict_solver=lambda match, other: other
-                      if other.name in ('episode', 'season', 'crc32')
-                      else '__default__')
+    rebulk.functional(
+        date_functional,
+        name="date",
+        properties={"date": [None]},
+        disabled=lambda context: is_disabled(context, "date"),
+        conflict_solver=lambda match, other: other if other.name in ("episode", "season", "crc32") else "__default__",
+    )
 
     rebulk.rules(KeepMarkedYearInFilepart)
 
@@ -68,22 +85,23 @@ class KeepMarkedYearInFilepart(Rule):
     """
     Keep first years marked with [](){} in filepart, or if no year is marked, ensure it won't override titles.
     """
+
     priority = 64
     consequence = RemoveMatch
 
-    def enabled(self, context):
-        return not is_disabled(context, 'year')
+    def enabled(self, context: dict[str, Any] | None) -> bool:
+        return not is_disabled(context, "year")
 
-    def when(self, matches, context):
-        ret = []
-        if len(matches.named('year')) > 1:
-            for filepart in matches.markers.named('path'):
-                years = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year')
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
+        if len(matches.named("year")) > 1:
+            for filepart in matches.markers.named("path"):
+                years = matches.range(filepart.start, filepart.end, lambda match: match.name == "year")
                 if len(years) > 1:
-                    group_years = []
-                    ungroup_years = []
+                    group_years: list[Match] = []
+                    ungroup_years: list[Match] = []
                     for year in years:
-                        if matches.markers.at_match(year, lambda marker: marker.name == 'group'):
+                        if matches.markers.at_match(year, lambda marker: marker.name == "group"):
                             group_years.append(year)
                         else:
                             ungroup_years.append(year)

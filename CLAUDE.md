@@ -8,33 +8,53 @@ GuessIt is a Python library that extracts metadata (title, season, episode, code
 
 ## Common Commands
 
+This project uses **uv** for packaging, dependencies, and builds (PEP 621 `pyproject.toml` + `uv.lock`, hatchling backend). There is no `setup.py` or `requirements.txt`. Multi-version testing uses `tox` (with `tox-uv`, see `tox.ini`).
+
 ```bash
-# Install in development mode
-pip install -e .[dev,test]
+# Create the dev environment (virtualenv + dev/test dependencies, from uv.lock)
+uv sync
 
 # Run all tests (includes doctests)
-pytest
+uv run pytest
 
 # Run a single test file
-pytest guessit/test/test_api.py
+uv run pytest guessit/test/test_api.py
 
 # Run a single test by name
-pytest -k test_default
+uv run pytest -k test_default
 
 # Run only the YAML-driven matcher tests
-pytest guessit/test/test_yml.py
+uv run pytest guessit/test/test_yml.py
 
-# Lint (config in pylintrc)
-pylint guessit
+# Lint (ruff, config in pyproject.toml [tool.ruff])
+uv run ruff check guessit
+# Auto-fix lint issues
+uv run ruff check guessit --fix
+# Format
+uv run ruff format
+# Type-check (mypy strict, config in pyproject.toml [tool.mypy])
+uv run mypy
 
-# Run tests across all supported Python versions
-tox
+# Install the git hooks (pre-commit: ruff check + format + mypy; commit-msg: commitizen)
+uv run pre-commit install
+# Run all file hooks manually (what the CI `pre-commit` job runs)
+uv run pre-commit run --all-files
+
+# Run tests on a specific Python version
+uv run --python 3.11 pytest
+# Run the full multi-version test matrix locally (tox-uv)
+uv run tox
+# ... or a single environment
+uv run tox -e py312
+
+# Build the sdist + wheel
+uv build
 
 # CLI usage (use --json / --yaml for structured output)
-guessit "Treme.1x03.HDTV.XviD-NoTV.avi"
+uv run guessit "Treme.1x03.HDTV.XviD-NoTV.avi"
 ```
 
-`pytest.ini` enables `--doctest-modules` and `--doctest-glob='*.rst'`, so docstring examples and `.rst` docs are executed as part of the suite — keep them accurate when editing.
+The pytest config lives in `pyproject.toml` (`[tool.pytest.ini_options]`) and enables `--doctest-modules` and `--doctest-glob='*.rst'`, so docstring examples and `.rst` docs are executed as part of the suite — keep them accurate when editing.
 
 ## Architecture
 
@@ -63,5 +83,8 @@ Tests live in `guessit/test/`. The YAML files (`episodes.yml`, `movies.yml`, `va
 ## Branch Strategy
 
 - **develop**: main development branch (PR target)
-- **master**: release branch (triggers semantic-release automation)
-- Conventional commits required (commitlint enforced in CI)
+- **main**: release branch (triggers semantic-release automation)
+- Conventional commits required — enforced locally by the commitizen commit-msg
+  hook (`.pre-commit-config.yaml`) and in CI by the `commitizen` job (`cz check`).
+  Config: `[tool.commitizen]` in `pyproject.toml`. Versioning/releases stay owned
+  by python-semantic-release, not commitizen.

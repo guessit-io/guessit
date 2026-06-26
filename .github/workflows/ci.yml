@@ -10,72 +10,102 @@ jobs:
     name: Python ${{ matrix.python-version }}${{ fromJSON('["", " (regex)"]')[matrix.regex == '1'] }}
 
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "pypy-3.8", "pypy-3.9", "pypy-3.10" ]
+        # pypy-3.11 is excluded: a pypy-3.11 interpreter bug segfaults when an
+        # AttributeError subclass with an uninitialized `name` is raised from
+        # __getattr__ (babelfish's LanguageConvertError, hit via str(Language)).
+        # Not a guessit bug; fine on pypy-3.10 and all CPython.
+        # Upstream: https://github.com/pypy/pypy/issues/5514
+        python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14", "pypy-3.10" ]
         regex: [ "0", "1" ]
         exclude:
           # regex module doesn't play well with pypy and unicode.
-          - python-version: "pypy-3.8"
-            regex: "1"
-          - python-version: "pypy-3.9"
-            regex: "1"
           - python-version: "pypy-3.10"
             regex: "1"
-          # test regex module only with Python 3.9.
-          - python-version: "3.7"
-            regex: "1"
-          - python-version: "3.8"
-            regex: "1"
+          # test regex module only with Python 3.11.
           - python-version: "3.10"
             regex: "1"
-          - python-version: "3.11"
-            regex: "1"
           - python-version: "3.12"
+            regex: "1"
+          - python-version: "3.13"
+            regex: "1"
+          - python-version: "3.14"
             regex: "1"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Setup python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
         with:
           python-version: ${{ matrix.python-version }}
+          enable-cache: true
 
       - name: Install Dependencies
-        run: |
-          pip install -e .[dev,test]
-
-      - name: Install regex
-        run: |
-          pip install regex
-        if: matrix.regex == '1'
-
-      - name: Pylint
-        run: pylint guessit
+        # --no-dev: the test matrix runs on PyPy too, where dev-only deps
+        # (python-semantic-release/commitizen -> pydantic-core, a Rust/pyo3
+        # extension) have no wheel and fail to build. Only the test group is needed.
+        run: uv sync --locked --no-dev --group test ${{ matrix.regex == '1' && '--extra regex' || '' }}
 
       - name: Test
-        run: |
-          pytest --cov=guessit
+        run: uv run --no-sync pytest --cov=guessit
         env:
           REBULK_REGEX_ENABLED: ${{ matrix.regex }}
 
       - name: Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v7
 
-  commitlint:
+  pre-commit:
+    # Runs the file hooks (ruff) once, instead of once per matrix entry, through
+    # the same .pre-commit-config.yaml developers use locally (all local + uvx).
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
+        with:
+          python-version: "3.14"
+
+      - name: Run pre-commit
+        run: uv run pre-commit run --all-files --show-diff-on-failure
+
+  commitizen:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: wagoid/commitlint-github-action@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
+        with:
+          python-version: "3.14"
 
-  build-setuptools:
+      - name: Check commit messages
+        # PR: validate the PR commits; push: validate the pushed range
+        # (skipped when pushing a brand-new branch with no "before" ref).
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "New branch push, no previous ref to compare against; skipping."
+            exit 0
+          else
+            RANGE="${{ github.event.before }}..${{ github.event.after }}"
+          fi
+          echo "Checking commit range: ${RANGE}"
+          uv run cz check --rev-range "${RANGE}"
+
+  build:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     needs: [ ci ]
 
@@ -83,18 +113,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.12
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: 3.12
-
-      - name: Install Dependencies
-        run: |
-          pip install -e .[dev]
+          python-version: "3.14"
+          enable-cache: true
 
       - name: Git User config
         run: |
@@ -102,14 +129,14 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release version --no-commit --no-tag --no-push
+        run: uvx --from python-semantic-release semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        run: python setup.py sdist bdist_wheel
+        run: uv build
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v7
         with:
           name: guessit-python
           path: ./dist
@@ -122,18 +149,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.12
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: 3.12
+          python-version: "3.14"
+          enable-cache: true
 
       - name: Install Dependencies
-        run: |
-          pip install -e .[dev]
+        run: uv sync --locked
 
       - name: Git User config
         run: |
@@ -141,18 +168,17 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release version --no-commit --no-tag --no-push
+        run: uvx --from python-semantic-release semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Binary
-        run: pyinstaller --dist ./dist guessit.spec
+        run: uv run pyinstaller --dist ./dist guessit.spec
 
       - name: Check binary
         run: ./dist/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
 
-      - uses: actions/upload-artifact@v3
-        if: matrix.regex == '0'
+      - uses: actions/upload-artifact@v7
         with:
           name: guessit-bin-linux
           path: ./dist
@@ -165,18 +191,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.12
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: 3.12
+          python-version: "3.14"
+          enable-cache: true
 
       - name: Install Dependencies
-        run: |
-          pip install -e .[dev]
+        run: uv sync --locked
 
       - name: Git User config
         run: |
@@ -184,17 +210,17 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release version --no-commit --no-tag --no-push
+        run: uvx --from python-semantic-release semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Binary
-        run: pyinstaller --dist ./dist guessit.spec
+        run: uv run pyinstaller --dist ./dist guessit.spec
 
       - name: Check binary
         run: ./dist/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v7
         with:
           name: guessit-bin-windows
           path: ./dist
@@ -207,18 +233,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.12
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: 3.12
+          python-version: "3.14"
+          enable-cache: true
 
       - name: Install Dependencies
-        run: |
-          pip install -e .[dev]
+        run: uv sync --locked
 
       - name: Git User config
         run: |
@@ -226,39 +252,44 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
-        run: semantic-release version --no-commit --no-tag --no-push
+        run: uvx --from python-semantic-release semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Binary
-        run: pyinstaller --dist ./dist guessit.spec
+        run: uv run pyinstaller --dist ./dist guessit.spec
 
       - name: Check binary
         run: ./dist/guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v7
         with:
           name: guessit-bin-macos
           path: ./dist
 
   release:
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    needs: [ commitlint, build-setuptools, build-bin-linux, build-bin-windows, build-bin-macos ]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [ pre-commit, commitizen, build, build-bin-linux, build-bin-windows, build-bin-macos ]
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write   # semantic-release pushes the version bump commit + tag + GitHub release
+      id-token: write   # OIDC token for PyPI Trusted Publishing (no API token needed)
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Setup python 3.12
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
         with:
-          python-version: 3.12
+          python-version: "3.14"
+          enable-cache: true
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v8
         with:
           path: artifacts
 
@@ -275,28 +306,25 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "github-actions"
 
-      - name: Install python-semantic-release twine
-        run: pip install python-semantic-release twine
-
       - name: Bump version
-        run: semantic-release version
+        run: uvx --from python-semantic-release semantic-release version
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload to pypi
-        run: twine upload --username "__token__" --password "${PYPI_TOKEN}" dist/*.tar.gz dist/*.whl
-        env:
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        # Trusted Publishing via the job's OIDC token (see permissions above);
+        # requires a trusted publisher configured on PyPI for this repo + ci.yml.
+        run: uv publish --trusted-publishing always dist/*.tar.gz dist/*.whl
 
       - name: Publish release
-        run: semantic-release publish
+        run: uvx --from python-semantic-release semantic-release publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge master to develop
-        uses: robotology/gh-action-nightly-merge@v1.4.0
+      - name: Merge main to develop
+        uses: robotology/gh-action-nightly-merge@v1.5.2
         with:
-          stable_branch: 'master'
+          stable_branch: 'main'
           development_branch: 'develop'
           allow_ff: true
           user_name: github-actions
