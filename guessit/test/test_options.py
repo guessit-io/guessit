@@ -8,7 +8,7 @@ from ..options import ConfigurationException, get_options_file_locations, load_c
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
-def test_config_locations():
+def test_config_locations() -> None:
     homedir = "/root"
     cwd = "/root/cwd"
 
@@ -26,7 +26,7 @@ def test_config_locations():
     assert "/root/cwd/guessit.options.yaml" in locations
 
 
-def test_merge_configurations():
+def test_merge_configurations() -> None:
     c1 = {"param1": True, "param2": True, "param3": False}
     c2 = {"param1": False, "param2": True, "param3": False}
     c3 = {"param1": False, "param2": True, "param3": False}
@@ -42,7 +42,7 @@ def test_merge_configurations():
     assert not merged["param3"]
 
 
-def test_merge_configurations_lists():
+def test_merge_configurations_lists() -> None:
     c1 = {"param1": [1], "param2": True, "param3": False}
     c2 = {"param1": [2], "param2": True, "param3": False}
     c3 = {"param1": [3], "param2": True, "param3": False}
@@ -58,7 +58,7 @@ def test_merge_configurations_lists():
     assert not merged["param3"]
 
 
-def test_merge_configurations_deep():
+def test_merge_configurations_deep() -> None:
     c1 = {"param1": [1], "param2": {"d1": [1]}, "param3": False}
     c2 = {"param1": [2], "param2": {"d1": [2]}, "param3": False}
     c3 = {"param1": [3], "param2": {"d3": [3]}, "param3": False}
@@ -79,7 +79,7 @@ def test_merge_configurations_deep():
     assert not merged["param3"]
 
 
-def test_merge_configurations_pristine_all():
+def test_merge_configurations_pristine_all() -> None:
     c1 = {"param1": [1], "param2": True, "param3": False}
     c2 = {"param1": [2], "param2": True, "param3": False, "pristine": True}
     c3 = {"param1": [3], "param2": True, "param3": False}
@@ -95,7 +95,7 @@ def test_merge_configurations_pristine_all():
     assert not merged["param3"]
 
 
-def test_merge_configurations_pristine_properties():
+def test_merge_configurations_pristine_properties() -> None:
     c1 = {"param1": [1], "param2": False, "param3": True}
     c2 = {"param1": [2], "param2": True, "param3": False, "pristine": ["param2", "param3"]}
     c3 = {"param1": [3], "param2": True, "param3": False}
@@ -106,7 +106,7 @@ def test_merge_configurations_pristine_properties():
     assert not merged["param3"]
 
 
-def test_merge_configurations_pristine_properties_deep():
+def test_merge_configurations_pristine_properties_deep() -> None:
     c1 = {"param1": [1], "param2": {"d1": False}, "param3": True}
     c2 = {"param1": [2], "param2": {"d1": True}, "param3": False, "pristine": ["param2", "param3"]}
     c3 = {"param1": [3], "param2": {"d1": True}, "param3": False}
@@ -117,7 +117,7 @@ def test_merge_configurations_pristine_properties_deep():
     assert not merged["param3"]
 
 
-def test_merge_configurations_pristine_properties2():
+def test_merge_configurations_pristine_properties2() -> None:
     c1 = {"param1": [1], "param2": False, "param3": True}
     c2 = {"param1": [2], "param2": True, "param3": False, "pristine": ["param1", "param2", "param3"]}
     c3 = {"param1": [3], "param2": True, "param3": False}
@@ -128,7 +128,7 @@ def test_merge_configurations_pristine_properties2():
     assert not merged["param3"]
 
 
-def test_load_config_file():
+def test_load_config_file() -> None:
     json_config = load_config_file(os.path.join(__location__, "config", "test.json"))
     yml_config = load_config_file(os.path.join(__location__, "config", "test.yml"))
     yaml_config = load_config_file(os.path.join(__location__, "config", "test.yaml"))
@@ -147,7 +147,7 @@ def test_load_config_file():
     assert excinfo.match('Configuration file extension is not supported for ".*?dummy.txt" file\\.')
 
 
-def test_load_config():
+def test_load_config() -> None:
     config = load_config(
         {"no_default_config": True, "param1": "test", "config": [os.path.join(__location__, "config", "test.yml")]}
     )

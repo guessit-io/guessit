@@ -1,6 +1,9 @@
 #!/usr/bin/env python
+from __future__ import annotations
+
 import logging
 import os
+from typing import TYPE_CHECKING, Any
 
 import babelfish
 import yaml
@@ -11,40 +14,43 @@ from .. import guessit
 from ..options import parse_options
 from ..yamlutils import OrderedDictYAMLLoader
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
 logger = logging.getLogger(__name__)
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
 class EntryResult:
-    def __init__(self, string, negates=False):
+    def __init__(self, string: str, negates: bool = False) -> None:
         self.string = string
         self.negates = negates
-        self.valid = []
-        self.missing = []
-        self.different = []
-        self.extra = []
-        self.others = []
+        self.valid: list[Any] = []
+        self.missing: list[Any] = []
+        self.different: list[Any] = []
+        self.extra: list[Any] = []
+        self.others: list[Any] = []
 
     @property
-    def ok(self):
+    def ok(self) -> Any:
         if self.negates:
             return self.missing or self.different
         return not self.missing and not self.different and not self.extra and not self.others
 
     @property
-    def warning(self):
+    def warning(self) -> Any:
         if self.negates:
             return False
         return not self.missing and not self.different and self.extra
 
     @property
-    def error(self):
+    def error(self) -> Any:
         if self.negates:
             return not self.missing and not self.different and not self.others
         return self.missing or self.different or self.others
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         if self.ok:
             return self.string + ": OK!"
         neg = "-" if self.negates else ""
@@ -57,8 +63,8 @@ class EntryResult:
         return f"{neg}{self.string}: UNKOWN! ({head}, {tail})"
 
     @property
-    def details(self):
-        ret = []
+    def details(self) -> list[str]:
+        ret: list[str] = []
         if self.valid:
             ret.append("valid=" + str(len(self.valid)))
         for valid in self.valid:
@@ -82,15 +88,15 @@ class EntryResult:
         return ret
 
 
-class Results(list):
-    def assert_ok(self):
+class Results(list[EntryResult]):
+    def assert_ok(self) -> None:
         errors = [entry for entry in self if entry.error]
         assert not errors
 
 
-def files_and_ids(predicate=None):
-    files = []
-    ids = []
+def files_and_ids(predicate: Callable[[str], bool] | None = None) -> tuple[list[str], list[str]]:
+    files: list[str] = []
+    ids: list[str] = []
 
     for dirpath, _, filenames in os.walk(__location__):
         if os.path.split(dirpath)[-1] == "config":
@@ -115,7 +121,7 @@ class TestYml:
 
     options_re = re.compile(r"^([ +-]+)(.*)")
 
-    def _get_unique_id(self, collection, base_id):
+    def _get_unique_id(self, collection: set[str], base_id: str) -> str:
         ret = base_id
         i = 2
         while ret in collection:
@@ -124,11 +130,11 @@ class TestYml:
             i += 1
         return ret
 
-    def pytest_generate_tests(self, metafunc):
+    def pytest_generate_tests(self, metafunc: Any) -> None:
         if "yml_test_case" in metafunc.fixturenames:
-            entries = []
-            entry_ids = []
-            entry_set = set()
+            entries: list[Any] = []
+            entry_ids: list[str] = []
+            entry_set: set[str] = set()
 
             for filename, _ in zip(*files_and_ids(), strict=False):
                 with open(os.path.join(__location__, filename), encoding="utf-8") as infile:
@@ -160,24 +166,22 @@ class TestYml:
             metafunc.parametrize("yml_test_case", entries, ids=entry_ids)
 
     @staticmethod
-    def set_default(expected, default):
+    def set_default(expected: Any, default: Any) -> None:
         if default:
             for k, v in default.items():
                 if k not in expected:
                     expected[k] = v
 
     @classmethod
-    def fix_encoding(cls, string):
-        if not isinstance(string, str):
-            string = str(string)
-        return string
+    def fix_encoding(cls, string: Any) -> str:
+        return string if isinstance(string, str) else str(string)
 
-    def test_entry(self, yml_test_case):
+    def test_entry(self, yml_test_case: Any) -> None:
         filename, string, expected = yml_test_case
         result = self.check_data(filename, string, expected)
         assert not result.error
 
-    def check_data(self, filename, string, expected):
+    def check_data(self, filename: str, string: str, expected: Any) -> EntryResult:
         entry = self.check(string, expected)
         if entry.ok:
             logger.debug("[%s] %s", filename, entry)
@@ -189,7 +193,7 @@ class TestYml:
                 logger.error("[%s] %s", filename, " " * 4 + line)
         return entry
 
-    def check(self, string, expected):
+    def check(self, string: str, expected: Any) -> EntryResult:
         negates, global_, string = self.parse_token_options(string)
 
         options = expected.get("options")
@@ -212,7 +216,7 @@ class TestYml:
 
         return entry
 
-    def parse_token_options(self, string):
+    def parse_token_options(self, string: str) -> tuple[bool, bool, str]:
         matches = self.options_re.search(string)
         negates = False
         global_ = False
@@ -225,8 +229,8 @@ class TestYml:
                     global_ = True
         return negates, global_, string
 
-    def check_global(self, string, result, entry):
-        global_span = []
+    def check_global(self, string: str, result: Any, entry: EntryResult) -> None:
+        global_span: list[int] = []
         for result_matches in result.matches.values():
             for result_match in result_matches:
                 if not global_span:
@@ -239,7 +243,7 @@ class TestYml:
         if global_span and global_span[1] - global_span[0] < len(string):
             entry.others.append("Match is not global")
 
-    def is_same(self, value, expected):
+    def is_same(self, value: Any, expected: Any) -> bool:
         values = set(value) if is_iterable(value) else {value}
         expecteds = set(expected) if is_iterable(expected) else {expected}
         if len(values) != len(expecteds):
@@ -250,7 +254,7 @@ class TestYml:
             expecteds = {babelfish.Country.fromguessit(expected) for expected in expecteds}
         return values == expecteds
 
-    def check_expected(self, result, expected, entry):
+    def check_expected(self, result: Any, expected: Any, entry: EntryResult) -> None:
         if expected:
             for expected_key, expected_value in expected.items():
                 if expected_key and expected_key != "options" and expected_value is not None:

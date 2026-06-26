@@ -5,7 +5,7 @@ from rebulk.match import Match, Matches
 from ...rules.processors import StripSeparators
 
 
-def test_strip_separators():
+def test_strip_separators() -> None:
     strip_separators = StripSeparators()
 
     matches = Matches()
@@ -23,7 +23,7 @@ def test_strip_separators():
     assert m.raw == "ABCDEF"
 
 
-def test_strip_separators_keep_acronyms():
+def test_strip_separators_keep_acronyms() -> None:
     strip_separators = StripSeparators()
 
     matches = Matches()
