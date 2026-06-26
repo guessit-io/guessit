@@ -1,0 +1,67 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project
+
+GuessIt is a Python library that extracts metadata (title, season, episode, codec, release group, etc.) from video filenames using pattern matching. It uses the **Rebulk** library as its rule engine.
+
+## Common Commands
+
+```bash
+# Install in development mode
+pip install -e .[dev,test]
+
+# Run all tests (includes doctests)
+pytest
+
+# Run a single test file
+pytest guessit/test/test_api.py
+
+# Run a single test by name
+pytest -k test_default
+
+# Run only the YAML-driven matcher tests
+pytest guessit/test/test_yml.py
+
+# Lint (config in pylintrc)
+pylint guessit
+
+# Run tests across all supported Python versions
+tox
+
+# CLI usage (use --json / --yaml for structured output)
+guessit "Treme.1x03.HDTV.XviD-NoTV.avi"
+```
+
+`pytest.ini` enables `--doctest-modules` and `--doctest-glob='*.rst'`, so docstring examples and `.rst` docs are executed as part of the suite — keep them accurate when editing.
+
+## Architecture
+
+### Rule Engine (Rebulk-based)
+
+The core parsing is built on **Rebulk**, a declarative pattern matching library. Each media property (episodes, codec, language, etc.) has its own rule module under `guessit/rules/properties/`, exposing a factory function that takes a config dict and returns a configured `Rebulk` instance. All rules are composed together in `guessit/rules/__init__.py:rebulk_builder()`.
+
+**Rule ordering matters.** `rebulk_builder()` registers properties in a deliberate sequence, and later rules can post-process or override earlier matches. When adding a property, create a module under `rules/properties/`, then import and register it in `rebulk_builder()` at the right position. `rules/processors.py` and `rules/markers/` (path, groups) handle cross-cutting post-processing of the match set; `rules/common/` holds shared validators/formatters.
+
+### API Layers
+
+- **Public API** (`guessit/__init__.py`): `guessit()`, `properties()`, `suggested_expected()`
+- **GuessItApi class** (`guessit/api.py`): Core implementation, manages Rebulk configuration and execution
+- **CLI** (`guessit/__main__.py`): Command-line interface, supports JSON/YAML output
+
+### Configuration
+
+- Default config: `guessit/config/options.json`
+- Users can customize via `--config` CLI flag or programmatic `options` dict
+- Options are merged: default → user config → programmatic options
+
+### Tests
+
+Tests live in `guessit/test/`. The YAML files (`episodes.yml`, `movies.yml`, `various.yml`, etc.) are the primary regression corpus: `test_yml.py` discovers every `.yml`/`.yaml` file and parametrizes one pytest case per entry, mapping a filename to its expected parsed properties. **To cover a new filename pattern or fix, add an entry to the relevant YAML file** rather than writing a new Python test. Entry strings support token prefixes parsed by `parse_token_options` (e.g. negation and "global match" checks). Python test files (`test_api.py`, `test_main.py`, `test_options.py`, `test_benchmark.py`) handle API, CLI, options, and benchmarks.
+
+## Branch Strategy
+
+- **develop**: main development branch (PR target)
+- **master**: release branch (triggers semantic-release automation)
+- Conventional commits required (commitlint enforced in CI)
