@@ -273,6 +273,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write   # semantic-release pushes the version bump commit + tag + GitHub release
+      id-token: write   # OIDC token for PyPI Trusted Publishing (no API token needed)
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -308,9 +312,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload to pypi
-        run: uv publish --token "${PYPI_TOKEN}" dist/*.tar.gz dist/*.whl
-        env:
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        # Trusted Publishing via the job's OIDC token (see permissions above);
+        # requires a trusted publisher configured on PyPI for this repo + ci.yml.
+        run: uv publish --trusted-publishing always dist/*.tar.gz dist/*.whl
 
       - name: Publish release
         run: uvx --from python-semantic-release semantic-release publish
