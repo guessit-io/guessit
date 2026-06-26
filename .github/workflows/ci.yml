@@ -44,10 +44,13 @@ jobs:
         run: uv sync --locked --no-default-groups --group test --group lint ${{ matrix.regex == '1' && '--extra regex' || '' }}
 
       - name: Ruff
-        run: uv run ruff check guessit
+        # --no-sync: reuse the env synced above; `uv run` would otherwise re-sync
+        # the default (dev) group and try to build dev-only native deps (e.g.
+        # pydantic-core via python-semantic-release), which has no pypy wheel.
+        run: uv run --no-sync ruff check guessit
 
       - name: Test
-        run: uv run pytest --cov=guessit
+        run: uv run --no-sync pytest --cov=guessit
         env:
           REBULK_REGEX_ENABLED: ${{ matrix.regex }}
 
