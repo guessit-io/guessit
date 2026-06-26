@@ -31,6 +31,11 @@ uv run ruff check guessit
 # Auto-fix lint issues
 uv run ruff check guessit --fix
 
+# Install the git hooks (pre-commit: ruff; commit-msg: commitizen)
+uv run pre-commit install
+# Run all file hooks manually (what the CI `pre-commit` job runs)
+uv run pre-commit run --all-files
+
 # Run tests on a specific Python version (replaces tox)
 uv run --python 3.11 pytest
 
@@ -71,4 +76,7 @@ Tests live in `guessit/test/`. The YAML files (`episodes.yml`, `movies.yml`, `va
 
 - **develop**: main development branch (PR target)
 - **master**: release branch (triggers semantic-release automation)
-- Conventional commits required (commitlint enforced in CI)
+- Conventional commits required — enforced locally by the commitizen commit-msg
+  hook (`.pre-commit-config.yaml`) and in CI by the `commitizen` job (`cz check`).
+  Config: `[tool.commitizen]` in `pyproject.toml`. Versioning/releases stay owned
+  by python-semantic-release, not commitizen.

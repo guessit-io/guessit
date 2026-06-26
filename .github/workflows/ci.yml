@@ -44,13 +44,10 @@ jobs:
           enable-cache: true
 
       - name: Install Dependencies
-        run: uv sync --locked --no-default-groups --group test --group lint ${{ matrix.regex == '1' && '--extra regex' || '' }}
-
-      - name: Ruff
-        # --no-sync: reuse the env synced above; `uv run` would otherwise re-sync
-        # the default (dev) group and try to build dev-only native deps (e.g.
-        # pydantic-core via python-semantic-release), which has no pypy wheel.
-        run: uv run --no-sync ruff check guessit
+        # --no-dev: the test matrix runs on PyPy too, where dev-only deps
+        # (python-semantic-release/commitizen -> pydantic-core, a Rust/pyo3
+        # extension) have no wheel and fail to build. Only the test group is needed.
+        run: uv sync --locked --no-dev --group test ${{ matrix.regex == '1' && '--extra regex' || '' }}
 
       - name: Test
         run: uv run --no-sync pytest --cov=guessit
@@ -60,7 +57,22 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v7
 
-  commitlint:
+  pre-commit:
+    # Runs the file hooks (ruff) once, instead of once per matrix entry.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - uses: pre-commit/action@v3.0.1
+
+  commitizen:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
     runs-on: ubuntu-latest
@@ -70,7 +82,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: wagoid/commitlint-github-action@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
+        with:
+          python-version: "3.13"
+
+      - name: Check commit messages
+        # PR: validate the PR commits; push: validate the pushed range
+        # (skipped when pushing a brand-new branch with no "before" ref).
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "New branch push, no previous ref to compare against; skipping."
+            exit 0
+          else
+            RANGE="${{ github.event.before }}..${{ github.event.after }}"
+          fi
+          echo "Checking commit range: ${RANGE}"
+          uvx --from commitizen cz check --rev-range "${RANGE}"
 
   build:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -236,7 +266,7 @@ jobs:
 
   release:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    needs: [ commitlint, build, build-bin-linux, build-bin-windows, build-bin-macos ]
+    needs: [ pre-commit, commitizen, build, build-bin-linux, build-bin-windows, build-bin-macos ]
 
     runs-on: ubuntu-latest
 

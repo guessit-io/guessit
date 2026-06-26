@@ -58,6 +58,8 @@ lint = [
 dev = [
     { include-group = "test" },
     { include-group = "lint" },
+    "pre-commit",
+    "commitizen",
     "mkdocs",
     "mkdocs-material",
     "pyinstaller",
@@ -81,14 +83,42 @@ commit_message = "chore(release): release v{version}"
 commit_author = "github-actions <actions@github.com>"
 build_command = ""
 
+# commitizen is used only to lint commit messages (Conventional Commits), both
+# via the local pre-commit commit-msg hook and the CI `cz check`. Versioning and
+# releases stay owned by python-semantic-release above.
+[tool.commitizen]
+name = "cz_conventional_commits"
+
 [tool.ruff]
 line-length = 120
 target-version = "py310"
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "B", "C4", "SIM", "UP"]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "PIE",  # flake8-pie
+    "RET",  # flake8-return
+    "ISC",  # flake8-implicit-str-concat
+    "TC",   # flake8-type-checking
+    "FA",   # flake8-future-annotations
+    "PT",   # flake8-pytest-style
+    "RUF",  # ruff-specific rules
+]
 # SIM102: collapsing nested `if`s hurts readability with long conditions here.
 ignore = ["SIM102"]
+
+[tool.ruff.lint.per-file-ignores]
+# Rebulk Rule subclasses declare `dependency`, `consequence`, `properties`, ...
+# as class attributes by design — that is the framework API, not a mutable
+# default footgun. ClassVar annotations everywhere would be pure noise here.
+"guessit/rules/**" = ["RUF012"]
 
 [tool.pytest.ini_options]
 addopts = "-s --ignore=build --ignore=docs --ignore=hatch_build.py --doctest-modules --doctest-glob='*.rst'"
