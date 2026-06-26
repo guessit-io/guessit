@@ -3,7 +3,10 @@
 source property
 """
 
+from __future__ import annotations
+
 import copy
+from typing import TYPE_CHECKING, Any
 
 from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
@@ -13,8 +16,11 @@ from ..common.pattern import is_disabled
 from ..common.validators import or_, seps_after, seps_before
 from .audio_codec import HqConflictRule
 
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
 
-def source(config):
+
+def source(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -35,11 +41,11 @@ def source(config):
     rip_prefix = config["rip_prefix"]
     rip_suffix = config["rip_suffix"]
 
-    def build_source_pattern(*patterns, prefix="", suffix=""):
+    def build_source_pattern(*patterns: str, prefix: str = "", suffix: str = "") -> list[str]:
         """Helper pattern to build source pattern."""
         return [prefix + f"({pattern})" + suffix for pattern in patterns]
 
-    def demote_other(match, other):
+    def demote_other(match: Match, other: Match) -> Any:
         """Default conflict solver with 'other' property."""
         return other if other.name in ["other", "release_group"] else "__default__"
 
@@ -175,14 +181,14 @@ class UltraHdBlurayRule(Rule):
     consequence = [RemoveMatch, AppendMatch]
 
     @classmethod
-    def find_ultrahd(cls, matches, start, end, index):
+    def find_ultrahd(cls, matches: Matches, start: int, end: int, index: int) -> Any:
         """Find Ultra HD match."""
         return matches.range(
             start, end, index=index, predicate=(lambda m: not m.private and m.name == "other" and m.value == "Ultra HD")
         )
 
     @classmethod
-    def validate_range(cls, matches, start, end):
+    def validate_range(cls, matches: Matches, start: int, end: int) -> Any:
         """Validate no holes or invalid matches exist in the specified range."""
         return not matches.holes(start, end, predicate=lambda m: m.value.strip(seps)) and not matches.range(
             start,
@@ -198,9 +204,9 @@ class UltraHdBlurayRule(Rule):
             ),
         )
 
-    def when(self, matches, context):
-        to_remove = []
-        to_append = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
         for filepart in matches.markers.named("path"):
             for match in matches.range(
                 filepart.start,
@@ -239,8 +245,8 @@ class ValidateSourcePrefixSuffix(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for filepart in matches.markers.named("path"):
             for match in matches.range(filepart.start, filepart.end, predicate=lambda m: m.name == "source"):
                 match = match.initiator
@@ -271,8 +277,8 @@ class ValidateWeakSource(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for filepart in matches.markers.named("path"):
             for match in matches.range(filepart.start, filepart.end, predicate=lambda m: m.name == "source"):
                 # if there are more than 1 source in this filepart, just before the year and with holes for the title

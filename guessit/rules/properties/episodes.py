@@ -3,8 +3,11 @@
 episode, season, disc, episode_count, season_count and episode_details properties
 """
 
+from __future__ import annotations
+
 import copy
 from collections import defaultdict
+from typing import TYPE_CHECKING, Any
 
 from rebulk import AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
 from rebulk.match import Match
@@ -21,8 +24,11 @@ from ..common.pattern import is_disabled
 from ..common.validators import and_, int_coercable, seps_surround
 from .title import TitleFromPosition
 
+if TYPE_CHECKING:
+    from rebulk.match import Matches
 
-def episodes(config):
+
+def episodes(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -32,11 +38,11 @@ def episodes(config):
     :rtype: Rebulk
     """
 
-    def is_season_episode_disabled(context):
+    def is_season_episode_disabled(context: dict[str, Any] | None) -> bool:
         """Whether season and episode rules should be enabled."""
         return is_disabled(context, "episode") or is_disabled(context, "season")
 
-    def episodes_season_chain_breaker(matches):
+    def episodes_season_chain_breaker(matches: Matches) -> bool:
         """
         Break chains if there's more than 100 offset between two neighbor values.
         :param matches:
@@ -51,7 +57,7 @@ def episodes(config):
         seasons = matches.named("season")
         return bool(len(seasons) > 1 and abs(seasons[-1].value - seasons[-2].value) > season_max_range)
 
-    def season_episode_conflict_solver(match, other):
+    def season_episode_conflict_solver(match: Match, other: Match) -> Any:
         """
         Conflict solver for episode/season patterns
 
@@ -69,7 +75,7 @@ def episodes(config):
                     other.name == "audio_channels"
                     and "weak-audio_channels" not in other.tags
                     and not match.initiator.children.named(match.name + "Marker")
-                ) or (other.name == "screen_size" and not int_coercable(other.raw)):
+                ) or (other.name == "screen_size" and (other.raw is None or not int_coercable(other.raw))):
                     return match
                 if other.name in ("season", "episode") and match.initiator != other.initiator:
                     if match.initiator.name in ("weak_episode", "weak_duplicate") and other.initiator.name in (
@@ -78,11 +84,13 @@ def episodes(config):
                     ):
                         return "__default__"
                     for current in (match, other):
-                        if "weak-episode" in current.tags or "x" in current.initiator.raw.lower():
+                        if "weak-episode" in current.tags or (
+                            current.initiator.raw is not None and "x" in current.initiator.raw.lower()
+                        ):
                             return current
         return "__default__"
 
-    def ordering_validator(match):
+    def ordering_validator(match: Match) -> bool:
         """
         Validator for season list. They should be in natural order to be validated.
 
@@ -99,7 +107,7 @@ def episodes(config):
             if sorted(values["episode"]) != values["episode"]:
                 return False
 
-        def is_consecutive(property_name):
+        def is_consecutive(property_name: str) -> bool:
             """
             Check if the property season or episode has valid consecutive values.
             :param property_name:
@@ -107,7 +115,7 @@ def episodes(config):
             :return:
             :rtype:
             """
-            previous_match = None
+            previous_match: Match | None = None
             valid = True
             for current_match in match.children.named(property_name):
                 if previous_match:
@@ -127,7 +135,7 @@ def episodes(config):
 
         return is_consecutive("episode") and is_consecutive("season")
 
-    def validate_roman(match):
+    def validate_roman(match: Match) -> bool:
         """
         Validate a roman match if surrounded by separators
         :param match:
@@ -135,9 +143,9 @@ def episodes(config):
         :return:
         :rtype:
         """
-        if int_coercable(match.raw):
+        if match.raw is not None and int_coercable(match.raw):
             return True
-        return seps_surround(match)
+        return bool(seps_surround(match))
 
     season_words = config["season_words"]
     episode_words = config["episode_words"]
@@ -171,7 +179,7 @@ def episodes(config):
     )
 
     # S01E02, 01x02, S01S02S03
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["SxxExx"],
         validate_all=True,
         validator={"__parent__": and_(seps_surround, ordering_validator)},
@@ -190,7 +198,7 @@ def episodes(config):
         + r"(?P<episode>\d+)"
     ).repeater("*")
 
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["SxxExx"],
         validate_all=True,
         validator={"__parent__": and_(seps_surround, ordering_validator)},
@@ -199,7 +207,7 @@ def episodes(config):
         r"(?P<season>\d+)@?" + build_or_pattern(season_ep_markers, name="episodeMarker") + r"@?(?P<episode>\d+)"
     ).repeater("+")
 
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["SxxExx"],
         validate_all=True,
         validator={"__parent__": and_(seps_surround, ordering_validator)},
@@ -213,7 +221,7 @@ def episodes(config):
         + r"(?P<episode>\d+)"
     ).repeater("*")
 
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["SxxExx"],
         validate_all=True,
         validator={"__parent__": and_(seps_surround, ordering_validator)},
@@ -245,7 +253,7 @@ def episodes(config):
         conflict_solver=season_episode_conflict_solver,
     )
 
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         validate_all=True,
         conflict_solver=season_episode_conflict_solver,
         formatter={"season": parse_numeral, "count": parse_numeral},
@@ -301,7 +309,7 @@ def episodes(config):
     )
 
     # 12, 13
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["weak-episode"],
         disabled=lambda context: context.get("type") == "movie" or is_disabled(context, "episode"),
     ).defaults(validator=None, tags=["weak-episode"]).regex(r"(?P<episode>\d{2})").regex(r"v(?P<version>\d+)").repeater(
@@ -309,7 +317,7 @@ def episodes(config):
     ).regex(r"(?P<episodeSeparator>[x-])(?P<episode>\d{2})", abbreviations=None).repeater("*")
 
     # 012, 013
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["weak-episode"],
         disabled=lambda context: context.get("type") == "movie" or is_disabled(context, "episode"),
     ).defaults(validator=None, tags=["weak-episode"]).regex(r"0(?P<episode>\d{1,2})").regex(
@@ -317,7 +325,7 @@ def episodes(config):
     ).repeater("?").regex(r"(?P<episodeSeparator>[x-])0(?P<episode>\d{1,2})", abbreviations=None).repeater("*")
 
     # 112, 113
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["weak-episode"],
         name="weak_episode",
         disabled=lambda context: context.get("type") == "movie" or is_disabled(context, "episode"),
@@ -326,7 +334,7 @@ def episodes(config):
     ).repeater("?").regex(r"(?P<episodeSeparator>[x-])(?P<episode>\d{3,4})", abbreviations=None).repeater("*")
 
     # 1, 2, 3
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["weak-episode"],
         disabled=lambda context: context.get("type") != "episode" or is_disabled(context, "episode"),
     ).defaults(validator=None, tags=["weak-episode"]).regex(r"(?P<episode>\d)").regex(r"v(?P<version>\d+)").repeater(
@@ -334,28 +342,28 @@ def episodes(config):
     ).regex(r"(?P<episodeSeparator>[x-])(?P<episode>\d{1,2})", abbreviations=None).repeater("*")
 
     # e112, e113, 1e18, 3e19
-    rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(
+    rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         r"(?P<season>\d{1,2})?(?P<episodeMarker>e)(?P<episode>\d{1,4})"
     ).regex(r"v(?P<version>\d+)").repeater("?").regex(
         r"(?P<episodeSeparator>e|x|-)(?P<episode>\d{1,4})", abbreviations=None
     ).repeater("*")
 
     # ep 112, ep113, ep112, ep113
-    rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(
+    rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         r"ep-?(?P<episode>\d{1,4})"
     ).regex(r"v(?P<version>\d+)").repeater("?").regex(
         r"(?P<episodeSeparator>ep|e|x|-)(?P<episode>\d{1,4})", abbreviations=None
     ).repeater("*")
 
     # cap 112, cap 112_114
-    rebulk.chain(tags=["see-pattern"], disabled=is_season_episode_disabled).defaults(
+    rebulk.chain(tags=["see-pattern"], disabled=is_season_episode_disabled).defaults(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         validator=None, tags=["see-pattern"]
     ).regex(r"(?P<seasonMarker>cap)-?(?P<season>\d{1,2})(?P<episode>\d{2})").regex(
         r"(?P<episodeSeparator>-)(?P<season>\d{1,2})(?P<episode>\d{2})"
     ).repeater("?")
 
     # 102, 0102
-    rebulk.chain(
+    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["weak-episode", "weak-duplicate"],
         name="weak_duplicate",
         conflict_solver=season_episode_conflict_solver,
@@ -434,11 +442,11 @@ class WeakConflictSolver(Rule):
     priority = 128
     consequence = [RemoveMatch, AppendMatch]
 
-    def enabled(self, context):
-        return context.get("type") != "movie"
+    def enabled(self, context: dict[str, Any] | None) -> bool:
+        return bool(context and context.get("type") != "movie")
 
     @classmethod
-    def is_anime(cls, matches):
+    def is_anime(cls, matches: Matches) -> bool:
         """Return True if it seems to be an anime.
 
         Anime characteristics:
@@ -459,9 +467,9 @@ class WeakConflictSolver(Rule):
 
         return False
 
-    def when(self, matches, context):
-        to_remove = []
-        to_append = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
         anime_detected = self.is_anime(matches)
         for filepart in matches.markers.named("path"):
             weak_matches = matches.range(
@@ -523,10 +531,10 @@ class CountValidator(Rule):
 
     properties = {"episode_count": [None], "season_count": [None]}
 
-    def when(self, matches, context):
-        to_remove = []
-        episode_count = []
-        season_count = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        episode_count: list[Match] = []
+        season_count: list[Match] = []
 
         for count in matches.named("count"):
             previous = matches.previous(count, lambda match: match.name in ["episode", "season"], 0)
@@ -550,13 +558,13 @@ class SeePatternRange(Rule):
     priority = 128
     consequence = [RemoveMatch, AppendMatch]
 
-    def __init__(self, range_separators):
+    def __init__(self, range_separators: list[str]) -> None:
         super().__init__()
         self.range_separators = range_separators
 
-    def when(self, matches, context):
-        to_remove = []
-        to_append = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
 
         for separator in matches.tagged("see-pattern", lambda m: m.name == "episodeSeparator"):
             previous_match = matches.previous(separator, lambda m: m.name == "episode" and "see-pattern" in m.tags, 0)
@@ -587,17 +595,17 @@ class AbstractSeparatorRange(Rule):
 
     consequence = [RemoveMatch, AppendMatch]
 
-    def __init__(self, range_separators, property_name):
+    def __init__(self, range_separators: list[str], property_name: str) -> None:
         super().__init__()
         self.range_separators = range_separators
         self.property_name = property_name
 
-    def _can_start_range(self, match):
+    def _can_start_range(self, match: Match) -> bool:
         return True
 
-    def when(self, matches, context):
-        to_remove = []
-        to_append = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
 
         for separator in matches.named(self.property_name + "Separator"):
             previous_match = matches.previous(separator, lambda m: m.name == self.property_name, 0)
@@ -620,7 +628,7 @@ class AbstractSeparatorRange(Rule):
             if not previous_match and not self._can_start_range(next_match):
                 continue
             if previous_match:
-                separator = matches.input_string[previous_match.initiator.end : next_match.initiator.start]
+                separator = (matches.input_string or "")[previous_match.initiator.end : next_match.initiator.start]
                 if separator not in self.range_separators:
                     separator = strip(separator)
                 if separator in self.range_separators:
@@ -663,12 +671,12 @@ class RenameToAbsoluteEpisode(Rule):
 
     consequence = [RenameMatch("absolute_episode"), RemoveMatch]
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         initiators = {
             match.initiator for match in matches.named("episode") if len(match.initiator.children.named("episode")) > 1
         }
         if len(initiators) != 2:
-            ret = ([], [])
+            ret: tuple[list[Match], list[Match]] = ([], [])
             for filepart in matches.markers.named("path"):
                 sxxexx_episode_matches = matches.range(
                     filepart.start + 1, filepart.end, predicate=lambda m: m.name == "episode" and "SxxExx" in m.tags
@@ -683,10 +691,12 @@ class RenameToAbsoluteEpisode(Rule):
                         ret[0].extend(absolute_episode_candidate)
             return ret
 
-        initiators = sorted(initiators, key=lambda item: item.end)
-        if not matches.holes(initiators[0].end, initiators[1].start, predicate=lambda m: m.raw.strip(seps)):
-            first_range = matches.named("episode", predicate=lambda m: m.initiator == initiators[0])
-            second_range = matches.named("episode", predicate=lambda m: m.initiator == initiators[1])
+        sorted_initiators = sorted(initiators, key=lambda item: item.end)
+        if not matches.holes(
+            sorted_initiators[0].end, sorted_initiators[1].start, predicate=lambda m: (m.raw or "").strip(seps)
+        ):
+            first_range = matches.named("episode", predicate=lambda m: m.initiator == sorted_initiators[0])
+            second_range = matches.named("episode", predicate=lambda m: m.initiator == sorted_initiators[1])
             if len(first_range) == len(second_range):
                 if second_range[0].value > first_range[0].value:
                     return second_range, []
@@ -702,10 +712,10 @@ class EpisodeNumberSeparatorRange(AbstractSeparatorRange):
 
     priority = 128
 
-    def __init__(self, range_separators):
+    def __init__(self, range_separators: list[str]) -> None:
         super().__init__(range_separators, "episode")
 
-    def _can_start_range(self, match):
+    def _can_start_range(self, match: Match) -> bool:
         return "weak-episode" not in match.tags
 
 
@@ -716,7 +726,7 @@ class SeasonSeparatorRange(AbstractSeparatorRange):
 
     priority = 128
 
-    def __init__(self, range_separators):
+    def __init__(self, range_separators: list[str]) -> None:
         super().__init__(range_separators, "season")
 
 
@@ -728,12 +738,12 @@ class RemoveWeakIfMovie(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def enabled(self, context):
-        return context.get("type") != "episode"
+    def enabled(self, context: dict[str, Any] | None) -> bool:
+        return bool(context and context.get("type") != "episode")
 
-    def when(self, matches, context):
-        to_remove = []
-        to_ignore = set()
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_ignore: set[Match] = set()
         remove = False
         for filepart in matches.markers.named("path"):
             year = matches.range(filepart.start, filepart.end, predicate=lambda m: m.name == "year", index=0)
@@ -742,7 +752,7 @@ class RemoveWeakIfMovie(Rule):
                 next_match = matches.range(year.end, filepart.end, predicate=lambda m: m.private, index=0)
                 if (
                     next_match
-                    and not matches.holes(year.end, next_match.start, predicate=lambda m: m.raw.strip(seps))
+                    and not matches.holes(year.end, next_match.start, predicate=lambda m: (m.raw or "").strip(seps))
                     and not matches.at_match(next_match, predicate=lambda m: m.name == "year")
                 ):
                     to_ignore.add(next_match.initiator)
@@ -772,13 +782,13 @@ class RemoveWeak(Rule):
     priority = 16
     consequence = RemoveMatch, AppendMatch
 
-    def __init__(self, episode_words):
+    def __init__(self, episode_words: list[str]) -> None:
         super().__init__()
         self.episode_words = episode_words
 
-    def when(self, matches, context):
-        to_remove = []
-        to_append = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
         for filepart in matches.markers.named("path"):
             weaks = matches.range(filepart.start, filepart.end, predicate=lambda m: "weak-episode" in m.tags)
             if weaks:
@@ -799,8 +809,10 @@ class RemoveWeak(Rule):
                     ),
                     index=0,
                 )
-                if previous and not matches.holes(previous.end, weak.start, predicate=lambda m: m.raw.strip(seps)):
-                    if previous.raw.lower() in self.episode_words:
+                if previous and not matches.holes(
+                    previous.end, weak.start, predicate=lambda m: (m.raw or "").strip(seps)
+                ):
+                    if (previous.raw or "").lower() in self.episode_words:
                         try:
                             episode = copy.copy(weak)
                             episode.name = "episode"
@@ -829,8 +841,8 @@ class RemoveWeakIfSxxExx(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
             if matches.range(filepart.start, filepart.end, predicate=lambda m: not m.private and "SxxExx" in m.tags):
                 for match in matches.range(filepart.start, filepart.end, predicate=lambda m: "weak-episode" in m.tags):
@@ -847,8 +859,8 @@ class RemoveInvalidSeason(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
             strong_season = matches.range(
                 filepart.start,
@@ -879,8 +891,8 @@ class RemoveInvalidEpisode(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
             strong_episode = matches.range(
                 filepart.start,
@@ -905,7 +917,7 @@ class RemoveInvalidEpisode(Rule):
         return to_remove
 
     @staticmethod
-    def get_episode_prefix(matches, episode):
+    def get_episode_prefix(matches: Matches, episode: Match) -> Any:
         """
         Return episode prefix: episodeMarker or episodeSeparator
         """
@@ -920,10 +932,10 @@ class RemoveWeakDuplicate(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
-            patterns = defaultdict(list)
+            patterns: defaultdict[Any, list[Any]] = defaultdict(list)
             for match in reversed(
                 matches.range(filepart.start, filepart.end, predicate=lambda m: "weak-duplicate" in m.tags)
             ):
@@ -942,8 +954,8 @@ class EpisodeDetailValidator(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for detail in matches.named("episode_details"):
             if (
                 not seps_surround(detail)
@@ -965,11 +977,11 @@ class RemoveDetachedEpisodeNumber(Rule):
     consequence = RemoveMatch
     dependency = [RemoveWeakIfSxxExx, RemoveWeakDuplicate]
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
 
-        episode_numbers = []
-        episode_values = set()
+        episode_numbers: list[Match] = []
+        episode_values: set[Any] = set()
         for match in matches.named("episode", lambda m: not m.private and "weak-episode" in m.tags):
             if match.value not in episode_values:
                 episode_numbers.append(match)
@@ -981,7 +993,7 @@ class RemoveDetachedEpisodeNumber(Rule):
             and episode_numbers[0].value < 10
             and episode_numbers[1].value - episode_numbers[0].value != 1
         ):
-            parent = episode_numbers[0]
+            parent: Match | None = episode_numbers[0]
             while parent:
                 ret.append(parent)
                 parent = parent.parent
@@ -997,8 +1009,8 @@ class VersionValidator(Rule):
     dependency = [RemoveWeakIfMovie, RemoveWeakIfSxxExx]
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for version in matches.named("version"):
             episode_number = matches.previous(version, lambda match: match.name == "episode", 0)
             if not episode_number and not seps_surround(version.initiator):
@@ -1015,11 +1027,11 @@ class EpisodeSingleDigitValidator(Rule):
 
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for episode in matches.named("episode", lambda match: len(match.initiator) == 1):
             group = matches.markers.at_match(episode, lambda marker: marker.name == "group", index=0)
-            if group and not matches.range(*group.span, predicate=lambda match: match.name == "title"):
+            if group and not matches.range(group.span[0], group.span[1], predicate=lambda match: match.name == "title"):
                 ret.append(episode)
         return ret
 
@@ -1031,10 +1043,10 @@ class RenameToDiscMatch(Rule):
 
     consequence = [RenameMatch("disc"), RenameMatch("discMarker"), RemoveMatch]
 
-    def when(self, matches, context):
-        discs = []
-        markers = []
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        discs: list[Match] = []
+        markers: list[Match] = []
+        to_remove: list[Match] = []
 
         disc_disabled = is_disabled(context, "disc")
 
