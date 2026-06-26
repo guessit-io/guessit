@@ -2,6 +2,7 @@
 """
 part property
 """
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 
@@ -21,10 +22,10 @@ def part(config):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'part'))
-    rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash], validator={'__parent__': seps_surround})
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, "part"))
+    rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash], validator={"__parent__": seps_surround})
 
-    prefixes = config['prefixes']
+    prefixes = config["prefixes"]
 
     def validate_roman(match):
         """
@@ -38,8 +39,14 @@ def part(config):
             return True
         return seps_surround(match)
 
-    rebulk.regex(build_or_pattern(prefixes) + r'-?(?P<part>' + numeral + r')',
-                 prefixes=prefixes, validate_all=True, private_parent=True, children=True, formatter=parse_numeral,
-                 validator={'part': and_(validate_roman, lambda m: 0 < m.value < 100)})
+    rebulk.regex(
+        build_or_pattern(prefixes) + r"-?(?P<part>" + numeral + r")",
+        prefixes=prefixes,
+        validate_all=True,
+        private_parent=True,
+        children=True,
+        formatter=parse_numeral,
+        validator={"part": and_(validate_roman, lambda m: 0 < m.value < 100)},
+    )
 
     return rebulk

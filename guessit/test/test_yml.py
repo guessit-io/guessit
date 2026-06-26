@@ -46,39 +46,39 @@ class EntryResult:
 
     def __repr__(self):
         if self.ok:
-            return self.string + ': OK!'
-        neg = '-' if self.negates else ''
+            return self.string + ": OK!"
+        neg = "-" if self.negates else ""
         if self.warning:
-            return f'{neg}{self.string}: WARNING! (valid={len(self.valid)}, extra={self.extra})'
-        head = f'valid={len(self.valid)}, extra={self.extra}, missing={self.missing}'
-        tail = f'different={self.different}, others={self.others}'
+            return f"{neg}{self.string}: WARNING! (valid={len(self.valid)}, extra={self.extra})"
+        head = f"valid={len(self.valid)}, extra={self.extra}, missing={self.missing}"
+        tail = f"different={self.different}, others={self.others}"
         if self.error:
-            return f'{neg}{self.string}: ERROR! ({head}, {tail})'
-        return f'{neg}{self.string}: UNKOWN! ({head}, {tail})'
+            return f"{neg}{self.string}: ERROR! ({head}, {tail})"
+        return f"{neg}{self.string}: UNKOWN! ({head}, {tail})"
 
     @property
     def details(self):
         ret = []
         if self.valid:
-            ret.append('valid=' + str(len(self.valid)))
+            ret.append("valid=" + str(len(self.valid)))
         for valid in self.valid:
-            ret.append(' ' * 4 + str(valid))
+            ret.append(" " * 4 + str(valid))
         if self.missing:
-            ret.append('missing=' + str(len(self.missing)))
+            ret.append("missing=" + str(len(self.missing)))
         for missing in self.missing:
-            ret.append(' ' * 4 + str(missing))
+            ret.append(" " * 4 + str(missing))
         if self.different:
-            ret.append('different=' + str(len(self.different)))
+            ret.append("different=" + str(len(self.different)))
         for different in self.different:
-            ret.append(' ' * 4 + str(different))
+            ret.append(" " * 4 + str(different))
         if self.extra:
-            ret.append('extra=' + str(len(self.extra)))
+            ret.append("extra=" + str(len(self.extra)))
         for extra in self.extra:
-            ret.append(' ' * 4 + str(extra))
+            ret.append(" " * 4 + str(extra))
         if self.others:
-            ret.append('others=' + str(len(self.others)))
+            ret.append("others=" + str(len(self.others)))
         for other in self.others:
-            ret.append(' ' * 4 + str(other))
+            ret.append(" " * 4 + str(other))
         return ret
 
 
@@ -92,14 +92,14 @@ def files_and_ids(predicate=None):
     files = []
     ids = []
 
-    for (dirpath, _, filenames) in os.walk(__location__):
-        if os.path.split(dirpath)[-1] == 'config':
+    for dirpath, _, filenames in os.walk(__location__):
+        if os.path.split(dirpath)[-1] == "config":
             continue
-        dirpath_rel = '' if dirpath == __location__ else os.path.relpath(dirpath, __location__)
+        dirpath_rel = "" if dirpath == __location__ else os.path.relpath(dirpath, __location__)
         for filename in filenames:
             name, ext = os.path.splitext(filename)
             filepath = os.path.join(dirpath_rel, filename)
-            if ext in ['.yml', '.yaml'] and (not predicate or predicate(filepath)):
+            if ext in [".yml", ".yaml"] and (not predicate or predicate(filepath)):
                 files.append(filepath)
                 ids.append(os.path.join(dirpath_rel, name))
 
@@ -113,7 +113,7 @@ class TestYml:
     Use $ marker to check inputs that should not match results.
     """
 
-    options_re = re.compile(r'^([ +-]+)(.*)')
+    options_re = re.compile(r"^([ +-]+)(.*)")
 
     def _get_unique_id(self, collection, base_id):
         ret = base_id
@@ -125,13 +125,13 @@ class TestYml:
         return ret
 
     def pytest_generate_tests(self, metafunc):
-        if 'yml_test_case' in metafunc.fixturenames:
+        if "yml_test_case" in metafunc.fixturenames:
             entries = []
             entry_ids = []
             entry_set = set()
 
             for filename, _ in zip(*files_and_ids(), strict=False):
-                with open(os.path.join(__location__, filename), encoding='utf-8') as infile:
+                with open(os.path.join(__location__, filename), encoding="utf-8") as infile:
                     data = yaml.load(infile, OrderedDictYAMLLoader)
 
                 last_expected = None
@@ -143,8 +143,8 @@ class TestYml:
 
                 default = None
                 try:
-                    default = data['__default__']
-                    del data['__default__']
+                    default = data["__default__"]
+                    del data["__default__"]
                 except KeyError:
                     pass
 
@@ -153,11 +153,11 @@ class TestYml:
                     string = TestYml.fix_encoding(string)
 
                     entries.append((filename, string, expected))
-                    unique_id = self._get_unique_id(entry_set, '[' + filename + '] ' + str(string))
+                    unique_id = self._get_unique_id(entry_set, "[" + filename + "] " + str(string))
                     entry_set.add(unique_id)
                     entry_ids.append(unique_id)
 
-            metafunc.parametrize('yml_test_case', entries, ids=entry_ids)
+            metafunc.parametrize("yml_test_case", entries, ids=entry_ids)
 
     @staticmethod
     def set_default(expected, default):
@@ -180,19 +180,19 @@ class TestYml:
     def check_data(self, filename, string, expected):
         entry = self.check(string, expected)
         if entry.ok:
-            logger.debug('[%s] %s', filename, entry)
+            logger.debug("[%s] %s", filename, entry)
         elif entry.warning:
-            logger.warning('[%s] %s', filename, entry)
+            logger.warning("[%s] %s", filename, entry)
         elif entry.error:
-            logger.error('[%s] %s', filename, entry)
+            logger.error("[%s] %s", filename, entry)
             for line in entry.details:
-                logger.error('[%s] %s', filename, ' ' * 4 + line)
+                logger.error("[%s] %s", filename, " " * 4 + line)
         return entry
 
     def check(self, string, expected):
         negates, global_, string = self.parse_token_options(string)
 
-        options = expected.get('options')
+        options = expected.get("options")
         if options is None:
             options = {}
         if not isinstance(options, dict):
@@ -200,7 +200,7 @@ class TestYml:
         try:
             result = guessit(string, options)
         except Exception as exc:
-            logger.error('[%s] Exception: %s', string, exc)
+            logger.error("[%s] Exception: %s", string, exc)
             raise exc
 
         entry = EntryResult(string, negates)
@@ -219,9 +219,9 @@ class TestYml:
         if matches:
             string = matches.group(2)
             for opt in matches.group(1):
-                if '-' in opt:
+                if "-" in opt:
                     negates = True
-                if '+' in opt:
+                if "+" in opt:
                     global_ = True
         return negates, global_, string
 
@@ -253,7 +253,7 @@ class TestYml:
     def check_expected(self, result, expected, entry):
         if expected:
             for expected_key, expected_value in expected.items():
-                if expected_key and expected_key != 'options' and expected_value is not None:
+                if expected_key and expected_key != "options" and expected_value is not None:
                     negates_key, _, result_key = self.parse_token_options(expected_key)
                     if result_key in result:
                         if not self.is_same(result[result_key], expected_value):

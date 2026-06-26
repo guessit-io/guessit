@@ -20,11 +20,11 @@ def monkeypatch_rebulk():
         """
 
         ret = OrderedDict()
-        ret['value'] = self.value
+        ret["value"] = self.value
         if self.raw:
-            ret['raw'] = self.raw
-        ret['start'] = self.start
-        ret['end'] = self.end
+            ret["raw"] = self.raw
+        ret["start"] = self.start
+        ret["end"] = self.end
         return ret
 
     Match.advanced = match_advanced

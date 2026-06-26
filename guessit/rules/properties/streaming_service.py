@@ -2,6 +2,7 @@
 """
 streaming_service property
 """
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 from rebulk.rules import RemoveMatch, Rule
@@ -20,9 +21,9 @@ def streaming_service(config):
     :return:
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'streaming_service'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, "streaming_service"))
     rebulk = rebulk.string_defaults(ignore_case=True).regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
-    rebulk.defaults(name='streaming_service', tags=['source-prefix'])
+    rebulk.defaults(name="streaming_service", tags=["source-prefix"])
 
     load_config_patterns(rebulk, config)
 
@@ -47,23 +48,29 @@ class ValidateStreamingService(Rule):
         :return:
         """
         to_remove = []
-        for service in matches.named('streaming_service'):
-            next_match = matches.next(service, lambda match: 'streaming_service.suffix' in match.tags, 0)
-            previous_match = matches.previous(service, lambda match: 'streaming_service.prefix' in match.tags, 0)
-            has_other = service.initiator and service.initiator.children.named('other')
+        for service in matches.named("streaming_service"):
+            next_match = matches.next(service, lambda match: "streaming_service.suffix" in match.tags, 0)
+            previous_match = matches.previous(service, lambda match: "streaming_service.prefix" in match.tags, 0)
+            has_other = service.initiator and service.initiator.children.named("other")
 
-            if not has_other and (not next_match or
-                    matches.holes(service.end, next_match.start,
-                                  predicate=lambda match: match.value.strip(seps)) or
-                    not seps_before(service)) and (not previous_match or
-                    matches.holes(previous_match.end, service.start,
-                                  predicate=lambda match: match.value.strip(seps)) or
-                    not seps_after(service)):
+            if (
+                not has_other
+                and (
+                    not next_match
+                    or matches.holes(service.end, next_match.start, predicate=lambda match: match.value.strip(seps))
+                    or not seps_before(service)
+                )
+                and (
+                    not previous_match
+                    or matches.holes(previous_match.end, service.start, predicate=lambda match: match.value.strip(seps))
+                    or not seps_after(service)
+                )
+            ):
                 to_remove.append(service)
                 continue
 
-            if service.value == 'Comedy Central':
+            if service.value == "Comedy Central":
                 # Current match is a valid streaming service, removing invalid Criterion Collection (CC) matches
-                to_remove.extend(matches.named('edition', predicate=lambda match: match.value == 'Criterion'))
+                to_remove.extend(matches.named("edition", predicate=lambda match: match.value == "Criterion"))
 
         return to_remove

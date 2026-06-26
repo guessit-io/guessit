@@ -2,6 +2,7 @@
 """
 cd and cd_count properties
 """
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 
@@ -19,7 +20,7 @@ def cd(config):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'cd'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, "cd"))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
 
     load_config_patterns(rebulk, config)

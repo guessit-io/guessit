@@ -2,6 +2,7 @@
 """
 size property
 """
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 
@@ -20,9 +21,9 @@ def size(config):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'size'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, "size"))
     rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
-    rebulk.defaults(name='size', validator=seps_surround)
-    rebulk.regex(r'\d+-?[mgt]b', r'\d+\.\d+-?[mgt]b', formatter=Size.fromstring, tags=['release-group-prefix'])
+    rebulk.defaults(name="size", validator=seps_surround)
+    rebulk.regex(r"\d+-?[mgt]b", r"\d+\.\d+-?[mgt]b", formatter=Size.fromstring, tags=["release-group-prefix"])
 
     return rebulk

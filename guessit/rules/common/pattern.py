@@ -18,9 +18,9 @@ def is_disabled(context, name):
     if not context:
         return False
 
-    excludes = context.get('excludes')
+    excludes = context.get("excludes")
     if excludes and name in excludes:
         return True
 
-    includes = context.get('includes')
+    includes = context.get("includes")
     return includes and name not in includes

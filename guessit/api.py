@@ -22,17 +22,19 @@ class GuessitException(Exception):
     """
 
     def __init__(self, string, options):
-        super().__init__("An internal error has occurred in guessit.\n"
-                         "===================== Guessit Exception Report =====================\n"
-                         f"version={__version__}\n"
-                         f"string={string!s}\n"
-                         f"options={options!s}\n"
-                         "--------------------------------------------------------------------\n"
-                         f"{traceback.format_exc()}"
-                         "--------------------------------------------------------------------\n"
-                         "Please report at "
-                         "https://github.com/guessit-io/guessit/issues.\n"
-                         "====================================================================")
+        super().__init__(
+            "An internal error has occurred in guessit.\n"
+            "===================== Guessit Exception Report =====================\n"
+            f"version={__version__}\n"
+            f"string={string!s}\n"
+            f"options={options!s}\n"
+            "--------------------------------------------------------------------\n"
+            f"{traceback.format_exc()}"
+            "--------------------------------------------------------------------\n"
+            "Please report at "
+            "https://github.com/guessit-io/guessit/issues.\n"
+            "===================================================================="
+        )
 
         self.string = string
         self.options = options
@@ -122,7 +124,7 @@ class GuessItApi:
         if isinstance(value, dict):
             return {cls._fix_encoding(k): cls._fix_encoding(v) for k, v in value.items()}
         if isinstance(value, bytes):
-            return value.decode('ascii')
+            return value.decode("ascii")
         return value
 
     @classmethod
@@ -151,20 +153,25 @@ class GuessItApi:
             options = parse_options(options, True)
             options = self._fix_encoding(options)
 
-        if self.config is None or self.load_config_options is None or force or \
-                not self._has_same_properties(self.load_config_options,
-                                              options,
-                                              ['config', 'no_user_config', 'no_default_config']):
+        if (
+            self.config is None
+            or self.load_config_options is None
+            or force
+            or not self._has_same_properties(
+                self.load_config_options, options, ["config", "no_user_config", "no_default_config"]
+            )
+        ):
             config = load_config(options)
             config = self._fix_encoding(config)
             self.load_config_options = options
         else:
             config = self.config
 
-        advanced_config = merge_options(config.get('advanced_config'), options.get('advanced_config'))
+        advanced_config = merge_options(config.get("advanced_config"), options.get("advanced_config"))
 
-        should_build_rebulk = force or not self.rebulk or not self.advanced_config or \
-                              self.advanced_config != advanced_config
+        should_build_rebulk = (
+            force or not self.rebulk or not self.advanced_config or self.advanced_config != advanced_config
+        )
 
         if should_build_rebulk:
             self.advanced_config = deepcopy(advanced_config)
@@ -199,7 +206,7 @@ class GuessItApi:
             result_encode = False
 
             if isinstance(string, bytes):
-                string = string.decode('ascii')
+                string = string.decode("ascii")
                 result_encode = True
 
             matches = self.rebulk.matches(string, options)
@@ -211,11 +218,12 @@ class GuessItApi:
                 for match in matches:
                     if isinstance(match.value, str):
                         match.value = match.value.encode("ascii")
-            matches_dict = matches.to_dict(options.get('advanced', False), options.get('single_value', False),
-                                           options.get('enforce_list', False))
-            output_input_string = options.get('output_input_string', False)
+            matches_dict = matches.to_dict(
+                options.get("advanced", False), options.get("single_value", False), options.get("enforce_list", False)
+            )
+            output_input_string = options.get("output_input_string", False)
             if output_input_string:
-                matches_dict['input_string'] = matches.input_string
+                matches_dict["input_string"] = matches.input_string
             return matches_dict
         except Exception as err:
             raise GuessitException(string, options) from err
@@ -236,7 +244,7 @@ class GuessItApi:
         ordered = OrderedDict()
         for k in sorted(unordered.keys(), key=str):
             ordered[k] = sorted(unordered[k], key=str)
-        if hasattr(self.rebulk, 'customize_properties'):
+        if hasattr(self.rebulk, "customize_properties"):
             ordered = self.rebulk.customize_properties(ordered)
         return ordered
 
@@ -253,7 +261,7 @@ class GuessItApi:
         suggested = []
         for title in titles:
             guess = self.guessit(title, options)
-            if len(guess) != 2 or 'title' not in guess:
+            if len(guess) != 2 or "title" not in guess:
                 suggested.append(title)
 
         return suggested

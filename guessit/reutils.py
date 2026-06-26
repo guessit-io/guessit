@@ -22,13 +22,13 @@ def build_or_pattern(patterns, name=None, escape=False):
     or_pattern = []
     for pattern in patterns:
         if not or_pattern:
-            or_pattern.append('(?')
+            or_pattern.append("(?")
             if name:
-                or_pattern.append(f'P<{name}>')
+                or_pattern.append(f"P<{name}>")
             else:
-                or_pattern.append(':')
+                or_pattern.append(":")
         else:
-            or_pattern.append('|')
-        or_pattern.append(f'(?:{re.escape(pattern)})' if escape else pattern)
-    or_pattern.append(')')
-    return ''.join(or_pattern)
+            or_pattern.append("|")
+        or_pattern.append(f"(?:{re.escape(pattern)})" if escape else pattern)
+    or_pattern.append(")")
+    return "".join(or_pattern)

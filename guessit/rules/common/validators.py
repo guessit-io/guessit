@@ -2,6 +2,7 @@
 """
 Validators
 """
+
 from functools import partial
 
 from rebulk.validators import chars_after, chars_before, chars_surround
@@ -36,6 +37,7 @@ def and_(*validators):
     :return:
     :rtype:
     """
+
     def composed(string):
         """
         Composed validators function
@@ -45,6 +47,7 @@ def and_(*validators):
         :rtype:
         """
         return all(validator(string) for validator in validators)
+
     return composed
 
 
@@ -56,6 +59,7 @@ def or_(*validators):
     :return:
     :rtype:
     """
+
     def composed(string):
         """
         Composed validators function
@@ -65,4 +69,5 @@ def or_(*validators):
         :rtype:
         """
         return any(validator(string) for validator in validators)
+
     return composed

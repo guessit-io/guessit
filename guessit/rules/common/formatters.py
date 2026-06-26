@@ -2,12 +2,13 @@
 """
 Formatters
 """
+
 from rebulk.formatters import formatters
 from rebulk.remodule import re
 
 from . import seps
 
-_excluded_clean_chars = ',:;-/\\'
+_excluded_clean_chars = ",:;-/\\"
 clean_chars = ""
 for sep in seps:
     if sep not in _excluded_clean_chars:
@@ -39,8 +40,7 @@ def _potential_after(i, input_string):
     :return:
     :rtype: bool
     """
-    return i + 2 >= len(input_string) or \
-           (input_string[i + 2] == input_string[i] and input_string[i + 1] not in seps)
+    return i + 2 >= len(input_string) or (input_string[i + 2] == input_string[i] and input_string[i + 1] not in seps)
 
 
 def cleanup(input_string):
@@ -56,7 +56,7 @@ def cleanup(input_string):
     """
     clean_string = input_string
     for char in clean_chars:
-        clean_string = clean_string.replace(char, ' ')
+        clean_string = clean_string.replace(char, " ")
 
     # Restore input separator if they separate single characters.
     # Useful for Mavels Agents of S.H.I.E.L.D.
@@ -84,11 +84,11 @@ def cleanup(input_string):
             for replace_index in replace_indices:
                 dots.add(input_string[replace_index])
                 clean_list[replace_index] = input_string[replace_index]
-            clean_string = ''.join(clean_list)
+            clean_string = "".join(clean_list)
 
-    clean_string = strip(clean_string, ''.join([c for c in seps if c not in dots]))
+    clean_string = strip(clean_string, "".join([c for c in seps if c not in dots]))
 
-    return re.sub(' +', ' ', clean_string)
+    return re.sub(" +", " ", clean_string)
 
 
 def strip(input_string, chars=seps):
@@ -114,7 +114,7 @@ def raw_cleanup(raw):
     return formatters(cleanup, strip)(raw.lower())
 
 
-def reorder_title(title, articles=('the',), separators=(',', ', ')):
+def reorder_title(title, articles=("the",), separators=(",", ", ")):
     """
     Reorder the title
     :param title:
@@ -130,6 +130,6 @@ def reorder_title(title, articles=('the',), separators=(',', ', ')):
     for article in articles:
         for separator in separators:
             suffix = separator + article
-            if ltitle[-len(suffix):] == suffix:
-                return title[-len(suffix) + len(separator):] + ' ' + title[:-len(suffix)]
+            if ltitle[-len(suffix) :] == suffix:
+                return title[-len(suffix) + len(separator) :] + " " + title[: -len(suffix)]
     return title

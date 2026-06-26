@@ -2,6 +2,7 @@
 """
 Quantities: Size
 """
+
 from abc import abstractmethod
 
 from rebulk.remodule import re
@@ -14,7 +15,7 @@ class Quantity:
     Represent a quantity object with magnitude and units.
     """
 
-    parser_re = re.compile(r'(?P<magnitude>\d+(?:[.]\d+)?)(?P<units>[^\d]+)?')
+    parser_re = re.compile(r"(?P<magnitude>\d+(?:[.]\d+)?)(?P<units>[^\d]+)?")
 
     def __init__(self, magnitude, units):
         self.magnitude = magnitude
@@ -37,10 +38,10 @@ class Quantity:
         """
         values = cls.parser_re.match(string).groupdict()
         try:
-            magnitude = int(values['magnitude'])
+            magnitude = int(values["magnitude"])
         except ValueError:
-            magnitude = float(values['magnitude'])
-        units = cls.parse_units(values['units'])
+            magnitude = float(values["magnitude"])
+        units = cls.parse_units(values["units"])
 
         return cls(magnitude, units)
 
@@ -58,10 +59,10 @@ class Quantity:
         return not self == other
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} [{self}]>'
+        return f"<{self.__class__.__name__} [{self}]>"
 
     def __str__(self):
-        return f'{self.magnitude}{self.units}'
+        return f"{self.magnitude}{self.units}"
 
 
 class Size(Quantity):
@@ -86,8 +87,8 @@ class BitRate(Quantity):
     @classmethod
     def parse_units(cls, value):
         value = value.strip(seps).capitalize()
-        for token in ('bits', 'bit'):
-            value = value.replace(token, 'bps')
+        for token in ("bits", "bit"):
+            value = value.replace(token, "bps")
 
         return value
 
@@ -101,4 +102,4 @@ class FrameRate(Quantity):
 
     @classmethod
     def parse_units(cls, value):
-        return 'fps'
+        return "fps"

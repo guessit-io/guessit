@@ -2,6 +2,7 @@
 """
 Processors
 """
+
 import copy
 from collections import defaultdict
 
@@ -18,13 +19,14 @@ class EnlargeGroupMatches(CustomRule):
     """
     Enlarge matches that are starting and/or ending group to include brackets in their span.
     """
+
     priority = PRE_PROCESS
 
     def when(self, matches, context):
         starting = []
         ending = []
 
-        for group in matches.markers.named('group'):
+        for group in matches.markers.named("group"):
             for match in matches.starting(group.start + 1):
                 starting.append(match)
 
@@ -54,20 +56,20 @@ class EquivalentHoles(Rule):
     """
     Creates equivalent matches for holes that have same values than existing (case insensitive)
     """
+
     priority = POST_PROCESS
     consequence = AppendMatch
 
     def when(self, matches, context):
         new_matches = []
 
-        for filepath in marker_sorted(matches.markers.named('path'), matches):
+        for filepath in marker_sorted(matches.markers.named("path"), matches):
             holes = matches.holes(start=filepath.start, end=filepath.end, formatter=cleanup)
             for name in matches.names:
                 for hole in list(holes):
                     for current_match in matches.named(name):
-                        if isinstance(current_match.value, str) and \
-                                        hole.value.lower() == current_match.value.lower():
-                            if 'equivalent-ignore' in current_match.tags:
+                        if isinstance(current_match.value, str) and hole.value.lower() == current_match.value.lower():
+                            if "equivalent-ignore" in current_match.tags:
                                 continue
                             new_value = _preferred_string(hole.value, current_match.value)
                             if hole.value != new_value:
@@ -75,7 +77,7 @@ class EquivalentHoles(Rule):
                             if current_match.value != new_value:
                                 current_match.value = new_value
                             hole.name = name
-                            hole.tags = ['equivalent']
+                            hole.tags = ["equivalent"]
                             new_matches.append(hole)
                             if hole in holes:
                                 holes.remove(hole)
@@ -98,7 +100,7 @@ class RemoveAmbiguous(Rule):
         self.predicate = predicate
 
     def when(self, matches, context):
-        fileparts = self.sort_function(matches.markers.named('path'), matches)
+        fileparts = self.sort_function(matches.markers.named("path"), matches)
 
         previous_fileparts_names = set()
         values = defaultdict(list)
@@ -127,12 +129,16 @@ class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
     If multiple season/episodes matches are found with different values,
     keep the one tagged as 'SxxExx' or in the rightmost filepart.
     """
+
     def __init__(self, name):
         super().__init__(
-            sort_function=(lambda markers, matches:
-                           marker_sorted(list(reversed(markers)), matches,
-                                         lambda match: match.name == name and 'SxxExx' in match.tags)),
-            predicate=lambda match: match.name == name)
+            sort_function=(
+                lambda markers, matches: marker_sorted(
+                    list(reversed(markers)), matches, lambda match: match.name == name and "SxxExx" in match.tags
+                )
+            ),
+            predicate=lambda match: match.name == name,
+        )
 
 
 def _preferred_string(value1, value2):
@@ -177,16 +183,17 @@ class SeasonYear(Rule):
     """
     If a season is a valid year and no year was found, create an match with year.
     """
+
     priority = POST_PROCESS
     consequence = AppendMatch
 
     def when(self, matches, context):
         ret = []
-        if not matches.named('year'):
-            for season in matches.named('season'):
+        if not matches.named("year"):
+            for season in matches.named("season"):
                 if valid_year(season.value):
                     year = copy.copy(season)
-                    year.name = 'year'
+                    year.name = "year"
                     ret.append(year)
         return ret
 
@@ -195,15 +202,16 @@ class YearSeason(Rule):
     """
     If a year is found, no season found, and episode is found, create an match with season.
     """
+
     priority = POST_PROCESS
     consequence = AppendMatch
 
     def when(self, matches, context):
         ret = []
-        if not matches.named('season') and matches.named('episode'):
-            for year in matches.named('year'):
+        if not matches.named("season") and matches.named("episode"):
+            for year in matches.named("year"):
                 season = copy.copy(year)
-                season.name = 'season'
+                season.name = "season"
                 ret.append(season)
         return ret
 
@@ -212,6 +220,7 @@ class Processors(CustomRule):
     """
     Empty rule for ordering post_processing properly.
     """
+
     priority = POST_PROCESS
 
     def when(self, matches, context):
@@ -225,6 +234,7 @@ class StripSeparators(CustomRule):
     """
     Strip separators from matches. Keep separators if they are from acronyms, like in ".S.H.I.E.L.D."
     """
+
     priority = POST_PROCESS
 
     def when(self, matches, context):
@@ -250,7 +260,14 @@ def processors(config):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    return Rebulk().rules(EnlargeGroupMatches, EquivalentHoles,
-                          RemoveLessSpecificSeasonEpisode('season'),
-                          RemoveLessSpecificSeasonEpisode('episode'),
-                          RemoveAmbiguous, SeasonYear, YearSeason, Processors, StripSeparators)
+    return Rebulk().rules(
+        EnlargeGroupMatches,
+        EquivalentHoles,
+        RemoveLessSpecificSeasonEpisode("season"),
+        RemoveLessSpecificSeasonEpisode("episode"),
+        RemoveAmbiguous,
+        SeasonYear,
+        YearSeason,
+        Processors,
+        StripSeparators,
+    )

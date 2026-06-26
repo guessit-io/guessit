@@ -2,6 +2,7 @@
 """
 Expected property factory
 """
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 from rebulk.utils import find_all
@@ -32,21 +33,22 @@ def build_expected_function(context_key):
         """
         ret = []
         for search in context.get(context_key):
-            if search.startswith('re:'):
+            if search.startswith("re:"):
                 search = search[3:]
-                search = search.replace(' ', '-')
-                matches = Rebulk().regex(search, abbreviations=[dash], flags=re.IGNORECASE) \
-                    .matches(input_string, context)
+                search = search.replace(" ", "-")
+                matches = (
+                    Rebulk().regex(search, abbreviations=[dash], flags=re.IGNORECASE).matches(input_string, context)
+                )
                 for match in matches:
                     ret.append(match.span)
             else:
                 for sep in seps:
-                    input_string = input_string.replace(sep, ' ')
-                    search = search.replace(sep, ' ')
+                    input_string = input_string.replace(sep, " ")
+                    search = search.replace(sep, " ")
                 for start in find_all(input_string, search, ignore_case=True):
                     end = start + len(search)
                     value = input_string[start:end]
-                    ret.append({'start': start, 'end': end, 'value': value})
+                    ret.append({"start": start, "end": end, "value": value})
         return ret
 
     return expected

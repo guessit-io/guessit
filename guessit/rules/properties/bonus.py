@@ -2,6 +2,7 @@
 """
 bonus property
 """
+
 from rebulk import AppendMatch, Rebulk, Rule
 from rebulk.remodule import re
 
@@ -20,10 +21,10 @@ def bonus(config):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'bonus'))
-    rebulk = rebulk.regex_defaults(name='bonus', flags=re.IGNORECASE)
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, "bonus"))
+    rebulk = rebulk.regex_defaults(name="bonus", flags=re.IGNORECASE)
 
-    load_config_patterns(rebulk, config.get('bonus'))
+    load_config_patterns(rebulk, config.get("bonus"))
 
     rebulk.rules(BonusTitleRule)
 
@@ -34,17 +35,18 @@ class BonusTitleRule(Rule):
     """
     Find bonus title after bonus.
     """
+
     dependency = TitleFromPosition
     consequence = AppendMatch
 
-    properties = {'bonus_title': [None]}
+    properties = {"bonus_title": [None]}
 
     def when(self, matches, context):
-        bonus_number = matches.named('bonus', lambda match: not match.private, index=0)
+        bonus_number = matches.named("bonus", lambda match: not match.private, index=0)
         if bonus_number:
-            filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == 'path', 0)
+            filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == "path", 0)
             hole = matches.holes(bonus_number.end, filepath.end + 1, formatter=cleanup, index=0)
             if hole and hole.value:
-                hole.name = 'bonus_title'
+                hole.name = "bonus_title"
                 return hole
         return None

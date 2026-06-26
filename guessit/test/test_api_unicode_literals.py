@@ -11,64 +11,64 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 
 
 def test_default():
-    ret = guessit('Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
+    ret = guessit("Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv")
     assert ret
-    assert 'title' in ret
+    assert "title" in ret
 
 
 def test_forced_unicode():
-    ret = guessit('Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
+    ret = guessit("Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv")
     assert ret
-    assert 'title' in ret
-    assert isinstance(ret['title'], str)
+    assert "title" in ret
+    assert isinstance(ret["title"], str)
 
 
 def test_forced_binary():
-    ret = guessit(b'Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv')
+    ret = guessit(b"Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv")
     assert ret
-    assert 'title' in ret
-    assert isinstance(ret['title'], bytes)
+    assert "title" in ret
+    assert isinstance(ret["title"], bytes)
 
 
 def test_unicode_japanese():
-    ret = guessit('[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi')
+    ret = guessit("[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi")
     assert ret
-    assert 'title' in ret
+    assert "title" in ret
 
 
 def test_unicode_japanese_options():
     ret = guessit("[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi", options={"expected_title": ["阿维达"]})
     assert ret
-    assert 'title' in ret
-    assert ret['title'] == "阿维达"
+    assert "title" in ret
+    assert ret["title"] == "阿维达"
 
 
 def test_forced_unicode_japanese_options():
     ret = guessit("[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi", options={"expected_title": ["阿维达"]})
     assert ret
-    assert 'title' in ret
-    assert ret['title'] == "阿维达"
+    assert "title" in ret
+    assert ret["title"] == "阿维达"
 
 
 def test_ensure_custom_string_class():
     class CustomStr(str):
         pass
 
-    ret = guessit(CustomStr('some.title.1080p.mkv'), options={'advanced': True})
+    ret = guessit(CustomStr("some.title.1080p.mkv"), options={"advanced": True})
     assert ret
-    assert 'screen_size' in ret
-    assert isinstance(ret['screen_size'].input_string, CustomStr)
+    assert "screen_size" in ret
+    assert isinstance(ret["screen_size"].input_string, CustomStr)
     assert ret
-    assert 'title' in ret
-    assert isinstance(ret['title'].input_string, CustomStr)
+    assert "title" in ret
+    assert isinstance(ret["title"].input_string, CustomStr)
     assert ret
-    assert 'container' in ret
-    assert isinstance(ret['container'].input_string, CustomStr)
+    assert "container" in ret
+    assert isinstance(ret["container"].input_string, CustomStr)
 
 
 def test_properties():
     props = properties()
-    assert 'video_codec' in props
+    assert "video_codec" in props
 
 
 def test_exception():

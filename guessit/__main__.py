@@ -2,6 +2,7 @@
 """
 Entry point module
 """
+
 # pragma: no cover
 import json
 import logging
@@ -26,24 +27,25 @@ def guess_filename(filename, options):
     :return:
     :rtype:
     """
-    if not options.get('yaml') and not options.get('json') and not options.get('show_property'):
-        print('For:', filename)
+    if not options.get("yaml") and not options.get("json") and not options.get("show_property"):
+        print("For:", filename)
 
     guess = api.guessit(filename, options)
 
-    if options.get('show_property'):
-        print(guess.get(options.get('show_property'), ''))
+    if options.get("show_property"):
+        print(guess.get(options.get("show_property"), ""))
         return
 
-    if options.get('json'):
+    if options.get("json"):
         print(json.dumps(guess, cls=GuessitEncoder, ensure_ascii=False))
-    elif options.get('yaml'):
+    elif options.get("yaml"):
         import yaml
 
         from guessit import yamlutils
 
-        ystr = yaml.dump({filename: OrderedDict(guess)}, Dumper=yamlutils.CustomDumper, default_flow_style=False,
-                         allow_unicode=True)
+        ystr = yaml.dump(
+            {filename: OrderedDict(guess)}, Dumper=yamlutils.CustomDumper, default_flow_style=False, allow_unicode=True
+        )
         for i, yline in enumerate(ystr.splitlines()):
             if i == 0:
                 print("? " + yline[:-1])
@@ -52,7 +54,7 @@ def guess_filename(filename, options):
             else:
                 print(yline)
     else:
-        print('GuessIt found:', json.dumps(guess, cls=GuessitEncoder, indent=4, ensure_ascii=False))
+        print("GuessIt found:", json.dumps(guess, cls=GuessitEncoder, indent=4, ensure_ascii=False))
 
 
 def display_properties(options):
@@ -61,30 +63,34 @@ def display_properties(options):
     """
     properties = api.properties(options)
 
-    if options.get('json'):
-        if options.get('values'):
+    if options.get("json"):
+        if options.get("values"):
             print(json.dumps(properties, cls=GuessitEncoder, ensure_ascii=False))
         else:
             print(json.dumps(list(properties.keys()), cls=GuessitEncoder, ensure_ascii=False))
-    elif options.get('yaml'):
+    elif options.get("yaml"):
         import yaml
 
         from guessit import yamlutils
-        if options.get('values'):
+
+        if options.get("values"):
             print(yaml.dump(properties, Dumper=yamlutils.CustomDumper, default_flow_style=False, allow_unicode=True))
         else:
-            print(yaml.dump(list(properties.keys()), Dumper=yamlutils.CustomDumper, default_flow_style=False,
-                            allow_unicode=True))
+            print(
+                yaml.dump(
+                    list(properties.keys()), Dumper=yamlutils.CustomDumper, default_flow_style=False, allow_unicode=True
+                )
+            )
     else:
-        print('GuessIt properties:')
+        print("GuessIt properties:")
 
         properties_list = sorted(properties.keys())
         for property_name in properties_list:
             property_values = properties.get(property_name)
-            print(2 * ' ' + f'[+] {property_name}')
-            if property_values and options.get('values'):
+            print(2 * " " + f"[+] {property_name}")
+            if property_values and options.get("values"):
                 for property_value in property_values:
-                    print(4 * ' ' + f'[!] {property_value}')
+                    print(4 * " " + f"[!] {property_value}")
 
 
 def main(args=None):
@@ -96,40 +102,40 @@ def main(args=None):
     config = load_config(options)
     options = merge_options(config, options)
 
-    if options.get('verbose'):
-        logging.basicConfig(stream=sys.stdout, format='%(message)s')
+    if options.get("verbose"):
+        logging.basicConfig(stream=sys.stdout, format="%(message)s")
         logging.getLogger().setLevel(logging.DEBUG)
 
     help_required = True
 
-    if options.get('version'):
-        print('+-------------------------------------------------------+')
-        print('+                   GuessIt ' + __version__ + (28 - len(__version__)) * ' ' + '+')
-        print('+-------------------------------------------------------+')
-        print('+                   Rebulk ' + __rebulk_version__ + (29 - len(__rebulk_version__)) * ' ' + '+')
-        print('+-------------------------------------------------------+')
-        print('|      Please report any bug or feature request at      |')
-        print('|     https://github.com/guessit-io/guessit/issues.     |')
-        print('+-------------------------------------------------------+')
+    if options.get("version"):
+        print("+-------------------------------------------------------+")
+        print("+                   GuessIt " + __version__ + (28 - len(__version__)) * " " + "+")
+        print("+-------------------------------------------------------+")
+        print("+                   Rebulk " + __rebulk_version__ + (29 - len(__rebulk_version__)) * " " + "+")
+        print("+-------------------------------------------------------+")
+        print("|      Please report any bug or feature request at      |")
+        print("|     https://github.com/guessit-io/guessit/issues.     |")
+        print("+-------------------------------------------------------+")
         help_required = False
 
-    if options.get('yaml'):
+    if options.get("yaml"):
         try:
             import yaml  # noqa: F401
         except ImportError:  # pragma: no cover
-            del options['yaml']
-            print('PyYAML is not installed. \'--yaml\' option will be ignored ...', file=sys.stderr)
+            del options["yaml"]
+            print("PyYAML is not installed. '--yaml' option will be ignored ...", file=sys.stderr)
 
-    if options.get('properties') or options.get('values'):
+    if options.get("properties") or options.get("values"):
         display_properties(options)
         help_required = False
 
     filenames = []
-    if options.get('filename'):
-        for filename in options.get('filename'):
+    if options.get("filename"):
+        for filename in options.get("filename"):
             filenames.append(filename)
-    if options.get('input_file'):
-        with open(options.get('input_file'), encoding='utf-8') as input_file:
+    if options.get("input_file"):
+        with open(options.get("input_file"), encoding="utf-8") as input_file:
             filenames.extend([line.strip() for line in input_file.readlines()])
 
     filenames = list(filter(lambda f: f, filenames))
@@ -143,5 +149,5 @@ def main(args=None):
         argument_parser.print_help()
 
 
-if __name__ == '__main__':  # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
     main()

@@ -32,16 +32,20 @@ def title(config):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'title'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, "title"))
     rebulk.rules(TitleFromPosition, PreferTitleWithYear)
 
-    expected_title = build_expected_function('expected_title')
+    expected_title = build_expected_function("expected_title")
 
-    rebulk.functional(expected_title, name='title', tags=['expected', 'title'],
-                      validator=seps_surround,
-                      formatter=formatters(cleanup, reorder_title),
-                      conflict_solver=lambda match, other: other,
-                      disabled=lambda context: not context.get('expected_title'))
+    rebulk.functional(
+        expected_title,
+        name="title",
+        tags=["expected", "title"],
+        validator=seps_surround,
+        formatter=formatters(cleanup, reorder_title),
+        conflict_solver=lambda match, other: other,
+        disabled=lambda context: not context.get("expected_title"),
+    )
 
     return rebulk
 
@@ -50,6 +54,7 @@ class TitleBaseRule(Rule):
     """
     Add title match in existing matches
     """
+
     consequence = [AppendMatch, RemoveMatch]
 
     def __init__(self, match_name, match_tags=None, alternative_match_name=None):
@@ -93,9 +98,9 @@ class TitleBaseRule(Rule):
         :rtype:
         """
         cropped_holes = []
-        group_markers = matches.markers.named('group')
+        group_markers = matches.markers.named("group")
         for group_marker in group_markers:
-            path_marker = matches.markers.at_match(group_marker, predicate=lambda m: m.name == 'path', index=0)
+            path_marker = matches.markers.at_match(group_marker, predicate=lambda m: m.name == "path", index=0)
             if path_marker and path_marker.span == group_marker.span:
                 group_markers.remove(group_marker)
 
@@ -111,7 +116,7 @@ class TitleBaseRule(Rule):
 
         Full word language and countries won't be ignored if they are uppercase.
         """
-        return not (len(match) > 3 and match.raw.isupper()) and match.name in ('language', 'country', 'episode_details')
+        return not (len(match) > 3 and match.raw.isupper()) and match.name in ("language", "country", "episode_details")
 
     def should_keep(self, match, to_keep, matches, filepart, hole, starting):
         """
@@ -131,7 +136,7 @@ class TitleBaseRule(Rule):
         :return:
         :rtype:
         """
-        if match.name in ('language', 'country'):
+        if match.name in ("language", "country"):
             # Keep language if exactly matching the hole.
             if len(hole.value) == len(match.raw):
                 return True
@@ -140,10 +145,17 @@ class TitleBaseRule(Rule):
             outside_matches = filepart.crop(hole)
             other_languages = []
             for outside in outside_matches:
-                other_languages.extend(matches.range(outside.start, outside.end,
-                                                     lambda c_match: c_match.name == match.name and
-                                                                     c_match not in to_keep and
-                                                                     c_match.value not in NON_SPECIFIC_LANGUAGES))
+                other_languages.extend(
+                    matches.range(
+                        outside.start,
+                        outside.end,
+                        lambda c_match: (
+                            c_match.name == match.name
+                            and c_match not in to_keep
+                            and c_match.value not in NON_SPECIFIC_LANGUAGES
+                        ),
+                    )
+                )
 
             if not other_languages and (not starting or len(match.raw) <= 3):
                 return True
@@ -159,21 +171,25 @@ class TitleBaseRule(Rule):
         :param hole:
         :return:
         """
-        if context.get('type') == 'episode' and match.name == 'episode_details':
+        if context.get("type") == "episode" and match.name == "episode_details":
             return match.start >= hole.start and match.end <= hole.end
         return True
 
-    def check_titles_in_filepart(self, filepart, matches, context,
-                                 additional_ignored=None):
+    def check_titles_in_filepart(self, filepart, matches, context, additional_ignored=None):
         """
         Find title in filepart (ignoring language)
         """
         start, end = filepart.span
 
-        holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
-                              ignore=self.is_ignored if additional_ignored is None else lambda m: self.is_ignored(
-                                  m) or additional_ignored(m),
-                              predicate=lambda m: m.value)
+        holes = matches.holes(
+            start,
+            end + 1,
+            formatter=formatters(cleanup, reorder_title),
+            ignore=self.is_ignored
+            if additional_ignored is None
+            else lambda m: self.is_ignored(m) or additional_ignored(m),
+            predicate=lambda m: m.value,
+        )
 
         holes = self.holes_process(holes, matches)
 
@@ -204,8 +220,7 @@ class TitleBaseRule(Rule):
 
                 for ignored_match in ignored_matches:
                     if ignored_match not in to_keep:
-                        starting = matches.chain_after(hole.start, seps,
-                                                       predicate=lambda m, im=ignored_match: m == im)
+                        starting = matches.chain_after(hole.start, seps, predicate=lambda m, im=ignored_match: m == im)
                         if starting:
                             should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, True)
                             if should_keep:
@@ -233,10 +248,13 @@ class TitleBaseRule(Rule):
                     titles = hole.split(title_seps, lambda m: m.value)
                     for title_match in list(titles[1:]):
                         previous_title = titles[titles.index(title_match) - 1]
-                        separator = matches.input_string[previous_title.end:title_match.start]
-                        if len(separator) == 1 and separator == '-' \
-                                and previous_title.raw[-1] not in seps \
-                                and title_match.raw[0] not in seps:
+                        separator = matches.input_string[previous_title.end : title_match.start]
+                        if (
+                            len(separator) == 1
+                            and separator == "-"
+                            and previous_title.raw[-1] not in seps
+                            and title_match.raw[0] not in seps
+                        ):
                             titles[titles.index(title_match) - 1].end = title_match.end
                             titles.remove(title_match)
                         else:
@@ -254,16 +272,21 @@ class TitleBaseRule(Rule):
                 continue
             filepart = fileparts[index]
             filepart_matches = [m for m in matches.range(filepart.start, filepart.end) if not m.private]
-            if len(filepart_matches) == 1 and filepart_matches[0].name == 'season' and \
-                    (filepart_matches[0].span == filepart.span or
-                     (filepart_matches[0].parent and filepart_matches[0].parent.span == filepart.span)):
+            if (
+                len(filepart_matches) == 1
+                and filepart_matches[0].name == "season"
+                and (
+                    filepart_matches[0].span == filepart.span
+                    or (filepart_matches[0].parent and filepart_matches[0].parent.span == filepart.span)
+                )
+            ):
                 # Filepath match season match exactly
                 return fileparts[index + 1]
         return None
 
     def _serie_name_filepart_match(self, matches, context, serie_name_filepart, to_append, to_remove):
         def serie_name_filepart_ignored(match):
-            return any(tag == 'weak' or tag.startswith('weak-') for tag in match.tags)
+            return any(tag == "weak" or tag.startswith("weak-") for tag in match.tags)
 
         titles = self.check_titles_in_filepart(serie_name_filepart, matches, context, serie_name_filepart_ignored)
         if titles:
@@ -277,7 +300,7 @@ class TitleBaseRule(Rule):
     def _year_fileparts(self, matches, fileparts):
         year_fileparts = []
         for filepart in fileparts:
-            year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
+            year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == "year", 0)
             if year_match:
                 year_fileparts.append(filepart)
         return year_fileparts
@@ -286,18 +309,22 @@ class TitleBaseRule(Rule):
         to_append = []
         to_remove = []
 
-        if matches.named(self.match_name, lambda match: 'expected' in match.tags):
+        if matches.named(self.match_name, lambda match: "expected" in match.tags):
             return False
 
-        fileparts = [filepart for filepart in list(marker_sorted(matches.markers.named('path'), matches))
-                     if not self.filepart_filter or self.filepart_filter(filepart, matches)]
+        fileparts = [
+            filepart
+            for filepart in list(marker_sorted(matches.markers.named("path"), matches))
+            if not self.filepart_filter or self.filepart_filter(filepart, matches)
+        ]
 
         serie_name_filepart = self._serie_name_filepart(matches, fileparts)
 
         serie_name_filepath_match = None
         if serie_name_filepart:
-            serie_name_filepath_match = self._serie_name_filepart_match(matches, context, serie_name_filepart,
-                                                                        to_append, to_remove)
+            serie_name_filepath_match = self._serie_name_filepart_match(
+                matches, context, serie_name_filepart, to_append, to_remove
+            )
 
         # Force inclusion of fileparts containing the year
         year_fileparts = self._year_fileparts(matches, fileparts)
@@ -311,7 +338,7 @@ class TitleBaseRule(Rule):
                 if serie_name_filepath_match:
                     for title_match in titles:
                         if title_match.value != serie_name_filepath_match.value:
-                            title_match.name = 'episode_title'
+                            title_match.name = "episode_title"
                 to_append.extend(titles)
                 to_remove.extend(to_remove_c)
                 break
@@ -333,37 +360,39 @@ class TitleFromPosition(TitleBaseRule):
     """
     Add title match in existing matches
     """
+
     dependency = [FilmTitleRule, SubtitlePrefixLanguageRule, SubtitleSuffixLanguageRule, SubtitleExtensionRule]
 
-    properties = {'title': [None], 'alternative_title': [None]}
+    properties = {"title": [None], "alternative_title": [None]}
 
     def __init__(self):
-        super().__init__('title', ['title'], 'alternative_title')
+        super().__init__("title", ["title"], "alternative_title")
 
     def enabled(self, context):
-        return not is_disabled(context, 'alternative_title')
+        return not is_disabled(context, "alternative_title")
 
 
 class PreferTitleWithYear(Rule):
     """
     Prefer title where filepart contains year.
     """
-    dependency = TitleFromPosition
-    consequence = [RemoveMatch, AppendTags(['equivalent-ignore'])]
 
-    properties = {'title': [None]}
+    dependency = TitleFromPosition
+    consequence = [RemoveMatch, AppendTags(["equivalent-ignore"])]
+
+    properties = {"title": [None]}
 
     def when(self, matches, context):
         with_year_in_group = []
         with_year = []
-        titles = matches.named('title')
+        titles = matches.named("title")
 
         for title_match in titles:
-            filepart = matches.markers.at_match(title_match, lambda marker: marker.name == 'path', 0)
+            filepart = matches.markers.at_match(title_match, lambda marker: marker.name == "path", 0)
             if filepart:
-                year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == 'year', 0)
+                year_match = matches.range(filepart.start, filepart.end, lambda match: match.name == "year", 0)
                 if year_match:
-                    group = matches.markers.at_match(year_match, lambda m: m.name == 'group')
+                    group = matches.markers.at_match(year_match, lambda m: m.name == "group")
                     if group:
                         with_year_in_group.append(title_match)
                     else:

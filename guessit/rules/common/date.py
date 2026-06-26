@@ -2,21 +2,24 @@
 """
 Date
 """
+
 from dateutil import parser
 from rebulk.remodule import re
 
-_dsep = r'[-/ \.]'
-_dsep_bis = r'[-/ \.x]'
+_dsep = r"[-/ \.]"
+_dsep_bis = r"[-/ \.x]"
 
 date_regexps = [
-    re.compile(rf'{_dsep}((\d{{8}})){_dsep}', re.IGNORECASE),
-    re.compile(rf'{_dsep}((\d{{6}})){_dsep}', re.IGNORECASE),
-    re.compile(rf'(?:^|[^\d])((\d{{2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])', re.IGNORECASE),
-    re.compile(rf'(?:^|[^\d])((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{2}}))(?:$|[^\d])', re.IGNORECASE),
-    re.compile(rf'(?:^|[^\d])((\d{{4}}){_dsep_bis}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])', re.IGNORECASE),
-    re.compile(rf'(?:^|[^\d])((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep_bis}(\d{{4}}))(?:$|[^\d])', re.IGNORECASE),
-    re.compile(rf'(?:^|[^\d])((\d{{1,2}}(?:st|nd|rd|th)?{_dsep}(?:[a-z]{{3,10}}){_dsep}\d{{4}}))(?:$|[^\d])',
-               re.IGNORECASE)]
+    re.compile(rf"{_dsep}((\d{{8}})){_dsep}", re.IGNORECASE),
+    re.compile(rf"{_dsep}((\d{{6}})){_dsep}", re.IGNORECASE),
+    re.compile(rf"(?:^|[^\d])((\d{{2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])", re.IGNORECASE),
+    re.compile(rf"(?:^|[^\d])((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{2}}))(?:$|[^\d])", re.IGNORECASE),
+    re.compile(rf"(?:^|[^\d])((\d{{4}}){_dsep_bis}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])", re.IGNORECASE),
+    re.compile(rf"(?:^|[^\d])((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep_bis}(\d{{4}}))(?:$|[^\d])", re.IGNORECASE),
+    re.compile(
+        rf"(?:^|[^\d])((\d{{1,2}}(?:st|nd|rd|th)?{_dsep}(?:[a-z]{{3,10}}){_dsep}\d{{4}}))(?:$|[^\d])", re.IGNORECASE
+    ),
+]
 
 
 def valid_year(year):
@@ -95,7 +98,7 @@ def search_date(string, year_first=None, day_first=None):
 
         start, end = search_match.start(1), search_match.end(1)
         groups = search_match.groups()[1:]
-        match = '-'.join(groups)
+        match = "-".join(groups)
 
         if match is None:
             continue
@@ -115,8 +118,7 @@ def search_date(string, year_first=None, day_first=None):
         if day_first is not None:
             dayfirst_opts = [day_first]
 
-        kwargs_list = ({'dayfirst': d, 'yearfirst': y}
-                       for d in dayfirst_opts for y in yearfirst_opts)
+        kwargs_list = ({"dayfirst": d, "yearfirst": y} for d in dayfirst_opts for y in yearfirst_opts)
         for kwargs in kwargs_list:
             try:
                 date = parser.parse(match, **kwargs)

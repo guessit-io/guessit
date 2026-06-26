@@ -2,6 +2,7 @@
 """
 mimetype property
 """
+
 import mimetypes
 
 from rebulk import POST_PROCESS, CustomRule, Rebulk
@@ -20,7 +21,7 @@ def mimetype(config):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'mimetype'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, "mimetype"))
     rebulk.rules(Mimetype)
 
     return rebulk
@@ -34,6 +35,7 @@ class Mimetype(CustomRule):
     :return:
     :rtype:
     """
+
     priority = POST_PROCESS
 
     dependency = Processors
@@ -44,11 +46,11 @@ class Mimetype(CustomRule):
 
     def then(self, matches, when_response, context):
         mime = when_response
-        matches.append(Match(len(matches.input_string), len(matches.input_string), name='mimetype', value=mime))
+        matches.append(Match(len(matches.input_string), len(matches.input_string), name="mimetype", value=mime))
 
     @property
     def properties(self):
         """
         Properties for this rule.
         """
-        return {'mimetype': [None]}
+        return {"mimetype": [None]}

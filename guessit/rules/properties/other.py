@@ -24,15 +24,25 @@ def other(config):
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    rebulk = Rebulk(disabled=lambda context: is_disabled(context, 'other'))
+    rebulk = Rebulk(disabled=lambda context: is_disabled(context, "other"))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name="other", validator=seps_surround)
 
-    load_config_patterns(rebulk, config.get('other'))
+    load_config_patterns(rebulk, config.get("other"))
 
-    rebulk.rules(RenameAnotherToOther, ValidateHasNeighbor, ValidateHasNeighborAfter, ValidateHasNeighborBefore,
-                 ValidateScreenerRule, ValidateMuxRule, ValidateHardcodedSubs, ValidateStreamingServiceNeighbor,
-                 ValidateAtEnd, ValidateReal, ProperCountRule)
+    rebulk.rules(
+        RenameAnotherToOther,
+        ValidateHasNeighbor,
+        ValidateHasNeighborAfter,
+        ValidateHasNeighborBefore,
+        ValidateScreenerRule,
+        ValidateMuxRule,
+        ValidateHardcodedSubs,
+        ValidateStreamingServiceNeighbor,
+        ValidateAtEnd,
+        ValidateReal,
+        ProperCountRule,
+    )
 
     return rebulk
 
@@ -53,29 +63,39 @@ def complete_words(rebulk: Rebulk, season_words, complete_article_words):
         :rtype:
         """
         children = match.children
-        return not (not children.named('completeWordsBefore') and not children.named('completeWordsAfter'))
+        return not (not children.named("completeWordsBefore") and not children.named("completeWordsAfter"))
 
-    rebulk.regex('(?P<completeArticle>' + complete_article_words_pattern + '-)?' +
-                 '(?P<completeWordsBefore>' + season_words_pattern + '-)?' +
-                 'Complete' + '(?P<completeWordsAfter>-' + season_words_pattern + ')?',
-                 private_names=['completeArticle', 'completeWordsBefore', 'completeWordsAfter'],
-                 value={'other': 'Complete'},
-                 tags=['release-group-prefix'],
-                 validator={'__parent__': and_(seps_surround, validate_complete)})
+    rebulk.regex(
+        "(?P<completeArticle>"
+        + complete_article_words_pattern
+        + "-)?"
+        + "(?P<completeWordsBefore>"
+        + season_words_pattern
+        + "-)?"
+        + "Complete"
+        + "(?P<completeWordsAfter>-"
+        + season_words_pattern
+        + ")?",
+        private_names=["completeArticle", "completeWordsBefore", "completeWordsAfter"],
+        value={"other": "Complete"},
+        tags=["release-group-prefix"],
+        validator={"__parent__": and_(seps_surround, validate_complete)},
+    )
 
 
 class ProperCountRule(Rule):
     """
     Add proper_count property
     """
+
     priority = POST_PROCESS
 
     consequence = AppendMatch
 
-    properties = {'proper_count': [None]}
+    properties = {"proper_count": [None]}
 
     def when(self, matches, context):
-        propers = matches.named('other', lambda match: match.value == 'Proper')
+        propers = matches.named("other", lambda match: match.value == "Proper")
         if propers:
             raws = {}  # Count distinct raw values
             for proper in propers:
@@ -92,14 +112,14 @@ class ProperCountRule(Rule):
                     start = proper.start
                 if not end or end < proper.end:
                     end = proper.end
-                if proper.children.named('proper_count', 0):
-                    value += int(proper.children.named('proper_count', 0).value)
-                elif 'real' in proper.tags:
+                if proper.children.named("proper_count", 0):
+                    value += int(proper.children.named("proper_count", 0).value)
+                elif "real" in proper.tags:
                     value += 2
                 else:
                     value += 1
 
-            proper_count_match = Match(name='proper_count', start=start, end=end, input_string=matches.input_string)
+            proper_count_match = Match(name="proper_count", start=start, end=end, input_string=matches.input_string)
             proper_count_match.value = value
             proper_count_matches.append(proper_count_match)
 
@@ -111,34 +131,36 @@ class RenameAnotherToOther(Rule):
     """
     Rename `another` properties to `other`
     """
+
     priority = 32
-    consequence = RenameMatch('other')
+    consequence = RenameMatch("other")
 
     def when(self, matches, context):
-        return matches.named('another')
+        return matches.named("another")
 
 
 class ValidateHasNeighbor(Rule):
     """
     Validate tag has-neighbor
     """
+
     consequence = RemoveMatch
     priority = 64
 
     def when(self, matches, context):
         ret = []
-        for to_check in matches.range(predicate=lambda match: 'has-neighbor' in match.tags):
+        for to_check in matches.range(predicate=lambda match: "has-neighbor" in match.tags):
             previous_match = matches.previous(to_check, index=0)
-            previous_group = matches.markers.previous(to_check, lambda marker: marker.name == 'group', 0)
+            previous_group = matches.markers.previous(to_check, lambda marker: marker.name == "group", 0)
             if previous_group and (not previous_match or previous_group.end > previous_match.end):
                 previous_match = previous_group
-            if previous_match and not matches.input_string[previous_match.end:to_check.start].strip(seps):
+            if previous_match and not matches.input_string[previous_match.end : to_check.start].strip(seps):
                 break
             next_match = matches.next(to_check, index=0)
-            next_group = matches.markers.next(to_check, lambda marker: marker.name == 'group', 0)
+            next_group = matches.markers.next(to_check, lambda marker: marker.name == "group", 0)
             if next_group and (not next_match or next_group.start < next_match.start):
                 next_match = next_group
-            if next_match and not matches.input_string[to_check.end:next_match.start].strip(seps):
+            if next_match and not matches.input_string[to_check.end : next_match.start].strip(seps):
                 break
             ret.append(to_check)
         return ret
@@ -148,17 +170,18 @@ class ValidateHasNeighborBefore(Rule):
     """
     Validate tag has-neighbor-before that previous match exists.
     """
+
     consequence = RemoveMatch
     priority = 64
 
     def when(self, matches, context):
         ret = []
-        for to_check in matches.range(predicate=lambda match: 'has-neighbor-before' in match.tags):
+        for to_check in matches.range(predicate=lambda match: "has-neighbor-before" in match.tags):
             next_match = matches.next(to_check, index=0)
-            next_group = matches.markers.next(to_check, lambda marker: marker.name == 'group', 0)
+            next_group = matches.markers.next(to_check, lambda marker: marker.name == "group", 0)
             if next_group and (not next_match or next_group.start < next_match.start):
                 next_match = next_group
-            if next_match and not matches.input_string[to_check.end:next_match.start].strip(seps):
+            if next_match and not matches.input_string[to_check.end : next_match.start].strip(seps):
                 break
             ret.append(to_check)
         return ret
@@ -168,17 +191,18 @@ class ValidateHasNeighborAfter(Rule):
     """
     Validate tag has-neighbor-after that next match exists.
     """
+
     consequence = RemoveMatch
     priority = 64
 
     def when(self, matches, context):
         ret = []
-        for to_check in matches.range(predicate=lambda match: 'has-neighbor-after' in match.tags):
+        for to_check in matches.range(predicate=lambda match: "has-neighbor-after" in match.tags):
             previous_match = matches.previous(to_check, index=0)
-            previous_group = matches.markers.previous(to_check, lambda marker: marker.name == 'group', 0)
+            previous_group = matches.markers.previous(to_check, lambda marker: marker.name == "group", 0)
             if previous_group and (not previous_match or previous_group.end > previous_match.end):
                 previous_match = previous_group
-            if previous_match and not matches.input_string[previous_match.end:to_check.start].strip(seps):
+            if previous_match and not matches.input_string[previous_match.end : to_check.start].strip(seps):
                 break
             ret.append(to_check)
         return ret
@@ -188,14 +212,15 @@ class ValidateScreenerRule(Rule):
     """
     Validate tag other.validate.screener
     """
+
     consequence = RemoveMatch
     priority = 64
 
     def when(self, matches, context):
         ret = []
-        for screener in matches.named('other', lambda match: 'other.validate.screener' in match.tags):
-            source_match = matches.previous(screener, lambda match: match.initiator.name == 'source', 0)
-            if not source_match or matches.input_string[source_match.end:screener.start].strip(seps):
+        for screener in matches.named("other", lambda match: "other.validate.screener" in match.tags):
+            source_match = matches.previous(screener, lambda match: match.initiator.name == "source", 0)
+            if not source_match or matches.input_string[source_match.end : screener.start].strip(seps):
                 ret.append(screener)
         return ret
 
@@ -204,13 +229,14 @@ class ValidateMuxRule(Rule):
     """
     Validate tag other.validate.mux
     """
+
     consequence = RemoveMatch
     priority = 64
 
     def when(self, matches, context):
         ret = []
-        for mux in matches.named('other', lambda match: 'other.validate.mux' in match.tags):
-            source_match = matches.previous(mux, lambda match: match.initiator.name == 'source', 0)
+        for mux in matches.named("other", lambda match: "other.validate.mux" in match.tags):
+            source_match = matches.previous(mux, lambda match: match.initiator.name == "source", 0)
             if not source_match:
                 ret.append(mux)
         return ret
@@ -224,16 +250,19 @@ class ValidateHardcodedSubs(Rule):
 
     def when(self, matches, context):
         to_remove = []
-        for hc_match in matches.named('other', predicate=lambda match: match.value == 'Hardcoded Subtitles'):
-            next_match = matches.next(hc_match, predicate=lambda match: match.name == 'subtitle_language', index=0)
-            if next_match and not matches.holes(hc_match.end, next_match.start,
-                                                predicate=lambda match: match.value.strip(seps)):
+        for hc_match in matches.named("other", predicate=lambda match: match.value == "Hardcoded Subtitles"):
+            next_match = matches.next(hc_match, predicate=lambda match: match.name == "subtitle_language", index=0)
+            if next_match and not matches.holes(
+                hc_match.end, next_match.start, predicate=lambda match: match.value.strip(seps)
+            ):
                 continue
 
-            previous_match = matches.previous(hc_match,
-                                              predicate=lambda match: match.name == 'subtitle_language', index=0)
-            if previous_match and not matches.holes(previous_match.end, hc_match.start,
-                                                    predicate=lambda match: match.value.strip(seps)):
+            previous_match = matches.previous(
+                hc_match, predicate=lambda match: match.name == "subtitle_language", index=0
+            )
+            if previous_match and not matches.holes(
+                previous_match.end, hc_match.start, predicate=lambda match: match.value.strip(seps)
+            ):
                 continue
 
             to_remove.append(hc_match)
@@ -249,26 +278,31 @@ class ValidateStreamingServiceNeighbor(Rule):
 
     def when(self, matches, context):
         to_remove = []
-        for match in matches.named('other',
-                                   predicate=lambda m: (m.initiator.name != 'source'
-                                                        and ('streaming_service.prefix' in m.tags
-                                                             or 'streaming_service.suffix' in m.tags))):
+        for match in matches.named(
+            "other",
+            predicate=lambda m: (
+                m.initiator.name != "source"
+                and ("streaming_service.prefix" in m.tags or "streaming_service.suffix" in m.tags)
+            ),
+        ):
             match = match.initiator
             if not seps_after(match):
-                if 'streaming_service.prefix' in match.tags:
-                    next_match = matches.next(match, lambda m: m.name == 'streaming_service', 0)
-                    if next_match and not matches.holes(match.end, next_match.start,
-                                                        predicate=lambda m: m.value.strip(seps)):
+                if "streaming_service.prefix" in match.tags:
+                    next_match = matches.next(match, lambda m: m.name == "streaming_service", 0)
+                    if next_match and not matches.holes(
+                        match.end, next_match.start, predicate=lambda m: m.value.strip(seps)
+                    ):
                         continue
                 if match.children:
                     to_remove.extend(match.children)
                 to_remove.append(match)
 
             elif not seps_before(match):
-                if 'streaming_service.suffix' in match.tags:
-                    previous_match = matches.previous(match, lambda m: m.name == 'streaming_service', 0)
-                    if previous_match and not matches.holes(previous_match.end, match.start,
-                                                            predicate=lambda m: m.value.strip(seps)):
+                if "streaming_service.suffix" in match.tags:
+                    previous_match = matches.previous(match, lambda m: m.name == "streaming_service", 0)
+                    if previous_match and not matches.holes(
+                        previous_match.end, match.start, predicate=lambda m: m.value.strip(seps)
+                    ):
                         continue
 
                 if match.children:
@@ -286,12 +320,13 @@ class ValidateAtEnd(Rule):
 
     def when(self, matches, context):
         to_remove = []
-        for filepart in matches.markers.named('path'):
-            for match in matches.range(filepart.start, filepart.end,
-                                       predicate=lambda m: m.name == 'other' and 'at-end' in m.tags):
-                if (matches.holes(match.end, filepart.end, predicate=lambda m: m.value.strip(seps)) or
-                        matches.range(match.end, filepart.end, predicate=lambda m: m.name not in (
-                                'other', 'container'))):
+        for filepart in matches.markers.named("path"):
+            for match in matches.range(
+                filepart.start, filepart.end, predicate=lambda m: m.name == "other" and "at-end" in m.tags
+            ):
+                if matches.holes(match.end, filepart.end, predicate=lambda m: m.value.strip(seps)) or matches.range(
+                    match.end, filepart.end, predicate=lambda m: m.name not in ("other", "container")
+                ):
                     to_remove.append(match)
 
         return to_remove
@@ -301,13 +336,14 @@ class ValidateReal(Rule):
     """
     Validate Real
     """
+
     consequence = RemoveMatch
     priority = 64
 
     def when(self, matches, context):
         ret = []
-        for filepart in matches.markers.named('path'):
-            for match in matches.range(filepart.start, filepart.end, lambda m: m.name == 'other' and 'real' in m.tags):
+        for filepart in matches.markers.named("path"):
+            for match in matches.range(filepart.start, filepart.end, lambda m: m.name == "other" and "real" in m.tags):
                 if not matches.range(filepart.start, match.start):
                     ret.append(match)
 

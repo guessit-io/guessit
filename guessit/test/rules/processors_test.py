@@ -12,7 +12,7 @@ def test_strip_separators():
 
     m = Match(3, 11, input_string="pre.ABCDEF.post")
 
-    assert m.raw == '.ABCDEF.'
+    assert m.raw == ".ABCDEF."
     matches.append(m)
 
     returned_matches = strip_separators.when(matches, None)
@@ -20,7 +20,7 @@ def test_strip_separators():
 
     strip_separators.then(matches, returned_matches, None)
 
-    assert m.raw == 'ABCDEF'
+    assert m.raw == "ABCDEF"
 
 
 def test_strip_separators_keep_acronyms():
@@ -31,7 +31,7 @@ def test_strip_separators_keep_acronyms():
     m = Match(0, 13, input_string=".S.H.I.E.L.D.")
     m2 = Match(0, 22, input_string=".Agent.Of.S.H.I.E.L.D.")
 
-    assert m.raw == '.S.H.I.E.L.D.'
+    assert m.raw == ".S.H.I.E.L.D."
     matches.append(m)
     matches.append(m2)
 
@@ -40,5 +40,5 @@ def test_strip_separators_keep_acronyms():
 
     strip_separators.then(matches, returned_matches, None)
 
-    assert m.raw == '.S.H.I.E.L.D.'
-    assert m2.raw == 'Agent.Of.S.H.I.E.L.D.'
+    assert m.raw == ".S.H.I.E.L.D."
+    assert m2.raw == "Agent.Of.S.H.I.E.L.D."
