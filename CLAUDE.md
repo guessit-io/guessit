@@ -30,8 +30,12 @@ uv run pytest guessit/test/test_yml.py
 uv run ruff check guessit
 # Auto-fix lint issues
 uv run ruff check guessit --fix
+# Format
+uv run ruff format
+# Type-check (mypy strict, config in pyproject.toml [tool.mypy])
+uv run mypy
 
-# Install the git hooks (pre-commit: ruff check + format; commit-msg: commitizen)
+# Install the git hooks (pre-commit: ruff check + format + mypy; commit-msg: commitizen)
 uv run pre-commit install
 # Run all file hooks manually (what the CI `pre-commit` job runs)
 uv run pre-commit run --all-files
