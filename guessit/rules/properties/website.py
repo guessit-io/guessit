@@ -3,7 +3,10 @@
 Website property.
 """
 
+from __future__ import annotations
+
 from importlib.resources import files
+from typing import TYPE_CHECKING, Any
 
 from rebulk import Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
@@ -14,8 +17,11 @@ from ..common.formatters import cleanup
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
 
-def website(config):
+
+def website(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -79,14 +85,14 @@ def website(config):
         consequence = RemoveMatch
 
         @staticmethod
-        def valid_followers(match):
+        def valid_followers(match: Match) -> Any:
             """
             Validator for next website matches
             """
             return match.named("season", "episode", "year")
 
-        def when(self, matches, context):
-            to_remove = []
+        def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+            to_remove: list[Match] = []
             for website_match in matches.named("website"):
                 safe = False
                 for safe_start in safe_subdomains + safe_prefix:
@@ -114,8 +120,8 @@ class ValidateWebsitePrefix(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for prefix in matches.tagged("website.prefix"):
             website_match = matches.next(prefix, predicate=lambda match: match.name == "website", index=0)
             if not website_match or matches.holes(

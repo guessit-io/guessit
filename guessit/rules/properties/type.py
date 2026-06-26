@@ -3,24 +3,32 @@
 type property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import POST_PROCESS, CustomRule, Rebulk
 from rebulk.match import Match
 
 from ...rules.processors import Processors
 from ..common.pattern import is_disabled
 
+if TYPE_CHECKING:
+    from rebulk.match import Matches
 
-def _type(matches, value):
+
+def _type(matches: Matches, value: Any) -> None:
     """
     Define type match with given value.
     :param matches:
     :param value:
     :return:
     """
+    assert matches.input_string is not None
     matches.append(Match(len(matches.input_string), len(matches.input_string), name="type", value=value))
 
 
-def type_(config):
+def type_(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -44,8 +52,8 @@ class TypeProcessor(CustomRule):
 
     properties = {"type": ["episode", "movie"]}
 
-    def when(self, matches, context):
-        option_type = context.get("type", None)
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        option_type = context.get("type", None) if context else None
         if option_type:
             return option_type
 
@@ -78,5 +86,5 @@ class TypeProcessor(CustomRule):
 
         return "movie"
 
-    def then(self, matches, when_response, context):
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
         _type(matches, when_response)

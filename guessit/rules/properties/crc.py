@@ -3,6 +3,10 @@
 crc and uuid properties
 """
 
+from __future__ import annotations
+
+from typing import Any
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 
@@ -10,7 +14,7 @@ from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
-def crc(config):
+def crc(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -44,7 +48,7 @@ _other = 2
 _idnum = re.compile(r"(?P<uuid>[a-zA-Z0-9-]{20,})")  # 1.0, (0, 0))
 
 
-def guess_idnumber(string):
+def guess_idnumber(string: str) -> list[tuple[int, int]]:
     """
     Guess id number function
     :param string:
@@ -52,7 +56,7 @@ def guess_idnumber(string):
     :return:
     :rtype:
     """
-    ret = []
+    ret: list[tuple[int, int]] = []
 
     matches = list(_idnum.finditer(string))
     for match in matches:
@@ -60,7 +64,7 @@ def guess_idnumber(string):
         switch_count = 0
         switch_letter_count = 0
         letter_count = 0
-        last_letter = None
+        last_letter: str | None = None
 
         last = _letter
         for c in result["uuid"]:

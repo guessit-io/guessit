@@ -3,7 +3,10 @@
 mimetype property
 """
 
+from __future__ import annotations
+
 import mimetypes
+from typing import TYPE_CHECKING, Any
 
 from rebulk import POST_PROCESS, CustomRule, Rebulk
 from rebulk.match import Match
@@ -11,8 +14,11 @@ from rebulk.match import Match
 from ...rules.processors import Processors
 from ..common.pattern import is_disabled
 
+if TYPE_CHECKING:
+    from rebulk.match import Matches
 
-def mimetype(config):
+
+def mimetype(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -40,16 +46,18 @@ class Mimetype(CustomRule):
 
     dependency = Processors
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        assert matches.input_string is not None
         mime, _ = mimetypes.guess_type(matches.input_string, strict=False)
         return mime
 
-    def then(self, matches, when_response, context):
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
         mime = when_response
+        assert matches.input_string is not None
         matches.append(Match(len(matches.input_string), len(matches.input_string), name="mimetype", value=mime))
 
     @property
-    def properties(self):
+    def properties(self) -> dict[str, list[None]]:  # type: ignore[override]
         """
         Properties for this rule.
         """

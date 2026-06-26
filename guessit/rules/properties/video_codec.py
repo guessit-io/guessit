@@ -3,6 +3,10 @@
 video_codec and video_profile property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
 
@@ -10,8 +14,11 @@ from ..common import dash
 from ..common.pattern import is_disabled
 from ..common.validators import seps_after, seps_before, seps_surround
 
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
 
-def video_codec(config):
+
+def video_codec(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -96,11 +103,11 @@ class ValidateVideoCodec(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def enabled(self, context):
+    def enabled(self, context: dict[str, Any] | None) -> bool:
         return not is_disabled(context, "video_codec")
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for codec in matches.named("video_codec"):
             if not seps_before(codec) and not matches.at_index(
                 codec.start - 1, lambda match: "video-codec-prefix" in match.tags
@@ -122,12 +129,12 @@ class VideoProfileRule(Rule):
 
     consequence = RemoveMatch
 
-    def enabled(self, context):
+    def enabled(self, context: dict[str, Any] | None) -> bool:
         return not is_disabled(context, "video_profile")
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         profile_list = matches.named("video_profile", lambda match: "video_profile.rule" in match.tags)
-        ret = []
+        ret: list[Match] = []
         for profile in profile_list:
             codec = matches.at_span(profile.span, lambda match: match.name == "video_codec", 0)
             if not codec:

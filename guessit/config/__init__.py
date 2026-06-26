@@ -2,10 +2,13 @@
 Config module.
 """
 
-from importlib import import_module
-from typing import Any
+from __future__ import annotations
 
-from rebulk import Rebulk
+from importlib import import_module
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from rebulk import Rebulk
 
 _regex_prefix = "re:"
 _import_prefix = "import:"
@@ -16,7 +19,7 @@ _pattern_types = ("regex", "string")
 _default_module_names = {"validator": "guessit.rules.common.validators", "formatter": "guessit.rules.common.formatters"}
 
 
-def _process_option(name: str, value: Any):
+def _process_option(name: str, value: Any) -> Any:
     if name in ("validator", "conflict_solver", "formatter"):
         if isinstance(value, dict):
             return {item_key: _process_option(name, item_value) for item_key, item_value in value.items()}
@@ -25,12 +28,14 @@ def _process_option(name: str, value: Any):
     return value
 
 
-def _import(value: str, default_module_name=None):
+def _import(value: str, default_module_name: str | None = None) -> Any:
+    module_name: str | None
     if "." in value:
         module_name, target = value.rsplit(":", 1)
     else:
         module_name = default_module_name
         target = value
+    assert module_name is not None
     import_id = module_name + ":" + target
     if import_id in _import_cache:
         return _import_cache[import_id]
@@ -46,14 +51,14 @@ def _import(value: str, default_module_name=None):
     return imported
 
 
-def _eval(value: str):
+def _eval(value: str) -> Any:
     compiled = _eval_cache.get(value)
     if not compiled:
         compiled = compile(value, "<string>", "eval")
     return eval(compiled)
 
 
-def _process_option_executable(value: str, default_module_name=None):
+def _process_option_executable(value: str, default_module_name: str | None = None) -> Any:
     if value.startswith(_import_prefix):
         value = value[len(_import_prefix) :]
         return _import(value, default_module_name)
@@ -65,11 +70,11 @@ def _process_option_executable(value: str, default_module_name=None):
     return value
 
 
-def _process_callable_entry(callable_spec: str, rebulk: Rebulk, entry: dict):
+def _process_callable_entry(callable_spec: str, rebulk: Rebulk, entry: dict[str, Any]) -> None:
     _process_option_executable(callable_spec)(rebulk, **entry)
 
 
-def _build_entry_decl(entry, options, value):
+def _build_entry_decl(entry: Any, options: dict[Any, Any], value: str) -> dict[str, Any]:
     entry_decl = dict(options.get(None, {}))
     if not value.startswith("_"):
         entry_decl["value"] = value
@@ -89,7 +94,9 @@ def _build_entry_decl(entry, options, value):
     return entry_decl
 
 
-def load_patterns(rebulk: Rebulk, pattern_type: str, patterns: list[str], options: dict | None = None):
+def load_patterns(
+    rebulk: Rebulk, pattern_type: str, patterns: list[str], options: dict[Any, Any] | None = None
+) -> None:
     """
     Load patterns for a prepared config entry
     :param rebulk: Rebulk builder to use.
@@ -107,7 +114,7 @@ def load_patterns(rebulk: Rebulk, pattern_type: str, patterns: list[str], option
     getattr(rebulk, pattern_type)(*patterns, **item_options)
 
 
-def load_config_patterns(rebulk: Rebulk, config: dict, options: dict | None = None):
+def load_config_patterns(rebulk: Rebulk, config: dict[str, Any] | None, options: dict[Any, Any] | None = None) -> None:
     """
     Load patterns defined in given config.
     :param rebulk: Rebulk builder to use.
@@ -117,6 +124,9 @@ def load_config_patterns(rebulk: Rebulk, config: dict, options: dict | None = No
     the default kwargs options to pass.
     :return:
     """
+    if config is None:
+        return
+
     if options is None:
         options = {}
 

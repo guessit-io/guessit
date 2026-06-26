@@ -3,6 +3,10 @@
 cd and cd_count properties
 """
 
+from __future__ import annotations
+
+from typing import Any
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 
@@ -11,7 +15,7 @@ from ..common import dash
 from ..common.pattern import is_disabled
 
 
-def cd(config):
+def cd(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 

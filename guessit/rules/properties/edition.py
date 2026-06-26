@@ -3,6 +3,10 @@
 edition property
 """
 
+from __future__ import annotations
+
+from typing import Any
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 
@@ -12,7 +16,7 @@ from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
-def edition(config):
+def edition(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 

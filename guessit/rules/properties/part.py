@@ -3,6 +3,10 @@
 part property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 
@@ -12,8 +16,11 @@ from ..common.numeral import numeral, parse_numeral
 from ..common.pattern import is_disabled
 from ..common.validators import and_, int_coercable, seps_surround
 
+if TYPE_CHECKING:
+    from rebulk.match import Match
 
-def part(config):
+
+def part(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -27,7 +34,7 @@ def part(config):
 
     prefixes = config["prefixes"]
 
-    def validate_roman(match):
+    def validate_roman(match: Match) -> bool:
         """
         Validate a roman match if surrounded by separators
         :param match:
@@ -35,9 +42,9 @@ def part(config):
         :return:
         :rtype:
         """
-        if int_coercable(match.raw):
+        if match.raw is not None and int_coercable(match.raw):
             return True
-        return seps_surround(match)
+        return bool(seps_surround(match))
 
     rebulk.regex(
         build_or_pattern(prefixes) + r"-?(?P<part>" + numeral + r")",

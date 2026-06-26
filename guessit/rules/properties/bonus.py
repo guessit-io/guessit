@@ -3,6 +3,10 @@
 bonus property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import AppendMatch, Rebulk, Rule
 from rebulk.remodule import re
 
@@ -11,8 +15,11 @@ from ..common.formatters import cleanup
 from ..common.pattern import is_disabled
 from .title import TitleFromPosition
 
+if TYPE_CHECKING:
+    from rebulk.match import Matches
 
-def bonus(config):
+
+def bonus(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -41,7 +48,7 @@ class BonusTitleRule(Rule):
 
     properties = {"bonus_title": [None]}
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         bonus_number = matches.named("bonus", lambda match: not match.private, index=0)
         if bonus_number:
             filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == "path", 0)

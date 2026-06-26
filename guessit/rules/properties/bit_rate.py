@@ -3,6 +3,10 @@
 video_bit_rate and audio_bit_rate properties
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 from rebulk.rules import RemoveMatch, RenameMatch, Rule
@@ -12,8 +16,11 @@ from ..common import dash, seps
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
 
-def bit_rate(config):
+
+def bit_rate(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -42,9 +49,9 @@ class BitRateTypeRule(Rule):
 
     consequence = [RenameMatch("video_bit_rate"), RemoveMatch]
 
-    def when(self, matches, context):
-        to_rename = []
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_rename: list[Match] = []
+        to_remove: list[Match] = []
 
         if is_disabled(context, "audio_bit_rate"):
             to_remove.extend(matches.named("audio_bit_rate"))

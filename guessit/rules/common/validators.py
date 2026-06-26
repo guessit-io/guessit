@@ -6,7 +6,7 @@ Validators
 from __future__ import annotations
 
 from functools import partial
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 from rebulk.validators import chars_after, chars_before, chars_surround
 
@@ -14,6 +14,8 @@ from . import seps
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+
+_T = TypeVar("_T")
 
 seps_before = partial(chars_before, seps)
 seps_after = partial(chars_after, seps)
@@ -35,7 +37,7 @@ def int_coercable(string: str) -> bool:
         return False
 
 
-def and_(*validators: Callable[[str], bool]) -> Callable[[str], bool]:
+def and_(*validators: Callable[[_T], bool]) -> Callable[[_T], bool]:
     """
     Compose validators functions
     :param validators:
@@ -44,7 +46,7 @@ def and_(*validators: Callable[[str], bool]) -> Callable[[str], bool]:
     :rtype:
     """
 
-    def composed(string: str) -> bool:
+    def composed(string: _T) -> bool:
         """
         Composed validators function
         :param string:
@@ -57,7 +59,7 @@ def and_(*validators: Callable[[str], bool]) -> Callable[[str], bool]:
     return composed
 
 
-def or_(*validators: Callable[[str], bool]) -> Callable[[str], bool]:
+def or_(*validators: Callable[[_T], bool]) -> Callable[[_T], bool]:
     """
     Compose validators functions
     :param validators:
@@ -66,7 +68,7 @@ def or_(*validators: Callable[[str], bool]) -> Callable[[str], bool]:
     :rtype:
     """
 
-    def composed(string: str) -> bool:
+    def composed(string: _T) -> bool:
         """
         Composed validators function
         :param string:

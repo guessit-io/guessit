@@ -3,6 +3,10 @@
 film property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import AppendMatch, Rebulk, Rule
 from rebulk.remodule import re
 
@@ -12,8 +16,11 @@ from ..common.formatters import cleanup
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
+if TYPE_CHECKING:
+    from rebulk.match import Matches
 
-def film(config):
+
+def film(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
     :return: Created Rebulk object
@@ -39,10 +46,10 @@ class FilmTitleRule(Rule):
 
     properties = {"film_title": [None]}
 
-    def enabled(self, context):
+    def enabled(self, context: dict[str, Any] | None) -> bool:
         return not is_disabled(context, "film_title")
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         bonus_number = matches.named("film", lambda match: not match.private, index=0)
         if bonus_number:
             filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == "path", 0)
