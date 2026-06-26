@@ -3,6 +3,10 @@
 streaming_service property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import Rebulk
 from rebulk.remodule import re
 from rebulk.rules import RemoveMatch, Rule
@@ -12,8 +16,11 @@ from ...rules.common import dash, seps
 from ...rules.common.validators import seps_after, seps_before
 from ..common.pattern import is_disabled
 
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
 
-def streaming_service(config):
+
+def streaming_service(config: dict[str, Any]) -> Rebulk:
     """Streaming service property.
 
     :param config: rule configuration
@@ -38,7 +45,7 @@ class ValidateStreamingService(Rule):
     priority = 128
     consequence = RemoveMatch
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         """Streaming service is always before source.
 
         :param matches:
@@ -47,7 +54,7 @@ class ValidateStreamingService(Rule):
         :type context: dict
         :return:
         """
-        to_remove = []
+        to_remove: list[Match] = []
         for service in matches.named("streaming_service"):
             next_match = matches.next(service, lambda match: "streaming_service.suffix" in match.tags, 0)
             previous_match = matches.previous(service, lambda match: "streaming_service.prefix" in match.tags, 0)

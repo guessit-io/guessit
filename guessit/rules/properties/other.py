@@ -3,6 +3,10 @@
 other property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import POST_PROCESS, AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
 from rebulk.match import Match
 from rebulk.remodule import re
@@ -14,8 +18,13 @@ from ..common import dash, seps
 from ..common.pattern import is_disabled
 from ..common.validators import and_, seps_after, seps_before, seps_surround
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
-def other(config):
+    from rebulk.match import Matches
+
+
+def other(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -47,14 +56,14 @@ def other(config):
     return rebulk
 
 
-def complete_words(rebulk: Rebulk, season_words, complete_article_words):
+def complete_words(rebulk: Rebulk, season_words: Iterable[str], complete_article_words: Iterable[str]) -> None:
     """
     Custom pattern to find complete seasons from words.
     """
     season_words_pattern = build_or_pattern(season_words)
     complete_article_words_pattern = build_or_pattern(complete_article_words)
 
-    def validate_complete(match):
+    def validate_complete(match: Match) -> bool:
         """
         Make sure season word is are defined.
         :param match:
@@ -94,31 +103,34 @@ class ProperCountRule(Rule):
 
     properties = {"proper_count": [None]}
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         propers = matches.named("other", lambda match: match.value == "Proper")
         if propers:
-            raws = {}  # Count distinct raw values
+            raws: dict[str, Match] = {}  # Count distinct raw values
             for proper in propers:
-                raws[raw_cleanup(proper.raw)] = proper
+                raws[raw_cleanup(proper.raw or "")] = proper
 
             value = 0
-            start = None
-            end = None
+            start: int | None = None
+            end: int | None = None
 
-            proper_count_matches = []
+            proper_count_matches: list[Match] = []
 
             for proper in raws.values():
                 if not start or start > proper.start:
                     start = proper.start
                 if not end or end < proper.end:
                     end = proper.end
-                if proper.children.named("proper_count", 0):
-                    value += int(proper.children.named("proper_count", 0).value)
+                proper_count = proper.children.named("proper_count", 0)
+                if proper_count:
+                    value += int(proper_count.value)
                 elif "real" in proper.tags:
                     value += 2
                 else:
                     value += 1
 
+            assert start is not None
+            assert end is not None
             proper_count_match = Match(name="proper_count", start=start, end=end, input_string=matches.input_string)
             proper_count_match.value = value
             proper_count_matches.append(proper_count_match)
@@ -135,7 +147,7 @@ class RenameAnotherToOther(Rule):
     priority = 32
     consequence = RenameMatch("other")
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         return matches.named("another")
 
 
@@ -147,20 +159,20 @@ class ValidateHasNeighbor(Rule):
     consequence = RemoveMatch
     priority = 64
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for to_check in matches.range(predicate=lambda match: "has-neighbor" in match.tags):
             previous_match = matches.previous(to_check, index=0)
             previous_group = matches.markers.previous(to_check, lambda marker: marker.name == "group", 0)
             if previous_group and (not previous_match or previous_group.end > previous_match.end):
                 previous_match = previous_group
-            if previous_match and not matches.input_string[previous_match.end : to_check.start].strip(seps):
+            if previous_match and not (matches.input_string or "")[previous_match.end : to_check.start].strip(seps):
                 break
             next_match = matches.next(to_check, index=0)
             next_group = matches.markers.next(to_check, lambda marker: marker.name == "group", 0)
             if next_group and (not next_match or next_group.start < next_match.start):
                 next_match = next_group
-            if next_match and not matches.input_string[to_check.end : next_match.start].strip(seps):
+            if next_match and not (matches.input_string or "")[to_check.end : next_match.start].strip(seps):
                 break
             ret.append(to_check)
         return ret
@@ -174,14 +186,14 @@ class ValidateHasNeighborBefore(Rule):
     consequence = RemoveMatch
     priority = 64
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for to_check in matches.range(predicate=lambda match: "has-neighbor-before" in match.tags):
             next_match = matches.next(to_check, index=0)
             next_group = matches.markers.next(to_check, lambda marker: marker.name == "group", 0)
             if next_group and (not next_match or next_group.start < next_match.start):
                 next_match = next_group
-            if next_match and not matches.input_string[to_check.end : next_match.start].strip(seps):
+            if next_match and not (matches.input_string or "")[to_check.end : next_match.start].strip(seps):
                 break
             ret.append(to_check)
         return ret
@@ -195,14 +207,14 @@ class ValidateHasNeighborAfter(Rule):
     consequence = RemoveMatch
     priority = 64
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for to_check in matches.range(predicate=lambda match: "has-neighbor-after" in match.tags):
             previous_match = matches.previous(to_check, index=0)
             previous_group = matches.markers.previous(to_check, lambda marker: marker.name == "group", 0)
             if previous_group and (not previous_match or previous_group.end > previous_match.end):
                 previous_match = previous_group
-            if previous_match and not matches.input_string[previous_match.end : to_check.start].strip(seps):
+            if previous_match and not (matches.input_string or "")[previous_match.end : to_check.start].strip(seps):
                 break
             ret.append(to_check)
         return ret
@@ -216,11 +228,11 @@ class ValidateScreenerRule(Rule):
     consequence = RemoveMatch
     priority = 64
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for screener in matches.named("other", lambda match: "other.validate.screener" in match.tags):
             source_match = matches.previous(screener, lambda match: match.initiator.name == "source", 0)
-            if not source_match or matches.input_string[source_match.end : screener.start].strip(seps):
+            if not source_match or (matches.input_string or "")[source_match.end : screener.start].strip(seps):
                 ret.append(screener)
         return ret
 
@@ -233,8 +245,8 @@ class ValidateMuxRule(Rule):
     consequence = RemoveMatch
     priority = 64
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for mux in matches.named("other", lambda match: "other.validate.mux" in match.tags):
             source_match = matches.previous(mux, lambda match: match.initiator.name == "source", 0)
             if not source_match:
@@ -248,8 +260,8 @@ class ValidateHardcodedSubs(Rule):
     priority = 32
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for hc_match in matches.named("other", predicate=lambda match: match.value == "Hardcoded Subtitles"):
             next_match = matches.next(hc_match, predicate=lambda match: match.name == "subtitle_language", index=0)
             if next_match and not matches.holes(
@@ -276,8 +288,8 @@ class ValidateStreamingServiceNeighbor(Rule):
     priority = 32
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for match in matches.named(
             "other",
             predicate=lambda m: (
@@ -318,8 +330,8 @@ class ValidateAtEnd(Rule):
     priority = 32
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        to_remove = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
             for match in matches.range(
                 filepart.start, filepart.end, predicate=lambda m: m.name == "other" and "at-end" in m.tags
@@ -340,8 +352,8 @@ class ValidateReal(Rule):
     consequence = RemoveMatch
     priority = 64
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
         for filepart in matches.markers.named("path"):
             for match in matches.range(filepart.start, filepart.end, lambda m: m.name == "other" and "real" in m.tags):
                 if not matches.range(filepart.start, match.start):

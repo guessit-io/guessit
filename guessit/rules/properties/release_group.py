@@ -3,8 +3,11 @@
 release_group property
 """
 
+from __future__ import annotations
+
 import copy
 import re
+from typing import TYPE_CHECKING, Any
 
 from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 from rebulk.match import Match
@@ -17,8 +20,13 @@ from ..common.pattern import is_disabled
 from ..common.validators import int_coercable, seps_surround
 from ..properties.title import TitleFromPosition
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
-def release_group(config):
+    from rebulk.match import Matches
+
+
+def release_group(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -32,7 +40,7 @@ def release_group(config):
     groupname_ignore_seps = config["ignored_seps"]
     groupname_seps = "".join([c for c in seps if c not in groupname_ignore_seps])
 
-    def clean_groupname(string):
+    def clean_groupname(string: str) -> str:
         """
         Removes and strip separators from input_string
         :param string:
@@ -118,13 +126,13 @@ class DashSeparatedReleaseGroup(Rule):
 
     consequence = [RemoveMatch, AppendMatch]
 
-    def __init__(self, value_formatter):
+    def __init__(self, value_formatter: Callable[[str], str]) -> None:
         """Default constructor."""
         super().__init__()
         self.value_formatter = value_formatter
 
     @classmethod
-    def is_valid(cls, matches, candidate, start, end, at_end):
+    def is_valid(cls, matches: Matches, candidate: Match, start: int, end: int, at_end: bool) -> Any:
         """
         Whether a candidate is a valid release group.
         """
@@ -140,7 +148,13 @@ class DashSeparatedReleaseGroup(Rule):
                 return False
 
             raw_value = first_hole.raw
-            return raw_value[0] == "-" and "-" not in raw_value[1:] and "." in raw_value and " " not in raw_value
+            return (
+                raw_value is not None
+                and raw_value[0] == "-"
+                and "-" not in raw_value[1:]
+                and "." in raw_value
+                and " " not in raw_value
+            )
 
         group = matches.markers.at_match(candidate, predicate=lambda m: m.name == "group", index=0)
         if group and matches.at_match(group, predicate=lambda m: not m.private and m.span != candidate.span):
@@ -155,8 +169,8 @@ class DashSeparatedReleaseGroup(Rule):
             if not current:
                 break
 
-            separator = match.input_string[current.end : match.start]
-            if not separator and match.raw[0] == "-":
+            separator = (match.input_string or "")[current.end : match.start]
+            if not separator and match.raw and match.raw[0] == "-":
                 separator = "-"
 
             match = current
@@ -172,7 +186,7 @@ class DashSeparatedReleaseGroup(Rule):
                 return True
         return None
 
-    def detect(self, matches, start, end, at_end):
+    def detect(self, matches: Matches, start: int, end: int, at_end: bool) -> Any:
         """
         Detect release group at the end or at the beginning of a filepart.
         """
@@ -189,6 +203,7 @@ class DashSeparatedReleaseGroup(Rule):
                     lambda m: (
                         not m.private
                         and not (m.name == "other" and "not-a-release-group" in m.tags)
+                        and m.raw is not None
                         and "-" not in m.raw
                         and m.raw.strip() == m.raw
                     )
@@ -202,23 +217,27 @@ class DashSeparatedReleaseGroup(Rule):
                     end,
                     seps=seps,
                     index=-1,
-                    predicate=lambda m: m.end == end and m.raw.strip(seps) and m.raw[0] == "-",
+                    predicate=lambda m: m.end == end and m.raw is not None and m.raw.strip(seps) and m.raw[0] == "-",
                 )
             else:
                 candidate = matches.holes(
-                    start, end, seps=seps, index=0, predicate=lambda m: m.start == start and m.raw.strip(seps)
+                    start,
+                    end,
+                    seps=seps,
+                    index=0,
+                    predicate=lambda m: m.start == start and m.raw is not None and m.raw.strip(seps),
                 )
 
         if candidate and self.is_valid(matches, candidate, start, end, at_end):
             return candidate
         return None
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         if matches.named("release_group"):
             return None
 
-        to_remove = []
-        to_append = []
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
         for filepart in matches.markers.named("path"):
             candidate = self.detect(matches, filepart.start, filepart.end, True)
             if candidate:
@@ -254,13 +273,13 @@ class SceneReleaseGroup(Rule):
 
     properties = {"release_group": [None]}
 
-    def __init__(self, value_formatter):
+    def __init__(self, value_formatter: Callable[[str], str]) -> None:
         """Default constructor."""
         super().__init__()
         self.value_formatter = value_formatter
 
     @staticmethod
-    def is_previous_match(match):
+    def is_previous_match(match: Match) -> Any:
         """
         Check if match can precede release_group
 
@@ -273,10 +292,10 @@ class SceneReleaseGroup(Rule):
             else match.tagged(*_scene_previous_tags)
         )
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         # If a release_group is found before, ignore this kind of release_group rule.
 
-        ret = []
+        ret: list[Match] = []
 
         for filepart in marker_sorted(matches.markers.named("path"), matches):
             # The closures below are consumed within this same iteration, so binding the loop
@@ -287,7 +306,7 @@ class SceneReleaseGroup(Rule):
 
             titles = matches.named("title", predicate=lambda m: m.start >= start and m.end <= end)  # noqa: B023
 
-            def keep_only_first_title(match):
+            def keep_only_first_title(match: Match) -> bool:
                 """
                 Keep only first title from this filepart, as other ones are most likely release group.
 
@@ -309,7 +328,7 @@ class SceneReleaseGroup(Rule):
 
             if last_hole:
 
-                def previous_match_filter(match):
+                def previous_match_filter(match: Match) -> bool:
                     """
                     Filter to apply to find previous match
 
@@ -327,7 +346,7 @@ class SceneReleaseGroup(Rule):
                 if (
                     previous_match
                     and (self.is_previous_match(previous_match))
-                    and not matches.input_string[previous_match.end : last_hole.start].strip(seps)
+                    and not (matches.input_string or "")[previous_match.end : last_hole.start].strip(seps)
                     and not int_coercable(last_hole.value.strip(seps))
                 ):
                     last_hole.name = "release_group"
@@ -362,9 +381,9 @@ class AnimeReleaseGroup(Rule):
 
     properties = {"release_group": [None]}
 
-    def when(self, matches, context):
-        to_remove = []
-        to_append = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
 
         # If a release_group is found before, ignore this kind of release_group rule.
         if matches.named("release_group"):

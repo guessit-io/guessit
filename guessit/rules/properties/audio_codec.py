@@ -3,6 +3,10 @@
 audio_codec, audio_profile and audio_channels property
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from rebulk import Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
 
@@ -11,10 +15,13 @@ from ..common import dash
 from ..common.pattern import is_disabled
 from ..common.validators import seps_after, seps_before
 
+if TYPE_CHECKING:
+    from rebulk.match import Match, Matches
+
 audio_properties = ["audio_codec", "audio_profile", "audio_channels"]
 
 
-def audio_codec(config):
+def audio_codec(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
@@ -25,7 +32,7 @@ def audio_codec(config):
     """
     rebulk = Rebulk().regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
 
-    def audio_codec_priority(match1, match2):
+    def audio_codec_priority(match1: Match, match2: Match) -> Any:
         """
         Gives priority to audio_codec
         :param match1:
@@ -72,8 +79,8 @@ class AudioValidatorRule(Rule):
     priority = 64
     consequence = RemoveMatch
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
 
         audio_list = matches.range(predicate=lambda match: match.name in audio_properties)
         for audio in audio_list:
@@ -100,18 +107,18 @@ class AudioProfileRule(Rule):
     dependency = AudioValidatorRule
     consequence = RemoveMatch
 
-    def __init__(self, codec):
+    def __init__(self, codec: str) -> None:
         super().__init__()
         self.codec = codec
 
-    def enabled(self, context):
+    def enabled(self, context: dict[str, Any] | None) -> bool:
         return not is_disabled(context, "audio_profile")
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         profile_list = matches.named(
             "audio_profile", lambda match: "audio_profile.rule" in match.tags and self.codec in match.tags
         )
-        ret = []
+        ret: list[Match] = []
         for profile in profile_list:
             codec = matches.at_span(
                 profile.span, lambda match: match.name == "audio_codec" and match.value == self.codec, 0
@@ -134,7 +141,7 @@ class DtsHDRule(AudioProfileRule):
     Rule to validate DTS-HD profile
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("DTS-HD")
 
 
@@ -143,7 +150,7 @@ class DtsRule(AudioProfileRule):
     Rule to validate DTS profile
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("DTS")
 
 
@@ -152,7 +159,7 @@ class AacRule(AudioProfileRule):
     Rule to validate AAC profile
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("AAC")
 
 
@@ -161,7 +168,7 @@ class DolbyDigitalRule(AudioProfileRule):
     Rule to validate Dolby Digital profile
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("Dolby Digital")
 
 
@@ -173,10 +180,10 @@ class HqConflictRule(Rule):
     dependency = [DtsHDRule, DtsRule, AacRule, DolbyDigitalRule]
     consequence = RemoveMatch
 
-    def enabled(self, context):
+    def enabled(self, context: dict[str, Any] | None) -> bool:
         return not is_disabled(context, "audio_profile")
 
-    def when(self, matches, context):
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         hq_audio = matches.named("audio_profile", lambda m: m.value == "High Quality")
         hq_audio_spans = [match.span for match in hq_audio]
         return matches.named("other", lambda m: m.span in hq_audio_spans)
@@ -190,11 +197,11 @@ class AudioChannelsValidatorRule(Rule):
     priority = 128
     consequence = RemoveMatch
 
-    def enabled(self, context):
+    def enabled(self, context: dict[str, Any] | None) -> bool:
         return not is_disabled(context, "audio_channels")
 
-    def when(self, matches, context):
-        ret = []
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
 
         for audio_channel in matches.tagged("weak-audio_channels"):
             valid_before = matches.range(
