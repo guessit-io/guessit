@@ -1,16 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 container property
 """
+from rebulk import Rebulk
 from rebulk.remodule import re
 
-from rebulk import Rebulk
-
+from ...reutils import build_or_pattern
 from ..common import seps
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-from ...reutils import build_or_pattern
 
 
 def container(config):

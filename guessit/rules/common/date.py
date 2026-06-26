@@ -1,31 +1,21 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Date
 """
 from dateutil import parser
-
 from rebulk.remodule import re
 
 _dsep = r'[-/ \.]'
 _dsep_bis = r'[-/ \.x]'
 
 date_regexps = [
-    # pylint:disable=consider-using-f-string
-    re.compile(r'%s((\d{8}))%s' % (_dsep, _dsep), re.IGNORECASE),
-    # pylint:disable=consider-using-f-string
-    re.compile(r'%s((\d{6}))%s' % (_dsep, _dsep), re.IGNORECASE),
-    # pylint:disable=consider-using-f-string
-    re.compile(r'(?:^|[^\d])((\d{2})%s(\d{1,2})%s(\d{1,2}))(?:$|[^\d])' % (_dsep, _dsep), re.IGNORECASE),
-    # pylint:disable=consider-using-f-string
-    re.compile(r'(?:^|[^\d])((\d{1,2})%s(\d{1,2})%s(\d{2}))(?:$|[^\d])' % (_dsep, _dsep), re.IGNORECASE),
-    # pylint:disable=consider-using-f-string
-    re.compile(r'(?:^|[^\d])((\d{4})%s(\d{1,2})%s(\d{1,2}))(?:$|[^\d])' % (_dsep_bis, _dsep), re.IGNORECASE),
-    # pylint:disable=consider-using-f-string
-    re.compile(r'(?:^|[^\d])((\d{1,2})%s(\d{1,2})%s(\d{4}))(?:$|[^\d])' % (_dsep, _dsep_bis), re.IGNORECASE),
-    # pylint:disable=consider-using-f-string
-    re.compile(r'(?:^|[^\d])((\d{1,2}(?:st|nd|rd|th)?%s(?:[a-z]{3,10})%s\d{4}))(?:$|[^\d])' % (_dsep, _dsep),
-               # pylint:disable=consider-using-f-string
+    re.compile(rf'{_dsep}((\d{{8}})){_dsep}', re.IGNORECASE),
+    re.compile(rf'{_dsep}((\d{{6}})){_dsep}', re.IGNORECASE),
+    re.compile(rf'(?:^|[^\d])((\d{{2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])', re.IGNORECASE),
+    re.compile(rf'(?:^|[^\d])((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{2}}))(?:$|[^\d])', re.IGNORECASE),
+    re.compile(rf'(?:^|[^\d])((\d{{4}}){_dsep_bis}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])', re.IGNORECASE),
+    re.compile(rf'(?:^|[^\d])((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep_bis}(\d{{4}}))(?:$|[^\d])', re.IGNORECASE),
+    re.compile(rf'(?:^|[^\d])((\d{{1,2}}(?:st|nd|rd|th)?{_dsep}(?:[a-z]{{3,10}}){_dsep}\d{{4}}))(?:$|[^\d])',
                re.IGNORECASE)]
 
 
@@ -55,7 +45,7 @@ def _is_int(string):
         return False
 
 
-def _guess_day_first_parameter(groups):  # pylint:disable=inconsistent-return-statements
+def _guess_day_first_parameter(groups):
     """
     If day_first is not defined, use some heuristic to fix it.
     It helps to solve issues with python dateutils 2.5.3 parser changes.
@@ -80,7 +70,7 @@ def _guess_day_first_parameter(groups):  # pylint:disable=inconsistent-return-st
         return True
 
 
-def search_date(string, year_first=None, day_first=None):  # pylint:disable=inconsistent-return-statements
+def search_date(string, year_first=None, day_first=None):
     """Looks for date patterns, and if found return the date and group span.
 
     Assumes there are sentinels at the beginning and end of the string that
@@ -134,5 +124,5 @@ def search_date(string, year_first=None, day_first=None):  # pylint:disable=inco
                 date = None
 
             # check date plausibility
-            if date and valid_year(date.year):  # pylint:disable=no-member
-                return start, end, date.date()  # pylint:disable=no-member
+            if date and valid_year(date.year):
+                return start, end, date.date()

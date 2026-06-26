@@ -1,21 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Website property.
 """
-try:
-    from importlib.resources import files  # @UnresolvedImport
-except ImportError:
-    from importlib_resources import files  # @UnresolvedImport
+from importlib.resources import files
 
+from rebulk import Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
 
-from rebulk import Rebulk, Rule, RemoveMatch
+from ...reutils import build_or_pattern
 from ..common import seps
 from ..common.formatters import cleanup
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-from ...reutils import build_or_pattern
 
 
 def website(config):

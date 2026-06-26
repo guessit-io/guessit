@@ -1,19 +1,18 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 film property
 """
-from rebulk import Rebulk, AppendMatch, Rule
+from rebulk import AppendMatch, Rebulk, Rule
 from rebulk.remodule import re
 
+from ...config import load_config_patterns
 from ..common import dash
 from ..common.formatters import cleanup
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-from ...config import load_config_patterns
 
 
-def film(config):  # pylint:disable=unused-argument
+def film(config):
     """
     Builder for rebulk object.
     :return: Created Rebulk object
@@ -41,7 +40,7 @@ class FilmTitleRule(Rule):
     def enabled(self, context):
         return not is_disabled(context, 'film_title')
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         bonus_number = matches.named('film', lambda match: not match.private, index=0)
         if bonus_number:
             filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == 'path', 0)

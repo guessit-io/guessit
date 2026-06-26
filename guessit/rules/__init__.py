@@ -1,40 +1,37 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Rebulk object default builder
 """
 from rebulk import Rebulk
 
-from .markers.path import path
 from .markers.groups import groups
-
-from .properties.episodes import episodes
-from .properties.container import container
-from .properties.source import source
-from .properties.video_codec import video_codec
-from .properties.audio_codec import audio_codec
-from .properties.screen_size import screen_size
-from .properties.website import website
-from .properties.date import date
-from .properties.title import title
-from .properties.episode_title import episode_title
-from .properties.language import language
-from .properties.country import country
-from .properties.release_group import release_group
-from .properties.streaming_service import streaming_service
-from .properties.other import other
-from .properties.size import size
-from .properties.bit_rate import bit_rate
-from .properties.edition import edition
-from .properties.cd import cd
-from .properties.bonus import bonus
-from .properties.film import film
-from .properties.part import part
-from .properties.crc import crc
-from .properties.mimetype import mimetype
-from .properties.type import type_
-
+from .markers.path import path
 from .processors import processors
+from .properties.audio_codec import audio_codec
+from .properties.bit_rate import bit_rate
+from .properties.bonus import bonus
+from .properties.cd import cd
+from .properties.container import container
+from .properties.country import country
+from .properties.crc import crc
+from .properties.date import date
+from .properties.edition import edition
+from .properties.episode_title import episode_title
+from .properties.episodes import episodes
+from .properties.film import film
+from .properties.language import language
+from .properties.mimetype import mimetype
+from .properties.other import other
+from .properties.part import part
+from .properties.release_group import release_group
+from .properties.screen_size import screen_size
+from .properties.size import size
+from .properties.source import source
+from .properties.streaming_service import streaming_service
+from .properties.title import title
+from .properties.type import type_
+from .properties.video_codec import video_codec
+from .properties.website import website
 
 
 def rebulk_builder(config):

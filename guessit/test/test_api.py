@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# pylint: disable=pointless-statement, missing-docstring, invalid-name, pointless-string-statement
 import json
 import os
 from pathlib import Path
@@ -9,7 +7,7 @@ import pytest
 from pytest_mock import MockerFixture
 
 from .. import api
-from ..api import guessit, properties, suggested_expected, GuessitException, default_api
+from ..api import GuessitException, default_api, guessit, properties, suggested_expected
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -52,7 +50,7 @@ def test_forced_unicode_japanese_options():
 
 def test_properties():
     props = properties()
-    assert 'video_codec' in props.keys()
+    assert 'video_codec' in props
 
 
 def test_exception():
@@ -64,7 +62,7 @@ def test_exception():
 
 
 def test_suggested_expected():
-    with open(os.path.join(__location__, 'suggested.json'), 'r', encoding='utf-8') as f:
+    with open(os.path.join(__location__, 'suggested.json'), encoding='utf-8') as f:
         content = json.load(f)
     actual = suggested_expected(content['titles'])
     assert actual == content['suggested']

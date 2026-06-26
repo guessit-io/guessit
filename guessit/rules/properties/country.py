@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 country property
 """
-# pylint: disable=no-member
 import babelfish
-
 from rebulk import Rebulk
+
 from ..common.pattern import is_disabled
 from ..common.words import iter_words
 
@@ -46,7 +44,7 @@ def country(config, common_words):
     return rebulk
 
 
-class GuessitCountryConverter(babelfish.CountryReverseConverter):  # pylint: disable=missing-docstring
+class GuessitCountryConverter(babelfish.CountryReverseConverter):
     def __init__(self, synonyms):
         self.guessit_exceptions = {}
 
@@ -55,7 +53,7 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):  # pylint: dis
                 self.guessit_exceptions[syn.lower()] = alpha2
 
     @property
-    def codes(self):  # pylint: disable=missing-docstring
+    def codes(self):
         return (babelfish.country_converters['name'].codes |
                 frozenset(babelfish.COUNTRIES.values()) |
                 frozenset(self.guessit_exceptions.keys()))
@@ -65,7 +63,7 @@ class GuessitCountryConverter(babelfish.CountryReverseConverter):  # pylint: dis
             return 'UK'
         return str(babelfish.Country(alpha2))
 
-    def reverse(self, name):  # pylint:disable=arguments-renamed
+    def reverse(self, name):
         # exceptions come first, as they need to override a potential match
         # with any of the other guessers
         try:
@@ -91,7 +89,7 @@ class CountryFinder:
     """Helper class to search and return country matches."""
 
     def __init__(self, allowed_countries, common_words):
-        self.allowed_countries = {l.lower() for l in allowed_countries or []}
+        self.allowed_countries = {country.lower() for country in allowed_countries or []}
         self.common_words = common_words
 
     def find(self, string):

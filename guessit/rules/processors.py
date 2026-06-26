@@ -1,17 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Processors
 """
-from collections import defaultdict
 import copy
+from collections import defaultdict
 
-from rebulk import Rebulk, Rule, CustomRule, POST_PROCESS, PRE_PROCESS, AppendMatch, RemoveMatch
+from rebulk import POST_PROCESS, PRE_PROCESS, AppendMatch, CustomRule, Rebulk, RemoveMatch, Rule
 
 from .common import seps_no_groups
-from .common.formatters import cleanup
 from .common.comparators import marker_sorted
 from .common.date import valid_year
+from .common.formatters import cleanup
 from .common.words import iter_words
 
 
@@ -136,7 +135,7 @@ class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
             predicate=lambda match: match.name == name)
 
 
-def _preferred_string(value1, value2):  # pylint:disable=too-many-return-statements
+def _preferred_string(value1, value2):
     """
     Retrieves preferred title from both values.
     :param value1:
@@ -242,7 +241,7 @@ class StripSeparators(CustomRule):
                     match.raw_end -= 1
 
 
-def processors(config):  # pylint:disable=unused-argument
+def processors(config):
     """
     Builder for rebulk object.
 

@@ -1,16 +1,15 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 crc and uuid properties
 """
+from rebulk import Rebulk
 from rebulk.remodule import re
 
-from rebulk import Rebulk
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
 
-def crc(config):  # pylint:disable=unused-argument
+def crc(config):
     """
     Builder for rebulk object.
 
@@ -50,7 +49,6 @@ def guess_idnumber(string):
     :return:
     :rtype:
     """
-    # pylint:disable=invalid-name
     ret = []
 
     matches = list(_idnum.finditer(string))

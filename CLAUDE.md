@@ -8,33 +8,40 @@ GuessIt is a Python library that extracts metadata (title, season, episode, code
 
 ## Common Commands
 
+This project uses **uv** for packaging, dependencies, and builds (PEP 621 `pyproject.toml` + `uv.lock`, native `uv_build` backend). There is no `setup.py`, `requirements.txt`, or `tox.ini`.
+
 ```bash
-# Install in development mode
-pip install -e .[dev,test]
+# Create the dev environment (virtualenv + dev/test dependencies, from uv.lock)
+uv sync
 
 # Run all tests (includes doctests)
-pytest
+uv run pytest
 
 # Run a single test file
-pytest guessit/test/test_api.py
+uv run pytest guessit/test/test_api.py
 
 # Run a single test by name
-pytest -k test_default
+uv run pytest -k test_default
 
 # Run only the YAML-driven matcher tests
-pytest guessit/test/test_yml.py
+uv run pytest guessit/test/test_yml.py
 
-# Lint (config in pylintrc)
-pylint guessit
+# Lint (ruff, config in pyproject.toml [tool.ruff])
+uv run ruff check guessit
+# Auto-fix lint issues
+uv run ruff check guessit --fix
 
-# Run tests across all supported Python versions
-tox
+# Run tests on a specific Python version (replaces tox)
+uv run --python 3.11 pytest
+
+# Build the sdist + wheel
+uv build
 
 # CLI usage (use --json / --yaml for structured output)
-guessit "Treme.1x03.HDTV.XviD-NoTV.avi"
+uv run guessit "Treme.1x03.HDTV.XviD-NoTV.avi"
 ```
 
-`pytest.ini` enables `--doctest-modules` and `--doctest-glob='*.rst'`, so docstring examples and `.rst` docs are executed as part of the suite — keep them accurate when editing.
+The pytest config lives in `pyproject.toml` (`[tool.pytest.ini_options]`) and enables `--doctest-modules` and `--doctest-glob='*.rst'`, so docstring examples and `.rst` docs are executed as part of the suite — keep them accurate when editing.
 
 ## Architecture
 

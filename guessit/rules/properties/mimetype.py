@@ -1,18 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 mimetype property
 """
 import mimetypes
 
-from rebulk import Rebulk, CustomRule, POST_PROCESS
+from rebulk import POST_PROCESS, CustomRule, Rebulk
 from rebulk.match import Match
 
-from ..common.pattern import is_disabled
 from ...rules.processors import Processors
+from ..common.pattern import is_disabled
 
 
-def mimetype(config):  # pylint:disable=unused-argument
+def mimetype(config):
     """
     Builder for rebulk object.
 

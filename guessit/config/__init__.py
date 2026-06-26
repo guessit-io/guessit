@@ -2,15 +2,15 @@
 Config module.
 """
 from importlib import import_module
-from typing import Any, List
+from typing import Any
 
 from rebulk import Rebulk
 
 _regex_prefix = 're:'
 _import_prefix = 'import:'
-_import_cache = {}
+_import_cache: dict[Any, Any] = {}
 _eval_prefix = 'eval:'
-_eval_cache = {}
+_eval_cache: dict[Any, Any] = {}
 _pattern_types = ('regex', 'string')
 _default_module_names = {
     'validator': 'guessit.rules.common.validators',
@@ -52,7 +52,7 @@ def _eval(value: str):
     compiled = _eval_cache.get(value)
     if not compiled:
         compiled = compile(value, '<string>', 'eval')
-    return eval(compiled)  # pylint:disable=eval-used
+    return eval(compiled)
 
 
 def _process_option_executable(value: str, default_module_name=None):
@@ -93,8 +93,8 @@ def _build_entry_decl(entry, options, value):
 
 def load_patterns(rebulk: Rebulk,
                   pattern_type: str,
-                  patterns: List[str],
-                  options: dict = None):
+                  patterns: list[str],
+                  options: dict | None = None):
     """
     Load patterns for a prepared config entry
     :param rebulk: Rebulk builder to use.
@@ -105,7 +105,7 @@ def load_patterns(rebulk: Rebulk,
     """
     default_options = options.get(None) if options else None
     item_options = dict(default_options) if default_options else {}
-    pattern_type_option = options.get(pattern_type)
+    pattern_type_option = options.get(pattern_type) if options else None
     if pattern_type_option:
         item_options.update(pattern_type_option)
     item_options = {name: _process_option(name, value) for name, value in item_options.items()}
@@ -114,7 +114,7 @@ def load_patterns(rebulk: Rebulk,
 
 def load_config_patterns(rebulk: Rebulk,
                          config: dict,
-                         options: dict = None):
+                         options: dict | None = None):
     """
     Load patterns defined in given config.
     :param rebulk: Rebulk builder to use.
@@ -130,7 +130,7 @@ def load_config_patterns(rebulk: Rebulk,
     for value, raw_entries in config.items():
         entries = raw_entries if isinstance(raw_entries, list) else [raw_entries]
         for entry in entries:
-            if isinstance(entry, dict) and "callable" in entry.keys():
+            if isinstance(entry, dict) and "callable" in entry:
                 _process_callable_entry(entry.pop("callable"), rebulk, entry)
                 continue
             entry_decl = _build_entry_decl(entry, options, value)

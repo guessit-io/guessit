@@ -1,14 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Path markers
 """
 from rebulk import Rebulk
-
 from rebulk.utils import find_all
 
 
-def path(config):  # pylint:disable=unused-argument
+def path(config):
     """
     Builder for rebulk object.
 

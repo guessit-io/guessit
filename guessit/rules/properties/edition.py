@@ -1,18 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 edition property
 """
 from rebulk import Rebulk
 from rebulk.remodule import re
 
+from ...config import load_config_patterns
 from ..common import dash
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-from ...config import load_config_patterns
 
 
-def edition(config):  # pylint:disable=unused-argument
+def edition(config):
     """
     Builder for rebulk object.
 

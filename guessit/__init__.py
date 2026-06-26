@@ -1,14 +1,13 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Extracts as much information as possible from a video file.
 """
 from . import monkeypatch as _monkeypatch
-
-from .api import guessit, GuessItApi
+from .__version__ import __version__
+from .api import GuessItApi, guessit
 from .options import ConfigurationException
 from .rules.common.quantity import Size
 
-from .__version__ import __version__
+__all__ = ['__version__', 'GuessItApi', 'guessit', 'ConfigurationException', 'Size']
 
 _monkeypatch.monkeypatch_rebulk()

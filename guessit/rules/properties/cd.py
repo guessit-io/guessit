@@ -1,17 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 cd and cd_count properties
 """
 from rebulk import Rebulk
 from rebulk.remodule import re
 
+from ...config import load_config_patterns
 from ..common import dash
 from ..common.pattern import is_disabled
-from ...config import load_config_patterns
 
 
-def cd(config):  # pylint:disable=unused-argument,invalid-name
+def cd(config):
     """
     Builder for rebulk object.
 

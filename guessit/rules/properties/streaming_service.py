@@ -1,20 +1,18 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 streaming_service property
 """
-from rebulk.remodule import re
-
 from rebulk import Rebulk
-from rebulk.rules import Rule, RemoveMatch
+from rebulk.remodule import re
+from rebulk.rules import RemoveMatch, Rule
 
-from ..common.pattern import is_disabled
 from ...config import load_config_patterns
-from ...rules.common import seps, dash
-from ...rules.common.validators import seps_before, seps_after
+from ...rules.common import dash, seps
+from ...rules.common.validators import seps_after, seps_before
+from ..common.pattern import is_disabled
 
 
-def streaming_service(config):  # pylint: disable=too-many-statements,unused-argument
+def streaming_service(config):
     """Streaming service property.
 
     :param config: rule configuration
@@ -54,17 +52,15 @@ class ValidateStreamingService(Rule):
             previous_match = matches.previous(service, lambda match: 'streaming_service.prefix' in match.tags, 0)
             has_other = service.initiator and service.initiator.children.named('other')
 
-            if not has_other:
-                if (not next_match or
-                        matches.holes(service.end, next_match.start,
-                                      predicate=lambda match: match.value.strip(seps)) or
-                        not seps_before(service)):
-                    if (not previous_match or
-                            matches.holes(previous_match.end, service.start,
-                                          predicate=lambda match: match.value.strip(seps)) or
-                            not seps_after(service)):
-                        to_remove.append(service)
-                        continue
+            if not has_other and (not next_match or
+                    matches.holes(service.end, next_match.start,
+                                  predicate=lambda match: match.value.strip(seps)) or
+                    not seps_before(service)) and (not previous_match or
+                    matches.holes(previous_match.end, service.start,
+                                  predicate=lambda match: match.value.strip(seps)) or
+                    not seps_after(service)):
+                to_remove.append(service)
+                continue
 
             if service.value == 'Comedy Central':
                 # Current match is a valid streaming service, removing invalid Criterion Collection (CC) matches

@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# pylint: disable=pointless-statement, missing-docstring, invalid-name
 import logging
 import os
 
 import babelfish
-import yaml  # pylint:disable=wrong-import-order
+import yaml
 from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
@@ -100,10 +98,7 @@ def files_and_ids(predicate=None):
     for (dirpath, _, filenames) in os.walk(__location__):
         if os.path.split(dirpath)[-1] == 'config':
             continue
-        if dirpath == __location__:
-            dirpath_rel = ''
-        else:
-            dirpath_rel = os.path.relpath(dirpath, __location__)
+        dirpath_rel = '' if dirpath == __location__ else os.path.relpath(dirpath, __location__)
         for filename in filenames:
             name, ext = os.path.splitext(filename)
             filepath = os.path.join(dirpath_rel, filename)
@@ -138,8 +133,8 @@ class TestYml:
             entry_ids = []
             entry_set = set()
 
-            for filename, _ in zip(*files_and_ids()):
-                with open(os.path.join(__location__, filename), 'r', encoding='utf-8') as infile:
+            for filename, _ in zip(*files_and_ids(), strict=False):
+                with open(os.path.join(__location__, filename), encoding='utf-8') as infile:
                     data = yaml.load(infile, OrderedDictYAMLLoader)
 
                 last_expected = None
@@ -248,15 +243,13 @@ class TestYml:
             entry.others.append("Match is not global")
 
     def is_same(self, value, expected):
-        values = set(value) if is_iterable(value) else set((value,))
-        expecteds = set(expected) if is_iterable(expected) else set((expected,))
+        values = set(value) if is_iterable(value) else {value}
+        expecteds = set(expected) if is_iterable(expected) else {expected}
         if len(values) != len(expecteds):
             return False
         if isinstance(next(iter(values)), babelfish.Language):
-            # pylint: disable=no-member
             expecteds = {babelfish.Language.fromguessit(expected) for expected in expecteds}
         elif isinstance(next(iter(values)), babelfish.Country):
-            # pylint: disable=no-member
             expecteds = {babelfish.Country.fromguessit(expected) for expected in expecteds}
         return values == expecteds
 
@@ -265,7 +258,7 @@ class TestYml:
             for expected_key, expected_value in expected.items():
                 if expected_key and expected_key != 'options' and expected_value is not None:
                     negates_key, _, result_key = self.parse_token_options(expected_key)
-                    if result_key in result.keys():
+                    if result_key in result:
                         if not self.is_same(result[result_key], expected_value):
                             if negates_key:
                                 entry.valid.append((expected_key, expected_value))
@@ -280,5 +273,5 @@ class TestYml:
                         entry.missing.append((expected_key, expected_value))
 
         for result_key, result_value in result.items():
-            if result_key not in expected.keys():
+            if result_key not in expected:
                 entry.extra.append((result_key, result_value))

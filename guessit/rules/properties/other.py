@@ -1,23 +1,21 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 other property
 """
 
-from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch, POST_PROCESS, AppendMatch
+from rebulk import POST_PROCESS, AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
 from rebulk.match import Match
 from rebulk.remodule import re
 
-from ..common import dash
-from ..common import seps
-from ..common.pattern import is_disabled
-from ..common.validators import seps_after, seps_before, seps_surround, and_
 from ...config import load_config_patterns
 from ...reutils import build_or_pattern
 from ...rules.common.formatters import raw_cleanup
+from ..common import dash, seps
+from ..common.pattern import is_disabled
+from ..common.validators import and_, seps_after, seps_before, seps_surround
 
 
-def other(config):  # pylint:disable=unused-argument,too-many-statements
+def other(config):
     """
     Builder for rebulk object.
 
@@ -55,9 +53,7 @@ def complete_words(rebulk: Rebulk, season_words, complete_article_words):
         :rtype:
         """
         children = match.children
-        if not children.named('completeWordsBefore') and not children.named('completeWordsAfter'):
-            return False
-        return True
+        return not (not children.named('completeWordsBefore') and not children.named('completeWordsAfter'))
 
     rebulk.regex('(?P<completeArticle>' + complete_article_words_pattern + '-)?' +
                  '(?P<completeWordsBefore>' + season_words_pattern + '-)?' +
@@ -78,7 +74,7 @@ class ProperCountRule(Rule):
 
     properties = {'proper_count': [None]}
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         propers = matches.named('other', lambda match: match.value == 'Proper')
         if propers:
             raws = {}  # Count distinct raw values

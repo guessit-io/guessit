@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# pylint: disable=pointless-statement, missing-docstring, invalid-name, pointless-string-statement
 
 
 import os
 
 import pytest
 
-from ..api import guessit, properties, GuessitException
+from ..api import GuessitException, guessit, properties
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -54,7 +52,7 @@ def test_ensure_custom_string_class():
 
 def test_properties():
     props = properties()
-    assert 'video_codec' in props.keys()
+    assert 'video_codec' in props
 
 
 def test_exception():

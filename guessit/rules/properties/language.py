@@ -1,14 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 language and subtitle_language properties
 """
-# pylint: disable=no-member
 import copy
 from collections import defaultdict, namedtuple
 
 import babelfish
-from rebulk import Rebulk, Rule, RemoveMatch, RenameMatch
+from rebulk import Rebulk, RemoveMatch, RenameMatch, Rule
 from rebulk.remodule import re
 
 from ..common import seps
@@ -77,7 +75,7 @@ MULTIPLE = babelfish.Language('mul')
 NON_SPECIFIC_LANGUAGES = frozenset([UNDETERMINED, MULTIPLE])
 
 
-class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=missing-docstring
+class GuessitConverter(babelfish.LanguageReverseConverter):
     _with_country_regexp = re.compile(r'(.*)\((.*)\)')
     _with_country_regexp2 = re.compile(r'(.*)-(.*)')
 
@@ -92,7 +90,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
                 self.guessit_exceptions[syn.lower()] = (alpha3, country, None)
 
     @property
-    def codes(self):  # pylint: disable=missing-docstring
+    def codes(self):
         return (babelfish.language_converters['alpha3b'].codes |
                 babelfish.language_converters['alpha2'].codes |
                 babelfish.language_converters['name'].codes |
@@ -103,7 +101,7 @@ class GuessitConverter(babelfish.LanguageReverseConverter):  # pylint: disable=m
     def convert(self, alpha3, country=None, script=None):
         return str(babelfish.Language(alpha3, country, script))
 
-    def reverse(self, name):  # pylint:disable=arguments-renamed
+    def reverse(self, name):
         name = name.lower()
         # exceptions come first, as they need to override a potential match
         # with any of the other guessers
@@ -152,7 +150,7 @@ class LanguageWord:
         self.next_word = next_word
 
     @property
-    def extended_word(self):  # pylint:disable=inconsistent-return-statements
+    def extended_word(self):
         """
         Return the extended word for this instance, if any.
         """
@@ -200,7 +198,7 @@ class LanguageFinder:
                  subtitle_prefixes, subtitle_suffixes,
                  lang_prefixes, lang_suffixes, weak_affixes):
         allowed_languages = context.get('allowed_languages') if context else None
-        self.allowed_languages = {l.lower() for l in allowed_languages or []}
+        self.allowed_languages = {lang.lower() for lang in allowed_languages or []}
         self.weak_affixes = weak_affixes
         self.prefixes_map = {}
         self.suffixes_map = {}
@@ -262,8 +260,7 @@ class LanguageFinder:
             candidates.append(previous)
 
         for candidate in candidates:
-            for match in self.iter_matches_for_candidate(candidate):
-                yield match
+            yield from self.iter_matches_for_candidate(candidate)
 
     def iter_matches_for_candidate(self, language_word):
         """
@@ -325,7 +322,7 @@ class LanguageFinder:
                         return match
         return None
 
-    def find_language_match_for_word(self, word, key='language'):  # pylint:disable=inconsistent-return-statements
+    def find_language_match_for_word(self, word, key='language'):
         """
         Return the language match for the given word.
         """
@@ -335,7 +332,7 @@ class LanguageFinder:
                 if match:
                     return match
 
-    def create_language_match(self, key, word):  # pylint:disable=inconsistent-return-statements
+    def create_language_match(self, key, word):
         """
         Create a LanguageMatch for a given word
         """
@@ -344,7 +341,7 @@ class LanguageFinder:
         if lang is not None:
             return _LanguageMatch(property_name=key, word=word, lang=lang)
 
-    def parse_language(self, lang_word):  # pylint:disable=inconsistent-return-statements
+    def parse_language(self, lang_word):
         """
         Parse the lang_word into a valid Language.
 
@@ -457,7 +454,7 @@ class SubtitleExtensionRule(Rule):
     def enabled(self, context):
         return not is_disabled(context, 'subtitle_language')
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         subtitle_extension = matches.named('container',
                                            lambda match: 'extension' in match.tags and 'subtitle' in match.tags,
                                            0)

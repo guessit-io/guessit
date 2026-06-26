@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 date, week and year properties
 """
@@ -7,14 +6,14 @@ import re
 
 from rebulk import Rebulk, RemoveMatch, Rule
 
+from ...reutils import build_or_pattern
 from ..common import dash
-from ..common.date import search_date, valid_year, valid_week
+from ..common.date import search_date, valid_week, valid_year
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-from ...reutils import build_or_pattern
 
 
-def date(config):  # pylint:disable=unused-argument
+def date(config):
     """
     Builder for rebulk object.
 
@@ -41,7 +40,7 @@ def date(config):  # pylint:disable=unused-argument
                  else '__default__',
                  validator=lambda match: seps_surround(match) and valid_week(match.value))
 
-    def date_functional(string, context):  # pylint:disable=inconsistent-return-statements
+    def date_functional(string, context):
         """
         Search for date in the string and retrieves match
 

@@ -1,21 +1,20 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Episode title
 """
 from collections import defaultdict
 
-from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch, RenameMatch, POST_PROCESS
+from rebulk import POST_PROCESS, AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
 
 from ..common import seps, title_seps
 from ..common.formatters import cleanup
 from ..common.pattern import is_disabled
 from ..common.validators import or_
-from ..properties.title import TitleFromPosition, TitleBaseRule
+from ..properties.title import TitleBaseRule, TitleFromPosition
 from ..properties.type import TypeProcessor
 
 
-def episode_title(config):  # pylint:disable=unused-argument
+def episode_title(config):
     """
     Builder for rebulk object.
 
@@ -143,16 +142,14 @@ class EpisodeTitleFromPosition(TitleBaseRule):
 
     def filepart_filter(self, filepart, matches):
         # Filepart where title was found.
-        if matches.range(filepart.start, filepart.end, lambda match: match.name == 'title'):
-            return True
-        return False
+        return bool(matches.range(filepart.start, filepart.end, lambda match: match.name == 'title'))
 
     def should_remove(self, match, matches, filepart, hole, context):
         if match.name == 'episode_details':
             return False
         return super().should_remove(match, matches, filepart, hole, context)
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         if matches.named('episode_title'):
             return
         return super().when(matches, context)
@@ -169,7 +166,7 @@ class AlternativeTitleReplace(Rule):
         super().__init__()
         self.previous_names = previous_names
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         if matches.named('episode_title'):
             return
 
@@ -203,7 +200,7 @@ class RenameEpisodeTitleWhenMovieType(Rule):
     dependency = TypeProcessor
     consequence = RenameMatch
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         if matches.named('episode_title', lambda m: 'alternative-replaced' not in m.tags) \
                 and not matches.named('type', lambda m: m.value == 'episode'):
             return matches.named('episode_title')
@@ -230,7 +227,7 @@ class Filepart3EpisodeTitle(Rule):
     """
     consequence = AppendMatch('title')
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         if matches.tagged('filepart-title'):
             return
 
@@ -275,7 +272,7 @@ class Filepart2EpisodeTitle(Rule):
     """
     consequence = AppendMatch('title')
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         if matches.tagged('filepart-title'):
             return
 

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# pylint: disable=pointless-statement, missing-docstring, invalid-name, pointless-string-statement
 
-from rebulk.match import Matches, Match
+from rebulk.match import Match, Matches
 
 from ...rules.processors import StripSeparators
 

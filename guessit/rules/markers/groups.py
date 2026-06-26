@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Groups markers (...), [...] and {...}
 """
 from rebulk import Rebulk
 
 from ...options import ConfigurationException
+
 
 def groups(config):
     """
@@ -33,21 +33,18 @@ def groups(config):
         :return:
         """
         openings = ([], ) * len(starting)
-        i = 0
 
         ret = []
-        for char in input_string:
+        for i, char in enumerate(input_string):
             start_type = starting.find(char)
             if start_type > -1:
                 openings[start_type].append(i)
-
-            i += 1
 
             end_type = ending.find(char)
             if end_type > -1:
                 try:
                     start_index = openings[end_type].pop()
-                    ret.append((start_index, i))
+                    ret.append((start_index, i + 1))
                 except IndexError:
                     pass
         return ret

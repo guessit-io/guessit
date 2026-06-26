@@ -1,19 +1,18 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 video_bit_rate and audio_bit_rate properties
 """
 from rebulk import Rebulk
 from rebulk.remodule import re
-from rebulk.rules import Rule, RemoveMatch, RenameMatch
+from rebulk.rules import RemoveMatch, RenameMatch, Rule
 
+from ...config import load_config_patterns
 from ..common import dash, seps
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-from ...config import load_config_patterns
 
 
-def bit_rate(config):  # pylint:disable=unused-argument
+def bit_rate(config):
     """
     Builder for rebulk object.
 

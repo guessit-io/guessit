@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 source property
 """
@@ -8,13 +7,13 @@ import copy
 from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
 
-from .audio_codec import HqConflictRule
-from ..common import dash, seps, optional
+from ..common import dash, optional, seps
 from ..common.pattern import is_disabled
-from ..common.validators import seps_before, seps_after, or_
+from ..common.validators import or_, seps_after, seps_before
+from .audio_codec import HqConflictRule
 
 
-def source(config):  # pylint:disable=unused-argument
+def source(config):
     """
     Builder for rebulk object.
 
@@ -37,7 +36,7 @@ def source(config):  # pylint:disable=unused-argument
         """Helper pattern to build source pattern."""
         return [prefix + f'({pattern})' + suffix for pattern in patterns]
 
-    def demote_other(match, other):  # pylint: disable=unused-argument
+    def demote_other(match, other):
         """Default conflict solver with 'other' property."""
         return other if other.name in ['other', 'release_group'] else '__default__'
 

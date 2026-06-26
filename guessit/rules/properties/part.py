@@ -1,19 +1,18 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 part property
 """
+from rebulk import Rebulk
 from rebulk.remodule import re
 
-from rebulk import Rebulk
-from ..common import dash
-from ..common.pattern import is_disabled
-from ..common.validators import seps_surround, int_coercable, and_
-from ..common.numeral import numeral, parse_numeral
 from ...reutils import build_or_pattern
+from ..common import dash
+from ..common.numeral import numeral, parse_numeral
+from ..common.pattern import is_disabled
+from ..common.validators import and_, int_coercable, seps_surround
 
 
-def part(config):  # pylint:disable=unused-argument
+def part(config):
     """
     Builder for rebulk object.
 

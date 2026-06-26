@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Comparators
 """
@@ -27,7 +26,7 @@ def marker_weight(matches, marker, predicate):
     :param predicate:
     :return:
     """
-    return len(set(match.name for match in matches.range(*marker.span, predicate=predicate)))
+    return len({match.name for match in matches.range(*marker.span, predicate=predicate)})
 
 
 def marker_comparator(matches, markers, predicate):

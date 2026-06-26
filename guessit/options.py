@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Options
 """
@@ -7,24 +6,16 @@ import copy
 import json
 import os
 import shlex
-import sys
 from argparse import ArgumentParser
+from importlib.resources import files
+
 
 # importlib.resources.read_text() is deprecated since Python 3.11.
-# importlib.resources.files() is new in Python 3.9.
-if sys.version_info >= (3, 9, 0):
-    from importlib.resources import files
-
-    def read_text(package, filename):
-        """
-        Should behave like deprecated importlib.resources.read_text()
-        """
-        return files(package).joinpath(filename).read_text()  # pylint:disable=unspecified-encoding
-else:
-    try:
-        from importlib.resources import read_text
-    except ImportError:
-        from importlib_resources import read_text
+def read_text(package, filename):
+    """
+    Should behave like deprecated importlib.resources.read_text()
+    """
+    return files(package).joinpath(filename).read_text()
 
 
 def build_argument_parser():
@@ -127,10 +118,7 @@ def parse_options(options=None, api=False):
         args = shlex.split(options)
         options = vars(argument_parser.parse_args(args))
     elif options is None:
-        if api:
-            options = {}
-        else:
-            options = vars(argument_parser.parse_args())
+        options = {} if api else vars(argument_parser.parse_args())
     elif not isinstance(options, dict):
         options = vars(argument_parser.parse_args(options))
     return options
@@ -143,7 +131,7 @@ class ConfigurationException(Exception):
     """
     Exception related to configuration file.
     """
-    pass  # pylint:disable=unnecessary-pass
+    pass
 
 
 def load_config(options):
@@ -168,7 +156,7 @@ def load_config(options):
         cwd = os.getcwd()
         yaml_supported = False
         try:
-            import yaml  # pylint:disable=unused-variable,unused-import,import-outside-toplevel
+            import yaml  # noqa: F401
             yaml_supported = True
         except ImportError:
             pass
@@ -212,9 +200,9 @@ def merge_options(*options):
         if options[0]:
             merged.update(copy.deepcopy(options[0]))
 
-        for options in options[1:]:
-            if options:
-                pristine = options.get('pristine')
+        for option_set in options[1:]:
+            if option_set:
+                pristine = option_set.get('pristine')
 
                 if pristine is True:
                     merged = {}
@@ -223,7 +211,7 @@ def merge_options(*options):
                         if to_reset in merged:
                             del merged[to_reset]
 
-                for (option, value) in options.items():
+                for (option, value) in option_set.items():
                     merge_option_value(option, value, merged)
 
     return merged
@@ -238,11 +226,11 @@ def merge_option_value(option, value, merged):
     :return:
     """
     if value is not None and option != 'pristine':
-        if option in merged.keys() and isinstance(merged[option], list):
+        if option in merged and isinstance(merged[option], list):
             for val in value:
                 if val not in merged[option] and val is not None:
                     merged[option].append(val)
-        elif option in merged.keys() and isinstance(merged[option], dict):
+        elif option in merged and isinstance(merged[option], dict):
             merged[option] = merge_options(merged[option], value)
         elif isinstance(value, list):
             merged[option] = list(value)
@@ -265,7 +253,7 @@ def load_config_file(filepath):
             return json.load(config_file_data)
     if filepath.endswith('.yaml') or filepath.endswith('.yml'):
         try:
-            import yaml  # pylint:disable=import-outside-toplevel
+            import yaml
             with open(filepath, encoding='utf-8') as config_file_data:
                 return yaml.load(config_file_data, yaml.SafeLoader)
         except ImportError as err:  # pragma: no cover
@@ -275,7 +263,7 @@ def load_config_file(filepath):
     try:
         # Try to load input as JSON
         return json.loads(filepath)
-    except:  # pylint: disable=bare-except
+    except Exception:
         pass
 
     raise ConfigurationException(f'Configuration file extension is not supported for "{filepath}" file.')

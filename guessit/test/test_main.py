@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# pylint: disable=pointless-statement, missing-docstring, invalid-name
 import json
 import os
 import sys
@@ -16,7 +14,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 # Prevent output from spamming the console
 @pytest.fixture(scope="function", autouse=True)
 def no_stdout(monkeypatch):
-    with open(os.devnull, "w") as f:  # pylint:disable=unspecified-encoding
+    with open(os.devnull, "w") as f:
         monkeypatch.setattr(sys, "stdout", f)
         yield
 

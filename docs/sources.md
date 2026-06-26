@@ -15,10 +15,10 @@ Or download the [zipball](https://github.com/guessit-io/guessit/zipball/master):
 
     $ curl -L https://github.com/guessit-io/guessit/zipball/master -o guessit.zip
 
-Once you have a copy of the source, you can embed it in your Python package, install it into your site-packages folder like that:
+Once you have a copy of the source, you can install it into your site-packages folder like that:
 
-    $ python setup.py install
+    $ uv pip install .
 
-or use it directly from the source folder for development:
+or set up a development environment (creates a virtualenv and installs the dev/test dependencies) like that:
 
-    $ python setup.py develop
+    $ uv sync

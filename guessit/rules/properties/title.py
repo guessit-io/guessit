@@ -1,28 +1,29 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 title property
 """
 
-from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch, AppendTags
+import contextlib
+
+from rebulk import AppendMatch, AppendTags, Rebulk, RemoveMatch, Rule
 from rebulk.formatters import formatters
 
-from .film import FilmTitleRule
-from .language import (
-    SubtitlePrefixLanguageRule,
-    SubtitleSuffixLanguageRule,
-    SubtitleExtensionRule,
-    NON_SPECIFIC_LANGUAGES
-)
 from ..common import seps, title_seps
 from ..common.comparators import marker_sorted
 from ..common.expected import build_expected_function
 from ..common.formatters import cleanup, reorder_title
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
+from .film import FilmTitleRule
+from .language import (
+    NON_SPECIFIC_LANGUAGES,
+    SubtitleExtensionRule,
+    SubtitlePrefixLanguageRule,
+    SubtitleSuffixLanguageRule,
+)
 
 
-def title(config):  # pylint:disable=unused-argument
+def title(config):
     """
     Builder for rebulk object.
 
@@ -49,7 +50,6 @@ class TitleBaseRule(Rule):
     """
     Add title match in existing matches
     """
-    # pylint:disable=unused-argument
     consequence = [AppendMatch, RemoveMatch]
 
     def __init__(self, match_name, match_tags=None, alternative_match_name=None):
@@ -163,12 +163,11 @@ class TitleBaseRule(Rule):
             return match.start >= hole.start and match.end <= hole.end
         return True
 
-    def check_titles_in_filepart(self, filepart, matches, context,  # pylint:disable=inconsistent-return-statements
+    def check_titles_in_filepart(self, filepart, matches, context,
                                  additional_ignored=None):
         """
         Find title in filepart (ignoring language)
         """
-        # pylint:disable=too-many-locals,too-many-branches,too-many-statements
         start, end = filepart.span
 
         holes = matches.holes(start, end + 1, formatter=formatters(cleanup, reorder_title),
@@ -189,12 +188,11 @@ class TitleBaseRule(Rule):
 
             if ignored_matches:
                 for ignored_match in reversed(ignored_matches):
-                    # pylint:disable=undefined-loop-variable, cell-var-from-loop
-                    trailing = matches.chain_before(hole.end, seps, predicate=lambda m: m == ignored_match)
+                    # Closure consumed within this iteration; late binding (B023) is intentional.
+                    trailing = matches.chain_before(hole.end, seps, predicate=lambda m: m == ignored_match)  # noqa: B023
                     if trailing:
                         should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, False)
                         if should_keep:
-                            # pylint:disable=unpacking-non-sequence
                             try:
                                 append, crop = should_keep
                             except TypeError:
@@ -211,7 +209,6 @@ class TitleBaseRule(Rule):
                         if starting:
                             should_keep = self.should_keep(ignored_match, to_keep, matches, filepart, hole, True)
                             if should_keep:
-                                # pylint:disable=unpacking-non-sequence
                                 try:
                                     append, crop = should_keep
                                 except TypeError:
@@ -265,10 +262,7 @@ class TitleBaseRule(Rule):
 
     def _serie_name_filepart_match(self, matches, context, serie_name_filepart, to_append, to_remove):
         def serie_name_filepart_ignored(match):
-            for tag in match.tags:
-                if tag == 'weak' or tag.startswith('weak-'):
-                    return True
-            return False
+            return any(tag == 'weak' or tag.startswith('weak-') for tag in match.tags)
 
         titles = self.check_titles_in_filepart(serie_name_filepart, matches, context, serie_name_filepart_ignored)
         if titles:
@@ -308,10 +302,8 @@ class TitleBaseRule(Rule):
         year_fileparts = self._year_fileparts(matches, fileparts)
 
         for filepart in fileparts:
-            try:
+            with contextlib.suppress(ValueError):
                 year_fileparts.remove(filepart)
-            except ValueError:
-                pass
             titles = self.check_titles_in_filepart(filepart, matches, context)
             if titles:
                 titles, to_remove_c = titles
@@ -327,7 +319,6 @@ class TitleBaseRule(Rule):
         for filepart in year_fileparts:
             titles = self.check_titles_in_filepart(filepart, matches, context)
             if titles:
-                # pylint:disable=unbalanced-tuple-unpacking
                 titles, to_remove_c = titles
                 to_append.extend(titles)
                 to_remove.extend(to_remove_c)

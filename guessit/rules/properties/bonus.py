@@ -1,18 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 bonus property
 """
-from rebulk import Rebulk, AppendMatch, Rule
+from rebulk import AppendMatch, Rebulk, Rule
 from rebulk.remodule import re
 
-from .title import TitleFromPosition
+from ...config import load_config_patterns
 from ..common.formatters import cleanup
 from ..common.pattern import is_disabled
-from ...config import load_config_patterns
+from .title import TitleFromPosition
 
 
-def bonus(config):  # pylint:disable=unused-argument
+def bonus(config):
     """
     Builder for rebulk object.
 
@@ -40,7 +39,7 @@ class BonusTitleRule(Rule):
 
     properties = {'bonus_title': [None]}
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         bonus_number = matches.named('bonus', lambda match: not match.private, index=0)
         if bonus_number:
             filepath = matches.markers.at_match(bonus_number, lambda marker: marker.name == 'path', 0)

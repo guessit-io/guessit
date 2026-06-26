@@ -1,19 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 size property
 """
+from rebulk import Rebulk
 from rebulk.remodule import re
 
-from rebulk import Rebulk
-
 from ..common import dash
-from ..common.quantity import Size
 from ..common.pattern import is_disabled
+from ..common.quantity import Size
 from ..common.validators import seps_surround
 
 
-def size(config):  # pylint:disable=unused-argument
+def size(config):
     """
     Builder for rebulk object.
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 parse numeral from various formats
 """
@@ -52,7 +51,7 @@ word_numeral = __build_word_numeral(english_word_numeral_list, french_word_numer
 
 numeral = '(?:' + digital_numeral + '|' + roman_numeral + '|' + word_numeral + ')'
 
-__romanNumeralMap = (
+_roman_numeral_map = (
     ('M', 1000),
     ('CM', 900),
     ('D', 500),
@@ -85,7 +84,7 @@ def __parse_roman(value):
 
     result = 0
     index = 0
-    for num, integer in __romanNumeralMap:
+    for num, integer in _roman_numeral_map:
         while value[index:index + len(num)] == num:
             result += integer
             index += len(num)
@@ -129,7 +128,6 @@ def parse_numeral(value, int_enabled=True, roman_enabled=True, word_enabled=True
     :return: Numeric value, or None if value can't be parsed
     :rtype: int
     """
-    # pylint: disable=too-many-branches
     if int_enabled:
         try:
             if clean:

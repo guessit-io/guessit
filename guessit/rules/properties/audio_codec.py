@@ -1,20 +1,19 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 audio_codec, audio_profile and audio_channels property
 """
-from rebulk import Rebulk, Rule, RemoveMatch
+from rebulk import Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
 
+from ...config import load_config_patterns
 from ..common import dash
 from ..common.pattern import is_disabled
-from ..common.validators import seps_before, seps_after
-from ...config import load_config_patterns
+from ..common.validators import seps_after, seps_before
 
 audio_properties = ['audio_codec', 'audio_profile', 'audio_channels']
 
 
-def audio_codec(config):  # pylint:disable=unused-argument
+def audio_codec(config):
     """
     Builder for rebulk object.
 

@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# pylint: disable=pointless-statement,missing-docstring,invalid-name,line-too-long
 import time
 
 import pytest
@@ -13,7 +11,7 @@ def case1():
 
 
 def case2():
-    return guessit('Movies/Fantastic Mr Fox/Fantastic.Mr.Fox.2009.DVDRip.{x264+LC-AAC.5.1}{Fr-Eng}{Sub.Fr-Eng}-™.[sharethefiles.com].mkv')
+    return guessit('Movies/Fantastic Mr Fox/Fantastic.Mr.Fox.2009.DVDRip.{x264+LC-AAC.5.1}{Fr-Eng}{Sub.Fr-Eng}-™.[sharethefiles.com].mkv')  # noqa: E501
 
 
 def case3():
@@ -21,7 +19,7 @@ def case3():
 
 
 def case4():
-    return guessit('Movies/The Doors (1991)/09.03.08.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv')
+    return guessit('Movies/The Doors (1991)/09.03.08.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv')  # noqa: E501
 
 
 @pytest.mark.benchmark(

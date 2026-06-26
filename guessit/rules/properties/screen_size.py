@@ -1,18 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 screen_size property
 """
+from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 from rebulk.match import Match
 from rebulk.remodule import re
 
-from rebulk import Rebulk, Rule, RemoveMatch, AppendMatch
-
+from ...reutils import build_or_pattern
+from ..common import dash, seps
 from ..common.pattern import is_disabled
 from ..common.quantity import FrameRate
 from ..common.validators import seps_surround
-from ..common import dash, seps
-from ...reutils import build_or_pattern
 
 
 def screen_size(config):
@@ -121,7 +119,7 @@ class ScreenSizeOnlyOne(Rule):
         for filepart in matches.markers.named('path'):
             screensize = list(reversed(matches.range(filepart.start, filepart.end,
                                                      lambda match: match.name == 'screen_size')))
-            if len(screensize) > 1 and len(set((match.value for match in screensize))) > 1:
+            if len(screensize) > 1 and len({match.value for match in screensize}) > 1:
                 to_remove.extend(screensize[1:])
 
         return to_remove

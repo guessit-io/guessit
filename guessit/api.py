@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 API functions that can be used by external software
 """
@@ -13,7 +12,7 @@ from pathlib import Path
 from rebulk.introspector import introspect
 
 from .__version__ import __version__
-from .options import parse_options, load_config, merge_options
+from .options import load_config, merge_options, parse_options
 from .rules import rebulk_builder
 
 
@@ -114,7 +113,7 @@ class GuessItApi:
         """
         Reset api internal state.
         """
-        self.__init__()  # pylint:disable=unnecessary-dunder-call
+        self.__init__()
 
     @classmethod
     def _fix_encoding(cls, value):
@@ -128,10 +127,7 @@ class GuessItApi:
 
     @classmethod
     def _has_same_properties(cls, dic1, dic2, values):
-        for value in values:
-            if dic1.get(value) != dic2.get(value):
-                return False
-        return True
+        return all(dic1.get(value) == dic2.get(value) for value in values)
 
     def configure(self, options=None, rules_builder=None, force=False, sanitize_options=True):
         """
@@ -177,7 +173,7 @@ class GuessItApi:
         self.config = config
         return self.config
 
-    def guessit(self, string, options=None):  # pylint: disable=too-many-branches
+    def guessit(self, string, options=None):
         """
         Retrieves all matches from string as a dict
         :param string: the filename or release name
@@ -239,7 +235,7 @@ class GuessItApi:
         unordered = introspect(self.rebulk, options).properties
         ordered = OrderedDict()
         for k in sorted(unordered.keys(), key=str):
-            ordered[k] = list(sorted(unordered[k], key=str))
+            ordered[k] = sorted(unordered[k], key=str)
         if hasattr(self.rebulk, 'customize_properties'):
             ordered = self.rebulk.customize_properties(ordered)
         return ordered

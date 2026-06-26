@@ -1,24 +1,24 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 episode, season, disc, episode_count, season_count and episode_details properties
 """
 import copy
 from collections import defaultdict
 
-from rebulk import Rebulk, RemoveMatch, Rule, AppendMatch, RenameMatch
+from rebulk import AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
 from rebulk.match import Match
 from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
 from guessit.rules import match_processors
-from guessit.rules.common.numeral import parse_numeral, numeral
-from .title import TitleFromPosition
-from ..common import dash, alt_dash, seps, seps_no_fs
+from guessit.rules.common.numeral import numeral, parse_numeral
+
+from ...reutils import build_or_pattern
+from ..common import alt_dash, dash, seps, seps_no_fs
 from ..common.formatters import strip
 from ..common.pattern import is_disabled
-from ..common.validators import seps_surround, int_coercable, and_
-from ...reutils import build_or_pattern
+from ..common.validators import and_, int_coercable, seps_surround
+from .title import TitleFromPosition
 
 
 def episodes(config):
@@ -31,7 +31,6 @@ def episodes(config):
     :rtype: Rebulk
     """
 
-    # pylint: disable=too-many-branches,too-many-statements,too-many-locals
     def is_season_episode_disabled(context):
         """Whether season and episode rules should be enabled."""
         return is_disabled(context, 'episode') or is_disabled(context, 'season')
@@ -49,9 +48,7 @@ def episodes(config):
             return True
 
         seasons = matches.named('season')
-        if len(seasons) > 1 and abs(seasons[-1].value - seasons[-2].value) > season_max_range:
-            return True
-        return False
+        return bool(len(seasons) > 1 and abs(seasons[-1].value - seasons[-2].value) > season_max_range)
 
     def season_episode_conflict_solver(match, other):
         """
@@ -90,11 +87,11 @@ def episodes(config):
         values = match.children.to_dict()
         if 'season' in values and is_iterable(values['season']):
             # Season numbers must be in natural order to be validated.
-            if not list(sorted(values['season'])) == values['season']:
+            if sorted(values['season']) != values['season']:
                 return False
         if 'episode' in values and is_iterable(values['episode']):
             # Season numbers must be in natural order to be validated.
-            if not list(sorted(values['episode'])) == values['episode']:
+            if sorted(values['episode']) != values['episode']:
                 return False
 
         def is_consecutive(property_name):
@@ -146,7 +143,7 @@ def episodes(config):
     disc_markers = config['disc_markers']
     episode_markers = config['episode_markers']
     range_separators = config['range_separators']
-    weak_discrete_separators = list(sep for sep in seps_no_fs if sep not in range_separators)
+    weak_discrete_separators = [sep for sep in seps_no_fs if sep not in range_separators]
     strong_discrete_separators = config['discrete_separators']
     discrete_separators = strong_discrete_separators + weak_discrete_separators
     episode_max_range = config['episode_max_range']
@@ -518,7 +515,7 @@ class AbstractSeparatorRange(Rule):
         self.range_separators = range_separators
         self.property_name = property_name
 
-    def _can_start_range(self, match):  # pylint: disable=unused-argument
+    def _can_start_range(self, match):
         return True
 
     def when(self, matches, context):
@@ -584,7 +581,7 @@ class RenameToAbsoluteEpisode(Rule):
 
     consequence = [RenameMatch('absolute_episode'), RemoveMatch]
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         initiators = {match.initiator for match in matches.named('episode')
                       if len(match.initiator.children.named('episode')) > 1}
         if len(initiators) != 2:
@@ -746,17 +743,16 @@ class RemoveInvalidSeason(Rule):
             strong_season = matches.range(filepart.start, filepart.end, index=0,
                                           predicate=lambda m: m.name == 'season'
                                                               and not m.private and 'SxxExx' in m.tags)
-            if strong_season:
-                if strong_season.initiator.children.named('episode'):
-                    for season in matches.range(strong_season.end, filepart.end,
-                                                predicate=lambda m: m.name == 'season' and not m.private):
-                        # remove weak season or seasons without episode matches
-                        if 'SxxExx' not in season.tags or not season.initiator.children.named('episode'):
-                            if season.initiator:
-                                to_remove.append(season.initiator)
-                                to_remove.extend(season.initiator.children)
-                            else:
-                                to_remove.append(season)
+            if strong_season and strong_season.initiator.children.named('episode'):
+                for season in matches.range(strong_season.end, filepart.end,
+                                            predicate=lambda m: m.name == 'season' and not m.private):
+                    # remove weak season or seasons without episode matches
+                    if 'SxxExx' not in season.tags or not season.initiator.children.named('episode'):
+                        if season.initiator:
+                            to_remove.append(season.initiator)
+                            to_remove.extend(season.initiator.children)
+                        else:
+                            to_remove.append(season)
 
         return to_remove
 
@@ -855,7 +851,7 @@ class RemoveDetachedEpisodeNumber(Rule):
                 episode_numbers.append(match)
                 episode_values.add(match.value)
 
-        episode_numbers = list(sorted(episode_numbers, key=lambda m: m.value))
+        episode_numbers = sorted(episode_numbers, key=lambda m: m.value)
         if len(episode_numbers) > 1 and \
                 episode_numbers[0].value < 10 and \
                 episode_numbers[1].value - episode_numbers[0].value != 1:
@@ -895,9 +891,8 @@ class EpisodeSingleDigitValidator(Rule):
         ret = []
         for episode in matches.named('episode', lambda match: len(match.initiator) == 1):
             group = matches.markers.at_match(episode, lambda marker: marker.name == 'group', index=0)
-            if group:
-                if not matches.range(*group.span, predicate=lambda match: match.name == 'title'):
-                    ret.append(episode)
+            if group and not matches.range(*group.span, predicate=lambda match: match.name == 'title'):
+                ret.append(episode)
         return ret
 
 

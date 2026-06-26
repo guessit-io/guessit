@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Entry point module
 """
@@ -7,7 +6,6 @@ Entry point module
 import json
 import logging
 import sys
-
 from collections import OrderedDict
 
 from rebulk.__version__ import __version__ as __rebulk_version__
@@ -15,7 +13,7 @@ from rebulk.__version__ import __version__ as __rebulk_version__
 from guessit import api
 from guessit.__version__ import __version__
 from guessit.jsonutils import GuessitEncoder
-from guessit.options import argument_parser, parse_options, load_config, merge_options
+from guessit.options import argument_parser, load_config, merge_options, parse_options
 
 
 def guess_filename(filename, options):
@@ -40,21 +38,19 @@ def guess_filename(filename, options):
     if options.get('json'):
         print(json.dumps(guess, cls=GuessitEncoder, ensure_ascii=False))
     elif options.get('yaml'):
-        # pylint:disable=import-outside-toplevel
         import yaml
+
         from guessit import yamlutils
 
         ystr = yaml.dump({filename: OrderedDict(guess)}, Dumper=yamlutils.CustomDumper, default_flow_style=False,
                          allow_unicode=True)
-        i = 0
-        for yline in ystr.splitlines():
+        for i, yline in enumerate(ystr.splitlines()):
             if i == 0:
                 print("? " + yline[:-1])
             elif i == 1:
                 print(":" + yline[1:])
             else:
                 print(yline)
-            i += 1
     else:
         print('GuessIt found:', json.dumps(guess, cls=GuessitEncoder, indent=4, ensure_ascii=False))
 
@@ -71,8 +67,8 @@ def display_properties(options):
         else:
             print(json.dumps(list(properties.keys()), cls=GuessitEncoder, ensure_ascii=False))
     elif options.get('yaml'):
-        # pylint:disable=import-outside-toplevel
         import yaml
+
         from guessit import yamlutils
         if options.get('values'):
             print(yaml.dump(properties, Dumper=yamlutils.CustomDumper, default_flow_style=False, allow_unicode=True))
@@ -82,7 +78,7 @@ def display_properties(options):
     else:
         print('GuessIt properties:')
 
-        properties_list = list(sorted(properties.keys()))
+        properties_list = sorted(properties.keys())
         for property_name in properties_list:
             property_values = properties.get(property_name)
             print(2 * ' ' + f'[+] {property_name}')
@@ -91,14 +87,11 @@ def display_properties(options):
                     print(4 * ' ' + f'[!] {property_value}')
 
 
-def main(args=None):  # pylint:disable=too-many-branches
+def main(args=None):
     """
     Main function for entry point
     """
-    if args is None:  # pragma: no cover
-        options = parse_options()
-    else:
-        options = parse_options(args)
+    options = parse_options() if args is None else parse_options(args)  # pragma: no cover
 
     config = load_config(options)
     options = merge_options(config, options)
@@ -122,7 +115,7 @@ def main(args=None):  # pylint:disable=too-many-branches
 
     if options.get('yaml'):
         try:
-            import yaml  # pylint:disable=unused-variable,unused-import,import-outside-toplevel
+            import yaml  # noqa: F401
         except ImportError:  # pragma: no cover
             del options['yaml']
             print('PyYAML is not installed. \'--yaml\' option will be ignored ...', file=sys.stderr)
@@ -136,7 +129,7 @@ def main(args=None):  # pylint:disable=too-many-branches
         for filename in options.get('filename'):
             filenames.append(filename)
     if options.get('input_file'):
-        with open(options.get('input_file'), 'r', encoding='utf-8') as input_file:
+        with open(options.get('input_file'), encoding='utf-8') as input_file:
             filenames.extend([line.strip() for line in input_file.readlines()])
 
     filenames = list(filter(lambda f: f, filenames))

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Options
 """
@@ -7,7 +6,7 @@ Options
 from collections import OrderedDict
 
 import babelfish
-import yaml  # pylint:disable=wrong-import-order
+import yaml
 
 from .rules.common.quantity import BitRate, FrameRate, Size
 
@@ -44,8 +43,8 @@ class OrderedDictYAMLLoader(yaml.SafeLoader):
                 hash(key)
             except TypeError as exc:  # pragma: no cover
                 raise yaml.constructor.ConstructorError('while constructing a mapping',
-                                                        node.start_mark, f'found unacceptable key ({exc})'
-                                                        , key_node.start_mark)
+                                                        node.start_mark, f'found unacceptable key ({exc})',
+                                                        key_node.start_mark) from exc
             value = self.construct_object(value_node, deep=deep)
             mapping[key] = value
         return mapping
@@ -55,7 +54,7 @@ class CustomDumper(yaml.SafeDumper):
     """
     Custom YAML Dumper.
     """
-    pass  # pylint:disable=unnecessary-pass
+    pass
 
 
 def default_representer(dumper, data):

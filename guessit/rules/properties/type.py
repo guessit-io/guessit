@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 type property
 """
-from rebulk import CustomRule, Rebulk, POST_PROCESS
+from rebulk import POST_PROCESS, CustomRule, Rebulk
 from rebulk.match import Match
 
-from ..common.pattern import is_disabled
 from ...rules.processors import Processors
+from ..common.pattern import is_disabled
 
 
 def _type(matches, value):
@@ -20,7 +19,7 @@ def _type(matches, value):
     matches.append(Match(len(matches.input_string), len(matches.input_string), name='type', value=value))
 
 
-def type_(config):  # pylint:disable=unused-argument
+def type_(config):
     """
     Builder for rebulk object.
 
@@ -45,7 +44,7 @@ class TypeProcessor(CustomRule):
 
     properties = {'type': ['episode', 'movie']}
 
-    def when(self, matches, context):  # pylint:disable=too-many-return-statements
+    def when(self, matches, context):
         option_type = context.get('type', None)
         if option_type:
             return option_type

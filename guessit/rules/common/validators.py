@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Validators
 """
 from functools import partial
 
-from rebulk.validators import chars_before, chars_after, chars_surround
+from rebulk.validators import chars_after, chars_before, chars_surround
+
 from . import seps
 
 seps_before = partial(chars_before, seps)
@@ -44,10 +44,7 @@ def and_(*validators):
         :return:
         :rtype:
         """
-        for validator in validators:
-            if not validator(string):
-                return False
-        return True
+        return all(validator(string) for validator in validators)
     return composed
 
 
@@ -67,8 +64,5 @@ def or_(*validators):
         :return:
         :rtype:
         """
-        for validator in validators:
-            if validator(string):
-                return True
-        return False
+        return any(validator(string) for validator in validators)
     return composed

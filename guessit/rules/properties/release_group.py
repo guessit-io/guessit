@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 release_group property
 """
 import copy
 import re
 
-from rebulk import Rebulk, Rule, AppendMatch, RemoveMatch
+from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 from rebulk.match import Match
 
 from ..common import seps
@@ -106,7 +105,7 @@ class DashSeparatedReleaseGroup(Rule):
         self.value_formatter = value_formatter
 
     @classmethod
-    def is_valid(cls, matches, candidate, start, end, at_end):  # pylint:disable=inconsistent-return-statements
+    def is_valid(cls, matches, candidate, start, end, at_end):
         """
         Whether a candidate is a valid release group.
         """
@@ -134,7 +133,7 @@ class DashSeparatedReleaseGroup(Rule):
             current = matches.range(start,
                                     match.start,
                                     index=-1,
-                                    predicate=lambda m: not m.private and not 'expected' in m.tags)
+                                    predicate=lambda m: not m.private and 'expected' not in m.tags)
             if not current:
                 break
 
@@ -154,7 +153,7 @@ class DashSeparatedReleaseGroup(Rule):
             if separator == '.':
                 return True
 
-    def detect(self, matches, start, end, at_end):  # pylint:disable=inconsistent-return-statements
+    def detect(self, matches, start, end, at_end):
         """
         Detect release group at the end or at the beginning of a filepart.
         """
@@ -180,7 +179,7 @@ class DashSeparatedReleaseGroup(Rule):
         if candidate and self.is_valid(matches, candidate, start, end, at_end):
             return candidate
 
-    def when(self, matches, context):  # pylint:disable=inconsistent-return-statements
+    def when(self, matches, context):
         if matches.named('release_group'):
             return
 
@@ -230,18 +229,19 @@ class SceneReleaseGroup(Rule):
         return not match.tagged(*_scene_no_previous_tags) if match.name in _scene_previous_names else \
             match.tagged(*_scene_previous_tags)
 
-    def when(self, matches, context):  # pylint:disable=too-many-locals
+    def when(self, matches, context):
         # If a release_group is found before, ignore this kind of release_group rule.
 
         ret = []
 
         for filepart in marker_sorted(matches.markers.named('path'), matches):
-            # pylint:disable=cell-var-from-loop
+            # The closures below are consumed within this same iteration, so binding the loop
+            # variables late (B023) is intentional and safe.
             start, end = filepart.span
-            if matches.named('release_group', predicate=lambda m: m.start >= start and m.end <= end):
+            if matches.named('release_group', predicate=lambda m: m.start >= start and m.end <= end):  # noqa: B023
                 continue
 
-            titles = matches.named('title', predicate=lambda m: m.start >= start and m.end <= end)
+            titles = matches.named('title', predicate=lambda m: m.start >= start and m.end <= end)  # noqa: B023
 
             def keep_only_first_title(match):
                 """
@@ -252,7 +252,7 @@ class SceneReleaseGroup(Rule):
                 :return:
                 :rtype:
                 """
-                return match in titles[1:]
+                return match in titles[1:]  # noqa: B023
 
             last_hole = matches.holes(start, end + 1, formatter=self.value_formatter,
                                       ignore=keep_only_first_title,
@@ -269,9 +269,9 @@ class SceneReleaseGroup(Rule):
                     :rtype:
                     """
 
-                    if match.start < filepart.start:
+                    if match.start < filepart.start:  # noqa: B023
                         return False
-                    return not match.private or self.is_previous_match(match)
+                    return not match.private or self.is_previous_match(match)  # noqa: B023
 
                 previous_match = matches.previous(last_hole,
                                                   previous_match_filter,

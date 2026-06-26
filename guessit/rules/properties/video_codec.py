@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 video_codec and video_profile property
 """
-from rebulk import Rebulk, Rule, RemoveMatch
+from rebulk import Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
 
 from ..common import dash
@@ -11,7 +10,7 @@ from ..common.pattern import is_disabled
 from ..common.validators import seps_after, seps_before, seps_surround
 
 
-def video_codec(config):  # pylint:disable=unused-argument
+def video_codec(config):
     """
     Builder for rebulk object.
 

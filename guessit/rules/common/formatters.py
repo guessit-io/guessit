@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Formatters
 """
 from rebulk.formatters import formatters
 from rebulk.remodule import re
+
 from . import seps
 
 _excluded_clean_chars = ',:;-/\\'

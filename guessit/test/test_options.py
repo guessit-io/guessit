@@ -1,12 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# pylint: disable=pointless-statement, missing-docstring, invalid-name, pointless-string-statement
 import os
 
 import pytest
 
-from ..options import get_options_file_locations, merge_options, load_config_file, ConfigurationException, \
-    load_config
+from ..options import ConfigurationException, get_options_file_locations, load_config, load_config_file, merge_options
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
