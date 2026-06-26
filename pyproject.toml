@@ -87,7 +87,13 @@ version_variables = ["guessit/__version__.py:__version__"]
 version_toml = ["pyproject.toml:project.version"]
 commit_message = "chore(release): release v{version}"
 commit_author = "github-actions <actions@github.com>"
-build_command = ""
+# `uv lock` re-stamps the bumped version into uv.lock (which pins guessit's own
+# version); `assets` includes it in the release commit so the lockfile never
+# drifts behind the released version (a stale lock dirties the tree and would
+# break the automated main->develop back-merge). Wheels/sdist/binaries are built
+# in the dedicated CI jobs, so no `uv build` is needed here.
+build_command = "uv lock"
+assets = ["uv.lock"]
 
 # commitizen is used only to lint commit messages (Conventional Commits), both
 # via the local pre-commit commit-msg hook and the CI `cz check`. Versioning and
