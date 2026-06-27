@@ -130,7 +130,9 @@ def _complete_properties(ordered: dict[str, Any]) -> dict[str, Any]:
             ordered[name] = sorted(merged, key=str)
         elif not current:
             ordered[name] = [None]
-    return ordered
+    # Newly added keys are appended; re-sort so the key order stays alphabetical
+    # (the contract introspection already followed before completion).
+    return dict(sorted(ordered.items(), key=lambda item: str(item[0])))
 
 
 class GuessItApi:
