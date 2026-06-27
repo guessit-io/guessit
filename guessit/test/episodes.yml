@@ -4797,3 +4797,27 @@
   release_group: GRP
   container: mkv
   type: episode
+
+# --- #813: hyphenated / compound titles kept whole, not split into release_group ---
+
+# leading hyphenated title with a season/episode anchor after it (upstream #634/#640)
+? grown-ish.s03e01.web.x264-tbs[eztv].mkv
+: title: grown-ish
+  season: 3
+  episode: 1
+  -release_group: grown
+  -title: ish
+
+? grown-ish.s03e01.web.x264-tbs[ettv].mkv
+: title: grown-ish
+  season: 3
+  episode: 1
+  -release_group: grown
+
+# name-number title kept whole (upstream #796)
+? Adam-12.S01E02.mkv
+: title: Adam-12
+  season: 1
+  episode: 2
+  -release_group: Adam
+  -alternative_title: '12'
