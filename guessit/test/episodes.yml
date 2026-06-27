@@ -4968,7 +4968,7 @@
   screen_size: 720p
   video_codec: H.264
 
-# --- #797: a SxxExx season in the filename wins over one in a parent directory ---
+# --- #797: a more complete SxxExx (season+episode) wins over a season-only parent directory ---
 ? How the Universe Works (2010) Season 1 S01/How the Universe Works (2010) - S44E03 - Monster Black Hole.mkv
 : title: How the Universe Works
   year: 2010
@@ -4976,3 +4976,20 @@
   episode: 3
   episode_title: Monster Black Hole
   -season: 1
+
+# guard: with equally-complete SxxExx in both fileparts, the parent (real episode) still wins
+# over a sample clip in a subdirectory — the filename must not override it
+? Westworld.S02E03.720p.WEB-DL/sample/Westworld.S01E01.sample.mkv
+: title: Westworld
+  season: 2
+  episode: 3
+  other: Sample
+  -season: 1
+  -episode: 1
+
+# guard: season and episode stay a coherent pair (no S05E08 from mixing fileparts)
+? Show S03E08/Show S05.mkv
+: title: Show
+  season: 3
+  episode: 8
+  -season: 5

@@ -148,7 +148,9 @@ class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
             # directory (#797/#772) instead of being overridden by it.
             sort_function=(
                 lambda markers, matches: marker_sorted(
-                    markers, matches, lambda match: match.name == name and "SxxExx" in match.tags
+                    list(reversed(markers)),
+                    matches,
+                    lambda match: match.name in ("season", "episode") and "SxxExx" in match.tags,
                 )
             ),
             predicate=lambda match: match.name == name,
