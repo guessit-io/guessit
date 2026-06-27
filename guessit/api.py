@@ -17,6 +17,7 @@ from rebulk.introspector import introspect
 from .__version__ import __version__
 from .options import load_config, merge_options, parse_options
 from .rules import rebulk_builder
+from .schema import GUESSIT_SCHEMA
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -105,6 +106,31 @@ def suggested_expected(titles: Any, options: Any = None) -> list[Any]:
     :rtype: list of str
     """
     return default_api.suggested_expected(titles, options)
+
+
+def _complete_properties(ordered: dict[str, Any]) -> dict[str, Any]:
+    """Make ``properties()`` code-complete against :data:`GUESSIT_SCHEMA`.
+
+    Value-constrained properties advertise their full declared enum (unioned with
+    whatever introspection found); every other schema property is guaranteed to be
+    present, with ``[None]`` marking a free/computed value. Mirrors guessit-js.
+    """
+    for name, spec in GUESSIT_SCHEMA.items():
+        current = ordered.get(name) or []
+        enum = spec.get("enum")
+        if enum:
+            # Union, deduplicating scalars while preserving any compound values
+            # already present (e.g. edition's ['Ultimate', 'Collector']).
+            merged = list(current)
+            seen = {value for value in current if not isinstance(value, list)}
+            for value in enum:
+                if value not in seen:
+                    merged.append(value)
+                    seen.add(value)
+            ordered[name] = sorted(merged, key=str)
+        elif not current:
+            ordered[name] = [None]
+    return ordered
 
 
 class GuessItApi:
@@ -262,7 +288,7 @@ class GuessItApi:
             ordered[k] = sorted(unordered[k], key=str)
         if hasattr(self.rebulk, "customize_properties"):
             ordered = self.rebulk.customize_properties(ordered)
-        return ordered
+        return _complete_properties(ordered)
 
     def suggested_expected(self, titles: Any, options: Any = None) -> list[Any]:
         """
