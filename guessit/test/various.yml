@@ -1419,3 +1419,8 @@
 ? Some.Release.2020.1080p.x264-GRP.webp
 : container: webp
   release_group: GRP
+# --- #816: Unicode × must be read as a resolution separator, not a season/episode ---
+? Movie.1920×1080.BluRay.mkv
+: title: Movie
+  screen_size: 1080p
+  -season: 1920
