@@ -106,6 +106,40 @@ _scene_previous_tags = ("release-group-prefix",)
 _scene_no_previous_tags = ("no-release-group-prefix",)
 
 
+def is_anime_group(matches: Matches, marker: Match, filepart_start: int) -> bool:
+    """An "empty" anime group holds no real title text, only ignorable matches.
+
+    A leading bracket whose only content is a subtitle-format container name
+    ([SSA]/[ASS]) is an anime release group, not a container (upstream #670).
+    """
+    inner = matches.range(marker.start, marker.end, lambda m: "weak-language" not in m.tags)
+    if not inner:
+        return True
+    return marker.start == filepart_start and all(m.name == "container" and "subtitle" in m.tags for m in inner)
+
+
+def leading_anime_group(matches: Matches, filepart: Match) -> Match | None:
+    """Return the filepart's leading ``[bracket]`` group when it is an anime release-group tag.
+
+    These releases carry the group in the first bracket (``[ASW] Title - 01 …``); a trailing
+    ``(English Title)`` parenthetical must not be claimed as the release_group instead (#696/#757).
+    """
+    first_group = matches.markers.range(
+        filepart.start,
+        filepart.end,
+        lambda marker: marker.name == "group" and marker.start == filepart.start,
+        0,
+    )
+    if (
+        first_group
+        and is_anime_group(matches, first_group, filepart.start)
+        and first_group.value.strip(seps)
+        and not int_coercable(first_group.value.strip(seps))
+    ):
+        return first_group
+    return None
+
+
 class DashSeparatedReleaseGroup(Rule):
     """
     Detect dash separated release groups that might appear at the end or at the beginning of a release name.
@@ -351,6 +385,12 @@ class SceneReleaseGroup(Rule):
             )
 
             if last_hole:
+                # Anime releases carry the group in the leading [bracket]; a trailing
+                # (English title) parenthetical must not be claimed as the release_group
+                # instead — leave it for AnimeReleaseGroup to pick the leading bracket (#696/#757).
+                hole_group = matches.markers.at_match(last_hole, lambda marker: marker.name == "group", 0)
+                if hole_group and (hole_group.raw or "").startswith("(") and leading_anime_group(matches, filepart):
+                    continue
 
                 def previous_match_filter(match: Match) -> bool:
                     """
@@ -418,24 +458,12 @@ class AnimeReleaseGroup(Rule):
             return False
 
         for filepart in marker_sorted(matches.markers.named("path"), matches):
-
-            def is_group_empty(marker: Match) -> bool:
-                """An "empty" anime group holds no real title text, only ignorable matches."""
-                inner = matches.range(marker.start, marker.end, lambda m: "weak-language" not in m.tags)
-                if not inner:
-                    return True
-                # A leading bracket whose only content is a subtitle-format container name
-                # ([SSA]/[ASS]) is an anime release group, not a container (upstream #670).
-                return marker.start == filepart.start and all(  # noqa: B023
-                    m.name == "container" and "subtitle" in m.tags for m in inner
-                )
-
             empty_group = matches.markers.range(
                 filepart.start,
                 filepart.end,
                 lambda marker: (
                     marker.name == "group"
-                    and is_group_empty(marker)
+                    and is_anime_group(matches, marker, filepart.start)  # noqa: B023
                     and marker.value.strip(seps)
                     and not int_coercable(marker.value.strip(seps))
                 ),
