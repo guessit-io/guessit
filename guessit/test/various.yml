@@ -1292,3 +1292,63 @@
   release_group: GRP
   container: mkv
   type: episode
+
+# guessit-js parity — archive / image containers + artwork (#817)
+
+? Show.Name.S01E01.720p.HDTV.x264-GRP.rar
+: title: Show Name
+  season: 1
+  episode: 1
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  release_group: GRP
+  container: rar
+  type: episode
+
+? Movie.Name.2020.1080p.x264.r00
+: title: Movie Name
+  year: 2020
+  screen_size: 1080p
+  video_codec: H.264
+  container: r00
+  type: movie
+
+? Movie.Name.2020.1080p-GRP.zip
+: title: Movie Name
+  year: 2020
+  screen_size: 1080p
+  release_group: GRP
+  container: zip
+  type: movie
+
+? Show.Name.S01E01.720p-GRP.jpg
+: title: Show Name
+  season: 1
+  episode: 1
+  screen_size: 720p
+  release_group: GRP
+  container: jpg
+  type: episode
+
+? poster.jpg
+: other: Poster
+  container: jpg
+  type: movie
+
+? Movie.Name.2020-fanart.jpg
+: title: Movie Name
+  year: 2020
+  other: Fanart
+  container: jpg
+  type: movie
+
+? The.Poster.2020.1080p.BluRay.x264-GRP.mkv
+: title: The Poster
+  year: 2020
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie

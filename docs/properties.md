@@ -39,7 +39,9 @@ Main properties
 
     Container of the file.
 
-    -   `3g2`, `3gp`, `3gp2`, `asf`, `ass`, `avi`, `divx`, `flv`, `idx`, `iso`, `m4v`, `mk2`, `mk3d`, `mkv`, `mka`, `mov`, `mp4`, `mp4a`, `mpeg`, `mpg`, `nfo`, `nzb`, `ogg`, `ogm`, `ogv`, `qt`, `ra`, `ram`, `rm`, `srt`, `ssa`, `sub`, `torrent`, `ts`, `vob`, `wav`, `webm`, `wma`, `wmv`
+    -   video / subtitle / info / torrent / nzb: `3g2`, `3gp`, `3gp2`, `asf`, `ass`, `avi`, `divx`, `flv`, `idx`, `iso`, `m4v`, `mk2`, `mk3d`, `mkv`, `mka`, `mov`, `mp4`, `mp4a`, `mpeg`, `mpg`, `nfo`, `nzb`, `ogg`, `ogm`, `ogv`, `qt`, `ra`, `ram`, `rm`, `srt`, `ssa`, `sub`, `torrent`, `ts`, `vob`, `wav`, `webm`, `wma`, `wmv`
+    -   archive (incl. split `.rNN` volumes): `rar`, `zip`, `7z`, `tar`, `gz`, `bz2`, `tgz`, `ace`, `arj`, `cbr`, `cbz`, `cb7`
+    -   image: `jpg`, `jpeg`, `png`, `gif`, `bmp`, `tbn`, `webp`
 -   **mimetype**
 
     Mime type of the related container. Guessed values may vary based on OS native support of mime type.
@@ -273,5 +275,5 @@ Other properties
 
     Other property will appear under this property.
 
-    -   `2in1`, `3D`, `Audio Fixed`, `Bonus`, `BT.2020`, `Classic`, `Colorized`, `Complete`, `Converted`, `Documentary`, `Dolby Vision`, `Dual Audio`, `East Coast Feed`, `Ending Credits`, `Extras`, `Fan Subtitled`, `Fast Subtitled`, `Full HD`, `Hardcoded Subtitles`, `HD`, `HDR10`, `High Frame Rate`, `Hybrid`, `Variable Frame Rate`, `High Quality`, `High Resolution`, `Internal`, `Line Dubbed`, `Line Audio`, `Mic Dubbed`, `Micro HD`, `Mux`, `NTSC`, `Obfuscated`, `Open Matte`, `Opening Credits`, `Original Aspect Ratio`, `Original Video`, `PAL`, `Preair`, `Proof`, `Proper`, `PS Vita`, `Read NFO`, `Region 5`, `Region C`, `Reencoded`, `Remux`, `Repost`, `Retail`, `Rip`, `Sample`, `Screener`, `SECAM`, `Standard Dynamic Range`, `Straight to Video`, `Sync Fixed`, `Trailer`, `Ultra HD`, `Upscaled`, `Virtual Reality`, `West Coast Feed`, `Widescreen`, `XXX`
+    -   `2in1`, `3D`, `Audio Fixed`, `Banner`, `Bonus`, `BT.2020`, `Classic`, `Clear Art`, `Clear Logo`, `Colorized`, `Complete`, `Converted`, `Cover`, `Disc Art`, `Documentary`, `Dolby Vision`, `Dual Audio`, `East Coast Feed`, `Ending Credits`, `Extras`, `Fan Subtitled`, `Fanart`, `Fast Subtitled`, `Full HD`, `Hardcoded Subtitles`, `HD`, `HDR10`, `High Frame Rate`, `Hybrid`, `Variable Frame Rate`, `High Quality`, `High Resolution`, `Internal`, `Landscape`, `Line Dubbed`, `Line Audio`, `Logo`, `Mic Dubbed`, `Micro HD`, `Mux`, `NTSC`, `Obfuscated`, `Open Matte`, `Opening Credits`, `Original Aspect Ratio`, `Original Video`, `PAL`, `Poster`, `Preair`, `Proof`, `Proper`, `PS Vita`, `Read NFO`, `Region 5`, `Region C`, `Reencoded`, `Remux`, `Repost`, `Retail`, `Rip`, `Sample`, `Screener`, `SECAM`, `Standard Dynamic Range`, `Straight to Video`, `Sync Fixed`, `Thumbnail`, `Trailer`, `Ultra HD`, `Upscaled`, `Virtual Reality`, `West Coast Feed`, `Widescreen`, `XXX`
 
