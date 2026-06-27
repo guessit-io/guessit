@@ -4904,6 +4904,27 @@
   screen_size: 1080p
   -language: ko
 
+# --- #696/#757: the leading [bracket] is the anime release group, not a trailing (title) ---
+? "[ASW] Fumetsu no Anata e - S01E03 [1080p HEVC x265 10Bit][AAC] (To Your Eternity)"
+: title: Fumetsu no Anata e
+  season: 1
+  episode: 3
+  release_group: ASW
+
+# the trailing "+" is normalised away by StripSeparators (it is a separator); the
+# group is now correctly identified instead of the trailing (WEB … service) parenthetical
+? "[SubsPlus+] Helck - S01E01 (WEB 1080p HIDIVE)"
+: title: Helck
+  season: 1
+  episode: 1
+  release_group: SubsPlus
+
+? "[SubsPlus+] Spy Classroom - S02E01 (WEB 1080p ADN) (Spy Kyoushitsu)"
+: title: Spy Classroom
+  season: 2
+  episode: 1
+  release_group: SubsPlus
+
 # casing guard: an uppercase US tag is a real country, kept
 ? The.Office.US.1x03.mkv
 : title: The Office
