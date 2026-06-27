@@ -4950,6 +4950,14 @@
   screen_size: 720p
   -other: Converted
 
+# the article may also close a longer episode_title: "Chapter 19 The" + "Convert"
+? The.Mandalorian.S03E03.Chapter.19.The.Convert.2160p.WEB-DL.DDP5.1.HEVC-Group
+: title: The Mandalorian
+  season: 3
+  episode: 3
+  episode_title: Chapter 19 The Convert
+  -other: Converted
+
 # --- #732: a bare "Cam" right after the episode marker is the episode title ---
 # isolated "Cam" (no other release metadata) is reclaimed from source: Camera
 ? Show.S01E01.Cam.mkv
