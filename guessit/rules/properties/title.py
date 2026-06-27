@@ -43,34 +43,11 @@ RELEASE_TAG_MARKERS = ("release-group-prefix", "streaming_service.prefix", "stre
 
 # Stop-words a title should not end on; used to refuse cropping a trailing language/country
 # that would otherwise leave the title ending on one of these (e.g. "It Ends With Us").
-TITLE_STOP_WORDS = frozenset(
-    {
-        "the",
-        "a",
-        "an",
-        "and",
-        "or",
-        "of",
-        "to",
-        "in",
-        "on",
-        "at",
-        "for",
-        "from",
-        "by",
-        "with",
-        "into",
-        "onto",
-        "no",
-        "le",
-        "la",
-        "les",
-        "de",
-        "du",
-        "des",
-        "el",
-    }
-)
+# Kept deliberately narrow: articles plus the two words the documented targets need
+# ("with" for "It Ends With Us" #789, "no" for "Oshi no Ko" #745). Other prepositions
+# (in/of/to/at/by/...) are excluded to avoid swallowing a genuine trailing country tag
+# such as "Shameless.in.Us" (where ".Us" is the country variant, not part of the title).
+TITLE_STOP_WORDS = frozenset({"the", "a", "an", "le", "la", "les", "el", "de", "du", "des", "with", "no"})
 
 
 def title(config: dict[str, Any]) -> Rebulk:
@@ -522,6 +499,9 @@ class CountryAtTitlePosition(Rule):
                 continue
             if any(tag in candidate.tags for tag in RELEASE_TAG_MARKERS):
                 continue
+            # A bracketed token ([Us]) is a deliberate tag/group, not the title.
+            if matches.markers.at_match(candidate, lambda marker: marker.name == "group", 0):
+                continue
             filepart = matches.markers.at_match(candidate, lambda m: m.name == "path", 0)
             if not filepart:
                 continue
@@ -568,6 +548,9 @@ class ExtendLoneArticleTitle(Rule):
                 0,
             )
             if not prop:
+                continue
+            # A bracketed property ([Collector]) is a deliberate tag/group, not part of the title.
+            if matches.markers.at_match(prop, lambda marker: marker.name == "group", 0):
                 continue
             if not all(ch in seps for ch in input_string[title_match.end : prop.start]):
                 continue
@@ -634,6 +617,9 @@ class PropertyAtTitlePositionAsTitle(Rule):
             # A country is the title only when Title-Case ("Us"); an uppercase "US" stays country.
             if lead.name == "country" and not re.match(r"^[A-Z][a-z]+$", lead.raw or ""):
                 continue
+            # A bracketed token ([Us]) is a deliberate tag/group, not the title.
+            if matches.markers.at_match(lead, lambda marker: marker.name == "group", 0):
+                continue
             if lead.start >= anchor.start:
                 continue
             if not all(ch in seps for ch in input_string[filepart.start : lead.start]):
@@ -684,6 +670,9 @@ class KeepTrailingStopWordTitle(Rule):
             # Only a Title-Case token ("Us", "Ko") is a cropped title word; an uppercase tag
             # ("US") is a genuine country/language, so keep it.
             if not re.match(r"^[A-Z][a-z]+$", trailing.raw or ""):
+                continue
+            # A bracketed country/language ([Us]) is a deliberate tag, not a cropped title word.
+            if matches.markers.at_match(trailing, lambda marker: marker.name == "group", 0):
                 continue
             if not all(ch in seps for ch in input_string[title_match.end : trailing.start]):
                 continue

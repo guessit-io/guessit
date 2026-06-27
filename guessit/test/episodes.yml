@@ -4910,3 +4910,12 @@
   country: US
   season: 1
   episode: 3
+
+# #812 review: a trailing country tag after a non-target preposition stays country
+# (only "with"/"no" trigger the stop-word merge), and a bracketed [Us] is never merged
+? Shameless.in.Us.S01E01.mkv
+: title: Shameless in
+  country: US
+  season: 1
+  episode: 1
+  -title: Shameless in Us

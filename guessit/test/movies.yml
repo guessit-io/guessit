@@ -1960,3 +1960,10 @@
 : country: US
   year: 2019
   -title: US
+
+# #812 review: a bracketed country tag is a deliberate tag, kept as country, not merged
+? It.Ends.With.[Us].2019.1080p.mkv
+: title: It Ends With
+  country: US
+  year: 2019
+  -title: It Ends With Us
