@@ -421,6 +421,9 @@
     "height": {
       "type": "string"
     },
+    "imdb_id": {
+      "type": "string"
+    },
     "language": {
       "oneOf": [
         {
@@ -455,6 +458,7 @@
             "Dolby Vision",
             "Dual Audio",
             "East Coast Feed",
+            "Ending Credits",
             "Extras",
             "Fan Subtitled",
             "Fast Subtitled",
@@ -477,6 +481,7 @@
             "NTSC",
             "Obfuscated",
             "Open Matte",
+            "Opening Credits",
             "Original Animated Video",
             "Original Animation DVD",
             "Original Aspect Ratio",
@@ -505,6 +510,7 @@
             "Ultra HD",
             "Upscaled",
             "Variable Frame Rate",
+            "Virtual Reality",
             "West Coast Feed",
             "Widescreen",
             "XXX"
@@ -528,6 +534,7 @@
               "Dolby Vision",
               "Dual Audio",
               "East Coast Feed",
+              "Ending Credits",
               "Extras",
               "Fan Subtitled",
               "Fast Subtitled",
@@ -550,6 +557,7 @@
               "NTSC",
               "Obfuscated",
               "Open Matte",
+              "Opening Credits",
               "Original Animated Video",
               "Original Animation DVD",
               "Original Aspect Ratio",
@@ -578,6 +586,7 @@
               "Ultra HD",
               "Upscaled",
               "Variable Frame Rate",
+              "Virtual Reality",
               "West Coast Feed",
               "Widescreen",
               "XXX"
@@ -916,6 +925,12 @@
     "title": {
       "type": "string"
     },
+    "tmdb_id": {
+      "type": "number"
+    },
+    "tvdb_id": {
+      "type": "number"
+    },
     "type": {
       "type": "string",
       "enum": [
@@ -990,6 +1005,9 @@
           }
         }
       ]
+    },
+    "volume": {
+      "type": "number"
     },
     "website": {
       "type": "string"

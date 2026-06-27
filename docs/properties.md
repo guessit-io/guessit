@@ -231,6 +231,22 @@ Other properties
 
     Volume identifier (UUID).
 
+-   **volume**
+
+    Volume number for multi-volume releases (manga/anime/music box sets). Examples: `vol127`, `vol.3`, `volume 12`.
+
+-   **imdb\_id**
+
+    IMDb identifier found in the filename (e.g. `tt1234567`).
+
+-   **tmdb\_id**
+
+    TMDb identifier (e.g. `{tmdb-12345}`).
+
+-   **tvdb\_id**
+
+    TVDb identifier (e.g. `[tvdbid-12345]`).
+
 -   **size**
 
     Size (MB, GB, TB). Examples: `1.2GB` (`<Size [1.2GB]>`), `430MB` (`<Size [430MB]>`).
@@ -257,5 +273,5 @@ Other properties
 
     Other property will appear under this property.
 
-    -   `2in1`, `3D`, `Audio Fixed`, `Bonus`, `BT.2020`, `Classic`, `Colorized`, `Complete`, `Converted`, `Documentary`, `Dolby Vision`, `Dual Audio`, `East Coast Feed`, `Extras`, `Fan Subtitled`, `Fast Subtitled`, `Full HD`, `Hardcoded Subtitles`, `HD`, `HDR10`, `High Frame Rate`, `Hybrid`, `Variable Frame Rate`, `High Quality`, `High Resolution`, `Internal`, `Line Dubbed`, `Line Audio`, `Mic Dubbed`, `Micro HD`, `Mux`, `NTSC`, `Obfuscated`, `Open Matte`, `Original Aspect Ratio`, `Original Video`, `PAL`, `Preair`, `Proof`, `Proper`, `PS Vita`, `Read NFO`, `Region 5`, `Region C`, `Reencoded`, `Remux`, `Repost`, `Retail`, `Rip`, `Sample`, `Screener`, `SECAM`, `Standard Dynamic Range`, `Straight to Video`, `Sync Fixed`, `Trailer`, `Ultra HD`, `Upscaled`, `West Coast Feed`, `Widescreen`, `XXX`
+    -   `2in1`, `3D`, `Audio Fixed`, `Bonus`, `BT.2020`, `Classic`, `Colorized`, `Complete`, `Converted`, `Documentary`, `Dolby Vision`, `Dual Audio`, `East Coast Feed`, `Ending Credits`, `Extras`, `Fan Subtitled`, `Fast Subtitled`, `Full HD`, `Hardcoded Subtitles`, `HD`, `HDR10`, `High Frame Rate`, `Hybrid`, `Variable Frame Rate`, `High Quality`, `High Resolution`, `Internal`, `Line Dubbed`, `Line Audio`, `Mic Dubbed`, `Micro HD`, `Mux`, `NTSC`, `Obfuscated`, `Open Matte`, `Opening Credits`, `Original Aspect Ratio`, `Original Video`, `PAL`, `Preair`, `Proof`, `Proper`, `PS Vita`, `Read NFO`, `Region 5`, `Region C`, `Reencoded`, `Remux`, `Repost`, `Retail`, `Rip`, `Sample`, `Screener`, `SECAM`, `Standard Dynamic Range`, `Straight to Video`, `Sync Fixed`, `Trailer`, `Ultra HD`, `Upscaled`, `Virtual Reality`, `West Coast Feed`, `Widescreen`, `XXX`
 

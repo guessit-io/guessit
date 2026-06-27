@@ -1197,3 +1197,98 @@
   release_group: YTS.LT
   container: mp4
   type: movie
+
+# guessit-js parity — new property / value extraction (#818)
+
+? Show.Name.vol127.1080p.x264-GRP.mkv
+: title: Show Name
+  volume: 127
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+? Manga.Title.vol.3.720p.x264-GRP.mkv
+: title: Manga Title
+  volume: 3
+  screen_size: 720p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+? Movie.Name.2020.tt1234567.1080p.BluRay.x264-GRP.mkv
+: title: Movie Name
+  year: 2020
+  imdb_id: tt1234567
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+? Movie.Name.2020.{tmdb-12345}.1080p.x264-GRP.mkv
+: title: Movie Name
+  year: 2020
+  tmdb_id: 12345
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+? Show.Name.S01E02.[tvdbid-67890].720p.HDTV.x264-GRP.mkv
+: title: Show Name
+  season: 1
+  episode: 2
+  tvdb_id: 67890
+  screen_size: 720p
+  source: HDTV
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: episode
+
+? Movie.Name.VR180.2020.1080p.x264-GRP.mkv
+: title: Movie Name
+  other: Virtual Reality
+  year: 2020
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+? Show.Name.S01E01.NCOP.1080p.x264-GRP.mkv
+: title: Show Name
+  season: 1
+  episode: 1
+  other: Opening Credits
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: episode
+
+? Show.Name.S01E01.NCED.1080p.x264-GRP.mkv
+: title: Show Name
+  season: 1
+  episode: 1
+  other: Ending Credits
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: episode
+
+? Show.Name.July.30.2021.1080p.WEB-DL.x264-GRP.mkv
+: title: Show Name
+  date: 2021-07-30
+  screen_size: 1080p
+  source: Web
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: episode
