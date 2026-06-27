@@ -1900,3 +1900,15 @@
   other: Micro HD
   screen_size: 1080p
   type: movie
+
+# guessit-js parity — pre-1920 year accepted (#646/#815)
+
+? The.Immigrant.1917.1080p.BluRay.x264-GRP.mkv
+: title: The Immigrant
+  year: 1917
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie

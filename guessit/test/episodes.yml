@@ -4770,3 +4770,30 @@
   video_codec: H.264
   release_group: NOGRP
   type: episode
+
+# guessit-js parity — a 4-digit year is not a season-word number (#800/#815);
+# with no real season/episode the title falls back to a movie.
+
+? Show.Name.Season.2025.1080p.WEB-DL.x264-GRP.mkv
+: title: Show Name Season
+  year: 2025
+  -season: 2025
+  screen_size: 1080p
+  source: Web
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+# SxxExx is unaffected: a 4-digit season number is still parsed there
+
+? Show.Name.S2013E14.1080p.HDTV.x264-GRP.mkv
+: title: Show Name
+  season: 2013
+  episode: 14
+  screen_size: 1080p
+  source: HDTV
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: episode
