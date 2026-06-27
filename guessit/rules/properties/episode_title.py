@@ -36,6 +36,7 @@ def episode_title(config: dict[str, Any]) -> Rebulk:
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "episode_title"))
     return rebulk.rules(
         RemoveConflictsWithEpisodeTitle(previous_names),
+        ReclaimCameraEpisodeTitle,
         EpisodeTitleFromPosition(previous_names),
         AlternativeTitleReplace(previous_names),
         TitleToEpisodeTitle,
@@ -134,6 +135,53 @@ class TitleToEpisodeTitle(Rule):
             matches.remove(title)
             title.name = "episode_title"
             matches.append(title)
+
+
+class ReclaimCameraEpisodeTitle(Rule):
+    """
+    A bare "Cam" right after an episode/season marker, with no other release metadata in the
+    filepart, is the episode title, not ``source: Camera`` (upstream #732):
+    ``Show.S01E01.Cam.mkv`` -> episode_title "Cam".
+
+    Scoped to the ambiguous bare-CAM source ("Camera"): the spurious source match is removed so
+    the normal episode-title hole-filling reclaims the word. Unambiguous sources (HDTV, WEB, ...)
+    and real CAM releases ("720p CAM x264", "...HDCAM XviD") are left untouched because the source
+    word is then either not at the episode-title slot or surrounded by other release metadata.
+
+    Runs before :class:`EpisodeTitleFromPosition` so the freed hole becomes the episode title.
+    """
+
+    priority = 32
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
+        to_remove: list[Match] = []
+        for source in matches.named("source"):
+            if source.value != "Camera":
+                continue
+            filepart = matches.markers.at_match(source, lambda m: m.name == "path", 0)
+            if not filepart:
+                continue
+            # Must directly follow an episode/season marker (only separators in between).
+            before = matches.range(filepart.start, source.start, lambda m: not m.private and m.value, -1)
+            if not before or before.name not in ("episode", "season", "episode_count", "season_count"):
+                continue
+            if any(ch not in seps for ch in input_string[before.end : source.start]):
+                continue
+            # Must be the trailing word: nothing meaningful after it but a container.
+            after = matches.range(
+                source.end,
+                filepart.end,
+                lambda m: not m.private and m.value and m.name != "container",
+                0,
+            )
+            if after:
+                continue
+            to_remove.append(source)
+            if source.parent:
+                to_remove.append(source.parent)
+        return to_remove
 
 
 class EpisodeTitleFromPosition(TitleBaseRule):

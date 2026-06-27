@@ -4928,3 +4928,21 @@
   episode_title: The Convert
   screen_size: 720p
   -other: Converted
+
+# --- #732: a bare "Cam" right after the episode marker is the episode title ---
+# isolated "Cam" (no other release metadata) is reclaimed from source: Camera
+? Show.S01E01.Cam.mkv
+: title: Show
+  season: 1
+  episode: 1
+  episode_title: Cam
+  -source: Camera
+
+# but "Cam" surrounded by release metadata stays source: Camera (real CAM release)
+? Show.S01E01.Cam.720p.x264.mkv
+: title: Show
+  season: 1
+  episode: 1
+  source: Camera
+  screen_size: 720p
+  video_codec: H.264
