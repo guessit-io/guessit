@@ -12,17 +12,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # pypy-3.11 is excluded: a pypy-3.11 interpreter bug segfaults when an
-        # AttributeError subclass with an uninitialized `name` is raised from
-        # __getattr__ (babelfish's LanguageConvertError, hit via str(Language)).
-        # Not a guessit bug; fine on pypy-3.10 and all CPython.
-        # Upstream: https://github.com/pypy/pypy/issues/5514
-        python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14", "pypy-3.10" ]
+        python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14" ]
         regex: [ "0", "1" ]
         exclude:
-          # regex module doesn't play well with pypy and unicode.
-          - python-version: "pypy-3.10"
-            regex: "1"
           # test regex module only with Python 3.11.
           - python-version: "3.10"
             regex: "1"
@@ -44,9 +36,8 @@ jobs:
           enable-cache: true
 
       - name: Install Dependencies
-        # --no-dev: the test matrix runs on PyPy too, where dev-only deps
-        # (python-semantic-release/commitizen -> pydantic-core, a Rust/pyo3
-        # extension) have no wheel and fail to build. Only the test group is needed.
+        # --no-dev: the test run only needs the test group; dev-only tooling
+        # (python-semantic-release/commitizen) is not required here.
         run: uv sync --locked --no-dev --group test ${{ matrix.regex == '1' && '--extra regex' || '' }}
 
       - name: Test
