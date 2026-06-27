@@ -1352,3 +1352,70 @@
   release_group: GRP
   container: mkv
   type: movie
+
+# guessit-js parity — every archive/image extension is a container (#817)
+# (keeps the container enum code-complete; the extension must not leak)
+
+? Some.Release.2020.1080p.x264-GRP.7z
+: container: 7z
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.tar
+: container: tar
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.gz
+: container: gz
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.bz2
+: container: bz2
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.tgz
+: container: tgz
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.ace
+: container: ace
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.arj
+: container: arj
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.cbr
+: container: cbr
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.cbz
+: container: cbz
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.cb7
+: container: cb7
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.jpeg
+: container: jpeg
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.png
+: container: png
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.gif
+: container: gif
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.bmp
+: container: bmp
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.tbn
+: container: tbn
+  release_group: GRP
+
+? Some.Release.2020.1080p.x264-GRP.webp
+: container: webp
+  release_group: GRP
