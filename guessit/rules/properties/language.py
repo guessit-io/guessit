@@ -562,11 +562,15 @@ class RemoveInvalidLanguages(Rule):
             if match.raw is not None and match.raw.lower() not in self.common_words:
                 continue
 
-            # A language code glued to a subtitle extension (".no.srt") is a deliberate subtitle
-            # tag, not a stray common word — keep it even when blacklisted (#668).
+            # A lowercase language code glued to a subtitle extension (".no.srt") is a deliberate
+            # subtitle tag, not a stray common word — keep it even when blacklisted (#668). A
+            # Title-Case token ("Dr.No.srt", "Garfield.It.srt") is the last word of the title, so
+            # the casing check leaves it for the title.
             following = matches.next(match, predicate=lambda m: not m.private and bool(m.value), index=0)
             if (
-                following is not None
+                match.raw is not None
+                and match.raw.islower()
+                and following is not None
                 and following.name == "container"
                 and "subtitle" in following.tags
                 and not (matches.input_string or "")[match.end : following.start].strip(seps)

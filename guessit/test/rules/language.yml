@@ -56,3 +56,13 @@
 ? Show.S01E01.DBRETAiL.no.mkv
 : -subtitle_language: Norwegian
   -language: Norwegian
+
+# but a Title-Case token before a subtitle extension is the last title word, not a language
+# ("Dr.No.srt" = the film *Dr. No*, not Norwegian subtitles)
+? Dr.No.srt
+: title: Dr No
+  -subtitle_language: Norwegian
+
+? Garfield.It.srt
+: title: Garfield It
+  -subtitle_language: it
