@@ -55,7 +55,20 @@ class ValidateStreamingService(Rule):
         :return:
         """
         to_remove: list[Match] = []
+        input_string = matches.input_string or ""
         for service in matches.named("streaming_service"):
+            # A short service code (e.g. CN) glued inside a larger token (CNHD) is a
+            # substring of that token, not a real streaming service (upstream #651).
+            raw = service.raw or ""
+            if len(raw) <= 3:
+                char_after = input_string[service.end : service.end + 1]
+                char_before = input_string[service.start - 1 : service.start] if service.start > 0 else ""
+                if (char_after and re.match(r"[a-z0-9]", char_after, re.IGNORECASE)) or (
+                    char_before and re.match(r"[a-z0-9]", char_before, re.IGNORECASE)
+                ):
+                    to_remove.append(service)
+                    continue
+
             next_match = matches.next(service, lambda match: "streaming_service.suffix" in match.tags, 0)
             previous_match = matches.previous(service, lambda match: "streaming_service.prefix" in match.tags, 0)
             has_other = service.initiator and service.initiator.children.named("other")

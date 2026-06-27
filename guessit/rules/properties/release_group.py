@@ -394,12 +394,26 @@ class AnimeReleaseGroup(Rule):
             return False
 
         for filepart in marker_sorted(matches.markers.named("path"), matches):
+
+            def is_group_empty(marker: Match) -> bool:
+                """An "empty" anime group holds no real title text, only ignorable matches."""
+                inner = matches.range(marker.start, marker.end, lambda m: "weak-language" not in m.tags)
+                if not inner:
+                    return True
+                if all(m.name == "other" for m in inner):
+                    return True
+                # A leading bracket whose only content is a subtitle-format container name
+                # ([SSA]/[ASS]) is an anime release group, not a container (upstream #670).
+                return marker.start == filepart.start and all(  # noqa: B023
+                    m.name == "container" and "subtitle" in m.tags for m in inner
+                )
+
             empty_group = matches.markers.range(
                 filepart.start,
                 filepart.end,
                 lambda marker: (
                     marker.name == "group"
-                    and not matches.range(marker.start, marker.end, lambda m: "weak-language" not in m.tags)
+                    and is_group_empty(marker)
                     and marker.value.strip(seps)
                     and not int_coercable(marker.value.strip(seps))
                 ),
@@ -414,7 +428,17 @@ class AnimeReleaseGroup(Rule):
                 group.tags = ["anime"]
                 group.name = "release_group"
                 to_append.append(group)
-                to_remove.extend(matches.range(empty_group.start, empty_group.end, lambda m: "weak-language" in m.tags))
+                to_remove.extend(
+                    matches.range(
+                        empty_group.start,
+                        empty_group.end,
+                        lambda m: (
+                            "weak-language" in m.tags
+                            or m.name == "other"
+                            or (m.name == "container" and "subtitle" in m.tags)
+                        ),
+                    )
+                )
 
         if to_remove or to_append:
             return to_remove, to_append
