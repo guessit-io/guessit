@@ -64,6 +64,16 @@ def test_properties() -> None:
     assert "video_codec" in props
 
 
+def test_list_value_not_mutated_between_guesses() -> None:
+    # Regression for #822: a config pattern with a list value (compound edition)
+    # used to be aliased into the result and mutated in place, leaking state into
+    # later guesses. Parsing a variant that adds another edition must not pollute
+    # the shared value.
+    assert guessit("ultimate collector edition")["edition"] == ["Ultimate", "Collector"]
+    assert guessit("ultimate collectors edition dc")["edition"] == ["Ultimate", "Collector", "Director's Cut"]
+    assert guessit("ultimate collector edition")["edition"] == ["Ultimate", "Collector"]
+
+
 def test_exception() -> None:
     with pytest.raises(GuessitException) as excinfo:
         guessit(object())  # type: ignore[arg-type]

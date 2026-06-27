@@ -8,32 +8,16 @@ import importlib.util
 import json
 import re
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
-import pytest
 import yaml
 
 from guessit import GUESSIT_SCHEMA, api
 from guessit.yamlutils import OrderedDictYAMLLoader
 
-if TYPE_CHECKING:
-    from collections.abc import Iterator
-
 ROOT = Path(__file__).resolve().parent.parent.parent
 TEST_DIR = ROOT / "guessit" / "test"
 OUTPUT_SCHEMA_JSON = ROOT / "guessit" / "data" / "output-schema.json"
-
-
-@pytest.fixture(autouse=True)
-def _reset_api_state() -> Iterator[None]:
-    """Reset the shared default API after each test.
-
-    Sweeping the whole corpus in-process mutates a shared ``edition`` config list
-    in place (a pre-existing guessit quirk), which would otherwise leak parsing
-    state into later test modules.
-    """
-    yield
-    api.reset()
 
 
 def _corpus_inputs() -> list[str]:
