@@ -142,9 +142,13 @@ class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
 
     def __init__(self, name: str) -> None:
         super().__init__(
+            # Sort fileparts most-valuable-first: a SxxExx-tagged season/episode outweighs a
+            # weaker one, and on a tie marker_sorted already prefers the rightmost filepart (the
+            # filename). Keep the markers in their natural order so the filename wins over a parent
+            # directory (#797/#772) instead of being overridden by it.
             sort_function=(
                 lambda markers, matches: marker_sorted(
-                    list(reversed(markers)), matches, lambda match: match.name == name and "SxxExx" in match.tags
+                    markers, matches, lambda match: match.name == name and "SxxExx" in match.tags
                 )
             ),
             predicate=lambda match: match.name == name,
