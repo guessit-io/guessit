@@ -1419,6 +1419,35 @@
 ? Some.Release.2020.1080p.x264-GRP.webp
 : container: webp
   release_group: GRP
+# --- #814: short "cd" token must not match glued inside a larger word/hash ---
+
+? My File 238ddcd5aff.mkv
+: title: My File 238ddcd5aff
+  -cd: 5
+
+# standalone CD tokens still match
+? Movie CD1.avi
+: title: Movie
+  cd: 1
+
+? Movie cd1of2.avi
+: title: Movie
+  cd: 1
+  cd_count: 2
+
+? (CD3) Movie.avi
+: title: Movie
+  cd: 3
+
+# a bracket whose content is a recognized "other" tag stays "other" (must not become
+# an anime release_group) — only a leading subtitle-format bracket like [SSA] does
+? Show.2020.[Remux].1080p.mkv
+: title: Show
+  year: 2020
+  other: Remux
+  screen_size: 1080p
+  -release_group: Remux
+
 # --- #816: Unicode × must be read as a resolution separator, not a season/episode ---
 ? Movie.1920×1080.BluRay.mkv
 : title: Movie

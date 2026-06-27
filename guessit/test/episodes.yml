@@ -4798,6 +4798,13 @@
   container: mkv
   type: episode
 
+# --- #814 / #670: leading subtitle-format bracket [SSA] is an anime release_group ---
+
+? "[SSA] Uma Musume Pretty Derby - 01.mkv"
+: release_group: SSA
+  title: Uma Musume Pretty Derby
+  episode: 1
+
 # --- #816: CJK (Japanese) season/episode markers, Unicode x, numeric episode_title ---
 
 # CJK episode marker 第N話 (upstream #671)

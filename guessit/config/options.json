@@ -130,7 +130,7 @@
     },
     "cd": {
       "_cd_of_cd_count": {
-        "regex": "cd-?(?P<cd>\\d+)(?:-?of-?(?P<cd_count>\\d+))?",
+        "regex": "(?<!\\d)(?<![^\\W\\d_])cd-?(?P<cd>\\d+)(?:-?of-?(?P<cd_count>\\d+))?",
         "validator": {
           "cd": "lambda match: 0 < match.value < 100",
           "cd_count": "lambda match: 0 < match.value < 100"
