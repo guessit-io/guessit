@@ -147,6 +147,18 @@ def episodes(config: dict[str, Any]) -> Rebulk:
             return True
         return bool(seps_surround(match))
 
+    def season_word_not_year(match: Match) -> bool:
+        """
+        Validate a season-word number, rejecting a 4-digit year (e.g. "Season 2025").
+
+        Only applies to the season WORD chain ("Season N"), not SxxExx, so
+        "S2013E14 -> season 2013" stays unaffected (guessit-js parity, #800).
+        """
+        raw = match.raw or ""
+        if re.match(r"^\d{4}$", raw) and 1900 <= int(raw) <= 2100:
+            return False
+        return validate_roman(match)
+
     season_words = config["season_words"]
     episode_words = config["episode_words"]
     of_words = config["of_words"]
@@ -259,13 +271,13 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         formatter={"season": parse_numeral, "count": parse_numeral},
         validator={
             "__parent__": and_(seps_surround, ordering_validator),
-            "season": validate_roman,
+            "season": season_word_not_year,
             "count": validate_roman,
         },
         disabled=lambda context: context.get("type") == "movie" or is_disabled(context, "season"),
     ).defaults(
         formatter={"season": parse_numeral, "count": parse_numeral},
-        validator={"season": validate_roman, "count": validate_roman},
+        validator={"season": season_word_not_year, "count": validate_roman},
         conflict_solver=season_episode_conflict_solver,
     ).regex(build_or_pattern(season_words, name="seasonMarker") + "@?(?P<season>" + numeral + ")").regex(
         r"" + build_or_pattern(of_words) + "@?(?P<count>" + numeral + ")"
