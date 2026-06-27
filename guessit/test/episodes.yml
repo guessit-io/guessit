@@ -4919,3 +4919,12 @@
   season: 1
   episode: 1
   -title: Shameless in Us
+
+# --- #743: a lone article episode_title swallows the following "other" word ---
+# "The" + other "Converted" -> episode_title "The Convert" (ExtendLoneArticleTitle)
+? Chapter.19.The.Convert.720p.mkv
+: title: Chapter
+  episode: 19
+  episode_title: The Convert
+  screen_size: 720p
+  -other: Converted
