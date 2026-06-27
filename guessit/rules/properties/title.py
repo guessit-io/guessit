@@ -525,8 +525,9 @@ class CountryAtTitlePosition(Rule):
 
 class ExtendLoneArticleTitle(Rule):
     """
-    A title made of a single article ("The") swallows the following edition/language/
-    country/other/source word (upstream #652, #737): "The" + edition "Collector" -> "The Collector".
+    A title or episode_title made of a single article ("The") swallows the following edition/
+    language/country/other/source word (upstream #652, #737, #743): "The" + edition "Collector"
+    -> "The Collector"; "Chapter.19.The.Convert" -> episode_title "The Convert".
     """
 
     priority = -32
@@ -535,7 +536,7 @@ class ExtendLoneArticleTitle(Rule):
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         input_string = matches.input_string or ""
         ret: list[tuple[Match, Match]] = []
-        for title_match in matches.named("title"):
+        for title_match in (*matches.named("title"), *matches.named("episode_title")):
             if str(title_match.value or "").strip().lower() not in ARTICLES:
                 continue
             filepart = matches.markers.at_match(title_match, lambda m: m.name == "path", 0)
