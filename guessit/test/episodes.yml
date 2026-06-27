@@ -4797,3 +4797,46 @@
   release_group: GRP
   container: mkv
   type: episode
+
+# --- #816: CJK (Japanese) season/episode markers, Unicode x, numeric episode_title ---
+
+# CJK episode marker 第N話 (upstream #671)
+? Show 第195話.mkv
+: title: Show
+  episode: 195
+  type: episode
+
+# CJK season/episode markers シーズン / 第 / 話 (upstream #763)
+? アニメ シーズン2 第3話.mkv
+: title: "アニメ"
+  season: 2
+  episode: 3
+  type: episode
+
+# CJK season suffix N期 (upstream #763)
+? Title 2期.mkv
+: title: Title
+  season: 2
+  type: episode
+
+# Unicode x (U+00D7) normalised like x (upstream #790)
+? La casa del dragón 2×7.mkv
+: title: La casa del dragón
+  season: 2
+  episode: 7
+  type: episode
+
+? Show 1×02.mkv
+: title: Show
+  season: 1
+  episode: 2
+  type: episode
+
+# Numeric episode_title with a season but no episode becomes the episode (upstream #667)
+? "[ASW] Show - S2 - 01 [1080p].mkv"
+: title: Show
+  season: 2
+  episode: 1
+  release_group: ASW
+  screen_size: 1080p
+  type: episode
