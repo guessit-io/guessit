@@ -4967,3 +4967,12 @@
   source: Camera
   screen_size: 720p
   video_codec: H.264
+
+# --- #797: a SxxExx season in the filename wins over one in a parent directory ---
+? How the Universe Works (2010) Season 1 S01/How the Universe Works (2010) - S44E03 - Monster Black Hole.mkv
+: title: How the Universe Works
+  year: 2010
+  season: 44
+  episode: 3
+  episode_title: Monster Black Hole
+  -season: 1
