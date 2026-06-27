@@ -1438,3 +1438,12 @@
 ? (CD3) Movie.avi
 : title: Movie
   cd: 3
+
+# a bracket whose content is a recognized "other" tag stays "other" (must not become
+# an anime release_group) — only a leading subtitle-format bracket like [SSA] does
+? Show.2020.[Remux].1080p.mkv
+: title: Show
+  year: 2020
+  other: Remux
+  screen_size: 1080p
+  -release_group: Remux

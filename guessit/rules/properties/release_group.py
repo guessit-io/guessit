@@ -400,8 +400,6 @@ class AnimeReleaseGroup(Rule):
                 inner = matches.range(marker.start, marker.end, lambda m: "weak-language" not in m.tags)
                 if not inner:
                     return True
-                if all(m.name == "other" for m in inner):
-                    return True
                 # A leading bracket whose only content is a subtitle-format container name
                 # ([SSA]/[ASS]) is an anime release group, not a container (upstream #670).
                 return marker.start == filepart.start and all(  # noqa: B023
@@ -432,11 +430,7 @@ class AnimeReleaseGroup(Rule):
                     matches.range(
                         empty_group.start,
                         empty_group.end,
-                        lambda m: (
-                            "weak-language" in m.tags
-                            or m.name == "other"
-                            or (m.name == "container" and "subtitle" in m.tags)
-                        ),
+                        lambda m: "weak-language" in m.tags or (m.name == "container" and "subtitle" in m.tags),
                     )
                 )
 
