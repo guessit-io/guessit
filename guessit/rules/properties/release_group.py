@@ -385,11 +385,17 @@ class SceneReleaseGroup(Rule):
             )
 
             if last_hole:
-                # Anime releases carry the group in the leading [bracket]; a trailing
-                # (English title) parenthetical must not be claimed as the release_group
-                # instead — leave it for AnimeReleaseGroup to pick the leading bracket (#696/#757).
+                # Anime episode releases carry the group in the leading [bracket]; a trailing
+                # (English title) parenthetical must not be claimed as the release_group instead —
+                # leave it for AnimeReleaseGroup to pick the leading bracket (#696/#757). Gate on an
+                # episode/season match so a movie's trailing (group) (e.g. YTS/YIFY) is left untouched.
                 hole_group = matches.markers.at_match(last_hole, lambda marker: marker.name == "group", 0)
-                if hole_group and (hole_group.raw or "").startswith("(") and leading_anime_group(matches, filepart):
+                if (
+                    hole_group
+                    and (hole_group.raw or "").startswith("(")
+                    and matches.range(start, end, predicate=lambda m: m.name in ("episode", "season"))
+                    and leading_anime_group(matches, filepart)
+                ):
                     continue
 
                 def previous_match_filter(match: Match) -> bool:
