@@ -1943,3 +1943,20 @@
 : title: It Ends With Us
   year: 2024
   -country: US
+
+# a bare leading edition / scene-tag before a year stays a property, not a title (#812 review)
+? Extended.2019.1080p.mkv
+: edition: Extended
+  year: 2019
+  -title: Extended
+
+? Proper.2020.720p.mkv
+: other: Proper
+  year: 2020
+  -title: Proper
+
+# an uppercase country tag stays country (only Title-Case "Us" becomes a title)
+? US.2019.1080p.mkv
+: country: US
+  year: 2019
+  -title: US

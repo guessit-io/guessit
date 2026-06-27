@@ -36,6 +36,11 @@ if TYPE_CHECKING:
 # property word (e.g. "The" + edition "Collector" -> title "The Collector").
 ARTICLES = frozenset({"the", "a", "an", "le", "la", "les", "el", "los", "las", "il", "lo", "l"})
 
+# Tags that mark a country/other match as a recognized release tag (edition, scene or
+# streaming-service keyword) rather than a real title word — such a token must never be
+# relabelled as the title even when it sits at the title position.
+RELEASE_TAG_MARKERS = ("release-group-prefix", "streaming_service.prefix", "streaming_service.suffix")
+
 # Stop-words a title should not end on; used to refuse cropping a trailing language/country
 # that would otherwise leave the title ending on one of these (e.g. "It Ends With Us").
 TITLE_STOP_WORDS = frozenset(
@@ -496,11 +501,12 @@ class PreferTitleWithYear(Rule):
 
 class CountryAtTitlePosition(Rule):
     """
-    A Title-Case country/other/edition word that starts the filepart and is immediately
+    A Title-Case country/other word that starts the filepart and is immediately
     followed by a year (only separators between) is really the title (upstream #638).
 
     The casing anchor is load-bearing: "Us" (Title-Case) is the title, but "US" (a real
-    country tag) is kept, so "The.Office.(US).1x03" keeps country: US.
+    country tag) is kept, so "The.Office.(US).1x03" keeps country: US. An ``edition`` or a
+    scene/streaming release tag (e.g. Extended, Proper) is a property, never a title.
     """
 
     priority = 64
@@ -510,9 +516,11 @@ class CountryAtTitlePosition(Rule):
         input_string = matches.input_string or ""
         to_remove: list[Match] = []
         for candidate in matches.range(
-            0, len(input_string), lambda m: not m.private and m.name in ("country", "other", "edition")
+            0, len(input_string), lambda m: not m.private and m.name in ("country", "other")
         ):
             if not re.match(r"^[A-Z][a-z]+$", candidate.raw or ""):
+                continue
+            if any(tag in candidate.tags for tag in RELEASE_TAG_MARKERS):
                 continue
             filepart = matches.markers.at_match(candidate, lambda m: m.name == "path", 0)
             if not filepart:
@@ -590,8 +598,11 @@ class ExtendLoneArticleTitle(Rule):
 
 class PropertyAtTitlePositionAsTitle(Rule):
     """
-    A leading other/country/edition word becomes the title when the filepart has no title
-    but does have a year/season/episode/date anchor after it (upstream #722, #773).
+    A leading other/country word becomes the title when the filepart has no title but does
+    have a year/season/episode/date anchor after it (upstream #722, #773).
+
+    Excludes editions and scene/streaming release tags (Extended, Proper, ...) which are
+    properties, never titles; a leading country must be Title-Case ("Us", not "US").
     """
 
     priority = -48
@@ -612,11 +623,16 @@ class PropertyAtTitlePositionAsTitle(Rule):
             if not anchor:
                 continue
             lead = matches.range(filepart.start, filepart.end, lambda m: not m.private and m.value, 0)
-            if not lead or lead.name not in ("other", "country", "edition"):
+            if not lead or lead.name not in ("other", "country"):
                 continue
             # Only an alphabetic token reads as a real title; a technical "other" such as "3D"
-            # stays a property.
+            # stays a property, and so does a recognized scene/streaming release tag.
             if not (lead.raw or "").isalpha():
+                continue
+            if any(tag in lead.tags for tag in RELEASE_TAG_MARKERS):
+                continue
+            # A country is the title only when Title-Case ("Us"); an uppercase "US" stays country.
+            if lead.name == "country" and not re.match(r"^[A-Z][a-z]+$", lead.raw or ""):
                 continue
             if lead.start >= anchor.start:
                 continue
