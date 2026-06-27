@@ -4879,3 +4879,34 @@
   title: Show Name
   season: 1
   episode: 1
+
+# --- #812: a real title word must not be consumed as language/other/country ---
+
+# lone article swallows the following language word (upstream #737)
+? The.English.S01E01.1080p.mkv
+: title: The English
+  season: 1
+  episode: 1
+  -language: English
+
+# leading "other" word is the show title (upstream #722)
+? Extras.2005.S01E01.mkv
+: title: Extras
+  season: 1
+  episode: 1
+  -other: Extras
+
+# trailing Title-Case language after a stop-word stays in the title (upstream #745)
+? "[ASW] Oshi no Ko - 01 [1080p].mkv"
+: title: Oshi no Ko
+  episode: 1
+  release_group: ASW
+  screen_size: 1080p
+  -language: ko
+
+# casing guard: an uppercase US tag is a real country, kept
+? The.Office.US.1x03.mkv
+: title: The Office
+  country: US
+  season: 1
+  episode: 3
