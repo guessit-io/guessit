@@ -8,8 +8,10 @@ from __future__ import annotations
 import contextlib
 from typing import TYPE_CHECKING, Any
 
-from rebulk import AppendMatch, AppendTags, Rebulk, RemoveMatch, Rule
+from rebulk import POST_PROCESS, AppendMatch, AppendTags, Rebulk, RemoveMatch, Rule
 from rebulk.formatters import formatters
+from rebulk.match import Match
+from rebulk.remodule import re
 
 from ..common import seps, title_seps
 from ..common.comparators import marker_sorted
@@ -28,7 +30,42 @@ from .language import (
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from rebulk.match import Match, Matches
+    from rebulk.match import Matches
+
+# Articles that, when they make up the whole detected title, should swallow the following
+# property word (e.g. "The" + edition "Collector" -> title "The Collector").
+ARTICLES = frozenset({"the", "a", "an", "le", "la", "les", "el", "los", "las", "il", "lo", "l"})
+
+# Stop-words a title should not end on; used to refuse cropping a trailing language/country
+# that would otherwise leave the title ending on one of these (e.g. "It Ends With Us").
+TITLE_STOP_WORDS = frozenset(
+    {
+        "the",
+        "a",
+        "an",
+        "and",
+        "or",
+        "of",
+        "to",
+        "in",
+        "on",
+        "at",
+        "for",
+        "from",
+        "by",
+        "with",
+        "into",
+        "onto",
+        "no",
+        "le",
+        "la",
+        "les",
+        "de",
+        "du",
+        "des",
+        "el",
+    }
+)
 
 
 def title(config: dict[str, Any]) -> Rebulk:
@@ -41,7 +78,14 @@ def title(config: dict[str, Any]) -> Rebulk:
     :rtype: Rebulk
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "title"))
-    rebulk.rules(TitleFromPosition, PreferTitleWithYear)
+    rebulk.rules(
+        CountryAtTitlePosition,
+        TitleFromPosition,
+        PreferTitleWithYear,
+        ExtendLoneArticleTitle,
+        PropertyAtTitlePositionAsTitle,
+        KeepTrailingStopWordTitle,
+    )
 
     expected_title = build_expected_function("expected_title")
 
@@ -448,3 +492,197 @@ class PreferTitleWithYear(Rule):
         if to_remove or to_tag:
             return to_remove, to_tag
         return False
+
+
+class CountryAtTitlePosition(Rule):
+    """
+    A Title-Case country/other/edition word that starts the filepart and is immediately
+    followed by a year (only separators between) is really the title (upstream #638).
+
+    The casing anchor is load-bearing: "Us" (Title-Case) is the title, but "US" (a real
+    country tag) is kept, so "The.Office.(US).1x03" keeps country: US.
+    """
+
+    priority = 64
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
+        to_remove: list[Match] = []
+        for candidate in matches.range(
+            0, len(input_string), lambda m: not m.private and m.name in ("country", "other", "edition")
+        ):
+            if not re.match(r"^[A-Z][a-z]+$", candidate.raw or ""):
+                continue
+            filepart = matches.markers.at_match(candidate, lambda m: m.name == "path", 0)
+            if not filepart:
+                continue
+            if not all(ch in seps for ch in input_string[filepart.start : candidate.start]):
+                continue
+            year = matches.range(candidate.end, filepart.end, lambda m: not m.private and m.name == "year", 0)
+            if not year:
+                continue
+            if matches.range(
+                candidate.end,
+                year.start,
+                lambda m: not m.private and m.name in ("season", "episode", "date"),
+                0,
+            ):
+                continue
+            if not all(ch in seps for ch in input_string[candidate.end : year.start]):
+                continue
+            to_remove.append(candidate)
+        return to_remove
+
+
+class ExtendLoneArticleTitle(Rule):
+    """
+    A title made of a single article ("The") swallows the following edition/language/
+    country/other/source word (upstream #652, #737): "The" + edition "Collector" -> "The Collector".
+    """
+
+    priority = -32
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
+        ret: list[tuple[Match, Match]] = []
+        for title_match in matches.named("title"):
+            if str(title_match.value or "").strip().lower() not in ARTICLES:
+                continue
+            filepart = matches.markers.at_match(title_match, lambda m: m.name == "path", 0)
+            if not filepart:
+                continue
+            prop = matches.range(
+                title_match.end,
+                filepart.end,
+                lambda m: not m.private and m.name in ("edition", "language", "country", "other", "source"),
+                0,
+            )
+            if not prop:
+                continue
+            if not all(ch in seps for ch in input_string[title_match.end : prop.start]):
+                continue
+            following = matches.range(
+                prop.end,
+                filepart.end,
+                lambda m: not m.private and m.name in ("year", "season", "episode", "date"),
+                0,
+            )
+            if following:
+                # The gap may hold season/episode marker letters (S/E/x/d) and separators,
+                # but no real title text — otherwise the article is not a lone title.
+                gap = re.sub(r"[sexd]", "", input_string[prop.end : following.start], flags=re.IGNORECASE)
+                if any(ch not in seps for ch in gap):
+                    continue
+            ret.append((title_match, prop))
+        return ret
+
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
+        input_string = matches.input_string or ""
+        for title_match, prop in when_response:
+            matches.remove(title_match)
+            matches.remove(prop)
+            title_match.end = prop.end
+            title_match.value = cleanup(input_string[title_match.start : title_match.end])
+            matches.append(title_match)
+
+
+class PropertyAtTitlePositionAsTitle(Rule):
+    """
+    A leading other/country/edition word becomes the title when the filepart has no title
+    but does have a year/season/episode/date anchor after it (upstream #722, #773).
+    """
+
+    priority = -48
+    consequence = AppendMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
+        to_replace: list[Match] = []
+        for filepart in matches.markers.named("path"):
+            if matches.range(filepart.start, filepart.end, lambda m: m.name == "title", 0):
+                continue
+            anchor = matches.range(
+                filepart.start,
+                filepart.end,
+                lambda m: not m.private and m.name in ("year", "season", "episode", "date"),
+                0,
+            )
+            if not anchor:
+                continue
+            lead = matches.range(filepart.start, filepart.end, lambda m: not m.private and m.value, 0)
+            if not lead or lead.name not in ("other", "country", "edition"):
+                continue
+            # Only an alphabetic token reads as a real title; a technical "other" such as "3D"
+            # stays a property.
+            if not (lead.raw or "").isalpha():
+                continue
+            if lead.start >= anchor.start:
+                continue
+            if not all(ch in seps for ch in input_string[filepart.start : lead.start]):
+                continue
+            to_replace.append(lead)
+        return to_replace
+
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
+        input_string = matches.input_string or ""
+        for lead in when_response:
+            matches.remove(lead)
+            matches.append(
+                Match(
+                    lead.start,
+                    lead.end,
+                    name="title",
+                    value=cleanup(input_string[lead.start : lead.end]),
+                    input_string=input_string,
+                )
+            )
+
+
+class KeepTrailingStopWordTitle(Rule):
+    """
+    Do not crop a trailing language/country out of the title when doing so would leave the
+    title ending on a stop-word (upstream #745 "Oshi no Ko", #789 "It Ends With Us"):
+    keep the word in the title and drop the language/country match instead.
+    """
+
+    priority = POST_PROCESS
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
+        ret: list[tuple[Match, Match]] = []
+        for title_match in matches.named("title"):
+            filepart = matches.markers.at_match(title_match, lambda m: m.name == "path", 0)
+            if not filepart:
+                continue
+            trailing = matches.range(
+                title_match.end,
+                filepart.end,
+                lambda m: not m.private and m.name in ("language", "country"),
+                0,
+            )
+            if not trailing:
+                continue
+            # Only a Title-Case token ("Us", "Ko") is a cropped title word; an uppercase tag
+            # ("US") is a genuine country/language, so keep it.
+            if not re.match(r"^[A-Z][a-z]+$", trailing.raw or ""):
+                continue
+            if not all(ch in seps for ch in input_string[title_match.end : trailing.start]):
+                continue
+            words = re.split(r"[^a-z0-9]+", str(title_match.value or "").lower())
+            words = [w for w in words if w]
+            if not words or words[-1] not in TITLE_STOP_WORDS:
+                continue
+            ret.append((title_match, trailing))
+        return ret
+
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
+        input_string = matches.input_string or ""
+        for title_match, trailing in when_response:
+            matches.remove(title_match)
+            matches.remove(trailing)
+            title_match.end = trailing.end
+            title_match.value = cleanup(input_string[title_match.start : title_match.end])
+            matches.append(title_match)
