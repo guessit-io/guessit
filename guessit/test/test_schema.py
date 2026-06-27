@@ -1,0 +1,133 @@
+#!/usr/bin/env python
+"""Tests for the machine-readable property schema (ported from guessit-js)."""
+
+from __future__ import annotations
+
+import importlib.util
+import json
+import re
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
+
+import pytest
+import yaml
+
+from guessit import GUESSIT_SCHEMA, api
+from guessit.yamlutils import OrderedDictYAMLLoader
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+ROOT = Path(__file__).resolve().parent.parent.parent
+TEST_DIR = ROOT / "guessit" / "test"
+OUTPUT_SCHEMA_JSON = ROOT / "guessit" / "data" / "output-schema.json"
+
+
+@pytest.fixture(autouse=True)
+def _reset_api_state() -> Iterator[None]:
+    """Reset the shared default API after each test.
+
+    Sweeping the whole corpus in-process mutates a shared ``edition`` config list
+    in place (a pre-existing guessit quirk), which would otherwise leak parsing
+    state into later test modules.
+    """
+    yield
+    api.reset()
+
+
+def _corpus_inputs() -> list[str]:
+    """Every input string from the YAML corpus, token prefixes stripped."""
+    token_prefix = re.compile(r"^[ +-]+")
+    inputs: list[str] = []
+    for path in sorted(TEST_DIR.rglob("*.yml")) + sorted(TEST_DIR.rglob("*.yaml")):
+        with open(path, encoding="utf-8") as stream:
+            data = yaml.load(stream, OrderedDictYAMLLoader)
+        if not isinstance(data, dict):
+            continue
+        for key in data:
+            text = key if isinstance(key, str) else str(key)
+            inputs.append(token_prefix.sub("", text))
+    return inputs
+
+
+def _load_generator() -> Any:
+    """Import scripts/gen_schema.py (a standalone script, not an installed module)."""
+    spec = importlib.util.spec_from_file_location("gen_schema", ROOT / "scripts" / "gen_schema.py")
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_properties_advertises_every_schema_property() -> None:
+    props = api.properties()
+    for name in GUESSIT_SCHEMA:
+        assert name in props, f"properties() missing {name}"
+    assert len(props) == len(GUESSIT_SCHEMA)
+
+
+def test_value_constrained_properties_expose_a_non_empty_enum() -> None:
+    assert "Blu-ray" in GUESSIT_SCHEMA["source"]["enum"]
+    assert GUESSIT_SCHEMA["type"]["enum"] == ["episode", "movie"]
+    assert "H.264" in GUESSIT_SCHEMA["video_codec"]["enum"]
+    assert "Web" in api.properties()["source"]
+
+
+def test_enums_are_code_complete() -> None:
+    # These source values are declared in the rules but absent from the corpus;
+    # the enum must still list them (introspection-driven completeness).
+    for value in ["Workprint", "Telecine", "Telesync", "Pay-per-view", "Video on Demand"]:
+        assert value in GUESSIT_SCHEMA["source"]["enum"], f"source enum missing {value}"
+
+
+def test_every_emitted_property_is_in_the_schema() -> None:
+    unknown: set[str] = set()
+    for string in _corpus_inputs():
+        try:
+            guess = api.guessit(string)
+        except Exception:  # a single bad input must not abort the sweep
+            continue
+        unknown.update(key for key in guess if key not in GUESSIT_SCHEMA)
+    assert not unknown, f"emitted properties absent from schema: {sorted(unknown)}"
+
+
+def test_every_emitted_enum_value_is_allowed() -> None:
+    violations: list[str] = []
+    for string in _corpus_inputs():
+        try:
+            guess = api.guessit(string)
+        except Exception:
+            continue
+        for key, value in guess.items():
+            spec = GUESSIT_SCHEMA.get(key)
+            enum = spec.get("enum") if spec else None
+            if not enum:
+                continue
+            for item in value if isinstance(value, list) else [value]:
+                if isinstance(item, str | int) and not isinstance(item, bool) and item not in enum:
+                    violations.append(f"{key}={item!r} ({string[:60]})")
+    assert not violations, f"emitted values not in schema enum: {violations[:10]}"
+
+
+def test_output_schema_json_is_draft07_describing_all_properties() -> None:
+    with open(OUTPUT_SCHEMA_JSON, encoding="utf-8") as stream:
+        output_schema = json.load(stream)
+    assert "draft-07" in output_schema["$schema"]
+    for name in GUESSIT_SCHEMA:
+        assert name in output_schema["properties"], f"JSON schema missing {name}"
+
+
+def test_schema_py_is_not_stale() -> None:
+    """guessit/schema.py must match what scripts/gen_schema.py produces."""
+    generator = _load_generator()
+    assert generator.build_schema() == GUESSIT_SCHEMA
+
+
+def test_output_schema_json_is_not_stale() -> None:
+    """guessit/data/output-schema.json must match the generator output."""
+    generator = _load_generator()
+    expected = generator.build_json_schema(generator.build_schema())
+    with open(OUTPUT_SCHEMA_JSON, encoding="utf-8") as stream:
+        committed = json.load(stream)
+    assert committed == expected
