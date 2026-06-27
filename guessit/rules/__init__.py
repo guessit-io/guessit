@@ -24,6 +24,7 @@ from .properties.edition import edition
 from .properties.episode_title import episode_title
 from .properties.episodes import episodes
 from .properties.film import film
+from .properties.imdb import imdb
 from .properties.language import language
 from .properties.mimetype import mimetype
 from .properties.other import other
@@ -36,6 +37,7 @@ from .properties.streaming_service import streaming_service
 from .properties.title import title
 from .properties.type import type_
 from .properties.video_codec import video_codec
+from .properties.volume import volume
 from .properties.website import website
 
 
@@ -79,6 +81,8 @@ def rebulk_builder(config: dict[str, Any]) -> Rebulk:
     rebulk.rebulk(film(_config("film")))
     rebulk.rebulk(part(_config("part")))
     rebulk.rebulk(crc(_config("crc")))
+    rebulk.rebulk(volume(_config("volume")))
+    rebulk.rebulk(imdb(_config("imdb")))
 
     rebulk.rebulk(processors(_config("processors")))
 
