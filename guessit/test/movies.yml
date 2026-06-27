@@ -1967,3 +1967,11 @@
   country: US
   year: 2019
   -title: It Ends With Us
+
+# #696/#757 review: the leading-[bracket]/trailing-(group) anime guard is gated on an
+# episode/season, so a movie keeps its trailing (group) and the [site] tag is not claimed
+? "[YTS.MX] Movie Name (2019) 1080p BluRay (YIFY)"
+: title: Movie Name
+  year: 2019
+  release_group: YIFY
+  -release_group: YTS.MX
