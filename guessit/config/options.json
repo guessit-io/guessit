@@ -202,6 +202,29 @@
       ],
       "nzb": [
         "nzb"
+      ],
+      "archives": [
+        "rar",
+        "zip",
+        "7z",
+        "tar",
+        "gz",
+        "bz2",
+        "tgz",
+        "ace",
+        "arj",
+        "cbr",
+        "cbz",
+        "cb7"
+      ],
+      "images": [
+        "jpg",
+        "jpeg",
+        "png",
+        "gif",
+        "bmp",
+        "tbn",
+        "webp"
       ]
     },
     "country": {

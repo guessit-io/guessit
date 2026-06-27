@@ -50,10 +50,27 @@ def other(config: dict[str, Any]) -> Rebulk:
         ValidateStreamingServiceNeighbor,
         ValidateAtEnd,
         ValidateReal,
+        ImageArtKeywordToOther,
         ProperCountRule,
     )
 
     return rebulk
+
+
+#: Artwork file-name keywords mapped to their canonical ``other`` value.
+ART_KEYWORDS = {
+    "poster": "Poster",
+    "fanart": "Fanart",
+    "banner": "Banner",
+    "thumb": "Thumbnail",
+    "thumbnail": "Thumbnail",
+    "landscape": "Landscape",
+    "cover": "Cover",
+    "clearart": "Clear Art",
+    "clearlogo": "Clear Logo",
+    "logo": "Logo",
+    "discart": "Disc Art",
+}
 
 
 def complete_words(rebulk: Rebulk, season_words: Iterable[str], complete_article_words: Iterable[str]) -> None:
@@ -136,6 +153,50 @@ class ProperCountRule(Rule):
             proper_count_matches.append(proper_count_match)
 
             return proper_count_matches
+        return None
+
+
+class ImageArtKeywordToOther(Rule):
+    """
+    Reclassify an artwork keyword (poster, fanart, …) as `other` when it is the
+    title of an image filepart, so artwork files aren't mistaken for real titles.
+
+    Scoped strictly to fileparts that hold an `image`-tagged container, so a real
+    video whose title contains "cover"/"logo" is never reclassified.
+    """
+
+    priority = POST_PROCESS
+    consequence = [RemoveMatch, AppendMatch]
+
+    properties = {"other": list(dict.fromkeys(ART_KEYWORDS.values()))}
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
+        for filepart in matches.markers.named("path"):
+            if not matches.range(
+                filepart.start,
+                filepart.end,
+                predicate=lambda match: match.name == "container" and "image" in match.tags,
+                index=0,
+            ):
+                continue
+            for candidate in matches.range(
+                filepart.start,
+                filepart.end,
+                predicate=lambda match: match.name in ("title", "alternative_title", "episode_title"),
+            ):
+                key = re.sub(r"[\s._-]+", "", str(candidate.value or "").strip().lower())
+                canonical = ART_KEYWORDS.get(key)
+                if not canonical:
+                    continue
+                to_remove.append(candidate)
+                other_match = Match(
+                    candidate.start, candidate.end, name="other", value=canonical, input_string=matches.input_string
+                )
+                to_append.append(other_match)
+        if to_remove or to_append:
+            return to_remove, to_append
         return None
 
 
