@@ -1912,3 +1912,58 @@
   release_group: GRP
   container: mkv
   type: movie
+
+# --- #812: a real title word must not be consumed as country/edition/other ---
+
+# Title-Case country-looking word before a year is the title (upstream #638)
+? Us.2019.mkv
+: title: Us
+  year: 2019
+  -country: US
+
+# lone article swallows the following edition/other word (upstream #652, #784)
+? The.Collector.2009.1080p.mkv
+: title: The Collector
+  year: 2009
+  -edition: Collector
+
+? The.Convert.2024.1080p.mkv
+: title: The Convert
+  year: 2024
+  -other: Converted
+
+# leading property word becomes the title when there is none (upstream #773)
+? xXx.2002.1080p.mkv
+: title: xXx
+  year: 2002
+  -other: XXX
+
+# trailing Title-Case country after a stop-word stays in the title (upstream #789)
+? It.Ends.With.Us.2024.1080p.mkv
+: title: It Ends With Us
+  year: 2024
+  -country: US
+
+# a bare leading edition / scene-tag before a year stays a property, not a title (#812 review)
+? Extended.2019.1080p.mkv
+: edition: Extended
+  year: 2019
+  -title: Extended
+
+? Proper.2020.720p.mkv
+: other: Proper
+  year: 2020
+  -title: Proper
+
+# an uppercase country tag stays country (only Title-Case "Us" becomes a title)
+? US.2019.1080p.mkv
+: country: US
+  year: 2019
+  -title: US
+
+# #812 review: a bracketed country tag is a deliberate tag, kept as country, not merged
+? It.Ends.With.[Us].2019.1080p.mkv
+: title: It Ends With
+  country: US
+  year: 2019
+  -title: It Ends With Us
