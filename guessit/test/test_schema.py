@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import functools
 import importlib.util
 import json
 import re
@@ -50,6 +51,7 @@ def _corpus_inputs() -> list[str]:
     return inputs
 
 
+@functools.lru_cache(maxsize=1)
 def _load_generator() -> Any:
     """Import scripts/gen_schema.py (a standalone script, not an installed module)."""
     spec = importlib.util.spec_from_file_location("gen_schema", ROOT / "scripts" / "gen_schema.py")
@@ -58,6 +60,24 @@ def _load_generator() -> Any:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+@functools.lru_cache(maxsize=1)
+def _corpus_guesses() -> tuple[tuple[str, dict[str, Any]], ...]:
+    """Guess every corpus input once; reused across the corpus-sweep tests."""
+    results: list[tuple[str, dict[str, Any]]] = []
+    for string in _corpus_inputs():
+        try:
+            results.append((string, api.guessit(string)))
+        except Exception:  # a single bad input must not abort the sweep
+            continue
+    return tuple(results)
+
+
+@functools.lru_cache(maxsize=1)
+def _built_schema() -> Any:
+    """Run the generator once; reused across the drift tests."""
+    return _load_generator().build_schema()
 
 
 def test_properties_advertises_every_schema_property() -> None:
@@ -83,22 +103,14 @@ def test_enums_are_code_complete() -> None:
 
 def test_every_emitted_property_is_in_the_schema() -> None:
     unknown: set[str] = set()
-    for string in _corpus_inputs():
-        try:
-            guess = api.guessit(string)
-        except Exception:  # a single bad input must not abort the sweep
-            continue
+    for _string, guess in _corpus_guesses():
         unknown.update(key for key in guess if key not in GUESSIT_SCHEMA)
     assert not unknown, f"emitted properties absent from schema: {sorted(unknown)}"
 
 
 def test_every_emitted_enum_value_is_allowed() -> None:
     violations: list[str] = []
-    for string in _corpus_inputs():
-        try:
-            guess = api.guessit(string)
-        except Exception:
-            continue
+    for string, guess in _corpus_guesses():
         for key, value in guess.items():
             spec = GUESSIT_SCHEMA.get(key)
             enum = spec.get("enum") if spec else None
@@ -120,14 +132,12 @@ def test_output_schema_json_is_draft07_describing_all_properties() -> None:
 
 def test_schema_py_is_not_stale() -> None:
     """guessit/schema.py must match what scripts/gen_schema.py produces."""
-    generator = _load_generator()
-    assert generator.build_schema() == GUESSIT_SCHEMA
+    assert _built_schema() == GUESSIT_SCHEMA
 
 
 def test_output_schema_json_is_not_stale() -> None:
     """guessit/data/output-schema.json must match the generator output."""
-    generator = _load_generator()
-    expected = generator.build_json_schema(generator.build_schema())
+    expected = _load_generator().build_json_schema(_built_schema())
     with open(OUTPUT_SCHEMA_JSON, encoding="utf-8") as stream:
         committed = json.load(stream)
     assert committed == expected
