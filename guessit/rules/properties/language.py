@@ -562,6 +562,17 @@ class RemoveInvalidLanguages(Rule):
             if match.raw is not None and match.raw.lower() not in self.common_words:
                 continue
 
+            # A language code glued to a subtitle extension (".no.srt") is a deliberate subtitle
+            # tag, not a stray common word — keep it even when blacklisted (#668).
+            following = matches.next(match, predicate=lambda m: not m.private and bool(m.value), index=0)
+            if (
+                following is not None
+                and following.name == "container"
+                and "subtitle" in following.tags
+                and not (matches.input_string or "")[match.end : following.start].strip(seps)
+            ):
+                continue
+
             group = matches.markers.at_match(match, index=0, predicate=lambda m: m.name == "group")
             if group and (
                 not matches.range(
