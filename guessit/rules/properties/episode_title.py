@@ -9,6 +9,7 @@ from collections import defaultdict
 from typing import TYPE_CHECKING, Any
 
 from rebulk import POST_PROCESS, AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
+from rebulk.remodule import re
 
 from ..common import seps, title_seps
 from ..common.formatters import cleanup
@@ -40,6 +41,7 @@ def episode_title(config: dict[str, Any]) -> Rebulk:
         TitleToEpisodeTitle,
         Filepart3EpisodeTitle,
         Filepart2EpisodeTitle,
+        NumericEpisodeTitleToEpisode,
         RenameEpisodeTitleWhenMovieType,
     )
 
@@ -205,6 +207,36 @@ class AlternativeTitleReplace(Rule):
         when_response.name = "episode_title"
         when_response.tags.append("alternative-replaced")
         matches.append(when_response)
+
+
+class NumericEpisodeTitleToEpisode(Rule):
+    """
+    Convert a numeric episode_title into episode when a season is present but no episode was found.
+
+    Anime such as ``Show S2 - 01`` would otherwise yield ``episode_title: "01"`` (upstream #667).
+    """
+
+    priority = POST_PROCESS
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        ret: list[Match] = []
+        for filepart in matches.markers.named("path"):
+            if matches.range(filepart.start, filepart.end, lambda m: m.name == "episode" and not m.private, index=0):
+                continue
+            if not matches.range(filepart.start, filepart.end, lambda m: m.name == "season" and not m.private, index=0):
+                continue
+            for episode_title in matches.range(filepart.start, filepart.end, lambda m: m.name == "episode_title"):
+                if re.match(r"^\d{1,3}$", str(episode_title.value).strip()):
+                    ret.append(episode_title)
+        return ret
+
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
+        for episode_title in when_response:
+            matches.remove(episode_title)
+            episode_title.name = "episode"
+            episode_title.value = int(str(episode_title.value).strip())
+            matches.append(episode_title)
 
 
 class RenameEpisodeTitleWhenMovieType(Rule):
