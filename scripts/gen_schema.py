@@ -36,10 +36,15 @@ OUTPUT_SCHEMA_JSON = ROOT / "guessit" / "data" / "output-schema.json"
 
 # Closed-vocabulary properties: these expose an `enum`. Everything else is free
 # text / numeric / structured and gets a type only. (Mirrors guessit-js.)
+#
+# `mimetype` is deliberately NOT constrained: it is computed by the stdlib
+# `mimetypes.guess_type`, whose vocabulary depends on the Python version and the
+# host's mime database (/etc/mime.types). Pinning its enum would make the schema
+# environment-specific and the drift test fail across the CI Python matrix.
 VALUE_CONSTRAINED = {
     "source", "screen_size", "video_codec", "audio_codec", "audio_channels",
     "audio_profile", "video_profile", "video_api", "color_depth", "container",
-    "mimetype", "other", "edition", "type", "scan_type", "streaming_service",
+    "other", "edition", "type", "scan_type", "streaming_service",
     "episode_format",
 }  # fmt: skip
 
