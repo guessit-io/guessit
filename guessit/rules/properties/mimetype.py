@@ -28,6 +28,8 @@ def mimetype(config: dict[str, Any]) -> Rebulk:
     :rtype: Rebulk
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "mimetype"))
+    # Register .svg deterministically (stdlib mimetypes is OS-dependent for it). #305
+    mimetypes.add_type("image/svg+xml", ".svg")
     rebulk.rules(Mimetype)
 
     return rebulk
