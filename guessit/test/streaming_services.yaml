@@ -2355,3 +2355,10 @@
   title: GTTV
   type: episode
   video_codec: H.264
+
+# --- #814 / #651: a <=3-char service code glued inside a release group is not a service ---
+
+? Show.S01E01.720p.x264-CNHD.mkv
+: title: Show
+  release_group: CNHD
+  -streaming_service: Cartoon Network

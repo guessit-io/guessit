@@ -4797,3 +4797,10 @@
   release_group: GRP
   container: mkv
   type: episode
+
+# --- #814 / #670: leading subtitle-format bracket [SSA] is an anime release_group ---
+
+? "[SSA] Uma Musume Pretty Derby - 01.mkv"
+: release_group: SSA
+  title: Uma Musume Pretty Derby
+  episode: 1

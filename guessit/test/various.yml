@@ -1419,3 +1419,22 @@
 ? Some.Release.2020.1080p.x264-GRP.webp
 : container: webp
   release_group: GRP
+# --- #814: short "cd" token must not match glued inside a larger word/hash ---
+
+? My File 238ddcd5aff.mkv
+: title: My File 238ddcd5aff
+  -cd: 5
+
+# standalone CD tokens still match
+? Movie CD1.avi
+: title: Movie
+  cd: 1
+
+? Movie cd1of2.avi
+: title: Movie
+  cd: 1
+  cd_count: 2
+
+? (CD3) Movie.avi
+: title: Movie
+  cd: 3
