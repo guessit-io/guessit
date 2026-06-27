@@ -4821,3 +4821,11 @@
   episode: 2
   -release_group: Adam
   -alternative_title: '12'
+
+# a real leading scene group followed by a multi-word title + episode is still detected
+# (the hyphenated-title guard must only fire for a single dash-joined word)
+? FoV-Show.Name.S01E01.720p.HDTV.x264.mkv
+: release_group: FoV
+  title: Show Name
+  season: 1
+  episode: 1

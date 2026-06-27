@@ -147,22 +147,31 @@ class DashSeparatedReleaseGroup(Rule):
             if matches.range(candidate.start, candidate.end, predicate=lambda m: m.name == "episode", index=0):
                 return False
 
-            # A candidate at the filepart start followed by a season/episode/date anchor is the
-            # first half of a hyphenated title ("grown-ish.s03e01...-tbs[eztv]" -> title
-            # "grown-ish"), not a release group (upstream #634/#640).
-            if candidate.start == start and matches.range(
-                candidate.end,
-                end,
-                predicate=lambda m: m.name in ("season", "episode", "date") and not m.private,
-                index=0,
-            ):
-                return False
-
             first_hole = matches.holes(candidate.end, end, predicate=lambda m: m.start == candidate.end, index=0)
             if not first_hole:
                 return False
 
             raw_value = first_hole.raw
+
+            # A candidate at the filepart start, joined by a dash to a single word (no internal
+            # separator) and followed by a season/episode/date anchor, is the first half of a
+            # hyphenated title ("grown-ish.s03e01" -> "grown-ish"), not a release group
+            # (upstream #634/#640). A multi-word remainder ("FoV-Show.Name.S01E01") keeps the
+            # leading scene group.
+            if (
+                candidate.start == start
+                and raw_value is not None
+                and "." not in raw_value.strip(seps)
+                and " " not in raw_value.strip(seps)
+                and matches.range(
+                    candidate.end,
+                    end,
+                    predicate=lambda m: m.name in ("season", "episode", "date") and not m.private,
+                    index=0,
+                )
+            ):
+                return False
+
             return (
                 raw_value is not None
                 and raw_value[0] == "-"
