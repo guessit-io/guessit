@@ -31,3 +31,21 @@ def monkeypatch_rebulk() -> None:
         return ret
 
     Match.advanced = match_advanced  # type: ignore[attr-defined]
+
+    # Defend against shared-list mutation: a config pattern declaring a list value
+    # (e.g. edition "ultimate-collector'?s?-edition" -> ["Ultimate", "Collector"])
+    # hands the *same* list object to every match. Matches.to_dict aliases that
+    # list into its result and appends sibling values to it in place, which mutates
+    # the shared config list and leaks into later guesses. Returning a fresh copy
+    # of list values keeps the config immutable. See guessit-io/guessit#822.
+    _rebulk_value = Match.value  # the original property (preserves formatter logic)
+
+    def value_getter(self: Match) -> Any:
+        value = _rebulk_value.fget(self)  # type: ignore[attr-defined]
+        return list(value) if isinstance(value, list) else value
+
+    Match.value = property(  # type: ignore[method-assign,assignment]
+        value_getter,
+        _rebulk_value.fset,  # type: ignore[attr-defined]
+        _rebulk_value.fdel,  # type: ignore[attr-defined]
+    )

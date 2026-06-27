@@ -9,6 +9,16 @@ So, for instance,
 -   `1920x1080` will be guessed as `screen_size` = `1080p`
 -   `DD5.1` will be guessed as `audio_codec` = `Dolby Digital` + `audio_channels` = `5.1`
 
+A machine-readable description of every property is shipped alongside this page:
+
+-   `guessit.GUESSIT_SCHEMA` — a Python mapping of each property to its type,
+    cardinality and (for closed vocabularies) allowed values.
+-   `guessit/data/output-schema.json` — the same information as a
+    [JSON Schema](https://json-schema.org/) (draft-07) describing guessit's output.
+
+Both are generated from the rules by `scripts/gen_schema.py`; a test fails if they
+drift. The list below is the human-friendly counterpart.
+
 Main properties
 ---------------
 
