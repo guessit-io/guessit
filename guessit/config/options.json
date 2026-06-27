@@ -290,7 +290,8 @@
         "s"
       ],
       "season_ep_markers": [
-        "x"
+        "x",
+        "×"
       ],
       "disc_markers": [
         "d"
@@ -300,7 +301,8 @@
         "ex",
         "ep",
         "e",
-        "x"
+        "x",
+        "×"
       ],
       "range_separators": [
         "-",

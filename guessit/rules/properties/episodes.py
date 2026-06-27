@@ -190,6 +190,14 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         )
     )
 
+    # CJK (Japanese) episode/season markers (upstream #671, #763).
+    # The glyphs never appear in Latin tokens, so no seps-surround validation is needed.
+    rebulk.regex(r"第(?P<episode>\d{1,4})話", tags=["SxxExx"], disabled=is_season_episode_disabled)
+    rebulk.regex(
+        r"(?:シーズン|シリーズ)(?P<season>\d{1,2})(?!\d)", tags=["SxxExx"], disabled=is_season_episode_disabled
+    )
+    rebulk.regex(r"(?<!\d)(?P<season>\d{1,2})期", tags=["SxxExx"], disabled=is_season_episode_disabled)
+
     # S01E02, 01x02, S01S02S03
     rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["SxxExx"],
