@@ -1880,3 +1880,23 @@
   release_group: DON
   container: mkv
   type: movie
+
+# guessit-js parity — MicroHD / HDlite regex form (#818)
+
+? Some.Movie.2019.Micro-HD.1080p.x264-GRP.mkv
+: title: Some Movie
+  year: 2019
+  other: Micro HD
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+? Barbecue-2014-French-mHD-1080p
+: title: Barbecue
+  year: 2014
+  language: fr
+  other: Micro HD
+  screen_size: 1080p
+  type: movie
