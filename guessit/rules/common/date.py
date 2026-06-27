@@ -35,7 +35,7 @@ date_regexps = [
 
 def valid_year(year: int) -> bool:
     """Check if number is a valid year"""
-    return 1920 <= year < 2030
+    return 1900 <= year < 2035
 
 
 def valid_week(week: int) -> bool:
