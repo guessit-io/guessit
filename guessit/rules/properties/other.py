@@ -44,6 +44,7 @@ def other(config: dict[str, Any]) -> Rebulk:
     rebulk.rules(
         RenameAnotherToOther,
         AppendCreditless,
+        AppendOpedEndingCredits,
         ValidateHasNeighbor,
         ValidateHasNeighborAfter,
         ValidateHasNeighborBefore,
@@ -286,6 +287,30 @@ class AppendCreditless(Rule):
             if raw.startswith("nc") or "creditless" in raw:
                 to_append.append(
                     Match(match.start, match.end, name="other", value="Creditless", input_string=matches.input_string)
+                )
+        return to_append
+
+
+class AppendOpedEndingCredits(Rule):
+    """
+    ``OPED`` is the combined opening *and* ending sequence, so it carries both
+    `Opening Credits` (already matched) and `Ending Credits`. This adds the
+    missing `Ending Credits` value over the same span.
+    """
+
+    priority = POST_PROCESS
+    consequence = AppendMatch
+
+    properties = {"other": ["Ending Credits"]}
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_append: list[Match] = []
+        for match in matches.named("other", predicate=lambda m: m.value == "Opening Credits"):
+            if re.sub(r"[\s._-]+", "", (match.raw or "").lower()) == "oped":
+                to_append.append(
+                    Match(
+                        match.start, match.end, name="other", value="Ending Credits", input_string=matches.input_string
+                    )
                 )
         return to_append
 

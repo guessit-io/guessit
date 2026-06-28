@@ -1307,12 +1307,15 @@
   container: mkv
   type: episode
 
-# OPED is the combined opening+ending sequence, not a creditless one.
+# OPED is the combined opening+ending sequence (both credits), not creditless.
 ? Show.Name.S01E01.OPED.1080p.x264-GRP.mkv
 : title: Show Name
   season: 1
   episode: 1
-  other: Opening Credits
+  other:
+  - Opening Credits
+  - Ending Credits
+  -other: Creditless
   screen_size: 1080p
   video_codec: H.264
   release_group: GRP
