@@ -668,6 +668,19 @@
   screen_size: 720p
   title: Happiness Charge Precure
 
+# #741: a trailing "up" (upscaled) marker glued to a WxH resolution must still resolve to the
+# screen_size; the malformed token must not be left over to shadow the real release group [BOIL].
+? '[BOIL] Inazuma Eleven - Choujigen Dream Match (DVDrip 1280x720up) [B97A2B39].mkv'
+: title: Inazuma Eleven
+  episode_title: Choujigen Dream Match
+  source: DVD
+  other: Rip
+  screen_size: 720p
+  release_group: BOIL
+  crc32: B97A2B39
+  container: mkv
+  type: episode
+
 ? "[Daisei] Free!：Iwatobi Swim Club - 01 ~ (BD 720p 10-bit AAC) [99E8E009].mkv"
 : audio_codec: AAC
   crc32: 99E8E009

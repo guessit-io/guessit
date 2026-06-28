@@ -2005,3 +2005,13 @@
   source: Laserdisc
   video_codec: H.264
   -other: Rip
+
+# #79: a weak "LiNE" token mid-name must not truncate the title; the whole title is kept.
+? Dr.Line.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
+: title: Dr Line Seuss The Lorax
+  year: 2012
+  source: DVD
+  video_codec: Xvid
+  audio_codec: Dolby Digital
+  release_group: Hive-CM8
+  type: movie
