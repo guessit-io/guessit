@@ -95,3 +95,6 @@ Tests live in `guessit/test/`. The YAML files (`episodes.yml`, `movies.yml`, `va
   hook (`.pre-commit-config.yaml`) and in CI by the `commitizen` job (`cz check`).
   Config: `[tool.commitizen]` in `pyproject.toml`. Versioning/releases stay owned
   by python-semantic-release, not commitizen.
+- To auto-close the related issue when a PR merges, use a GitHub closing keyword
+  (`closes #NNN` / `fixes #NNN`) in the commit message or PR body. A bare `(#NNN)`
+  only references the issue — it does **not** close it.
