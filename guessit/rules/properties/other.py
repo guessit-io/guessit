@@ -39,8 +39,12 @@ def other(config: dict[str, Any]) -> Rebulk:
 
     load_config_patterns(rebulk, config.get("other"))
 
+    opening_ending_credits(rebulk)
+
     rebulk.rules(
         RenameAnotherToOther,
+        AppendCreditless,
+        AppendOpedEndingCredits,
         ValidateHasNeighbor,
         ValidateHasNeighborAfter,
         ValidateHasNeighborBefore,
@@ -55,6 +59,62 @@ def other(config: dict[str, Any]) -> Rebulk:
     )
 
     return rebulk
+
+
+#: Ordinal of an opening/ending sequence, e.g. ``2`` in ``OP02`` or ``4a`` in
+#: ``OP4a``. Kept as a string because of the variant-letter forms (``4a``, ``1a``).
+#: The leading version ``v`` is excluded so ``ED2v2`` yields number ``2``, version ``2``.
+#: ``[^\W\d_]`` (a letter) avoids a ``-`` range, which the ``dash`` abbreviation
+#: would otherwise rewrite into a broken nested character set.
+_CREDITS_NUMBER = r"(?P<credits_number>\d+(?:(?![vV]\d)[^\W\d_])?)?"
+#: Optional version suffix glued to an opening/ending token, e.g. ``v2`` in ``ED2v2``.
+_CREDITS_VERSION = r"(?:-?[vV](?P<version>\d+))?"
+_CREDITS_SUFFIX = _CREDITS_NUMBER + _CREDITS_VERSION
+
+
+def _format_credits_number(value: str) -> str:
+    """Normalize an opening/ending ordinal: drop leading zeros, keep the variant letter."""
+    match = re.match(r"(\d+)(\w?)$", value)
+    if not match:
+        return value
+    number, letter = str(match.group(1)), str(match.group(2))
+    return str(int(number)) + letter.lower()
+
+
+def opening_ending_credits(rebulk: Rebulk) -> None:
+    """
+    Match anime opening/ending credit sequences (OP/ED, NCOP/NCED, creditless…).
+
+    Emits ``other: Opening Credits`` / ``Ending Credits`` plus, when present, the
+    sequence ordinal as ``credits_number`` (string, e.g. ``4a``) and the ``version``.
+    The bare two-letter ``OP``/``ED`` tokens are matched case-sensitively (uppercase
+    only) so common mixed-case words such as the name "Ed" are never captured; the
+    unambiguous NC*/creditless forms stay case-insensitive.
+    """
+
+    def add(pattern: str, value: str, *, ignore_case: bool) -> None:
+        rebulk.regex(
+            "(?P<other>" + pattern + ")" + _CREDITS_SUFFIX,
+            flags=re.IGNORECASE if ignore_case else 0,
+            name="other",
+            children=True,
+            private_parent=True,
+            validate_all=True,
+            validator={"__parent__": seps_surround},
+            formatter={
+                "other": lambda _match, value=value: value,
+                "credits_number": _format_credits_number,
+                "version": int,
+            },
+            disabled=lambda context: is_disabled(context, "other"),
+        )
+
+    # NC*/creditless forms are unambiguous — match them case-insensitively.
+    add(r"NC-?OP|creditless-?op(?:ening)?", "Opening Credits", ignore_case=True)
+    add(r"NC-?ED|creditless-?(?:ed|ending)", "Ending Credits", ignore_case=True)
+    # Bare uppercase tokens. OPED is the combined opening+ending sequence (not creditless).
+    add(r"OPED|OP", "Opening Credits", ignore_case=False)
+    add(r"ED", "Ending Credits", ignore_case=False)
 
 
 #: Artwork file-name keywords mapped to their canonical ``other`` value.
@@ -198,6 +258,61 @@ class ImageArtKeywordToOther(Rule):
         if to_remove or to_append:
             return to_remove, to_append
         return None
+
+
+class AppendCreditless(Rule):
+    """
+    Surface a `Creditless` other value for creditless opening/ending tokens.
+
+    The `Opening Credits` / `Ending Credits` matches conflate two facts: which
+    sequence it is (opening vs ending) and whether it is creditless (no text
+    overlay, the ``NC``/``creditless`` forms). This rule keeps opening/ending in
+    its existing match and adds a separate `Creditless` value over the same span
+    so the creditless attribute is distinguishable. The combined ``OPED`` token
+    is opening+ending, not creditless, so it is left untouched.
+
+    Runs at POST_PROCESS so a credits match removed by the has-neighbor
+    validators never leaves an orphan `Creditless` behind.
+    """
+
+    priority = POST_PROCESS
+    consequence = AppendMatch
+
+    properties = {"other": ["Creditless"]}
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_append: list[Match] = []
+        for match in matches.named("other", predicate=lambda m: m.value in ("Opening Credits", "Ending Credits")):
+            raw = re.sub(r"[\s._-]+", "", (match.raw or "").lower())
+            if raw.startswith("nc") or "creditless" in raw:
+                to_append.append(
+                    Match(match.start, match.end, name="other", value="Creditless", input_string=matches.input_string)
+                )
+        return to_append
+
+
+class AppendOpedEndingCredits(Rule):
+    """
+    ``OPED`` is the combined opening *and* ending sequence, so it carries both
+    `Opening Credits` (already matched) and `Ending Credits`. This adds the
+    missing `Ending Credits` value over the same span.
+    """
+
+    priority = POST_PROCESS
+    consequence = AppendMatch
+
+    properties = {"other": ["Ending Credits"]}
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_append: list[Match] = []
+        for match in matches.named("other", predicate=lambda m: m.value == "Opening Credits"):
+            if re.sub(r"[\s._-]+", "", (match.raw or "").lower()) == "oped":
+                to_append.append(
+                    Match(
+                        match.start, match.end, name="other", value="Ending Credits", input_string=matches.input_string
+                    )
+                )
+        return to_append
 
 
 class RenameAnotherToOther(Rule):

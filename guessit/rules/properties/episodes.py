@@ -475,10 +475,14 @@ class WeakConflictSolver(Rule):
 
         Anime characteristics:
             - version, crc32 matches
+            - opening/ending credits (NCOP/NCED…), near-exclusive to anime
             - screen_size inside brackets
             - release_group at start and inside brackets
         """
         if matches.named("version") or matches.named("crc32"):
+            return True
+
+        if matches.named("other", predicate=lambda m: m.value in ("Opening Credits", "Ending Credits")):
             return True
 
         for group in matches.markers.named("group"):
