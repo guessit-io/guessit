@@ -562,7 +562,7 @@ class ExtendLoneArticleTitle(Rule):
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         input_string = matches.input_string or ""
         ret: list[tuple[Match, Match]] = []
-        for title_match in (*matches.named("title"), *matches.named("episode_title")):
+        for title_match in matches.named("title", "episode_title"):
             if str(title_match.value or "").strip().lower() not in ARTICLES:
                 continue
             filepart = matches.markers.at_match(title_match, lambda m: m.name == "path", 0)
