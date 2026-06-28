@@ -1322,6 +1322,19 @@
   release_group: ASDF
   type: movie
 
+? Some.Movie.2017.2160p.UHD.BluRay.DTS-HD.MA.5.1.DoVi.x265-NoGroup
+: title: Some Movie
+  year: 2017
+  screen_size: 2160p
+  source: Ultra HD Blu-ray
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
+  audio_channels: '5.1'
+  other: [Dolby Vision]
+  video_codec: H.265
+  release_group: NoGroup
+  type: movie
+
 ? How To Steal A Dog.2014.BluRay.1080p.12bit.HEVC.OPUS 5.1-Hn1Dr2.mkv
 : title: How To Steal A Dog
   year: 2014
