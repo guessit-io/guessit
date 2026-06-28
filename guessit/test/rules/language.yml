@@ -66,3 +66,8 @@
 ? Garfield.It.srt
 : title: Garfield It
   -subtitle_language: it
+
+# regression anchor (#668): a lowercase language code before a subtitle extension is kept
+? Show.S01E01.Some.Title.it.srt
+: subtitle_language: Italian
+  episode_title: Some Title
