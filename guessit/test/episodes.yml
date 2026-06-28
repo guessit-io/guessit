@@ -5063,3 +5063,15 @@
   episode_title: Absolutely Lovely! Their Name Is The Children
   container: mkv
   type: episode
+
+# #627: with `-t episode`, the single-digit episode rule must not steal the digit prefix of an
+# obfuscated dash-separated release group ("...x264.1-URANiME-Obfuscated"). Result matches auto.
+? Kemono.Michi.Rise.Up.E03.1080p.WEB.x264.1-URANiME-Obfuscated
+: options: -t episode
+  title: Kemono Michi Rise Up
+  episode: 3
+  release_group: 1-URANiME
+  source: Web
+  video_codec: H.264
+  other: Obfuscated
+  -episode_title: URANiME
