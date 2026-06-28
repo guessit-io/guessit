@@ -24,6 +24,7 @@ nav:
   - Properties: properties.md
   - Sources: sources.md
   - Configuration: configuration.md
+  - Known limitations: known-limitations.md
   - Migration (2.x to 3.x): migration2to3.md
   - Migration (1.x to 2.x): migration.md
 
