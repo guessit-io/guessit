@@ -51,6 +51,7 @@ def screen_size(config: dict[str, Any]) -> Rebulk:
     progressive_pattern = build_or_pattern(progressive, name="height")
 
     res_pattern = r"(?:(?P<width>\d{3,4})(?:x|\*|×))?"  # noqa: RUF001  # U+00D7 resolution separator
+    upscaled = r"(?:up)?"  # tolerate a trailing "up" (upscaled) marker glued to the resolution (#741)
     rebulk.regex(res_pattern + interlaced_pattern + r"(?P<scan_type>i)" + frame_rate_pattern + "?")
     rebulk.regex(res_pattern + progressive_pattern + r"(?P<scan_type>p)" + frame_rate_pattern + "?")
     rebulk.regex(res_pattern + progressive_pattern + r"(?P<scan_type>p)?(?:hd)")
@@ -61,7 +62,7 @@ def screen_size(config: dict[str, Any]) -> Rebulk:
         conflict_solver=lambda match, other: "__default__" if other.name == "screen_size" else match,
     )
     rebulk.regex(
-        r"(?P<width>\d{3,4})-?(?:x|\*|×)-?(?P<height>\d{3,4})",  # noqa: RUF001  # U+00D7 separator
+        r"(?P<width>\d{3,4})-?(?:x|\*|×)-?(?P<height>\d{3,4})" + upscaled,  # noqa: RUF001  # U+00D7 separator
         conflict_solver=lambda match, other: "__default__" if other.name == "screen_size" else other,
     )
 

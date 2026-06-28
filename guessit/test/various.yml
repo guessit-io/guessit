@@ -947,6 +947,13 @@
   audio_codec: DTS-HD
   type: movie
 
+# #693: a decimal frame rate with an FPS suffix must be read as frame_rate, not split into
+# season/episode numbers ("23.976" -> S9 E[23,76]).
+? Gladiator 23.976 FPS
+: title: Gladiator
+  frame_rate: 23.976fps
+  type: movie
+
 ? Mr Robot - S03E01 - eps3 0 power-saver-mode h (1080p AMZN WEB-DL x265 HEVC 10bit EAC3 6.0 RCVR).mkv
 : title: Mr Robot
   season: 3
