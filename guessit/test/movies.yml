@@ -1989,3 +1989,19 @@
   year: 2023
   release_group: GROUP
   -country: US
+
+# #791 (by @plotski): Laserdisc source. Bare "LD" is also "Line Dubbed", so it only counts
+# as Laserdisc with a Rip suffix; the full word matches with or without it.
+? Some.Title.1983.LDRip.x264-GRP.mkv
+: title: Some Title
+  year: 1983
+  source: Laserdisc
+  other: Rip
+  video_codec: H.264
+
+? Some.Title.1983.Laserdisc.x264-GRP.mkv
+: title: Some Title
+  year: 1983
+  source: Laserdisc
+  video_codec: H.264
+  -other: Rip

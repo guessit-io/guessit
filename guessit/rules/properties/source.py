@@ -89,6 +89,13 @@ def source(config: dict[str, Any]) -> Rebulk:
         value={"source": "Digital TV", "other": "Rip"},
     )
     rebulk.regex(*build_source_pattern("DVD", suffix=optional(rip_suffix)), value={"source": "DVD", "other": "Rip"})
+    # "LD" alone also means "Line Dubbed", so a bare "LD" is only read as Laserdisc with a Rip
+    # suffix; the full "Laserdisc" word is unambiguous and matches with or without the suffix.
+    rebulk.regex(*build_source_pattern("LD", suffix=rip_suffix), value={"source": "Laserdisc", "other": "Rip"})
+    rebulk.regex(
+        *build_source_pattern("LASERDISC", suffix=optional(rip_suffix)),
+        value={"source": "Laserdisc", "other": "Rip"},
+    )
     rebulk.regex(
         *build_source_pattern("DM", suffix=optional(rip_suffix)), value={"source": "Digital Master", "other": "Rip"}
     )
