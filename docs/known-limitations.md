@@ -152,6 +152,32 @@ A trailing `720` is simultaneously a plausible `720p` resolution, an absolute ep
 `7x20` season/episode. guessit picks one (`7x20`); the choice is anchored by a fixture but cannot be
 "correct" for every release. Add the missing `p` (`720p`) or an `Exx` marker to disambiguate.
 
+### #693 — a bare resolution or duration number read as season/episode
+
+```
+Gladiator.EXTENDED.2000.720.BrRip.264.YIFY   -> season: 7   episode: 20    (wrong)
+Gladiator.EXTENDED.2000.1080.BrRip.264.YIFY  -> season: 10  episode: 80    (wrong)
+Aliens DVD Silver Box Set 131 Min            -> season: 1   episode: 31    (wrong)
+  wanted -> no season/episode (these are movies)
+```
+
+The same shape as #533: a bare `720` / `1080` (resolution without the `p`) or a stray duration
+(`131 Min`) is structurally a `season+episode` split (`7x20`, `10x80`, `1x31`). Nothing local marks
+them as a resolution or a runtime. The related **frame-rate** form *is* handled — `Gladiator 23.976
+FPS` correctly yields `frame_rate: 23.976fps` because the `FPS` suffix disambiguates it.
+
+### #637 — a one-letter title followed by a number
+
+```
+E.60.2020.02.16.Remembering.Coach.Alto.720p.ESPN.WEB-DL.AAC2.0.H.264-KiMCHi.mkv
+  title: "E"   episode: 60                                 (wrong)
+  wanted -> title: "E 60"   (the show "E:60", with no episode)
+```
+
+The show *E:60* is released as `E.60` (the `:` is illegal in filenames). A single-letter token
+followed by a one/two-digit number is byte-for-byte a `title + episode` shape; there is no local
+signal that `E 60` is the whole title rather than episode `60` of a show called `E`.
+
 ## Anime titles containing a ` - ` separator
 
 ```
@@ -164,6 +190,34 @@ A trailing `720` is simultaneously a plausible `720p` resolution, an absolute ep
 ` - ` (`Garo - Vanishing Line`, `Uma Musume - Pretty Derby`). There is no structural way to tell a
 name-internal dash from a real title/alt-title boundary, so the name is split. These are anchored by
 fixtures as the accepted behaviour.
+
+### #690 — `Season N - M` read as a season range
+
+```
+[Golumpa] Re ZERO -Starting Life in Another World- Season 2 - 15 [CR-Dub 1080p x264].mkv
+  season: [2, 3, …, 15]                                    (wrong)
+  wanted -> season: 2   episode: 15
+```
+
+`Season N - M` is read as the season range `N`→`M`. This is **not** safely fixable because the very
+same shape is a legitimate season *pack* elsewhere in the corpus — `Coupling Season 1 - 4 Complete
+DVDRip/…` is anchored as season `1`→`4`. Nothing structural distinguishes "season 2, episode 15"
+from "seasons 2 through 15"; the dashes inside the *Re:ZERO* title only make the ambiguity more
+visible. Use an explicit `SxxExx` (`S02E15`) to disambiguate.
+
+## A leading language / country code consumed from the title
+
+```
+HI.SCORE.GIRL.II.S01E01-E09.Blu-ray.MKV.h264.1080p.FLAC2.0-SonicBoom
+  language: hi   title: "SCORE GIRL II"                    (#660, wrong)
+  wanted -> title: "HI SCORE GIRL II"   (the show "High Score Girl")
+```
+
+`HI` is the ISO-639 code for Hindi, and it sits where a language tag legitimately can. The show
+*HI SCORE GIRL* (stylised *High Score Girl*) opens with that exact token, so the language match eats
+the first title word. This is the same class as the `Us` / country case (#739): a short token that
+is simultaneously a valid code and a real title word, with no local signal to tell them apart. The
+`expected_title` option (`HI SCORE GIRL`) resolves it at call time.
 
 ## Release group boundaries
 
