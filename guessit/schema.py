@@ -341,6 +341,7 @@ GUESSIT_SCHEMA: dict[str, PropertySchema] = {
             "HD Telesync",
             "HD-DVD",
             "HDTV",
+            "Laserdisc",
             "Pay-per-view",
             "Satellite",
             "TV",
