@@ -47,7 +47,10 @@ RELEASE_TAG_MARKERS = ("release-group-prefix", "streaming_service.prefix", "stre
 # ("with" for "It Ends With Us" #789, "no" for "Oshi no Ko" #745). Other prepositions
 # (in/of/to/at/by/...) are excluded to avoid swallowing a genuine trailing country tag
 # such as "Shameless.in.Us" (where ".Us" is the country variant, not part of the title).
-TITLE_STOP_WORDS = frozenset({"the", "a", "an", "le", "la", "les", "el", "de", "du", "des", "with", "no"})
+# Words a title can legitimately end on before a Title-Case token that merely looks like a
+# country/language ("It Ends With Us", "The Last of Us"). Kept deliberately small: "in" is
+# excluded so "Shameless.in.Us" still resolves country US (see episodes.yml regression anchor).
+TITLE_STOP_WORDS = frozenset({"the", "a", "an", "le", "la", "les", "el", "de", "du", "des", "with", "of", "no"})
 
 
 def title(config: dict[str, Any]) -> Rebulk:
