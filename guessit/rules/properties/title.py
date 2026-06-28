@@ -43,10 +43,37 @@ RELEASE_TAG_MARKERS = ("release-group-prefix", "streaming_service.prefix", "stre
 
 # Stop-words a title may legitimately end on: refuse cropping a trailing Title-Case
 # language/country that would otherwise leave the title ending on one of these
-# ("It Ends With Us" #789, "The Last of Us" #739, "Oshi no Ko" #745). Kept deliberately
-# narrow — "in" is excluded so "Shameless.in.Us" still resolves country US (see the
-# regression anchor in episodes.yml).
-TITLE_STOP_WORDS = frozenset({"the", "a", "an", "le", "la", "les", "el", "de", "du", "des", "with", "of", "no"})
+# ("It Ends With Us" #789, "The Last of Us" #739, "Oshi no Ko" #745). Kept in sync with
+# guessit-js (src/rules/properties/title.ts) for parity. An uppercase tag ("...US") is still
+# kept as a country by the Title-Case guard in KeepTrailingStopWordTitle.
+TITLE_STOP_WORDS = frozenset(
+    {
+        "the",
+        "a",
+        "an",
+        "and",
+        "or",
+        "of",
+        "to",
+        "in",
+        "on",
+        "at",
+        "for",
+        "from",
+        "by",
+        "with",
+        "into",
+        "onto",
+        "no",
+        "le",
+        "la",
+        "les",
+        "de",
+        "du",
+        "des",
+        "el",
+    }
+)
 
 
 def title(config: dict[str, Any]) -> Rebulk:

@@ -4932,11 +4932,18 @@
   season: 1
   episode: 3
 
-# #812 review: a trailing country tag after a non-target preposition stays country
-# ("in" does NOT trigger the stop-word merge), and a bracketed [Us] is never merged
+# #812 parity (guessit-js stop-word set): a preposition like "in" before a Title-Case "Us"
+# keeps it in the title; only an uppercase tag (The.Office.US above) or a bracketed [Us]
+# stays a country.
 ? Shameless.in.Us.S01E01.mkv
-: title: Shameless in
-  country: US
+: title: Shameless in Us
+  season: 1
+  episode: 1
+  -country: US
+
+# guard: a bracketed [Us] is a deliberate country tag, never merged into the title
+? Shameless.in.[Us].S01E01.mkv
+: country: US
   season: 1
   episode: 1
   -title: Shameless in Us
