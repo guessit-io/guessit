@@ -22,6 +22,42 @@ if TYPE_CHECKING:
     from rebulk.match import Match, Matches
 
 
+def _parent_title_hole(matches: Matches, start: int, end: int) -> Match | None:
+    """Title hole in a parent filepart, keeping a dash-joined name (e.g. "Adam-12") whole.
+
+    ``matches.holes`` splits on ``title_seps`` (the dash included), so without this a
+    name like "Adam-12" is truncated to its first hole "Adam"; merge the consecutive
+    leading holes joined by a single "-" the same way :class:`TitleBaseRule` does when it
+    builds a title in place (upstream #796).
+    """
+    holes = matches.holes(
+        start,
+        end,
+        ignore=or_(lambda match: "weak-episode" in match.tags, TitleBaseRule.is_ignored),
+        formatter=cleanup,
+        seps=title_seps,
+        predicate=lambda match: match.value,
+    )
+    if not holes:
+        return None
+    hole = holes[0]
+    input_string = matches.input_string or ""
+    for next_hole in holes[1:]:
+        separator = input_string[hole.end : next_hole.start]
+        if (
+            len(separator) == 1
+            and separator == "-"
+            and hole.raw is not None
+            and hole.raw[-1] not in seps
+            and next_hole.raw is not None
+            and next_hole.raw[0] not in seps
+        ):
+            hole.end = next_hole.end
+        else:
+            break
+    return hole
+
+
 def episode_title(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
@@ -354,15 +390,7 @@ class Filepart3EpisodeTitle(Rule):
             season = matches.range(directory.start, directory.end, lambda match: match.name == "season", 0)
 
             if season:
-                hole = matches.holes(
-                    subdirectory.start,
-                    subdirectory.end,
-                    ignore=or_(lambda match: "weak-episode" in match.tags, TitleBaseRule.is_ignored),
-                    formatter=cleanup,
-                    seps=title_seps,
-                    predicate=lambda match: match.value,
-                    index=0,
-                )
+                hole = _parent_title_hole(matches, subdirectory.start, subdirectory.end)
                 if hole:
                     return hole
         return None
@@ -415,15 +443,7 @@ class Filepart2EpisodeTitle(Rule):
             ) or matches.range(filename.start, filename.end, lambda match: match.name == "season", 0)
             # Absolute numbering (no season anywhere) still puts the title in the parent directory.
             if season or not matches.named("season"):
-                hole = matches.holes(
-                    directory.start,
-                    directory.end,
-                    ignore=or_(lambda match: "weak-episode" in match.tags, TitleBaseRule.is_ignored),
-                    formatter=cleanup,
-                    seps=title_seps,
-                    predicate=lambda match: match.value,
-                    index=0,
-                )
+                hole = _parent_title_hole(matches, directory.start, directory.end)
                 if hole:
                     hole.tags.append("filepart-title")
                     return hole
