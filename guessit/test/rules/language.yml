@@ -71,3 +71,14 @@
 ? Show.S01E01.Some.Title.it.srt
 : subtitle_language: Italian
   episode_title: Some Title
+
+# anchor (#668 boundary): the common-word filter still suppresses a stray language code mid-name
+# in a video file — only a subtitle extension (or a non-common code) keeps it
+? Show.no.Way.Home.2021.1080p.mkv
+: title: Show no Way Home
+  -language: Norwegian
+  -subtitle_language: Norwegian
+
+# anchor: a real (non-common-word) language is unaffected by the filter
+? Show.S01E01.German.1080p.WEB-DL.mkv
+: language: German

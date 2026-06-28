@@ -5008,3 +5008,15 @@
   season: 3
   episode: 8
   -season: 5
+
+# anchor: the common "season folder + episode-numbered file" layout still combines correctly —
+# season from the directory, episode from the filename (#797 weight change must not break this)
+? Friends S03/Friends - 07 - The One.mkv
+: title: Friends
+  season: 3
+  episode: 7
+
+# anchor: a parent directory still provides the season when the filename carries none
+? The Wire Season 3/The Wire - Episode Name.mkv
+: title: The Wire
+  season: 3
