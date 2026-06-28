@@ -41,15 +41,11 @@ ARTICLES = frozenset({"the", "a", "an", "le", "la", "les", "el", "los", "las", "
 # relabelled as the title even when it sits at the title position.
 RELEASE_TAG_MARKERS = ("release-group-prefix", "streaming_service.prefix", "streaming_service.suffix")
 
-# Stop-words a title should not end on; used to refuse cropping a trailing language/country
-# that would otherwise leave the title ending on one of these (e.g. "It Ends With Us").
-# Kept deliberately narrow: articles plus the two words the documented targets need
-# ("with" for "It Ends With Us" #789, "no" for "Oshi no Ko" #745). Other prepositions
-# (in/of/to/at/by/...) are excluded to avoid swallowing a genuine trailing country tag
-# such as "Shameless.in.Us" (where ".Us" is the country variant, not part of the title).
-# Words a title can legitimately end on before a Title-Case token that merely looks like a
-# country/language ("It Ends With Us", "The Last of Us"). Kept deliberately small: "in" is
-# excluded so "Shameless.in.Us" still resolves country US (see episodes.yml regression anchor).
+# Stop-words a title may legitimately end on: refuse cropping a trailing Title-Case
+# language/country that would otherwise leave the title ending on one of these
+# ("It Ends With Us" #789, "The Last of Us" #739, "Oshi no Ko" #745). Kept deliberately
+# narrow — "in" is excluded so "Shameless.in.Us" still resolves country US (see the
+# regression anchor in episodes.yml).
 TITLE_STOP_WORDS = frozenset({"the", "a", "an", "le", "la", "les", "el", "de", "du", "des", "with", "of", "no"})
 
 
