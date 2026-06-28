@@ -42,6 +42,18 @@ Schmigadoon.S02E04.Something.Real.1080p.ATVP.WEB-DL.DDP5.1.H.264-NOGRP
   wanted -> episode_title: "Something Real"  (no other)
 ```
 
+### #739 — a title ending in `Us` read as the US country
+
+```
+The.Last.of.Us.S01E01
+  title: "The Last of"   country: US                       (wrong)
+  wanted -> title: "The Last of Us"
+```
+
+`Us` at the title tail is identical to the `US` country keyword. The standalone case is handled
+(`Us.2019` → title `Us`), but a title that *ends* with `Us` after other words still loses it to the
+country match — the same content-vs-property ambiguity as above.
+
 **Root cause.** `Converted` (`CONVERT`) and `Real`/`Proper` are `has-neighbor` `other` keywords. With
 a neighbour present they match wherever they appear, including mid-title.
 
@@ -128,6 +140,42 @@ structurally matches a `season+episode` split (`20`/`49`). When the real release
 result is correct (`Blade.Runner.2049.2017…` → title `Blade Runner 2049`); without it there is no
 local signal that `2049` is title text. As the reporter notes, disambiguating this reliably needs an
 external database (e.g. IMDb).
+
+### #373 — a title starting with `NxN`
+
+```
+3x3 Eyes (1991)/Season 2/3x3 Eyes - 2x01 - Descent.mkv
+  season: 3   episode: [3, 1]   title: "Eyes"             (wrong)
+  wanted -> title: "3x3 Eyes"   season: 2   episode: 1
+```
+
+The leading `3x3` of the title *3×3 Eyes* is byte-for-byte a `season x episode` marker. Nothing
+local says it is title text rather than `S03E03`.
+
+### #533 — a bare trailing number
+
+```
+One Piece - 720
+  season: 7   episode: 20                                 (one reading)
+  wanted -> episode: 720  *or*  screen_size: 720p  (depending on intent)
+```
+
+A trailing `720` is simultaneously a plausible `720p` resolution, an absolute episode `720`, and a
+`7x20` season/episode. guessit picks one (`7x20`); the choice is anchored by a fixture but cannot be
+"correct" for every release. Add the missing `p` (`720p`) or an `Exx` marker to disambiguate.
+
+## Anime titles containing a ` - ` separator
+
+```
+[HorribleSubs] Garo - Vanishing Line - 01 [1080p].mkv
+  title: "Garo"   alternative_title: "Vanishing Line"     (#524, #670)
+  wanted -> title: "Garo - Vanishing Line"   episode: 1
+```
+
+` - ` is guessit's title / alternative-title separator, but many anime *names* contain a literal
+` - ` (`Garo - Vanishing Line`, `Uma Musume - Pretty Derby`). There is no structural way to tell a
+name-internal dash from a real title/alt-title boundary, so the name is split. These are anchored by
+fixtures as the accepted behaviour.
 
 ## Release group boundaries
 
