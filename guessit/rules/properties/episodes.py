@@ -152,7 +152,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         Validate a season-word number, rejecting a 4-digit year (e.g. "Season 2025").
 
         Only applies to the season WORD chain ("Season N"), not SxxExx, so
-        "S2013E14 -> season 2013" stays unaffected (guessit-js parity, #800).
+        "S2013E14 -> season 2013" stays unaffected (#800).
         """
         raw = match.raw or ""
         if re.match(r"^\d{4}$", raw) and 1900 <= int(raw) <= 2100:

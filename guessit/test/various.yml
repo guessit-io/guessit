@@ -1205,7 +1205,7 @@
   container: mp4
   type: movie
 
-# guessit-js parity — new property / value extraction (#818)
+# new property / value extraction (#818)
 
 ? Show.Name.vol127.1080p.x264-GRP.mkv
 : title: Show Name
@@ -1300,7 +1300,7 @@
   container: mkv
   type: episode
 
-# guessit-js parity — archive / image containers + artwork (#817)
+# archive / image containers + artwork (#817)
 
 ? Show.Name.S01E01.720p.HDTV.x264-GRP.rar
 : title: Show Name
@@ -1360,7 +1360,7 @@
   container: mkv
   type: movie
 
-# guessit-js parity — every archive/image extension is a container (#817)
+# every archive/image extension is a container (#817)
 # (keeps the container enum code-complete; the extension must not leak)
 
 ? Some.Release.2020.1080p.x264-GRP.7z

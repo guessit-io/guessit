@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Tests for the machine-readable property schema (ported from guessit-js)."""
+"""Tests for the machine-readable property schema."""
 
 from __future__ import annotations
 

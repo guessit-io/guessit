@@ -1894,7 +1894,7 @@
   container: mkv
   type: movie
 
-# guessit-js parity — MicroHD / HDlite regex form (#818)
+# MicroHD / HDlite regex form (#818)
 
 ? Some.Movie.2019.Micro-HD.1080p.x264-GRP.mkv
 : title: Some Movie
@@ -1914,7 +1914,7 @@
   screen_size: 1080p
   type: movie
 
-# guessit-js parity — pre-1920 year accepted (#646/#815)
+# pre-1920 year accepted (#646/#815)
 
 ? The.Immigrant.1917.1080p.BluRay.x264-GRP.mkv
 : title: The Immigrant
