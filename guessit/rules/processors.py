@@ -79,7 +79,15 @@ class EquivalentHoles(Rule):
                         if isinstance(current_match.value, str) and hole.value.lower() == current_match.value.lower():
                             if "equivalent-ignore" in current_match.tags:
                                 continue
-                            new_value = _preferred_string(hole.value, current_match.value)
+                            # A release group keeps the casing of the actual match (typically the
+                            # scene tag at the end of the filename); a parent folder with a different
+                            # casing must not override it (upstream #776). _preferred_string favours
+                            # lower-case over upper-case, which is right for titles but wrong here.
+                            new_value = (
+                                current_match.value
+                                if name == "release_group"
+                                else _preferred_string(hole.value, current_match.value)
+                            )
                             if hole.value != new_value:
                                 hole.value = new_value
                             if current_match.value != new_value:

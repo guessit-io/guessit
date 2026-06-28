@@ -232,6 +232,10 @@ class GuessItApi:
         :return:
         :rtype:
         """
+        if string is None:
+            # A bare None is almost always an accidental call (e.g. a missing filename); fail with a
+            # clear message instead of the cryptic internal error report wrapped by GuessitException.
+            raise TypeError("guessit() requires a filename string, got None")
         if isinstance(string, Path):
             try:
                 # Handle path-like object
