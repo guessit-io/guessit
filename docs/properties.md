@@ -114,6 +114,12 @@ Episode properties
     Version of the episode.
 
     -   In anime fansub scene, new versions are released with tag `<episode>v[0-9]`.
+    -   Also applies to opening/ending credit sequences (e.g. `ED2v2`).
+-   **credits\_number**
+
+    Ordinal of an opening/ending credit sequence (see `Opening Credits` /
+    `Ending Credits` in `other`). Kept as a string because of the variant-letter
+    forms (e.g. `2` in `OP02`, `4a` in `OP4a`).
 
 Video properties
 ----------------
@@ -275,5 +281,5 @@ Other properties
 
     Other property will appear under this property.
 
-    -   `2in1`, `3D`, `Audio Fixed`, `Banner`, `Bonus`, `BT.2020`, `Classic`, `Clear Art`, `Clear Logo`, `Colorized`, `Complete`, `Converted`, `Cover`, `Disc Art`, `Documentary`, `Dolby Vision`, `Dual Audio`, `East Coast Feed`, `Ending Credits`, `Extras`, `Fan Subtitled`, `Fanart`, `Fast Subtitled`, `Full HD`, `Hardcoded Subtitles`, `HD`, `HDR10`, `High Frame Rate`, `Hybrid`, `Variable Frame Rate`, `High Quality`, `High Resolution`, `Internal`, `Landscape`, `Line Dubbed`, `Line Audio`, `Logo`, `Mic Dubbed`, `Micro HD`, `Mux`, `NTSC`, `Obfuscated`, `Open Matte`, `Opening Credits`, `Original Aspect Ratio`, `Original Video`, `PAL`, `Poster`, `Preair`, `Proof`, `Proper`, `PS Vita`, `Read NFO`, `Region 5`, `Region C`, `Reencoded`, `Remux`, `Repost`, `Retail`, `Rip`, `Sample`, `Screener`, `SECAM`, `Standard Dynamic Range`, `Straight to Video`, `Sync Fixed`, `Thumbnail`, `Trailer`, `Ultra HD`, `Upscaled`, `Virtual Reality`, `West Coast Feed`, `Widescreen`, `XXX`
+    -   `2in1`, `3D`, `Audio Fixed`, `Banner`, `Bonus`, `BT.2020`, `Classic`, `Clear Art`, `Clear Logo`, `Colorized`, `Complete`, `Converted`, `Cover`, `Creditless`, `Disc Art`, `Documentary`, `Dolby Vision`, `Dual Audio`, `East Coast Feed`, `Ending Credits`, `Extras`, `Fan Subtitled`, `Fanart`, `Fast Subtitled`, `Full HD`, `Hardcoded Subtitles`, `HD`, `HDR10`, `High Frame Rate`, `Hybrid`, `Variable Frame Rate`, `High Quality`, `High Resolution`, `Internal`, `Landscape`, `Line Dubbed`, `Line Audio`, `Logo`, `Mic Dubbed`, `Micro HD`, `Mux`, `NTSC`, `Obfuscated`, `Open Matte`, `Opening Credits`, `Original Aspect Ratio`, `Original Video`, `PAL`, `Poster`, `Preair`, `Proof`, `Proper`, `PS Vita`, `Read NFO`, `Region 5`, `Region C`, `Reencoded`, `Remux`, `Repost`, `Retail`, `Rip`, `Sample`, `Screener`, `SECAM`, `Standard Dynamic Range`, `Straight to Video`, `Sync Fixed`, `Thumbnail`, `Trailer`, `Ultra HD`, `Upscaled`, `Virtual Reality`, `West Coast Feed`, `Widescreen`, `XXX`
 
