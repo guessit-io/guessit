@@ -1454,6 +1454,222 @@
   screen_size: 1080p
   -season: 1920
 
+# === regression anchors for historically-fixed 'Invalid Guess Result' issues ===
+# These bugs were reported and fixed in earlier releases but lacked a corpus fixture.
+# Added while sweeping closed issues; each anchors the now-correct parse for its ticket.
+
+# #659: leading www. website, title after it
+? "www.4MovieRulz.be - Ginny Weds Sunny (2020) 1080p Hindi Proper HDRip x264 DD5.1 - 2.4GB ESub.mkv"
+: title: Ginny Weds Sunny
+  year: 2020
+  website: www.4MovieRulz.be
+  language: hi
+  audio_codec: Dolby Digital
+  audio_channels: "5.1"
+  video_codec: H.264
+  screen_size: 1080p
+  other: [Proper, HD, Rip]
+  proper_count: 1
+  type: movie
+
+# #620: one-word title Us kept (not country)
+? "Us.2019.2160p.BluRay.REMUX.HEVC.DTS-HD.MA.TrueHD.7.1.Atmos-FGT.mkv"
+: title: Us
+  year: 2019
+  release_group: FGT
+  source: Ultra HD Blu-ray
+  audio_codec: [DTS-HD, Dolby TrueHD, Dolby Atmos]
+  audio_channels: "7.1"
+  video_codec: H.265
+  video_profile: High Efficiency Video Coding
+  screen_size: 2160p
+  other: Remux
+  type: movie
+
+# #523: title with year and SxxExx
+? "Next.Of.Kin.2018.S01E04.HDTV.x264-ORGANiC[eztv].mkv"
+: title: Next Of Kin
+  season: 1
+  episode: 4
+  year: 2018
+  release_group: ORGANiC[eztv]
+  source: HDTV
+  video_codec: H.264
+  type: episode
+
+# #505: multi-language list, NTb release group
+? "Test (2013) [WEBDL-1080p] [x264 AC3] [ENG+RU+PT] [NTb].mkv"
+: title: Test
+  year: 2013
+  release_group: NTb
+  language: [en, ru, pt]
+  source: Web
+  audio_codec: Dolby Digital
+  video_codec: H.264
+  screen_size: 1080p
+  type: movie
+
+# #458: CZ language, SDTV group
+? "Goof.Troop.1x24.Waste.Makes.Haste.720p.HDTV.x264.CZ-SDTV"
+: title: Goof Troop
+  season: 1
+  episode: 24
+  episode_title: Waste Makes Haste
+  release_group: SDTV
+  language: cs
+  source: HDTV
+  video_codec: H.264
+  screen_size: 720p
+  type: episode
+
+# #440: episode title with Part 1
+? "Adventure.Time.S08E16.Elements.Part.1.Skyhooks.720p.WEB-DL.AAC2.0.H.264-RTN.mkv"
+: title: Adventure Time
+  season: 8
+  episode: 16
+  episode_title: Elements Part 1 Skyhooks
+  release_group: RTN
+  source: Web
+  audio_codec: AAC
+  audio_channels: "2.0"
+  video_codec: H.264
+  screen_size: 720p
+  type: episode
+
+# #417: READ.NFO + NTSC others
+? "The.Hobbit.The.Battle.Of.The.Five.Armies.2014.READ.NFO.NTSC.DVDR-KART3LDVD"
+: title: The Hobbit The Battle Of The Five Armies
+  year: 2014
+  release_group: KART3LDVD
+  source: DVD
+  other: [Read NFO, NTSC]
+  type: movie
+
+# #413: season-only S01, iP streaming
+? "Special.Forces.Ultimate.Hell.Week.S01.720p.iP.WEBRip.AAC2.0.H.264-BTN"
+: title: Special Forces Ultimate Hell Week
+  season: 1
+  release_group: BTN
+  source: Web
+  audio_codec: AAC
+  audio_channels: "2.0"
+  video_codec: H.264
+  screen_size: 720p
+  other: Rip
+  type: episode
+
+# #303: BS666 group not audio
+? "Banshee.S04E03.1080i.HDTV.DD5.1.H.264-BS666"
+: title: Banshee
+  season: 4
+  episode: 3
+  release_group: BS666
+  source: HDTV
+  audio_codec: Dolby Digital
+  audio_channels: "5.1"
+  video_codec: H.264
+  screen_size: 1080i
+  type: episode
+
+# #298: BATV group
+? "Dark.Net.S01E06.720p.HDTV.x264-BATV"
+: title: Dark Net
+  season: 1
+  episode: 6
+  release_group: BATV
+  source: HDTV
+  video_codec: H.264
+  screen_size: 720p
+  type: episode
+
+# #286: single-letter episode title X
+? "Black.Sails.S02E02.X.1080p.WEB-DL.DD5.1.H.264-BS.mkv"
+: title: Black Sails
+  season: 2
+  episode: 2
+  episode_title: X
+  release_group: BS
+  source: Web
+  audio_codec: Dolby Digital
+  audio_channels: "5.1"
+  video_codec: H.264
+  screen_size: 1080p
+  type: episode
+
+# #269: AC3D audio, DL dual-language
+? "Das.Appartement.GERMAN.AC3D.DL.720p.BluRay.x264-TVP"
+: title: Das Appartement
+  release_group: TVP
+  language: [de, mul]
+  source: Blu-ray
+  audio_codec: Dolby Digital
+  video_codec: H.264
+  screen_size: 720p
+  type: movie
+
+# #234: dashed layout episode title
+? "Californication - S05E09 - At the Movies [HDTV-720p].mkv"
+: title: Californication
+  season: 5
+  episode: 9
+  episode_title: At the Movies
+  source: HDTV
+  screen_size: 720p
+  type: episode
+
+# #220: LD line-dubbed
+? "Doctor.Who.2005.S04E06.FRENCH.LD.DVDRip.XviD-TRACKS.avi"
+: title: Doctor Who
+  season: 4
+  episode: 6
+  year: 2005
+  release_group: TRACKS
+  language: fr
+  source: DVD
+  video_codec: Xvid
+  other: [Line Dubbed, Rip]
+  type: episode
+
+# #245: anime - 01 -> episode
+? "[PuyaSubs!] Digimon Adventure tri - 01 [720p][F9967949].mkv"
+: title: Digimon Adventure tri
+  episode: 1
+  release_group: PuyaSubs!
+  screen_size: 720p
+  type: episode
+
+# #151: h265 prefix not in title
+? "h265 Volte Face 1080p DTS"
+: title: Volte Face
+  audio_codec: DTS
+  video_codec: H.265
+  screen_size: 1080p
+  type: movie
+
+# #328: 5.1Ch audio channels
+? "Show.Name.S02E02.Episode.Title.1080p.WEB-DL.x264.5.1Ch.-.Group"
+: title: Show Name
+  season: 2
+  episode: 2
+  episode_title: Episode Title
+  release_group: Group
+  source: Web
+  audio_channels: "5.1"
+  video_codec: H.264
+  screen_size: 1080p
+  type: episode
+
+# #311: episode range 21.22, VOSTFR
+? "Show.Name.S03E21.22.FASTSUB.VOSTFR.HDTV.XviD.GROUP"
+: title: Show Name
+  season: 3
+  episode: [21, 22]
+  release_group: GROUP
+  source: HDTV
+  video_codec: Xvid
+  other: Fast Subtitled
+  type: episode
+
 # --- #776: a release group casing must follow the actual match (the scene tag at the end of the
 # filename), not a parent folder with a different casing ---
 ? /mnt/user/noxxus/Hellboy.2019.1080p.BluRay.x265-NOXXUS.mkv
