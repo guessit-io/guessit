@@ -201,7 +201,17 @@ class EpisodeTitleFromPosition(TitleBaseRule):
 
         crc32 = matches.named("crc32")
 
-        return bool(episode or crc32)
+        if episode or crc32:
+            return True
+
+        # A release tag (REPACK -> Proper, INTERNAL, ...) can sit between the episode marker and
+        # the episode title (upstream #775: "...S00E01.REPACK.Episode.Title..."). Such a tag is the
+        # hole's immediate predecessor, so the adjacency check above misses the marker; look past it.
+        for previous in reversed(matches.range(0, hole.start, lambda m: not m.private and bool(m.value))):
+            if previous.name in ("other", "proper_count"):
+                continue
+            return previous.named(*self.previous_names)
+        return False
 
     def filepart_filter(self, filepart: Match, matches: Matches) -> bool:
         # Filepart where title was found.

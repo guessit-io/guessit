@@ -39,6 +39,12 @@ def test_pathlike_object() -> None:
     assert "title" in ret
 
 
+def test_none_input() -> None:
+    with pytest.raises(TypeError) as excinfo:
+        guessit(None)  # type: ignore[arg-type]
+    assert "None" in str(excinfo.value)
+
+
 def test_unicode_japanese() -> None:
     ret = guessit("[阿维达].Avida.2006.FRENCH.DVDRiP.XViD-PROD.avi")
     assert ret

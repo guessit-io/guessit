@@ -1670,3 +1670,14 @@
   other: Fast Subtitled
   type: episode
 
+# --- #776: a release group casing must follow the actual match (the scene tag at the end of the
+# filename), not a parent folder with a different casing ---
+? /mnt/user/noxxus/Hellboy.2019.1080p.BluRay.x265-NOXXUS.mkv
+: title: Hellboy
+  year: 2019
+  release_group: NOXXUS
+
+? /mnt/user/noXxus/Hellboy.2019.1080p.BluRay.x265-NOXXUS.mkv
+: title: Hellboy
+  year: 2019
+  release_group: NOXXUS

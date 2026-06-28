@@ -4965,6 +4965,25 @@
   other: Internal
   -episode_title: Winner The Internal
 
+# --- #775: a release tag (REPACK -> Proper, INTERNAL, ...) between the episode marker and the
+# episode title must not hide the title; the tag stays a property and the title is still parsed ---
+? Total.Forgiveness.S00E01.REPACK.Grant.OBrien.Its.All.Love.Full.Stand.up.Set.1080p.DRPO.WEBRip.x265.AAC.2.0-NOXXUS.mkv
+: title: Total Forgiveness
+  season: 0
+  episode: 1
+  episode_title: Grant OBrien Its All Love Full Stand up Set
+  other: [Proper, Rip]
+  proper_count: 1
+  release_group: NOXXUS
+
+? Total.Forgiveness.S00E01.INTERNAL.Grant.OBrien.1080p.x265-NOXXUS.mkv
+: title: Total Forgiveness
+  season: 0
+  episode: 1
+  episode_title: Grant OBrien
+  other: Internal
+  release_group: NOXXUS
+
 # --- #732: a bare "Cam" right after the episode marker is the episode title ---
 # isolated "Cam" (no other release metadata) is reclaimed from source: Camera
 ? Show.S01E01.Cam.mkv

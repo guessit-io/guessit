@@ -170,6 +170,8 @@ Support
 
 This project is hosted on [GitHub](https://github.com/guessit-io/guessit). Feel free to open an issue if you think you have found a bug or something is missing in guessit.
 
+Some filename shapes are inherently ambiguous to a structural parser; the ones guessit deliberately does not resolve are documented on the [known limitations page](./known-limitations.md).
+
 GuessIt relies on [Rebulk](https://github.com/Toilal/rebulk) project for pattern and rules registration.
 
 License
