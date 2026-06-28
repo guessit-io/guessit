@@ -354,12 +354,16 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     ).repeater("?").regex(r"(?P<episodeSeparator>[x-])(?P<episode>\d{3,4})", abbreviations=None).repeater("*")
 
     # 1, 2, 3
+    # The negative lookahead keeps a lone digit immediately glued to a "-<word>" out of the
+    # episode list: that digit is the prefix of a dash-separated release group (e.g. the
+    # obfuscation prefix in "x264.1-URANiME-Obfuscated", #627), not a single-digit episode.
+    # A range ("1-2", digit-dash-digit) is unaffected.
     rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
         tags=["weak-episode"],
         disabled=lambda context: context.get("type") != "episode" or is_disabled(context, "episode"),
-    ).defaults(validator=None, tags=["weak-episode"]).regex(r"(?P<episode>\d)").regex(r"v(?P<version>\d+)").repeater(
-        "?"
-    ).regex(r"(?P<episodeSeparator>[x-])(?P<episode>\d{1,2})", abbreviations=None).repeater("*")
+    ).defaults(validator=None, tags=["weak-episode"]).regex(r"(?P<episode>\d)(?!-[a-z])", abbreviations=None).regex(
+        r"v(?P<version>\d+)"
+    ).repeater("?").regex(r"(?P<episodeSeparator>[x-])(?P<episode>\d{1,2})", abbreviations=None).repeater("*")
 
     # e112, e113, 1e18, 3e19
     rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
