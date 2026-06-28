@@ -523,7 +523,7 @@ class CountryAtTitlePosition(Rule):
         ):
             if not re.match(r"^[A-Z][a-z]+$", candidate.raw or ""):
                 continue
-            if any(tag in candidate.tags for tag in RELEASE_TAG_MARKERS):
+            if candidate.tagged(*RELEASE_TAG_MARKERS):
                 continue
             # A bracketed token ([Us]) is a deliberate tag/group, not the title.
             if matches.markers.at_match(candidate, lambda marker: marker.name == "group", 0):
@@ -639,7 +639,7 @@ class PropertyAtTitlePositionAsTitle(Rule):
             # stays a property, and so does a recognized scene/streaming release tag.
             if not (lead.raw or "").isalpha():
                 continue
-            if any(tag in lead.tags for tag in RELEASE_TAG_MARKERS):
+            if lead.tagged(*RELEASE_TAG_MARKERS):
                 continue
             # A country is the title only when Title-Case ("Us"); an uppercase "US" stays country.
             if lead.name == "country" and not re.match(r"^[A-Z][a-z]+$", lead.raw or ""):
