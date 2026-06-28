@@ -45,3 +45,24 @@
 ? French.Kiss.1995.1080p
 : title: French Kiss
   -language: french
+
+# --- #668: a language glued to a subtitle extension is kept even if it is a common word ---
+# ".no.srt" -> Norwegian subtitle (was dropped by RemoveInvalidLanguages as the common word "no")
+? Show.S01E01.DBRETAiL.no.srt
+: subtitle_language: Norwegian
+  episode_title: DBRETAiL
+
+# but the same common-word code before a video extension is still filtered out
+? Show.S01E01.DBRETAiL.no.mkv
+: -subtitle_language: Norwegian
+  -language: Norwegian
+
+# but a Title-Case token before a subtitle extension is the last title word, not a language
+# ("Dr.No.srt" = the film *Dr. No*, not Norwegian subtitles)
+? Dr.No.srt
+: title: Dr No
+  -subtitle_language: Norwegian
+
+? Garfield.It.srt
+: title: Garfield It
+  -subtitle_language: it
