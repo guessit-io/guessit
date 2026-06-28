@@ -113,7 +113,7 @@ def _complete_properties(ordered: dict[str, Any]) -> dict[str, Any]:
 
     Value-constrained properties advertise their full declared enum (unioned with
     whatever introspection found); every other schema property is guaranteed to be
-    present, with ``[None]`` marking a free/computed value. Mirrors guessit-js.
+    present, with ``[None]`` marking a free/computed value.
     """
     for name, spec in GUESSIT_SCHEMA.items():
         current = ordered.get(name) or []

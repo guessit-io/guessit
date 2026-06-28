@@ -26,7 +26,7 @@ date_regexps = [
     re.compile(
         rf"(?:^|[^\d])((\d{{1,2}}(?:st|nd|rd|th)?{_dsep}(?:[a-z]{{3,10}}){_dsep}\d{{4}}))(?:$|[^\d])", re.IGNORECASE
     ),
-    # month-name first, e.g. "July 30 2021" (guessit-js parity, upstream #708)
+    # month-name first, e.g. "July 30 2021" (upstream #708)
     re.compile(
         rf"(?:^|[^a-z\d])(((?:[a-z]{{3,10}}){_dsep}\d{{1,2}}(?:st|nd|rd|th)?{_dsep}\d{{4}}))(?:$|[^\d])", re.IGNORECASE
     ),

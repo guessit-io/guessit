@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Archive / image / artwork container tests (ported from guessit-js).
+"""Archive / image / artwork container tests.
 
 #272 (archive containers) and #273 (metadata/image files): the extension must be
 recognised as a container and must NOT leak into release_group / title / etc.

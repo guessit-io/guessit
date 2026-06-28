@@ -4784,7 +4784,7 @@
   release_group: NOGRP
   type: episode
 
-# guessit-js parity — a 4-digit year is not a season-word number (#800/#815);
+# a 4-digit year is not a season-word number (#800/#815);
 # with no real season/episode the title falls back to a movie.
 
 ? Show.Name.Season.2025.1080p.WEB-DL.x264-GRP.mkv
@@ -4956,7 +4956,7 @@
   season: 1
   episode: 3
 
-# #812 parity (guessit-js stop-word set): a preposition like "in" before a Title-Case "Us"
+# #812: a preposition like "in" before a Title-Case "Us"
 # keeps it in the title; only an uppercase tag (The.Office.US above) or a bracketed [Us]
 # stays a country.
 ? Shameless.in.Us.S01E01.mkv
@@ -5099,3 +5099,20 @@
   video_codec: H.264
   other: Obfuscated
   -episode_title: URANiME
+
+# #794: a weekday glued to the broadcast date ("Thu.2.Jan.2025") is part of the air-date stamp,
+# not the episode_title; absorbing it into the date frees the real title sitting after the date.
+? A.Place.in.the.Sun.S2025E01.Thu.2.Jan.2025.Mar.Menor.Spain.1080p.ALL4.WEB-DL.AAC2.0.H.264-TBN
+: title: A Place in the Sun
+  season: 2025
+  episode: 1
+  date: 2025-01-02
+  episode_title: Mar Menor Spain
+  screen_size: 1080p
+  streaming_service: Channel 4
+  source: Web
+  audio_codec: AAC
+  audio_channels: '2.0'
+  video_codec: H.264
+  release_group: TBN
+  type: episode
