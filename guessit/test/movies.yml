@@ -1975,3 +1975,10 @@
   year: 2019
   release_group: YIFY
   -release_group: YTS.MX
+
+# regression anchor (#743 boundary): a title ending in a (foreign) article must keep a following
+# real edition as a property, not swallow it into the title (a withdrawn broadening did this).
+? Cinema.Paradiso.La.Extended.1988.1080p.BluRay.x264-GRP.mkv
+: year: 1988
+  edition: Extended
+  -title: Cinema Paradiso La Extended

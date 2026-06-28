@@ -4950,6 +4950,21 @@
   screen_size: 720p
   -other: Converted
 
+# regression anchors (#743 boundary): the lone-article merge must stay scoped — an episode_title
+# that merely *ends* with an article must NOT swallow a following real other/proper word into the
+# title (a broadening that did this was withdrawn from PR #838). Assert the property survives.
+? Game.of.Thrones.S01E09.Baelor.The.Real.1080p.BluRay
+: season: 1
+  episode: 9
+  other: Proper
+  -episode_title: Baelor The Real
+
+? Better.Call.Saul.S04E10.Winner.The.Internal.1080p.WEB
+: season: 4
+  episode: 10
+  other: Internal
+  -episode_title: Winner The Internal
+
 # --- #732: a bare "Cam" right after the episode marker is the episode title ---
 # isolated "Cam" (no other release metadata) is reclaimed from source: Camera
 ? Show.S01E01.Cam.mkv
