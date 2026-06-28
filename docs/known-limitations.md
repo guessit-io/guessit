@@ -42,18 +42,6 @@ Schmigadoon.S02E04.Something.Real.1080p.ATVP.WEB-DL.DDP5.1.H.264-NOGRP
   wanted -> episode_title: "Something Real"  (no other)
 ```
 
-### #739 — a title ending in `Us` read as the US country
-
-```
-The.Last.of.Us.S01E01
-  title: "The Last of"   country: US                       (wrong)
-  wanted -> title: "The Last of Us"
-```
-
-`Us` at the title tail is identical to the `US` country keyword. The standalone case is handled
-(`Us.2019` → title `Us`), but a title that *ends* with `Us` after other words still loses it to the
-country match — the same content-vs-property ambiguity as above.
-
 **Root cause.** `Converted` (`CONVERT`) and `Real`/`Proper` are `has-neighbor` `other` keywords. With
 a neighbour present they match wherever they appear, including mid-title.
 

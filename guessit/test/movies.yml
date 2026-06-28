@@ -1982,3 +1982,10 @@
 : year: 1988
   edition: Extended
   -title: Cinema Paradiso La Extended
+
+# #739: a movie title ending on a stop-word + Title-Case "Us" keeps "Us" in the title
+? The.Last.of.Us.2023.1080p.BluRay.x264-GROUP.mkv
+: title: The Last of Us
+  year: 2023
+  release_group: GROUP
+  -country: US

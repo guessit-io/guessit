@@ -4933,13 +4933,22 @@
   episode: 3
 
 # #812 review: a trailing country tag after a non-target preposition stays country
-# (only "with"/"no" trigger the stop-word merge), and a bracketed [Us] is never merged
+# ("in" does NOT trigger the stop-word merge), and a bracketed [Us] is never merged
 ? Shameless.in.Us.S01E01.mkv
 : title: Shameless in
   country: US
   season: 1
   episode: 1
   -title: Shameless in Us
+
+# #739: a title ending on a stop-word + Title-Case "Us" keeps "Us" in the title (like #789
+# "It Ends With Us"); "of" triggers the KeepTrailingStopWordTitle merge
+? The.Last.of.Us.S01E01.1080p.mkv
+: title: The Last of Us
+  season: 1
+  episode: 1
+  screen_size: 1080p
+  -country: US
 
 # --- #743: a lone article episode_title swallows the following "other" word ---
 # "The" + other "Converted" -> episode_title "The Convert" (ExtendLoneArticleTitle)
