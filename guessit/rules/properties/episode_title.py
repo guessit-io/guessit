@@ -385,6 +385,14 @@ class Filepart2EpisodeTitle(Rule):
 
     If BBBB contains season and episode and AAA contains a hole
     then title is to be found in AAAA.
+
+    or (absolute numbering, common for anime)
+
+    Serie name/01 - episode_title.mkv
+    AAAAAAAAAA/BBBBBBBBBBBBBBBBBBBB
+
+    If BBBB contains an episode and no season exists anywhere
+    then title is to be found in AAAA.
     """
 
     consequence = AppendMatch("title")
@@ -405,7 +413,8 @@ class Filepart2EpisodeTitle(Rule):
             season = matches.range(
                 directory.start, directory.end, lambda match: match.name == "season", 0
             ) or matches.range(filename.start, filename.end, lambda match: match.name == "season", 0)
-            if season:
+            # Absolute numbering (no season anywhere) still puts the title in the parent directory.
+            if season or not matches.named("season"):
                 hole = matches.holes(
                     directory.start,
                     directory.end,

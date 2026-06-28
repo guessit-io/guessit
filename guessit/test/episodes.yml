@@ -5055,3 +5055,11 @@
 ? The Wire Season 3/The Wire - Episode Name.mkv
 : title: The Wire
   season: 3
+
+# #777 (by @zoriya): absolute episode numbering with the title in the parent directory
+? video/zettai karen children/01 - Absolutely Lovely! Their Name Is The Children.mkv
+: title: zettai karen children
+  episode: 1
+  episode_title: Absolutely Lovely! Their Name Is The Children
+  container: mkv
+  type: episode
