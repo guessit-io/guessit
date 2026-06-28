@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Any
 from rebulk import Rebulk, RemoveMatch, Rule
 
 from ...reutils import build_or_pattern
-from ..common import dash
+from ..common import dash, seps
 from ..common.date import search_date, valid_week, valid_year
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
@@ -76,9 +76,59 @@ def date(config: dict[str, Any]) -> Rebulk:
         conflict_solver=lambda match, other: other if other.name in ("episode", "season", "crc32") else "__default__",
     )
 
-    rebulk.rules(KeepMarkedYearInFilepart)
+    rebulk.rules(KeepMarkedYearInFilepart, AbsorbWeekdayPrefix(config["weekday_words"]))
 
     return rebulk
+
+
+class AbsorbWeekdayPrefix(Rule):
+    """
+    Absorb a weekday word glued to a date into the ``date`` match (upstream #794).
+
+    ``A.Place.in.the.Sun.S2025E01.Thu.2.Jan.2025.Mar.Menor.Spain...`` parses ``2 Jan 2025`` as the
+    air date but the leading "Thu" is the broadcast weekday, not the title. The interior date splits
+    the title hole in two, so ``EpisodeTitleFromPosition`` fills the first hole ("Thu") and drops the
+    real title after the date ("Mar Menor Spain"). Growing the date span to cover the adjacent weekday
+    removes that first hole, so the title after the date is reclaimed instead.
+
+    Only a weekday directly preceding the date (separators only between, and not already claimed by
+    another match) is absorbed; the parsed date value is unchanged.
+    """
+
+    consequence = RemoveMatch
+
+    def __init__(self, weekday_words: list[str]) -> None:
+        super().__init__()
+        seps_class = "[" + re.escape(seps) + "]"
+        self.weekday_re = re.compile(
+            r"(?:^|" + seps_class + r")(" + build_or_pattern(weekday_words) + r")" + seps_class + r"*$",
+            re.IGNORECASE,
+        )
+
+    def enabled(self, context: dict[str, Any] | None) -> bool:
+        return not is_disabled(context, "date")
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
+        ret: list[tuple[Match, int]] = []
+        for date_match in matches.named("date"):
+            filepart = matches.markers.at_match(date_match, lambda m: m.name == "path", 0)
+            lower = filepart.start if filepart else 0
+            weekday = self.weekday_re.search(input_string[lower : date_match.start])
+            if not weekday:
+                continue
+            new_start = lower + weekday.start(1)
+            # Only absorb a free weekday word; never swallow a token already claimed by a match.
+            if matches.range(new_start, date_match.start, predicate=lambda m: not m.private):
+                continue
+            ret.append((date_match, new_start))
+        return ret
+
+    def then(self, matches: Matches, when_response: Any, context: dict[str, Any] | None) -> None:
+        for date_match, new_start in when_response:
+            matches.remove(date_match)
+            date_match.start = new_start
+            matches.append(date_match)
 
 
 class KeepMarkedYearInFilepart(Rule):

@@ -881,7 +881,11 @@
       "ZDF": "ZDF"
     },
     "date": {
-      "week_words": ["week"]
+      "week_words": ["week"],
+      "weekday_words": [
+        "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+        "mon", "tue", "tues", "wed", "weds", "thu", "thur", "thurs", "fri", "sat", "sun"
+      ]
     }
   }
 }
