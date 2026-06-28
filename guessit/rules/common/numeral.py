@@ -95,7 +95,9 @@ def __build_word_numeral(*args: list[str]) -> str:
     :return:
     :rtype:
     """
-    re_: str | None = None
+    # Initialise to "" rather than None: Nuitka miscompiles the None branch here
+    # (Nuitka#2101), and an empty string keeps the same first-iteration behaviour.
+    re_ = ""
     for word_list in args:
         for word in word_list:
             if not re_:
@@ -103,7 +105,6 @@ def __build_word_numeral(*args: list[str]) -> str:
             else:
                 re_ += "|"
             re_ += word
-    assert re_ is not None
     re_ += ")"
     return re_
 
