@@ -643,6 +643,7 @@
       "ABC Australia": "AUBC",
       "Al Jazeera English": "AJAZ",
       "AMC": "AMC",
+      "Anime Digital Network": "ADN",
       "Amazon Prime": [
         "AMZN",
         "AMZN-CBR",
@@ -686,6 +687,7 @@
         "ALL4",
         "4OD"
       ],
+      "Channel 5": "MY5",
       "CHRGD": "CHGD",
       "Cinemax": "CMAX",
       "Country Music Television": "CMT",
@@ -762,6 +764,7 @@
       "ITV": "ITV",
       "Knowledge Network": "KNOW",
       "Lifetime": "LIFE",
+      "Max": {"pattern": "MAX", "ignore_case": false},
       "Motor Trend OnDemand": "MTOD",
       "MBC": [
         "MBC",
@@ -794,6 +797,7 @@
         "NICKAPP"
       ],
       "Norsk Rikskringkasting": "NRK",
+      "NowTV": {"pattern": "NOW", "ignore_case": false},
       "OnDemandKorea": [
         "ODK",
         "OnDemandKorea"
@@ -873,7 +877,7 @@
       "WWE Network": "WWEN",
       "Xbox Video": "XBOX",
       "Yahoo": "YHOO",
-      "YouTube Red": "RED",
+      "YouTube Red": {"pattern": "RED", "ignore_case": false},
       "ZDF": "ZDF"
     },
     "date": {
