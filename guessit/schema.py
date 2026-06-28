@@ -139,6 +139,7 @@ GUESSIT_SCHEMA: dict[str, PropertySchema] = {
     },
     "country": {"type": ["Language"], "array": False, "scalar": True},
     "crc32": {"type": ["string"], "array": False, "scalar": True},
+    "credits_number": {"type": ["string"], "array": False, "scalar": True},
     "date": {"type": ["string"], "array": False, "scalar": True},
     "disc": {"type": ["number"], "array": True, "scalar": True},
     "edition": {
@@ -197,6 +198,7 @@ GUESSIT_SCHEMA: dict[str, PropertySchema] = {
             "Complete",
             "Converted",
             "Cover",
+            "Creditless",
             "Disc Art",
             "Documentary",
             "Dolby Vision",

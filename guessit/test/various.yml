@@ -1272,7 +1272,9 @@
 : title: Show Name
   season: 1
   episode: 1
-  other: Opening Credits
+  other:
+  - Opening Credits
+  - Creditless
   screen_size: 1080p
   video_codec: H.264
   release_group: GRP
@@ -1283,12 +1285,96 @@
 : title: Show Name
   season: 1
   episode: 1
-  other: Ending Credits
+  other:
+  - Ending Credits
+  - Creditless
   screen_size: 1080p
   video_codec: H.264
   release_group: GRP
   container: mkv
   type: episode
+
+? Show.Name.S01E01.NC-ED.1080p.x264-GRP.mkv
+: title: Show Name
+  season: 1
+  episode: 1
+  other:
+  - Ending Credits
+  - Creditless
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: episode
+
+# OPED is the combined opening+ending sequence, not a creditless one.
+? Show.Name.S01E01.OPED.1080p.x264-GRP.mkv
+: title: Show Name
+  season: 1
+  episode: 1
+  other: Opening Credits
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: episode
+
+# Opening/ending sequence ordinal (credits_number) and version.
+? '[FFF] Shingeki no Kyojin - OP02 [BD][1080p-FLAC][40D46701].mkv'
+: title: Shingeki no Kyojin
+  other: Opening Credits
+  credits_number: '2'
+  source: Blu-ray
+  screen_size: 1080p
+  release_group: FFF
+
+? '[Coalgirls]_Bakemonogatari_OP4a_(1920x1080_Blu-ray_FLAC)_[AF4FF3CC].mkv'
+: title: Bakemonogatari
+  other: Opening Credits
+  credits_number: 4a
+  source: Blu-ray
+  release_group: Coalgirls
+
+? Fullmetal_Alchemist_Brotherhood_ED2v2_Clean_[BD_1080p][AtsA][0F81F8F7].mkv
+: title: Fullmetal Alchemist Brotherhood
+  other: Ending Credits
+  credits_number: '2'
+  version: 2
+  source: Blu-ray
+  screen_size: 1080p
+
+# Bare uppercase OP token (anime opening, no ordinal).
+? '[GHOST] Saga of Tanya the Evil - OP [BDRip 1920x1080 x264][FB85D2DA].mkv'
+: title: Saga of Tanya the Evil
+  other:
+  - Opening Credits
+  - Rip
+  release_group: GHOST
+
+# Creditless opening with ordinal, plus the Creditless attribute.
+? Code_Geass_Creditless_OP5_[720p,BluRay,x264]_-_gg-THORA.mkv
+: title: Code Geass
+  other:
+  - Opening Credits
+  - Creditless
+  credits_number: '5'
+  screen_size: 720p
+
+# Creditless ending alongside a real episode number.
+? 'NC/[VCB-Studio] Ishuzoku Reviewers [NCED_EP12][Ma10p_1080p][x265_flac].mkv'
+: title: Ishuzoku Reviewers
+  other:
+  - Ending Credits
+  - Creditless
+  episode: 12
+  release_group: VCB-Studio
+
+# The name "Ed" must not be captured as an Ending Credits token (case-sensitive).
+? Ed.S01E01.1080p.WEB-DL-GRP.mkv
+: title: Ed
+  season: 1
+  episode: 1
+  -other: Ending Credits
 
 ? Show.Name.July.30.2021.1080p.WEB-DL.x264-GRP.mkv
 : title: Show Name

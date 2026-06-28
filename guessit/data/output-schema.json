@@ -340,6 +340,9 @@
     "crc32": {
       "type": "string"
     },
+    "credits_number": {
+      "type": "string"
+    },
     "date": {
       "type": "string"
     },
@@ -498,6 +501,7 @@
             "Complete",
             "Converted",
             "Cover",
+            "Creditless",
             "Disc Art",
             "Documentary",
             "Dolby Vision",
@@ -584,6 +588,7 @@
               "Complete",
               "Converted",
               "Cover",
+              "Creditless",
               "Disc Art",
               "Documentary",
               "Dolby Vision",

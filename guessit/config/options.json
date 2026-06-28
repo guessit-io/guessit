@@ -506,8 +506,6 @@
         "2in1": "2in1",
         "3D": {"string": "3D", "tags": "has-neighbor"},
         "Virtual Reality": {"string": ["VR"], "regex": ["VR180", "VR360"], "tags": "has-neighbor"},
-        "Opening Credits": {"string": ["NCOP", "OPED"], "regex": ["NC-?OP", "creditless-?opening"], "tags": "has-neighbor"},
-        "Ending Credits": {"string": ["NCED"], "regex": ["NC-?ED", "creditless-?ending"], "tags": "has-neighbor"},
         "High Quality": {"string": "HQ", "tags": "uhdbluray-neighbor"},
         "High Resolution": "HR",
         "Line Dubbed": "LD",
