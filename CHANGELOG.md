@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v4.0.2 (2026-06-29)
+
+### Bug Fixes
+
+- **title**: Keep languages instead of a language-only title
+  ([`524291a`](https://github.com/guessit-io/guessit/commit/524291a6a8ca091c7b366d68209a1b766718229d))
+
+
 ## v4.0.1 (2026-06-29)
 
 ### Bug Fixes
