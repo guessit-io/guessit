@@ -543,7 +543,7 @@ test = [
 requires-dist = [
     { name = "babelfish", specifier = ">=0.6.1" },
     { name = "python-dateutil", specifier = ">=2.8.0" },
-    { name = "rebulk", specifier = ">=4.2.2,<5" },
+    { name = "rebulk", specifier = ">=5,<6" },
     { name = "regex", marker = "extra == 'regex'" },
 ]
 provides-extras = ["regex"]
@@ -1508,11 +1508,11 @@ wheels = [
 
 [[package]]
 name = "rebulk"
-version = "4.2.2"
+version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/0c/87/e9bcdaab8c72fb81e7db22d3e5990f05c0fc74937195e73f2462e0b6e307/rebulk-4.2.2.tar.gz", hash = "sha256:8b248adc39383c9ec08ee33f4e0ab71b12f6467b845f777bd93cafa7084213cb", size = 53824, upload-time = "2026-06-28T12:33:47.501Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1e/f5/09e1932bb59be9c4326d4d4a6e5d29ef960cda5dff7d83b1d44c0519d667/rebulk-5.0.0.tar.gz", hash = "sha256:a5165628bc8f6d5c3d4d36cb2c09249aeebf246ca3fcec53b16f3fb7af8aeba4", size = 55286, upload-time = "2026-06-29T06:47:31.128Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/b6/8336dbda55af24970948005c3ef096ca32480f995818988cd60d53f0bc97/rebulk-4.2.2-py3-none-any.whl", hash = "sha256:bea17bf13b880033e056ba03f2a1f3f66e68c737bbef2f317d6fe8735f283752", size = 65859, upload-time = "2026-06-28T12:33:46.513Z" },
+    { url = "https://files.pythonhosted.org/packages/1c/02/cd13e91c850741b1d150a53919edd443f6133105dfd2af179c14b49cd55e/rebulk-5.0.0-py3-none-any.whl", hash = "sha256:4123fc0a1795ac1fee3bcee049ad0de4b936f3eef5ed1e0c391c42ff1479c062", size = 67377, upload-time = "2026-06-29T06:47:30.052Z" },
 ]
 
 [[package]]

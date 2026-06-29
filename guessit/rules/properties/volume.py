@@ -8,10 +8,19 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from rebulk import Rebulk
+from rebulk import Key, Rebulk
 
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
+
+
+def _format_volume(value: str) -> int:
+    """Extract the volume number from a matched ``vol…N`` token."""
+    return int(re.sub(r"\D", "", value))
+
+
+#: Typed key (rebulk 5) binding the ``volume`` match name to its ``int`` value.
+VOLUME = Key("volume", int, formatter=_format_volume)
 
 
 def volume(config: dict[str, Any]) -> Rebulk:
@@ -32,9 +41,8 @@ def volume(config: dict[str, Any]) -> Rebulk:
     # glued, as in the NAS path "/volume1/") is intentionally NOT matched.
     rebulk.regex(
         r"vol(?:\d{1,3}|(?:ume)?[-. ]\d{1,3})",
-        name="volume",
+        key=VOLUME,
         validator=seps_surround,
-        formatter=lambda value: int(re.sub(r"\D", "", value)),
     )
 
     return rebulk
