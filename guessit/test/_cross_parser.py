@@ -20,13 +20,16 @@ from typing import Any
 DATA_DIR = Path(__file__).resolve().parent / "cross_parser"
 BASELINE_PATH = DATA_DIR / "baseline.json"
 
-_TITLE_NON_ALNUM = re.compile(r"[^0-9a-zÀ-ſ]+")  # noqa: RUF001 (intentional Latin range)
+# ``\W`` is Unicode-aware for ``str``, so accented, Cyrillic, CJK… letters are
+# kept (only punctuation/spacing is collapsed) — an ASCII-only class would erase
+# whole non-Latin titles to "" and make every such comparison vacuously equal.
+_TITLE_NON_WORD = re.compile(r"\W+")
 _WS = re.compile(r"\s+")
 
 
 def normalize_title(value: Any) -> str:
     """Case/punctuation-insensitive title key, so ``Mr. Robot`` == ``Mr Robot``."""
-    text = _TITLE_NON_ALNUM.sub(" ", str(value).lower())
+    text = _TITLE_NON_WORD.sub(" ", str(value).casefold())
     return _WS.sub(" ", text).strip()
 
 
@@ -35,9 +38,11 @@ def field_matches(result: dict[str, Any], field: str, expected: Any) -> bool:
     got = result.get(field)
     if field == "title":
         return got is not None and normalize_title(got) == normalize_title(expected)
-    if field in ("season", "episode") and isinstance(expected, list):
+    if field in ("season", "episode") and (isinstance(expected, list) or isinstance(got, list)):
+        # compare as sets so a scalar and its single-element list are equal both ways
         got_set = set(got) if isinstance(got, list) else {got}
-        return got_set == set(expected)
+        expected_set = set(expected) if isinstance(expected, list) else {expected}
+        return got_set == expected_set
     return str(got) == str(expected)
 
 

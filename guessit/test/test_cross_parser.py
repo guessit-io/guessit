@@ -52,7 +52,14 @@ def test_cross_parser(parser: str) -> None:
     """Run guessit over every case of one parser; fail only on new divergences."""
     regressions: list[str] = []
     for name, expected in _BY_PARSER[parser]:
-        result = guessit(name)
+        try:
+            result = guessit(name)
+        except Exception as exc:  # a crash on any name is itself a finding
+            # `regenerate_baseline` records crashes as the "<exception>" field, so
+            # tolerate them the same way and only flag a *new* crash as a regression.
+            if (parser, name, "<exception>") not in _BASELINE:
+                regressions.append(f"  {name}\n    <exception>: {exc!r}")
+            continue
         for field, value in expected.items():
             if field_matches(result, field, value):
                 continue

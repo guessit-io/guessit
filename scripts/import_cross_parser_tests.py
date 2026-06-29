@@ -90,7 +90,8 @@ def _type_ptt(label: dict[str, Any]) -> str | None:
 
 
 def _type_anime(label: dict[str, Any]) -> str | None:
-    return "episode" if label.get("episode_number") else None
+    # presence, not truthiness: episode_number 0 (episode zero / specials) is valid
+    return "episode" if label.get("episode_number") is not None else None
 
 
 # Shared field rules reused by the parse-torrent-name family (go-ptn, ptn).
@@ -312,10 +313,9 @@ def load_entries(spec: SourceSpec) -> list[tuple[str, dict[str, Any]]]:
     raise ValueError(f"unknown loader {spec.loader!r}")
 
 
-def import_source(name: str, screen_sizes: set[str]) -> int:
+def import_source(name: str, mappers: dict[str, Callable[[Any], Any]]) -> int:
     spec = SOURCES[name]
     print(f"  fetching {name} ({spec.license}) ...", flush=True)
-    mappers = make_mappers(screen_sizes)
     payload = []
     for release, label in load_entries(spec):
         if not isinstance(label, dict):
@@ -349,13 +349,13 @@ def main() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     if not args.baseline_only:
-        screen_sizes = load_screen_sizes()
+        mappers = make_mappers(load_screen_sizes())  # screen sizes are fixed for the whole run
         names = [args.source] if args.source else list(SOURCES)
         print("Importing datasets:")
         total = 0
         for name in names:
             try:
-                total += import_source(name, screen_sizes)
+                total += import_source(name, mappers)
             except Exception as exc:
                 print(f"    !! {name} failed: {exc}", file=sys.stderr)
         print(f"Total: {total} entries across {len(names)} source(s).")
@@ -374,28 +374,22 @@ def regenerate_baseline() -> None:
     """
     sys.path.insert(0, str(ROOT))
     from guessit import guessit
-    from guessit.test._cross_parser import field_matches
+    from guessit.test._cross_parser import field_matches, iter_cases
 
     disagreements: dict[str, dict[str, list[str]]] = {}
     total = ok = 0
-    for path in sorted(DATA_DIR.glob("*.json")):
-        if path.name == "baseline.json":
+    for source, name, expected in iter_cases():  # same enumeration the test uses
+        total += 1
+        try:
+            result = guessit(name)
+        except Exception:
+            disagreements.setdefault(source, {})[name] = ["<exception>"]
             continue
-        doc = json.loads(path.read_text(encoding="utf-8"))
-        source = doc.get("_source", path.stem)
-        for entry in doc["entries"]:
-            total += 1
-            name = entry["release_name"]
-            try:
-                result = guessit(name)
-            except Exception:
-                disagreements.setdefault(source, {})[name] = ["<exception>"]
-                continue
-            bad = [f for f, exp in entry["expected"].items() if not field_matches(result, f, exp)]
-            if bad:
-                disagreements.setdefault(source, {})[name] = bad
-            else:
-                ok += 1
+        bad = [f for f, exp in expected.items() if not field_matches(result, f, exp)]
+        if bad:
+            disagreements.setdefault(source, {})[name] = bad
+        else:
+            ok += 1
     baseline_path = DATA_DIR / "baseline.json"
     baseline_path.write_text(json.dumps(disagreements, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     n_dis = sum(len(fields) for by_name in disagreements.values() for fields in by_name.values())

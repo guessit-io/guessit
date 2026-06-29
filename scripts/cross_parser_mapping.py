@@ -13,7 +13,6 @@ network.
 
 from __future__ import annotations
 
-import re
 from typing import Any
 
 # --- value normalisation tables (external token -> guessit vocabulary) --------
@@ -109,10 +108,6 @@ AUDIO_CODEC_MAP: dict[str, str] = {
     "vorbis": "Vorbis",
 }
 
-# Resolutions guessit knows by the "<n>p"/"<n>i" name. Pixel resolutions like
-# "1280x720" only map when guessit advertises the exact token in its enum.
-RESOLUTION_RE = re.compile(r"^\d{3,4}[pi]$")
-
 
 def _norm_token(value: Any) -> str:
     return str(value).strip().lower()
@@ -138,12 +133,10 @@ def map_audio_codec(value: Any) -> str | None:
 
 
 def map_screen_size(value: Any, known: set[str]) -> str | None:
+    # guessit advertises both "<n>p"/"<n>i" and exact pixel sizes ("1280x720") in
+    # its enum, so a token maps iff it is one of those advertised values.
     token = _norm_token(value).replace("×", "x")  # noqa: RUF001 (normalise multiplication sign)
-    if token in known:
-        return token
-    if RESOLUTION_RE.match(token) and token in known:
-        return token
-    return None
+    return token if token in known else None
 
 
 def map_int(value: Any) -> int | None:
