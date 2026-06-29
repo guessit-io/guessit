@@ -4839,6 +4839,32 @@
   season: 2
   type: episode
 
+# Chinese season/episode markers 第N季 / 第N集, ASCII or Han numerals (#779)
+? 庆余年第二季/01.mp4
+: title: 庆余年
+  season: 2
+  episode: 1
+  type: episode
+
+? 庆余年第2季/01.mp4
+: title: 庆余年
+  season: 2
+  episode: 1
+  type: episode
+
+? 庆余年 第二季 第3集.mp4
+: title: 庆余年
+  season: 2
+  episode: 3
+  type: episode
+
+# Han numeral composition: 十一 -> 11, 二十三 -> 23 (#779)
+? 庆余年第十一季 第二十三集.mkv
+: title: 庆余年
+  season: 11
+  episode: 23
+  type: episode
+
 # Unicode x (U+00D7) normalised like x (upstream #790)
 ? La casa del dragón 2×7.mkv
 : title: La casa del dragón

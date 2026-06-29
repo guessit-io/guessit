@@ -28,6 +28,40 @@ if TYPE_CHECKING:
     from rebulk.match import Matches
 
 
+_CJK_DIGITS = {
+    "零": 0,
+    "一": 1,
+    "二": 2,
+    "两": 2,
+    "三": 3,
+    "四": 4,
+    "五": 5,
+    "六": 6,
+    "七": 7,
+    "八": 8,
+    "九": 9,
+}
+
+# ASCII digits or Han numerals up to 99 (十一 -> 11, 二十三 -> 23, single digit otherwise).
+cjk_number = r"(?:\d{1,4}|[一二两三四五六七八九]?十[一二两三四五六七八九]?|[零一二两三四五六七八九])"
+
+
+def parse_cjk_number(value: str) -> int:
+    """Parse a season/episode number written as ASCII digits or CJK numerals.
+
+    Handles Han numerals up to 99 so Chinese markers such as ``第二季`` (#779)
+    resolve to a numeric value (二 -> 2, 十一 -> 11, 二十三 -> 23).
+    """
+    if value.isdigit():
+        return int(value)
+    if "十" in value:
+        tens, _, ones = value.partition("十")
+        tens_value = _CJK_DIGITS[tens] if tens else 1
+        ones_value = _CJK_DIGITS[ones] if ones else 0
+        return tens_value * 10 + ones_value
+    return _CJK_DIGITS[value]
+
+
 def episodes(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
@@ -190,9 +224,21 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         )
     )
 
-    # CJK (Japanese) episode/season markers (upstream #671, #763).
+    # CJK episode/season markers (Japanese: upstream #671, #763; Chinese: #779).
     # The glyphs never appear in Latin tokens, so no seps-surround validation is needed.
-    rebulk.regex(r"第(?P<episode>\d{1,4})話", tags=["SxxExx"], disabled=is_season_episode_disabled)
+    # Numbers may be ASCII digits or Han numerals (二 -> 2), e.g. 第二季 -> season 2.
+    rebulk.regex(
+        r"第(?P<episode>" + cjk_number + r")[話话集]",
+        tags=["SxxExx"],
+        formatter={"episode": parse_cjk_number},
+        disabled=is_season_episode_disabled,
+    )
+    rebulk.regex(
+        r"第(?P<season>" + cjk_number + r")季",
+        tags=["SxxExx"],
+        formatter={"season": parse_cjk_number},
+        disabled=is_season_episode_disabled,
+    )
     rebulk.regex(
         r"(?:シーズン|シリーズ)(?P<season>\d{1,2})(?!\d)", tags=["SxxExx"], disabled=is_season_episode_disabled
     )
