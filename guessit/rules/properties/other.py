@@ -54,11 +54,34 @@ def other(config: dict[str, Any]) -> Rebulk:
         ValidateStreamingServiceNeighbor,
         ValidateAtEnd,
         ValidateReal,
+        ValidateStereoVRContext,
         ImageArtKeywordToOther,
         ProperCountRule,
     )
 
     return rebulk
+
+
+#: Tag carried by stereoscopic-3D abbreviations that are too ambiguous to trust on
+#: their own (``SBS`` is also a broadcaster, ``TB``/``OU``/``LR`` are common letter
+#: pairs). They are only kept when their filepart already carries a VR/3D signal.
+STEREO_VR_CONTEXT_TAG = "stereo-vr-context"
+
+#: ``other`` values that establish a VR/3D context within a filepart. Only the
+#: generic "this is VR/3D content" markers count: a specific stereoscopic layout
+#: does not license a *different* ambiguous layout token in the same filepart.
+VR_CONTEXT_VALUES = frozenset({"Virtual Reality", "3D"})
+
+
+def _has_vr_context(matches: Matches, filepart: Match) -> bool:
+    """Whether ``filepart`` carries an unambiguous VR/3D ``other`` signal."""
+    return bool(
+        matches.range(
+            filepart.start,
+            filepart.end,
+            predicate=lambda m: m.name == "other" and m.value in VR_CONTEXT_VALUES,
+        )
+    )
 
 
 #: Ordinal of an opening/ending sequence, e.g. ``2`` in ``OP02`` or ``4a`` in
@@ -517,6 +540,44 @@ class ValidateAtEnd(Rule):
                 ):
                     to_remove.append(match)
 
+        return to_remove
+
+
+class ValidateStereoVRContext(Rule):
+    """
+    A stereoscopic abbreviation (``SBS``/``LR``/``TB``/``OU``) is ambiguous on its
+    own (``SBS`` is also a broadcaster, the others are common letter pairs). Keep it
+    as a stereoscopic ``other`` only when its filepart carries a VR/3D signal, and
+    then let it win its span over a colliding ``streaming_service`` (so ``VR.SBS``
+    means Side By Side, not the SBS broadcaster). Without such a signal, drop it so
+    the token falls back to whatever it would otherwise be (broadcaster, release
+    group, title…).
+    """
+
+    consequence = RemoveMatch
+    priority = 64
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        for filepart in matches.markers.named("path"):
+            gated = matches.range(
+                filepart.start,
+                filepart.end,
+                predicate=lambda m: m.name == "other" and STEREO_VR_CONTEXT_TAG in m.tags,
+            )
+            if not gated:
+                continue
+            if _has_vr_context(matches, filepart):
+                for stereo in gated:
+                    to_remove.extend(
+                        matches.range(
+                            stereo.start,
+                            stereo.end,
+                            predicate=lambda m: m.name == "streaming_service",
+                        )
+                    )
+            else:
+                to_remove.extend(gated)
         return to_remove
 
 
