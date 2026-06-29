@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 """Tests for the typed Key registry (guessit.rules.common.keys)."""
 
-from typing import Any
+from typing import Any, TypedDict
 
+import pytest
 from rebulk import Key
 
-from ..api import guessit
+from ..api import default_api, guessit
 from ..rules.common import keys as keys_module
 from ..schema import GUESSIT_SCHEMA
 
-#: Registry key names that are internal match names, renamed before output and
-#: therefore absent from GUESSIT_SCHEMA. ``bit_rate`` becomes ``audio_bit_rate`` /
-#: ``video_bit_rate`` (see ``BitRateTypeRule``).
-_INTERNAL_NAMES = {"bit_rate"}
+#: Registry key names that are internal match names, renamed/aggregated before
+#: output and therefore absent from GUESSIT_SCHEMA. ``count`` becomes
+#: ``episode_count`` / ``season_count`` (see the episode rules).
+_INTERNAL_NAMES = {"count"}
 
 
 def _registry() -> list[Key[Any]]:
@@ -41,6 +42,40 @@ def test_emitted_key_names_exist_in_schema() -> None:
 
 
 def test_registry_formatter_applies_end_to_end() -> None:
-    # A config-driven property whose formatter now comes from the registry Key
-    # (film -> int via FILM.converter) must still yield the typed value.
+    # A config-driven property whose formatter now comes from the declared Key
+    # (film -> int) must still yield the typed value.
     assert guessit("James_Bond-f21-Casino_Royale.mkv").get("film") == 21
+
+
+def test_check_keys_has_no_typo_or_dead_declaration() -> None:
+    # Every key passed to declare_keys must be produced by some pattern, so a
+    # typo'd or stale declaration fails fast here (Toilal/rebulk#73).
+    default_api.configure({})
+    assert default_api.rebulk is not None
+    assert default_api.rebulk.check_keys() == []
+
+
+class _SeasonEpisode(TypedDict, total=False):
+    season: int
+    episode: int
+
+
+class _SeasonAsStr(TypedDict, total=False):
+    season: str
+
+
+def test_to_projection_uses_declared_key_types() -> None:
+    # Typed projection (Toilal/rebulk#71): declared keys carry the value type.
+    default_api.configure({})
+    assert default_api.rebulk is not None
+    matches = default_api.rebulk.matches("Show.S03E07.1080p.mkv", {})
+    assert matches.to(_SeasonEpisode) == {"season": 3, "episode": 7}
+
+
+def test_to_projection_rejects_type_contradicting_declared_key() -> None:
+    # season is declared int; a model typing it str must be rejected (#71).
+    default_api.configure({})
+    assert default_api.rebulk is not None
+    matches = default_api.rebulk.matches("Show.S03E07.mkv", {})
+    with pytest.raises(TypeError):
+        matches.to(_SeasonAsStr)

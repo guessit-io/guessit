@@ -20,6 +20,7 @@ from guessit.rules.common.numeral import numeral, parse_numeral
 from ...reutils import build_or_pattern
 from ..common import alt_dash, dash, seps, seps_no_fs
 from ..common.formatters import strip
+from ..common.keys import COUNT, EPISODE, SEASON, VERSION
 from ..common.pattern import is_disabled
 from ..common.validators import and_, int_coercable, seps_surround
 from .title import TitleFromPosition
@@ -214,9 +215,9 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         .regex_defaults(flags=re.IGNORECASE)
         .string_defaults(ignore_case=True)
         .chain_defaults(chain_breaker=episodes_season_chain_breaker)
+        .declare_keys(SEASON, EPISODE, VERSION, COUNT)
         .defaults(
             private_names=["episodeSeparator", "seasonSeparator", "episodeMarker", "seasonMarker"],
-            formatter={"season": int, "episode": int, "version": int, "count": int},
             children=True,
             private_parent=True,
             conflict_solver=season_episode_conflict_solver,
@@ -450,7 +451,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         r"(?P<episodeSeparator>x|-)(?P<episode>\d{2})", abbreviations=None
     ).repeater("*")
 
-    rebulk.regex(r"v(?P<version>\d+)", formatter=int, disabled=lambda context: is_disabled(context, "version"))
+    rebulk.regex(r"v(?P<version>\d+)", disabled=lambda context: is_disabled(context, "version"))
 
     rebulk.defaults(private_names=["episodeSeparator", "seasonSeparator"])
 
@@ -461,7 +462,6 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + r"-?(?P<count>\d+)-?"
         + build_or_pattern(episode_words)
         + "?",
-        formatter=int,
         pre_match_processor=match_processors.strip,
         disabled=lambda context: is_disabled(context, "episode"),
     )

@@ -27,9 +27,8 @@ def cd(config: dict[str, Any]) -> Rebulk:
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "cd"))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
+    rebulk.declare_keys(CD, CD_COUNT)
 
-    load_config_patterns(
-        rebulk, config, options={None: {"formatter": {"cd": CD.converter, "cd_count": CD_COUNT.converter}}}
-    )
+    load_config_patterns(rebulk, config)
 
     return rebulk

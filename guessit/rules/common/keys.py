@@ -38,8 +38,16 @@ CD_COUNT = Key("cd_count", int)
 FILM = Key("film", int)
 VOLUME = Key("volume", int, formatter=_format_volume)
 
+# episode core: declared once on the episodes builder; digit patterns inherit
+# ``int`` per name while roman/CJK patterns keep their own formatter override.
+#: ``count`` is an internal match name, renamed to ``episode_count`` / ``season_count``.
+SEASON = Key("season", int)
+EPISODE = Key("episode", int)
+VERSION = Key("version", int)
+COUNT = Key("count", int)
+
 # quantities (custom scalar value types)
 SIZE = Key("size", Size, formatter=Size.fromstring)
-#: ``bit_rate`` is an internal match name; ``BitRateTypeRule`` renames it to the
-#: emitted ``audio_bit_rate`` / ``video_bit_rate`` properties.
-BIT_RATE = Key("bit_rate", BitRate, formatter=BitRate.fromstring)
+#: Patterns build matches named ``audio_bit_rate``; ``BitRateTypeRule`` renames
+#: some of them to ``video_bit_rate`` afterwards (same value type).
+AUDIO_BIT_RATE = Key("audio_bit_rate", BitRate, formatter=BitRate.fromstring)

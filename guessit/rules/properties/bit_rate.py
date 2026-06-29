@@ -13,7 +13,7 @@ from rebulk.rules import RemoveMatch, RenameMatch, Rule
 
 from ...config import load_config_patterns
 from ..common import dash, seps
-from ..common.keys import BIT_RATE
+from ..common.keys import AUDIO_BIT_RATE
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
@@ -35,8 +35,9 @@ def bit_rate(config: dict[str, Any]) -> Rebulk:
     )
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
     rebulk.defaults(name="audio_bit_rate", validator=seps_surround)
+    rebulk.declare_keys(AUDIO_BIT_RATE)
 
-    load_config_patterns(rebulk, config.get("bit_rate"), options={None: {"formatter": BIT_RATE.converter}})
+    load_config_patterns(rebulk, config.get("bit_rate"))
 
     rebulk.rules(BitRateTypeRule)
 

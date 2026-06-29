@@ -30,8 +30,9 @@ def film(config: dict[str, Any]) -> Rebulk:
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "film"))
     rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name="film", validator=seps_surround)
+    rebulk.declare_keys(FILM)
 
-    load_config_patterns(rebulk, config.get("film"), options={None: {"formatter": FILM.converter}})
+    load_config_patterns(rebulk, config.get("film"))
 
     rebulk.rules(FilmTitleRule)
 

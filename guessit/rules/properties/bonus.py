@@ -31,8 +31,9 @@ def bonus(config: dict[str, Any]) -> Rebulk:
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "bonus"))
     rebulk = rebulk.regex_defaults(name="bonus", flags=re.IGNORECASE)
+    rebulk.declare_keys(BONUS)
 
-    load_config_patterns(rebulk, config.get("bonus"), options={None: {"formatter": BONUS.converter}})
+    load_config_patterns(rebulk, config.get("bonus"))
 
     rebulk.rules(BonusTitleRule)
 
