@@ -271,7 +271,7 @@ class GuessItApi:
             output_input_string = options.get("output_input_string", False)
             if output_input_string:
                 matches_dict["input_string"] = matches.input_string
-            # rebulk 5 types MatchesDict keys as ``str | None``; every guessit
+            # rebulk 6 types MatchesDict keys as ``str | None``; every guessit
             # property (and ``input_string``) is named, so the keys are always ``str``.
             return cast("dict[str, Any]", matches_dict)
         except Exception as err:

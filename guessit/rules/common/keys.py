@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Typed keys (rebulk 5) binding match names to value types and formatters.
+Typed keys (rebulk 6) binding match names to value types and formatters.
 
 Single source of truth for the scalar properties whose patterns are built with a
 typed :class:`~rebulk.key.Key`. Each key wires the match ``name``, its Python
