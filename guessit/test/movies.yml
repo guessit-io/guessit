@@ -1322,6 +1322,19 @@
   release_group: ASDF
   type: movie
 
+? Some.Movie.2017.2160p.UHD.BluRay.DTS-HD.MA.5.1.DoVi.x265-NoGroup
+: title: Some Movie
+  year: 2017
+  screen_size: 2160p
+  source: Ultra HD Blu-ray
+  audio_codec: DTS-HD
+  audio_profile: Master Audio
+  audio_channels: '5.1'
+  other: [Dolby Vision]
+  video_codec: H.265
+  release_group: NoGroup
+  type: movie
+
 ? How To Steal A Dog.2014.BluRay.1080p.12bit.HEVC.OPUS 5.1-Hn1Dr2.mkv
 : title: How To Steal A Dog
   year: 2014
@@ -1879,4 +1892,139 @@
   video_codec: H.264
   release_group: DON
   container: mkv
+  type: movie
+
+# MicroHD / HDlite regex form (#818)
+
+? Some.Movie.2019.Micro-HD.1080p.x264-GRP.mkv
+: title: Some Movie
+  year: 2019
+  other: Micro HD
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+? Barbecue-2014-French-mHD-1080p
+: title: Barbecue
+  year: 2014
+  language: fr
+  other: Micro HD
+  screen_size: 1080p
+  type: movie
+
+# pre-1920 year accepted (#646/#815)
+
+? The.Immigrant.1917.1080p.BluRay.x264-GRP.mkv
+: title: The Immigrant
+  year: 1917
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  type: movie
+
+# --- #812: a real title word must not be consumed as country/edition/other ---
+
+# Title-Case country-looking word before a year is the title (upstream #638)
+? Us.2019.mkv
+: title: Us
+  year: 2019
+  -country: US
+
+# lone article swallows the following edition/other word (upstream #652, #784)
+? The.Collector.2009.1080p.mkv
+: title: The Collector
+  year: 2009
+  -edition: Collector
+
+? The.Convert.2024.1080p.mkv
+: title: The Convert
+  year: 2024
+  -other: Converted
+
+# leading property word becomes the title when there is none (upstream #773)
+? xXx.2002.1080p.mkv
+: title: xXx
+  year: 2002
+  -other: XXX
+
+# trailing Title-Case country after a stop-word stays in the title (upstream #789)
+? It.Ends.With.Us.2024.1080p.mkv
+: title: It Ends With Us
+  year: 2024
+  -country: US
+
+# a bare leading edition / scene-tag before a year stays a property, not a title (#812 review)
+? Extended.2019.1080p.mkv
+: edition: Extended
+  year: 2019
+  -title: Extended
+
+? Proper.2020.720p.mkv
+: other: Proper
+  year: 2020
+  -title: Proper
+
+# an uppercase country tag stays country (only Title-Case "Us" becomes a title)
+? US.2019.1080p.mkv
+: country: US
+  year: 2019
+  -title: US
+
+# #812 review: a bracketed country tag is a deliberate tag, kept as country, not merged
+? It.Ends.With.[Us].2019.1080p.mkv
+: title: It Ends With
+  country: US
+  year: 2019
+  -title: It Ends With Us
+
+# #696/#757 review: the leading-[bracket]/trailing-(group) anime guard is gated on an
+# episode/season, so a movie keeps its trailing (group) and the [site] tag is not claimed
+? "[YTS.MX] Movie Name (2019) 1080p BluRay (YIFY)"
+: title: Movie Name
+  year: 2019
+  release_group: YIFY
+  -release_group: YTS.MX
+
+# regression anchor (#743 boundary): a title ending in a (foreign) article must keep a following
+# real edition as a property, not swallow it into the title (a withdrawn broadening did this).
+? Cinema.Paradiso.La.Extended.1988.1080p.BluRay.x264-GRP.mkv
+: year: 1988
+  edition: Extended
+  -title: Cinema Paradiso La Extended
+
+# #739: a movie title ending on a stop-word + Title-Case "Us" keeps "Us" in the title
+? The.Last.of.Us.2023.1080p.BluRay.x264-GROUP.mkv
+: title: The Last of Us
+  year: 2023
+  release_group: GROUP
+  -country: US
+
+# #791 (by @plotski): Laserdisc source. Bare "LD" is also "Line Dubbed", so it only counts
+# as Laserdisc with a Rip suffix; the full word matches with or without it.
+? Some.Title.1983.LDRip.x264-GRP.mkv
+: title: Some Title
+  year: 1983
+  source: Laserdisc
+  other: Rip
+  video_codec: H.264
+
+? Some.Title.1983.Laserdisc.x264-GRP.mkv
+: title: Some Title
+  year: 1983
+  source: Laserdisc
+  video_codec: H.264
+  -other: Rip
+
+# #79: a weak "LiNE" token mid-name must not truncate the title; the whole title is kept.
+? Dr.Line.Seuss.The.Lorax.2012.DVDRip.LiNE.XviD.AC3.HQ.Hive-CM8.mp4
+: title: Dr Line Seuss The Lorax
+  year: 2012
+  source: DVD
+  video_codec: Xvid
+  audio_codec: Dolby Digital
+  release_group: Hive-CM8
   type: movie

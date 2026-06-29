@@ -1,0 +1,33 @@
+# Install the git hooks with:  uv run pre-commit install
+# Run the file hooks manually with:  uv run pre-commit run --all-files
+#
+# All hooks are `local` + `language: system` and run the tools through `uv run`,
+# so they use the exact versions locked in uv.lock (declared in the dev group).
+default_install_hook_types: [pre-commit, commit-msg]
+
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: commitizen
+        name: commitizen check
+        entry: uv run cz check --commit-msg-file
+        language: system
+        stages: [commit-msg]

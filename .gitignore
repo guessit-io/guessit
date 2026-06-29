@@ -14,8 +14,8 @@ build/
 # PyEnv
 .python-version
 
-# Tox
-.tox/
+# uv / virtualenv
+.venv/
 
 # py.test
 lastfailed

@@ -4,7 +4,7 @@ GuessIt
 [![Latest Version](https://img.shields.io/pypi/v/guessit.svg)](https://pypi.python.org/pypi/guessit)
 [![LGPLv3 License](https://img.shields.io/badge/license-LGPLv3-blue.svg)]()
 [![Build Status](https://img.shields.io/github/workflow/status/guessit-io/guessit/ci)](https://github.com/guessit-io/guessit/actions?query=workflow%3Aci)
-[![Coveralls](https://img.shields.io/coveralls/guessit-io/guessit/master.svg)](https://coveralls.io/github/guessit-io/guessit?branch=master)
+[![Coveralls](https://img.shields.io/coveralls/guessit-io/guessit/main.svg)](https://coveralls.io/github/guessit-io/guessit?branch=main)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/relekang/python-semantic-release)
 
 GuessIt is a python library that extracts as much information as
@@ -169,6 +169,8 @@ Support
 -------
 
 This project is hosted on [GitHub](https://github.com/guessit-io/guessit). Feel free to open an issue if you think you have found a bug or something is missing in guessit.
+
+Some filename shapes are inherently ambiguous to a structural parser; the ones guessit deliberately does not resolve are documented on the [known limitations page](./known-limitations.md).
 
 GuessIt relies on [Rebulk](https://github.com/Toilal/rebulk) project for pattern and rules registration.
 

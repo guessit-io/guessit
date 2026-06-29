@@ -1,13 +1,12 @@
-FROM python:3.7-alpine
+FROM python:3.13-alpine
 
-MAINTAINER Rémi Alvergnat <toilal.dev@gmail.com>
+LABEL org.opencontainers.image.authors="Rémi Alvergnat <toilal.dev@gmail.com>"
 
-WORKDIR /root
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-COPY / /root/guessit/
 WORKDIR /root/guessit/
+COPY / /root/guessit/
 
-RUN pip install -e .
+RUN uv sync --locked --no-default-groups
 
-ENTRYPOINT ["guessit"]
-
+ENTRYPOINT ["uv", "run", "guessit"]

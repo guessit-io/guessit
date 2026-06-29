@@ -1,8 +1,151 @@
+[project]
+name = "guessit"
+version = "3.8.0"
+description = "GuessIt - a library for guessing information from video filenames."
+dynamic = ["readme"]
+license = "LGPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Rémi Alvergnat", email = "toilal.dev@gmail.com" },
+]
+keywords = [
+    "python", "library", "release", "parser", "name", "filename",
+    "movies", "series", "episodes", "animes",
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Multimedia",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "rebulk>=6,<7",
+    "babelfish>=0.6.1",
+    "python-dateutil>=2.8.0",
+]
+
+[project.urls]
+Homepage = "https://guessit-io.github.io/guessit"
+Repository = "https://github.com/guessit-io/guessit"
+Documentation = "https://guessit-io.github.io/guessit"
+Changelog = "https://github.com/guessit-io/guessit/blob/develop/CHANGELOG.md"
+
+[project.optional-dependencies]
+regex = ["regex"]
+
+[project.scripts]
+guessit = "guessit.__main__:main"
+
+[dependency-groups]
+test = [
+    "pytest",
+    "pytest-mock",
+    "pytest-benchmark",
+    "pytest-cov",
+    "PyYAML",
+]
+lint = [
+    "ruff",
+    "mypy",
+]
+dev = [
+    { include-group = "test" },
+    { include-group = "lint" },
+    # Tooling driven by .pre-commit-config.yaml: the hooks run via `uv run`, so
+    # these must be in the dev env / uv.lock — pre-commit itself, ruff (via the
+    # lint group above) and commitizen.
+    "pre-commit",
+    "commitizen",
+    "mkdocs",
+    "mkdocs-material",
+    "pyinstaller",
+    "python-semantic-release",
+    "tox",
+    "tox-uv",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["guessit"]
+
+[tool.hatch.metadata.hooks.custom]
+path = "hatch_build.py"
+
 [tool.semantic_release]
 version_variables = ["guessit/__version__.py:__version__"]
-commit_subject = "chore(release): release v{version}"
+version_toml = ["pyproject.toml:project.version"]
+commit_message = "chore(release): release v{version}"
 commit_author = "github-actions <actions@github.com>"
-build_command = ""
+# `uv lock` re-stamps the bumped version into uv.lock (which pins guessit's own
+# version); `assets` includes it in the release commit so the lockfile never
+# drifts behind the released version (a stale lock dirties the tree and would
+# break the automated main->develop back-merge). Wheels/sdist/binaries are built
+# in the dedicated CI jobs, so no `uv build` is needed here.
+build_command = "uv lock"
+assets = ["uv.lock"]
 
-[tool.check-manifest]
-ignore = ["docs", "docs/*", ".dockerignore", "Dockerfile", "docker", "docker/*"]
+# commitizen is used only to lint commit messages (Conventional Commits), both
+# via the local pre-commit commit-msg hook and the CI `cz check`. Versioning and
+# releases stay owned by python-semantic-release above.
+[tool.commitizen]
+name = "cz_conventional_commits"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "PIE",  # flake8-pie
+    "RET",  # flake8-return
+    "ISC",  # flake8-implicit-str-concat
+    "TC",   # flake8-type-checking
+    "FA",   # flake8-future-annotations
+    "PT",   # flake8-pytest-style
+    "RUF",  # ruff-specific rules
+]
+# SIM102: collapsing nested `if`s hurts readability with long conditions here.
+ignore = ["SIM102"]
+
+[tool.ruff.lint.per-file-ignores]
+# Rebulk Rule subclasses declare `dependency`, `consequence`, `properties`, ...
+# as class attributes by design — that is the framework API, not a mutable
+# default footgun. ClassVar annotations everywhere would be pure noise here.
+"guessit/rules/**" = ["RUF012"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["guessit"]
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "-s --ignore=build --ignore=docs --ignore=hatch_build.py --doctest-modules --doctest-glob='*.rst'"
+
+[tool.coverage.run]
+omit = [
+    "guessit/__version__.py",
+    "guessit/test/*",
+]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover"]

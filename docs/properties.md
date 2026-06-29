@@ -9,6 +9,16 @@ So, for instance,
 -   `1920x1080` will be guessed as `screen_size` = `1080p`
 -   `DD5.1` will be guessed as `audio_codec` = `Dolby Digital` + `audio_channels` = `5.1`
 
+A machine-readable description of every property is shipped alongside this page:
+
+-   `guessit.GUESSIT_SCHEMA` — a Python mapping of each property to its type,
+    cardinality and (for closed vocabularies) allowed values.
+-   `guessit/data/output-schema.json` — the same information as a
+    [JSON Schema](https://json-schema.org/) (draft-07) describing guessit's output.
+
+Both are generated from the rules by `scripts/gen_schema.py`; a test fails if they
+drift. The list below is the human-friendly counterpart.
+
 Main properties
 ---------------
 
@@ -29,7 +39,9 @@ Main properties
 
     Container of the file.
 
-    -   `3g2`, `3gp`, `3gp2`, `asf`, `ass`, `avi`, `divx`, `flv`, `idx`, `iso`, `m4v`, `mk2`, `mk3d`, `mkv`, `mka`, `mov`, `mp4`, `mp4a`, `mpeg`, `mpg`, `nfo`, `nzb`, `ogg`, `ogm`, `ogv`, `qt`, `ra`, `ram`, `rm`, `srt`, `ssa`, `sub`, `torrent`, `ts`, `vob`, `wav`, `webm`, `wma`, `wmv`
+    -   video / subtitle / info / torrent / nzb: `3g2`, `3gp`, `3gp2`, `asf`, `ass`, `avi`, `divx`, `flv`, `idx`, `iso`, `m4v`, `mk2`, `mk3d`, `mkv`, `mka`, `mov`, `mp4`, `mp4a`, `mpeg`, `mpg`, `nfo`, `nzb`, `ogg`, `ogm`, `ogv`, `qt`, `ra`, `ram`, `rm`, `srt`, `ssa`, `sub`, `torrent`, `ts`, `vob`, `wav`, `webm`, `wma`, `wmv`
+    -   archive (incl. split `.rNN` volumes): `rar`, `zip`, `7z`, `tar`, `gz`, `bz2`, `tgz`, `ace`, `arj`, `cbr`, `cbz`, `cb7`
+    -   image: `jpg`, `jpeg`, `png`, `gif`, `bmp`, `tbn`, `webp`
 -   **mimetype**
 
     Mime type of the related container. Guessed values may vary based on OS native support of mime type.
@@ -102,6 +114,12 @@ Episode properties
     Version of the episode.
 
     -   In anime fansub scene, new versions are released with tag `<episode>v[0-9]`.
+    -   Also applies to opening/ending credit sequences (e.g. `ED2v2`).
+-   **credits\_number**
+
+    Ordinal of an opening/ending credit sequence (see `Opening Credits` /
+    `Ending Credits` in `other`). Kept as a string because of the variant-letter
+    forms (e.g. `2` in `OP02`, `4a` in `OP4a`).
 
 Video properties
 ----------------
@@ -221,6 +239,22 @@ Other properties
 
     Volume identifier (UUID).
 
+-   **volume**
+
+    Volume number for multi-volume releases (manga/anime/music box sets). Examples: `vol127`, `vol.3`, `volume 12`.
+
+-   **imdb\_id**
+
+    IMDb identifier found in the filename (e.g. `tt1234567`).
+
+-   **tmdb\_id**
+
+    TMDb identifier (e.g. `{tmdb-12345}`).
+
+-   **tvdb\_id**
+
+    TVDb identifier (e.g. `[tvdbid-12345]`).
+
 -   **size**
 
     Size (MB, GB, TB). Examples: `1.2GB` (`<Size [1.2GB]>`), `430MB` (`<Size [430MB]>`).
@@ -247,5 +281,5 @@ Other properties
 
     Other property will appear under this property.
 
-    -   `2in1`, `3D`, `Audio Fixed`, `Bonus`, `BT.2020`, `Classic`, `Colorized`, `Complete`, `Converted`, `Documentary`, `Dolby Vision`, `Dual Audio`, `East Coast Feed`, `Extras`, `Fan Subtitled`, `Fast Subtitled`, `Full HD`, `Hardcoded Subtitles`, `HD`, `HDR10`, `High Frame Rate`, `Hybrid`, `Variable Frame Rate`, `High Quality`, `High Resolution`, `Internal`, `Line Dubbed`, `Line Audio`, `Mic Dubbed`, `Micro HD`, `Mux`, `NTSC`, `Obfuscated`, `Open Matte`, `Original Aspect Ratio`, `Original Video`, `PAL`, `Preair`, `Proof`, `Proper`, `PS Vita`, `Read NFO`, `Region 5`, `Region C`, `Reencoded`, `Remux`, `Repost`, `Retail`, `Rip`, `Sample`, `Screener`, `SECAM`, `Standard Dynamic Range`, `Straight to Video`, `Sync Fixed`, `Trailer`, `Ultra HD`, `Upscaled`, `West Coast Feed`, `Widescreen`, `XXX`
+    -   `2in1`, `3D`, `Audio Fixed`, `Banner`, `Bonus`, `BT.2020`, `Classic`, `Clear Art`, `Clear Logo`, `Colorized`, `Complete`, `Converted`, `Cover`, `Creditless`, `Disc Art`, `Documentary`, `Dolby Vision`, `Dual Audio`, `East Coast Feed`, `Ending Credits`, `Extras`, `Fan Subtitled`, `Fanart`, `Fast Subtitled`, `Full HD`, `Hardcoded Subtitles`, `HD`, `HDR10`, `High Frame Rate`, `Hybrid`, `Variable Frame Rate`, `High Quality`, `High Resolution`, `Internal`, `Landscape`, `Line Dubbed`, `Line Audio`, `Logo`, `Mic Dubbed`, `Micro HD`, `Mux`, `NTSC`, `Obfuscated`, `Open Matte`, `Opening Credits`, `Original Aspect Ratio`, `Original Video`, `PAL`, `Poster`, `Preair`, `Proof`, `Proper`, `PS Vita`, `Read NFO`, `Region 5`, `Region C`, `Reencoded`, `Remux`, `Repost`, `Retail`, `Rip`, `Sample`, `Screener`, `SECAM`, `Standard Dynamic Range`, `Straight to Video`, `Sync Fixed`, `Thumbnail`, `Trailer`, `Ultra HD`, `Upscaled`, `Virtual Reality`, `West Coast Feed`, `Widescreen`, `XXX`
 
