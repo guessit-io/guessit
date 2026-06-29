@@ -171,6 +171,19 @@ class TitleBaseRule(Rule):
         return cropped_holes
 
     @staticmethod
+    def _hole_has_title_text(hole: Match, ignored_matches: list[Match]) -> bool:
+        """
+        Whether a title hole holds any real title text once the ignored matches
+        (languages/countries) are removed. A hole fully covered by ignored matches
+        is just a language/country enumeration, not a title.
+        """
+        input_string = hole.input_string or ""
+        covered: set[int] = set()
+        for ignored in ignored_matches:
+            covered.update(range(ignored.start, ignored.end))
+        return any(index not in covered and input_string[index] not in seps for index in range(hole.start, hole.end))
+
+    @staticmethod
     def is_ignored(match: Match) -> bool:
         """
         Ignore matches when scanning for title (hole).
@@ -276,6 +289,17 @@ class TitleBaseRule(Rule):
             to_keep: list[Match] = []
 
             ignored_matches = matches.range(hole.start, hole.end, self.is_ignored)
+
+            # A hole made up entirely of languages/countries is not a real title
+            # (e.g. "Ita Eng" between codecs, #751): keep the languages rather than
+            # fabricating a title out of them and deleting them. episode_details
+            # ("Pilot", "Special") are excluded: those legitimately become episode_title.
+            if (
+                ignored_matches
+                and all(ignored.name in ("language", "country") for ignored in ignored_matches)
+                and not self._hole_has_title_text(hole, ignored_matches)
+            ):
+                continue
 
             if ignored_matches:
                 for ignored_match in reversed(ignored_matches):

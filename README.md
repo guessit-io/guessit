@@ -31,6 +31,11 @@ For example, GuessIt can do the following:
 
 More information is available at [guessit-io.github.io/guessit](https://guessit-io.github.io/guessit).
 
+JavaScript / TypeScript port
+----------------------------
+
+Looking for a JavaScript implementation? [guessit-js](https://github.com/opensubtitles/guessit-js) is a third-party TypeScript/WASM port (maintained by [OpenSubtitles](https://www.opensubtitles.org)) that runs in Node, browsers and WASM with no Python required. It is not affiliated with this project.
+
 Support
 -------
 
