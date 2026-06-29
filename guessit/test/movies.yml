@@ -327,6 +327,21 @@
   film_title: James Bond
   film: 17
 
+# #751: with a film_title and no real title after the film number, a language-only
+# hole ("Ita Eng") must stay languages and not be promoted to a bogus title.
+? Fast and Furious F9 2021 BluRay 1080p.H264 Ita Eng AC3 5.1 Sub Ita Eng.mkv
+: film_title: Fast and Furious
+  film: 9
+  year: 2021
+  source: Blu-ray
+  screen_size: 1080p
+  video_codec: H.264
+  language: [Italian, English]
+  subtitle_language: Italian
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  -title: y
+
 
 ? /movies/James_Bond-f21-Casino_Royale.mkv
 : title: Casino Royale
