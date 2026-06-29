@@ -1,5 +1,371 @@
 # CHANGELOG
 
+<!-- version list -->
+
+## v4.0.0 (2026-06-29)
+
+### Bug Fixes
+
+- Do not absorb a bracketed or non-target-preposition country into the title
+  ([`e758839`](https://github.com/guessit-io/guessit/commit/e758839579db379bc6ba5e755dee02a731719af9))
+
+- Do not turn an "other"-only bracket into an anime release_group
+  ([`ec809f7`](https://github.com/guessit-io/guessit/commit/ec809f74747aa575fef04ec9e268d7873ecc8f28))
+
+- Don't mutate shared config list values between guesses
+  ([`6eb4dd5`](https://github.com/guessit-io/guessit/commit/6eb4dd51c2e7524725dd2b051cbe292c65c461ec))
+
+- Don't pin an enum for the OS-dependent mimetype property
+  ([`c5003b9`](https://github.com/guessit-io/guessit/commit/c5003b9199a6fd6436cc44dc3178d8278a80783c))
+
+- Extend lone-article merge to episode_title so it absorbs a following other word
+  ([#743](https://github.com/guessit-io/guessit/pull/743),
+  [`6dfde2d`](https://github.com/guessit-io/guessit/commit/6dfde2d403ca1a76ad0ce44a56d7e8a9dc099471))
+
+- Gate the leading-anime-bracket release_group guard on an episode/season
+  ([`c5be00b`](https://github.com/guessit-io/guessit/commit/c5be00bb8d7cba86ce12071a95392aad1cc007a9))
+
+- Keep a subtitle language glued to its extension even if it is a common word
+  ([`24952af`](https://github.com/guessit-io/guessit/commit/24952af612d9e84ad105dc6cfdc151c871446c21))
+
+- Keep edition/scene-tag words as properties, not titles (review follow-up)
+  ([`4ad33df`](https://github.com/guessit-io/guessit/commit/4ad33dfe8da0907bcca0b2df0fa8227e04b22432))
+
+- Keep leading hyphenated title whole instead of splitting into release_group
+  ([`b25e97b`](https://github.com/guessit-io/guessit/commit/b25e97bc4e21bb9a3c30cf6f74d1c03c378046d8))
+
+- Keep properties() keys alphabetically sorted
+  ([`56768df`](https://github.com/guessit-io/guessit/commit/56768df44458abf407a780e092a25aa1838238cc))
+
+- Let the filename's season/episode win over a parent directory's
+  ([`d3dc53a`](https://github.com/guessit-io/guessit/commit/d3dc53a1c40ca3e1fa3eda0a895469fb52e06c9a))
+
+- Only keep a lowercase subtitle language glued to its extension (review #839)
+  ([`6fa58a3`](https://github.com/guessit-io/guessit/commit/6fa58a38511337edb773c89b0af7e0a5cbefa2a7))
+
+- Only treat a leading dash token as a hyphenated title when it is one word
+  ([`f027ffb`](https://github.com/guessit-io/guessit/commit/f027ffb2d3f033da3f366fce89311b905988f149))
+
+- Prefer the leading anime [bracket] over a trailing parenthetical as release_group
+  ([`c0ec184`](https://github.com/guessit-io/guessit/commit/c0ec18422838535fa167c088c0379659d2727c14))
+
+- Read Unicode × as a resolution separator and bound CJK season markers
+  ([`7bdade6`](https://github.com/guessit-io/guessit/commit/7bdade60a026cd7213e22ba47aae6d1674989a81))
+
+- Reclaim a bare "Cam" after the episode marker as episode_title, not source
+  ([#732](https://github.com/guessit-io/guessit/pull/732),
+  [`bc33ee8`](https://github.com/guessit-io/guessit/commit/bc33ee81c668cb23cea510a0cc5cde4ca921af25))
+
+- Recognise CJK & Unicode × episode markers, numeric episode_title as episode
+  ([`a2c9f54`](https://github.com/guessit-io/guessit/commit/a2c9f544a86e0efd4d90c390131e6f93ff92efe1))
+
+- Stop a real title word being consumed as country/language/edition/other
+  ([`f5e43f7`](https://github.com/guessit-io/guessit/commit/f5e43f76e07a77997ccea4d09d1af389a1c4e80c))
+
+- Stop short tokens matching glued inside a larger word
+  ([`58e5a47`](https://github.com/guessit-io/guessit/commit/58e5a47f596762d0de493067836efff17861e283))
+
+- Weight season+episode completeness so the filename wins without mixing fileparts
+  ([`15eeb45`](https://github.com/guessit-io/guessit/commit/15eeb45313c06e00e8c974eaeaecf8f087dbd4d1))
+
+- Widen valid_year bounds and reject a year used as a season number
+  ([`19bd458`](https://github.com/guessit-io/guessit/commit/19bd458dc978f3581035321c59b82d9a60b70677))
+
+- **api,release_group**: Clear error on None input and stable release-group casing
+  ([`01d32ab`](https://github.com/guessit-io/guessit/commit/01d32ab5e85b5ef665a15e790c00d9ad57531a75))
+
+- **date**: Absorb a weekday glued to a date so episode_title survives
+  ([#794](https://github.com/guessit-io/guessit/pull/794),
+  [`690aea0`](https://github.com/guessit-io/guessit/commit/690aea08451ac62dc4d6d90dfb218e7b5a635948))
+
+- **episode_title**: Keep title when a release tag follows the episode marker
+  ([`8d049b4`](https://github.com/guessit-io/guessit/commit/8d049b485960c0e2a9d473b9ea1d8d268190a9b5))
+
+- **episodes**: Keep release-group digit prefix out of episodes with -t episode
+  ([`ad30fcb`](https://github.com/guessit-io/guessit/commit/ad30fcb3b15fbc11aac112b4a443a504accaf5d0))
+
+- **numeral**: Initialise word-numeral regex to "" (Nuitka workaround)
+  ([`f28c911`](https://github.com/guessit-io/guessit/commit/f28c911b097a35bdf7069f8e57a75ec777043067))
+
+- **screen_size**: Tolerate trailing "up" upscaled marker
+  ([`4fb072c`](https://github.com/guessit-io/guessit/commit/4fb072c91f5afe4b928efb260f2d23e9161e1dc5))
+
+- **title**: Keep dash-joined parent-directory title whole
+  ([#796](https://github.com/guessit-io/guessit/pull/796),
+  [`d28eea7`](https://github.com/guessit-io/guessit/commit/d28eea78db11f3fa91a9a8fe5301d193579e226a))
+
+- **title**: Keep trailing "Us" in a title ending on "of" (The Last of Us)
+  ([`c4d21ce`](https://github.com/guessit-io/guessit/commit/c4d21ceecb1ffa20a0fcc013e4222b2363631917))
+
+### Build System
+
+- Add pre-commit (ruff + commitizen) and expand ruff ruleset
+  ([`e6b6e22`](https://github.com/guessit-io/guessit/commit/e6b6e22ef6a65123e177b36499883e941998e36a))
+
+- Add ruff-format hook and run pre-commit tools via uv run
+  ([`b66a372`](https://github.com/guessit-io/guessit/commit/b66a372f713bfcdf7efd85da5f463387a569627e))
+
+- Add tox (tox-uv) for local multi-version testing
+  ([`7d646c4`](https://github.com/guessit-io/guessit/commit/7d646c419dc2ec4f469ebb2d89dfade91441c112))
+
+- Migrate to uv and modernize tooling
+  ([`6131554`](https://github.com/guessit-io/guessit/commit/61315544730a975f8c10b2a33b9c192ab264b0bf))
+
+- Require Python >=3.10 and rebulk 6 for guessit 4
+  ([`d2a6a06`](https://github.com/guessit-io/guessit/commit/d2a6a069ce74bc13ea18e2426d17d1e5a7915df7))
+
+- Require rebulk >=4,<5 and add mypy tooling
+  ([`ae69e25`](https://github.com/guessit-io/guessit/commit/ae69e25aaaa8eff90d4b922b03c81b21b57650e8))
+
+- Require rebulk >=4.1 and exploit its precise query overloads
+  ([`6a4566e`](https://github.com/guessit-io/guessit/commit/6a4566e34a078305cc40328840be455406cf4aed))
+
+- Run pre-commit hooks locally via uvx and bump CI to Python 3.14
+  ([`e15d702`](https://github.com/guessit-io/guessit/commit/e15d7021b541ab93b1566cbf6cb1d1c2543c60ce))
+
+- **deps**: Require rebulk >=6,<7
+  ([`6a57efc`](https://github.com/guessit-io/guessit/commit/6a57efc2e492689a7d2f4a76b40c9825eaca16a1))
+
+### Chores
+
+- **deps**: Require rebulk >=4.2.2
+  ([`10f871e`](https://github.com/guessit-io/guessit/commit/10f871e0eefaae6cf540db5ba1cf3c789c82d456))
+
+- **title**: Fix contradictory TITLE_STOP_WORDS comment
+  ([`af24bab`](https://github.com/guessit-io/guessit/commit/af24bab609000df6ca372d76a2a0529d1e5a18db))
+
+### Code Style
+
+- Clean up code for the expanded ruff ruleset
+  ([`3a6cdf2`](https://github.com/guessit-io/guessit/commit/3a6cdf2fecb5fcd113e8733e1c8a727e261112b2))
+
+- Format the codebase with ruff format
+  ([`6510028`](https://github.com/guessit-io/guessit/commit/6510028def712b5a110388817a6cbe6b7d3ea937))
+
+### Continuous Integration
+
+- Check last commit instead of skipping on new-branch push
+  ([`65acf6a`](https://github.com/guessit-io/guessit/commit/65acf6a8fe478bcaf1a03ead1699577829f4a8c7))
+
+- Drop pypy-3.10 from the test matrix
+  ([`275ad91`](https://github.com/guessit-io/guessit/commit/275ad9124f7a95ddcff537a8827e226d6940c373))
+
+- Drop pypy-3.11 from the matrix (babelfish segfault)
+  ([`24ed0bd`](https://github.com/guessit-io/guessit/commit/24ed0bd7ff2e522741856332aa853254b318b3c8))
+
+- Fix semantic_release commit message
+  ([`b145ae2`](https://github.com/guessit-io/guessit/commit/b145ae2791b9a77db68f20abf4ed4731a4dd8a0a))
+
+- Link upstream pypy issue for the pypy-3.11 babelfish segfault
+  ([`3e14ad9`](https://github.com/guessit-io/guessit/commit/3e14ad9d46e104cdd6eca5c2585aa20f27ff8ba7))
+
+- Publish to PyPI via Trusted Publishing
+  ([`120c84b`](https://github.com/guessit-io/guessit/commit/120c84b009b36a87215e25e9aaaa95c5a0e9260b))
+
+- Re-stamp uv.lock on release to avoid lockfile drift
+  ([`fcf45bc`](https://github.com/guessit-io/guessit/commit/fcf45bcad485617d3caed36c6f581f318f9cf541))
+
+- Rename the release branch master -> main
+  ([`8af01ec`](https://github.com/guessit-io/guessit/commit/8af01ec71d32b8ea349799eaaabc7de75bd53fc5))
+
+- Update GitHub Actions to latest versions
+  ([`c9ebf35`](https://github.com/guessit-io/guessit/commit/c9ebf35f5f887c8556870d038f2c9087c08bbaf9))
+
+- Use uv run --no-sync in the test job
+  ([`2aaf930`](https://github.com/guessit-io/guessit/commit/2aaf93082178ad69cea5f0e4184f8a415cfecef9))
+
+### Documentation
+
+- Add CLAUDE.md with architecture and dev guidance
+  ([`726ad46`](https://github.com/guessit-io/guessit/commit/726ad46933d1f4de71914c496d2049fc73ffbab8))
+
+- Drop guessit-js parity mentions from comments
+  ([`58fd8d5`](https://github.com/guessit-io/guessit/commit/58fd8d5db0fbd213288012c098131281270cd9f0))
+
+- Mention mypy in CLAUDE.md commands and pre-commit hooks
+  ([`e17aab5`](https://github.com/guessit-io/guessit/commit/e17aab5351d3dcc5a99cc6c358f104e4f1899c80))
+
+- Note GitHub closing keywords to auto-close issues on merge
+  ([`7c73d08`](https://github.com/guessit-io/guessit/commit/7c73d08ce6cf321f54bfb4a3cc6917261ab78c2a))
+
+- Record won't-fix structural-ambiguity cases as known limitations
+  ([`99d537e`](https://github.com/guessit-io/guessit/commit/99d537ea4b19cf62ca62439fdc9ee2fb0580f72c))
+
+- Remove Build Status from README
+  ([`0ddd49d`](https://github.com/guessit-io/guessit/commit/0ddd49debb814c5dccac0b1b12d40ed3cfd83974))
+
+- **known-limitations**: Add historical won't-fix cases from issue tracker
+  ([`e550b7d`](https://github.com/guessit-io/guessit/commit/e550b7d7f7805b285d8f3ee270f427a7d9b4c9dd))
+
+- **known-limitations**: Add structural cases found sweeping closed Invalid Guess issues
+  ([`2feb20a`](https://github.com/guessit-io/guessit/commit/2feb20aa4a046a64a1f76c0e7822fe3bf37c674e))
+
+- **known-limitations**: Record #637/#693/#690/#660 as structural won't-fix
+  ([`8228d2b`](https://github.com/guessit-io/guessit/commit/8228d2b11c5dc05a2a924a1a87b9719bc4ba89ad))
+
+- **properties**: Document credits_number and Creditless
+  ([#863](https://github.com/guessit-io/guessit/pull/863),
+  [`b6d1834`](https://github.com/guessit-io/guessit/commit/b6d1834cc0e663a01b1de75b92b191233d844daf))
+
+- **rules**: Correct stale rebulk 5 references to rebulk 6
+  ([`7ff1fc0`](https://github.com/guessit-io/guessit/commit/7ff1fc0b1037ddf0e15ae916704119effae7a83b))
+
+### Features
+
+- Add GUESSIT_SCHEMA machine-readable property schema
+  ([`7b37408`](https://github.com/guessit-io/guessit/commit/7b37408293e87455d01b0adfc8313f10c26dd627))
+
+- Add other values (VR, Micro HD, credits) and month-name dates
+  ([`0865f2d`](https://github.com/guessit-io/guessit/commit/0865f2d412d9ba8e89b4e104ccd24e68493808d8))
+
+- Add volume, imdb_id, tmdb_id and tvdb_id properties
+  ([`c7afecb`](https://github.com/guessit-io/guessit/commit/c7afecbaf2ee7cf78c877b09272ef57612dcdf19))
+
+- Classify artwork files as other, register svg mimetype
+  ([`67acb99`](https://github.com/guessit-io/guessit/commit/67acb990f1b40d964a532cb192af07c6cde55816))
+
+- Make properties() code-complete against GUESSIT_SCHEMA
+  ([`83255a1`](https://github.com/guessit-io/guessit/commit/83255a19ee600fc32e223057e0c7a851d7454b5d))
+
+- Recognise archive and image extensions as container
+  ([`a44d244`](https://github.com/guessit-io/guessit/commit/a44d2441d857a67c899a3a5eb51f2b69bb2be3ce))
+
+- Ship output-schema.json and schema regression tests
+  ([`b52e9af`](https://github.com/guessit-io/guessit/commit/b52e9af030e4ee6879e39e79bb3bfba09efac0d5))
+
+- **deps**: Require rebulk 5 and adopt typed Key handles
+  ([`625b1da`](https://github.com/guessit-io/guessit/commit/625b1da2278112ae260de77edb5136389985c4fe))
+
+- **deps**: Require rebulk>=4.2.1 and use multi-name Matches.named
+  ([`8eefc50`](https://github.com/guessit-io/guessit/commit/8eefc50ab52b30cc9c29f1e357ad6bf629eccd2b))
+
+- **episode_title**: Title from parent directory for absolute-numbered episodes
+  ([`44f3bae`](https://github.com/guessit-io/guessit/commit/44f3bae7afd0c9bedf10ae1a6f67643a3655ebe3))
+
+- **episodes**: Support Chinese season/episode markers 第N季 / 第N集
+  ([#779](https://github.com/guessit-io/guessit/pull/779),
+  [`4a6b07e`](https://github.com/guessit-io/guessit/commit/4a6b07e15ad51b5361efb2f14ab664838fe12ea0))
+
+- **other**: Add VR angle and stereoscopic 3D format support
+  ([#864](https://github.com/guessit-io/guessit/pull/864),
+  [`509de77`](https://github.com/guessit-io/guessit/commit/509de771e0d274e609547b8fefee0e7e4c6f516d))
+
+- **other**: Detect DoVi as Dolby Vision
+  ([`94cc4ad`](https://github.com/guessit-io/guessit/commit/94cc4ad8f28c09aa6eea699b082f762b56c116a6))
+
+- **other**: Match opening/ending credits with index and version
+  ([#863](https://github.com/guessit-io/guessit/pull/863),
+  [`b6d1834`](https://github.com/guessit-io/guessit/commit/b6d1834cc0e663a01b1de75b92b191233d844daf))
+
+- **other**: Match opening/ending credits with index and version (#705)
+  ([#863](https://github.com/guessit-io/guessit/pull/863),
+  [`b6d1834`](https://github.com/guessit-io/guessit/commit/b6d1834cc0e663a01b1de75b92b191233d844daf))
+
+- **other**: OPED yields both Opening and Ending Credits
+  ([#863](https://github.com/guessit-io/guessit/pull/863),
+  [`b6d1834`](https://github.com/guessit-io/guessit/commit/b6d1834cc0e663a01b1de75b92b191233d844daf))
+
+- **rules**: Adopt rebulk declared Keys and enforce value types in CI
+  ([`3fedc4e`](https://github.com/guessit-io/guessit/commit/3fedc4eeec7e40ea9062b0378206541035e720c7))
+
+- **rules**: Centralize typed Keys in a registry and wire config formatters
+  ([`bcd451a`](https://github.com/guessit-io/guessit/commit/bcd451a48aab2c3eb3e3c0450c853daabd641360))
+
+- **source**: Add Laserdisc (LDRip / Laserdisc)
+  ([`0f142cc`](https://github.com/guessit-io/guessit/commit/0f142cc55a79bf523dbc56e873719db810fc1131))
+
+- **streaming_service**: Add ADN, Channel 5, Max and NowTV
+  ([`4013e94`](https://github.com/guessit-io/guessit/commit/4013e94fa3236cc79812a66c1da77ca438abb50e))
+
+- **title**: Align TITLE_STOP_WORDS with guessit-js (full set)
+  ([`d0699d6`](https://github.com/guessit-io/guessit/commit/d0699d639774f151686012c9d5d64ff53bd8c122))
+
+### Refactoring
+
+- **title**: Use Match.tagged(*RELEASE_TAG_MARKERS)
+  ([`3302bf3`](https://github.com/guessit-io/guessit/commit/3302bf326dd330318cdcdc2883871448b9da3c78))
+
+- **types**: Annotate api, options, cli, markers and rules core
+  ([`66371b7`](https://github.com/guessit-io/guessit/commit/66371b77db8b405af60514d4c8c37a319f15e22a))
+
+- **types**: Annotate common helpers and utils for mypy strict
+  ([`2fdb2e7`](https://github.com/guessit-io/guessit/commit/2fdb2e735f2ef436dbe9cefffdc71355cf39f3b0))
+
+- **types**: Annotate config and the simpler property modules
+  ([`31c450e`](https://github.com/guessit-io/guessit/commit/31c450e069aa1b33cf9843ac2c05f39d9af07228))
+
+- **types**: Annotate date, country and screen_size properties
+  ([`7321220`](https://github.com/guessit-io/guessit/commit/7321220683f5a8dd33934f0073978a3490b27cdc))
+
+- **types**: Annotate language and subtitle_language rules
+  ([`0a27ecf`](https://github.com/guessit-io/guessit/commit/0a27ecfaef050bb79c732c2de8370b823b070945))
+
+- **types**: Annotate other, audio_codec, streaming_service, release_group
+  ([`d47db2f`](https://github.com/guessit-io/guessit/commit/d47db2faefb702e6b5e91d88132df2d3ca057924))
+
+- **types**: Annotate source and episodes rules
+  ([`c2fb57b`](https://github.com/guessit-io/guessit/commit/c2fb57bde4f633cd9a184ab2c1e7e5505bb0a7f9))
+
+- **types**: Annotate tests and enable the mypy strict pre-commit hook
+  ([`5d3764d`](https://github.com/guessit-io/guessit/commit/5d3764dcf4067aac2c4cd074e58ad49b1ca1ccb4))
+
+- **types**: Annotate title and episode_title rules
+  ([`11293ed`](https://github.com/guessit-io/guessit/commit/11293ed988f74749e7116704f38cc7feeaef9b59))
+
+### Testing
+
+- Add fixtures, regenerate schema and document new properties
+  ([`b9143df`](https://github.com/guessit-io/guessit/commit/b9143dfc309ee242b38e7ae0d9715ea8fc96d14a))
+
+- Add regression anchors for ambiguity-prone parsing boundaries
+  ([`654b785`](https://github.com/guessit-io/guessit/commit/654b785b96dece76a9ebec867dac62c54ffa8f6e))
+
+- Add regression anchors for historically-fixed Invalid Guess Result issues
+  ([`9a536c5`](https://github.com/guessit-io/guessit/commit/9a536c53d469a7fb064cf3d06b955f958bea138e))
+
+- Anchor correct behaviour of the shared rules touched by recent fixes
+  ([`da4cb47`](https://github.com/guessit-io/guessit/commit/da4cb474b9f289b5a403d5e819e8ccf18247701d))
+
+- Archive/artwork tests, fixtures, schema and docs
+  ([`86736ed`](https://github.com/guessit-io/guessit/commit/86736ed2f9c94245132c5bca0495d1594a0a2fe4))
+
+- Complete the container enum with all archive/image extensions
+  ([`a78a057`](https://github.com/guessit-io/guessit/commit/a78a05782f6baf40fd4747550a0b8af4550a7d27))
+
+- Fixture for filename season winning over a parent-directory season
+  ([#797](https://github.com/guessit-io/guessit/pull/797),
+  [`bb77e04`](https://github.com/guessit-io/guessit/commit/bb77e04e25ef0cf95f7f0f45e1f81e67f703b69b))
+
+- Fixtures for a common-word language kept before a subtitle extension
+  ([#668](https://github.com/guessit-io/guessit/pull/668),
+  [`a27d225`](https://github.com/guessit-io/guessit/commit/a27d2253b432a4dd20d4b2dcc37cbe1b20c53f8c))
+
+- Fixtures for anime leading-bracket release group (#696/#757)
+  ([`c0c8ef1`](https://github.com/guessit-io/guessit/commit/c0c8ef1d8e1003119752a480055b074e0551406a))
+
+- Fixtures for CJK / × markers and numeric episode_title
+  ([`38508eb`](https://github.com/guessit-io/guessit/commit/38508eb3f937cc8f6036b1e44ce0150e43e859f4))
+
+- Fixtures for glued short tokens and release_group bracket edges
+  ([`1fc886f`](https://github.com/guessit-io/guessit/commit/1fc886ffa162016d718c28c8919bfc6dedbd0230))
+
+- Fixtures for hyphenated/compound titles kept whole
+  ([`2f319a8`](https://github.com/guessit-io/guessit/commit/2f319a813ed207b83966d3a5c3504f50c6084d01))
+
+- Fixtures for title words wrongly consumed as country/language/other
+  ([`cf75378`](https://github.com/guessit-io/guessit/commit/cf75378fad237efe2d6b29e5bcdc3aa3b9c47c2e))
+
+- Fixtures for year/season validation
+  ([`e0289b8`](https://github.com/guessit-io/guessit/commit/e0289b8bef16a8a6da5f0aa0e1a7612b1ef12dcc))
+
+- Memoize corpus sweeps in schema tests
+  ([`20af1ca`](https://github.com/guessit-io/guessit/commit/20af1caf9ad21f0ac906f865887b80c4941c6416))
+
+### Breaking Changes
+
+- Drops support for Python 3.7, 3.8 and 3.9 — guessit now requires Python >=3.10. PyPy is no longer
+  tested or supported. The rebulk engine dependency moves to >=6,<7 (from >=3). Downstream users on
+  an older Python or pinning rebulk <6 must upgrade.
 
 
 ## v3.8.0 (2023-12-14)
