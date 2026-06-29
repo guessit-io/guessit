@@ -689,7 +689,9 @@
   audio_codec: DTS-HD
   audio_profile: Master Audio
   source: Blu-ray
-  other: 3D
+  other:
+  - 3D
+  - Half Side By Side
   release_group: ABC
   screen_size: 1080p
   title: TEST
@@ -702,7 +704,9 @@
   audio_codec: DTS-HD
   audio_profile: Master Audio
   source: Blu-ray
-  other: 3D
+  other:
+  - 3D
+  - Half Over Under
   release_group: ABC
   screen_size: 1080p
   title: TEST
@@ -718,7 +722,9 @@
   - Dolby Atmos
   audio_profile: Master Audio
   source: Blu-ray
-  other: 3D
+  other:
+  - 3D
+  - Half Over Under
   release_group: ABC
   screen_size: 1080p
   title: TEST
@@ -734,7 +740,9 @@
   - Dolby Atmos
   audio_profile: Master Audio
   source: Blu-ray
-  other: 3D
+  other:
+  - 3D
+  - Half Side By Side
   release_group: ABC
   screen_size: 1080p
   title: TEST
@@ -1267,6 +1275,115 @@
   release_group: GRP
   container: mkv
   type: movie
+
+# VR with a separated angle: the 180/360 must be absorbed by Virtual Reality,
+# not split into season/episode (#618).
+? Movie.Name.2020.VR.180.1080p.x264-GRP.mkv
+: title: Movie Name
+  other: Virtual Reality
+  year: 2020
+  screen_size: 1080p
+  -season: 1
+  -episode: 80
+  type: movie
+
+? Movie.Name.2020.VR.360.1080p.mkv
+: title: Movie Name
+  other: Virtual Reality
+  year: 2020
+  -season: 3
+  -episode: 60
+  type: movie
+
+? Movie.Name.2020.EAC360.1080p.mkv
+: title: Movie Name
+  other: Virtual Reality
+  type: movie
+
+# Stereoscopic layout, VR context resolves the ambiguous abbreviations.
+? Movie.Name.VR.180.SBS.1080p.mkv
+: title: Movie Name
+  other:
+  - Virtual Reality
+  - Side By Side
+  -streaming_service: SBS
+  type: movie
+
+? Movie.Name.VR.180.LR.1080p.mkv
+: title: Movie Name
+  other:
+  - Virtual Reality
+  - Side By Side
+  type: movie
+
+? Movie.Name.VR.180.OU.1080p.mkv
+: title: Movie Name
+  other:
+  - Virtual Reality
+  - Over Under
+  -episode_title: OU
+  type: movie
+
+? Movie.Name.2015.3D.SBS.1080p.BluRay.x264-GRP.mkv
+: title: Movie Name
+  other:
+  - 3D
+  - Side By Side
+  type: movie
+
+# The compact `H*`/`Half-*` forms are unambiguous and need no VR/3D neighbor.
+? Movie.Name.2015.1080p.HSBS.x264-GRP.mkv
+: title: Movie Name
+  other: Half Side By Side
+  type: movie
+
+? Movie.Name.2015.1080p.Half-OU.x264-GRP.mkv
+: title: Movie Name
+  other: Half Over Under
+  type: movie
+
+# In a VR/3D context the ambiguous abbreviation wins its span over the SBS
+# broadcaster (the same token must not be reported as two properties).
+? Movie.Name.VR.180.SBS.HDTV.x264-GRP.mkv
+: title: Movie Name
+  other:
+  - Virtual Reality
+  - Side By Side
+  source: HDTV
+  -streaming_service: SBS
+  type: movie
+
+# Negative guards: outside a VR/3D context, the ambiguous abbreviations and the
+# real-word phrases keep their usual meaning and never become a stereoscopic `other`.
+? Over.Under.2021.1080p.WEB.h264-GRP.mkv
+: title: Over Under
+  -other: Over Under
+  type: movie
+
+# Spelled-out word pairs are never a stereoscopic `other`, even with a 3D neighbor,
+# so a real title is preserved.
+? Top.Bottom.2019.3D.1080p.BluRay.x264-GRP.mkv
+: title: Top Bottom
+  other: 3D
+  -other: Over Under
+  type: movie
+
+? Show.Name.SBS.HDTV.x264-GRP.mkv
+: title: Show Name
+  streaming_service: SBS
+  source: HDTV
+  video_codec: H.264
+  release_group: GRP
+  container: mkv
+  -other: Side By Side
+  type: movie
+
+? Show.Name.S04E10.OU.1080p.x264-GRP.mkv
+: title: Show Name
+  season: 4
+  episode: 10
+  -other: Over Under
+  type: episode
 
 ? Show.Name.S01E01.NCOP.1080p.x264-GRP.mkv
 : title: Show Name
