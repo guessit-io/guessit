@@ -95,6 +95,14 @@ commit_author = "github-actions <actions@github.com>"
 build_command = "uv lock"
 assets = ["uv.lock"]
 
+[tool.semantic_release.changelog]
+# Keep the changelog (and the PyPI long description it feeds via hatch_build.py)
+# focused on user-facing changes by dropping noise commit types. Breaking commits
+# (type!:) are NOT matched by these patterns, so they still surface.
+exclude_commit_patterns = [
+    "^(?:chore|ci|test|style|docs|refactor|build)(?:\\([^)]*\\))?: ",
+]
+
 # commitizen is used only to lint commit messages (Conventional Commits), both
 # via the local pre-commit commit-msg hook and the CI `cz check`. Versioning and
 # releases stay owned by python-semantic-release above.
