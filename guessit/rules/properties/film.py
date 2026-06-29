@@ -13,6 +13,7 @@ from rebulk.remodule import re
 from ...config import load_config_patterns
 from ..common import dash
 from ..common.formatters import cleanup
+from ..common.keys import FILM
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
@@ -30,7 +31,7 @@ def film(config: dict[str, Any]) -> Rebulk:
     rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash]).string_defaults(ignore_case=True)
     rebulk.defaults(name="film", validator=seps_surround)
 
-    load_config_patterns(rebulk, config.get("film"))
+    load_config_patterns(rebulk, config.get("film"), options={None: {"formatter": FILM.converter}})
 
     rebulk.rules(FilmTitleRule)
 

@@ -7,16 +7,13 @@ from __future__ import annotations
 
 from typing import Any
 
-from rebulk import Key, Rebulk
+from rebulk import Rebulk
 from rebulk.remodule import re
 
 from ..common import dash
+from ..common.keys import SIZE
 from ..common.pattern import is_disabled
-from ..common.quantity import Size
 from ..common.validators import seps_surround
-
-#: Typed key (rebulk 5) binding the ``size`` match name to its :class:`Size` value.
-SIZE = Key("size", Size, formatter=Size.fromstring)
 
 
 def size(config: dict[str, Any]) -> Rebulk:

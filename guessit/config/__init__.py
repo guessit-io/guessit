@@ -58,7 +58,11 @@ def _eval(value: str) -> Any:
     return eval(compiled)
 
 
-def _process_option_executable(value: str, default_module_name: str | None = None) -> Any:
+def _process_option_executable(value: Any, default_module_name: str | None = None) -> Any:
+    if not isinstance(value, str):
+        # Already-resolved callable (e.g. a typed Key converter injected by a rule
+        # module), not an "import:"/"eval:" spec to resolve.
+        return value
     if value.startswith(_import_prefix):
         value = value[len(_import_prefix) :]
         return _import(value, default_module_name)

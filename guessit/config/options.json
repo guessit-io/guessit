@@ -110,7 +110,6 @@
         "_": {
           "regex": ["\\d+-?[kmg]b(ps|its?)", "\\d+\\.\\d+-?[kmg]b(ps|its?)"],
           "conflict_solver": "lambda match, other: match if other.name == 'audio_channels' and 'weak-audio_channels' not in other.tags else other",
-          "formatter": "import:guessit.rules.common.quantity:BitRate.fromstring",
           "tags": ["release-group-prefix"]
         }
       }
@@ -121,7 +120,6 @@
           "regex": "x(\\d+)",
           "private_parent": true,
           "children": true,
-          "formatter": "eval:int",
           "validator": {"__parent__": "import:seps_surround"},
           "validate_all": true,
           "conflict_solver": "lambda match, conflicting: match if conflicting.name in ('video_codec', 'episode') and 'weak-episode' not in conflicting.tags else '__default__'"
@@ -135,7 +133,6 @@
           "cd": "lambda match: 0 < match.value < 100",
           "cd_count": "lambda match: 0 < match.value < 100"
         },
-        "formatter": {"cd": "eval:int", "cd_count": "eval:int"},
         "children": true,
         "private_parent": true,
         "properties": {"cd": [null], "cd_count": [null]}
@@ -146,7 +143,6 @@
           "cd": "lambda match: 0 < match.value < 100",
           "cd_count": "lambda match: 0 < match.value < 100"
         },
-        "formatter": {"cd_count": "eval:int"},
         "children": true,
         "private_parent": true,
         "properties": {"cd": [null], "cd_count": [null]}
@@ -348,7 +344,7 @@
     },
     "film": {
       "film": {
-        "_f": {"regex": "f(\\d{1,2})", "name": "film", "validate_all": true, "validator": {"__parent__": "import:seps_surround"}, "private_parent": true, "children": true, "formatter": "eval:int"}
+        "_f": {"regex": "f(\\d{1,2})", "name": "film", "validate_all": true, "validator": {"__parent__": "import:seps_surround"}, "private_parent": true, "children": true}
       }
     },
     "language": {

@@ -7,15 +7,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from rebulk import Key, Rebulk
+from rebulk import Rebulk
 from rebulk.remodule import re
 
+from ..common.keys import CRC32, UUID
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-
-#: Typed keys (rebulk 5) binding each match name to its value type.
-CRC32 = Key("crc32", str)
-UUID = Key("uuid", str)
 
 
 def crc(config: dict[str, Any]) -> Rebulk:

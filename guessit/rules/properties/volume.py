@@ -8,19 +8,11 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from rebulk import Key, Rebulk
+from rebulk import Rebulk
 
+from ..common.keys import VOLUME
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
-
-
-def _format_volume(value: str) -> int:
-    """Extract the volume number from a matched ``vol…N`` token."""
-    return int(re.sub(r"\D", "", value))
-
-
-#: Typed key (rebulk 5) binding the ``volume`` match name to its ``int`` value.
-VOLUME = Key("volume", int, formatter=_format_volume)
 
 
 def volume(config: dict[str, Any]) -> Rebulk:
