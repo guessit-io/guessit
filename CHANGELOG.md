@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v4.0.1 (2026-06-29)
+
+### Bug Fixes
+
+- **changelog**: Trim noise commit types from the changelog and PyPI page
+  ([`b9a1b6b`](https://github.com/guessit-io/guessit/commit/b9a1b6bc7a9f69eef0afad2db8659837302a9bfe))
+
+- **packaging**: Balance changelog code fences in the PyPI long description
+  ([`a1722db`](https://github.com/guessit-io/guessit/commit/a1722dbedb17fbd77b802b493b5262b60d4491a9))
+
+
 ## v4.0.0 (2026-06-29)
 
 ### Bug Fixes
