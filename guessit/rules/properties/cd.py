@@ -12,6 +12,7 @@ from rebulk.remodule import re
 
 from ...config import load_config_patterns
 from ..common import dash
+from ..common.keys import CD, CD_COUNT
 from ..common.pattern import is_disabled
 
 
@@ -26,6 +27,7 @@ def cd(config: dict[str, Any]) -> Rebulk:
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "cd"))
     rebulk = rebulk.regex_defaults(flags=re.IGNORECASE, abbreviations=[dash])
+    rebulk.declare_keys(CD, CD_COUNT)
 
     load_config_patterns(rebulk, config)
 

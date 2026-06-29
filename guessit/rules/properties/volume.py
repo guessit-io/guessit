@@ -10,6 +10,7 @@ from typing import Any
 
 from rebulk import Rebulk
 
+from ..common.keys import VOLUME
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
@@ -32,9 +33,8 @@ def volume(config: dict[str, Any]) -> Rebulk:
     # glued, as in the NAS path "/volume1/") is intentionally NOT matched.
     rebulk.regex(
         r"vol(?:\d{1,3}|(?:ume)?[-. ]\d{1,3})",
-        name="volume",
+        key=VOLUME,
         validator=seps_surround,
-        formatter=lambda value: int(re.sub(r"\D", "", value)),
     )
 
     return rebulk

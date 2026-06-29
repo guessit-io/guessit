@@ -10,7 +10,7 @@ import traceback
 from collections import OrderedDict
 from copy import deepcopy
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 from rebulk.introspector import introspect
 
@@ -271,7 +271,9 @@ class GuessItApi:
             output_input_string = options.get("output_input_string", False)
             if output_input_string:
                 matches_dict["input_string"] = matches.input_string
-            return matches_dict
+            # rebulk 6 types MatchesDict keys as ``str | None``; every guessit
+            # property (and ``input_string``) is named, so the keys are always ``str``.
+            return cast("dict[str, Any]", matches_dict)
         except Exception as err:
             raise GuessitException(string, options) from err
 

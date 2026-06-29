@@ -10,6 +10,7 @@ from typing import Any
 from rebulk import Rebulk
 from rebulk.remodule import re
 
+from ..common.keys import CRC32, UUID
 from ..common.pattern import is_disabled
 from ..common.validators import seps_surround
 
@@ -29,13 +30,13 @@ def crc(config: dict[str, Any]) -> Rebulk:
 
     rebulk.regex(
         "(?:[a-fA-F]|[0-9]){8}",
-        name="crc32",
+        key=CRC32,
         conflict_solver=lambda match, other: other if other.name in ["episode", "season"] else "__default__",
     )
 
     rebulk.functional(
         guess_idnumber,
-        name="uuid",
+        key=UUID,
         conflict_solver=lambda match, other: match if other.name in ["episode", "season"] else "__default__",
     )
     return rebulk

@@ -12,6 +12,7 @@ from rebulk.remodule import re
 
 from ...config import load_config_patterns
 from ..common.formatters import cleanup
+from ..common.keys import BONUS
 from ..common.pattern import is_disabled
 from .title import TitleFromPosition
 
@@ -30,6 +31,7 @@ def bonus(config: dict[str, Any]) -> Rebulk:
     """
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "bonus"))
     rebulk = rebulk.regex_defaults(name="bonus", flags=re.IGNORECASE)
+    rebulk.declare_keys(BONUS)
 
     load_config_patterns(rebulk, config.get("bonus"))
 

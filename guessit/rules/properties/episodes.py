@@ -20,6 +20,7 @@ from guessit.rules.common.numeral import numeral, parse_numeral
 from ...reutils import build_or_pattern
 from ..common import alt_dash, dash, seps, seps_no_fs
 from ..common.formatters import strip
+from ..common.keys import COUNT, EPISODE, SEASON, VERSION
 from ..common.pattern import is_disabled
 from ..common.validators import and_, int_coercable, seps_surround
 from .title import TitleFromPosition
@@ -214,9 +215,9 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         .regex_defaults(flags=re.IGNORECASE)
         .string_defaults(ignore_case=True)
         .chain_defaults(chain_breaker=episodes_season_chain_breaker)
+        .declare_keys(SEASON, EPISODE, VERSION, COUNT)
         .defaults(
             private_names=["episodeSeparator", "seasonSeparator", "episodeMarker", "seasonMarker"],
-            formatter={"season": int, "episode": int, "version": int, "count": int},
             children=True,
             private_parent=True,
             conflict_solver=season_episode_conflict_solver,
@@ -245,7 +246,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     rebulk.regex(r"(?<!\d)(?P<season>\d{1,2})期", tags=["SxxExx"], disabled=is_season_episode_disabled)
 
     # S01E02, 01x02, S01S02S03
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["SxxExx"],
         validate_all=True,
         validator={"__parent__": and_(seps_surround, ordering_validator)},
@@ -264,7 +265,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + r"(?P<episode>\d+)"
     ).repeater("*")
 
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["SxxExx"],
         validate_all=True,
         validator={"__parent__": and_(seps_surround, ordering_validator)},
@@ -273,7 +274,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         r"(?P<season>\d+)@?" + build_or_pattern(season_ep_markers, name="episodeMarker") + r"@?(?P<episode>\d+)"
     ).repeater("+")
 
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["SxxExx"],
         validate_all=True,
         validator={"__parent__": and_(seps_surround, ordering_validator)},
@@ -287,7 +288,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + r"(?P<episode>\d+)"
     ).repeater("*")
 
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["SxxExx"],
         validate_all=True,
         validator={"__parent__": and_(seps_surround, ordering_validator)},
@@ -319,7 +320,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         conflict_solver=season_episode_conflict_solver,
     )
 
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         validate_all=True,
         conflict_solver=season_episode_conflict_solver,
         formatter={"season": parse_numeral, "count": parse_numeral},
@@ -375,7 +376,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     )
 
     # 12, 13
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["weak-episode"],
         disabled=lambda context: context.get("type") == "movie" or is_disabled(context, "episode"),
     ).defaults(validator=None, tags=["weak-episode"]).regex(r"(?P<episode>\d{2})").regex(r"v(?P<version>\d+)").repeater(
@@ -383,7 +384,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     ).regex(r"(?P<episodeSeparator>[x-])(?P<episode>\d{2})", abbreviations=None).repeater("*")
 
     # 012, 013
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["weak-episode"],
         disabled=lambda context: context.get("type") == "movie" or is_disabled(context, "episode"),
     ).defaults(validator=None, tags=["weak-episode"]).regex(r"0(?P<episode>\d{1,2})").regex(
@@ -391,7 +392,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     ).repeater("?").regex(r"(?P<episodeSeparator>[x-])0(?P<episode>\d{1,2})", abbreviations=None).repeater("*")
 
     # 112, 113
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["weak-episode"],
         name="weak_episode",
         disabled=lambda context: context.get("type") == "movie" or is_disabled(context, "episode"),
@@ -404,7 +405,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     # episode list: that digit is the prefix of a dash-separated release group (e.g. the
     # obfuscation prefix in "x264.1-URANiME-Obfuscated", #627), not a single-digit episode.
     # A range ("1-2", digit-dash-digit) is unaffected.
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["weak-episode"],
         disabled=lambda context: context.get("type") != "episode" or is_disabled(context, "episode"),
     ).defaults(validator=None, tags=["weak-episode"]).regex(r"(?P<episode>\d)(?!-[a-z])", abbreviations=None).regex(
@@ -412,28 +413,28 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     ).repeater("?").regex(r"(?P<episodeSeparator>[x-])(?P<episode>\d{1,2})", abbreviations=None).repeater("*")
 
     # e112, e113, 1e18, 3e19
-    rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(
         r"(?P<season>\d{1,2})?(?P<episodeMarker>e)(?P<episode>\d{1,4})"
     ).regex(r"v(?P<version>\d+)").repeater("?").regex(
         r"(?P<episodeSeparator>e|x|-)(?P<episode>\d{1,4})", abbreviations=None
     ).repeater("*")
 
     # ep 112, ep113, ep112, ep113
-    rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(disabled=lambda context: is_disabled(context, "episode")).defaults(validator=None).regex(
         r"ep-?(?P<episode>\d{1,4})"
     ).regex(r"v(?P<version>\d+)").repeater("?").regex(
         r"(?P<episodeSeparator>ep|e|x|-)(?P<episode>\d{1,4})", abbreviations=None
     ).repeater("*")
 
     # cap 112, cap 112_114
-    rebulk.chain(tags=["see-pattern"], disabled=is_season_episode_disabled).defaults(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(tags=["see-pattern"], disabled=is_season_episode_disabled).defaults(
         validator=None, tags=["see-pattern"]
     ).regex(r"(?P<seasonMarker>cap)-?(?P<season>\d{1,2})(?P<episode>\d{2})").regex(
         r"(?P<episodeSeparator>-)(?P<season>\d{1,2})(?P<episode>\d{2})"
     ).repeater("?")
 
     # 102, 0102
-    rebulk.chain(  # type: ignore[attr-defined]  # rebulk Chain.repeater not in stubs
+    rebulk.chain(
         tags=["weak-episode", "weak-duplicate"],
         name="weak_duplicate",
         conflict_solver=season_episode_conflict_solver,
@@ -450,7 +451,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         r"(?P<episodeSeparator>x|-)(?P<episode>\d{2})", abbreviations=None
     ).repeater("*")
 
-    rebulk.regex(r"v(?P<version>\d+)", formatter=int, disabled=lambda context: is_disabled(context, "version"))
+    rebulk.regex(r"v(?P<version>\d+)", disabled=lambda context: is_disabled(context, "version"))
 
     rebulk.defaults(private_names=["episodeSeparator", "seasonSeparator"])
 
@@ -461,7 +462,6 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + r"-?(?P<count>\d+)-?"
         + build_or_pattern(episode_words)
         + "?",
-        formatter=int,
         pre_match_processor=match_processors.strip,
         disabled=lambda context: is_disabled(context, "episode"),
     )
