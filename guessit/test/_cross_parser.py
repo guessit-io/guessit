@@ -38,6 +38,11 @@ def field_matches(result: dict[str, Any], field: str, expected: Any) -> bool:
     got = result.get(field)
     if field == "title":
         return got is not None and normalize_title(got) == normalize_title(expected)
+    if field == "year" and got is None:
+        # guessit folds a full air date into `date` (no separate `year`); other
+        # parsers only keep the year, so accept the date's year as a match.
+        date = result.get("date")
+        return date is not None and str(getattr(date, "year", None)) == str(expected)
     if field in ("season", "episode") and (isinstance(expected, list) or isinstance(got, list)):
         # compare as sets so a scalar and its single-element list are equal both ways
         got_set = set(got) if isinstance(got, list) else {got}
