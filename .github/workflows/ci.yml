@@ -294,6 +294,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    environment: pypi
+
     permissions:
       contents: write   # semantic-release pushes the version bump commit + tag + GitHub release
       id-token: write   # OIDC token for PyPI Trusted Publishing (no API token needed)
