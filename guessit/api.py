@@ -146,6 +146,8 @@ class GuessItApi:
         self.config: dict[str, Any] | None = None
         self.load_config_options: Any = None
         self.advanced_config: Any = None
+        self.effective_options: dict[str, Any] | None = None
+        self.effective_options_input: Any = None
 
     def reset(self) -> None:
         """
@@ -195,19 +197,32 @@ class GuessItApi:
             options = parse_options(options, True)
             options = self._fix_encoding(options)
 
-        if (
+        config_reloaded = (
             self.config is None
             or self.load_config_options is None
             or force
             or not self._has_same_properties(
                 self.load_config_options, options, ["config", "no_user_config", "no_default_config"]
             )
-        ):
+        )
+        if config_reloaded:
             config = load_config(options)
             config = self._fix_encoding(config)
             self.load_config_options = options
         else:
+            assert self.config is not None
             config = self.config
+
+        # merge_options deep-copies advanced_config, and the effective options embed it again; both are
+        # unchanged while nothing that feeds them changes, so reuse them across repeated calls.
+        if (
+            not force
+            and not config_reloaded
+            and self.rebulk is not None
+            and self.effective_options is not None
+            and self.effective_options_input == options
+        ):
+            return config
 
         advanced_config = merge_options(config.get("advanced_config"), options.get("advanced_config"))
 
@@ -220,6 +235,8 @@ class GuessItApi:
             self.rebulk = rules_builder(advanced_config)
 
         self.config = config
+        self.effective_options = merge_options(config, options)
+        self.effective_options_input = options
         return self.config
 
     def guessit(self, string: str | Path | bytes, options: Any = None) -> dict[str, Any]:
@@ -246,8 +263,9 @@ class GuessItApi:
         try:
             options = parse_options(options, True)
             options = self._fix_encoding(options)
-            config = self.configure(options, sanitize_options=False)
-            options = merge_options(config, options)
+            self.configure(options, sanitize_options=False)
+            assert self.effective_options is not None
+            options = self.effective_options
             result_decode = False
             result_encode = False
 
@@ -287,8 +305,9 @@ class GuessItApi:
         """
         options = parse_options(options, True)
         options = self._fix_encoding(options)
-        config = self.configure(options, sanitize_options=False)
-        options = merge_options(config, options)
+        self.configure(options, sanitize_options=False)
+        assert self.effective_options is not None
+        options = self.effective_options
         assert self.rebulk is not None
         unordered = introspect(self.rebulk, options).properties
         ordered = OrderedDict()
