@@ -2,6 +2,42 @@
 
 <!-- version list -->
 
+## v4.1.0 (2026-07-03)
+
+### Bug Fixes
+
+- **episodes**: Don't treat a title year as a number-first season marker
+  ([`d25e714`](https://github.com/guessit-io/guessit/commit/d25e714494c4f7d7ee5f675366b36dd5e1c91391))
+
+- **film**: Keep a leading film number in the title
+  ([`cc2b0a4`](https://github.com/guessit-io/guessit/commit/cc2b0a484dc51b48ba18782c51c829a8373edd49))
+
+- **options**: Read bundled options.json as UTF-8
+  ([`1fa5cd1`](https://github.com/guessit-io/guessit/commit/1fa5cd14c6406bef90acddf16d4b4be263c92a14))
+
+- **title**: Reclaim a title-word property value from the title zone
+  ([`af31f60`](https://github.com/guessit-io/guessit/commit/af31f6046c5ef2b45c212cadaf71d1913c4f3b68))
+
+- **website**: Refresh IANA TLD list so modern-gTLD hosts are detected
+  ([`246562d`](https://github.com/guessit-io/guessit/commit/246562d1fcfca34106f4d90aed28af274162ad78))
+
+### Features
+
+- **episodes**: Keep a title-trailing number out of number-first seasons
+  ([`01fb144`](https://github.com/guessit-io/guessit/commit/01fb144006bda32d1ca384f12eb627257a7e3480))
+
+- **episodes**: Recognize non-English season/episode keywords
+  ([`53d9a73`](https://github.com/guessit-io/guessit/commit/53d9a73b35680facfa85a8b0ad49e73fe93eea1b))
+
+- **title**: Split a leading original-language script prefix into alternative_title
+  ([`01c3d4e`](https://github.com/guessit-io/guessit/commit/01c3d4e72bc2ff102735594bfada6ae741165c96))
+
+### Performance Improvements
+
+- Cache effective options across calls with stable options
+  ([`975cf8f`](https://github.com/guessit-io/guessit/commit/975cf8f2a2ac5c4a1054247bb57017dfa6273652))
+
+
 ## v4.0.2 (2026-06-29)
 
 ### Bug Fixes
