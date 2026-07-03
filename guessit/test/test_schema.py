@@ -18,6 +18,7 @@ from guessit.yamlutils import OrderedDictYAMLLoader
 ROOT = Path(__file__).resolve().parent.parent.parent
 TEST_DIR = ROOT / "guessit" / "test"
 OUTPUT_SCHEMA_JSON = ROOT / "guessit" / "data" / "output-schema.json"
+PROPERTIES_DOC = ROOT / "docs" / "properties.md"
 
 
 def _corpus_inputs() -> list[str]:
@@ -69,6 +70,14 @@ def test_properties_advertises_every_schema_property() -> None:
     for name in GUESSIT_SCHEMA:
         assert name in props, f"properties() missing {name}"
     assert len(props) == len(GUESSIT_SCHEMA)
+
+
+def test_properties_doc_documents_every_schema_property() -> None:
+    """docs/properties.md must carry an entry for every schema property."""
+    doc = PROPERTIES_DOC.read_text(encoding="utf-8")
+    documented = {match.replace("\\", "") for match in re.findall(r"\*\*([^*]+)\*\*", doc)}
+    missing = [name for name in GUESSIT_SCHEMA if name not in documented]
+    assert not missing, f"docs/properties.md missing entries for: {sorted(missing)}"
 
 
 def test_value_constrained_properties_expose_a_non_empty_enum() -> None:
