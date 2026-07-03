@@ -92,6 +92,12 @@ The core parsing is built on **Rebulk**, a declarative pattern matching library.
   the `config` dict its builder receives; this keeps every vocabulary user-overridable. When
   adding a feature that needs keywords/stop-words/function-words, add them to `advanced_config`
   and thread them through the property builder — do not inline a `frozenset`/list literal.
+- **Do not base rules on letter case.** Guessit is case-insensitive by design (patterns match
+  regardless of case), so a rule must not use casing as a discriminator (`re.match(r"^[A-Z]...")`,
+  `.isupper()`, etc.). Real release names come in Title-Case, lowercase and UPPERCASE alike;
+  keying on case makes a rule silently miss the other spellings. Prefer a structural signal
+  (position relative to an anchor, separators, neighbouring matches, a config tag). Rare, clearly
+  justified exceptions may exist, but the default is case-agnostic.
 
 ### Tests
 

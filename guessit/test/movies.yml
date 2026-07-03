@@ -2093,3 +2093,46 @@
   source: Blu-ray
   screen_size: 720p
   video_codec: H.264
+
+# #885: a property value that is also a plain title word (tagged title-word, e.g. audio_codec
+# "Opus") sitting in the title zone -- before the year/season/episode anchor -- is title text,
+# not a codec. Case-insensitive and works at the start, end or middle of the title.
+? Opus.2025.Hybrid.2160p.WEB-DL.DV.HDR.DDP5.1.Atmos.H265-AOC.mkv
+: title: Opus
+  year: 2025
+  audio_codec:
+    - Dolby Digital Plus
+    - Dolby Atmos
+  -audio_codec: Opus
+
+? Something.Opus.2025.1080p.WEB-DL.DDP5.1-AOC.mkv
+: title: Something Opus
+  year: 2025
+  -audio_codec: Opus
+
+# Lowercase (scene style): title-word is still reclaimed at the start, end and middle.
+? opus.2025.1080p.web-dl.ddp5.1.atmos.h265-aoc.mkv
+: title: opus
+  year: 2025
+  -audio_codec: Opus
+
+? something.opus.2025.1080p.web-dl.ddp5.1-aoc.mkv
+: title: something opus
+  year: 2025
+  -audio_codec: Opus
+
+? foo.opus.bar.2025.1080p.web-dl.ddp5.1-aoc.mkv
+: title: foo opus bar
+  year: 2025
+  -audio_codec: Opus
+
+# The codec proper stays a codec: "OPUS"/"Opus" that lives in the technical tag block
+# (after the anchor / among the other tags) is untouched, whatever its case.
+? How To Steal A Dog.2014.BluRay.1080p.12bit.HEVC.OPUS 5.1-Hn1Dr2.mkv
+: title: How To Steal A Dog
+  year: 2014
+  audio_codec: Opus
+
+? Alien.Director.Cut.Ita.Eng.VP9.Opus.AlphaBot.webm
+: title: Alien
+  audio_codec: Opus
