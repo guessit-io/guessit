@@ -72,7 +72,7 @@ Several mechanisms expose what GuessIt can emit:
 - `properties()` — a dict mapping every property to the list of values it can
   produce (empty list for free-form values):
 
-      >>> from guessit.api import properties
+      >>> from guessit import properties
       >>> 'Blu-ray' in properties()['source']
       True
 
@@ -83,8 +83,9 @@ Several mechanisms expose what GuessIt can emit:
 - On the command line, `guessit -p` lists the properties and `guessit -V` lists
   their possible values.
 
-`GUESSIT_SCHEMA` is exported from the top-level package; `properties()` and
-`suggested_expected()` live in `guessit.api` (or as methods on `GuessItApi`).
+`GUESSIT_SCHEMA`, `properties()` and `suggested_expected()` are all exported
+from the top-level `guessit` package (and are also available as methods on
+`GuessItApi`).
 
 ### `suggested_expected(titles)`
 
@@ -92,7 +93,7 @@ Given an iterable of known titles, return the subset that GuessIt would
 mis-parse into extra properties — good candidates to feed back as
 `expected_title`:
 
-    >>> from guessit.api import suggested_expected
+    >>> from guessit import suggested_expected
     >>> suggested_expected(['OSS 117', 'The 100', 'Normal Movie Title'])
     ['The 100']
 
