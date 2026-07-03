@@ -2054,3 +2054,34 @@
   audio_codec: Dolby Digital
   release_group: Hive-CM8
   type: movie
+
+# #887: a leading release-site host on a modern gTLD (.party, .vip, .show, .pics) must be
+# detected as a website and kept out of the title. Refreshing the IANA TLD list fixes these.
+? www.Tamilblasters.party - The Wheel of Time (2021) 720p x264
+: title: The Wheel of Time
+  year: 2021
+  screen_size: 720p
+  video_codec: H.264
+  website: www.Tamilblasters.party
+
+? www.TamilBlasters.vip - Shang-Chi (2021) 720p BDRip x264
+: title: Shang-Chi
+  year: 2021
+  screen_size: 720p
+  source: Blu-ray
+  video_codec: H.264
+  website: www.TamilBlasters.vip
+
+? www.5MovieRulz.show - Khel Khel Mein (2024) 1080p x264
+: title: Khel Khel Mein
+  year: 2024
+  screen_size: 1080p
+  video_codec: H.264
+  website: www.5MovieRulz.show
+
+? www.1TamilMV.pics - 777 Charlie (2022) 720p x264
+: title: 777 Charlie
+  year: 2022
+  screen_size: 720p
+  video_codec: H.264
+  website: www.1TamilMV.pics
