@@ -35,7 +35,6 @@ Documentation
 Full documentation is available at [guessit-io.github.io/guessit](https://guessit-io.github.io/guessit), including:
 
 - [Properties](https://guessit-io.github.io/guessit/properties/) guessit can extract
-- [Sources](https://guessit-io.github.io/guessit/sources/) it recognises
 - [Configuration](https://guessit-io.github.io/guessit/configuration/) and advanced options
 - [Supported languages](https://guessit-io.github.io/guessit/languages/) for season/episode keywords and spoken/subtitle detection
 - [Known limitations](https://guessit-io.github.io/guessit/known-limitations/)
