@@ -26,6 +26,11 @@ uv run pytest -k test_default
 # Run only the YAML-driven matcher tests
 uv run pytest guessit/test/test_yml.py
 
+# Run the opt-in cross-parser tests (excluded from the default run)
+uv run pytest -m cross_parser
+# Re-import / refresh the cross-parser datasets + baseline (needs network; run rarely)
+uv run python scripts/import_cross_parser_tests.py
+
 # Lint (ruff, config in pyproject.toml [tool.ruff])
 uv run ruff check guessit
 # Auto-fix lint issues
@@ -82,10 +87,23 @@ The core parsing is built on **Rebulk**, a declarative pattern matching library.
 - Default config: `guessit/config/options.json`
 - Users can customize via `--config` CLI flag or programmatic `options` dict
 - Options are merged: default → user config → programmatic options
+- **All tokens and word lists must live in the configuration** (`options.json`, under
+  `advanced_config.<property>`), never hard-coded in a rule module. A rule reads its lists from
+  the `config` dict its builder receives; this keeps every vocabulary user-overridable. When
+  adding a feature that needs keywords/stop-words/function-words, add them to `advanced_config`
+  and thread them through the property builder — do not inline a `frozenset`/list literal.
+- **Do not base rules on letter case.** Guessit is case-insensitive by design (patterns match
+  regardless of case), so a rule must not use casing as a discriminator (`re.match(r"^[A-Z]...")`,
+  `.isupper()`, etc.). Real release names come in Title-Case, lowercase and UPPERCASE alike;
+  keying on case makes a rule silently miss the other spellings. Prefer a structural signal
+  (position relative to an anchor, separators, neighbouring matches, a config tag). Rare, clearly
+  justified exceptions may exist, but the default is case-agnostic.
 
 ### Tests
 
 Tests live in `guessit/test/`. The YAML files (`episodes.yml`, `movies.yml`, `various.yml`, etc.) are the primary regression corpus: `test_yml.py` discovers every `.yml`/`.yaml` file and parametrizes one pytest case per entry, mapping a filename to its expected parsed properties. **To cover a new filename pattern or fix, add an entry to the relevant YAML file** rather than writing a new Python test. Entry strings support token prefixes parsed by `parse_token_options` (e.g. negation and "global match" checks). Python test files (`test_api.py`, `test_main.py`, `test_options.py`, `test_benchmark.py`) handle API, CLI, options, and benchmarks.
+
+**Cross-parser tests** (`test_cross_parser.py`, marker `cross_parser`, opt-in via `pytest -m cross_parser`, excluded from the default run): thousands of `(release_name → expected fields)` assertions imported from the test fixtures of other permissively-licensed parsers (PTT, anitomy, scene-release-parser, PTN, go-ptn) and mapped into the guessit vocabulary by `scripts/import_cross_parser_tests.py`. The vendored data lives in `guessit/test/cross_parser/*.json` (generated — do not hand-edit; see `cross_parser/NOTICE.md` for MIT/MPL-2.0 attribution). There is **one test per external parser**. Independent parsers legitimately disagree, so these tests are not meant to make guessit match every label: every field guessit does not currently satisfy is recorded in `cross_parser/baseline.json`, and a parser's test fails only on a **new** divergence (a regression). Regenerate the datasets + baseline with `python scripts/import_cross_parser_tests.py` after an intentional behaviour change.
 
 ## Branch Strategy
 

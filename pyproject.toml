@@ -27,7 +27,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "rebulk>=6,<7",
+    "rebulk>=6.0.1,<7",
     "babelfish>=0.6.1",
     "python-dateutil>=2.8.0",
 ]
@@ -147,7 +147,10 @@ strict = true
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
-addopts = "-s --ignore=build --ignore=docs --ignore=hatch_build.py --doctest-modules --doctest-glob='*.rst'"
+addopts = "-s --ignore=build --ignore=docs --ignore=hatch_build.py --doctest-modules --doctest-glob='*.rst' -m 'not cross_parser'"
+markers = [
+    "cross_parser: opt-in tests checking guessit against other parsers' labelled fixtures (run with `pytest -m cross_parser`)",
+]
 
 [tool.coverage.run]
 omit = [

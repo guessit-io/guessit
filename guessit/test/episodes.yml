@@ -5142,3 +5142,117 @@
   video_codec: H.264
   release_group: TBN
   type: episode
+
+# #874: non-English season/episode keywords. Spanish/Portuguese "Temporada" (with
+# ordinals "1ª"/"04ª"/"3º" or bare), Turkish "Sezon"/"Bölüm", Russian
+# "Сезон"/"Серия"/"Эпизод" (both word-first and number-first, with "-й"/"-я"
+# ordinals), Italian "Stagione"/"Episodio", plus the compact "T02E22"/"T01XE08" forms.
+? Teen Wolf - 04ª Temporada 720p
+: title: Teen Wolf
+  season: 4
+
+? Vikings 3 Temporada 720p
+: title: Vikings
+  season: 3
+
+? Merli - 1a. Temporada
+: season: 1
+
+? My Little Pony - T02E22.mp4
+: season: 2
+  episode: 22
+
+? 30 M0N3D4S ESP T01XE08.mkv
+: season: 1
+  episode: 8
+
+? The.White.Lotus.2.Sezon.7.Bolum.2021.1080p.WEB-DL
+: title: The White Lotus
+  season: 2
+  episode: 7
+
+? Sherlock Temporada 1 Capitulo 3
+: season: 1
+  episode: 3
+
+? La Casa di Carta Stagione 2 Episodio 5
+: season: 2
+  episode: 5
+
+? Vikings Сезон 3 Эпизод 21 1080p
+: season: 3
+  episode: 21
+
+? Интерны 2 сезон 24 серия
+: season: 2
+
+? Проклytie 5-й сезон 09-я серия
+: season: 5
+  episode: 9
+
+? Kaamelott Saison 2 Épisode 5 FRENCH 1080p
+: title: Kaamelott
+  season: 2
+  episode: 5
+
+# #874: additional non-English keywords for non-scene names — German "Staffel"/"Folge"
+# (also number-first "2. Staffel"), Dutch "aflevering"/"afl", Polish "Odcinek",
+# Romanian "Sezonul"/"Episodul", Hungarian number-first "2. évad 5. rész", Scandinavian
+# "Säsong"/"Sesong" + "Avsnitt".
+? Die.Simpsons.Staffel.2.Folge.5.German.1080p
+: title: Die Simpsons
+  season: 2
+  episode: 5
+
+? Die Simpsons 2. Staffel Folge 5
+: season: 2
+  episode: 5
+
+? Pokemon Seizoen 22 aflevering 5 720p
+: season: 22
+  episode: 5
+
+? Serial Sezon 1 Odcinek 5 PL 720p
+: season: 1
+  episode: 5
+
+? Sorozat 2. évad 5. rész
+: season: 2
+  episode: 5
+
+? Serie Säsong 2 Avsnitt 5 SWEDISH 1080p
+: season: 2
+  episode: 5
+
+# #874: a 4-digit year in the title before a word-first keyword must not be
+# mistaken for that keyword's leading number ("... 2019 Сезон 1 Серия 5").
+? Cosmos 2019 Сезон 1 Серия 5 1080p
+: season: 1
+  episode: 5
+  year: 2019
+
+# #874: Russian multi-letter ordinal suffix on a number-first season ("5-го сезон").
+? Serial 5-го сезон 9 серия
+: season: 5
+  episode: 9
+
+# #874: a title ending in a number right before a number-first keyword must not
+# be read as that keyword's season number when the keyword carries its own
+# trailing number ("Studio 60 Сезон 5" -> season 5, "60" stays in the title).
+? Studio 60 Сезон 5 1080p
+: season: 5
+
+? Apollo 18 Temporada 2
+: season: 2
+
+# #890: a leading original-language (non-Latin) title glued before the romanized title is
+# split — the Latin part is the title, the original run becomes alternative_title.
+? 超能警探.Memorist.S01E01.2160p.WEB-DL.H265.AAC-FLTTH.mkv
+: title: Memorist
+  alternative_title: 超能警探
+  season: 1
+  episode: 1
+  screen_size: 2160p
+  source: Web
+  video_codec: H.265
+  release_group: FLTTH

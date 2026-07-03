@@ -48,6 +48,32 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v7
 
+  cross-parser:
+    # Opt-in tests that check guessit against other parsers' labelled fixtures
+    # (marker `cross_parser`). They are excluded from the matrix above by the
+    # default `-m 'not cross_parser'`, so run them once, on a single Python.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
+    runs-on: ubuntu-latest
+
+    name: Cross-parser tests
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
+        with:
+          python-version: "3.14"
+          enable-cache: true
+
+      - name: Install Dependencies
+        run: uv sync --locked --no-dev --group test
+
+      - name: Test
+        run: uv run --no-sync pytest -m cross_parser
+
   pre-commit:
     # Runs the file hooks (ruff) once, instead of once per matrix entry, through
     # the same .pre-commit-config.yaml developers use locally (all local + uvx).
@@ -82,14 +108,17 @@ jobs:
           python-version: "3.14"
 
       - name: Check commit messages
-        # PR: validate the PR commits; push: validate the pushed range. On a
-        # brand-new branch (no "before" ref) fall back to the last commit rather
-        # than skipping, so a uv command always runs (an empty run would make
-        # setup-uv's cache step error with "Cache path does not exist").
+        # PR: validate the PR commits; push: validate the pushed range. Fall back
+        # to the last commit when there is no usable "before" ref — a brand-new
+        # branch (zero sha) or a force-push whose "before" commit was orphaned and
+        # is therefore unreachable here — rather than failing on an invalid range.
+        # That also keeps a uv command running, so setup-uv's cache step never
+        # errors with "Cache path does not exist".
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
-          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] \
+            || ! git cat-file -e "${{ github.event.before }}^{commit}" 2>/dev/null; then
             RANGE="HEAD~1..HEAD"
           else
             RANGE="${{ github.event.before }}..${{ github.event.after }}"
@@ -264,6 +293,8 @@ jobs:
     needs: [ pre-commit, commitizen, build, build-bin-linux, build-bin-windows, build-bin-macos ]
 
     runs-on: ubuntu-latest
+
+    environment: pypi
 
     permissions:
       contents: write   # semantic-release pushes the version bump commit + tag + GitHub release

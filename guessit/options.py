@@ -19,7 +19,7 @@ def read_text(package: str, filename: str) -> str:
     """
     Should behave like deprecated importlib.resources.read_text()
     """
-    return str(files(package).joinpath(filename).read_text())
+    return str(files(package).joinpath(filename).read_text(encoding="utf-8"))
 
 
 def build_argument_parser() -> ArgumentParser:

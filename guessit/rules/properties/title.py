@@ -32,46 +32,17 @@ if TYPE_CHECKING:
 
     from rebulk.match import Matches
 
-# Articles that, when they make up the whole detected title, should swallow the following
-# property word (e.g. "The" + edition "Collector" -> title "The Collector").
-ARTICLES = frozenset({"the", "a", "an", "le", "la", "les", "el", "los", "las", "il", "lo", "l"})
-
 # Tags that mark a country/other match as a recognized release tag (edition, scene or
 # streaming-service keyword) rather than a real title word — such a token must never be
 # relabelled as the title even when it sits at the title position.
 RELEASE_TAG_MARKERS = ("release-group-prefix", "streaming_service.prefix", "streaming_service.suffix")
 
-# Stop-words a title may legitimately end on: refuse cropping a trailing Title-Case
-# language/country that would otherwise leave the title ending on one of these
-# ("It Ends With Us" #789, "The Last of Us" #739, "Oshi no Ko" #745). An uppercase tag
-# ("...US") is still kept as a country by the Title-Case guard in KeepTrailingStopWordTitle.
-TITLE_STOP_WORDS = frozenset(
-    {
-        "the",
-        "a",
-        "an",
-        "and",
-        "or",
-        "of",
-        "to",
-        "in",
-        "on",
-        "at",
-        "for",
-        "from",
-        "by",
-        "with",
-        "into",
-        "onto",
-        "no",
-        "le",
-        "la",
-        "les",
-        "de",
-        "du",
-        "des",
-        "el",
-    }
+# Non-Latin scripts used for original-language titles glued in front of a romanized title
+# (CJK, kana, hangul, Cyrillic, Greek, Arabic, Hebrew, Thai, fullwidth forms). Latin-1 accented
+# letters (à, ñ, …) are deliberately excluded — they are Latin-script title characters.
+NON_LATIN_SCRIPT_RE = re.compile(
+    r"[Ͱ-ϿЀ-ӿ֐-׿؀-ۿ฀-๿"
+    r"　-〿぀-ヿ㐀-䶿一-鿿가-힯＀-￯]"
 )
 
 
@@ -84,14 +55,19 @@ def title(config: dict[str, Any]) -> Rebulk:
     :return: Created Rebulk object
     :rtype: Rebulk
     """
+    articles = frozenset(config.get("articles", ()))
+    title_stop_words = frozenset(config.get("title_stop_words", ()))
+
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "title"))
     rebulk.rules(
         CountryAtTitlePosition,
+        TitleWordAtTitlePosition,
         TitleFromPosition,
         PreferTitleWithYear,
-        ExtendLoneArticleTitle,
+        ExtendLoneArticleTitle(articles),
         PropertyAtTitlePositionAsTitle,
-        KeepTrailingStopWordTitle,
+        KeepTrailingStopWordTitle(title_stop_words),
+        SplitOriginalScriptTitle,
     )
 
     expected_title = build_expected_function("expected_title")
@@ -572,6 +548,45 @@ class CountryAtTitlePosition(Rule):
         return to_remove
 
 
+class TitleWordAtTitlePosition(Rule):
+    """
+    A property value whose spelling is also a plain title word (tagged ``title-word`` in the
+    vocabulary, e.g. audio_codec "Opus") is really part of the title when it sits in the title
+    zone -- before the first year/season/episode/date anchor of the file part. Removing the
+    property match reopens the title hole so the normal title logic keeps the word, whether it
+    leads, ends or sits in the middle of the title: ``Opus.2025...`` -> "Opus",
+    ``Foo.Opus.2025...`` -> "Foo Opus", ``Foo.Opus.Bar.2025...`` -> "Foo Opus Bar".
+
+    Property-agnostic: any property can opt a value in by tagging it ``title-word``. The anchor
+    is load-bearing (not the casing): a real codec/tag always sits *after* the year/episode
+    marker, so a ``title-word`` before the anchor cannot be the property regardless of case
+    ("opus", "Opus" or "OPUS" all read as the title here). A spelling that appears after the
+    anchor, among the other tags, stays the property.
+    """
+
+    priority = 64
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        for candidate in matches.tagged("title-word"):
+            if candidate.private:
+                continue
+            filepart = matches.markers.at_match(candidate, lambda marker: marker.name == "path", 0)
+            if not filepart:
+                continue
+            anchor = matches.range(
+                filepart.start,
+                filepart.end,
+                lambda m: not m.private and m.name in ("year", "season", "episode", "date"),
+                0,
+            )
+            if not anchor or candidate.start >= anchor.start:
+                continue
+            to_remove.append(candidate)
+        return to_remove
+
+
 class ExtendLoneArticleTitle(Rule):
     """
     A title or episode_title made of a single article ("The") swallows the following edition/
@@ -582,11 +597,15 @@ class ExtendLoneArticleTitle(Rule):
     priority = -32
     consequence = RemoveMatch
 
+    def __init__(self, articles: frozenset[str]) -> None:
+        super().__init__()
+        self.articles = articles
+
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         input_string = matches.input_string or ""
         ret: list[tuple[Match, Match]] = []
         for title_match in matches.named("title", "episode_title"):
-            if str(title_match.value or "").strip().lower() not in ARTICLES:
+            if str(title_match.value or "").strip().lower() not in self.articles:
                 continue
             filepart = matches.markers.at_match(title_match, lambda m: m.name == "path", 0)
             if not filepart:
@@ -702,6 +721,10 @@ class KeepTrailingStopWordTitle(Rule):
     priority = POST_PROCESS
     consequence = RemoveMatch
 
+    def __init__(self, title_stop_words: frozenset[str]) -> None:
+        super().__init__()
+        self.title_stop_words = title_stop_words
+
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         input_string = matches.input_string or ""
         ret: list[tuple[Match, Match]] = []
@@ -728,7 +751,7 @@ class KeepTrailingStopWordTitle(Rule):
                 continue
             words = re.split(r"[^a-z0-9]+", str(title_match.value or "").lower())
             words = [w for w in words if w]
-            if not words or words[-1] not in TITLE_STOP_WORDS:
+            if not words or words[-1] not in self.title_stop_words:
                 continue
             ret.append((title_match, trailing))
         return ret
@@ -741,3 +764,61 @@ class KeepTrailingStopWordTitle(Rule):
             title_match.end = trailing.end
             title_match.value = cleanup(input_string[title_match.start : title_match.end])
             matches.append(title_match)
+
+
+class SplitOriginalScriptTitle(Rule):
+    """
+    A title glued as "<original-language title> <romanized title>" — a leading non-Latin script
+    run in front of a Latin run — yields the Latin part as the title and the original-language run
+    as ``alternative_title`` (#890): "超能警探 Memorist" -> title "Memorist", alternative_title
+    "超能警探".
+
+    Only a *leading* non-Latin run is split. An all-non-Latin title is kept as the title, and dual
+    titles already separated on "/" are untouched (each side is its own segment).
+    """
+
+    priority = POST_PROCESS
+    consequence = [RemoveMatch, AppendMatch]
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
+        for title_match in matches.named("title"):
+            if "expected" in title_match.tags:
+                continue  # a user-forced expected_title is verbatim, never split
+            raw = input_string[title_match.start : title_match.end]
+            # The Latin part must start a word (preceded by a separator or the string start), so a
+            # stray Latin-homoglyph letter inside a Cyrillic word is not treated as a split point.
+            latin = re.search(rf"(?:^|[{re.escape(seps)}])([A-Za-z])", raw)
+            if not latin:
+                continue  # no romanized run starting a word: keep it as the title
+            latin_offset = latin.start(1)
+            prefix = raw[:latin_offset]
+            if not NON_LATIN_SCRIPT_RE.search(prefix):
+                continue  # numeric / Latin lead: nothing to strip
+            prefix_end = title_match.start + len(prefix.rstrip(seps))
+            latin_start = title_match.start + latin_offset
+            if prefix_end <= title_match.start:
+                continue
+            to_remove.append(title_match)
+            to_append.append(
+                Match(
+                    title_match.start,
+                    prefix_end,
+                    name="alternative_title",
+                    value=cleanup(input_string[title_match.start : prefix_end]),
+                    input_string=input_string,
+                )
+            )
+            to_append.append(
+                Match(
+                    latin_start,
+                    title_match.end,
+                    name="title",
+                    tags=["title"],
+                    value=cleanup(input_string[latin_start : title_match.end]),
+                    input_string=input_string,
+                )
+            )
+        return to_remove, to_append
