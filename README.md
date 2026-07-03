@@ -29,15 +29,28 @@ For example, GuessIt can do the following:
         "type": "episode"
     }
 
+Python usage
+------------
+
+As a library, `guessit()` returns an ordered `MatchesDict` of the detected properties:
+
+    >>> from guessit import guessit
+
+    >>> guessit('The.Matrix.1999.1080p.BluRay.x264-GROUP.mkv')
+    MatchesDict({'title': 'The Matrix', 'year': 1999, 'screen_size': '1080p', 'source': 'Blu-ray', 'video_codec': 'H.264', 'release_group': 'GROUP', 'container': 'mkv', 'mimetype': 'video/matroska', 'type': 'movie'})
+
+    >>> guessit('[Anime-Group] Attack on Titan - 25 [1080p][HEVC].mkv')
+    MatchesDict({'release_group': 'Anime-Group', 'title': 'Attack on Titan', 'episode': 25, 'screen_size': '1080p', 'video_codec': 'H.265', 'video_profile': 'High Efficiency Video Coding', 'container': 'mkv', 'mimetype': 'video/matroska', 'type': 'episode'})
+
+    >>> guessit('Shameless.US.S05E10.720p.HDTV.x264-KILLERS.mkv')
+    MatchesDict({'title': 'Shameless', 'country': <Country [US]>, 'season': 5, 'episode': 10, 'screen_size': '720p', 'source': 'HDTV', 'video_codec': 'H.264', 'release_group': 'KILLERS', 'container': 'mkv', 'mimetype': 'video/matroska', 'type': 'episode'})
+
+See the [API & options reference](https://guessit-io.github.io/guessit/api/) for the full API.
+
 Documentation
 -------------
 
-Full documentation is available at [guessit-io.github.io/guessit](https://guessit-io.github.io/guessit), including:
-
-- [Properties](https://guessit-io.github.io/guessit/properties/) guessit can extract
-- [Configuration](https://guessit-io.github.io/guessit/configuration/) and advanced options
-- [Supported languages](https://guessit-io.github.io/guessit/languages/) for season/episode keywords and spoken/subtitle detection
-- [Known limitations](https://guessit-io.github.io/guessit/known-limitations/)
+Full documentation is available at [guessit-io.github.io/guessit](https://guessit-io.github.io/guessit).
 
 JavaScript / TypeScript port
 ----------------------------
