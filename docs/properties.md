@@ -83,6 +83,15 @@ Episode properties
 
     Episode number. (Can be a list if several are found)
 
+-   **episode\_title**
+
+    Title of the episode.
+
+-   **absolute\_episode**
+
+    Absolute episode number, mainly used by anime for continuous numbering
+    across seasons. (Can be a list if several are found)
+
 -   **disc**
 
     Disc number. (Can be a list if several are found)
@@ -137,6 +146,20 @@ Video properties
 -   **aspect\_ratio**
 
     Aspect ratio of video. Calculated using width and height from `screen_size`
+
+-   **width**
+
+    Pixel width parsed from an explicit `<width>x<height>` resolution. A
+    component used to compute `screen_size`; rarely emitted on its own.
+
+-   **height**
+
+    Pixel height parsed from the resolution. A component used to compute
+    `screen_size`; rarely emitted on its own.
+
+-   **scan\_type**
+
+    Scan type component of `screen_size`: `i` (interlaced) or `p` (progressive).
 
 -   **video\_codec**
 
@@ -235,6 +258,11 @@ Other properties
 
     CRC32 of the file.
 
+-   **proper\_count**
+
+    Number of `Proper` / `Repack` markers found (see `Proper` in `other`),
+    counting how many times the release was re-issued.
+
 -   **uuid**
 
     Volume identifier (UUID).
@@ -273,9 +301,11 @@ Other properties
 
     Film title of this movie.
 
--   **film\_series**
+-   **another**
 
-    Film series of this movie.
+    Internal secondary tag (e.g. `Reencoded` found alongside a source) that is
+    always renamed to `other` before output. Advertised for completeness; it
+    does not appear as a standalone property in results.
 
 -   **other**
 
