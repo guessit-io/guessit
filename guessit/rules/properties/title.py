@@ -95,6 +95,7 @@ def title(config: dict[str, Any]) -> Rebulk:
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "title"))
     rebulk.rules(
         CountryAtTitlePosition,
+        TitleWordAtTitlePosition,
         TitleFromPosition,
         PreferTitleWithYear,
         ExtendLoneArticleTitle,
@@ -576,6 +577,45 @@ class CountryAtTitlePosition(Rule):
             ):
                 continue
             if not all(ch in seps for ch in input_string[candidate.end : year.start]):
+                continue
+            to_remove.append(candidate)
+        return to_remove
+
+
+class TitleWordAtTitlePosition(Rule):
+    """
+    A property value whose spelling is also a plain title word (tagged ``title-word`` in the
+    vocabulary, e.g. audio_codec "Opus") is really part of the title when it sits in the title
+    zone -- before the first year/season/episode/date anchor of the file part. Removing the
+    property match reopens the title hole so the normal title logic keeps the word, whether it
+    leads, ends or sits in the middle of the title: ``Opus.2025...`` -> "Opus",
+    ``Foo.Opus.2025...`` -> "Foo Opus", ``Foo.Opus.Bar.2025...`` -> "Foo Opus Bar".
+
+    Property-agnostic: any property can opt a value in by tagging it ``title-word``. The anchor
+    is load-bearing (not the casing): a real codec/tag always sits *after* the year/episode
+    marker, so a ``title-word`` before the anchor cannot be the property regardless of case
+    ("opus", "Opus" or "OPUS" all read as the title here). A spelling that appears after the
+    anchor, among the other tags, stays the property.
+    """
+
+    priority = 64
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        for candidate in matches.tagged("title-word"):
+            if candidate.private:
+                continue
+            filepart = matches.markers.at_match(candidate, lambda marker: marker.name == "path", 0)
+            if not filepart:
+                continue
+            anchor = matches.range(
+                filepart.start,
+                filepart.end,
+                lambda m: not m.private and m.name in ("year", "season", "episode", "date"),
+                0,
+            )
+            if not anchor or candidate.start >= anchor.start:
                 continue
             to_remove.append(candidate)
         return to_remove

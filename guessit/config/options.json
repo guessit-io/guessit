@@ -64,7 +64,7 @@
         "DTS-HD": {"regex":  ["DTS-?HD", "DTS(?=-?MA)"], "conflict_solver": "lambda match, other: other if other.name == 'audio_codec' else '__default__'"},
         "DTS:X": {"string": ["DTS:X", "DTS-X", "DTSX"] },
         "Dolby TrueHD": {"regex": ["True-?HD"] },
-        "Opus": "Opus",
+        "Opus": {"string": "Opus", "tags": "title-word"},
         "Vorbis": "Vorbis",
         "PCM": "PCM",
         "LPCM": "LPCM"
