@@ -487,6 +487,16 @@
         "true"
       ]
     },
+    "title": {
+      "articles": [
+        "the", "a", "an", "le", "la", "les", "el", "los", "las", "il", "lo", "l"
+      ],
+      "title_stop_words": [
+        "the", "a", "an", "and", "or", "of", "to", "in", "on", "at", "for",
+        "from", "by", "with", "into", "onto", "no", "le", "la", "les", "de",
+        "du", "des", "el"
+      ]
+    },
     "other": {
       "other": {
         "Audio Fixed": {"regex": ["Audio-?Fix", "Audio-?Fixed"]},
@@ -579,6 +589,19 @@
         "Obfuscated": {"string": ["Obfuscated", "Scrambled"], "tags": ["at-end", "not-a-release-group"]},
         "Repost": {"string": ["xpost", "postbot", "asrequested"], "tags": "not-a-release-group"},
         "_complete_words": {"callable": "import:guessit.rules.properties.other:complete_words", "season_words": ["seasons?", "series?"], "complete_article_words": ["The"]}
+      },
+      "art": {
+        "poster": "Poster",
+        "fanart": "Fanart",
+        "banner": "Banner",
+        "thumb": "Thumbnail",
+        "thumbnail": "Thumbnail",
+        "landscape": "Landscape",
+        "cover": "Cover",
+        "clearart": "Clear Art",
+        "clearlogo": "Clear Logo",
+        "logo": "Logo",
+        "discart": "Disc Art"
       }
     },
     "part": {

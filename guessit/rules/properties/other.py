@@ -41,6 +41,8 @@ def other(config: dict[str, Any]) -> Rebulk:
 
     opening_ending_credits(rebulk)
 
+    art_keywords = config.get("art", {})
+
     rebulk.rules(
         RenameAnotherToOther,
         AppendCreditless,
@@ -55,7 +57,7 @@ def other(config: dict[str, Any]) -> Rebulk:
         ValidateAtEnd,
         ValidateReal,
         ValidateStereoVRContext,
-        ImageArtKeywordToOther,
+        ImageArtKeywordToOther(art_keywords),
         ProperCountRule,
     )
 
@@ -138,22 +140,6 @@ def opening_ending_credits(rebulk: Rebulk) -> None:
     # Bare uppercase tokens. OPED is the combined opening+ending sequence (not creditless).
     add(r"OPED|OP", "Opening Credits", ignore_case=False)
     add(r"ED", "Ending Credits", ignore_case=False)
-
-
-#: Artwork file-name keywords mapped to their canonical ``other`` value.
-ART_KEYWORDS = {
-    "poster": "Poster",
-    "fanart": "Fanart",
-    "banner": "Banner",
-    "thumb": "Thumbnail",
-    "thumbnail": "Thumbnail",
-    "landscape": "Landscape",
-    "cover": "Cover",
-    "clearart": "Clear Art",
-    "clearlogo": "Clear Logo",
-    "logo": "Logo",
-    "discart": "Disc Art",
-}
 
 
 def complete_words(rebulk: Rebulk, season_words: Iterable[str], complete_article_words: Iterable[str]) -> None:
@@ -251,7 +237,12 @@ class ImageArtKeywordToOther(Rule):
     priority = POST_PROCESS
     consequence = [RemoveMatch, AppendMatch]
 
-    properties = {"other": list(dict.fromkeys(ART_KEYWORDS.values()))}
+    properties: dict[str, Any]  # type: ignore[misc]  # instance-level, populated from config
+
+    def __init__(self, art_keywords: dict[str, str]) -> None:
+        super().__init__()
+        self.art_keywords = art_keywords
+        self.properties = {"other": list(dict.fromkeys(art_keywords.values()))}
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         to_remove: list[Match] = []
@@ -270,7 +261,7 @@ class ImageArtKeywordToOther(Rule):
                 predicate=lambda match: match.name in ("title", "alternative_title", "episode_title"),
             ):
                 key = re.sub(r"[\s._-]+", "", str(candidate.value or "").strip().lower())
-                canonical = ART_KEYWORDS.get(key)
+                canonical = self.art_keywords.get(key)
                 if not canonical:
                     continue
                 to_remove.append(candidate)
