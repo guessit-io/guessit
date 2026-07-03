@@ -5235,3 +5235,12 @@
 ? Serial 5-го сезон 9 серия
 : season: 5
   episode: 9
+
+# #874: a title ending in a number right before a number-first keyword must not
+# be read as that keyword's season number when the keyword carries its own
+# trailing number ("Studio 60 Сезон 5" -> season 5, "60" stays in the title).
+? Studio 60 Сезон 5 1080p
+: season: 5
+
+? Apollo 18 Temporada 2
+: season: 2

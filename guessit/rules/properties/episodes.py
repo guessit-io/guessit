@@ -564,15 +564,48 @@ class NumberFirstConflict(Rule):
                 if item not in to_remove:
                     to_remove.append(item)
 
-        for numfirst in matches.tagged("numfirst", lambda m: m.name in ("season", "episode")):
+        numfirst_matches = matches.tagged("numfirst", lambda m: m.name in ("season", "episode"))
+
+        # A leading number-first number is a stray title number when its keyword is
+        # directly followed by its own word-first number that no later keyword claims:
+        # "Studio 60 Сезон 5" -> season 5, the 60 belongs to the title.
+        for numfirst in numfirst_matches:
+            marker = next(
+                (child for child in numfirst.initiator.children if child.name in ("seasonMarker", "episodeMarker")),
+                None,
+            )
+            if not marker:
+                continue
+            trailing = matches.next(
+                marker,
+                lambda m: (
+                    m.name in ("season", "episode")
+                    and not any(tag in m.tags for tag in ("numfirst", "weak-episode", "weak-duplicate"))
+                ),
+                index=0,
+            )
+            if (
+                trailing
+                and trailing.initiator.start <= marker.end
+                and not matches.holes(marker.end, trailing.start, predicate=lambda h: (h.raw or "").strip(self.seps))
+                and not matches.conflicting(trailing, lambda m: "numfirst" in m.tags or m.name == "year")
+            ):
+                drop(numfirst)
+
+        # A number between two keywords binds to the following keyword only when the
+        # preceding keyword owns a leading number-first match ("2 Sezon 7 Bölüm" ->
+        # the 7 is Bölüm's); otherwise it stays on the preceding keyword. A
+        # number-first match also always wins over a weak guess on the same span.
+        for numfirst in numfirst_matches:
             if numfirst.initiator in to_remove:
                 continue
             for other in matches.conflicting(
                 numfirst, lambda m: m.name in ("season", "episode") and "numfirst" not in m.tags
             ):
+                if other in to_remove:
+                    continue
                 if "weak-episode" in other.tags or "weak-duplicate" in other.tags:
-                    if other not in to_remove:
-                        to_remove.append(other)
+                    to_remove.append(other)
                     continue
                 leading = matches.previous(
                     other.initiator,
@@ -581,6 +614,7 @@ class NumberFirstConflict(Rule):
                 )
                 keyword_owns_number = bool(
                     leading
+                    and leading.initiator not in to_remove
                     and not matches.holes(
                         leading.end, other.initiator.start, predicate=lambda h: (h.raw or "").strip(self.seps)
                     )
