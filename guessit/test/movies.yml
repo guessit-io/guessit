@@ -327,6 +327,17 @@
   film_title: James Bond
   film: 17
 
+# #879: a leading "f<number>" with no collection title before it is part of
+# the title, not a film number (F1 = the 2025 movie, not "film 1").
+? F1.The.Movie.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR.mkv
+: title: F1 The Movie
+  year: 2025
+  -film: 1
+
+? F1.2024.1080p.mkv
+: title: F1
+  -film: 1
+
 # #751: with a film_title and no real title after the film number, a language-only
 # hole ("Ita Eng") must stay languages and not be promoted to a bogus title.
 ? Fast and Furious F9 2021 BluRay 1080p.H264 Ita Eng AC3 5.1 Sub Ita Eng.mkv

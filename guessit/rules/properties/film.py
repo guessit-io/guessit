@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from rebulk import AppendMatch, Rebulk, Rule
+from rebulk import AppendMatch, Rebulk, RemoveMatch, Rule
 from rebulk.remodule import re
 
 from ...config import load_config_patterns
@@ -34,9 +34,34 @@ def film(config: dict[str, Any]) -> Rebulk:
 
     load_config_patterns(rebulk, config.get("film"))
 
-    rebulk.rules(FilmTitleRule)
+    rebulk.rules(LeadingFilmNumberRule, FilmTitleRule)
 
     return rebulk
+
+
+class LeadingFilmNumberRule(Rule):
+    """
+    Discard a film number that leads the file part with nothing before it.
+
+    A collection number only makes sense after a collection title
+    (e.g. ``James Bond f17``). When ``f\\d`` opens the name with no title
+    ahead of it, it belongs to the title itself (e.g. ``F1 The Movie``).
+    """
+
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Any] = []
+        for film_match in matches.named("film", lambda match: not match.private):
+            filepath = matches.markers.at_match(film_match, lambda marker: marker.name == "path", 0)
+            if not filepath:
+                continue
+            hole = matches.holes(filepath.start, film_match.start + 1, formatter=cleanup, index=0)
+            if not (hole and hole.value):
+                to_remove.append(film_match)
+                if film_match.parent:
+                    to_remove.append(film_match.parent)
+        return to_remove
 
 
 class FilmTitleRule(Rule):
