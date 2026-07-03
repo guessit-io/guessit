@@ -144,8 +144,8 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         ):
             if "weak-episode" in other.tags or "weak-duplicate" in other.tags:
                 return other
-            before = (other.initiator.input_string or "")[: other.initiator.start].rstrip(seps + ordinal_chars)
-            leading = re.search(r"(?<!\d)(\d{1,2})$", before)
+            before = (other.initiator.input_string or "")[: other.initiator.start]
+            leading = re.search(r"(?<!\d)\d{1,2}" + ordinal_suffix + "[" + re.escape(seps) + r"]*$", before)
             return other if leading else match
         return season_episode_conflict_solver(match, other)
 
@@ -223,7 +223,6 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     season_words_numfirst = config["season_words_numfirst"]
     episode_words_numfirst = config["episode_words_numfirst"]
     ordinal_suffix = config["ordinal_suffix"]
-    ordinal_chars = config["ordinal_chars"]
     of_words = config["of_words"]
     all_words = config["all_words"]
     season_markers = config["season_markers"]

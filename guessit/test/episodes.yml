@@ -5230,3 +5230,8 @@
 : season: 1
   episode: 5
   year: 2019
+
+# #874: Russian multi-letter ordinal suffix on a number-first season ("5-го сезон").
+? Serial 5-го сезон 9 серия
+: season: 5
+  episode: 9
