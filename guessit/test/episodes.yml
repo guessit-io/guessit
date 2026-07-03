@@ -5244,3 +5244,15 @@
 
 ? Apollo 18 Temporada 2
 : season: 2
+
+# #890: a leading original-language (non-Latin) title glued before the romanized title is
+# split — the Latin part is the title, the original run becomes alternative_title.
+? 超能警探.Memorist.S01E01.2160p.WEB-DL.H265.AAC-FLTTH.mkv
+: title: Memorist
+  alternative_title: 超能警探
+  season: 1
+  episode: 1
+  screen_size: 2160p
+  source: Web
+  video_codec: H.265
+  release_group: FLTTH

@@ -2085,3 +2085,11 @@
   screen_size: 720p
   video_codec: H.264
   website: www.1TamilMV.pics
+
+# #890: leading original-language (non-Latin) title prefix split off into alternative_title.
+? 劇場版 ペンギン・ハイウェイ Penguin Highway The Movie (BD 1280x720 AVC).mp4
+: title: Penguin Highway The Movie
+  alternative_title: 劇場版 ペンギン・ハイウェイ
+  source: Blu-ray
+  screen_size: 720p
+  video_codec: H.264

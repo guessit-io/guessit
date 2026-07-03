@@ -41,6 +41,14 @@ ARTICLES = frozenset({"the", "a", "an", "le", "la", "les", "el", "los", "las", "
 # relabelled as the title even when it sits at the title position.
 RELEASE_TAG_MARKERS = ("release-group-prefix", "streaming_service.prefix", "streaming_service.suffix")
 
+# Non-Latin scripts used for original-language titles glued in front of a romanized title
+# (CJK, kana, hangul, Cyrillic, Greek, Arabic, Hebrew, Thai, fullwidth forms). Latin-1 accented
+# letters (à, ñ, …) are deliberately excluded — they are Latin-script title characters.
+NON_LATIN_SCRIPT_RE = re.compile(
+    r"[Ͱ-ϿЀ-ӿ֐-׿؀-ۿ฀-๿"
+    r"　-〿぀-ヿ㐀-䶿一-鿿가-힯＀-￯]"
+)
+
 # Stop-words a title may legitimately end on: refuse cropping a trailing Title-Case
 # language/country that would otherwise leave the title ending on one of these
 # ("It Ends With Us" #789, "The Last of Us" #739, "Oshi no Ko" #745). An uppercase tag
@@ -92,6 +100,7 @@ def title(config: dict[str, Any]) -> Rebulk:
         ExtendLoneArticleTitle,
         PropertyAtTitlePositionAsTitle,
         KeepTrailingStopWordTitle,
+        SplitOriginalScriptTitle,
     )
 
     expected_title = build_expected_function("expected_title")
@@ -741,3 +750,61 @@ class KeepTrailingStopWordTitle(Rule):
             title_match.end = trailing.end
             title_match.value = cleanup(input_string[title_match.start : title_match.end])
             matches.append(title_match)
+
+
+class SplitOriginalScriptTitle(Rule):
+    """
+    A title glued as "<original-language title> <romanized title>" — a leading non-Latin script
+    run in front of a Latin run — yields the Latin part as the title and the original-language run
+    as ``alternative_title`` (#890): "超能警探 Memorist" -> title "Memorist", alternative_title
+    "超能警探".
+
+    Only a *leading* non-Latin run is split. An all-non-Latin title is kept as the title, and dual
+    titles already separated on "/" are untouched (each side is its own segment).
+    """
+
+    priority = POST_PROCESS
+    consequence = [RemoveMatch, AppendMatch]
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
+        to_remove: list[Match] = []
+        to_append: list[Match] = []
+        for title_match in matches.named("title"):
+            if "expected" in title_match.tags:
+                continue  # a user-forced expected_title is verbatim, never split
+            raw = input_string[title_match.start : title_match.end]
+            # The Latin part must start a word (preceded by a separator or the string start), so a
+            # stray Latin-homoglyph letter inside a Cyrillic word is not treated as a split point.
+            latin = re.search(rf"(?:^|[{re.escape(seps)}])([A-Za-z])", raw)
+            if not latin:
+                continue  # no romanized run starting a word: keep it as the title
+            latin_offset = latin.start(1)
+            prefix = raw[:latin_offset]
+            if not NON_LATIN_SCRIPT_RE.search(prefix):
+                continue  # numeric / Latin lead: nothing to strip
+            prefix_end = title_match.start + len(prefix.rstrip(seps))
+            latin_start = title_match.start + latin_offset
+            if prefix_end <= title_match.start:
+                continue
+            to_remove.append(title_match)
+            to_append.append(
+                Match(
+                    title_match.start,
+                    prefix_end,
+                    name="alternative_title",
+                    value=cleanup(input_string[title_match.start : prefix_end]),
+                    input_string=input_string,
+                )
+            )
+            to_append.append(
+                Match(
+                    latin_start,
+                    title_match.end,
+                    name="title",
+                    tags=["title"],
+                    value=cleanup(input_string[latin_start : title_match.end]),
+                    input_string=input_string,
+                )
+            )
+        return to_remove, to_append
