@@ -14,6 +14,7 @@ from rebulk.match import Match
 from rebulk.remodule import re
 
 from ..common import seps, title_seps
+from ..common.cohesion import title_cohesion
 from ..common.comparators import marker_sorted
 from ..common.expected import build_expected_function
 from ..common.formatters import cleanup, reorder_title
@@ -40,6 +41,16 @@ ARTICLES = frozenset({"the", "a", "an", "le", "la", "les", "el", "los", "las", "
 # streaming-service keyword) rather than a real title word — such a token must never be
 # relabelled as the title even when it sits at the title position.
 RELEASE_TAG_MARKERS = ("release-group-prefix", "streaming_service.prefix", "streaming_service.suffix")
+
+# A leading "www"/"ww" host token ("www.TamilBlasters.vip", "www 1TamilMV world") is a
+# release-site prefix, never the title — anchored on the literal prefix so "WW2" is not caught.
+RELEASE_SITE_RE = re.compile(r"^\s*(?:https?://)?w{2,3}[.,\s]", re.IGNORECASE)
+
+
+def _is_release_site(match: Match) -> bool:
+    """Whether a title segment is really a release-site host (www.<host>.<tld>)."""
+    return bool(RELEASE_SITE_RE.match(match.raw or match.value or ""))
+
 
 # Stop-words a title may legitimately end on: refuse cropping a trailing Title-Case
 # language/country that would otherwise leave the title ending on one of these
@@ -361,10 +372,31 @@ class TitleBaseRule(Rule):
                         else:
                             title_match.name = self.alternative_match_name
 
+                    titles = self._arbitrate_title_segments(titles)
                 else:
                     titles = [hole]
                 return titles, to_remove
         return None
+
+    def _arbitrate_title_segments(self, titles: list[Match]) -> list[Match]:
+        """
+        Choose the primary title among the split segments by lexical coherence.
+
+        A leading release-site host (``www.<host>.<tld>``) is dropped so the language-like
+        segment becomes the title instead of the site name (#884). Only triggers when a
+        site segment sits next to a real one; legitimate title / alternative_title splits
+        (no site segment) are left untouched.
+        """
+        if len(titles) < 2:
+            return titles
+        kept = [segment for segment in titles if not _is_release_site(segment)]
+        if not kept or len(kept) == len(titles):
+            return titles
+        primary = max(kept, key=lambda segment: title_cohesion(str(segment.value or "")))
+        for segment in kept:
+            segment.name = self.alternative_match_name
+        primary.name = self.match_name
+        return sorted(kept, key=lambda segment: segment.start)
 
     def _serie_name_filepart(self, matches: Matches, fileparts: list[Match]) -> Match | None:
         # Try to get show title from subdirectory of a season only directory (Show Name/Season 1/episode_title.avi)

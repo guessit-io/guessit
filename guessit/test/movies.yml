@@ -2054,3 +2054,25 @@
   audio_codec: Dolby Digital
   release_group: Hive-CM8
   type: movie
+
+# #884: a leading release-site host (www.<host>.<tld>) is not the title — the
+# language-like segment after it becomes the title (cohesion arbiter in the
+# title/alternative_title classification).
+? www.Tamilblasters.party - The Wheel of Time (2021) 720p x264
+: title: The Wheel of Time
+  year: 2021
+  screen_size: 720p
+  video_codec: H.264
+  -alternative_title: www Tamilblasters party
+
+? www.5MovieRulz.show - Khel Khel Mein (2024) 1080p x264
+: title: Khel Khel Mein
+  year: 2024
+  screen_size: 1080p
+  video_codec: H.264
+
+? www.TamilBlasters - Titanic (1997) 720p x264
+: title: Titanic
+  year: 1997
+  screen_size: 720p
+  video_codec: H.264
