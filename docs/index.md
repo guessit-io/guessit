@@ -73,7 +73,8 @@ It can also be used as a python module:
 
 `MatchesDict` is a dict that keeps matches ordering.
 
-Command line options can be given as dict or string to the second argument.
+Command line options can be given as dict or string to the second argument. See
+the [API & options reference](./api.md) for the full API and every option.
 
 Configuration
 -------------
