@@ -64,6 +64,26 @@ def parse_cjk_number(value: str) -> int:
     return _CJK_DIGITS[value]
 
 
+def _split_words(entries: list[Any]) -> tuple[list[str], list[str]]:
+    """Split a season/episode word config into (word-first values, number-first values).
+
+    Each entry is either a plain string (word-first only) or a mapping
+    ``{"value": str, "numfirst": bool}``. A flat list of strings stays supported
+    for backward compatibility (and for user configs merged into the default one).
+    """
+    words: list[str] = []
+    numfirst: list[str] = []
+    for entry in entries:
+        if isinstance(entry, dict):
+            value = entry["value"]
+            if entry.get("numfirst"):
+                numfirst.append(value)
+        else:
+            value = entry
+        words.append(value)
+    return words, numfirst
+
+
 def episodes(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
@@ -195,10 +215,8 @@ def episodes(config: dict[str, Any]) -> Rebulk:
             return False
         return validate_roman(match)
 
-    season_words = config["season_words"]
-    episode_words = config["episode_words"]
-    season_words_numfirst = config["season_words_numfirst"]
-    episode_words_numfirst = config["episode_words_numfirst"]
+    season_words, season_words_numfirst = _split_words(config["season_words"])
+    episode_words, episode_words_numfirst = _split_words(config["episode_words"])
     ordinal_suffix = config["ordinal_suffix"]
     of_words = config["of_words"]
     all_words = config["all_words"]
