@@ -5223,3 +5223,10 @@
 ? Serie Säsong 2 Avsnitt 5 SWEDISH 1080p
 : season: 2
   episode: 5
+
+# #874: a 4-digit year in the title before a word-first keyword must not be
+# mistaken for that keyword's leading number ("... 2019 Сезон 1 Серия 5").
+? Cosmos 2019 Сезон 1 Серия 5 1080p
+: season: 1
+  episode: 5
+  year: 2019

@@ -133,7 +133,9 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         only when that word-first keyword already owns a leading number (so its
         trailing number belongs to the following keyword): "2 Sezon 7 Bölüm" gives
         the "7" to "Bölüm", whereas "Temporada 1 Capitulo" keeps the "1" on
-        "Temporada". Any other conflict falls back to the standard solver.
+        "Temporada". The leading number must be a 1-2 digit season number, not a
+        4-digit year sitting in the title ("Show 2019 Сезон 1 Серия 5" keeps
+        season 1). Any other conflict falls back to the standard solver.
         """
         if (
             other.name in ("season", "episode")
@@ -143,7 +145,8 @@ def episodes(config: dict[str, Any]) -> Rebulk:
             if "weak-episode" in other.tags or "weak-duplicate" in other.tags:
                 return other
             before = (other.initiator.input_string or "")[: other.initiator.start].rstrip(seps + ordinal_chars)
-            return other if before and before[-1].isdigit() else match
+            leading = re.search(r"(?<!\d)(\d{1,2})$", before)
+            return other if leading else match
         return season_episode_conflict_solver(match, other)
 
     def ordering_validator(match: Match) -> bool:
