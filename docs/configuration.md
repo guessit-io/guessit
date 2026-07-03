@@ -73,4 +73,47 @@ used.
 We're willing to keep it backwards compatible, but in order to enhance
 Guessit, these parameters might change without prior notice.
 
+## What you can tune
+
+`advanced_config` is a nested dict, grouped by property. The complete set of
+keys and default values lives in [config/options.json][]; the sections you are
+most likely to tweak are:
+
+> -   `common_words` — short words ignored as noise anywhere in the name.
+> -   `episodes` — season/episode markers and ranges, including the per-language
+>     keywords behind the [supported languages](languages.md).
+> -   `language` — synonyms, prefixes and suffixes for spoken/subtitle language tags.
+> -   `title` — `articles` and `title_stop_words` used when isolating the title.
+> -   `streaming_service` — mapping of each service name to the tags that trigger it.
+> -   `release_group` — `forbidden_names` and `ignored_seps` when isolating the group.
+> -   `screen_size` — `frame_rates`, the interlaced/progressive tags and the
+>     `min_ar`/`max_ar` aspect-ratio bounds.
+> -   `website` — `safe_tlds`, `safe_subdomains` and prefixes used to detect a website.
+
+## Overriding advanced values
+
+`advanced_config` follows the same [merge rules](#merging-and-overriding-values)
+as the rest of the configuration: nested dicts are deep-merged, and lists are
+concatenated.
+
+Adding to a mapping (deep-merge) — register a streaming service:
+
+```python
+>>> from guessit import guessit
+>>> options = {'advanced_config': {'streaming_service': {'MyTV': ['mytv']}}}
+>>> guessit('Show.S01E01.MYTV.WEB-DL.mkv', options)['streaming_service']
+'MyTV'
+```
+
+Adding to a list (concatenation) — stop a token from being read as the release group:
+
+```python
+>>> options = {'advanced_config': {'release_group': {'forbidden_names': ['mygroup']}}}
+>>> 'release_group' in guessit('Show.S01E01.x264-mygroup.mkv', options)
+False
+```
+
+To replace a default list instead of appending to it, reset it first with the
+`pristine` option, exactly as for top-level options.
+
   [config/options.json]: https://github.com/guessit-io/guessit/blob/main/guessit/config/options.json/
