@@ -87,6 +87,11 @@ The core parsing is built on **Rebulk**, a declarative pattern matching library.
 - Default config: `guessit/config/options.json`
 - Users can customize via `--config` CLI flag or programmatic `options` dict
 - Options are merged: default → user config → programmatic options
+- **All tokens and word lists must live in the configuration** (`options.json`, under
+  `advanced_config.<property>`), never hard-coded in a rule module. A rule reads its lists from
+  the `config` dict its builder receives; this keeps every vocabulary user-overridable. When
+  adding a feature that needs keywords/stop-words/function-words, add them to `advanced_config`
+  and thread them through the property builder — do not inline a `frozenset`/list literal.
 
 ### Tests
 
