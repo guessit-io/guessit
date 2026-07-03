@@ -51,15 +51,18 @@ override.
 
 ### `GuessItApi`
 
-`guessit()` uses a shared default instance. To reuse a specific configuration
-across many calls, build your own:
+`guessit()` delegates to a shared default instance. Building your own instance
+lets you parse many names while reusing the compiled configuration: pass the
+same options on each call and the instance skips rebuilding the rules when the
+options are unchanged.
 
 ```python
 from guessit import GuessItApi
 
 api = GuessItApi()
-api.configure({'expected_title': ['The 100']})
-api.guessit('The 100')
+options = {'expected_title': ['The 100']}
+api.guessit('The 100', options)
+api.guessit('The 100 S01E01', options)  # reuses the cached configuration
 ```
 
 ### Discovering properties and values
