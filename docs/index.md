@@ -31,27 +31,29 @@ For example, GuessIt can do the following:
         "type": "episode"
     }
 
-Migration note
------
-
-In GuessIt 3, some properties and values were renamed in order to keep consistency and to be more intuitive.
-
-To migrate from guessit `2.x` to `3.x`, please read
-[migration2to3.md](./migration2to3.md).
-
-To migrate from guessit `0.x` or `1.x` to `guessit 2.x`, please read
-[migration.md](./migration.md).
-
 Install
 -----
 
-Installing GuessIt is simple with [pip](http://www.pip-installer.org/):
+Install GuessIt with [pip](https://pip.pypa.io/):
 
 ```bash
 pip install guessit
 ```
 
-You can also [install GuessIt from sources](./sources.md)
+Or with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv add guessit          # add it as a project dependency
+uv pip install guessit  # or install it into the active environment
+```
+
+You can also run the CLI without installing it, with uvx:
+
+```bash
+uvx guessit "Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi"
+```
+
+You can also [install GuessIt from sources](./sources.md).
 
 Usage
 -----
@@ -80,11 +82,6 @@ Configuration
 -------------
 
 Find more about Guessit configuration at [configuration page](./configuration.md).
-
-REST API
---------
-
-A REST API is available as a separate project, [guessit-rest](https://github.com/Toilal/guessit-rest).
 
 Support
 -------
