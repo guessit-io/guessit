@@ -166,3 +166,40 @@ def test_episode_words_accept_legacy_string_list() -> None:
     assert guessit("Sarja Kausi 2", config).get("season") == 2
     assert guessit("Vikings 3 Temporada 720p", config).get("season") == 3
     api.reset()
+
+
+def test_title_articles_overridable() -> None:
+    api.reset()
+    # A lone-article title swallows the following property word only for words in
+    # advanced_config.title.articles. "das" is not a default article, so adding it
+    # via config must make it behave like "the".
+    assert guessit("Das.Collector.2009.mkv").get("title") == "Das"
+    config = {"advanced_config": {"title": {"articles": ["das"]}}}
+    assert guessit("Das.Collector.2009.mkv", config).get("title") == "Das Collector"
+    api.reset()
+
+
+def test_title_stop_words_overridable() -> None:
+    api.reset()
+    # A trailing Title-Case country is kept in the title when cropping it would leave
+    # the title ending on a stop-word. "beyond" is not a default stop-word, so the
+    # country is dropped by default and kept once it is added via config.
+    default = guessit("Life.Beyond.Us.1080p.mkv")
+    assert default.get("title") == "Life Beyond"
+    assert str(default.get("country")) == "US"
+    config = {"advanced_config": {"title": {"title_stop_words": ["beyond"]}}}
+    overridden = guessit("Life.Beyond.Us.1080p.mkv", config)
+    assert overridden.get("title") == "Life Beyond Us"
+    assert overridden.get("country") is None
+    api.reset()
+
+
+def test_other_art_keywords_overridable() -> None:
+    api.reset()
+    # An artwork keyword filename is reclassified as `other` only for the keywords in
+    # advanced_config.other.art. "myart" is not a default keyword, so it stays a title
+    # until it is added via config.
+    assert guessit("Show/myart.jpg").get("other") is None
+    config = {"advanced_config": {"other": {"art": {"myart": "Poster"}}}}
+    assert guessit("Show/myart.jpg", config).get("other") == "Poster"
+    api.reset()
