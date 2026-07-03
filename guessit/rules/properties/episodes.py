@@ -125,6 +125,27 @@ def episodes(config: dict[str, Any]) -> Rebulk:
                             return current
         return "__default__"
 
+    def numfirst_conflict_solver(match: Match, other: Match) -> Any:
+        """
+        Conflict solver for the number-first keyword patterns ("2 Sezon", "24 серия").
+
+        The number-first match wins over a conflicting word-first season/episode
+        only when that word-first keyword already owns a leading number (so its
+        trailing number belongs to the following keyword): "2 Sezon 7 Bölüm" gives
+        the "7" to "Bölüm", whereas "Temporada 1 Capitulo" keeps the "1" on
+        "Temporada". Any other conflict falls back to the standard solver.
+        """
+        if (
+            other.name in ("season", "episode")
+            and other.initiator is not match.initiator
+            and "numfirst" not in other.initiator.tags
+        ):
+            if "weak-episode" in other.tags or "weak-duplicate" in other.tags:
+                return other
+            before = (other.initiator.input_string or "")[: other.initiator.start].rstrip(seps + "ªº°йяе")
+            return other if before and before[-1].isdigit() else match
+        return season_episode_conflict_solver(match, other)
+
     def ordering_validator(match: Match) -> bool:
         """
         Validator for season list. They should be in natural order to be validated.
@@ -196,6 +217,8 @@ def episodes(config: dict[str, Any]) -> Rebulk:
 
     season_words = config["season_words"]
     episode_words = config["episode_words"]
+    season_words_numfirst = config["season_words_numfirst"]
+    episode_words_numfirst = config["episode_words_numfirst"]
     of_words = config["of_words"]
     all_words = config["all_words"]
     season_markers = config["season_markers"]
@@ -300,6 +323,15 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + r"(?P<season>\d+)"
     ).repeater("*")
 
+    # Compact non-English season/episode marker: "T02E22", "T01XE08" (Spanish/Portuguese).
+    # Restricted to a "t" prefix immediately followed by an episode marker so a lone
+    # "T1" stays a title token.
+    rebulk.regex(
+        r"t(?P<season>\d{1,2})@?" + build_or_pattern(episode_markers, name="episodeMarker") + r"@?(?P<episode>\d{1,4})",
+        tags=["SxxExx"],
+        disabled=is_season_episode_disabled,
+    )
+
     # episode_details property
     for episode_detail in ("Special", "Pilot", "Unaired", "Final"):
         rebulk.string(
@@ -334,19 +366,46 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         formatter={"season": parse_numeral, "count": parse_numeral},
         validator={"season": season_word_not_year, "count": validate_roman},
         conflict_solver=season_episode_conflict_solver,
-    ).regex(build_or_pattern(season_words, name="seasonMarker") + "@?(?P<season>" + numeral + ")").regex(
-        r"" + build_or_pattern(of_words) + "@?(?P<count>" + numeral + ")"
-    ).repeater("?").regex(
+    ).regex(
+        build_or_pattern(season_words, name="seasonMarker") + "@?@?(?:(?:№|#)@?)?(?P<season>" + numeral + ")"
+    ).regex(r"" + build_or_pattern(of_words) + "@?(?P<count>" + numeral + ")").repeater("?").regex(
         r"@?"
         + build_or_pattern(range_separators + discrete_separators + ["@"], name="seasonSeparator", escape=True)
         + r"@?(?P<season>\d+)"
     ).repeater("*")
 
+    # Non-English convention where the number precedes the keyword:
+    #   "1ª Temporada", "3 сезон", "5-й сезон", "2.Sezon" (season); "24 серия", "7.Bölüm" (episode).
+    # An optional ordinal suffix (ª/º/°, Portuguese a/o, Russian -й/-я/…) may sit between the two.
+    ordinal_suffix = r"(?:ª|º|°|a|o|-?(?:й|я|е|го|ая|ый|ое))?"  # noqa: RUF001
+    rebulk.regex(
+        r"(?P<season>\d{1,2})"
+        + ordinal_suffix
+        + r"@?@?"
+        + build_or_pattern(season_words_numfirst, name="seasonMarker")
+        + r"(?![^\W\d_])",
+        tags=["SxxExx", "numfirst"],
+        formatter={"season": parse_numeral},
+        conflict_solver=numfirst_conflict_solver,
+        disabled=is_season_episode_disabled,
+    )
+    rebulk.regex(
+        r"(?P<episode>\d{1,3})"
+        + ordinal_suffix
+        + r"@?@?"
+        + build_or_pattern(episode_words_numfirst, name="episodeMarker")
+        + r"(?![^\W\d_])",
+        tags=["SxxExx", "numfirst"],
+        formatter={"episode": parse_numeral},
+        conflict_solver=numfirst_conflict_solver,
+        disabled=lambda context: is_disabled(context, "episode"),
+    )
+
     rebulk.defaults(abbreviations=[dash])
 
     rebulk.regex(
         build_or_pattern(episode_words, name="episodeMarker")
-        + r"-?(?P<episode>\d+)"
+        + r"-?-?(?:(?:№|#)-?)?(?P<episode>\d+)"
         + r"(?:v(?P<version>\d+))?"
         + r"(?:-?"
         + build_or_pattern(of_words)
@@ -356,7 +415,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
 
     rebulk.regex(
         build_or_pattern(episode_words, name="episodeMarker")
-        + r"-?(?P<episode>"
+        + r"-?-?(?:(?:№|#)-?)?(?P<episode>"
         + numeral
         + ")"
         + r"(?:v(?P<version>\d+))?"
