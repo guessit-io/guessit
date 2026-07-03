@@ -70,6 +70,23 @@ def test_properties() -> None:
     assert "video_codec" in props
 
 
+def test_public_api_is_exported_from_the_package() -> None:
+    import guessit as pkg
+
+    expected = {
+        "GUESSIT_SCHEMA",
+        "ConfigurationException",
+        "GuessItApi",
+        "Size",
+        "guessit",
+        "properties",
+        "suggested_expected",
+    }
+    assert expected <= set(pkg.__all__)
+    for name in expected:
+        assert hasattr(pkg, name), f"guessit.{name} is not exported"
+
+
 def test_list_value_not_mutated_between_guesses() -> None:
     # Regression for #822: a config pattern with a list value (compound edition)
     # used to be aliased into the result and mutated in place, leaking state into
