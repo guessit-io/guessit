@@ -142,7 +142,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         ):
             if "weak-episode" in other.tags or "weak-duplicate" in other.tags:
                 return other
-            before = (other.initiator.input_string or "")[: other.initiator.start].rstrip(seps + "ªº°йяе")
+            before = (other.initiator.input_string or "")[: other.initiator.start].rstrip(seps + ordinal_chars)
             return other if before and before[-1].isdigit() else match
         return season_episode_conflict_solver(match, other)
 
@@ -219,6 +219,8 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     episode_words = config["episode_words"]
     season_words_numfirst = config["season_words_numfirst"]
     episode_words_numfirst = config["episode_words_numfirst"]
+    ordinal_suffix = config["ordinal_suffix"]
+    ordinal_chars = config["ordinal_chars"]
     of_words = config["of_words"]
     all_words = config["all_words"]
     season_markers = config["season_markers"]
@@ -377,7 +379,6 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     # Non-English convention where the number precedes the keyword:
     #   "1ª Temporada", "3 сезон", "5-й сезон", "2.Sezon" (season); "24 серия", "7.Bölüm" (episode).
     # An optional ordinal suffix (ª/º/°, Portuguese a/o, Russian -й/-я/…) may sit between the two.
-    ordinal_suffix = r"(?:ª|º|°|a|o|-?(?:й|я|е|го|ая|ый|ое))?"  # noqa: RUF001
     rebulk.regex(
         r"(?P<season>\d{1,2})"
         + ordinal_suffix

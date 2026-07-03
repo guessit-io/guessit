@@ -376,6 +376,8 @@
         "bolum",
         "rész"
       ],
+      "ordinal_suffix": "(?:ª|º|°|a|o|-?(?:й|я|е|го|ая|ый|ое))?",
+      "ordinal_chars": "ªº°йяе",
       "of_words": [
         "of",
         "sur"
