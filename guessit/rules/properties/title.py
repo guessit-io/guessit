@@ -32,10 +32,6 @@ if TYPE_CHECKING:
 
     from rebulk.match import Matches
 
-# Articles that, when they make up the whole detected title, should swallow the following
-# property word (e.g. "The" + edition "Collector" -> title "The Collector").
-ARTICLES = frozenset({"the", "a", "an", "le", "la", "les", "el", "los", "las", "il", "lo", "l"})
-
 # Tags that mark a country/other match as a recognized release tag (edition, scene or
 # streaming-service keyword) rather than a real title word — such a token must never be
 # relabelled as the title even when it sits at the title position.
@@ -49,39 +45,6 @@ NON_LATIN_SCRIPT_RE = re.compile(
     r"　-〿぀-ヿ㐀-䶿一-鿿가-힯＀-￯]"
 )
 
-# Stop-words a title may legitimately end on: refuse cropping a trailing Title-Case
-# language/country that would otherwise leave the title ending on one of these
-# ("It Ends With Us" #789, "The Last of Us" #739, "Oshi no Ko" #745). An uppercase tag
-# ("...US") is still kept as a country by the Title-Case guard in KeepTrailingStopWordTitle.
-TITLE_STOP_WORDS = frozenset(
-    {
-        "the",
-        "a",
-        "an",
-        "and",
-        "or",
-        "of",
-        "to",
-        "in",
-        "on",
-        "at",
-        "for",
-        "from",
-        "by",
-        "with",
-        "into",
-        "onto",
-        "no",
-        "le",
-        "la",
-        "les",
-        "de",
-        "du",
-        "des",
-        "el",
-    }
-)
-
 
 def title(config: dict[str, Any]) -> Rebulk:
     """
@@ -92,15 +55,18 @@ def title(config: dict[str, Any]) -> Rebulk:
     :return: Created Rebulk object
     :rtype: Rebulk
     """
+    articles = frozenset(config.get("articles", ()))
+    title_stop_words = frozenset(config.get("title_stop_words", ()))
+
     rebulk = Rebulk(disabled=lambda context: is_disabled(context, "title"))
     rebulk.rules(
         CountryAtTitlePosition,
         TitleWordAtTitlePosition,
         TitleFromPosition,
         PreferTitleWithYear,
-        ExtendLoneArticleTitle,
+        ExtendLoneArticleTitle(articles),
         PropertyAtTitlePositionAsTitle,
-        KeepTrailingStopWordTitle,
+        KeepTrailingStopWordTitle(title_stop_words),
         SplitOriginalScriptTitle,
     )
 
@@ -631,11 +597,15 @@ class ExtendLoneArticleTitle(Rule):
     priority = -32
     consequence = RemoveMatch
 
+    def __init__(self, articles: frozenset[str]) -> None:
+        super().__init__()
+        self.articles = articles
+
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         input_string = matches.input_string or ""
         ret: list[tuple[Match, Match]] = []
         for title_match in matches.named("title", "episode_title"):
-            if str(title_match.value or "").strip().lower() not in ARTICLES:
+            if str(title_match.value or "").strip().lower() not in self.articles:
                 continue
             filepart = matches.markers.at_match(title_match, lambda m: m.name == "path", 0)
             if not filepart:
@@ -751,6 +721,10 @@ class KeepTrailingStopWordTitle(Rule):
     priority = POST_PROCESS
     consequence = RemoveMatch
 
+    def __init__(self, title_stop_words: frozenset[str]) -> None:
+        super().__init__()
+        self.title_stop_words = title_stop_words
+
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         input_string = matches.input_string or ""
         ret: list[tuple[Match, Match]] = []
@@ -777,7 +751,7 @@ class KeepTrailingStopWordTitle(Rule):
                 continue
             words = re.split(r"[^a-z0-9]+", str(title_match.value or "").lower())
             words = [w for w in words if w]
-            if not words or words[-1] not in TITLE_STOP_WORDS:
+            if not words or words[-1] not in self.title_stop_words:
                 continue
             ret.append((title_match, trailing))
         return ret
