@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any
 
 from rebulk import AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
 from rebulk.match import Match
+from rebulk.processors import PRE_PROCESS
 from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
@@ -124,30 +125,6 @@ def episodes(config: dict[str, Any]) -> Rebulk:
                         ):
                             return current
         return "__default__"
-
-    def numfirst_conflict_solver(match: Match, other: Match) -> Any:
-        """
-        Conflict solver for the number-first keyword patterns ("2 Sezon", "24 серия").
-
-        The number-first match wins over a conflicting word-first season/episode
-        only when that word-first keyword already owns a leading number (so its
-        trailing number belongs to the following keyword): "2 Sezon 7 Bölüm" gives
-        the "7" to "Bölüm", whereas "Temporada 1 Capitulo" keeps the "1" on
-        "Temporada". The leading number must be a 1-2 digit season number, not a
-        4-digit year sitting in the title ("Show 2019 Сезон 1 Серия 5" keeps
-        season 1). Any other conflict falls back to the standard solver.
-        """
-        if (
-            other.name in ("season", "episode")
-            and other.initiator is not match.initiator
-            and "numfirst" not in other.initiator.tags
-        ):
-            if "weak-episode" in other.tags or "weak-duplicate" in other.tags:
-                return other
-            before = (other.initiator.input_string or "")[: other.initiator.start]
-            leading = re.search(r"(?<!\d)\d{1,2}" + ordinal_suffix + "[" + re.escape(seps) + r"]*$", before)
-            return other if leading else match
-        return season_episode_conflict_solver(match, other)
 
     def ordering_validator(match: Match) -> bool:
         """
@@ -389,7 +366,6 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + r"(?![^\W\d_])",
         tags=["SxxExx", "numfirst"],
         formatter={"season": parse_numeral},
-        conflict_solver=numfirst_conflict_solver,
         disabled=is_season_episode_disabled,
     )
     rebulk.regex(
@@ -400,7 +376,6 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + r"(?![^\W\d_])",
         tags=["SxxExx", "numfirst"],
         formatter={"episode": parse_numeral},
-        conflict_solver=numfirst_conflict_solver,
         disabled=lambda context: is_disabled(context, "episode"),
     )
 
@@ -538,6 +513,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     )
 
     rebulk.rules(
+        NumberFirstConflict(seps),
         WeakConflictSolver,
         RemoveInvalidSeason,
         RemoveInvalidEpisode,
@@ -558,6 +534,64 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     )
 
     return rebulk
+
+
+class NumberFirstConflict(Rule):
+    """
+    Arbitrate a number shared by a number-first keyword ("N KW2") and a
+    word-first keyword ("KW1 N"), before the default conflict solver runs.
+
+    A number sitting between two keywords binds to the following keyword only
+    when the preceding word-first keyword itself owns a leading number-first
+    match ("2 Sezon 7 Bölüm" -> the 7 is Bölüm's); otherwise it stays on the
+    preceding keyword ("Temporada 1 Capitulo 25", "Show 2019 Сезон 1 Серия 5"
+    -> the 1 is the season, the year is not a number-first marker). A
+    number-first match also always wins over a weak guess on the same span.
+    """
+
+    priority = PRE_PROCESS + 1
+    consequence = RemoveMatch
+
+    def __init__(self, seps: str) -> None:
+        super().__init__()
+        self.seps = seps
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+
+        def drop(match: Match) -> None:
+            for item in (match.initiator, *match.initiator.children):
+                if item not in to_remove:
+                    to_remove.append(item)
+
+        for numfirst in matches.tagged("numfirst", lambda m: m.name in ("season", "episode")):
+            if numfirst.initiator in to_remove:
+                continue
+            for other in matches.conflicting(
+                numfirst, lambda m: m.name in ("season", "episode") and "numfirst" not in m.tags
+            ):
+                if "weak-episode" in other.tags or "weak-duplicate" in other.tags:
+                    if other not in to_remove:
+                        to_remove.append(other)
+                    continue
+                leading = matches.previous(
+                    other.initiator,
+                    lambda m: m.name in ("season", "episode") and "numfirst" in m.tags,
+                    index=0,
+                )
+                keyword_owns_number = bool(
+                    leading
+                    and not matches.holes(
+                        leading.end, other.initiator.start, predicate=lambda h: (h.raw or "").strip(self.seps)
+                    )
+                )
+                if keyword_owns_number:
+                    drop(other)
+                else:
+                    drop(numfirst)
+                    break
+
+        return to_remove
 
 
 class WeakConflictSolver(Rule):
