@@ -63,9 +63,7 @@
       "episode"
     ],
     "Chrono Crusade ep. 1-5": [
-      "title",
-      "episode",
-      "type"
+      "episode"
     ],
     "[gg]_Kimi_ni_Todoke_2nd_Season_-_00_[BF735BC4].mkv": [
       "title"
@@ -351,10 +349,8 @@
       "title"
     ],
     "Черное зеркало / Black Mirror / Сезон 4 / Серии 1-6 (6) [2017, США, WEBRip 1080p] MVO + Eng Sub": [
-      "title",
-      "season",
-      "episode",
-      "type"
+      "year",
+      "episode"
     ],
     "[neoHEVC] Student Council's Discretion / Seitokai no Ichizon [Season 1] [BD 1080p x265 HEVC AAC]": [
       "title"
@@ -386,8 +382,7 @@
       "title"
     ],
     "{WWW.BLUDV.TV} Love, Death & Robots - 1ª Temporada Completa 2019 (1080p) Acesse o ORIGINAL WWW.BLUDV.TV": [
-      "season",
-      "type"
+      "year"
     ],
     "Dune.Part.Two.2024.2160p.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX[TGx]": [
       "title",
@@ -417,8 +412,7 @@
     ],
     "Game of Thrones 1ª a 8ª Temporada Completa [720p-1080p] [BluRay] [DUAL]": [
       "title",
-      "season",
-      "type"
+      "season"
     ],
     "Kill.2024.REPACK.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-XEBEC.mkv": [
       "audio_codec"
@@ -464,12 +458,6 @@
     "BLACK PANTHER - Wakanda Forever (2022) 10bit.m1080p.BRRip.H265.MKV.AC3-5.1 DUBPL-ENG-NapisyPL [StarLord]": [
       "title",
       "screen_size"
-    ],
-    "The.White.Lotus.2.Sezon.7.Bölüm.2021.1080p.BLUTV.WEB-DL.AAC2.0.H.264-TURG.mkv": [
-      "title",
-      "season",
-      "episode",
-      "type"
     ],
     "Apollo 13 (1995) [1080p] [WEB-DL] [x264] [E-AC3-S78] [Lektor PL]": [
       "type"
@@ -565,16 +553,7 @@
     "Anatomia De Grey - Temporada 19 [HDTV][Cap.1905][Castellano][www.AtomoHD.nu].avi": [
       "episode"
     ],
-    "2 сезон 24 серия.avi": [
-      "season"
-    ],
     "2-06. Девичья сила.mkv": [
-      "season"
-    ],
-    "2. Discovery-Kak_ustroena_Vselennaya.(2.sezon_8.serii.iz.8).2012.XviD.HDTVRip.Krasnodarka": [
-      "season"
-    ],
-    "3 сезон": [
       "season"
     ],
     "3Âº Temporada Bob esponja Pt-Br": [
@@ -582,10 +561,6 @@
     ],
     "4-13 Cursed (HD).m4v": [
       "season"
-    ],
-    "30 M0N3D4S ESP T01XE08.mkv": [
-      "season",
-      "episode"
     ],
     "Ace of the Diamond: 1st Season": [
       "season"
@@ -598,9 +573,6 @@
     ],
     "All of Us Are Dead . 2022 . S01 EP #1.2.mkv": [
       "episode"
-    ],
-    "Beavis and Butt-Head - 1a. Temporada": [
-      "season"
     ],
     "clny.3x11m720p.es[www.planetatorrent.com].mkv": [
       "season",
@@ -621,18 +593,6 @@
       "season",
       "episode"
     ],
-    "Elementar 3º Temporada Dublado": [
-      "season"
-    ],
-    "Eu, a Patroa e as Crianças  4° Temporada Completa - HDTV - Dublado": [
-      "season"
-    ],
-    "Game of Thrones / Сезон: 1-8 / Серии: 1-73 из 73 [2011-2019, США, BDRip 1080p] MVO (LostFilm)": [
-      "season"
-    ],
-    "House MD All Seasons (1-8) 720p Ultra-Compressed": [
-      "season"
-    ],
     "How I Met Your Mother Season 1, 2, 3, 4, 5, & 6 + Extras DVDRip": [
       "season"
     ],
@@ -646,10 +606,6 @@
       "episode"
     ],
     "Mash S10E01b Thats Show Biz Part 2 1080p H.264 (moviesbyrizzo upload).mp4": [
-      "season",
-      "episode"
-    ],
-    "My Little Pony - A Amizade é Mágica - T02E22.mp4": [
       "season",
       "episode"
     ],
@@ -672,9 +628,6 @@
     "Stargate Atlantis ALL Seasons - S01 / S02 / S03 / S04 / S05": [
       "season"
     ],
-    "Teen Wolf - 04ª Temporada 720p": [
-      "season"
-    ],
     "The.Man.In.The.High.Castle1x01.HDTV.XviD[www.DivxTotaL.com].avi": [
       "season",
       "episode"
@@ -693,12 +646,6 @@
     "Tokyo Ghoul Root A - 07 [S2-07] [Eng Sub] 480p [email protected]": [
       "season",
       "episode"
-    ],
-    "Vikings 3 Temporada 720p": [
-      "season"
-    ],
-    "Zvezdnie.Voiny.Voina.Klonov.3.sezon.22.seria.iz.22.XviD.HDRip.avi": [
-      "season"
     ],
     "[5.01] Weight Loss.avi": [
       "season"
@@ -727,32 +674,9 @@
       "season",
       "episode"
     ],
-    "Друзья / Friends / Сезон: 1 / Серии: 1-24 из 24 [1994-1995, США, BDRip 720p] MVO + Original + Sub (Rus, Eng)": [
-      "season"
-    ],
-    "Друзья / Friends / Сезон: 1, 2 / Серии: 1-24 из 24 [1994-1999, США, BDRip 720p] MVO": [
-      "season"
-    ],
-    "Интерны. Сезон №9. Серия №180.avi": [
-      "season",
-      "episode"
-    ],
     "Комиссар Рекс 11-13.avi": [
       "season",
       "episode"
-    ],
-    "Леди Баг и Супер-Кот – Сезон 3, Эпизод 21 – Кукловод 2 [1080p].mkv": [
-      "season"
-    ],
-    "Проклятие острова ОУК_ 5-й сезон 09-я серия_ Прорыв Дэна.avi": [
-      "season"
-    ],
-    "Разрушители легенд. MythBusters. Сезон 15. Эпизод 09. Скрытая угроза (2015).avi": [
-      "season",
-      "episode"
-    ],
-    "Сезон 5/Серия 11.mkv": [
-      "season"
     ],
     "Клинок, рассекающий демонов (ТВ-1) / Kimetsu no Yaiba / Demon Slayer [TV] [26 из 26] [RUS(ext), ENG, JAP+Sub] [2019, BDRip] [1080p]": [
       "season"
@@ -835,9 +759,6 @@
     "SupNat-11_06.avi": [
       "episode"
     ],
-    "Tajny.sledstvija.(2.sezon.12.serija.iz.12).2002.XviD.DVDRip.avi": [
-      "episode"
-    ],
     "Tajny.sledstviya-20.01.serya.WEB-DL.(1080p).by.lunkin.mkv": [
       "episode"
     ],
@@ -887,9 +808,6 @@
       "episode"
     ],
     "[Golumpa] Star Blazers 2202 - 22 (Uchuu Senkan Yamato 2022) [FuniDub 1080p x264 AAC] [A24B89C8].mkv": [
-      "episode"
-    ],
-    "Викинги / Vikings / Сезон: 5 / Серия: 1 [2017, WEB-DL 1080p] MVO": [
       "episode"
     ],
     "Викинги / Vikings / Сезон: 5 / Серии: 5 из 20 [2017, WEB-DL 1080p] MVO": [

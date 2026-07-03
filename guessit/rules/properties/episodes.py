@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any
 
 from rebulk import AppendMatch, Rebulk, RemoveMatch, RenameMatch, Rule
 from rebulk.match import Match
+from rebulk.processors import PRE_PROCESS
 from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
@@ -61,6 +62,26 @@ def parse_cjk_number(value: str) -> int:
         ones_value = _CJK_DIGITS[ones] if ones else 0
         return tens_value * 10 + ones_value
     return _CJK_DIGITS[value]
+
+
+def _split_words(entries: list[Any]) -> tuple[list[str], list[str]]:
+    """Split a season/episode word config into (word-first values, number-first values).
+
+    Each entry is either a plain string (word-first only) or a mapping
+    ``{"value": str, "numfirst": bool}``. A flat list of strings stays supported
+    for backward compatibility (and for user configs merged into the default one).
+    """
+    words: list[str] = []
+    numfirst: list[str] = []
+    for entry in entries:
+        if isinstance(entry, dict):
+            value = entry["value"]
+            if entry.get("numfirst"):
+                numfirst.append(value)
+        else:
+            value = entry
+        words.append(value)
+    return words, numfirst
 
 
 def episodes(config: dict[str, Any]) -> Rebulk:
@@ -194,8 +215,9 @@ def episodes(config: dict[str, Any]) -> Rebulk:
             return False
         return validate_roman(match)
 
-    season_words = config["season_words"]
-    episode_words = config["episode_words"]
+    season_words, season_words_numfirst = _split_words(config["season_words"])
+    episode_words, episode_words_numfirst = _split_words(config["episode_words"])
+    ordinal_suffix = config["ordinal_suffix"]
     of_words = config["of_words"]
     all_words = config["all_words"]
     season_markers = config["season_markers"]
@@ -300,6 +322,15 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + r"(?P<season>\d+)"
     ).repeater("*")
 
+    # Compact non-English season/episode marker: "T02E22", "T01XE08" (Spanish/Portuguese).
+    # Restricted to a "t" prefix immediately followed by an episode marker so a lone
+    # "T1" stays a title token.
+    rebulk.regex(
+        r"t(?P<season>\d{1,2})@?" + build_or_pattern(episode_markers, name="episodeMarker") + r"@?(?P<episode>\d{1,4})",
+        tags=["SxxExx"],
+        disabled=is_season_episode_disabled,
+    )
+
     # episode_details property
     for episode_detail in ("Special", "Pilot", "Unaired", "Final"):
         rebulk.string(
@@ -334,19 +365,43 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         formatter={"season": parse_numeral, "count": parse_numeral},
         validator={"season": season_word_not_year, "count": validate_roman},
         conflict_solver=season_episode_conflict_solver,
-    ).regex(build_or_pattern(season_words, name="seasonMarker") + "@?(?P<season>" + numeral + ")").regex(
-        r"" + build_or_pattern(of_words) + "@?(?P<count>" + numeral + ")"
-    ).repeater("?").regex(
+    ).regex(
+        build_or_pattern(season_words, name="seasonMarker") + "@?@?(?:(?:№|#)@?)?(?P<season>" + numeral + ")"
+    ).regex(r"" + build_or_pattern(of_words) + "@?(?P<count>" + numeral + ")").repeater("?").regex(
         r"@?"
         + build_or_pattern(range_separators + discrete_separators + ["@"], name="seasonSeparator", escape=True)
         + r"@?(?P<season>\d+)"
     ).repeater("*")
 
+    # Non-English convention where the number precedes the keyword:
+    #   "1ª Temporada", "3 сезон", "5-й сезон", "2.Sezon" (season); "24 серия", "7.Bölüm" (episode).
+    # An optional ordinal suffix (ª/º/°, Portuguese a/o, Russian -й/-я/…) may sit between the two.
+    rebulk.regex(
+        r"(?P<season>\d{1,2})"
+        + ordinal_suffix
+        + r"@?@?"
+        + build_or_pattern(season_words_numfirst, name="seasonMarker")
+        + r"(?![^\W\d_])",
+        tags=["SxxExx", "numfirst"],
+        formatter={"season": parse_numeral},
+        disabled=is_season_episode_disabled,
+    )
+    rebulk.regex(
+        r"(?P<episode>\d{1,3})"
+        + ordinal_suffix
+        + r"@?@?"
+        + build_or_pattern(episode_words_numfirst, name="episodeMarker")
+        + r"(?![^\W\d_])",
+        tags=["SxxExx", "numfirst"],
+        formatter={"episode": parse_numeral},
+        disabled=lambda context: is_disabled(context, "episode"),
+    )
+
     rebulk.defaults(abbreviations=[dash])
 
     rebulk.regex(
         build_or_pattern(episode_words, name="episodeMarker")
-        + r"-?(?P<episode>\d+)"
+        + r"-?-?(?:(?:№|#)-?)?(?P<episode>\d+)"
         + r"(?:v(?P<version>\d+))?"
         + r"(?:-?"
         + build_or_pattern(of_words)
@@ -356,7 +411,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
 
     rebulk.regex(
         build_or_pattern(episode_words, name="episodeMarker")
-        + r"-?(?P<episode>"
+        + r"-?-?(?:(?:№|#)-?)?(?P<episode>"
         + numeral
         + ")"
         + r"(?:v(?P<version>\d+))?"
@@ -476,6 +531,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     )
 
     rebulk.rules(
+        NumberFirstConflict(seps),
         WeakConflictSolver,
         RemoveInvalidSeason,
         RemoveInvalidEpisode,
@@ -496,6 +552,98 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     )
 
     return rebulk
+
+
+class NumberFirstConflict(Rule):
+    """
+    Arbitrate a number shared by a number-first keyword ("N KW2") and a
+    word-first keyword ("KW1 N"), before the default conflict solver runs.
+
+    A number sitting between two keywords binds to the following keyword only
+    when the preceding word-first keyword itself owns a leading number-first
+    match ("2 Sezon 7 Bölüm" -> the 7 is Bölüm's); otherwise it stays on the
+    preceding keyword ("Temporada 1 Capitulo 25", "Show 2019 Сезон 1 Серия 5"
+    -> the 1 is the season, the year is not a number-first marker). A
+    number-first match also always wins over a weak guess on the same span.
+    """
+
+    priority = PRE_PROCESS + 1
+    consequence = RemoveMatch
+
+    def __init__(self, seps: str) -> None:
+        super().__init__()
+        self.seps = seps
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+
+        def drop(match: Match) -> None:
+            for item in (match.initiator, *match.initiator.children):
+                if item not in to_remove:
+                    to_remove.append(item)
+
+        numfirst_matches = matches.tagged("numfirst", lambda m: m.name in ("season", "episode"))
+
+        # A leading number-first number is a stray title number when its keyword is
+        # directly followed by its own word-first number that no later keyword claims:
+        # "Studio 60 Сезон 5" -> season 5, the 60 belongs to the title.
+        for numfirst in numfirst_matches:
+            marker = next(
+                (child for child in numfirst.initiator.children if child.name in ("seasonMarker", "episodeMarker")),
+                None,
+            )
+            if not marker:
+                continue
+            trailing = matches.next(
+                marker,
+                lambda m: (
+                    m.name in ("season", "episode")
+                    and not any(tag in m.tags for tag in ("numfirst", "weak-episode", "weak-duplicate"))
+                ),
+                index=0,
+            )
+            if (
+                trailing
+                and trailing.initiator.start <= marker.end
+                and not matches.holes(marker.end, trailing.start, predicate=lambda h: (h.raw or "").strip(self.seps))
+                and not matches.conflicting(trailing, lambda m: "numfirst" in m.tags or m.name == "year")
+            ):
+                drop(numfirst)
+
+        # A number between two keywords binds to the following keyword only when the
+        # preceding keyword owns a leading number-first match ("2 Sezon 7 Bölüm" ->
+        # the 7 is Bölüm's); otherwise it stays on the preceding keyword. A
+        # number-first match also always wins over a weak guess on the same span.
+        for numfirst in numfirst_matches:
+            if numfirst.initiator in to_remove:
+                continue
+            for other in matches.conflicting(
+                numfirst, lambda m: m.name in ("season", "episode") and "numfirst" not in m.tags
+            ):
+                if other in to_remove:
+                    continue
+                if "weak-episode" in other.tags or "weak-duplicate" in other.tags:
+                    to_remove.append(other)
+                    continue
+                leading = matches.previous(
+                    other.initiator,
+                    lambda m: m.name in ("season", "episode") and "numfirst" in m.tags,
+                    index=0,
+                )
+                keyword_owns_number = bool(
+                    leading
+                    and leading.initiator not in to_remove
+                    and not matches.holes(
+                        leading.end, other.initiator.start, predicate=lambda h: (h.raw or "").strip(self.seps)
+                    )
+                )
+                if keyword_owns_number:
+                    drop(other)
+                else:
+                    drop(numfirst)
+                    break
+
+        return to_remove
 
 
 class WeakConflictSolver(Rule):

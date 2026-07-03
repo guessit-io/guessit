@@ -139,3 +139,30 @@ def test_should_not_rebuild_rebulk_on_same_advanced_config(mocker: MockerFixture
 
     assert rebulk_builder_spy.call_count == 0
     rebulk_builder_spy.reset_mock()
+
+
+def test_split_words_backward_compatible() -> None:
+    from ..rules.properties.episodes import _split_words
+
+    # A flat list of strings stays valid: every word is word-first, none number-first.
+    assert _split_words(["season", "saison"]) == (["season", "saison"], [])
+
+    # Object entries carry an optional numfirst flag.
+    words, numfirst = _split_words([{"value": "temporada", "numfirst": True}, {"value": "season"}])
+    assert words == ["temporada", "season"]
+    assert numfirst == ["temporada"]
+
+    # Mixed list, as produced when a user's string list is merged into the default objects.
+    words, numfirst = _split_words([{"value": "сезон", "numfirst": True}, "kausi"])
+    assert words == ["сезон", "kausi"]
+    assert numfirst == ["сезон"]
+
+
+def test_episode_words_accept_legacy_string_list() -> None:
+    api.reset()
+    # A user config may still provide season_words as a plain list of strings; it is
+    # merged into the object-based default config and must keep working end to end.
+    config = {"advanced_config": {"episodes": {"season_words": ["kausi"]}}}
+    assert guessit("Sarja Kausi 2", config).get("season") == 2
+    assert guessit("Vikings 3 Temporada 720p", config).get("season") == 3
+    api.reset()
