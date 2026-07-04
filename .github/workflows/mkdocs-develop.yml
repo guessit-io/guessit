@@ -1,8 +1,8 @@
-name: mkdocs
+name: mkdocs-develop
 on:
   push:
     branches:
-      - main
+      - develop
 concurrency:
   group: gh-pages-deploy
   cancel-in-progress: false
@@ -19,13 +19,12 @@ jobs:
 
       - run: uvx --with mkdocs-material mkdocs build
 
-      - name: Deploy 🚀
+      - name: Deploy develop preview 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           folder: site
+          # Publish the develop build under /dev/ without touching the stable site at the root.
+          target-folder: dev
           clean: true
-          # Preserve the develop preview published under dev/ by the mkdocs-develop workflow.
-          clean-exclude: |
-            dev
