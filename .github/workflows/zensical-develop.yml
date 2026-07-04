@@ -1,4 +1,4 @@
-name: mkdocs-develop
+name: zensical-develop
 on:
   push:
     branches:

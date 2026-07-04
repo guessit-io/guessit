@@ -1,4 +1,4 @@
-name: mkdocs-preview
+name: zensical-preview
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]

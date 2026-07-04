@@ -1,4 +1,4 @@
-name: mkdocs
+name: zensical
 on:
   push:
     branches:
@@ -30,7 +30,7 @@ jobs:
           folder: site
           clean: true
           # Preserve the develop preview (dev/) and the docs/* MR previews (preview/)
-          # published by the mkdocs-develop and mkdocs-preview workflows.
+          # published by the zensical-develop and zensical-preview workflows.
           clean-exclude: |
             dev
             preview
