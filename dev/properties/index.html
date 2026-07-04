@@ -674,15 +674,18 @@
 <li><code>1920x1080</code> will be guessed as <code>screen_size</code> = <code>1080p</code></li>
 <li><code>DD5.1</code> will be guessed as <code>audio_codec</code> = <code>Dolby Digital</code> + <code>audio_channels</code> = <code>5.1</code></li>
 </ul>
-<p>A machine-readable description of every property is shipped alongside this page:</p>
+<p>A machine-readable description of every property is available:</p>
 <ul>
-<li><code>guessit.GUESSIT_SCHEMA</code> — a Python mapping of each property to its type,
-    cardinality and (for closed vocabularies) allowed values.</li>
-<li><code>guessit/data/output-schema.json</code> — the same information as a
-    <a href="https://json-schema.org/">JSON Schema</a> (draft-07) describing guessit's output.</li>
+<li><code>guessit.schema(options=None)</code> — a Python mapping of each property to its type,
+    cardinality and (for closed vocabularies) allowed values, for the effective
+    configuration. (<code>guessit.GUESSIT_SCHEMA</code>, the default-configuration snapshot, is
+    deprecated in favour of <code>schema()</code>.)</li>
+<li><code>guessit.json_schema(options=None)</code> — the same information as a
+    <a href="https://json-schema.org/">JSON Schema</a> (draft-07) describing guessit's output.
+    The default-configuration snapshot is shipped as <code>guessit/data/output-schema.json</code>.</li>
 </ul>
-<p>Both are generated from the rules by <code>scripts/gen_schema.py</code>; a test fails if they
-drift. The list below is the human-friendly counterpart.</p>
+<p>The frozen defaults are generated from the rules by <code>scripts/gen_schema.py</code>; a test
+fails if they drift. The list below is the human-friendly counterpart.</p>
 <h2 id="main-properties">Main properties<a class="headerlink" href="#main-properties" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
