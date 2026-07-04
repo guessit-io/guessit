@@ -873,28 +873,21 @@ options are unchanged.</p>
 <h3 id="discovering-properties-and-values">Discovering properties and values<a class="headerlink" href="#discovering-properties-and-values" title="Permanent link">&para;</a></h3>
 <p>Several mechanisms expose what GuessIt can emit:</p>
 <ul>
-<li>
-<p><code>properties()</code> — a dict mapping every property to the list of values it can
-  produce (empty list for free-form values):</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>from guessit import properties
-'Blu-ray' in properties()['source']
-  True</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</li>
-<li>
-<p><code>guessit.GUESSIT_SCHEMA</code> — a mapping of each property to its type, cardinality
-  and (for closed vocabularies) allowed values.</p>
-</li>
+<li><code>properties()</code> — a dict mapping every property to the list of values it can
+  produce (empty list for free-form values).</li>
+<li><code>guessit.GUESSIT_SCHEMA</code> — a mapping of each property to its type, cardinality
+  and (for closed vocabularies) allowed values.</li>
 <li><code>guessit/data/output-schema.json</code> — the same information as a
   <a href="https://json-schema.org/">JSON Schema</a> (draft-07).</li>
 <li>On the command line, <code>guessit -p</code> lists the properties and <code>guessit -V</code> lists
   their possible values.</li>
 </ul>
+<p>For example:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">properties</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;Blu-ray&#39;</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">()[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span>
+<span class="kc">True</span>
+</code></pre></div>
+
 <p><code>GUESSIT_SCHEMA</code>, <code>properties()</code> and <code>suggested_expected()</code> are all exported
 from the top-level <code>guessit</code> package (and are also available as methods on
 <code>GuessItApi</code>).</p>
