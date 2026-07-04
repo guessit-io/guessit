@@ -40,11 +40,10 @@ Install GuessIt with [pip](https://pip.pypa.io/):
 pip install guessit
 ```
 
-Or with [uv](https://docs.astral.sh/uv/):
+Or add it to your project with [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uv add guessit          # add it as a project dependency
-uv pip install guessit  # or install it into the active environment
+uv add guessit
 ```
 
 You can also run the CLI without installing it, with uvx:
@@ -69,9 +68,12 @@ properties GuessIt can detect and `guessit -V` to list their possible values.
 
 It can also be used as a python module:
 
-    >>> from guessit import guessit
-    >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
-    MatchesDict({'title': 'Treme', 'season': 1, 'episode': 3, 'episode_title': 'Right Place, Wrong Time', 'source': 'HDTV', 'video_codec': 'Xvid', 'release_group': 'NoTV', 'container': 'avi', 'mimetype': 'video/x-msvideo', 'type': 'episode'})
+```python
+>>> from guessit import guessit
+>>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
+MatchesDict({'title': 'Treme', 'season': 1, 'episode': 3, 'episode_title': 'Right Place, Wrong Time', 'source': 'HDTV', 'video_codec': 'Xvid', 'release_group': 'NoTV', 'container': 'avi', 'mimetype': 'video/x-msvideo', 'type': 'episode'})
+
+```
 
 `MatchesDict` is a dict that keeps matches ordering.
 

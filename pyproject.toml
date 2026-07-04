@@ -147,7 +147,7 @@ strict = true
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
-addopts = "-s --ignore=build --ignore=docs --ignore=hatch_build.py --doctest-modules --doctest-glob='*.rst' -m 'not cross_parser'"
+addopts = "-s --ignore=build --ignore=hatch_build.py --doctest-modules --doctest-glob='*.rst' --doctest-glob='*.md' -m 'not cross_parser'"
 markers = [
     "cross_parser: opt-in tests checking guessit against other parsers' labelled fixtures (run with `pytest -m cross_parser`)",
 ]

@@ -28,7 +28,7 @@ episode_title `The Convert`, see `ExtendLoneArticleTitle`). The general mid-titl
 
 ### #743 — `Convert` in a multi-word episode title
 
-```
+```text
 The.Mandalorian.S03E03.Chapter.19.The.Convert.2160p.WEB-DL.DDP5.1.HEVC-Group
   episode_title: "Chapter 19 The"   other: "Converted"      (wrong)
   wanted -> episode_title: "Chapter 19 The Convert"  (no other)
@@ -36,7 +36,7 @@ The.Mandalorian.S03E03.Chapter.19.The.Convert.2160p.WEB-DL.DDP5.1.HEVC-Group
 
 ### #746 — `Real` in an episode title
 
-```
+```text
 Schmigadoon.S02E04.Something.Real.1080p.ATVP.WEB-DL.DDP5.1.H.264-NOGRP
   episode_title: "Something"   other: "Proper"             (wrong)
   wanted -> episode_title: "Something Real"  (no other)
@@ -66,7 +66,7 @@ the corpus but wrong for the cases below.
 
 ### #752 — leading digit of an episode title joined as a range
 
-```
+```text
 Show.Name.1969.S01E02.3.Kings.1080p.DDP5.1.H.264
   episode: [2, 3]   episode_title: "Kings"                 (wrong)
   wanted -> episode: 2   episode_title: "3 Kings"
@@ -79,7 +79,7 @@ The `SxxExx` chain extends across a weak `.` separator to the **consecutive** nu
 
 ### #744 — episode title made of numbers and hyphens
 
-```
+```text
 Ted.Lasso.S03E03.4-5-1.1080p.ATVP.WEB-DL.DDP5.1.H.264-Group
   episode: [3, 4, 5]   episode_title: "1"                  (wrong)
   wanted -> episode: 3   episode_title: "4-5-1"
@@ -90,7 +90,7 @@ signal that `4-5-1` is a title (a football formation) rather than a range.
 
 ### #747 — single-digit leading episode number (anime)
 
-```
+```text
 5. Nanatsu no Taizai - The Seven Deadly Sins [1080 Hi10p AAC][kuchikirukia].mkv
   title: "5 Nanatsu no Taizai"   type: movie               (wrong)
   wanted -> episode: 5   title: "Nanatsu no Taizai"
@@ -103,7 +103,7 @@ titles that legitimately start with a digit.
 
 ### #772 — a folder's episode range overrides the file's episode
 
-```
+```text
 [Erai-raws] Great Teacher Onizuka - 01~43 [480p][Multiple Subtitle]/[Erai-raws] Great Teacher Onizuka - 11 [480p].mkv
   episode: [1, 43]                                          (wrong)
   wanted -> episode: 11
@@ -117,7 +117,7 @@ in a subdirectory (`Westworld.S02E03…/sample/Westworld.S01E01.sample.mkv` → 
 
 ### #774 — a future year in the title read as season/episode
 
-```
+```text
 Blade Runner 2049.HDRip.XviD.AC3-EVO.avi
   season: 20   episode: 49   title: "Blade Runner"         (wrong)
   wanted -> title: "Blade Runner 2049"   (year 2017, from the real release)
@@ -131,7 +131,7 @@ external database (e.g. IMDb).
 
 ### #373 — a title starting with `NxN`
 
-```
+```text
 3x3 Eyes (1991)/Season 2/3x3 Eyes - 2x01 - Descent.mkv
   season: 3   episode: [3, 1]   title: "Eyes"             (wrong)
   wanted -> title: "3x3 Eyes"   season: 2   episode: 1
@@ -142,7 +142,7 @@ local says it is title text rather than `S03E03`.
 
 ### #533 — a bare trailing number
 
-```
+```text
 One Piece - 720
   season: 7   episode: 20                                 (one reading)
   wanted -> episode: 720  *or*  screen_size: 720p  (depending on intent)
@@ -154,7 +154,7 @@ A trailing `720` is simultaneously a plausible `720p` resolution, an absolute ep
 
 ### #693 — a bare resolution or duration number read as season/episode
 
-```
+```text
 Gladiator.EXTENDED.2000.720.BrRip.264.YIFY   -> season: 7   episode: 20    (wrong)
 Gladiator.EXTENDED.2000.1080.BrRip.264.YIFY  -> season: 10  episode: 80    (wrong)
 Aliens DVD Silver Box Set 131 Min            -> season: 1   episode: 31    (wrong)
@@ -168,7 +168,7 @@ FPS` correctly yields `frame_rate: 23.976fps` because the `FPS` suffix disambigu
 
 ### #637 — a one-letter title followed by a number
 
-```
+```text
 E.60.2020.02.16.Remembering.Coach.Alto.720p.ESPN.WEB-DL.AAC2.0.H.264-KiMCHi.mkv
   title: "E"   episode: 60                                 (wrong)
   wanted -> title: "E 60"   (the show "E:60", with no episode)
@@ -180,7 +180,7 @@ signal that `E 60` is the whole title rather than episode `60` of a show called 
 
 ## Anime titles containing a ` - ` separator
 
-```
+```text
 [HorribleSubs] Garo - Vanishing Line - 01 [1080p].mkv
   title: "Garo"   alternative_title: "Vanishing Line"     (#524, #670)
   wanted -> title: "Garo - Vanishing Line"   episode: 1
@@ -193,7 +193,7 @@ fixtures as the accepted behaviour.
 
 ### #690 — `Season N - M` read as a season range
 
-```
+```text
 [Golumpa] Re ZERO -Starting Life in Another World- Season 2 - 15 [CR-Dub 1080p x264].mkv
   season: [2, 3, …, 15]                                    (wrong)
   wanted -> season: 2   episode: 15
@@ -207,7 +207,7 @@ visible. Use an explicit `SxxExx` (`S02E15`) to disambiguate.
 
 ## A leading language / country code consumed from the title
 
-```
+```text
 HI.SCORE.GIRL.II.S01E01-E09.Blu-ray.MKV.h264.1080p.FLAC2.0-SonicBoom
   language: hi   title: "SCORE GIRL II"                    (#660, wrong)
   wanted -> title: "HI SCORE GIRL II"   (the show "High Score Girl")
@@ -226,7 +226,7 @@ properties heuristically. A few shapes defeat the heuristic.
 
 ### #530 — a group name placed *before* the title
 
-```
+```text
 avchd-modern.family.s02e01.720p.bluray.x264.mkv
   title: "modern family"                                  (no release_group)
   wanted -> release_group: "avchd"
@@ -238,7 +238,7 @@ allow-list (which the project deliberately does not maintain).
 
 ### #356 — episode-title words swallowed by a greedy release group
 
-```
+```text
 National.Geographic.Documentaries.S2016E15.720p.HDTV.x264.Mammoth.Back.from.the.Dead-DHD.mkv
   release_group: "Mammoth.Back.from.the.Dead-DHD"         (wrong)
   wanted -> episode_title: "Mammoth Back from the Dead"   release_group: "DHD"
@@ -249,7 +249,7 @@ title ends and the release group begins, so the whole run is taken as the group.
 
 ### #236 / #248 — an indexer suffix kept in the release group
 
-```
+```text
 Hannibal.S03E13.720p.HDTV.x264-KILLERS[rarbg]   -> release_group: "KILLERS[rarbg]"
 Some.Show.S01E01.720p.HDTV.x264-UAV[rartv]      -> release_group: "UAV[rartv]"
 ```
@@ -262,7 +262,7 @@ known indexer suffix themselves.
 
 ### #496 — a `www`-prefixed website
 
-```
+```text
 The.Path_.2x10.HDTV_.XviD_.www_.DivxTotaL.com_.avi
   website: "DivxTotaL.com"   release_group: "www"         (wrong)
   wanted -> website: "www.DivxTotaL.com"   (no release_group)
@@ -272,7 +272,7 @@ The `www` is split from the website it belongs to and left dangling as a release
 
 ## Title text is normalised, never rewritten
 
-```
+```text
 The Devils Backbone (2001).avi
   title: "The Devils Backbone"                            (no apostrophe)
   wanted -> title: "The Devil's Backbone"   (#508)
@@ -285,7 +285,7 @@ downstream lookup against a real title database.
 
 ## A date-shaped title read as a date
 
-```
+```text
 19-2.2014.S03E01.GERMAN.720p.HDTV.x264-ACED
   date: 2014-02-19   title: (none)                        (#494)
   wanted -> title: "19-2"   year: 2014
