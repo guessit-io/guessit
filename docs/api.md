@@ -28,9 +28,12 @@ Run `guessit --help` for the complete list.
 Parse a filename or release name and return a `MatchesDict` — an ordered dict of
 the detected properties:
 
-    >>> from guessit import guessit
-    >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
-    MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('source', 'HDTV'), ('video_codec', 'Xvid'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
+```python
+>>> from guessit import guessit
+>>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
+MatchesDict({'title': 'Treme', 'season': 1, 'episode': 3, 'episode_title': 'Right Place, Wrong Time', 'source': 'HDTV', 'video_codec': 'Xvid', 'release_group': 'NoTV', 'container': 'avi', 'mimetype': 'video/x-msvideo', 'type': 'episode'})
+
+```
 
 A property whose value is a list keeps every match; `enforce_list` (below) forces
 every property to a list for uniform handling.
@@ -80,9 +83,12 @@ Several mechanisms expose what GuessIt can emit:
 
 For example:
 
-    >>> from guessit import properties
-    >>> 'Blu-ray' in properties()['source']
-    True
+```python
+>>> from guessit import properties
+>>> 'Blu-ray' in properties()['source']
+True
+
+```
 
 `GUESSIT_SCHEMA`, `properties()` and `suggested_expected()` are all exported
 from the top-level `guessit` package (and are also available as methods on
@@ -94,9 +100,12 @@ Given an iterable of known titles, return the subset that GuessIt would
 mis-parse into extra properties — good candidates to feed back as
 `expected_title`:
 
-    >>> from guessit import suggested_expected
-    >>> suggested_expected(['OSS 117', 'The 100', 'Normal Movie Title'])
-    ['The 100']
+```python
+>>> from guessit import suggested_expected
+>>> suggested_expected(['OSS 117', 'The 100', 'Normal Movie Title'])
+['The 100']
+
+```
 
 Here `The 100` is otherwise read as season 1 / episode 0; declaring it as an
 expected title fixes the guess:

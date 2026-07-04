@@ -41,6 +41,7 @@ your values are added to the defaults instead of replacing them.
 >>> from guessit import guessit
 >>> guessit('SS-GB.S01E01.1080p.x265-MeGusta.mkv', {'allowed_countries': []})['country']
 <Country [GB]>
+
 ```
 
 To drop the inherited value before merging, use the `pristine` option. Set it
@@ -51,6 +52,7 @@ reset only those:
 >>> guessit('SS-GB.S01E01.1080p.x265-MeGusta.mkv',
 ...         {'pristine': ['allowed_countries'], 'allowed_countries': []})['title']
 'SS-GB'
+
 ```
 
 `pristine` is applied per source, resetting the matching options accumulated
@@ -103,6 +105,7 @@ Adding to a mapping (deep-merge) — register a streaming service:
 >>> options = {'advanced_config': {'streaming_service': {'MyTV': ['mytv']}}}
 >>> guessit('Show.S01E01.MYTV.WEB-DL.mkv', options)['streaming_service']
 'MyTV'
+
 ```
 
 Adding to a list (concatenation) — stop a token from being read as the release group:
@@ -111,6 +114,7 @@ Adding to a list (concatenation) — stop a token from being read as the release
 >>> options = {'advanced_config': {'release_group': {'forbidden_names': ['mygroup']}}}
 >>> 'release_group' in guessit('Show.S01E01.x264-mygroup.mkv', options)
 False
+
 ```
 
 To replace a default list instead of appending to it, reset it first with the

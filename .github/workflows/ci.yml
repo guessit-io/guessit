@@ -74,6 +74,34 @@ jobs:
       - name: Test
         run: uv run --no-sync pytest -m cross_parser
 
+  doctest-docs:
+    # Doctest the docs' Python examples on a single pinned environment. The full
+    # guessit output is not portable: rebulk's MatchesDict is an OrderedDict, whose
+    # repr changed in Python 3.12 (`[(...)]` -> `{...}`), and `mimetype` values
+    # depend on the OS mime database. Pinning Python 3.14 + Ubuntu 26.04 keeps the
+    # expected output deterministic.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
+    runs-on: ubuntu-26.04
+
+    name: Doc doctests
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
+        with:
+          python-version: "3.14"
+          enable-cache: true
+
+      - name: Install Dependencies
+        run: uv sync --locked --no-dev --group test
+
+      - name: Doctest docs
+        run: uv run --no-sync pytest -o addopts="" --doctest-glob='*.md' README.md docs
+
   pre-commit:
     # Runs the file hooks (ruff) once, instead of once per matrix entry, through
     # the same .pre-commit-config.yaml developers use locally (all local + uvx).
