@@ -1003,60 +1003,84 @@ class SeasonSeparatorRange(AbstractSeparatorRange):
         super().__init__(range_separators, "season")
 
 
-class SeasonWordDashEpisode(Rule):
+class AbstractSeasonSeparatorAsEpisode(Rule):
     """
-    Reinterpret a season-word chain's "Season N - EE" as season=N, episode=EE rather than a
-    season range N..EE (#875).
+    Shared machinery for reinterpreting a single-hop "season <sep> season" chain as
+    season=N, episode=M rather than a season range N..M (#875).
 
-    A dash glued directly to both digits ("Season.1-3") keeps reading as a genuine season
-    range/list (a common box-set naming convention, upstream #800-ish); a dash surrounded by
-    real separators on both sides ("Season 2 - 08") is the anime convention where the number
-    after the dash is the episode, not another season bound. A "Complete" (or similar pack
-    marker) later in the same filepart overrides this back to a genuine range: "Coupling Season
-    1 - 4 Complete DVDRip" is a season-pack release, not season 1 episode 4.
+    A subclass supplies the structural evidence (:meth:`applies`) that decides when a given
+    ``seasonSeparator`` hop is really an anime "absolute/season - episode" annotation rather
+    than a genuine season range/list; this base handles the shared single-hop guard and the
+    season -> episode rename once that evidence holds.
     """
 
     priority = 132
     consequence = [RemoveMatch, RenameMatch("episode")]
 
-    def __init__(self, range_separators: list[str]) -> None:
-        super().__init__()
-        self.range_separators = range_separators
+    def candidates(self, matches: Matches) -> Any:
+        """The ``seasonSeparator`` matches this subclass cares about."""
+        return matches.named("seasonSeparator")
+
+    def applies(self, matches: Matches, separator: Match, next_season: Match) -> bool:
+        """Whether this single-hop separator should be reinterpreted as season/episode."""
+        raise NotImplementedError
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         to_remove: list[Match] = []
         to_rename: list[Match] = []
-        input_string = matches.input_string or ""
-
-        for separator in matches.named("seasonSeparator"):
-            if separator.value not in self.range_separators or "SxxExx" in separator.tags:
-                continue
-            # A word separator ("to", "a") always needs surrounding separators to tokenize at
-            # all ("Season 1 to 3"): it's never "tight", so it always reads as a genuine range.
-            if (separator.value or "").isalpha():
-                continue
-            previous_season = matches.previous(separator, lambda m: m.name == "season", 0)
-            next_season = matches.next(separator, lambda m: m.name == "season", 0)
-            if not previous_season or not next_season:
-                continue
+        for separator in self.candidates(matches):
             initiator = separator.initiator
             if len(initiator.children.named("season")) != 2:
                 continue
-            if not input_string[previous_season.end : separator.start]:
-                continue  # tight dash: a genuine season range/list
-            if not input_string[separator.end : next_season.start]:
+            next_season = matches.next(separator, lambda m: m.name == "season", 0)
+            if not next_season:
                 continue
-            filepart = matches.markers.at_match(separator, lambda m: m.name == "path", 0)
-            if filepart and matches.range(
-                next_season.end, filepart.end, lambda m: m.name == "other" and str(m.value).lower() == "complete", 0
-            ):
-                continue  # a pack marker ("Complete") later on: a genuine season range/list
+            if not self.applies(matches, separator, next_season):
+                continue
             to_remove.append(separator)
             to_rename.append(next_season)
         return to_remove, to_rename
 
 
-class ParenthesizedSeasonRangeAsEpisode(Rule):
+class SeasonWordDashEpisode(AbstractSeasonSeparatorAsEpisode):
+    """
+    Reinterpret a season-word chain's "Season N - EE" as season=N, episode=EE rather than a
+    season range N..EE (#875).
+
+    A dash glued directly to both digits ("Season.1-3") keeps reading as a genuine season
+    range/list (a common box-set naming convention); a dash surrounded by real separators on
+    both sides ("Season 2 - 08") is the anime convention where the number after the dash is the
+    episode, not another season bound. Restricted to anime releases: this convention clashes
+    with the equally common western box-set range ("The Wire Season 1 - 5"), so it only applies
+    when other anime signals (see :meth:`WeakConflictSolver.is_anime`) are present (#920).
+    """
+
+    def __init__(self, range_separators: list[str]) -> None:
+        super().__init__()
+        self.range_separators = range_separators
+
+    def candidates(self, matches: Matches) -> Any:
+        return matches.named("seasonSeparator", lambda m: "SxxExx" not in m.tags)
+
+    def applies(self, matches: Matches, separator: Match, next_season: Match) -> bool:
+        if separator.value not in self.range_separators:
+            return False
+        # A word separator ("to", "a") always needs surrounding separators to tokenize at
+        # all ("Season 1 to 3"): it's never "tight", so it always reads as a genuine range.
+        if (separator.value or "").isalpha():
+            return False
+        previous_season = matches.previous(separator, lambda m: m.name == "season", 0)
+        if not previous_season:
+            return False
+        input_string = matches.input_string or ""
+        if not input_string[previous_season.end : separator.start]:
+            return False  # tight dash: a genuine season range/list
+        if not input_string[separator.end : next_season.start]:
+            return False
+        return WeakConflictSolver.is_anime(matches)
+
+
+class ParenthesizedSeasonRangeAsEpisode(AbstractSeasonSeparatorAsEpisode):
     """
     A parenthesized "(S<n>-<nn>)" directly after an absolute episode number is season n,
     episode nn, not a season range n..nn (#875): "87 (S4-24)" -- 24 is the per-season episode
@@ -1067,33 +1091,21 @@ class ParenthesizedSeasonRangeAsEpisode(Rule):
     "[S01-07]" or a parenthesized range with nothing in front of it is a genuine season range.
     """
 
-    priority = 132
-    consequence = [RemoveMatch, RenameMatch("episode")]
+    def candidates(self, matches: Matches) -> Any:
+        return matches.named("seasonSeparator", lambda m: "SxxExx" in m.tags)
 
-    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
-        to_remove: list[Match] = []
-        to_rename: list[Match] = []
-        for separator in matches.named("seasonSeparator", lambda m: "SxxExx" in m.tags):
-            initiator = separator.initiator
-            if len(initiator.children.named("season")) != 2:
-                continue
-            group = matches.markers.at_match(initiator, lambda m: m.name == "group", 0)
-            # EnlargeGroupMatches (processors.py) has already grown the chain match to the
-            # group's own span by this priority, so the bracket-wrapped case reads as equal
-            # spans rather than the raw off-by-one.
-            if not group or group.start != initiator.start or group.end != initiator.end:
-                continue
-            if (group.raw or "")[:1] != "(" or (group.raw or "")[-1:] != ")":
-                continue
-            absolute_number = matches.previous(group, lambda m: not m.private and "weak-episode" in m.tags, 0)
-            if not absolute_number or (matches.input_string or "")[absolute_number.end : group.start].strip():
-                continue
-            next_season = matches.next(separator, lambda m: m.name == "season", 0)
-            if not next_season:
-                continue
-            to_remove.append(separator)
-            to_rename.append(next_season)
-        return to_remove, to_rename
+    def applies(self, matches: Matches, separator: Match, next_season: Match) -> bool:
+        initiator = separator.initiator
+        group = matches.markers.at_match(initiator, lambda m: m.name == "group", 0)
+        # EnlargeGroupMatches (processors.py) has already grown the chain match to the
+        # group's own span by this priority, so the bracket-wrapped case reads as equal
+        # spans rather than the raw off-by-one.
+        if not group or group.start != initiator.start or group.end != initiator.end:
+            return False
+        if (group.raw or "")[:1] != "(" or (group.raw or "")[-1:] != ")":
+            return False
+        absolute_number = matches.previous(group, lambda m: not m.private and "weak-episode" in m.tags, 0)
+        return bool(absolute_number and not (matches.input_string or "")[absolute_number.end : group.start].strip())
 
 
 class RemoveWeakIfMovie(Rule):
@@ -1339,10 +1351,12 @@ class RemoveDetachedEpisodeNumber(Rule):
     Fairy Tail 2 - 16-20: "2" is detached from the 16-20 range and less than 10, so it's
     removed -- it's a part/season digit glued to the title, not an episode.
 
-    When there is no range (exactly two isolated numbers), the larger one is removed instead:
-    it's either a number embedded in the title (Mob Psycho 100 - 09, #875) or a duplicated
-    absolute episode count in parentheses (Fairy Tail 2 - 52 (227), #875), never the real
-    episode, whichever position it occupies in the release name.
+    When there is no range (exactly two isolated numbers) and the release is anime, the larger
+    one is removed instead: it's either a number embedded in the title (Mob Psycho 100 - 09,
+    #875) or a duplicated absolute episode count in parentheses (Fairy Tail 2 - 52 (227), #875),
+    never the real episode, whichever position it occupies in the release name. This is gated on
+    anime specifically: two isolated non-consecutive numbers are a legitimate two-episode list
+    outside of that convention (a bare "Show 12 - 24" keeps both, #920).
     """
 
     priority = 64
@@ -1363,7 +1377,7 @@ class RemoveDetachedEpisodeNumber(Rule):
 
         outlier: Match | None = None
         if len(episode_numbers) == 2:
-            if episode_numbers[1].value - episode_numbers[0].value != 1:
+            if episode_numbers[1].value - episode_numbers[0].value != 1 and WeakConflictSolver.is_anime(matches):
                 outlier = episode_numbers[1]
         elif (
             len(episode_numbers) > 2

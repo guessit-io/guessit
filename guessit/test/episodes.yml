@@ -1721,6 +1721,22 @@
   release_group: Generalfilm
   type: episode
 
+# A bare two-episode list stays a list outside of anime -- only anime-signalled releases
+# reinterpret a dash-separated pair as season/episode or drop the outlier number (#920)
+? Show 12 - 24
+: title: Show
+  episode: [12, 24]
+
+# A spaced western box-set range ("Season 1 - 5") must stay a season list: the "N - EE"
+# reinterpretation is restricted to anime-signalled releases, since this convention clashes
+# with the anime "Season N - EE" = season N episode EE reading (#920)
+? The Wire Season 1 - 5 1080p BluRay
+: title: The Wire
+  season: [1, 2, 3, 4, 5]
+  screen_size: 1080p
+  source: Blu-ray
+  type: episode
+
 ? "Looney Tunes 1940x01 Porky's Last Stand.mkv"
 : episode: 1
   season: 1940
