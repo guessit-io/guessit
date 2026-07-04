@@ -22,6 +22,10 @@ jobs:
 
       - run: uv run --only-group docs zensical build --strict
 
+      # GitHub Pages would otherwise run Jekyll on the static site; disable it.
+
+      - run: touch site/.nojekyll
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
