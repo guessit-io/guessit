@@ -3,7 +3,7 @@
 
 The structural base — every property's type and cardinality (``array``/``scalar``)
 — is a configuration invariant, generated offline from the corpus and frozen in
-:data:`guessit.schema.GUESSIT_SCHEMA`. Only the closed-vocabulary ``enum`` lists
+:data:`guessit.schema_generated.GUESSIT_SCHEMA`. Only the closed-vocabulary ``enum`` lists
 depend on the effective configuration (a custom ``advanced_config`` can add e.g.
 a ``streaming_service`` or an ``edition``), so a configuration-aware schema is the
 frozen base with its enums overlaid from ``properties(options)``.

@@ -14,7 +14,8 @@ import pytest
 import yaml
 
 from guessit import api
-from guessit.schema import GUESSIT_SCHEMA
+from guessit.schema_builder import overlay_config_enums
+from guessit.schema_generated import GUESSIT_SCHEMA
 from guessit.yamlutils import OrderedDictYAMLLoader
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -162,8 +163,21 @@ def test_schema_accessor_is_configuration_aware() -> None:
     assert "MyOwnTV" not in GUESSIT_SCHEMA["streaming_service"]["enum"]  # the constant stays untouched
 
 
+def test_overlay_adds_property_absent_from_the_base() -> None:
+    """A property surfaced by a custom rules_builder (absent from the frozen base) is added
+    with an inferred type; free-form values yield no enum."""
+    base = {"title": {"type": ["string"], "array": False, "scalar": True}}
+    properties = {"title": [None], "custom_index": [1, 2, 3], "custom_free": [None]}
+
+    result = overlay_config_enums(base, properties)
+
+    assert result["custom_index"] == {"type": ["number"], "array": False, "scalar": True, "enum": [1, 2, 3]}
+    assert result["custom_free"] == {"type": ["string"], "array": False, "scalar": True}
+    assert list(result) == sorted(result)  # keys stay alphabetically ordered
+
+
 def test_schema_py_is_not_stale() -> None:
-    """guessit/schema.py must match what scripts/gen_schema.py produces."""
+    """guessit/schema_generated.py must match what scripts/gen_schema.py produces."""
     assert _built_schema() == GUESSIT_SCHEMA
 
 

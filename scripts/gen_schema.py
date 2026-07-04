@@ -7,7 +7,7 @@ Source of truth (self-contained — no guessit-js needed):
   - guessit/test/**/*.yml inputs  → runtime type + cardinality (array/scalar)
 
 Outputs (committed):
-  - guessit/schema.py             → GUESSIT_SCHEMA (typed dict) + PropertySchema
+  - guessit/schema_generated.py   → GUESSIT_SCHEMA (typed dict) + PropertySchema
   - guessit/data/output-schema.json → JSON Schema (draft-07) of the output
 
 Run:  uv run python scripts/gen_schema.py
@@ -32,7 +32,7 @@ from guessit.yamlutils import OrderedDictYAMLLoader
 
 ROOT = Path(__file__).resolve().parent.parent
 TEST_DIR = ROOT / "guessit" / "test"
-SCHEMA_PY = ROOT / "guessit" / "schema.py"
+SCHEMA_PY = ROOT / "guessit" / "schema_generated.py"
 OUTPUT_SCHEMA_JSON = ROOT / "guessit" / "data" / "output-schema.json"
 
 # Closed-vocabulary properties: these expose an `enum`. Everything else is free
@@ -155,7 +155,7 @@ def build_schema() -> dict[str, dict[str, Any]]:
 
 
 def render_schema_py(schema: dict[str, dict[str, Any]]) -> str:
-    """Render guessit/schema.py (Python literal; `ruff format` prettifies it)."""
+    """Render guessit/schema_generated.py (Python literal; `ruff format` prettifies it)."""
     body = repr(schema)
     return (
         "#!/usr/bin/env python\n"

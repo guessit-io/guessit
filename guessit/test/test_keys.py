@@ -8,7 +8,7 @@ from rebulk import Key
 
 from ..api import default_api, guessit
 from ..rules.common import keys as keys_module
-from ..schema import GUESSIT_SCHEMA
+from ..schema_generated import GUESSIT_SCHEMA
 
 #: Registry key names that are internal match names, renamed/aggregated before
 #: output and therefore absent from GUESSIT_SCHEMA. ``count`` becomes

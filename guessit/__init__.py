@@ -31,7 +31,7 @@ def __getattr__(name: str) -> Any:
         # Deprecated: kept for backward compatibility, scheduled for removal in a future
         # major release. It is the default-configuration snapshot; use schema() to obtain a
         # configuration-aware schema (schema() with no options returns the same mapping).
-        from .schema import GUESSIT_SCHEMA as _guessit_schema
+        from .schema_generated import GUESSIT_SCHEMA as _guessit_schema
 
         warnings.warn(
             "guessit.GUESSIT_SCHEMA is deprecated and will be removed in a future major release; "

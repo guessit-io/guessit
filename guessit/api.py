@@ -17,8 +17,8 @@ from rebulk.introspector import introspect
 from .__version__ import __version__
 from .options import load_config, merge_options, parse_options
 from .rules import rebulk_builder
-from .schema import GUESSIT_SCHEMA
 from .schema_builder import build_json_schema, overlay_config_enums
+from .schema_generated import GUESSIT_SCHEMA
 
 if TYPE_CHECKING:
     from collections.abc import Callable
