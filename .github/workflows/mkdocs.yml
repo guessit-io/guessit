@@ -26,6 +26,8 @@ jobs:
           branch: gh-pages
           folder: site
           clean: true
-          # Preserve the develop preview published under dev/ by the mkdocs-develop workflow.
+          # Preserve the develop preview (dev/) and the docs/* MR previews (preview/)
+          # published by the mkdocs-develop and mkdocs-preview workflows.
           clean-exclude: |
             dev
+            preview
