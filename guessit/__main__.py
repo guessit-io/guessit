@@ -97,6 +97,23 @@ def display_properties(options: dict[str, Any]) -> None:
                     print(4 * " " + f"[!] {property_value}")
 
 
+def display_schema(options: dict[str, Any]) -> None:
+    """
+    Display the property schema or its JSON Schema for the effective configuration.
+    """
+    data = api.json_schema(options) if options.get("json_schema") else api.schema(options)
+
+    if options.get("yaml"):
+        import yaml
+
+        from guessit import yamlutils
+
+        print(yaml.dump(data, Dumper=yamlutils.CustomDumper, default_flow_style=False, allow_unicode=True))
+    else:
+        indent = None if options.get("json") else 2
+        print(json.dumps(data, cls=GuessitEncoder, indent=indent, ensure_ascii=False))
+
+
 def main(args: list[str] | None = None) -> None:
     """
     Main function for entry point
@@ -132,6 +149,10 @@ def main(args: list[str] | None = None) -> None:
 
     if options.get("properties") or options.get("values"):
         display_properties(options)
+        help_required = False
+
+    if options.get("schema") or options.get("json_schema"):
+        display_schema(options)
         help_required = False
 
     filenames: list[str] = []

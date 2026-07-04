@@ -123,6 +123,34 @@ def test_output_schema_json_is_draft07_describing_all_properties() -> None:
         assert name in output_schema["properties"], f"JSON schema missing {name}"
 
 
+def test_schema_accessor_without_options_matches_frozen_schema() -> None:
+    result = api.schema()
+    assert result == GUESSIT_SCHEMA
+    assert result is not GUESSIT_SCHEMA  # a copy, never the shared constant
+
+
+def test_json_schema_accessor_without_options_matches_committed_file() -> None:
+    with open(OUTPUT_SCHEMA_JSON, encoding="utf-8") as stream:
+        committed = json.load(stream)
+    assert api.json_schema() == committed
+
+
+def test_schema_accessor_is_configuration_aware() -> None:
+    """A custom advanced_config vocabulary is overlaid onto the enums, defaults kept."""
+    options = {"advanced_config": {"streaming_service": {"MyOwnTV": "myowntv"}}}
+
+    enum = api.schema(options)["streaming_service"]["enum"]
+    assert "MyOwnTV" in enum
+    assert "Netflix" in enum  # a default value is never dropped
+
+    json_enum = api.json_schema(options)["properties"]["streaming_service"]["enum"]
+    assert "MyOwnTV" in json_enum
+
+    # Type and cardinality are configuration invariants.
+    assert api.schema(options)["streaming_service"]["array"] == GUESSIT_SCHEMA["streaming_service"]["array"]
+    assert "MyOwnTV" not in GUESSIT_SCHEMA["streaming_service"]["enum"]  # the constant stays untouched
+
+
 def test_schema_py_is_not_stale() -> None:
     """guessit/schema.py must match what scripts/gen_schema.py produces."""
     assert _built_schema() == GUESSIT_SCHEMA

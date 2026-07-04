@@ -18,6 +18,9 @@ Useful flags:
 - `--input-file <path>` / `-f` — read filenames from a UTF-8 text file.
 - `--properties` / `-p`, `--values` / `-V` — list what GuessIt can detect (see
   [Discovering properties and values](#discovering-properties-and-values)).
+- `--schema`, `--json-schema` — print the property schema, or its
+  [JSON Schema](https://json-schema.org/) (draft-07), for the effective
+  configuration. Both honour `--json` / `--yaml` and reflect `--config`.
 
 Run `guessit --help` for the complete list.
 
@@ -72,14 +75,18 @@ api.guessit('The 100 S01E01', options)  # reuses the cached configuration
 
 Several mechanisms expose what GuessIt can emit:
 
-- `properties()` — a dict mapping every property to the list of values it can
-  produce (empty list for free-form values).
-- `guessit.GUESSIT_SCHEMA` — a mapping of each property to its type, cardinality
+- `properties(options=None)` — a dict mapping every property to the list of
+  values it can produce (empty list for free-form values).
+- `schema(options=None)` — a mapping of each property to its type, cardinality
   and (for closed vocabularies) allowed values.
-- `guessit/data/output-schema.json` — the same information as a
+- `json_schema(options=None)` — the same information as a
   [JSON Schema](https://json-schema.org/) (draft-07).
-- On the command line, `guessit -p` lists the properties and `guessit -V` lists
-  their possible values.
+- `guessit.GUESSIT_SCHEMA` — the frozen schema for the default configuration
+  (what `schema()` returns with no options); `guessit/data/output-schema.json`
+  is its JSON Schema counterpart.
+- On the command line, `guessit -p` lists the properties, `guessit -V` lists
+  their possible values, and `guessit --schema` / `guessit --json-schema` print
+  the two schema forms.
 
 For example:
 
@@ -90,9 +97,22 @@ True
 
 ```
 
-`GUESSIT_SCHEMA`, `properties()` and `suggested_expected()` are all exported
-from the top-level `guessit` package (and are also available as methods on
-`GuessItApi`).
+`schema()` and `json_schema()` are **configuration-aware**: a property's type and
+cardinality are configuration invariants (taken from the frozen `GUESSIT_SCHEMA`),
+but the closed-vocabulary enums reflect the configuration you pass, so a custom
+`advanced_config` value shows up in the returned schema:
+
+```python
+>>> from guessit import schema
+>>> options = {'advanced_config': {'streaming_service': {'MyOwnTV': 'myowntv'}}}
+>>> 'MyOwnTV' in schema(options)['streaming_service']['enum']
+True
+
+```
+
+`GUESSIT_SCHEMA`, `properties()`, `schema()`, `json_schema()` and
+`suggested_expected()` are all exported from the top-level `guessit` package (and
+are also available as methods on `GuessItApi`).
 
 ### `suggested_expected(titles)`
 
