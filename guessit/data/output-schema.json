@@ -1098,7 +1098,17 @@
       "type": "string"
     },
     "year": {
-      "type": "number"
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      ]
     }
   },
   "additionalProperties": true
