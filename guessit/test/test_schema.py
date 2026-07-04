@@ -10,9 +10,11 @@ import re
 from pathlib import Path
 from typing import Any
 
+import pytest
 import yaml
 
-from guessit import GUESSIT_SCHEMA, api
+from guessit import api
+from guessit.schema import GUESSIT_SCHEMA
 from guessit.yamlutils import OrderedDictYAMLLoader
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -121,6 +123,15 @@ def test_output_schema_json_is_draft07_describing_all_properties() -> None:
     assert "draft-07" in output_schema["$schema"]
     for name in GUESSIT_SCHEMA:
         assert name in output_schema["properties"], f"JSON schema missing {name}"
+
+
+def test_guessit_schema_constant_is_deprecated() -> None:
+    """The public ``guessit.GUESSIT_SCHEMA`` still works but warns; ``schema()`` replaces it."""
+    import guessit
+
+    with pytest.warns(DeprecationWarning, match="GUESSIT_SCHEMA"):
+        deprecated = guessit.GUESSIT_SCHEMA
+    assert deprecated == GUESSIT_SCHEMA
 
 
 def test_schema_accessor_without_options_matches_frozen_schema() -> None:

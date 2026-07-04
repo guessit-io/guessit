@@ -81,9 +81,10 @@ Several mechanisms expose what GuessIt can emit:
   and (for closed vocabularies) allowed values.
 - `json_schema(options=None)` — the same information as a
   [JSON Schema](https://json-schema.org/) (draft-07).
-- `guessit.GUESSIT_SCHEMA` — the frozen schema for the default configuration
-  (what `schema()` returns with no options); `guessit/data/output-schema.json`
-  is its JSON Schema counterpart.
+- `guessit.GUESSIT_SCHEMA` — **deprecated** (removed in a future major release;
+  use `schema()`): the frozen schema for the default configuration, i.e. what
+  `schema()` returns with no options. `guessit/data/output-schema.json` is its
+  JSON Schema counterpart.
 - On the command line, `guessit -p` lists the properties, `guessit -V` lists
   their possible values, and `guessit --schema` / `guessit --json-schema` print
   the two schema forms.
@@ -110,9 +111,10 @@ True
 
 ```
 
-`GUESSIT_SCHEMA`, `properties()`, `schema()`, `json_schema()` and
-`suggested_expected()` are all exported from the top-level `guessit` package (and
-are also available as methods on `GuessItApi`).
+`properties()`, `schema()`, `json_schema()` and `suggested_expected()` are all
+exported from the top-level `guessit` package and are also available as methods on
+`GuessItApi`. The `GUESSIT_SCHEMA` constant remains exported for backward
+compatibility but is deprecated in favour of `schema()`.
 
 ### `suggested_expected(titles)`
 
