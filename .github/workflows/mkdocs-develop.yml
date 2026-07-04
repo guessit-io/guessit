@@ -3,9 +3,12 @@ on:
   push:
     branches:
       - develop
+# Per-target group: coalesce rapid develop pushes to the latest build, without
+# cancelling the main/preview deploys. Concurrent pushes to disjoint gh-pages
+# folders are handled by the deploy action's fetch+rebase+retry.
 concurrency:
-  group: gh-pages-deploy
-  cancel-in-progress: false
+  group: gh-pages-develop
+  cancel-in-progress: true
 jobs:
   deploy:
     runs-on: ubuntu-latest

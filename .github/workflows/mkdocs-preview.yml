@@ -2,9 +2,13 @@ name: mkdocs-preview
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
+# Per-PR group: a new push (or the close/cleanup) supersedes an in-flight build
+# for the same PR, without touching other PRs' or the main/develop deploys.
+# Concurrent pushes to disjoint gh-pages folders are handled by the deploy
+# action's fetch+rebase+retry.
 concurrency:
-  group: gh-pages-deploy
-  cancel-in-progress: false
+  group: gh-pages-preview-${{ github.head_ref }}
+  cancel-in-progress: true
 permissions:
   contents: write
 jobs:

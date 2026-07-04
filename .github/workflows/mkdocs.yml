@@ -3,8 +3,11 @@ on:
   push:
     branches:
       - main
+# Per-target group: a release deploy is never cancelled by the develop/preview
+# workflows. Concurrent pushes to disjoint gh-pages folders are handled by the
+# deploy action's fetch+rebase+retry.
 concurrency:
-  group: gh-pages-deploy
+  group: gh-pages-main
   cancel-in-progress: false
 jobs:
   deploy:
