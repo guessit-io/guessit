@@ -1602,6 +1602,125 @@
   screen_size: 720p
   title: Fairy Tail 2
 
+# A title-internal number must not be merged into the episode list (#875)
+? Mob Psycho 100 - 09 [1080p].mkv
+: title: Mob Psycho 100
+  episode: 9
+  screen_size: 1080p
+  container: mkv
+  type: episode
+
+? '[Golumpa] Star Blazers 2202 - 22 (a.k.a. Yamato 2022) whatever'
+: release_group: Golumpa
+  title: Star Blazers 2202
+  episode: 22
+  year: 2022
+  season: 2022
+  episode_title: whatever
+  type: episode
+
+? '[SubsPlease] Fairy Tail - 100 Years Quest - 05 (1080p)'
+: release_group: SubsPlease
+  title: Fairy Tail
+  alternative_title: 100 Years Quest
+  episode: 5
+  screen_size: 1080p
+  type: episode
+
+# An absolute episode number in parentheses must not double-count the episode (#875)
+? '[Hatsuyuki-Kaitou]_Fairy_Tail_2_-_52_(227)_test'
+: release_group: Hatsuyuki-Kaitou
+  title: Fairy Tail 2
+  episode: 52
+  episode_title: test
+  type: episode
+
+? '[Hatsuyuki] Dragon Ball Kai (2014) - 002 (100) test'
+: release_group: Hatsuyuki
+  title: Dragon Ball Kai
+  year: 2014
+  season: 2014
+  episode: 2
+  episode_title: test
+  type: episode
+
+? '[Deep] Tegami Bachi (REVERSE) - Letter Bee - 29 (04) test'
+: release_group: Deep
+  title: Tegami Bachi
+  episode_title: Letter Bee - 29
+  episode: 4
+  type: episode
+
+# "Season N - EE" is season N, episode EE, not a season range N..EE (#875)
+? '[SCY] Attack on Titan Season 3 - 11 (BD 1080p Hi10 FLAC) [1FA13150].mkv'
+: release_group: SCY
+  title: Attack on Titan
+  season: 3
+  episode: 11
+  source: Blu-ray
+  screen_size: 1080p
+  video_profile: High 10
+  color_depth: 10-bit
+  audio_codec: FLAC
+  crc32: 1FA13150
+  container: mkv
+  type: episode
+
+? '[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv'
+: release_group: Erai-raws
+  title: Granblue Fantasy The Animation
+  season: 2
+  episode: 8
+  screen_size: 1080p
+  subtitle_language: mul
+  container: mkv
+  type: episode
+
+? '[HR] Boku no Hero Academia 87 (S4-24) [1080p HEVC Multi-Subs] HR-GZ'
+: other: High Resolution
+  title: Boku no Hero Academia 87
+  season: 4
+  episode: 24
+  screen_size: 1080p
+  video_codec: H.265
+  video_profile: High Efficiency Video Coding
+  subtitle_language: mul
+  release_group: GZ
+  type: episode
+
+# A leading [0x539]-style group tag is a release group id, not season/episode (#875)
+? '[0x539] Somali and the Forest Spirit - S01E01 (WEB 1080p test)'
+: release_group: "0x539"
+  title: Somali and the Forest Spirit
+  season: 1
+  episode: 1
+  source: Web
+  screen_size: 1080p
+  type: episode
+
+# A "Season N - EE"-shaped range stays a genuine season list when a pack marker
+# ("Complete") follows -- it must not be reinterpreted as season N episode EE (#875)
+? Coupling Season 1 - 4 Complete DVDRip - x264 - MKV by RiddlerA
+: title: Coupling
+  season: [1, 2, 3, 4]
+  other: [Complete, Rip]
+  source: DVD
+  video_codec: H.264
+  container: mkv
+  release_group: RiddlerA
+  type: episode
+
+# A bracketed "[S01-07]" season range must not be reinterpreted as season+episode:
+# only a parenthesized range right after a bare absolute episode number is (#875)
+? Once Upon a Time [S01-07] (2011-2017) WEB-DLRip by Generalfilm
+: title: Once Upon a Time
+  season: [1, 2, 3, 4, 5, 6, 7]
+  year: [2011, 2017]
+  source: Web
+  other: Rip
+  release_group: Generalfilm
+  type: episode
+
 ? "Looney Tunes 1940x01 Porky's Last Stand.mkv"
 : episode: 1
   season: 1940
