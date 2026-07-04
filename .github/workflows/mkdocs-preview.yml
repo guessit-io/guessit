@@ -33,7 +33,7 @@ jobs:
           python-version: "3.13"
           enable-cache: true
 
-      - run: uvx --with mkdocs-material mkdocs build
+      - run: uv run --only-group docs zensical build --strict
 
       - name: Deploy MR preview 🚀
         uses: JamesIves/github-pages-deploy-action@v4

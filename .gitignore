@@ -27,4 +27,6 @@ lastfailed
 
 # docs
 docs/_build/
+site/
+.cache/
 
