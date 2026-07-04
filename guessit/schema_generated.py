@@ -567,5 +567,5 @@ GUESSIT_SCHEMA: dict[str, PropertySchema] = {
     "website": {"type": ["string"], "array": False, "scalar": True},
     "week": {"type": ["number"], "array": False, "scalar": True},
     "width": {"type": ["string"], "array": False, "scalar": True},
-    "year": {"type": ["number"], "array": False, "scalar": True},
+    "year": {"type": ["number"], "array": True, "scalar": True},
 }
