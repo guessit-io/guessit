@@ -70,18 +70,19 @@ api.guessit('The 100 S01E01', options)  # reuses the cached configuration
 Several mechanisms expose what GuessIt can emit:
 
 - `properties()` — a dict mapping every property to the list of values it can
-  produce (empty list for free-form values):
-
-      >>> from guessit import properties
-      >>> 'Blu-ray' in properties()['source']
-      True
-
+  produce (empty list for free-form values).
 - `guessit.GUESSIT_SCHEMA` — a mapping of each property to its type, cardinality
   and (for closed vocabularies) allowed values.
 - `guessit/data/output-schema.json` — the same information as a
   [JSON Schema](https://json-schema.org/) (draft-07).
 - On the command line, `guessit -p` lists the properties and `guessit -V` lists
   their possible values.
+
+For example:
+
+    >>> from guessit import properties
+    >>> 'Blu-ray' in properties()['source']
+    True
 
 `GUESSIT_SCHEMA`, `properties()` and `suggested_expected()` are all exported
 from the top-level `guessit` package (and are also available as methods on
