@@ -229,6 +229,21 @@ def build_argument_parser() -> ArgumentParser:
         help="Display property values that can be guessed.",
     )
     information_opts.add_argument(
+        "--schema",
+        dest="schema",
+        action="store_true",
+        default=None,
+        help="Display the property schema (type, cardinality and allowed values per property) "
+        "for the effective configuration.",
+    )
+    information_opts.add_argument(
+        "--json-schema",
+        dest="json_schema",
+        action="store_true",
+        default=None,
+        help="Display the draft-07 JSON Schema of the output for the effective configuration.",
+    )
+    information_opts.add_argument(
         "--version", dest="version", action="store_true", default=None, help="Display the guessit version."
     )
 
