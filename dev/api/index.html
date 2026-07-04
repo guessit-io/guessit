@@ -842,11 +842,10 @@ a CLI-style string).</p>
 <h3 id="guessitstring-optionsnone"><code>guessit(string, options=None)</code><a class="headerlink" href="#guessitstring-optionsnone" title="Permanent link">&para;</a></h3>
 <p>Parse a filename or release name and return a <code>MatchesDict</code> — an ordered dict of
 the detected properties:</p>
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">guessit</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">guessit</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi&#39;</span><span class="p">)</span>
-<span class="n">MatchesDict</span><span class="p">([(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Treme&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;season&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;episode&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;episode_title&#39;</span><span class="p">,</span> <span class="s1">&#39;Right Place, Wrong Time&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;HDTV&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;video_codec&#39;</span><span class="p">,</span> <span class="s1">&#39;Xvid&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;release_group&#39;</span><span class="p">,</span> <span class="s1">&#39;NoTV&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;container&#39;</span><span class="p">,</span> <span class="s1">&#39;avi&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;mimetype&#39;</span><span class="p">,</span> <span class="s1">&#39;video/x-msvideo&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;episode&#39;</span><span class="p">)])</span>
+<span class="n">MatchesDict</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Treme&#39;</span><span class="p">,</span> <span class="s1">&#39;season&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;episode&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;episode_title&#39;</span><span class="p">:</span> <span class="s1">&#39;Right Place, Wrong Time&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;HDTV&#39;</span><span class="p">,</span> <span class="s1">&#39;video_codec&#39;</span><span class="p">:</span> <span class="s1">&#39;Xvid&#39;</span><span class="p">,</span> <span class="s1">&#39;release_group&#39;</span><span class="p">:</span> <span class="s1">&#39;NoTV&#39;</span><span class="p">,</span> <span class="s1">&#39;container&#39;</span><span class="p">:</span> <span class="s1">&#39;avi&#39;</span><span class="p">,</span> <span class="s1">&#39;mimetype&#39;</span><span class="p">:</span> <span class="s1">&#39;video/x-msvideo&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;episode&#39;</span><span class="p">})</span>
 </code></pre></div>
-
 <p>A property whose value is a list keeps every match; <code>enforce_list</code> (below) forces
 every property to a list for uniform handling.</p>
 <h3 id="passing-options">Passing options<a class="headerlink" href="#passing-options" title="Permanent link">&para;</a></h3>
@@ -883,11 +882,10 @@ options are unchanged.</p>
   their possible values.</li>
 </ul>
 <p>For example:</p>
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">properties</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">properties</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;Blu-ray&#39;</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">()[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span>
 <span class="kc">True</span>
 </code></pre></div>
-
 <p><code>GUESSIT_SCHEMA</code>, <code>properties()</code> and <code>suggested_expected()</code> are all exported
 from the top-level <code>guessit</code> package (and are also available as methods on
 <code>GuessItApi</code>).</p>
@@ -895,11 +893,10 @@ from the top-level <code>guessit</code> package (and are also available as metho
 <p>Given an iterable of known titles, return the subset that GuessIt would
 mis-parse into extra properties — good candidates to feed back as
 <code>expected_title</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">suggested_expected</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">suggested_expected</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">suggested_expected</span><span class="p">([</span><span class="s1">&#39;OSS 117&#39;</span><span class="p">,</span> <span class="s1">&#39;The 100&#39;</span><span class="p">,</span> <span class="s1">&#39;Normal Movie Title&#39;</span><span class="p">])</span>
 <span class="p">[</span><span class="s1">&#39;The 100&#39;</span><span class="p">]</span>
 </code></pre></div>
-
 <p>Here <code>The 100</code> is otherwise read as season 1 / episode 0; declaring it as an
 expected title fixes the guess:</p>
 <div class="highlight"><pre><span></span><code><span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;The 100&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;expected_title&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;The 100&#39;</span><span class="p">]})</span>

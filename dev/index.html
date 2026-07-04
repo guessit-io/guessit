@@ -695,9 +695,8 @@ GuessIt<span class="w"> </span>found:<span class="w"> </span><span class="o">{</
 <p>Install GuessIt with <a href="https://pip.pypa.io/">pip</a>:</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>guessit
 </code></pre></div>
-<p>Or with <a href="https://docs.astral.sh/uv/">uv</a>:</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>guessit<span class="w">          </span><span class="c1"># add it as a project dependency</span>
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>guessit<span class="w">  </span><span class="c1"># or install it into the active environment</span>
+<p>Or add it to your project with <a href="https://docs.astral.sh/uv/">uv</a>:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>guessit
 </code></pre></div>
 <p>You can also run the CLI without installing it, with uvx:</p>
 <div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>guessit<span class="w"> </span><span class="s2">&quot;Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi&quot;</span>
@@ -710,11 +709,10 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
 <p>Run <code>guessit --help</code> for the full list of options. Use <code>guessit -p</code> to list the
 properties GuessIt can detect and <code>guessit -V</code> to list their possible values.</p>
 <p>It can also be used as a python module:</p>
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">guessit</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">guessit</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi&#39;</span><span class="p">)</span>
 <span class="n">MatchesDict</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Treme&#39;</span><span class="p">,</span> <span class="s1">&#39;season&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;episode&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;episode_title&#39;</span><span class="p">:</span> <span class="s1">&#39;Right Place, Wrong Time&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;HDTV&#39;</span><span class="p">,</span> <span class="s1">&#39;video_codec&#39;</span><span class="p">:</span> <span class="s1">&#39;Xvid&#39;</span><span class="p">,</span> <span class="s1">&#39;release_group&#39;</span><span class="p">:</span> <span class="s1">&#39;NoTV&#39;</span><span class="p">,</span> <span class="s1">&#39;container&#39;</span><span class="p">:</span> <span class="s1">&#39;avi&#39;</span><span class="p">,</span> <span class="s1">&#39;mimetype&#39;</span><span class="p">:</span> <span class="s1">&#39;video/x-msvideo&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;episode&#39;</span><span class="p">})</span>
 </code></pre></div>
-
 <p><code>MatchesDict</code> is a dict that keeps matches ordering.</p>
 <p>Command line options can be given as dict or string to the second argument. See
 the <a href="api/">API &amp; options reference</a> for the full API and every option.</p>
