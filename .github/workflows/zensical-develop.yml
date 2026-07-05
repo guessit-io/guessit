@@ -9,6 +9,9 @@ on:
 concurrency:
   group: gh-pages-develop
   cancel-in-progress: true
+permissions:
+  contents: write
+  actions: write
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -35,3 +38,6 @@ jobs:
           # Publish the develop build under /dev/ without touching the stable site at the root.
           target-folder: dev
           clean: true
+
+      - name: Ensure Pages published (retry ×3)
+        uses: ./.github/actions/ensure-pages-published

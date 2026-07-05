@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: true
 permissions:
   contents: write
+  actions: write
 jobs:
   deploy:
     # Same-repo docs/* PRs only: fork PRs get a read-only token and cannot push to gh-pages.
@@ -48,6 +49,9 @@ jobs:
           # Publish under preview/<branch-without-docs>/ without touching the rest of gh-pages.
           target-folder: preview/${{ steps.slug.outputs.name }}
           clean: true
+
+      - name: Ensure Pages published (retry ×3)
+        uses: ./.github/actions/ensure-pages-published
 
   cleanup:
     # When a docs/* PR is merged or closed, remove its preview folder.

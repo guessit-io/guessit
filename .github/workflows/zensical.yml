@@ -9,6 +9,9 @@ on:
 concurrency:
   group: gh-pages-main
   cancel-in-progress: false
+permissions:
+  contents: write
+  actions: write
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -38,3 +41,6 @@ jobs:
           clean-exclude: |
             dev
             preview
+
+      - name: Ensure Pages published (retry ×3)
+        uses: ./.github/actions/ensure-pages-published
