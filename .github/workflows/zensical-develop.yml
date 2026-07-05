@@ -1,4 +1,4 @@
-name: mkdocs-develop
+name: zensical-develop
 on:
   push:
     branches:
@@ -21,6 +21,10 @@ jobs:
           enable-cache: true
 
       - run: uv run --only-group docs zensical build --strict
+
+      # GitHub Pages would otherwise run Jekyll on the static site; disable it.
+
+      - run: touch site/.nojekyll
 
       - name: Deploy develop preview 🚀
         uses: JamesIves/github-pages-deploy-action@v4
