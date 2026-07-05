@@ -38,6 +38,11 @@
       
       <link rel="stylesheet" href="../assets/stylesheets/modern/main.19d3147f.min.css">
       
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
       
 
 
@@ -64,7 +69,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -116,6 +128,32 @@
       </div>
     </div>
     
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
@@ -142,7 +180,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    guessit-io/guessit
   </div>
 </a>
       
@@ -188,7 +226,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    guessit-io/guessit
   </div>
 </a>
     </div>
@@ -477,10 +515,31 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
   
+    <a href="https://github.com/guessit-io/guessit/edit/develop/docs/configuration.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/guessit-io/guessit/raw/develop/docs/configuration.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code-2" viewBox="0 0 24 24"><path d="M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35"/><path d="M14 2v5a1 1 0 0 0 1 1h5M5 16l-3 3 3 3M9 22l3-3-3-3"/></svg>
+    </a>
   
 
 
@@ -518,17 +577,17 @@ programmatically to <code>guessit()</code> are merged last, on top of the files.
 <p>Because lists are concatenated, you cannot override a list option (such as
 <code>allowed_countries</code> or <code>allowed_languages</code>) simply by providing a new list:
 your values are added to the defaults instead of replacing them.</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">guessit</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;SS-GB.S01E01.1080p.x265-MeGusta.mkv&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;allowed_countries&#39;</span><span class="p">:</span> <span class="p">[]})[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span>
-<span class="o">&lt;</span><span class="n">Country</span> <span class="p">[</span><span class="n">GB</span><span class="p">]</span><span class="o">&gt;</span>
-</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">guessit</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;SS-GB.S01E01.1080p.x265-MeGusta.mkv&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;allowed_countries&#39;</span><span class="p">:</span> <span class="p">[]})[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&lt;</span><span class="n">Country</span> <span class="p">[</span><span class="n">GB</span><span class="p">]</span><span class="o">&gt;</span>
+</span></code></pre></div>
 <p>To drop the inherited value before merging, use the <code>pristine</code> option. Set it
 to <code>True</code> to reset the whole configuration, or to a list of option names to
 reset only those:</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;SS-GB.S01E01.1080p.x265-MeGusta.mkv&#39;</span><span class="p">,</span>
-<span class="o">...</span>         <span class="p">{</span><span class="s1">&#39;pristine&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;allowed_countries&#39;</span><span class="p">],</span> <span class="s1">&#39;allowed_countries&#39;</span><span class="p">:</span> <span class="p">[]})[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
-<span class="s1">&#39;SS-GB&#39;</span>
-</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;SS-GB.S01E01.1080p.x265-MeGusta.mkv&#39;</span><span class="p">,</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">...</span>         <span class="p">{</span><span class="s1">&#39;pristine&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;allowed_countries&#39;</span><span class="p">],</span> <span class="s1">&#39;allowed_countries&#39;</span><span class="p">:</span> <span class="p">[]})[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="s1">&#39;SS-GB&#39;</span>
+</span></code></pre></div>
 <p><code>pristine</code> is applied per source, resetting the matching options accumulated
 from the previous sources before the current one is merged in. It is available
 in configuration files and in the programmatic options, but not as a
@@ -566,16 +625,16 @@ most likely to tweak are:</p>
 as the rest of the configuration: nested dicts are deep-merged, and lists are
 concatenated.</p>
 <p>Adding to a mapping (deep-merge) — register a streaming service:</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">guessit</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;advanced_config&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;streaming_service&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;MyTV&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mytv&#39;</span><span class="p">]}}}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;Show.S01E01.MYTV.WEB-DL.mkv&#39;</span><span class="p">,</span> <span class="n">options</span><span class="p">)[</span><span class="s1">&#39;streaming_service&#39;</span><span class="p">]</span>
-<span class="s1">&#39;MyTV&#39;</span>
-</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">guessit</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;advanced_config&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;streaming_service&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;MyTV&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mytv&#39;</span><span class="p">]}}}</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;Show.S01E01.MYTV.WEB-DL.mkv&#39;</span><span class="p">,</span> <span class="n">options</span><span class="p">)[</span><span class="s1">&#39;streaming_service&#39;</span><span class="p">]</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s1">&#39;MyTV&#39;</span>
+</span></code></pre></div>
 <p>Adding to a list (concatenation) — stop a token from being read as the release group:</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;advanced_config&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;release_group&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;forbidden_names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mygroup&#39;</span><span class="p">]}}}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;release_group&#39;</span> <span class="ow">in</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;Show.S01E01.x264-mygroup.mkv&#39;</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
-<span class="kc">False</span>
-</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;advanced_config&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;release_group&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;forbidden_names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mygroup&#39;</span><span class="p">]}}}</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;release_group&#39;</span> <span class="ow">in</span> <span class="n">guessit</span><span class="p">(</span><span class="s1">&#39;Show.S01E01.x264-mygroup.mkv&#39;</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kc">False</span>
+</span></code></pre></div>
 <p>To replace a default list instead of appending to it, reset it first with the
 <code>pristine</code> option, exactly as for top-level options.</p>
 
@@ -597,12 +656,60 @@ concatenated.</p>
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
         
       </main>
       
         <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../sources/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sources">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Sources
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../languages/" class="md-footer__link md-footer__link--next" aria-label="Next: Languages">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Languages
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -629,7 +736,7 @@ concatenated.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":[],"search":"../assets/javascripts/workers/search.b6b7e04f.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["announce.dismiss","content.action.edit","content.action.view","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"search":"../assets/javascripts/workers/search.b6b7e04f.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
       <script src="../assets/javascripts/bundle.ee611ef6.min.js"></script>
