@@ -1,7 +1,7 @@
 name: Ensure Pages published
 description: >-
   Wait for GitHub's auto "pages build and deployment" of the current gh-pages
-  HEAD and rerun it (up to 3 attempts) if it fails with a transient error.
+  HEAD and rerun it (with backoff) if it fails with a transient error.
 
 runs:
   using: composite
@@ -10,6 +10,7 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
         REPO: ${{ github.repository }}
+        ATTEMPTS: "5"
       run: |
         set -euo pipefail
 
@@ -25,7 +26,7 @@ runs:
 
         # Block until a run for this SHA reaches "completed"; echo "id conclusion".
         await_completed() {
-          for _ in $(seq 1 90); do
+          for _ in $(seq 1 60); do
             local info id status conclusion
             info="$(find_run)"
             id="$(printf '%s' "$info" | awk '{print $1}')"
@@ -40,8 +41,8 @@ runs:
           return 1
         }
 
-        for attempt in 1 2 3; do
-          echo "::group::Pages publish check (attempt $attempt/3)"
+        for attempt in $(seq 1 "$ATTEMPTS"); do
+          echo "::group::Pages publish check (attempt $attempt/$ATTEMPTS)"
           if ! result="$(await_completed)"; then
             echo "Timed out waiting for the pages-build-deployment run." >&2
             echo "::endgroup::"
@@ -57,8 +58,12 @@ runs:
             exit 0
           fi
 
-          if [ "$attempt" -lt 3 ]; then
-            echo "Transient failure; rerunning run $run_id…"
+          if [ "$attempt" -lt "$ATTEMPTS" ]; then
+            # Progressive backoff: transient failures are usually account-level
+            # Pages throttling under concurrent deploys — give it room to clear.
+            backoff=$((attempt * 30))
+            echo "Transient failure; waiting ${backoff}s before rerunning run $run_id…"
+            sleep "$backoff"
             gh run rerun "$run_id" --repo "$REPO" || true
             # Let the rerun leave the "completed" state before we poll again.
             for _ in $(seq 1 12); do
@@ -69,5 +74,5 @@ runs:
           fi
         done
 
-        echo "Pages deployment still failing after 3 attempts for gh-pages@$target_sha." >&2
+        echo "Pages deployment still failing after $ATTEMPTS attempts for gh-pages@$target_sha." >&2
         exit 1
