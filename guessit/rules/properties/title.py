@@ -508,7 +508,7 @@ class CountryAtTitlePosition(Rule):
 
     It qualifies when the word is followed, before the next year/season/episode/date anchor,
     by only separators ("Us.2019...") or by plain title text ("Au bout c'est la mer - 8x01").
-    Another property in that gap ("Us.1080p.S01E01") means the word is a genuine tag.
+    Another property in that gap ("Au.HDTV.8x01") means the word is a genuine tag.
 
     The casing anchor is load-bearing: "Us" (Title-Case) is the title, but "US" (a real
     country tag) is kept, so "The.Office.(US).1x03" keeps country: US. An ``edition`` or a
@@ -547,7 +547,7 @@ class CountryAtTitlePosition(Rule):
             if not all(ch in seps for ch in input_string[candidate.end : anchor.start]):
                 # Plain title text between the leading word and the anchor means the word
                 # opens that title ("Au bout c'est la mer - 8x01"). Another property in the
-                # gap ("Us.1080p.S01E01") means the word is a real tag, not the title.
+                # gap ("Au.HDTV.8x01") means the word is a real tag, not the title.
                 if matches.range(candidate.end, anchor.start, lambda m: not m.private and m.value, 0):
                     continue
             to_remove.append(candidate)
