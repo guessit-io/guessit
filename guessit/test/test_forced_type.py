@@ -93,3 +93,10 @@ def test_forced_episode_keeps_year_anchored_properties(name: str, expected: dict
     result = guessit(name, {"type": "episode"})
     for prop, value in expected.items():
         assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
+
+
+def test_forced_episode_ignores_an_episode_word_from_another_filepart() -> None:
+    """A parent directory named "Episode" must not vouch for a number in the file below it."""
+    result = guessit("Series/Episode/12.Angry.Men.1957.mkv", {"type": "episode"})
+    assert result.get("title") == "12 Angry Men"
+    assert result.get("year") == 1957

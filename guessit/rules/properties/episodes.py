@@ -44,6 +44,8 @@ _CJK_DIGITS = {
     "九": 9,
 }
 
+_SEPS_RE = re.compile(rf"[{re.escape(seps)}]+")
+
 # ASCII digits or Han numerals up to 99 (十一 -> 11, 二十三 -> 23, single digit otherwise).
 cjk_number = r"(?:\d{1,4}|[一二两三四五六七八九]?十[一二两三四五六七八九]?|[零一二两三四五六七八九])"
 
@@ -982,11 +984,14 @@ class RemoveWeakIfMovie(Rule):
         ):
             return True
 
-        preceding = matches.holes(0, match.start, predicate=lambda h: (h.raw or "").strip(seps))
+        # The word must sit in the same filepart: a parent directory named "Episode" says nothing
+        # about a number in the filename below it.
+        filepart = matches.markers.at_match(match, lambda marker: marker.name == "path", 0)
+        start = filepart.start if filepart else 0
+        preceding = (match.input_string or "")[start : match.start].strip(seps)
         if not preceding:
             return False
-        words = re.split(rf"[{re.escape(seps)}]+", (preceding[-1].raw or "").strip(seps))
-        return bool(words) and words[-1].lower() in self.episode_words
+        return _SEPS_RE.split(preceding)[-1].lower() in self.episode_words
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         to_remove: list[Match] = []
