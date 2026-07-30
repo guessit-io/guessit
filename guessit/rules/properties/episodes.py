@@ -1120,35 +1120,52 @@ class RemoveMisleadingLoneDigitEpisode(Rule):
                 matches.range(filepart.start, filepart.end, predicate=lambda m: m.name == "episode"),
                 key=lambda m: (m.start, m.end),
             )
-            # A lone digit in a parent directory numbers the directory, not the file below it
-            # ("/Volumes/data-1/Series/…"), and one quoted in a bracketed group belongs to that
-            # group's own identifier ("[7.1.7.8.5]", "[t.3.3.d]").
-            is_final_part = index == len(fileparts) - 1
-            for episode in episodes_:
-                if "weak-episode" in episode.tags and len(episode.raw or "") == 1:
-                    quoted = matches.markers.at_match(episode, lambda marker: marker.name == "group", 0)
-                    if not is_final_part or quoted:
-                        to_remove.extend(self._whole_match(matches, episode))
+            in_final_part = index == len(fileparts) - 1
+            misplaced = [
+                episode
+                for episode in episodes_
+                if self._is_lone_digit(episode) and self._numbers_something_else(matches, episode, in_final_part)
+            ]
+            kept = [episode for episode in episodes_ if episode not in misplaced]
+            misplaced.extend(self._detached_from_list(kept))
 
-            anchor = next((match for match in episodes_ if "weak-episode" not in match.tags), None)
-            if anchor is None:
-                continue
-
-            previous = anchor
-            for episode in episodes_:
-                lone_digit = "weak-episode" in episode.tags and len(episode.raw or "") == 1
-                if episode.end <= anchor.start:
-                    if lone_digit:
-                        to_remove.extend(self._whole_match(matches, episode))
-                    continue
-
-                between = (episode.input_string or "")[previous.end : episode.start].strip(seps)
-                if between and lone_digit:
-                    to_remove.extend(self._whole_match(matches, episode))
-                else:
-                    previous = episode
+            for episode in misplaced:
+                to_remove.extend(self._whole_match(matches, episode))
 
         return to_remove
+
+    @staticmethod
+    def _is_lone_digit(episode: Match) -> bool:
+        return "weak-episode" in episode.tags and len(episode.raw or "") == 1
+
+    @staticmethod
+    def _numbers_something_else(matches: Matches, episode: Match, in_final_part: bool) -> bool:
+        """A digit numbering a parent directory ("/Volumes/data-1/…") or a quoted group ("[t.3.3.d]")."""
+        quoted = matches.markers.at_match(episode, lambda marker: marker.name == "group", 0)
+        return not in_final_part or bool(quoted)
+
+    @classmethod
+    def _detached_from_list(cls, episodes_: list[Match]) -> list[Match]:
+        """Lone digits that cannot extend the marked episode list of their filepart."""
+        anchor = next((episode for episode in episodes_ if "weak-episode" not in episode.tags), None)
+        if anchor is None:
+            return []
+
+        detached: list[Match] = []
+        previous = anchor
+        for episode in episodes_:
+            if episode.end <= anchor.start:
+                if cls._is_lone_digit(episode):
+                    detached.append(episode)
+                continue
+
+            between = (episode.input_string or "")[previous.end : episode.start].strip(seps)
+            if between and cls._is_lone_digit(episode):
+                detached.append(episode)
+            else:
+                previous = episode
+
+        return detached
 
     @staticmethod
     def _whole_match(matches: Matches, episode: Match) -> list[Match]:

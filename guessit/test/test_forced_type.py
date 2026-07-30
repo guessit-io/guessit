@@ -20,9 +20,9 @@ from . import test_yml
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-# Names whose forced-type result still differs from the inferred one. Both are a number the
-# forced-episode patterns read differently from the inferred ones, with no structural signal
-# left to tell them apart. Tracked by #943; entries must be removed as they get fixed.
+# Names whose forced-type result still differs from the inferred one: a half-episode number
+# (02.5) and an episode word the numeral pattern leaves dangling. Tracked by #948; entries
+# must be removed as they get fixed.
 KNOWN_DIVERGENCES = frozenset(
     {
         "[GroupName].Show.Name.-.02.5.(Special).[BD.1080p]",
