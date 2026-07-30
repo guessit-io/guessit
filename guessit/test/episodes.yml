@@ -5271,3 +5271,31 @@
   screen_size: 1080p
   video_codec: H.264
   release_group: GRP
+
+# The codec only marks the number as a resolution when both sit in the same tag block: a codec
+# quoted in its own group leaves an absolute episode number alone (#933).
+? '[Group] One Piece - 1080 [1080p][x264].mkv'
+: title: One Piece
+  episode: 1080
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: Group
+
+? '[Group] Show Name - 1080 [x264].mkv'
+: title: Show Name
+  episode: 1080
+  video_codec: H.264
+  -screen_size: 1080p
+
+? Show.Name.101.x264-GRP
+: title: Show Name
+  episode: 101
+  video_codec: H.264
+  release_group: GRP
+  -screen_size: 101x264
+
+? Anime - 03 x264 GRP.mkv
+: title: Anime
+  episode: 3
+  video_codec: H.264
+  -season: 3

@@ -165,13 +165,23 @@ class ResolveScreenSizeConflicts(Rule):
 
     consequence = RemoveMatch
 
+    @staticmethod
+    def _same_group(matches: Matches, first: Match, second: Match) -> bool:
+        """Whether both matches sit in the same bracketed group (or both outside of any)."""
+
+        def group_of(match: Match) -> Match | None:
+            return matches.markers.at_match(match, lambda marker: marker.name == "group", 0)
+
+        return group_of(first) == group_of(second)
+
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
-            screensize = matches.range(filepart.start, filepart.end, lambda match: match.name == "screen_size", 0)
-            if not screensize:
+            screensizes = matches.range(filepart.start, filepart.end, lambda match: match.name == "screen_size")
+            if not screensizes:
                 continue
 
+            screensize = screensizes[0]
             conflicts = matches.conflicting(screensize, lambda match: match.name in ("season", "episode"))
             if not conflicts:
                 continue
@@ -183,8 +193,14 @@ class ResolveScreenSizeConflicts(Rule):
             if following and not matches.holes(
                 screensize.end, following.start, predicate=lambda h: h.value and h.value.strip(seps)
             ):
-                to_remove.extend(conflicts)
-                has_neighbor = True
+                # A video_codec marks the number as a resolution ("1080.x264" -> 1080p) only when both
+                # sit in the same tag block and the part spells no other resolution: a codec quoted in
+                # its own group says nothing about the number ("One Piece - 1080 [x264]") (#933).
+                if following.name == "video_profile" or (
+                    len(screensizes) == 1 and self._same_group(matches, screensize, following)
+                ):
+                    to_remove.extend(conflicts)
+                    has_neighbor = True
 
             previous = matches.previous(
                 screensize, index=0, predicate=(lambda m: m.name in ("date", "source", "other", "streaming_service"))
