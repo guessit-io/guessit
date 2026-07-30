@@ -22,7 +22,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 
 # Names whose forced-type result still differs from the inferred one. Each is a lone digit that
 # only the forced-episode patterns pick up — inside a release group, a path segment or a duplicate
-# marker — and pushes out a property. Tracked by #939; entries must be removed as they get fixed.
+# marker — and pushes out a property. Tracked by #943; entries must be removed as they get fixed.
 KNOWN_DIVERGENCES = frozenset(
     {
         "series/Freaks And Geeks/Season 1/Episode 4 - Kim Kelly Is My Friend-eng(1).srt",
