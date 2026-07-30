@@ -5372,3 +5372,34 @@
   episode: 3
   video_codec: H.264
   -season: 3
+
+# A leading country-code word that opens the title is the title, not a country tag (#928)
+? Au.bout.c'est.la.mer.-.8x01.-.Le.fleuve.Yukon.mp4
+: title: Au bout c'est la mer
+  season: 8
+  episode: 1
+  episode_title: Le fleuve Yukon
+  -country: AU
+
+? Au bout c'est la mer - 8x01 - Le fleuve Yukon.mp4
+: title: Au bout c'est la mer
+  season: 8
+  episode: 1
+  episode_title: Le fleuve Yukon
+  -country: AU
+
+# guard: a property between the leading word and the anchor means the word is a real tag
+? Au.HDTV.8x01.Le.fleuve.mkv
+: country: AU
+  source: HDTV
+  season: 8
+  episode: 1
+  title: Le fleuve
+
+# trade-off of accepting title text before the anchor: a genuine country tag followed by
+# plain title text is now read as the opening word of that title
+? Uk.Top.Gear.S01E01.mkv
+: title: Uk Top Gear
+  season: 1
+  episode: 1
+  -country: GB
