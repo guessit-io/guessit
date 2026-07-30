@@ -317,8 +317,8 @@ class TitleBaseRule(Rule):
 
             if hole and hole.value:
                 hole.name = self.match_name
-                hole.tags = self.match_tags or []
-                if self.alternative_match_name:
+                hole.tags = list(self.match_tags or [])
+                if self.alternative_match_name and not is_disabled(context, self.alternative_match_name):
                     # Split and keep values that can be a title
                     titles = hole.split(title_seps, lambda m: m.value)
                     for title_match in list(titles[1:]):
@@ -451,9 +451,6 @@ class TitleFromPosition(TitleBaseRule):
 
     def __init__(self) -> None:
         super().__init__("title", ["title"], "alternative_title")
-
-    def enabled(self, context: dict[str, Any] | None) -> bool:
-        return not is_disabled(context, "alternative_title")
 
 
 class PreferTitleWithYear(Rule):
