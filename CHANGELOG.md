@@ -2,6 +2,30 @@
 
 <!-- version list -->
 
+## v4.2.0 (2026-07-30)
+
+### Bug Fixes
+
+- **screen_size**: Keep an absolute episode number when the codec is quoted apart
+  ([#934](https://github.com/guessit-io/guessit/pull/934),
+  [`22468c0`](https://github.com/guessit-io/guessit/commit/22468c0d16200334b30bfacc08b4f0feda07de9b))
+
+- **screen_size**: Stop a p-less resolution from swallowing an x264 codec
+  ([#934](https://github.com/guessit-io/guessit/pull/934),
+  [`22468c0`](https://github.com/guessit-io/guessit/commit/22468c0d16200334b30bfacc08b4f0feda07de9b))
+
+### Features
+
+- **api**: Export properties and suggested_expected from the package
+  ([`706768d`](https://github.com/guessit-io/guessit/commit/706768dd8f4523c8238410b872acc180e89f5afd))
+
+- **schema**: Add configuration-aware schema() and json_schema() accessors
+  ([`3607ec2`](https://github.com/guessit-io/guessit/commit/3607ec20c92a23d3c703d100383f9f413c752c03))
+
+- **schema**: Deprecate the GUESSIT_SCHEMA constant in favour of schema()
+  ([`9d0a7b0`](https://github.com/guessit-io/guessit/commit/9d0a7b06bd7cfde1a76769efc324b5b825ff3984))
+
+
 ## v4.1.0 (2026-07-03)
 
 ### Bug Fixes
