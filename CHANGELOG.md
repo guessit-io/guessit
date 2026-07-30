@@ -2,6 +2,44 @@
 
 <!-- version list -->
 
+## v4.3.0 (2026-07-30)
+
+### Bug Fixes
+
+- **episodes**: Claim the whole episode word before a roman numeral
+  ([`d4774dd`](https://github.com/guessit-io/guessit/commit/d4774ddf230b8942e0199a1376d8fdde59c7cf94))
+
+- **episodes**: Drop a lone digit that plainly numbers something else
+  ([#946](https://github.com/guessit-io/guessit/pull/946),
+  [`47e669a`](https://github.com/guessit-io/guessit/commit/47e669a121812544bf81fbaf2b8df7bc7cdaab47))
+
+- **episodes**: Keep the fraction of a half episode out of the numbering
+  ([`6bcf863`](https://github.com/guessit-io/guessit/commit/6bcf863a720da3168c329e0c0ae2b132edbe2bc2))
+
+- **episodes**: Know the "of" word of the languages the markers cover
+  ([`f48d276`](https://github.com/guessit-io/guessit/commit/f48d2760895457201edfd0937d6cb1c65df40bfb))
+
+- **other**: Anchor the Complete marker on the numbered season word
+  ([`6f756f0`](https://github.com/guessit-io/guessit/commit/6f756f06f341a21e3341aeaf4133d544d095684c))
+
+- **release_group**: Keep a trailing group out of an unclaimed numeric run
+  ([`aeed0d2`](https://github.com/guessit-io/guessit/commit/aeed0d25ea92dfb21acbaea44476e55fd27ed0d4))
+
+- **title**: Count a falsy-valued match as a property in the gap
+  ([`abd2a2e`](https://github.com/guessit-io/guessit/commit/abd2a2ea3774f4715885eecc2f3fd4393fc15a4e))
+
+- **title**: Keep a leading country word that opens the title
+  ([`6b8c5b6`](https://github.com/guessit-io/guessit/commit/6b8c5b6942fec47a2e6cb50a70424c84f64940de))
+
+- **title**: Keep the title when alternative_title is excluded
+  ([`91f0dd9`](https://github.com/guessit-io/guessit/commit/91f0dd92b6f8e8b06d2cb81a287518d990dabb50))
+
+### Features
+
+- **episodes**: Read the total that follows a number-first marker
+  ([`2b22112`](https://github.com/guessit-io/guessit/commit/2b22112e902a6385cd56387a3333f5999693060a))
+
+
 ## v4.2.1 (2026-07-30)
 
 ### Bug Fixes
