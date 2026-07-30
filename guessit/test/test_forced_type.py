@@ -20,19 +20,13 @@ from . import test_yml
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-# Names whose forced-type result still differs from the inferred one. Each is a lone digit that
-# only the forced-episode patterns pick up — inside a release group, a path segment or a duplicate
-# marker — and pushes out a property. Tracked by #943; entries must be removed as they get fixed.
+# Names whose forced-type result still differs from the inferred one. Both are a number the
+# forced-episode patterns read differently from the inferred ones, with no structural signal
+# left to tell them apart. Tracked by #943; entries must be removed as they get fixed.
 KNOWN_DIVERGENCES = frozenset(
     {
-        "series/Freaks And Geeks/Season 1/Episode 4 - Kim Kelly Is My Friend-eng(1).srt",
-        "/Volumes/data-1/Series/Futurama/Season 3/Futurama_-_S03_DVD_Bonus_-_Deleted_Scenes_Part_3.ogm",
-        "[t.3.3.d]_Mikakunin_de_Shinkoukei_-_12_[720p][5DDC1352].mkv",
-        "[7.1.7.8.5] Foo Bar - 11 (H.264) [5235532D].mkv",
         "[GroupName].Show.Name.-.02.5.(Special).[BD.1080p]",
-        "Thumping.Spike.2.E01.DF.WEBRip.720p-DRAMATV.mp4",
         "La Casa di Carta Stagione 2 Episodio 5",
-        "GTTV.E3.All.Access.Live.Day.1.Xbox.Showcase.Preshow.HDTV.x264-SYS",
     }
 )
 
@@ -100,3 +94,33 @@ def test_forced_episode_ignores_an_episode_word_from_another_filepart() -> None:
     result = guessit("Series/Episode/12.Angry.Men.1957.mkv", {"type": "episode"})
     assert result.get("title") == "12 Angry Men"
     assert result.get("year") == 1957
+
+
+@pytest.mark.parametrize(
+    ("name", "expected"),
+    [
+        # A lone digit only the forced-episode patterns see must not evict what owns its span:
+        # the tail of a title, a word of the episode title, a duplicate suffix, a release group,
+        # or a parent directory (#943).
+        ("Thumping.Spike.2.E01.DF.WEBRip.720p-DRAMATV.mp4", {"title": "Thumping Spike 2", "episode": 1}),
+        (
+            "GTTV.E3.All.Access.Live.Day.1.Xbox.Showcase.Preshow.HDTV.x264-SYS",
+            {"episode": 3, "episode_title": "All Access Live Day 1 Xbox Showcase Preshow"},
+        ),
+        ("[t.3.3.d]_Mikakunin_de_Shinkoukei_-_12_[720p][5DDC1352].mkv", {"episode": 12, "release_group": "t.3.3.d"}),
+        ("[7.1.7.8.5] Foo Bar - 11 (H.264) [5235532D].mkv", {"episode": 11, "release_group": "7.8.5"}),
+        (
+            "/Volumes/data-1/Series/Futurama/Season 3/Futurama_-_S03_DVD_Bonus_-_Deleted_Scenes_Part_3.ogm",
+            {"title": "Futurama", "season": 3},
+        ),
+        # A number that does carry the episode numbering stays, marked or not.
+        ("Some Series E01 02 03", {"episode": [1, 2, 3]}),
+        ("Show.Name.Season.4.Episodes.1-12", {"season": 4, "episode": list(range(1, 13))}),
+        ("FooBar.7.PDTV-FlexGet", {"episode": 7}),
+        ("Show Name - 313-315 - s16e03-05", {"absolute_episode": [313, 314, 315], "episode": [3, 4, 5]}),
+    ],
+)
+def test_forced_episode_keeps_a_lone_digit_out_of_other_properties(name: str, expected: dict[str, object]) -> None:
+    result = guessit(name, {"type": "episode"})
+    for prop, value in expected.items():
+        assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
