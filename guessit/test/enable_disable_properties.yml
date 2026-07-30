@@ -254,6 +254,11 @@
 : options: --exclude title
   -title: Title Only
 
+? Star Wars - The Mandalorian and Grogu (2026) 720p x265.mkv
+: options: --exclude alternative_title
+  title: Star Wars - The Mandalorian and Grogu
+  -alternative_title: The Mandalorian and Grogu
+
 ? h265
 ? x265
 ? h.265
