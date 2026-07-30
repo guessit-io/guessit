@@ -77,6 +77,19 @@ The `SxxExx` chain extends across a weak `.` separator to the **consecutive** nu
 `S01E02.5.Kings` → episode `2`, episode_title `5 Kings`. Telling `S01E02.3.Kings` (title) apart from
 `S01E02.03` (range) needs to know `Kings` is a title, which is the same ambiguity as #743/#746.
 
+### #948 — a half-episode number
+
+```text
+[GroupName].Show.Name.-.02.5.(Special).[BD.1080p]
+  episode: 2   episode_title: "5"   episode_details: Special
+  wanted -> a single "episode 2.5" notion
+```
+
+`02.5` numbers a special sitting between episodes 2 and 3. Episode numbers are integers, so the
+fractional part has nowhere to go: guessit keeps it out of the numbering — it is neither a second
+episode nor a range — and it falls back to the episode title. Carrying it would need a new property,
+or a non-integer `episode` every consumer of the schema would have to follow.
+
 ### #744 — episode title made of numbers and hyphens
 
 ```text

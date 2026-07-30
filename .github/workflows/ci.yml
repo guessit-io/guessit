@@ -178,6 +178,12 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
+        # A pull_request checkout is a detached merge commit, which python-semantic-release
+        # refuses to version ("Detached HEAD state cannot match any release groups") with a
+        # non-zero exit — unlike a branch outside the release groups, which it just skips.
+        # Artifacts built from a pull request are never published, so they keep the version
+        # already in pyproject.toml.
+        if: github.event_name != 'pull_request'
         run: uvx --from python-semantic-release semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -217,6 +223,8 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
+        # Skipped on a pull request: detached merge commit, see the build job.
+        if: github.event_name != 'pull_request'
         run: uvx --from python-semantic-release semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -259,6 +267,8 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
+        # Skipped on a pull request: detached merge commit, see the build job.
+        if: github.event_name != 'pull_request'
         run: uvx --from python-semantic-release semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -301,6 +311,8 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Bump version
+        # Skipped on a pull request: detached merge commit, see the build job.
+        if: github.event_name != 'pull_request'
         run: uvx --from python-semantic-release semantic-release version --no-commit --no-tag --no-push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

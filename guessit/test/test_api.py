@@ -97,6 +97,34 @@ def test_list_value_not_mutated_between_guesses() -> None:
     assert guessit("ultimate collector edition")["edition"] == ["Ultimate", "Collector"]
 
 
+def test_title_rule_tags_not_mutated_between_guesses() -> None:
+    """
+    The tags TitleFromPosition puts on the title hole must be a copy of the rule's own list.
+
+    The rule instance lives in the cached rebulk and is shared by every guessit() call. When the
+    hole aliases ``match_tags`` instead of copying it, ``PreferTitleWithYear`` (which appends
+    ``equivalent-ignore`` to the title matches it demotes) extends that shared list in place, so
+    it grows at every parse and every later title is born already tagged ``equivalent-ignore`` --
+    a tag the processors act upon. A yaml corpus entry cannot catch this: each entry parses a
+    single string, while the leak only shows up on the parses that follow.
+    """
+    from ..rules.properties.title import TitleFromPosition
+
+    api.reset()
+    options = {"excludes": ["alternative_title"]}
+    for _ in range(3):
+        assert guessit("Movies/Foo (2019)/Foo.2019.1080p.BluRay.x264-GRP.mkv", options)["title"] == "Foo"
+
+    assert default_api.rebulk is not None
+    title_rule = next(
+        rule
+        for rule in default_api.rebulk.effective_rules(default_api.effective_options)
+        if isinstance(rule, TitleFromPosition)
+    )
+    assert title_rule.match_tags == ["title"]
+    api.reset()
+
+
 def test_exception() -> None:
     with pytest.raises(GuessitException) as excinfo:
         guessit(object())  # type: ignore[arg-type]
