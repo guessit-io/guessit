@@ -503,8 +503,12 @@ class PreferTitleWithYear(Rule):
 
 class CountryAtTitlePosition(Rule):
     """
-    A Title-Case country/other word that starts the filepart and is immediately
-    followed by a year (only separators between) is really the title (upstream #638).
+    A Title-Case country/other word that starts the filepart and opens the title is really
+    part of the title, not a tag (upstream #638, #928).
+
+    It qualifies when the word is followed, before the next year/season/episode/date anchor,
+    by only separators ("Us.2019...") or by plain title text ("Au bout c'est la mer - 8x01").
+    Another property in that gap ("Us.1080p.S01E01") means the word is a genuine tag.
 
     The casing anchor is load-bearing: "Us" (Title-Case) is the title, but "US" (a real
     country tag) is kept, so "The.Office.(US).1x03" keeps country: US. An ``edition`` or a
@@ -532,18 +536,20 @@ class CountryAtTitlePosition(Rule):
                 continue
             if not all(ch in seps for ch in input_string[filepart.start : candidate.start]):
                 continue
-            year = matches.range(candidate.end, filepart.end, lambda m: not m.private and m.name == "year", 0)
-            if not year:
-                continue
-            if matches.range(
+            anchor = matches.range(
                 candidate.end,
-                year.start,
-                lambda m: not m.private and m.name in ("season", "episode", "date"),
+                filepart.end,
+                lambda m: not m.private and m.name in ("year", "season", "episode", "date"),
                 0,
-            ):
+            )
+            if not anchor:
                 continue
-            if not all(ch in seps for ch in input_string[candidate.end : year.start]):
-                continue
+            if not all(ch in seps for ch in input_string[candidate.end : anchor.start]):
+                # Plain title text between the leading word and the anchor means the word
+                # opens that title ("Au bout c'est la mer - 8x01"). Another property in the
+                # gap ("Us.1080p.S01E01") means the word is a real tag, not the title.
+                if matches.range(candidate.end, anchor.start, lambda m: not m.private and m.value, 0):
+                    continue
             to_remove.append(candidate)
         return to_remove
 

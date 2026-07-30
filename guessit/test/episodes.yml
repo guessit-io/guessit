@@ -5372,3 +5372,18 @@
   episode: 3
   video_codec: H.264
   -season: 3
+
+# A leading country-code word that opens the title is the title, not a country tag (#928)
+? Au.bout.c'est.la.mer.-.8x01.-.Le.fleuve.Yukon.mp4
+: title: Au bout c'est la mer
+  season: 8
+  episode: 1
+  episode_title: Le fleuve Yukon
+  -country: AU
+
+? Au bout c'est la mer - 8x01 - Le fleuve Yukon.mp4
+: title: Au bout c'est la mer
+  season: 8
+  episode: 1
+  episode_title: Le fleuve Yukon
+  -country: AU
