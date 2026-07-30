@@ -1038,6 +1038,62 @@
   video_codec: H.264
   year: 2013
 
+# The word linking a number to its total, in the languages the markers already cover.
+? Show.Name.Capitulo.5.de.12.HDTV.x264-GRUPO
+: title: Show Name
+  episode: 5
+  episode_count: 12
+  source: HDTV
+  video_codec: H.264
+  release_group: GRUPO
+
+? Serie.Temporada.1.de.5.1080p.WEB-DL
+: title: Serie
+  season: 1
+  season_count: 5
+  screen_size: 1080p
+  source: Web
+
+? Show.Name.Episodio.5.di.12.ITA.1080p.BluRay
+: title: Show Name
+  episode: 5
+  episode_count: 12
+  language: it
+  screen_size: 1080p
+  source: Blu-ray
+
+? Show.Name.Stagione.1.di.5.720p
+: title: Show Name
+  season: 1
+  season_count: 5
+  screen_size: 720p
+
+? Show.Name.Folge.5.von.12.German.HDTV
+: title: Show Name
+  episode: 5
+  episode_count: 12
+  language: de
+  source: HDTV
+
+? Show.Name.Aflevering.5.van.12.1080p
+: title: Show Name
+  episode: 5
+  episode_count: 12
+  screen_size: 1080p
+
+? Show.Name.Episodul.5.din.12.HDTV
+: title: Show Name
+  episode: 5
+  episode_count: 12
+  source: HDTV
+
+# "av" is left out of the of-words: it would read the AV1 codec as a total (#950).
+? Show.Name.Season.2.AV1.1080p
+: title: Show Name
+  season: 2
+  screen_size: 1080p
+  -season_count: 1
+
 ? Something.S04E05E09
 : episode: # 1.x guessit this as a range from 5 to 9. But not sure if it should ...
   - 5

@@ -362,7 +362,12 @@
       "ordinal_suffix": "(?:ª|º|°|a|o|-?(?:й|я|е|го|ая|ый|ое))?",
       "of_words": [
         "of",
-        "sur"
+        "sur",
+        "de",
+        "di",
+        "von",
+        "van",
+        "din"
       ],
       "all_words": [
         "All"

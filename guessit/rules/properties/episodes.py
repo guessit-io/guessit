@@ -771,17 +771,29 @@ class CountValidator(Rule):
         season_count: list[Match] = []
 
         for count in matches.named("count"):
-            previous = matches.previous(count, lambda match: match.name in ["episode", "season"], 0)
-            if previous:
-                if previous.name == "episode":
-                    episode_count.append(count)
-                elif previous.name == "season":
-                    season_count.append(count)
-            else:
+            numbered = self._numbered_by(matches, count)
+            if numbered is None:
                 to_remove.append(count)
+            elif numbered.name == "episode":
+                episode_count.append(count)
+            else:
+                season_count.append(count)
         if to_remove or episode_count or season_count:
             return to_remove, episode_count, season_count
         return False
+
+    @staticmethod
+    def _numbered_by(matches: Matches, count: Match) -> Match | None:
+        """The episode or season the count belongs to: the last one its own match holds.
+
+        Scoped to the count's match rather than to the nearest neighbour, because another property
+        can sit on the linking word itself — "de" is the German language code as much as it is the
+        Spanish "of" — and would then hide the number the count completes.
+        """
+        numbers = matches.range(
+            count.initiator.start, count.start, predicate=lambda match: match.name in ("episode", "season")
+        )
+        return numbers[-1] if numbers else None
 
 
 class SeePatternRange(Rule):
