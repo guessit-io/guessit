@@ -548,7 +548,7 @@ class CountryAtTitlePosition(Rule):
                 # Plain title text between the leading word and the anchor means the word
                 # opens that title ("Au bout c'est la mer - 8x01"). Another property in the
                 # gap ("Au.HDTV.8x01") means the word is a real tag, not the title.
-                if matches.range(candidate.end, anchor.start, lambda m: not m.private and m.value, 0):
+                if matches.range(candidate.end, anchor.start, lambda m: not m.private and m.value is not None, 0):
                     continue
             to_remove.append(candidate)
         return to_remove
