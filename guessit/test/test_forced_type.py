@@ -15,6 +15,8 @@ import pytest
 import yaml
 
 from .. import guessit
+from ..options import load_config
+from ..rules.properties.episodes import _split_words
 from ..yamlutils import OrderedDictYAMLLoader
 from . import test_yml
 
@@ -73,21 +75,29 @@ def test_forced_episode_keeps_year_anchored_properties(name: str, expected: dict
         assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
 
 
-@pytest.mark.parametrize(
-    "name",
-    [
-        "La Casa di Carta Stagione 2 Episodio 5",
-        "Show Name Episodio 5",
-        "Show Name Episodios 5",
-        "Show Name Capitulos 5",
-        "Show Name Episodul 5",
-    ],
-)
-def test_forced_episode_consumes_the_whole_episode_word(name: str) -> None:
-    """The numeral variant claims its marker instead of a shorter one a roman numeral extends (#948)."""
-    result = guessit(name, {"type": "episode"})
-    assert result.get("episode") == 5
-    assert "episode_title" not in result
+def marker_names(word_key: str) -> list[str]:
+    """One "Show Name <marker> 5" per configured season/episode word, reversed for number-first ones."""
+    config = load_config({"no_user_config": True})["advanced_config"]["episodes"]
+    words, numfirst = _split_words(config[word_key])
+    return [f"Show Name 5 {word}" if word in set(numfirst) else f"Show Name {word} 5" for word in words]
+
+
+@pytest.mark.parametrize("options", [{}, {"type": "episode"}], ids=["inferred", "forced"])
+@pytest.mark.parametrize("name", marker_names("episode_words"))
+def test_every_episode_word_is_claimed_by_its_number(name: str, options: dict[str, str]) -> None:
+    """A marker is claimed whole: a shorter one leaving its tail in the title is the #948 bug."""
+    result = guessit(name, options)
+    assert result.get("episode") == 5, f"episode: {dict(result)}"
+    assert result.get("title") == "Show Name", f"title: {dict(result)}"
+
+
+@pytest.mark.parametrize("options", [{}, {"type": "episode"}], ids=["inferred", "forced"])
+@pytest.mark.parametrize("name", marker_names("season_words"))
+def test_every_season_word_is_claimed_by_its_number(name: str, options: dict[str, str]) -> None:
+    """Same guard on the season side, where the numeral pattern is shared by both modes."""
+    result = guessit(name, options)
+    assert result.get("season") == 5, f"season: {dict(result)}"
+    assert result.get("title") == "Show Name", f"title: {dict(result)}"
 
 
 @pytest.mark.parametrize(
