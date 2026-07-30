@@ -588,7 +588,7 @@
         "Proof": {"string": "Proof", "tags": ["at-end", "not-a-release-group"]},
         "Obfuscated": {"string": ["Obfuscated", "Scrambled"], "tags": ["at-end", "not-a-release-group"]},
         "Repost": {"string": ["xpost", "postbot", "asrequested"], "tags": "not-a-release-group"},
-        "_complete_words": {"callable": "import:guessit.rules.properties.other:complete_words", "season_words": ["seasons?", "series?"], "complete_article_words": ["The"]}
+        "_complete_words": {"callable": "import:guessit.rules.properties.other:complete_words", "season_words": ["seasons?", "series?"], "complete_article_words": ["The"], "season_number_separators": ["&", "and"]}
       },
       "art": {
         "poster": "Poster",

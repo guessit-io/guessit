@@ -89,6 +89,38 @@ def test_forced_episode_keeps_year_anchored_properties(name: str, expected: dict
         assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
 
 
+@pytest.mark.parametrize(
+    ("name", "expected"),
+    [
+        # The "Complete" marker is anchored on the numbered season word, so it survives the season
+        # chain being off (#944).
+        ("Series/Mad Men Season 1 Complete/Mad.Men.S01E01.avi", {"title": "Mad Men", "other": "Complete"}),
+        ("Something Seasons 1 & 2 - Complete", {"title": "Something", "other": "Complete"}),
+        ("Something Seasons 4 Complete", {"title": "Something", "other": "Complete"}),
+        # An absolute episode run nothing claims must not swallow the trailing release group.
+        ("Bleach.s16e03-04.313-314-GROUP", {"title": "Bleach", "release_group": "GROUP"}),
+        ("Show.Name.16x03-05.313-315-GROUP", {"title": "Show Name", "release_group": "GROUP"}),
+    ],
+)
+def test_forced_movie_keeps_properties_unrelated_to_episodes(name: str, expected: dict[str, object]) -> None:
+    result = guessit(name, {"type": "movie"})
+    for prop, value in expected.items():
+        assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "Show.Name.2019.313-314-GROUP",
+        "Show Name 313-314-GROUP",
+        "12-Monkeys",
+    ],
+)
+def test_a_numeric_run_alone_does_not_yield_a_release_group(name: str) -> None:
+    """Only a run anchored on a season/episode marker vouches for the word behind it (#944)."""
+    assert "release_group" not in guessit(name, {"type": "movie"})
+
+
 def test_forced_episode_ignores_an_episode_word_from_another_filepart() -> None:
     """A parent directory named "Episode" must not vouch for a number in the file below it."""
     result = guessit("Series/Episode/12.Angry.Men.1957.mkv", {"type": "episode"})

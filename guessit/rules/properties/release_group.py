@@ -140,6 +140,16 @@ def leading_anime_group(matches: Matches, filepart: Match) -> Match | None:
     return None
 
 
+_SEPS_CHARS = re.escape(seps)
+
+#: A trailing hole made of a numeric run and a final dash-separated word, e.g. ``.313-314-GROUP``.
+#: Digits and separators alone cannot be a title, so the last word stays a release group even when
+#: nothing claimed the numbers.
+_NUMERIC_RUN_THEN_GROUP = re.compile(
+    rf"^[{_SEPS_CHARS}]?\d+(?:[{_SEPS_CHARS}]+\d+)*-(?P<group>[^{_SEPS_CHARS}]{{2,}})$"
+)
+
+
 class DashSeparatedReleaseGroup(Rule):
     """
     Detect dash separated release groups that might appear at the end or at the beginning of a release name.
@@ -288,7 +298,34 @@ class DashSeparatedReleaseGroup(Rule):
 
         if candidate and self.is_valid(matches, candidate, start, end, at_end):
             return candidate
+        if at_end:
+            return self.detect_after_numeric_run(matches, start, end)
         return None
+
+    @classmethod
+    def detect_after_numeric_run(cls, matches: Matches, start: int, end: int) -> Match | None:
+        """
+        Detach a trailing dash separated group from an unclaimed numeric run.
+
+        ``Bleach.s16e03-04.313-314-GROUP`` leaves ``.313-314-GROUP`` as a single hole whenever no
+        rule claims the absolute episode run — the weak episode chains are off under a forced
+        ``type=movie`` (#944). The run is anchored on the season/episode markers it follows, so the
+        trailing word behind it is a release group rather than the tail of a title.
+        """
+        hole = matches.holes(start, end, index=-1, predicate=lambda m: m.end == end and m.raw)
+        if not hole or hole.raw is None:
+            return None
+
+        numeric_run = _NUMERIC_RUN_THEN_GROUP.match(hole.raw)
+        if not numeric_run or int_coercable(numeric_run.group("group")):
+            return None
+
+        previous = matches.range(start, hole.start, index=-1, predicate=lambda m: not m.private)
+        if not previous or previous.name not in ("season", "episode"):
+            return None
+
+        # The candidate keeps its leading dash, as the ones the branches above return do.
+        return Match(hole.start + numeric_run.start("group") - 1, hole.end, input_string=hole.input_string)
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         if matches.named("release_group"):
