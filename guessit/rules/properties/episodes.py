@@ -546,6 +546,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         EpisodeNumberSeparatorRange(range_separators),
         SeasonSeparatorRange(range_separators),
         RemoveWeakIfMovie(episode_words),
+        RemoveMisleadingLoneDigitEpisode,
         RemoveWeakIfSxxExx,
         RemoveWeakDuplicate,
         EpisodeDetailValidator,
@@ -1088,6 +1089,92 @@ class RemoveWeak(Rule):
         if to_remove or to_append:
             return to_remove, to_append
         return False
+
+
+class RemoveMisleadingLoneDigitEpisode(Rule):
+    """
+    Remove a lone digit read as an episode while it plainly numbers something else.
+
+    Only a forced `type=episode` reads a single digit as an episode, and that pattern fires
+    wherever a digit sits — including inside a release group, in a parent directory, or in the
+    tail of a title — where it then evicts whatever owned that span. Such a digit is discarded
+    when it cannot be part of the episode numbering: quoted in a bracketed group, sitting in a
+    non-final path part, or unable to extend a marked episode list (a list grows rightwards from
+    its marker and stays glued to it, as in "E01 02 03") (#943).
+
+    Runs before anything is carved out of the name (rebulk executes rules by decreasing priority),
+    so the freed span goes back to the title instead of leaving a hole behind.
+    """
+
+    priority = PRE_PROCESS + 1
+    consequence = RemoveMatch
+
+    def enabled(self, context: dict[str, Any] | None) -> bool:
+        return bool(context and context.get("type") == "episode")
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        fileparts = matches.markers.named("path")
+        for index, filepart in enumerate(fileparts):
+            episodes_ = sorted(
+                matches.range(filepart.start, filepart.end, predicate=lambda m: m.name == "episode"),
+                key=lambda m: (m.start, m.end),
+            )
+            in_final_part = index == len(fileparts) - 1
+            misplaced = [
+                episode
+                for episode in episodes_
+                if self._is_lone_digit(episode) and self._numbers_something_else(matches, episode, in_final_part)
+            ]
+            kept = [episode for episode in episodes_ if episode not in misplaced]
+            misplaced.extend(self._detached_from_list(kept))
+
+            for episode in misplaced:
+                to_remove.extend(self._whole_match(matches, episode))
+
+        return to_remove
+
+    @staticmethod
+    def _is_lone_digit(episode: Match) -> bool:
+        return "weak-episode" in episode.tags and len(episode.raw or "") == 1
+
+    @staticmethod
+    def _numbers_something_else(matches: Matches, episode: Match, in_final_part: bool) -> bool:
+        """A digit numbering a parent directory ("/Volumes/data-1/…") or a quoted group ("[t.3.3.d]")."""
+        quoted = matches.markers.at_match(episode, lambda marker: marker.name == "group", 0)
+        return not in_final_part or bool(quoted)
+
+    @classmethod
+    def _detached_from_list(cls, episodes_: list[Match]) -> list[Match]:
+        """Lone digits that cannot extend the marked episode list of their filepart."""
+        anchor = next((episode for episode in episodes_ if "weak-episode" not in episode.tags), None)
+        if anchor is None:
+            return []
+
+        detached: list[Match] = []
+        previous = anchor
+        for episode in episodes_:
+            if episode.end <= anchor.start:
+                if cls._is_lone_digit(episode):
+                    detached.append(episode)
+                continue
+
+            between = (episode.input_string or "")[previous.end : episode.start].strip(seps)
+            if between and cls._is_lone_digit(episode):
+                detached.append(episode)
+            else:
+                previous = episode
+
+        return detached
+
+    @staticmethod
+    def _whole_match(matches: Matches, episode: Match) -> list[Match]:
+        """The match and the private ones holding its span, so the freed text becomes a hole again."""
+        return matches.range(
+            episode.start,
+            episode.end,
+            predicate=lambda m: "weak-episode" in m.tags and m.start >= episode.start and m.end <= episode.end,
+        )
 
 
 class RemoveWeakIfSxxExx(Rule):
