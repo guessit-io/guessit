@@ -44,6 +44,8 @@ _CJK_DIGITS = {
     "九": 9,
 }
 
+_SEPS_RE = re.compile(rf"[{re.escape(seps)}]+")
+
 # ASCII digits or Han numerals up to 99 (十一 -> 11, 二十三 -> 23, single digit otherwise).
 cjk_number = r"(?:\d{1,4}|[一二两三四五六七八九]?十[一二两三四五六七八九]?|[零一二两三四五六七八九])"
 
@@ -307,7 +309,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         validator={"__parent__": and_(seps_surround, ordering_validator)},
         disabled=is_season_episode_disabled,
     ).defaults(tags=["SxxExx"]).regex(
-        r"(?P<season>\d+)@?" + build_or_pattern(season_ep_markers, name="episodeMarker") + r"@?(?P<episode>\d+)"
+        r"(?P<season>\d+)" + asymmetric_season_ep_marker + r"@?" + season_ep_marker_pattern + r"@?(?P<episode>\d+)"
     ).regex(
         build_or_pattern(
             season_ep_markers + discrete_separators + range_separators, name="episodeSeparator", escape=True
@@ -543,7 +545,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         SeePatternRange([*range_separators, "_"]),
         EpisodeNumberSeparatorRange(range_separators),
         SeasonSeparatorRange(range_separators),
-        RemoveWeakIfMovie,
+        RemoveWeakIfMovie(episode_words),
         RemoveWeakIfSxxExx,
         RemoveWeakDuplicate,
         EpisodeDetailValidator,
@@ -960,13 +962,36 @@ class SeasonSeparatorRange(AbstractSeparatorRange):
 class RemoveWeakIfMovie(Rule):
     """
     Remove weak-episode tagged matches if it seems to be a movie.
+
+    A year in the part is a movie signal strong enough to drop the weak readings, whatever the
+    requested type: forcing `type=episode` must not turn the leading number of a title into an
+    episode ("12.Angry.Men.1957" stays "12 Angry Men" + year 1957). Weak matches carrying an
+    explicit marker ("Episodio 13") are numbered on purpose and stay (#939).
     """
 
     priority = 64
     consequence = RemoveMatch
 
-    def enabled(self, context: dict[str, Any] | None) -> bool:
-        return bool(context and context.get("type") != "episode")
+    def __init__(self, episode_words: list[str]) -> None:
+        super().__init__()
+        self.episode_words = episode_words
+
+    def _is_numbered_on_purpose(self, matches: Matches, match: Match) -> bool:
+        """Whether the number carries an explicit marker ("Episodio 13", "S01E02")."""
+        initiator = match.initiator
+        if initiator is not None and (
+            initiator.children.named("episodeMarker") or initiator.children.named("seasonMarker")
+        ):
+            return True
+
+        # The word must sit in the same filepart: a parent directory named "Episode" says nothing
+        # about a number in the filename below it.
+        filepart = matches.markers.at_match(match, lambda marker: marker.name == "path", 0)
+        start = filepart.start if filepart else 0
+        preceding = (match.input_string or "")[start : match.start].strip(seps)
+        if not preceding:
+            return False
+        return _SEPS_RE.split(preceding)[-1].lower() in self.episode_words
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         to_remove: list[Match] = []
@@ -994,7 +1019,14 @@ class RemoveWeakIfMovie(Rule):
         if remove:
             to_remove.extend(
                 matches.tagged(
-                    "weak-episode", predicate=(lambda m: m.initiator not in to_ignore and "anime" not in m.tags)
+                    "weak-episode",
+                    predicate=(
+                        lambda m: (
+                            m.initiator not in to_ignore
+                            and "anime" not in m.tags
+                            and not self._is_numbered_on_purpose(matches, m)
+                        )
+                    ),
                 )
             )
 
