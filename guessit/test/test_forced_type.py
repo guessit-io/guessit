@@ -103,6 +103,9 @@ def test_forced_episode_keeps_year_anchored_properties(name: str, expected: dict
         ("Series/Mad Men Season 1 Complete/Mad.Men.S01E01.avi", {"title": "Mad Men", "other": "Complete"}),
         ("Something Seasons 1 & 2 - Complete", {"title": "Something", "other": "Complete"}),
         ("Something Seasons 4 Complete", {"title": "Something", "other": "Complete"}),
+        # An absolute episode run nothing claims must not swallow the trailing release group.
+        ("Bleach.s16e03-04.313-314-GROUP", {"title": "Bleach", "release_group": "GROUP"}),
+        ("Show.Name.16x03-05.313-315-GROUP", {"title": "Show Name", "release_group": "GROUP"}),
     ],
 )
 def test_forced_movie_keeps_properties_unrelated_to_episodes(name: str, expected: dict[str, object]) -> None:
