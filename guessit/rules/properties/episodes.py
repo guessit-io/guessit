@@ -543,7 +543,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         SeePatternRange([*range_separators, "_"]),
         EpisodeNumberSeparatorRange(range_separators),
         SeasonSeparatorRange(range_separators),
-        RemoveWeakIfMovie,
+        RemoveWeakIfMovie(episode_words),
         RemoveWeakIfSxxExx,
         RemoveWeakDuplicate,
         EpisodeDetailValidator,
@@ -960,13 +960,33 @@ class SeasonSeparatorRange(AbstractSeparatorRange):
 class RemoveWeakIfMovie(Rule):
     """
     Remove weak-episode tagged matches if it seems to be a movie.
+
+    A year in the part is a movie signal strong enough to drop the weak readings, whatever the
+    requested type: forcing `type=episode` must not turn the leading number of a title into an
+    episode ("12.Angry.Men.1957" stays "12 Angry Men" + year 1957). Weak matches carrying an
+    explicit marker ("Episodio 13") are numbered on purpose and stay (#939).
     """
 
     priority = 64
     consequence = RemoveMatch
 
-    def enabled(self, context: dict[str, Any] | None) -> bool:
-        return bool(context and context.get("type") != "episode")
+    def __init__(self, episode_words: list[str]) -> None:
+        super().__init__()
+        self.episode_words = episode_words
+
+    def _is_numbered_on_purpose(self, matches: Matches, match: Match) -> bool:
+        """Whether the number carries an explicit marker ("Episodio 13", "S01E02")."""
+        initiator = match.initiator
+        if initiator is not None and (
+            initiator.children.named("episodeMarker") or initiator.children.named("seasonMarker")
+        ):
+            return True
+
+        preceding = matches.holes(0, match.start, predicate=lambda h: (h.raw or "").strip(seps))
+        if not preceding:
+            return False
+        words = re.split(rf"[{re.escape(seps)}]+", (preceding[-1].raw or "").strip(seps))
+        return bool(words) and words[-1].lower() in self.episode_words
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         to_remove: list[Match] = []
@@ -994,7 +1014,14 @@ class RemoveWeakIfMovie(Rule):
         if remove:
             to_remove.extend(
                 matches.tagged(
-                    "weak-episode", predicate=(lambda m: m.initiator not in to_ignore and "anime" not in m.tags)
+                    "weak-episode",
+                    predicate=(
+                        lambda m: (
+                            m.initiator not in to_ignore
+                            and "anime" not in m.tags
+                            and not self._is_numbered_on_purpose(matches, m)
+                        )
+                    ),
                 )
             )
 
