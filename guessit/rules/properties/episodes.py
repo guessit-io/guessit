@@ -382,13 +382,16 @@ def episodes(config: dict[str, Any]) -> Rebulk:
 
     # Non-English convention where the number precedes the keyword:
     #   "1ª Temporada", "3 сезон", "5-й сезон", "2.Sezon" (season); "24 серия", "7.Bölüm" (episode).
-    # An optional ordinal suffix (ª/º/°, Portuguese a/o, Russian -й/-я/…) may sit between the two.
+    # An optional ordinal suffix (ª/º/°, Portuguese a/o, Russian -й/-я/…) may sit between the two,
+    # and the total may follow the keyword ("5 серия из 12"), as it does in the word-first patterns.
+    of_count = r"(?:@?" + build_or_pattern(of_words) + r"@?(?P<count>\d+))?"
     rebulk.regex(
         r"(?P<season>\d{1,2})"
         + ordinal_suffix
         + r"@?@?"
         + build_or_pattern(season_words_numfirst, name="seasonMarker")
-        + r"(?![^\W\d_])",
+        + r"(?![^\W\d_])"
+        + of_count,
         tags=["SxxExx", "numfirst"],
         formatter={"season": parse_numeral},
         disabled=is_season_episode_disabled,
@@ -398,7 +401,8 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + ordinal_suffix
         + r"@?@?"
         + build_or_pattern(episode_words_numfirst, name="episodeMarker")
-        + r"(?![^\W\d_])",
+        + r"(?![^\W\d_])"
+        + of_count,
         tags=["SxxExx", "numfirst"],
         formatter={"episode": parse_numeral},
         disabled=lambda context: is_disabled(context, "episode"),
@@ -771,17 +775,29 @@ class CountValidator(Rule):
         season_count: list[Match] = []
 
         for count in matches.named("count"):
-            previous = matches.previous(count, lambda match: match.name in ["episode", "season"], 0)
-            if previous:
-                if previous.name == "episode":
-                    episode_count.append(count)
-                elif previous.name == "season":
-                    season_count.append(count)
-            else:
+            numbered = self._numbered_by(matches, count)
+            if numbered is None:
                 to_remove.append(count)
+            elif numbered.name == "episode":
+                episode_count.append(count)
+            else:
+                season_count.append(count)
         if to_remove or episode_count or season_count:
             return to_remove, episode_count, season_count
         return False
+
+    @staticmethod
+    def _numbered_by(matches: Matches, count: Match) -> Match | None:
+        """The episode or season the count belongs to: the last one its own match holds.
+
+        Scoped to the count's match rather than to the nearest neighbour, because another property
+        can sit on the linking word itself — "de" is the German language code as much as it is the
+        Spanish "of" — and would then hide the number the count completes.
+        """
+        numbers = matches.range(
+            count.initiator.start, count.start, predicate=lambda match: match.name in ("episode", "season")
+        )
+        return numbers[-1] if numbers else None
 
 
 class SeePatternRange(Rule):
