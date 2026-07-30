@@ -150,6 +150,9 @@ def complete_words(
 ) -> None:
     """
     Custom pattern to find complete seasons from words.
+
+    ``season_number_separators`` are the tokens that may join the season numbers a marker spans,
+    e.g. the ``&`` of "Seasons 1 & 2 - Complete"; plain separators are always allowed.
     """
     season_words_pattern = build_or_pattern(season_words)
     complete_article_words_pattern = build_or_pattern(complete_article_words)

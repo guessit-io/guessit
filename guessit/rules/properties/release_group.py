@@ -140,13 +140,13 @@ def leading_anime_group(matches: Matches, filepart: Match) -> Match | None:
     return None
 
 
-_seps_class = "[" + re.escape(seps) + "]"
+_SEPS_CHARS = re.escape(seps)
 
 #: A trailing hole made of a numeric run and a final dash-separated word, e.g. ``.313-314-GROUP``.
 #: Digits and separators alone cannot be a title, so the last word stays a release group even when
 #: nothing claimed the numbers.
 _NUMERIC_RUN_THEN_GROUP = re.compile(
-    rf"^{_seps_class}?\d+(?:{_seps_class}+\d+)*-(?P<group>[^{re.escape(seps)}]{{2,}})$"
+    rf"^[{_SEPS_CHARS}]?\d+(?:[{_SEPS_CHARS}]+\d+)*-(?P<group>[^{_SEPS_CHARS}]{{2,}})$"
 )
 
 
