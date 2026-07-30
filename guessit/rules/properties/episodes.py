@@ -416,8 +416,12 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         disabled=lambda context: context.get("type") == "episode" or is_disabled(context, "episode"),
     )
 
+    # A roman numeral can be read out of the letters a longer marker continues with ("Ep" then
+    # "i" of "Episodio"), so the marker only counts when it ends on a word boundary. The digit
+    # variant above needs no such guard: a letter can never start its number.
     rebulk.regex(
         build_or_pattern(episode_words, name="episodeMarker")
+        + r"(?![^\W\d_])"
         + r"-?-?(?:(?:№|#)-?)?(?P<episode>"
         + numeral
         + ")"
@@ -1099,8 +1103,9 @@ class RemoveMisleadingLoneDigitEpisode(Rule):
     wherever a digit sits — including inside a release group, in a parent directory, or in the
     tail of a title — where it then evicts whatever owned that span. Such a digit is discarded
     when it cannot be part of the episode numbering: quoted in a bracketed group, sitting in a
-    non-final path part, or unable to extend a marked episode list (a list grows rightwards from
-    its marker and stays glued to it, as in "E01 02 03") (#943).
+    non-final path part, behind the dot of a decimal number, or unable to extend a marked episode
+    list (a list grows rightwards from its marker and stays glued to it, as in "E01 02 03")
+    (#943, #948).
 
     Runs before anything is carved out of the name (rebulk executes rules by decreasing priority),
     so the freed span goes back to the title instead of leaving a hole behind.
@@ -1124,7 +1129,10 @@ class RemoveMisleadingLoneDigitEpisode(Rule):
             misplaced = [
                 episode
                 for episode in episodes_
-                if self._is_lone_digit(episode) and self._numbers_something_else(matches, episode, in_final_part)
+                if self._is_lone_digit(episode)
+                and (
+                    self._numbers_something_else(matches, episode, in_final_part) or self._fraction_of_a_number(episode)
+                )
             ]
             kept = [episode for episode in episodes_ if episode not in misplaced]
             misplaced.extend(self._detached_from_list(kept))
@@ -1143,6 +1151,12 @@ class RemoveMisleadingLoneDigitEpisode(Rule):
         """A digit numbering a parent directory ("/Volumes/data-1/…") or a quoted group ("[t.3.3.d]")."""
         quoted = matches.markers.at_match(episode, lambda marker: marker.name == "group", 0)
         return not in_final_part or bool(quoted)
+
+    @staticmethod
+    def _fraction_of_a_number(episode: Match) -> bool:
+        """A digit behind the dot of a decimal number ("02.5"): a half episode, not a second one."""
+        before = (episode.input_string or "")[: episode.start]
+        return len(before) > 1 and before[-1] == "." and before[-2].isdigit()
 
     @classmethod
     def _detached_from_list(cls, episodes_: list[Match]) -> list[Match]:

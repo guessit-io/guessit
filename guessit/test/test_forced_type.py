@@ -15,20 +15,12 @@ import pytest
 import yaml
 
 from .. import guessit
+from ..options import load_config
+from ..rules.properties.episodes import _split_words
 from ..yamlutils import OrderedDictYAMLLoader
 from . import test_yml
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
-# Names whose forced-type result still differs from the inferred one: a half-episode number
-# (02.5) and an episode word the numeral pattern leaves dangling. Tracked by #948; entries
-# must be removed as they get fixed.
-KNOWN_DIVERGENCES = frozenset(
-    {
-        "[GroupName].Show.Name.-.02.5.(Special).[BD.1080p]",
-        "La Casa di Carta Stagione 2 Episodio 5",
-    }
-)
 
 
 def corpus_names() -> list[str]:
@@ -48,9 +40,8 @@ def corpus_names() -> list[str]:
 
 
 def test_forcing_the_inferred_type_is_a_no_op() -> None:
-    names = corpus_names()
     divergences = {}
-    for name in names:
+    for name in corpus_names():
         inferred = guessit(name)
         guessed_type = inferred.get("type")
         if guessed_type not in ("movie", "episode"):
@@ -59,14 +50,9 @@ def test_forcing_the_inferred_type_is_a_no_op() -> None:
         if dict(forced) != dict(inferred):
             divergences[name] = (dict(inferred), dict(forced))
 
-    unexpected = {name: diff for name, diff in divergences.items() if name not in KNOWN_DIVERGENCES}
-    assert not unexpected, "forcing the inferred type changed the result:\n" + "\n".join(
-        f"  {name}\n    inferred={inferred}\n    forced  ={forced}" for name, (inferred, forced) in unexpected.items()
+    assert not divergences, "forcing the inferred type changed the result:\n" + "\n".join(
+        f"  {name}\n    inferred={inferred}\n    forced  ={forced}" for name, (inferred, forced) in divergences.items()
     )
-
-    scanned = set(names)
-    stale = {name for name in KNOWN_DIVERGENCES if name in scanned and name not in divergences}
-    assert not stale, f"these names no longer diverge, drop them from KNOWN_DIVERGENCES: {sorted(stale)}"
 
 
 @pytest.mark.parametrize(
@@ -87,6 +73,31 @@ def test_forced_episode_keeps_year_anchored_properties(name: str, expected: dict
     result = guessit(name, {"type": "episode"})
     for prop, value in expected.items():
         assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
+
+
+def marker_names(word_key: str) -> list[str]:
+    """One "Show Name <marker> 5" per configured season/episode word, reversed for number-first ones."""
+    config = load_config({"no_user_config": True})["advanced_config"]["episodes"]
+    words, numfirst = _split_words(config[word_key])
+    return [f"Show Name 5 {word}" if word in set(numfirst) else f"Show Name {word} 5" for word in words]
+
+
+@pytest.mark.parametrize("options", [{}, {"type": "episode"}], ids=["inferred", "forced"])
+@pytest.mark.parametrize("name", marker_names("episode_words"))
+def test_every_episode_word_is_claimed_by_its_number(name: str, options: dict[str, str]) -> None:
+    """A marker is claimed whole: a shorter one leaving its tail in the title is the #948 bug."""
+    result = guessit(name, options)
+    assert result.get("episode") == 5, f"episode: {dict(result)}"
+    assert result.get("title") == "Show Name", f"title: {dict(result)}"
+
+
+@pytest.mark.parametrize("options", [{}, {"type": "episode"}], ids=["inferred", "forced"])
+@pytest.mark.parametrize("name", marker_names("season_words"))
+def test_every_season_word_is_claimed_by_its_number(name: str, options: dict[str, str]) -> None:
+    """Same guard on the season side, where the numeral pattern is shared by both modes."""
+    result = guessit(name, options)
+    assert result.get("season") == 5, f"season: {dict(result)}"
+    assert result.get("title") == "Show Name", f"title: {dict(result)}"
 
 
 @pytest.mark.parametrize(
@@ -150,6 +161,9 @@ def test_forced_episode_ignores_an_episode_word_from_another_filepart() -> None:
         ("Show.Name.Season.4.Episodes.1-12", {"season": 4, "episode": list(range(1, 13))}),
         ("FooBar.7.PDTV-FlexGet", {"episode": 7}),
         ("Show Name - 313-315 - s16e03-05", {"absolute_episode": [313, 314, 315], "episode": [3, 4, 5]}),
+        # The fractional digit of a half episode is not a second episode (#948).
+        ("[GroupName].Show.Name.-.02.5.(Special).[BD.1080p]", {"episode": 2, "episode_title": "5"}),
+        ("Show.Name.-.12.5.(Special)", {"episode": 12, "episode_title": "5"}),
     ],
 )
 def test_forced_episode_keeps_a_lone_digit_out_of_other_properties(name: str, expected: dict[str, object]) -> None:
