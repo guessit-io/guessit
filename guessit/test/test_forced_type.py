@@ -21,12 +21,11 @@ from . import test_yml
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 # Names whose forced-type result still differs from the inferred one: a half-episode number
-# (02.5) and an episode word the numeral pattern leaves dangling. Tracked by #948; entries
-# must be removed as they get fixed.
+# (02.5) whose fractional digit the forced patterns read as a second episode. Tracked by #948;
+# entries must be removed as they get fixed.
 KNOWN_DIVERGENCES = frozenset(
     {
         "[GroupName].Show.Name.-.02.5.(Special).[BD.1080p]",
-        "La Casa di Carta Stagione 2 Episodio 5",
     }
 )
 
@@ -87,6 +86,23 @@ def test_forced_episode_keeps_year_anchored_properties(name: str, expected: dict
     result = guessit(name, {"type": "episode"})
     for prop, value in expected.items():
         assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "La Casa di Carta Stagione 2 Episodio 5",
+        "Show Name Episodio 5",
+        "Show Name Episodios 5",
+        "Show Name Capitulos 5",
+        "Show Name Episodul 5",
+    ],
+)
+def test_forced_episode_consumes_the_whole_episode_word(name: str) -> None:
+    """The numeral variant claims its marker instead of a shorter one a roman numeral extends (#948)."""
+    result = guessit(name, {"type": "episode"})
+    assert result.get("episode") == 5
+    assert "episode_title" not in result
 
 
 @pytest.mark.parametrize(

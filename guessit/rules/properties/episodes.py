@@ -416,8 +416,12 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         disabled=lambda context: context.get("type") == "episode" or is_disabled(context, "episode"),
     )
 
+    # A roman numeral can be read out of the letters a longer marker continues with ("Ep" then
+    # "i" of "Episodio"), so the marker only counts when it ends on a word boundary. The digit
+    # variant above needs no such guard: a letter can never start its number.
     rebulk.regex(
         build_or_pattern(episode_words, name="episodeMarker")
+        + r"(?![^\W\d_])"
         + r"-?-?(?:(?:№|#)-?)?(?P<episode>"
         + numeral
         + ")"
