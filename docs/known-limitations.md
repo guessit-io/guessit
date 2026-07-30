@@ -166,6 +166,12 @@ The same shape as #533: a bare `720` / `1080` (resolution without the `p`) or a 
 them as a resolution or a runtime. The related **frame-rate** form *is* handled — `Gladiator 23.976
 FPS` correctly yields `frame_rate: 23.976fps` because the `FPS` suffix disambiguates it.
 
+A **video codec** sitting in the same tag block does disambiguate it, and is handled since #933:
+`Les.Profs.2013.FRENCH.AC3.1080.x264-Ox` yields `screen_size: 1080p` + `video_codec: H.264`. The
+cases above have no such neighbour — `BrRip.264` is a stray number, not an `x264` codec token. A
+codec quoted in its own group stays neutral, so an absolute episode number survives it
+(`[Group] One Piece - 1080 [x264].mkv` -> `episode: 1080`).
+
 ### #637 — a one-letter title followed by a number
 
 ```text
