@@ -2177,3 +2177,22 @@
   screen_size: 1080p
   video_codec: H.264
   release_group: Ox
+
+# The same release with the type forced: the number keeps its resolution reading even when the
+# weak-episode patterns are off, so no orphan season is left behind (#937).
+? Les.Profs.2013.FRENCH.AC3.1080.x264-Ox
+: options: --type movie
+  title: Les Profs
+  year: 2013
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: Ox
+  -season: 1080
+
+? Movie.Name.2013.720.x264-Ox.mkv
+: options: --type movie
+  title: Movie Name
+  year: 2013
+  screen_size: 720p
+  video_codec: H.264
+  -season: 720
