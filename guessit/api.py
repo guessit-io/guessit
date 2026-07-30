@@ -17,7 +17,8 @@ from rebulk.introspector import introspect
 from .__version__ import __version__
 from .options import load_config, merge_options, parse_options
 from .rules import rebulk_builder
-from .schema import GUESSIT_SCHEMA
+from .schema_builder import build_json_schema, overlay_config_enums
+from .schema_generated import GUESSIT_SCHEMA
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -93,6 +94,28 @@ def properties(options: Any = None) -> dict[str, Any]:
     :rtype:
     """
     return default_api.properties(options)
+
+
+def schema(options: Any = None) -> dict[str, Any]:
+    """
+    Retrieve the property schema (type, cardinality and enums) for the effective configuration
+    :param options:
+    :type options: str|dict
+    :return:
+    :rtype: dict
+    """
+    return default_api.schema(options)
+
+
+def json_schema(options: Any = None) -> dict[str, Any]:
+    """
+    Retrieve the draft-07 JSON Schema of the output for the effective configuration
+    :param options:
+    :type options: str|dict
+    :return:
+    :rtype: dict
+    """
+    return default_api.json_schema(options)
 
 
 def suggested_expected(titles: Any, options: Any = None) -> list[Any]:
@@ -316,6 +339,37 @@ class GuessItApi:
         if hasattr(self.rebulk, "customize_properties"):
             ordered = self.rebulk.customize_properties(ordered)
         return _complete_properties(ordered)
+
+    def schema(self, options: Any = None) -> dict[str, Any]:
+        """
+        Grab the property schema (type, cardinality and enums) for the effective configuration.
+
+        The type and cardinality of every property are configuration invariants, taken from the
+        frozen :data:`GUESSIT_SCHEMA`; only the closed-vocabulary enums depend on the configuration
+        and are overlaid from :meth:`properties`. With no options this returns a copy of
+        :data:`GUESSIT_SCHEMA`.
+
+        :param options:
+        :type options: str|dict
+        :return:
+        :rtype: dict
+        """
+        if options is None:
+            return deepcopy(GUESSIT_SCHEMA)
+        return overlay_config_enums(GUESSIT_SCHEMA, self.properties(options))
+
+    def json_schema(self, options: Any = None) -> dict[str, Any]:
+        """
+        Grab the draft-07 JSON Schema of the output for the effective configuration.
+
+        With no options this equals the committed ``guessit/data/output-schema.json``.
+
+        :param options:
+        :type options: str|dict
+        :return:
+        :rtype: dict
+        """
+        return build_json_schema(self.schema(options))
 
     def suggested_expected(self, titles: Any, options: Any = None) -> list[Any]:
         """

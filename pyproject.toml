@@ -56,16 +56,18 @@ lint = [
     "ruff",
     "mypy",
 ]
+docs = [
+    "zensical",
+]
 dev = [
     { include-group = "test" },
     { include-group = "lint" },
+    { include-group = "docs" },
     # Tooling driven by .pre-commit-config.yaml: the hooks run via `uv run`, so
     # these must be in the dev env / uv.lock — pre-commit itself, ruff (via the
     # lint group above) and commitizen.
     "pre-commit",
     "commitizen",
-    "mkdocs",
-    "mkdocs-material",
     "pyinstaller",
     "python-semantic-release",
     "tox",

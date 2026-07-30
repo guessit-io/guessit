@@ -1,0 +1,79 @@
+name: zensical-preview
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+# Per-PR group: a new push (or the close/cleanup) supersedes an in-flight build
+# for the same PR, without touching other PRs' or the main/develop deploys.
+# Concurrent pushes to disjoint gh-pages folders are handled by the deploy
+# action's fetch+rebase+retry.
+concurrency:
+  group: gh-pages-preview-${{ github.head_ref }}
+  cancel-in-progress: true
+permissions:
+  contents: write
+  actions: write
+jobs:
+  deploy:
+    # Same-repo docs/* PRs only: fork PRs get a read-only token and cannot push to gh-pages.
+    if: >-
+      github.event.action != 'closed'
+      && github.event.pull_request.head.repo.full_name == github.repository
+      && startsWith(github.head_ref, 'docs/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Compute preview slug
+        id: slug
+        run: |
+          name="${GITHUB_HEAD_REF#docs/}"
+          name="$(printf '%s' "$name" | tr '/' '-' | tr -cd '[:alnum:]._-')"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
+        with:
+          python-version: "3.13"
+          enable-cache: true
+
+      - run: uv run --only-group docs zensical build --strict
+
+      # GitHub Pages would otherwise run Jekyll on the static site; disable it.
+
+      - run: touch site/.nojekyll
+
+      - name: Deploy MR preview 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: site
+          # Publish under preview/<branch-without-docs>/ without touching the rest of gh-pages.
+          target-folder: preview/${{ steps.slug.outputs.name }}
+          clean: true
+
+      - name: Ensure Pages published (retry ×3)
+        uses: ./.github/actions/ensure-pages-published
+
+  cleanup:
+    # When a docs/* PR is merged or closed, remove its preview folder.
+    if: >-
+      github.event.action == 'closed'
+      && github.event.pull_request.head.repo.full_name == github.repository
+      && startsWith(github.head_ref, 'docs/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+      - name: Remove preview folder
+        run: |
+          name="${GITHUB_HEAD_REF#docs/}"
+          name="$(printf '%s' "$name" | tr '/' '-' | tr -cd '[:alnum:]._-')"
+          if [ -d "preview/$name" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git rm -r "preview/$name"
+            git commit -m "chore(docs): remove MR preview for ${name}"
+            git push
+          else
+            echo "No preview folder preview/${name} to remove."
+          fi

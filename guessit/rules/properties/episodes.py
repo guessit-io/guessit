@@ -232,6 +232,9 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     season_max_range = config["season_max_range"]
     max_range_gap = config["max_range_gap"]
 
+    season_ep_marker_pattern = build_or_pattern(season_ep_markers, name="episodeMarker")
+    asymmetric_season_ep_marker = r"(?!@" + build_or_pattern(season_ep_markers) + r"\d)"
+
     rebulk = (
         Rebulk()
         .regex_defaults(flags=re.IGNORECASE)
@@ -293,7 +296,9 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         validator={"__parent__": and_(seps_surround, ordering_validator)},
         disabled=is_season_episode_disabled,
     ).defaults(tags=["SxxExx"]).regex(
-        r"(?P<season>\d+)@?" + build_or_pattern(season_ep_markers, name="episodeMarker") + r"@?(?P<episode>\d+)"
+        # A separator before the marker requires one after it too: "1x03" and "1 x 03" are episodes,
+        # while "1080.x264" is a number followed by a codec token (#933).
+        r"(?P<season>\d+)" + asymmetric_season_ep_marker + r"@?" + season_ep_marker_pattern + r"@?(?P<episode>\d+)"
     ).repeater("+")
 
     rebulk.chain(

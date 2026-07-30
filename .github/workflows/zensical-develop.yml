@@ -1,0 +1,43 @@
+name: zensical-develop
+on:
+  push:
+    branches:
+      - develop
+# Per-target group: coalesce rapid develop pushes to the latest build, without
+# cancelling the main/preview deploys. Concurrent pushes to disjoint gh-pages
+# folders are handled by the deploy action's fetch+rebase+retry.
+concurrency:
+  group: gh-pages-develop
+  cancel-in-progress: true
+permissions:
+  contents: write
+  actions: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.2.0
+        with:
+          python-version: "3.13"
+          enable-cache: true
+
+      - run: uv run --only-group docs zensical build --strict
+
+      # GitHub Pages would otherwise run Jekyll on the static site; disable it.
+
+      - run: touch site/.nojekyll
+
+      - name: Deploy develop preview 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: site
+          # Publish the develop build under /dev/ without touching the stable site at the root.
+          target-folder: dev
+          clean: true
+
+      - name: Ensure Pages published (retry ×3)
+        uses: ./.github/actions/ensure-pages-published

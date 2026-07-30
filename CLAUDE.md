@@ -55,7 +55,7 @@ uv run tox -e py312
 # Build the sdist + wheel
 uv build
 
-# Regenerate the property schema (guessit/schema.py + guessit/data/output-schema.json)
+# Regenerate the property schema (guessit/schema_generated.py + guessit/data/output-schema.json)
 uv run python scripts/gen_schema.py
 
 # CLI usage (use --json / --yaml for structured output)
@@ -74,13 +74,13 @@ The core parsing is built on **Rebulk**, a declarative pattern matching library.
 
 ### API Layers
 
-- **Public API** (`guessit/__init__.py`): `guessit()`, `properties()`, `suggested_expected()`
+- **Public API** (`guessit/__init__.py`): `guessit()`, `properties()`, `schema()`, `json_schema()`, `suggested_expected()`
 - **GuessItApi class** (`guessit/api.py`): Core implementation, manages Rebulk configuration and execution
 - **CLI** (`guessit/__main__.py`): Command-line interface, supports JSON/YAML output
 
 ### Property schema
 
-`guessit/schema.py` (`GUESSIT_SCHEMA`, re-exported from `guessit`) and `guessit/data/output-schema.json` (JSON Schema draft-07) are the machine-readable description of every property guessit can emit — type, cardinality, and closed-vocabulary enums. **Both are generated** by `scripts/gen_schema.py` from `api.properties()` + the YAML corpus; never hand-edit them. `GuessItApi.properties()` uses the schema to stay code-complete (advertises every property and its full enum). `test_schema.py` fails if the committed files drift from the generator.
+`guessit/schema_generated.py` (`GUESSIT_SCHEMA`) and `guessit/data/output-schema.json` (JSON Schema draft-07) are the machine-readable description of every property guessit can emit — type, cardinality, and closed-vocabulary enums. **Both are generated** by `scripts/gen_schema.py` from `api.properties()` + the YAML corpus; never hand-edit them. They describe the **default configuration**. The public accessors `schema(options)` / `json_schema(options)` (in `api.py`, exported from `guessit`) build a **configuration-aware** schema on top of that frozen base: type/cardinality come from `GUESSIT_SCHEMA`, enums are overlaid from `properties(options)` (see `guessit/schema_builder.py`). The bare `guessit.GUESSIT_SCHEMA` constant is still exported but **deprecated** in favour of `schema()`. `GuessItApi.properties()` uses the schema to stay code-complete (advertises every property and its full enum). `test_schema.py` fails if the committed files drift from the generator.
 
 ### Configuration
 

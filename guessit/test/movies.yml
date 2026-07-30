@@ -2136,3 +2136,44 @@
 ? Alien.Director.Cut.Ita.Eng.VP9.Opus.AlphaBot.webm
 : title: Alien
   audio_codec: Opus
+
+# A "p"-less resolution followed by an x264/x265 codec: the "x" belongs to the codec, not to a
+# <width>x<height> resolution nor to a "season x episode" marker (#933).
+? Les.Profs.2013.FRENCH.AC3.1080.x264-Ox
+: title: Les Profs
+  year: 2013
+  language: French
+  audio_codec: Dolby Digital
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: Ox
+  -aspect_ratio: 4.091
+  -season: 1080
+
+? Movie.Name.2013.720.x264-Ox.mkv
+: title: Movie Name
+  year: 2013
+  screen_size: 720p
+  video_codec: H.264
+  release_group: Ox
+
+? Movie.Name.2013.2160.x265-Ox.mkv
+: title: Movie Name
+  year: 2013
+  screen_size: 2160p
+  video_codec: H.265
+  release_group: Ox
+
+# Every separator flavour between the number and the codec behaves the same.
+? Movie Name 2013 1080 x265 Ox.mkv
+: title: Movie Name
+  year: 2013
+  screen_size: 1080p
+  video_codec: H.265
+
+? Movie.Name.2013.1080-x264-Ox.mkv
+: title: Movie Name
+  year: 2013
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: Ox

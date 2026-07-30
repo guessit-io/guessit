@@ -10,14 +10,18 @@ import re
 from pathlib import Path
 from typing import Any
 
+import pytest
 import yaml
 
-from guessit import GUESSIT_SCHEMA, api
+from guessit import api
+from guessit.schema_builder import overlay_config_enums
+from guessit.schema_generated import GUESSIT_SCHEMA
 from guessit.yamlutils import OrderedDictYAMLLoader
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 TEST_DIR = ROOT / "guessit" / "test"
 OUTPUT_SCHEMA_JSON = ROOT / "guessit" / "data" / "output-schema.json"
+PROPERTIES_DOC = ROOT / "docs" / "properties.md"
 
 
 def _corpus_inputs() -> list[str]:
@@ -71,6 +75,14 @@ def test_properties_advertises_every_schema_property() -> None:
     assert len(props) == len(GUESSIT_SCHEMA)
 
 
+def test_properties_doc_documents_every_schema_property() -> None:
+    """docs/properties.md must carry an entry for every schema property."""
+    doc = PROPERTIES_DOC.read_text(encoding="utf-8")
+    documented = {match.replace("\\", "") for match in re.findall(r"\*\*([^*]+)\*\*", doc)}
+    missing = [name for name in GUESSIT_SCHEMA if name not in documented]
+    assert not missing, f"docs/properties.md missing entries for: {sorted(missing)}"
+
+
 def test_value_constrained_properties_expose_a_non_empty_enum() -> None:
     assert "Blu-ray" in GUESSIT_SCHEMA["source"]["enum"]
     assert GUESSIT_SCHEMA["type"]["enum"] == ["episode", "movie"]
@@ -114,8 +126,58 @@ def test_output_schema_json_is_draft07_describing_all_properties() -> None:
         assert name in output_schema["properties"], f"JSON schema missing {name}"
 
 
+def test_guessit_schema_constant_is_deprecated() -> None:
+    """The public ``guessit.GUESSIT_SCHEMA`` still works but warns; ``schema()`` replaces it."""
+    import guessit
+
+    with pytest.warns(DeprecationWarning, match="GUESSIT_SCHEMA"):
+        deprecated = guessit.GUESSIT_SCHEMA
+    assert deprecated == GUESSIT_SCHEMA
+
+
+def test_schema_accessor_without_options_matches_frozen_schema() -> None:
+    result = api.schema()
+    assert result == GUESSIT_SCHEMA
+    assert result is not GUESSIT_SCHEMA  # a copy, never the shared constant
+
+
+def test_json_schema_accessor_without_options_matches_committed_file() -> None:
+    with open(OUTPUT_SCHEMA_JSON, encoding="utf-8") as stream:
+        committed = json.load(stream)
+    assert api.json_schema() == committed
+
+
+def test_schema_accessor_is_configuration_aware() -> None:
+    """A custom advanced_config vocabulary is overlaid onto the enums, defaults kept."""
+    options = {"advanced_config": {"streaming_service": {"MyOwnTV": "myowntv"}}}
+
+    enum = api.schema(options)["streaming_service"]["enum"]
+    assert "MyOwnTV" in enum
+    assert "Netflix" in enum  # a default value is never dropped
+
+    json_enum = api.json_schema(options)["properties"]["streaming_service"]["enum"]
+    assert "MyOwnTV" in json_enum
+
+    # Type and cardinality are configuration invariants.
+    assert api.schema(options)["streaming_service"]["array"] == GUESSIT_SCHEMA["streaming_service"]["array"]
+    assert "MyOwnTV" not in GUESSIT_SCHEMA["streaming_service"]["enum"]  # the constant stays untouched
+
+
+def test_overlay_adds_property_absent_from_the_base() -> None:
+    """A property surfaced by a custom rules_builder (absent from the frozen base) is added
+    with an inferred type; free-form values yield no enum."""
+    base = {"title": {"type": ["string"], "array": False, "scalar": True}}
+    properties = {"title": [None], "custom_index": [1, 2, 3], "custom_free": [None]}
+
+    result = overlay_config_enums(base, properties)
+
+    assert result["custom_index"] == {"type": ["number"], "array": False, "scalar": True, "enum": [1, 2, 3]}
+    assert result["custom_free"] == {"type": ["string"], "array": False, "scalar": True}
+    assert list(result) == sorted(result)  # keys stay alphabetically ordered
+
+
 def test_schema_py_is_not_stale() -> None:
-    """guessit/schema.py must match what scripts/gen_schema.py produces."""
+    """guessit/schema_generated.py must match what scripts/gen_schema.py produces."""
     assert _built_schema() == GUESSIT_SCHEMA
 
 

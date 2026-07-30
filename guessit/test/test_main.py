@@ -72,6 +72,26 @@ def test_main_values() -> None:
     main(["-V", "--yaml"])
 
 
+def test_main_schema() -> None:
+    main(["--schema"])
+    main(["--schema", "--json"])
+    main(["--schema", "--yaml"])
+
+
+def test_main_json_schema() -> None:
+    main(["--json-schema"])
+    main(["--json-schema", "--json"])
+    main(["--json-schema", "--yaml"])
+
+
+def test_main_json_schema_output(capsys: CaptureFixture[str]) -> None:
+    main(["--json-schema", "--json"])
+    outerr = capsys.readouterr()
+    data = json.loads(outerr.out)
+    assert "draft-07" in data["$schema"]
+    assert "title" in data["properties"]
+
+
 def test_main_help() -> None:
     with pytest.raises(SystemExit):
         main(["--help"])

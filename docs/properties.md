@@ -9,15 +9,18 @@ So, for instance,
 -   `1920x1080` will be guessed as `screen_size` = `1080p`
 -   `DD5.1` will be guessed as `audio_codec` = `Dolby Digital` + `audio_channels` = `5.1`
 
-A machine-readable description of every property is shipped alongside this page:
+A machine-readable description of every property is available:
 
--   `guessit.GUESSIT_SCHEMA` — a Python mapping of each property to its type,
-    cardinality and (for closed vocabularies) allowed values.
--   `guessit/data/output-schema.json` — the same information as a
+-   `guessit.schema(options=None)` — a Python mapping of each property to its type,
+    cardinality and (for closed vocabularies) allowed values, for the effective
+    configuration. (`guessit.GUESSIT_SCHEMA`, the default-configuration snapshot, is
+    deprecated in favour of `schema()`.)
+-   `guessit.json_schema(options=None)` — the same information as a
     [JSON Schema](https://json-schema.org/) (draft-07) describing guessit's output.
+    The default-configuration snapshot is shipped as `guessit/data/output-schema.json`.
 
-Both are generated from the rules by `scripts/gen_schema.py`; a test fails if they
-drift. The list below is the human-friendly counterpart.
+The frozen defaults are generated from the rules by `scripts/gen_schema.py`; a test
+fails if they drift. The list below is the human-friendly counterpart.
 
 Main properties
 ---------------
@@ -83,6 +86,15 @@ Episode properties
 
     Episode number. (Can be a list if several are found)
 
+-   **episode\_title**
+
+    Title of the episode.
+
+-   **absolute\_episode**
+
+    Absolute episode number, mainly used by anime for continuous numbering
+    across seasons. (Can be a list if several are found)
+
 -   **disc**
 
     Disc number. (Can be a list if several are found)
@@ -137,6 +149,20 @@ Video properties
 -   **aspect\_ratio**
 
     Aspect ratio of video. Calculated using width and height from `screen_size`
+
+-   **width**
+
+    Pixel width parsed from an explicit `<width>x<height>` resolution. A
+    component used to compute `screen_size`; rarely emitted on its own.
+
+-   **height**
+
+    Pixel height parsed from the resolution. A component used to compute
+    `screen_size`; rarely emitted on its own.
+
+-   **scan\_type**
+
+    Scan type component of `screen_size`: `i` (interlaced) or `p` (progressive).
 
 -   **video\_codec**
 
@@ -235,6 +261,11 @@ Other properties
 
     CRC32 of the file.
 
+-   **proper\_count**
+
+    Number of `Proper` / `Repack` markers found (see `Proper` in `other`),
+    counting how many times the release was re-issued.
+
 -   **uuid**
 
     Volume identifier (UUID).
@@ -273,9 +304,11 @@ Other properties
 
     Film title of this movie.
 
--   **film\_series**
+-   **another**
 
-    Film series of this movie.
+    Internal secondary tag (e.g. `Reencoded` found alongside a source) that is
+    always renamed to `other` before output. Advertised for completeness; it
+    does not appear as a standalone property in results.
 
 -   **other**
 

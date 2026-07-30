@@ -10,9 +10,12 @@ API
 
 Example:
 
-    >>> from guessit import guessit
-    >>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
-    MatchesDict([('title', 'Treme'), ('season', 1), ('episode', 3), ('episode_title', 'Right Place, Wrong Time'), ('format', 'HDTV'), ('video_codec', 'XviD'), ('release_group', 'NoTV'), ('container', 'avi'), ('mimetype', 'video/x-msvideo'), ('type', 'episode')])
+```python
+>>> from guessit import guessit
+>>> guessit('Treme.1x03.Right.Place,.Wrong.Time.HDTV.XviD-NoTV.avi')
+MatchesDict({'title': 'Treme', 'season': 1, 'episode': 3, 'episode_title': 'Right Place, Wrong Time', 'source': 'HDTV', 'video_codec': 'Xvid', 'release_group': 'NoTV', 'container': 'avi', 'mimetype': 'video/x-msvideo', 'type': 'episode'})
+
+```
 
 `MatchesDict` is a dict that keeps matches ordering.
 

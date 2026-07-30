@@ -1,0 +1,78 @@
+name: Ensure Pages published
+description: >-
+  Wait for GitHub's auto "pages build and deployment" of the current gh-pages
+  HEAD and rerun it (with backoff) if it fails with a transient error.
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        REPO: ${{ github.repository }}
+        ATTEMPTS: "5"
+      run: |
+        set -euo pipefail
+
+        target_sha="$(gh api "repos/$REPO/branches/gh-pages" --jq '.commit.sha')"
+        echo "Ensuring Pages is published for gh-pages@$target_sha"
+
+        find_run() {
+          gh run list --repo "$REPO" --workflow "pages-build-deployment" \
+            --commit "$target_sha" --limit 1 \
+            --json databaseId,status,conclusion \
+            --jq '.[0] // empty | "\(.databaseId) \(.status) \(.conclusion // "")"' 2>/dev/null || true
+        }
+
+        # Block until a run for this SHA reaches "completed"; echo "id conclusion".
+        await_completed() {
+          for _ in $(seq 1 60); do
+            local info id status conclusion
+            info="$(find_run)"
+            id="$(printf '%s' "$info" | awk '{print $1}')"
+            status="$(printf '%s' "$info" | awk '{print $2}')"
+            conclusion="$(printf '%s' "$info" | awk '{print $3}')"
+            if [ -n "$id" ] && [ "$status" = "completed" ]; then
+              printf '%s %s\n' "$id" "$conclusion"
+              return 0
+            fi
+            sleep 10
+          done
+          return 1
+        }
+
+        for attempt in $(seq 1 "$ATTEMPTS"); do
+          echo "::group::Pages publish check (attempt $attempt/$ATTEMPTS)"
+          if ! result="$(await_completed)"; then
+            echo "Timed out waiting for the pages-build-deployment run." >&2
+            echo "::endgroup::"
+            exit 1
+          fi
+          run_id="${result%% *}"
+          conclusion="${result##* }"
+          echo "pages-build-deployment run $run_id -> $conclusion"
+          echo "::endgroup::"
+
+          if [ "$conclusion" = "success" ]; then
+            echo "Pages published for gh-pages@$target_sha."
+            exit 0
+          fi
+
+          if [ "$attempt" -lt "$ATTEMPTS" ]; then
+            # Progressive backoff: transient failures are usually account-level
+            # Pages throttling under concurrent deploys — give it room to clear.
+            backoff=$((attempt * 30))
+            echo "Transient failure; waiting ${backoff}s before rerunning run $run_id…"
+            sleep "$backoff"
+            gh run rerun "$run_id" --repo "$REPO" || true
+            # Let the rerun leave the "completed" state before we poll again.
+            for _ in $(seq 1 12); do
+              status="$(find_run | awk '{print $2}')"
+              [ "$status" != "completed" ] && break
+              sleep 5
+            done
+          fi
+        done
+
+        echo "Pages deployment still failing after $ATTEMPTS attempts for gh-pages@$target_sha." >&2
+        exit 1
