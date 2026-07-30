@@ -1289,6 +1289,11 @@ local says it is title text rather than <code>S03E03</code>.</p>
 (<code>131 Min</code>) is structurally a <code>season+episode</code> split (<code>7x20</code>, <code>10x80</code>, <code>1x31</code>). Nothing local marks
 them as a resolution or a runtime. The related <strong>frame-rate</strong> form <em>is</em> handled — <code>Gladiator 23.976
 FPS</code> correctly yields <code>frame_rate: 23.976fps</code> because the <code>FPS</code> suffix disambiguates it.</p>
+<p>A <strong>video codec</strong> sitting in the same tag block does disambiguate it, and is handled since #933:
+<code>Les.Profs.2013.FRENCH.AC3.1080.x264-Ox</code> yields <code>screen_size: 1080p</code> + <code>video_codec: H.264</code>. The
+cases above have no such neighbour — <code>BrRip.264</code> is a stray number, not an <code>x264</code> codec token. A
+codec quoted in its own group stays neutral, so an absolute episode number survives it
+(<code>[Group] One Piece - 1080 [x264].mkv</code> -&gt; <code>episode: 1080</code>).</p>
 <h3 id="637-a-one-letter-title-followed-by-a-number">#637 — a one-letter title followed by a number<a class="headerlink" href="#637-a-one-letter-title-followed-by-a-number" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>E.60.2020.02.16.Remembering.Coach.Alto.720p.ESPN.WEB-DL.AAC2.0.H.264-KiMCHi.mkv
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  title: &quot;E&quot;   episode: 60                                 (wrong)
