@@ -2,6 +2,23 @@
 
 <!-- version list -->
 
+## v4.2.1 (2026-07-30)
+
+### Bug Fixes
+
+- **episodes**: Apply the codec-token guard to both season-x-episode chains
+  ([#938](https://github.com/guessit-io/guessit/pull/938),
+  [`1bd16a9`](https://github.com/guessit-io/guessit/commit/1bd16a9f52991af761f3d8bf9525174f8b6d41ed))
+
+- **episodes**: Keep a year anchoring the title when the type is forced
+  ([#940](https://github.com/guessit-io/guessit/pull/940),
+  [`d50cbb0`](https://github.com/guessit-io/guessit/commit/d50cbb02698273cb2d195f928f97652315ed48de))
+
+- **episodes**: Scope the episode-word lookup to the match filepart
+  ([#940](https://github.com/guessit-io/guessit/pull/940),
+  [`d50cbb0`](https://github.com/guessit-io/guessit/commit/d50cbb02698273cb2d195f928f97652315ed48de))
+
+
 ## v4.2.0 (2026-07-30)
 
 ### Bug Fixes
