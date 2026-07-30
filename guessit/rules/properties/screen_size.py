@@ -50,7 +50,8 @@ def screen_size(config: dict[str, Any]) -> Rebulk:
     interlaced_pattern = build_or_pattern(interlaced, name="height")
     progressive_pattern = build_or_pattern(progressive, name="height")
 
-    res_pattern = r"(?:(?P<width>\d{3,4})(?:x|\*|×))?"  # noqa: RUF001  # U+00D7 resolution separator
+    res_separator = r"(?:x|\*|×)"  # noqa: RUF001  # U+00D7 resolution separator
+    res_pattern = r"(?:(?P<width>\d{3,4})" + res_separator + r")?"
     upscaled = r"(?:up)?"  # tolerate a trailing "up" (upscaled) marker glued to the resolution (#741)
     rebulk.regex(res_pattern + interlaced_pattern + r"(?P<scan_type>i)" + frame_rate_pattern + "?")
     rebulk.regex(res_pattern + progressive_pattern + r"(?P<scan_type>p)" + frame_rate_pattern + "?")
@@ -61,8 +62,10 @@ def screen_size(config: dict[str, Any]) -> Rebulk:
         value="2160p",
         conflict_solver=lambda match, other: "__default__" if other.name == "screen_size" else match,
     )
+    # The separators around the "x" must be symmetric: "1920x1080" and "1920 x 1080" are resolutions,
+    # while a leading-only separator ("1080.x264") is a resolution followed by a codec (#933).
     rebulk.regex(
-        r"(?P<width>\d{3,4})-?(?:x|\*|×)-?(?P<height>\d{3,4})" + upscaled,  # noqa: RUF001  # U+00D7 separator
+        r"(?P<width>\d{3,4})(?:" + res_separator + r"|-" + res_separator + r"-)(?P<height>\d{3,4})" + upscaled,
         conflict_solver=lambda match, other: "__default__" if other.name == "screen_size" else other,
     )
 
@@ -174,9 +177,11 @@ class ResolveScreenSizeConflicts(Rule):
                 continue
 
             has_neighbor = False
-            video_profile = matches.range(screensize.end, filepart.end, lambda match: match.name == "video_profile", 0)
-            if video_profile and not matches.holes(
-                screensize.end, video_profile.start, predicate=lambda h: h.value and h.value.strip(seps)
+            following = matches.range(
+                screensize.end, filepart.end, lambda match: match.name in ("video_profile", "video_codec"), 0
+            )
+            if following and not matches.holes(
+                screensize.end, following.start, predicate=lambda h: h.value and h.value.strip(seps)
             ):
                 to_remove.extend(conflicts)
                 has_neighbor = True

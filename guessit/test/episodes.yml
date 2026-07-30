@@ -5256,3 +5256,18 @@
   source: Web
   video_codec: H.265
   release_group: FLTTH
+
+# #933: the "season x episode" marker tolerates separators only when they are symmetric —
+# "1 x 03" stays an episode, while a lone leading separator marks a codec token ("1080.x264").
+? Show Name 1 x 03 HDTV.avi
+: title: Show Name
+  season: 1
+  episode: 3
+  source: HDTV
+
+? Show.Name.S01.1080.x264-GRP.mkv
+: title: Show Name
+  season: 1
+  screen_size: 1080p
+  video_codec: H.264
+  release_group: GRP
