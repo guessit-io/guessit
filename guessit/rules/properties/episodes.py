@@ -382,13 +382,16 @@ def episodes(config: dict[str, Any]) -> Rebulk:
 
     # Non-English convention where the number precedes the keyword:
     #   "1ª Temporada", "3 сезон", "5-й сезон", "2.Sezon" (season); "24 серия", "7.Bölüm" (episode).
-    # An optional ordinal suffix (ª/º/°, Portuguese a/o, Russian -й/-я/…) may sit between the two.
+    # An optional ordinal suffix (ª/º/°, Portuguese a/o, Russian -й/-я/…) may sit between the two,
+    # and the total may follow the keyword ("5 серия из 12"), as it does in the word-first patterns.
+    of_count = r"(?:@?" + build_or_pattern(of_words) + r"@?(?P<count>\d+))?"
     rebulk.regex(
         r"(?P<season>\d{1,2})"
         + ordinal_suffix
         + r"@?@?"
         + build_or_pattern(season_words_numfirst, name="seasonMarker")
-        + r"(?![^\W\d_])",
+        + r"(?![^\W\d_])"
+        + of_count,
         tags=["SxxExx", "numfirst"],
         formatter={"season": parse_numeral},
         disabled=is_season_episode_disabled,
@@ -398,7 +401,8 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         + ordinal_suffix
         + r"@?@?"
         + build_or_pattern(episode_words_numfirst, name="episodeMarker")
-        + r"(?![^\W\d_])",
+        + r"(?![^\W\d_])"
+        + of_count,
         tags=["SxxExx", "numfirst"],
         formatter={"episode": parse_numeral},
         disabled=lambda context: is_disabled(context, "episode"),

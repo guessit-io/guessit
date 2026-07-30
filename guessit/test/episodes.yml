@@ -1087,6 +1087,14 @@
   episode_count: 12
   source: HDTV
 
+# Russian numbers its episode before the marker, and its total after it.
+? Show.Name.5.серия.из.12.WEB-DL.1080p
+: title: Show Name
+  episode: 5
+  episode_count: 12
+  source: Web
+  screen_size: 1080p
+
 # "av" is left out of the of-words: it would read the AV1 codec as a total (#950).
 ? Show.Name.Season.2.AV1.1080p
 : title: Show Name
