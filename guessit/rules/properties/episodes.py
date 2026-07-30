@@ -307,7 +307,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         validator={"__parent__": and_(seps_surround, ordering_validator)},
         disabled=is_season_episode_disabled,
     ).defaults(tags=["SxxExx"]).regex(
-        r"(?P<season>\d+)@?" + build_or_pattern(season_ep_markers, name="episodeMarker") + r"@?(?P<episode>\d+)"
+        r"(?P<season>\d+)" + asymmetric_season_ep_marker + r"@?" + season_ep_marker_pattern + r"@?(?P<episode>\d+)"
     ).regex(
         build_or_pattern(
             season_ep_markers + discrete_separators + range_separators, name="episodeSeparator", escape=True

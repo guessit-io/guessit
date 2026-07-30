@@ -5287,12 +5287,21 @@
   video_codec: H.264
   -screen_size: 1080p
 
+# "101" reads as S01E01 whatever the codec spelling follows it — "x264" now behaves like "h264".
 ? Show.Name.101.x264-GRP
 : title: Show Name
-  episode: 101
+  season: 1
+  episode: 1
   video_codec: H.264
   release_group: GRP
   -screen_size: 101x264
+
+? Show.Name.101.h264-GRP
+: title: Show Name
+  season: 1
+  episode: 1
+  video_codec: H.264
+  release_group: GRP
 
 ? Anime - 03 x264 GRP.mkv
 : title: Anime
