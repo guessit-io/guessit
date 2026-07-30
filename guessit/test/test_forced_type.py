@@ -95,6 +95,22 @@ def test_forced_episode_keeps_year_anchored_properties(name: str, expected: dict
         assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
 
 
+@pytest.mark.parametrize(
+    ("name", "expected"),
+    [
+        # The "Complete" marker is anchored on the numbered season word, so it survives the season
+        # chain being off (#944).
+        ("Series/Mad Men Season 1 Complete/Mad.Men.S01E01.avi", {"title": "Mad Men", "other": "Complete"}),
+        ("Something Seasons 1 & 2 - Complete", {"title": "Something", "other": "Complete"}),
+        ("Something Seasons 4 Complete", {"title": "Something", "other": "Complete"}),
+    ],
+)
+def test_forced_movie_keeps_properties_unrelated_to_episodes(name: str, expected: dict[str, object]) -> None:
+    result = guessit(name, {"type": "movie"})
+    for prop, value in expected.items():
+        assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
+
+
 def test_forced_episode_ignores_an_episode_word_from_another_filepart() -> None:
     """A parent directory named "Episode" must not vouch for a number in the file below it."""
     result = guessit("Series/Episode/12.Angry.Men.1957.mkv", {"type": "episode"})

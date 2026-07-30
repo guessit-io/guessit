@@ -142,12 +142,19 @@ def opening_ending_credits(rebulk: Rebulk) -> None:
     add(r"ED", "Ending Credits", ignore_case=False)
 
 
-def complete_words(rebulk: Rebulk, season_words: Iterable[str], complete_article_words: Iterable[str]) -> None:
+def complete_words(
+    rebulk: Rebulk,
+    season_words: Iterable[str],
+    complete_article_words: Iterable[str],
+    season_number_separators: Iterable[str],
+) -> None:
     """
     Custom pattern to find complete seasons from words.
     """
     season_words_pattern = build_or_pattern(season_words)
     complete_article_words_pattern = build_or_pattern(complete_article_words)
+    # The season numbers listed between the season word and the marker: "1", "1 & 2", "1 and 2".
+    season_numbers_pattern = r"(?:-+(?:\d+|" + build_or_pattern(season_number_separators, escape=True) + r"))+-+"
 
     def validate_complete(match: Match) -> bool:
         """
@@ -175,6 +182,20 @@ def complete_words(rebulk: Rebulk, season_words: Iterable[str], complete_article
         value={"other": "Complete"},
         tags=["release-group-prefix"],
         validator={"__parent__": and_(seps_surround, validate_complete)},
+    )
+
+    # "Season 1 Complete", "Seasons 1 & 2 - Complete": the season numbers sit between the season
+    # word and the marker, so the adjacency pattern above cannot see the word. Anchoring on the
+    # numbered season word keeps the marker alive even when nothing matched the numbers — the
+    # season chain is off under a forced ``type=movie`` (#944).
+    rebulk.regex(
+        season_words_pattern + season_numbers_pattern + "(?P<other>Complete)",
+        children=True,
+        private_parent=True,
+        validate_all=True,
+        value={"other": "Complete"},
+        tags=["release-group-prefix"],
+        validator={"__parent__": seps_surround},
     )
 
 
