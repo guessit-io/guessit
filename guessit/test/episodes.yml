@@ -2030,6 +2030,42 @@
   type: movie # Should be episode
   video_codec: Xvid
 
+? Friends.INTEGRALE.MULTi.1080p.BluRay-GRP
+? Friends.INTÉGRALE.MULTi.1080p.BluRay-GRP
+: title: Friends
+  other: Complete
+  language: mul
+  screen_size: 1080p
+  source: Blu-ray
+  release_group: GRP
+  type: movie # Should be episode, see #953
+
+? Malcolm.LIntegrale.FRENCH.DVDRip-GRP
+? Malcolm.L'Integrale.FRENCH.DVDRip-GRP
+: title: Malcolm
+  other: [Complete, Rip]
+  language: French
+  source: DVD
+  release_group: GRP
+  type: movie # Should be episode, see #953
+
+? Engrenages.Coffret.Integrale.FRENCH.1080p-GRP
+: title: Engrenages
+  other: Complete
+  language: French
+  screen_size: 1080p
+  release_group: GRP
+  type: movie # Should be episode, see #953
+
+? Breaking.Bad.INTEGRALE.Saison.1.FRENCH.1080p-GRP
+: title: Breaking Bad
+  other: Complete
+  season: 1
+  language: French
+  screen_size: 1080p
+  release_group: GRP
+  type: episode
+
 ? Show Name The Complete Seasons 1 to 5 720p BluRay x265 HEVC-SUJAIDR[UTR]
 : source: Blu-ray
   other: Complete
