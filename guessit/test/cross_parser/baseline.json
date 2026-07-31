@@ -299,11 +299,6 @@
     "thomas.and.friends.s19e09_s20e14.convert.hdtv.x264-w4f[eztv].mkv": [
       "season",
       "episode"
-    ],
-    "2012 2009 x264 720p Esub BluRay 6.0 Dual Audio English Hindi GOPISAHI": [
-      "title",
-      "year",
-      "video_codec"
     ]
   },
   "ptn": {
@@ -430,6 +425,12 @@
     "[Anime Time] Naruto - 116 - 360 Degrees of Vision The Byakugan's Blind Spot.mkv": [
       "episode"
     ],
+    "[JySzE] Naruto [v2] [R2J] [VFR] [Dual Audio] [Complete] [Extras] [x264]": [
+      "type"
+    ],
+    "[JySzE] Naruto [v3] [R2J] [VFR] [Dual Audio] [Complete] [Extras] [x264]": [
+      "type"
+    ],
     "Naruto Collection [DB 1080p][ Dual Audio ][ English & Arabic Sub ]": [
       "title"
     ],
@@ -467,6 +468,9 @@
     ],
     "xXx.2002.15th.Anniversary.Edition.1080p.BluRay.Remux.AVC.DTS-HD.MA.5.1-FraMeSToR": [
       "title"
+    ],
+    "Dragon Ball Z (Complete Series) [1080p] [MP4] [English Audio]": [
+      "type"
     ],
     "[GM-Team][国漫][太乙仙魔录 灵飞纪 第3季][Magical Legend of Rise to immortality Ⅲ][01-26][AVC][GB][1080P]": [
       "title"

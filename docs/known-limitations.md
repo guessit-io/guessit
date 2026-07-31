@@ -313,6 +313,24 @@ downstream lookup against a real title database.
 The show *19-2* produces `19-2.2014`, which is a valid `DD-M.YYYY` date. A title that is itself a
 date-like number is structurally indistinguishable from an actual date; date detection wins.
 
+## A yearless `COMPLETE` film typed as a series
+
+```text
+The.Matrix.COMPLETE.BLURAY-GRP
+  type: episode                                           (#953)
+  wanted -> type: movie
+
+Lord.of.the.Rings.Trilogy.COMPLETE.BLURAY-GRP
+  type: episode                                           (#953)
+  wanted -> type: movie
+```
+
+`other: Complete` marks two unrelated things: a complete **run** of a series, and a complete
+**disc** of a film. The only local signal separating them is the year — a run spanning several
+years carries none, a film carries its own — so a yearless `COMPLETE` is read as a series. A film
+whose filename omits its release year, and a box set of films, therefore fall on the wrong side.
+Adding the year (`The.Matrix.1999.COMPLETE.BLURAY-GRP`) or `type=movie` settles it.
+
 ## How these could be revisited
 
 Most of the cases above share one root: they need to know whether an ambiguous token is *content*
