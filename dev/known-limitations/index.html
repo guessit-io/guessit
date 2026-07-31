@@ -743,6 +743,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#a-yearless-complete-film-typed-as-a-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        A yearless <code>COMPLETE</code> film typed as a series
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-these-could-be-revisited" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1142,6 +1153,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#a-yearless-complete-film-typed-as-a-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        A yearless <code>COMPLETE</code> film typed as a series
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-these-could-be-revisited" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1411,6 +1433,20 @@ downstream lookup against a real title database.</p>
 </span></code></pre></div>
 <p>The show <em>19-2</em> produces <code>19-2.2014</code>, which is a valid <code>DD-M.YYYY</code> date. A title that is itself a
 date-like number is structurally indistinguishable from an actual date; date detection wins.</p>
+<h2 id="a-yearless-complete-film-typed-as-a-series">A yearless <code>COMPLETE</code> film typed as a series<a class="headerlink" href="#a-yearless-complete-film-typed-as-a-series" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>The.Matrix.COMPLETE.BLURAY-GRP
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>  type: episode                                           (#953)
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>  wanted -&gt; type: movie
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>Lord.of.the.Rings.Trilogy.COMPLETE.BLURAY-GRP
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>  type: episode                                           (#953)
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>  wanted -&gt; type: movie
+</span></code></pre></div>
+<p><code>other: Complete</code> marks two unrelated things: a complete <strong>run</strong> of a series, and a complete
+<strong>disc</strong> of a film. The only local signal separating them is the year — a run spanning several
+years carries none, a film carries its own — so a yearless <code>COMPLETE</code> is read as a series. A film
+whose filename omits its release year, and a box set of films, therefore fall on the wrong side.
+Adding the year (<code>The.Matrix.1999.COMPLETE.BLURAY-GRP</code>) or <code>type=movie</code> settles it.</p>
 <h2 id="how-these-could-be-revisited">How these could be revisited<a class="headerlink" href="#how-these-could-be-revisited" title="Permanent link">&para;</a></h2>
 <p>Most of the cases above share one root: they need to know whether an ambiguous token is <em>content</em>
 (title / episode title) or <em>metadata</em>. Promising directions, none of them free:</p>
