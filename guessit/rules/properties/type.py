@@ -28,6 +28,13 @@ def _type(matches: Matches, value: Any) -> None:
     matches.append(Match(len(matches.input_string), len(matches.input_string), name="type", value=value))
 
 
+def _is_complete_series(match: Match) -> bool:
+    """Whether ``match`` is a completeness marker qualified by a season word."""
+    return match.value == "Complete" and bool(
+        match.children.named("completeWordsBefore") or match.children.named("completeWordsAfter")
+    )
+
+
 def type_(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
@@ -63,6 +70,12 @@ class TypeProcessor(CustomRule):
         episode_details = matches.named("episode_details")
 
         if episode or season or episode_details or absolute_episode:
+            return "episode"
+
+        # "COMPLETE SERIES", "COMPLETE MINISERIES": the season word next to the marker is consumed
+        # into it, so it reaches no property of its own — but a film is never a *series*, whatever
+        # else the name carries. This one holds even against a year, unlike a bare `Complete`.
+        if matches.named("other", predicate=_is_complete_series):
             return "episode"
 
         film = matches.named("film")

@@ -2046,6 +2046,25 @@
   release_group: GRP
   type: episode
 
+# A season word next to the marker outweighs the year: a film is never a *series*.
+? The.Wire.COMPLETE.SERIES.2002.720p.BluRay-GRP
+: title: The Wire
+  year: 2002
+  other: Complete
+  screen_size: 720p
+  source: Blu-ray
+  release_group: GRP
+  type: episode
+
+? Chernobyl.2019.COMPLETE.MINISERIES.1080p.WEB-GRP
+: title: Chernobyl
+  year: 2019
+  other: Complete
+  screen_size: 1080p
+  source: Web
+  release_group: GRP
+  type: episode
+
 ? Kampen Om Tungtvannet aka The Heavy Water War COMPLETE 720p x265 HEVC-Lund
 : title: Kampen Om Tungtvannet aka The Heavy Water War
   other: Complete
