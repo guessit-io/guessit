@@ -560,7 +560,10 @@
         "Full HD": {"string": ["FHD"],"regex": ["Full-?HD"], "validator": null, "tags": ["streaming_service.prefix", "streaming_service.suffix"]},
         "Ultra HD": {"string": ["UHD"],"regex": ["Ultra-?(?:HD)?"], "validator": null, "tags": ["streaming_service.prefix", "streaming_service.suffix"]},
         "Upscaled": {"regex": "Upscaled?"},
-        "Complete": {"string": ["Complet", "Complete"], "tags": ["has-neighbor", "release-group-prefix"]},
+        "Complete": [
+          {"string": ["Complet", "Complete"], "tags": ["has-neighbor", "release-group-prefix"]},
+          {"regex": ["Int[ée]grale"], "tags": ["has-neighbor", "release-group-prefix"]}
+        ],
         "Classic": {"string": "Classic", "tags": ["has-neighbor", "release-group-prefix"]},
         "Bonus": {"string": "Bonus", "tags": ["has-neighbor", "release-group-prefix"]},
         "Trailer": {"string": "Trailer", "tags": ["has-neighbor", "release-group-prefix"]},
@@ -594,7 +597,7 @@
         "Proof": {"string": "Proof", "tags": ["at-end", "not-a-release-group"]},
         "Obfuscated": {"string": ["Obfuscated", "Scrambled"], "tags": ["at-end", "not-a-release-group"]},
         "Repost": {"string": ["xpost", "postbot", "asrequested"], "tags": "not-a-release-group"},
-        "_complete_words": {"callable": "import:guessit.rules.properties.other:complete_words", "season_words": ["seasons?", "series?"], "complete_article_words": ["The"], "season_number_separators": ["&", "and"]}
+        "_complete_words": {"callable": "import:guessit.rules.properties.other:complete_words", "complete_marker_words": ["Complete", "Int[ée]grale"], "season_words": ["seasons?", "mini-?series?", "series?"], "complete_article_words": ["The"], "complete_prefix_words": ["L['’]?", "Coffret"], "season_number_separators": ["&", "and"]}
       },
       "art": {
         "poster": "Poster",

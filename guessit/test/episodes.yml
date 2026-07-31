@@ -2021,14 +2021,102 @@
   type: episode
   video_codec: H.264
 
+? Breaking.Bad.COMPLETE.1080p.BluRay.x264-GRP
+: title: Breaking Bad
+  other: Complete
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: GRP
+  type: episode
+
+? The.Wire.COMPLETE.SERIES.720p.BluRay-GRP
+: title: The Wire
+  other: Complete
+  screen_size: 720p
+  source: Blu-ray
+  release_group: GRP
+  type: episode
+
+? Chernobyl.COMPLETE.MINISERIES.1080p.WEB-GRP
+: title: Chernobyl
+  other: Complete
+  screen_size: 1080p
+  source: Web
+  release_group: GRP
+  type: episode
+
+# A season word next to the marker outweighs the year: a film is never a *series*.
+? The.Wire.COMPLETE.SERIES.2002.720p.BluRay-GRP
+: title: The Wire
+  year: 2002
+  other: Complete
+  screen_size: 720p
+  source: Blu-ray
+  release_group: GRP
+  type: episode
+
+? Chernobyl.2019.COMPLETE.MINISERIES.1080p.WEB-GRP
+: title: Chernobyl
+  year: 2019
+  other: Complete
+  screen_size: 1080p
+  source: Web
+  release_group: GRP
+  type: episode
+
+? Kampen Om Tungtvannet aka The Heavy Water War COMPLETE 720p x265 HEVC-Lund
+: title: Kampen Om Tungtvannet aka The Heavy Water War
+  other: Complete
+  screen_size: 720p
+  video_codec: H.265
+  release_group: Lund
+  type: episode
+
 ? How.I.Met.Your.Mother.COMPLETE.SERIES.DVDRip.XviD-AR
 : options: -L en -C us
   source: DVD
   other: [Complete, Rip]
   release_group: AR
   title: How I Met Your Mother
-  type: movie # Should be episode
+  type: episode
   video_codec: Xvid
+
+? Friends.INTEGRALE.MULTi.1080p.BluRay-GRP
+? Friends.INTÉGRALE.MULTi.1080p.BluRay-GRP
+: title: Friends
+  other: Complete
+  language: mul
+  screen_size: 1080p
+  source: Blu-ray
+  release_group: GRP
+  type: episode
+
+? Malcolm.LIntegrale.FRENCH.DVDRip-GRP
+? Malcolm.L'Integrale.FRENCH.DVDRip-GRP
+: title: Malcolm
+  other: [Complete, Rip]
+  language: French
+  source: DVD
+  release_group: GRP
+  type: episode
+
+? Engrenages.Coffret.Integrale.FRENCH.1080p-GRP
+: title: Engrenages
+  other: Complete
+  language: French
+  screen_size: 1080p
+  release_group: GRP
+  type: episode
+
+? Breaking.Bad.INTEGRALE.Saison.1.FRENCH.1080p-GRP
+: title: Breaking Bad
+  other: Complete
+  season: 1
+  language: French
+  screen_size: 1080p
+  release_group: GRP
+  type: episode
 
 ? Show Name The Complete Seasons 1 to 5 720p BluRay x265 HEVC-SUJAIDR[UTR]
 : source: Blu-ray

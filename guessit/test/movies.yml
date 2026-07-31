@@ -1116,13 +1116,38 @@
   video_codec: H.264
   type: movie
 
-? Kampen Om Tungtvannet aka The Heavy Water War COMPLETE 720p x265 HEVC-Lund
-: title: Kampen Om Tungtvannet aka The Heavy Water War
+? The.Matrix.1999.COMPLETE.BLURAY-GRP
+: title: The Matrix
+  year: 1999
   other: Complete
-  screen_size: 720p
-  video_codec: H.265
-  release_group: Lund
+  source: Blu-ray
+  release_group: GRP
   type: movie
+
+? Heat.1995.COMPLETE.BLURAY.REMUX-GRP
+: title: Heat
+  year: 1995
+  other: [Complete, Remux]
+  source: Blu-ray
+  release_group: GRP
+  type: movie
+
+# The year is the only thing separating a film on a complete disc from a complete run of a
+# series. A film that does not carry its own year, and a box set of films, both fall on the
+# wrong side of that line.
+? The.Matrix.COMPLETE.BLURAY-GRP
+: title: The Matrix
+  other: Complete
+  source: Blu-ray
+  release_group: GRP
+  type: episode # Should be movie, no year to tell it from a complete run
+
+? Lord.of.the.Rings.Trilogy.COMPLETE.BLURAY-GRP
+: title: Lord of the Rings Trilogy
+  other: Complete
+  source: Blu-ray
+  release_group: GRP
+  type: episode # Should be movie, no year to tell it from a complete run
 
 ? All.Fall.Down.x264.PROOFFIX-OUTLAWS
 : title: All Fall Down

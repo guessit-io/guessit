@@ -142,18 +142,32 @@ def opening_ending_credits(rebulk: Rebulk) -> None:
     add(r"ED", "Ending Credits", ignore_case=False)
 
 
+#: A match may only start on a token boundary. Without it a leading word part is a valid starting
+#: point for the regex — the "the" of "Breathe.Complete.Series" opens an article group — and the
+#: whole match is then dropped by ``seps_surround``, taking the real marker down with it: the
+#: scan resumes *after* the rejected span, so "Complete.Series" is never tried.
+_TOKEN_START = r"(?<![^\W_])"
+
+
 def complete_words(
     rebulk: Rebulk,
+    complete_marker_words: Iterable[str],
     season_words: Iterable[str],
     complete_article_words: Iterable[str],
+    complete_prefix_words: Iterable[str],
     season_number_separators: Iterable[str],
 ) -> None:
     """
     Custom pattern to find complete seasons from words.
 
-    ``season_number_separators`` are the tokens that may join the season numbers a marker spans,
-    e.g. the ``&`` of "Seasons 1 & 2 - Complete"; plain separators are always allowed.
+    ``complete_marker_words`` are the completeness markers themselves, ``Complete`` and its
+    equivalents in other languages. ``complete_article_words`` only qualify a marker that a season
+    word already anchors ("The Complete Series"), whereas ``complete_prefix_words`` carry the
+    completeness on their own ("L'Intégrale", "Coffret Intégrale"). ``season_number_separators``
+    are the tokens that may join the season numbers a marker spans, e.g. the ``&`` of
+    "Seasons 1 & 2 - Complete"; plain separators are always allowed.
     """
+    complete_marker_pattern = build_or_pattern(complete_marker_words)
     season_words_pattern = build_or_pattern(season_words)
     complete_article_words_pattern = build_or_pattern(complete_article_words)
     # The season numbers listed between the season word and the marker: "1", "1 & 2", "1 and 2".
@@ -171,13 +185,14 @@ def complete_words(
         return not (not children.named("completeWordsBefore") and not children.named("completeWordsAfter"))
 
     rebulk.regex(
-        "(?P<completeArticle>"
+        _TOKEN_START
+        + "(?P<completeArticle>"
         + complete_article_words_pattern
         + "-)?"
         + "(?P<completeWordsBefore>"
         + season_words_pattern
         + "-)?"
-        + "Complete"
+        + complete_marker_pattern
         + "(?P<completeWordsAfter>-"
         + season_words_pattern
         + ")?",
@@ -192,10 +207,26 @@ def complete_words(
     # numbered season word keeps the marker alive even when nothing matched the numbers — the
     # season chain is off under a forced ``type=movie`` (#944).
     rebulk.regex(
-        season_words_pattern + season_numbers_pattern + "(?P<other>Complete)",
+        season_words_pattern + season_numbers_pattern + "(?P<other>" + complete_marker_pattern + ")",
         children=True,
         private_parent=True,
         validate_all=True,
+        value={"other": "Complete"},
+        tags=["release-group-prefix"],
+        validator={"__parent__": seps_surround},
+    )
+
+    # "L'Intégrale", "Coffret Intégrale": the prefix carries the completeness with no season word
+    # to anchor on, so the first pattern rejects it. The separator is optional because the French
+    # elided article glues to the marker — the apostrophe is not a separator, so "L'Intégrale" is
+    # a single token that has to be matched whole for the marker to leave the title.
+    rebulk.regex(
+        _TOKEN_START
+        + "(?P<completePrefix>"
+        + build_or_pattern(complete_prefix_words)
+        + "-?)"
+        + complete_marker_pattern,
+        private_names=["completePrefix"],
         value={"other": "Complete"},
         tags=["release-group-prefix"],
         validator={"__parent__": seps_surround},

@@ -28,6 +28,13 @@ def _type(matches: Matches, value: Any) -> None:
     matches.append(Match(len(matches.input_string), len(matches.input_string), name="type", value=value))
 
 
+def _is_complete_series(match: Match) -> bool:
+    """Whether ``match`` is a completeness marker qualified by a season word."""
+    return match.value == "Complete" and bool(
+        match.children.named("completeWordsBefore") or match.children.named("completeWordsAfter")
+    )
+
+
 def type_(config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
@@ -65,6 +72,12 @@ class TypeProcessor(CustomRule):
         if episode or season or episode_details or absolute_episode:
             return "episode"
 
+        # "COMPLETE SERIES", "COMPLETE MINISERIES": the season word next to the marker is consumed
+        # into it, so it reaches no property of its own — but a film is never a *series*, whatever
+        # else the name carries. This one holds even against a year, unlike a bare `Complete`.
+        if matches.named("other", predicate=_is_complete_series):
+            return "episode"
+
         film = matches.named("film")
         if film:
             return "movie"
@@ -77,6 +90,14 @@ class TypeProcessor(CustomRule):
 
         bonus = matches.named("bonus")
         if bonus and not year:
+            return "episode"
+
+        # A complete run of a series spans several years and so carries none of its own, whereas a
+        # film on a complete disc carries its release year. The year is the only signal that tells
+        # the two apart, and neither half is a proof: a film whose name omits its year, or a box
+        # set of films, still lands on the episode side (#953).
+        complete = matches.named("other", lambda match: match.value == "Complete")
+        if complete and not year:
             return "episode"
 
         crc32 = matches.named("crc32")
