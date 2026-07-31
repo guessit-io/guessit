@@ -79,6 +79,14 @@ class TypeProcessor(CustomRule):
         if bonus and not year:
             return "episode"
 
+        # A complete run of a series spans several years and so carries none of its own, whereas a
+        # film on a complete disc carries its release year. The year is the only signal that tells
+        # the two apart, and neither half is a proof: a film whose name omits its year, or a box
+        # set of films, still lands on the episode side (#953).
+        complete = matches.named("other", lambda match: match.value == "Complete")
+        if complete and not year:
+            return "episode"
+
         crc32 = matches.named("crc32")
         anime_release_group = matches.named("release_group", lambda match: "anime" in match.tags)
         if crc32 and anime_release_group:
