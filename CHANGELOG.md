@@ -2,6 +2,25 @@
 
 <!-- version list -->
 
+## v4.4.0 (2026-07-31)
+
+### Bug Fixes
+
+- **other**: Anchor the complete marker on a token boundary
+  ([`39ae8ce`](https://github.com/guessit-io/guessit/commit/39ae8ce7463a6f64a0a3be8b7cb8b080864aa454))
+
+### Features
+
+- **other**: Read the French INTEGRALE as a complete run
+  ([`5f8bc4e`](https://github.com/guessit-io/guessit/commit/5f8bc4e6360ca0126384839525214fd628ff1b92))
+
+- **type**: Let a complete series outweigh the year
+  ([`f1297d9`](https://github.com/guessit-io/guessit/commit/f1297d9c698859ee77ddfd887c7c13099f841eba))
+
+- **type**: Type a yearless complete run as an episode
+  ([`e7a28c1`](https://github.com/guessit-io/guessit/commit/e7a28c16e71700be60f3b5f79344eccd97a184b8))
+
+
 ## v4.3.0 (2026-07-30)
 
 ### Bug Fixes

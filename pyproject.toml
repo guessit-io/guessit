@@ -1,6 +1,6 @@
 [project]
 name = "guessit"
-version = "4.3.0"
+version = "4.4.0"
 description = "GuessIt - a library for guessing information from video filenames."
 dynamic = ["readme"]
 license = "LGPL-3.0-or-later"
