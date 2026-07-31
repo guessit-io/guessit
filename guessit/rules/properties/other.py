@@ -142,6 +142,13 @@ def opening_ending_credits(rebulk: Rebulk) -> None:
     add(r"ED", "Ending Credits", ignore_case=False)
 
 
+#: A match may only start on a token boundary. Without it a leading word part is a valid starting
+#: point for the regex — the "the" of "Breathe.Complete.Series" opens an article group — and the
+#: whole match is then dropped by ``seps_surround``, taking the real marker down with it: the
+#: scan resumes *after* the rejected span, so "Complete.Series" is never tried.
+_TOKEN_START = r"(?<![^\W_])"
+
+
 def complete_words(
     rebulk: Rebulk,
     season_words: Iterable[str],
@@ -171,7 +178,8 @@ def complete_words(
         return not (not children.named("completeWordsBefore") and not children.named("completeWordsAfter"))
 
     rebulk.regex(
-        "(?P<completeArticle>"
+        _TOKEN_START
+        + "(?P<completeArticle>"
         + complete_article_words_pattern
         + "-)?"
         + "(?P<completeWordsBefore>"

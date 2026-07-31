@@ -134,6 +134,12 @@
 ? +The complete movie
 : title: The complete movie
 
+# A leading word part must not open the article group: the "the" of "Breathe" used to swallow
+# the whole match, and the marker went down with it.
+? Breathe.Complete.Series.1080p-GRP
+: other: Complete
+  title: Breathe
+
 ? +AC3-HQ
 : audio_profile: High Quality
 
