@@ -164,6 +164,44 @@ class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
             predicate=lambda match: match.name == name,
         )
 
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        # Only decide when the SxxExx weights strictly differ. Equally-specific fileparts
+        # ("S06E01.E10" pack dir vs "S06E09" file) are left to the generic RemoveAmbiguous,
+        # whose full-property weight and rightmost preference pick the correct side.
+        def sxx_exx(match: Match) -> bool:
+            return match.name in ("season", "episode") and "SxxExx" in match.tags
+
+        markers = matches.markers.named("path")
+        if len(markers) > 1:
+            weights = [
+                len({match.name for match in matches.range(marker.start, marker.end, predicate=sxx_exx)})
+                for marker in markers
+            ]
+            top = max(weights)
+            if weights.count(top) > 1:
+                return []
+        return super().when(matches, context)
+
+
+class RemoveLessSpecificSeason(RemoveLessSpecificSeasonEpisode):
+    """
+    Distinct subclass so both season and episode passes survive rule registration: rebulk's
+    ``Rule.__eq__``/``__hash__`` compare by class only, so two instances of the same class are
+    deduplicated by ``extend_safe`` when rebulk objects are merged and only the first one executes.
+    """
+
+    def __init__(self) -> None:
+        super().__init__("season")
+
+
+class RemoveLessSpecificEpisode(RemoveLessSpecificSeasonEpisode):
+    """
+    See :class:`RemoveLessSpecificSeason`.
+    """
+
+    def __init__(self) -> None:
+        super().__init__("episode")
+
 
 def _preferred_string(value1: str, value2: str) -> str:
     """
@@ -288,8 +326,8 @@ def processors(config: dict[str, Any]) -> Rebulk:
     return Rebulk().rules(
         EnlargeGroupMatches,
         EquivalentHoles,
-        RemoveLessSpecificSeasonEpisode("season"),
-        RemoveLessSpecificSeasonEpisode("episode"),
+        RemoveLessSpecificSeason,
+        RemoveLessSpecificEpisode,
         RemoveAmbiguous,
         SeasonYear,
         YearSeason,
