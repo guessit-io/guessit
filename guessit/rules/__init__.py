@@ -54,6 +54,7 @@ def rebulk_builder(config: dict[str, Any]) -> Rebulk:
     rebulk = Rebulk()
 
     common_words = frozenset(_config("common_words"))
+    year_config = _config("year")
 
     rebulk.rebulk(path(_config("path")))
     rebulk.rebulk(groups(_config("groups")))
@@ -65,7 +66,7 @@ def rebulk_builder(config: dict[str, Any]) -> Rebulk:
     rebulk.rebulk(audio_codec(_config("audio_codec")))
     rebulk.rebulk(screen_size(_config("screen_size")))
     rebulk.rebulk(website(_config("website")))
-    rebulk.rebulk(date(_config("date")))
+    rebulk.rebulk(date(_config("date"), year_config))
     rebulk.rebulk(title(_config("title")))
     rebulk.rebulk(episode_title(_config("episode_title")))
     rebulk.rebulk(language(_config("language"), common_words))
@@ -84,7 +85,7 @@ def rebulk_builder(config: dict[str, Any]) -> Rebulk:
     rebulk.rebulk(volume(_config("volume")))
     rebulk.rebulk(imdb(_config("imdb")))
 
-    rebulk.rebulk(processors(_config("processors")))
+    rebulk.rebulk(processors(_config("processors"), year_config))
 
     rebulk.rebulk(mimetype(_config("mimetype")))
     rebulk.rebulk(type_(_config("type")))

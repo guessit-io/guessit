@@ -20,15 +20,22 @@ if TYPE_CHECKING:
     from rebulk.match import Match, Matches
 
 
-def date(config: dict[str, Any]) -> Rebulk:
+def date(config: dict[str, Any], year_config: dict[str, Any] | None = None) -> Rebulk:
     """
     Builder for rebulk object.
 
     :param config: rule configuration
     :type config: dict
+    :param year_config: year rule configuration
+    :type year_config: dict or None
     :return: Created Rebulk object
     :rtype: Rebulk
     """
+    if year_config is None:
+        year_config = config.get("year", config)
+    min_year: int = year_config.get("min", 1900)
+    max_year: int = year_config.get("max", 2035)
+
     rebulk = Rebulk().defaults(validator=seps_surround)
 
     rebulk.regex(
@@ -39,8 +46,11 @@ def date(config: dict[str, Any]) -> Rebulk:
         conflict_solver=lambda match, other: (
             other if other.name in ("episode", "season") and len(other.raw) < len(match.raw) else "__default__"
         ),
-        validator=lambda match: seps_surround(match) and valid_year(match.value),
+        validator=lambda match: seps_surround(match) and valid_year(match.value, min_year=min_year, max_year=max_year),
     )
+
+    def is_valid_year_match(match: Match) -> bool:
+        return valid_year(int(match.value), min_year=min_year, max_year=max_year)
 
     rebulk.chain(
         tags=["year-range"],
@@ -48,7 +58,7 @@ def date(config: dict[str, Any]) -> Rebulk:
         children=True,
         private_parent=True,
         validate_all=True,
-        validator={"__parent__": and_(seps_surround, _is_ascending_year_range), "year": _is_valid_year_match},
+        validator={"__parent__": and_(seps_surround, _is_ascending_year_range), "year": is_valid_year_match},
         formatter={"year": int},
         conflict_solver=lambda match, other: (
             other if other.name in ("episode", "season") and len(other.raw) <= len(match.raw) else "__default__"
@@ -80,7 +90,12 @@ def date(config: dict[str, Any]) -> Rebulk:
         """
 
         ret = search_date(
-            string, context.get("date_year_first"), context.get("date_day_first"), context.get("type") == "movie"
+            string,
+            context.get("date_year_first"),
+            context.get("date_day_first"),
+            context.get("type") == "movie",
+            min_year=min_year,
+            max_year=max_year,
         )
         if ret:
             return ret[0], ret[1], {"value": ret[2]}

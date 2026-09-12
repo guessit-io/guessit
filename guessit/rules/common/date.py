@@ -43,10 +43,13 @@ def _build_date_regexps(guard: str = "") -> list[re.Pattern[str]]:
 date_regexps = _build_date_regexps()
 _movie_date_regexps = _build_date_regexps(_not_decimal)
 
+_DEFAULT_MIN_YEAR = 1900
+_DEFAULT_MAX_YEAR = 2035
 
-def valid_year(year: int) -> bool:
+
+def valid_year(year: int, min_year: int = _DEFAULT_MIN_YEAR, max_year: int = _DEFAULT_MAX_YEAR) -> bool:
     """Check if number is a valid year"""
-    return 1900 <= year < 2035
+    return min_year <= year <= max_year
 
 
 def valid_week(week: int) -> bool:
@@ -70,7 +73,9 @@ def _is_int(string: str) -> bool:
         return False
 
 
-def _guess_day_first_parameter(groups: tuple[Any, ...]) -> bool | None:
+def _guess_day_first_parameter(
+    groups: tuple[Any, ...], min_year: int = _DEFAULT_MIN_YEAR, max_year: int = _DEFAULT_MAX_YEAR
+) -> bool | None:
     """
     If day_first is not defined, use some heuristic to fix it.
     It helps to solve issues with python dateutils 2.5.3 parser changes.
@@ -82,22 +87,27 @@ def _guess_day_first_parameter(groups: tuple[Any, ...]) -> bool | None:
     """
 
     # If match starts with a long year, then day_first is force to false.
-    if _is_int(groups[0]) and valid_year(int(groups[0][:4])):
+    if _is_int(groups[0]) and valid_year(int(groups[0][:4]), min_year=min_year, max_year=max_year):
         return False
     # If match ends with a long year, the day_first is forced to true.
-    if _is_int(groups[-1]) and valid_year(int(groups[-1][-4:])):
+    if _is_int(groups[-1]) and valid_year(int(groups[-1][-4:]), min_year=min_year, max_year=max_year):
         return True
     # If match starts with a short year, then day_first is force to false.
     if _is_int(groups[0]) and int(groups[0][:2]) > 31:
         return False
-    # If match ends with a short year, then day_first is force to true.
+    # If match ends with a short year, then day_first is forced to true.
     if _is_int(groups[-1]) and int(groups[-1][-2:]) > 31:
         return True
     return None
 
 
 def search_date(
-    string: str, year_first: bool | None = None, day_first: bool | None = None, movie: bool = False
+    string: str,
+    year_first: bool | None = None,
+    day_first: bool | None = None,
+    movie: bool = False,
+    min_year: int = _DEFAULT_MIN_YEAR,
+    max_year: int = _DEFAULT_MAX_YEAR,
 ) -> tuple[int, int, date] | None:
     """Looks for date patterns, and if found return the date and group span.
 
@@ -139,7 +149,7 @@ def search_date(
             day_first = False
 
         if day_first is None:
-            day_first = _guess_day_first_parameter(groups)
+            day_first = _guess_day_first_parameter(groups, min_year=min_year, max_year=max_year)
 
         # If day_first/year_first is undefined, parse is made using both possible values.
         yearfirst_opts = [False, True]
@@ -159,6 +169,6 @@ def search_date(
                 date = None
 
             # check date plausibility
-            if date and valid_year(date.year):
+            if date and valid_year(date.year, min_year=min_year, max_year=max_year):
                 return start, end, date.date()
     return None
