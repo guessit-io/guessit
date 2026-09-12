@@ -10,11 +10,11 @@
 ? +2015.01.31
 : date: 2015-01-31
 
-# valid_year upper bound widened to 2035 (#646/#815): for this fully ambiguous
-# 2-digit date both 15 and 31 are plausible years, and 2031 is now valid, so
-# dateutil resolves it day-first (15 Jan 2031).
-? +15.01.31
-: date: 2031-01-15
+# valid_year upper bound is next year (#967): for this fully ambiguous
+# 2-digit date both 15 and 27 are plausible years, and 2026 is valid, so
+# dateutil resolves it day-first (15 Jan 2026).
+? +15.01.26
+: date: 2026-01-15
 
 ? +01.02.03
 : date: 2003-02-01
@@ -31,8 +31,8 @@
 ? 2030
 : !!map {}
 
-? 2029
-: year: 2029
+? 2027
+: year: 2027
 
 ? (1920)
 : year: 1920
