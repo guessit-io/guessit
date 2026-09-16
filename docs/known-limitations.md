@@ -136,7 +136,7 @@ Blade Runner 2049.HDRip.XviD.AC3-EVO.avi
   wanted -> title: "Blade Runner 2049"   (year 2017, from the real release)
 ```
 
-`2049` is part of the **title**. It is not a valid year (`valid_year` accepts `1900 ≤ y < 2035`) and
+`2049` is part of the **title**. It is not a valid year (`valid_year` accepts `1900 ≤ y ≤ next year`) and
 structurally matches a `season+episode` split (`20`/`49`). When the real release year is present the
 result is correct (`Blade.Runner.2049.2017…` → title `Blade Runner 2049`); without it there is no
 local signal that `2049` is title text. As the reporter notes, disambiguating this reliably needs an

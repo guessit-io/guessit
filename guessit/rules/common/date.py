@@ -5,13 +5,11 @@ Date
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from datetime import date
+from typing import Any
 
 from dateutil import parser
 from rebulk.remodule import re
-
-if TYPE_CHECKING:
-    from datetime import date
 
 _dsep = r"[-/ \.]"
 _dsep_bis = r"[-/ \.x]"
@@ -32,10 +30,12 @@ date_regexps = [
     ),
 ]
 
+max_valid_year = date.today().year + 1
+
 
 def valid_year(year: int) -> bool:
     """Check if number is a valid year"""
-    return 1900 <= year < 2035
+    return 1900 <= year <= max_valid_year
 
 
 def valid_week(week: int) -> bool:
