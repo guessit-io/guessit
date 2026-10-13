@@ -175,6 +175,12 @@
 ? -HDR100
 : other: HDR10
 
+? HDR10+
+? HDR10Plus
+? HDR10P
+? -HDR10Pro
+: other: HDR10+
+
 ? BT2020
 ? BT.2020
 ? -BT.20200
