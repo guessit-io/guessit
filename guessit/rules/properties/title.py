@@ -565,12 +565,18 @@ class TitleWordAtTitlePosition(Rule):
     marker, so a ``title-word`` before the anchor cannot be the property regardless of case
     ("opus", "Opus" or "OPUS" all read as the title here). A spelling that appears after the
     anchor, among the other tags, stays the property.
+
+    A value glued to another property (only separators between them) continues that tag run
+    rather than the title, so it stays the property even before the anchor: the "2.0" of
+    ``Movie.AAC2.0.2008`` is the channel layout of the AAC codec, while the bare "2.0" of
+    ``M3GAN.2.0.2025`` is the title's sequel number (#963).
     """
 
     priority = 64
     consequence = RemoveMatch
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        input_string = matches.input_string or ""
         to_remove: list[Match] = []
         for candidate in matches.tagged("title-word"):
             if candidate.private:
@@ -585,6 +591,13 @@ class TitleWordAtTitlePosition(Rule):
                 0,
             )
             if not anchor or candidate.start >= anchor.start:
+                continue
+            previous = matches.previous(candidate, lambda m: not m.private and not m.tagged("title-word"), 0)
+            if (
+                previous
+                and previous.end >= filepart.start
+                and all(ch in seps for ch in input_string[previous.end : candidate.start])
+            ):
                 continue
             to_remove.append(candidate)
         return to_remove
