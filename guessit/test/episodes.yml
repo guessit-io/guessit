@@ -4317,7 +4317,7 @@
 : title: Marvels Agents of S.H.I.E.L.D.
   season: 1
   episode: 2
-  episode_title: 0.8.4.
+  episode_title: 0.8.4
   screen_size: 720p
   source: Web
   container: mkv
@@ -5491,3 +5491,21 @@
   season: 1
   episode: 1
   -country: GB
+
+# A dotted number keeps its dots when nothing else around it is a dot separator, and loses the
+# trailing one that only ends it (#963).
+? Kaiju.No.8.S01E04.Fortitude.9.8.1080p.BluRay.AAC2.0.x264-VALKYRiE.mkv
+: title: Kaiju No 8
+  season: 1
+  episode: 4
+  episode_title: Fortitude 9.8
+  audio_codec: AAC
+  audio_channels: '2.0'
+  release_group: VALKYRiE
+
+? Mr.Robot.S01E01.eps1.0_hellofriend.mov.1080p.BluRay.DD5.1.x264-SA89.mkv
+: title: Mr Robot
+  season: 1
+  episode: 1
+  episode_title: eps1.0 hellofriend
+  release_group: SA89

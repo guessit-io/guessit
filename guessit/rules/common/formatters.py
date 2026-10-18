@@ -18,6 +18,8 @@ for sep in seps:
     if sep not in _excluded_clean_chars:
         clean_chars += sep
 
+_decimal_re = re.compile(r"(?<![\d.])\d+(?:\.\d+)+(?![\d.])")
+
 
 def _potential_before(i: int, input_string: str) -> bool:
     """
@@ -81,6 +83,10 @@ def cleanup(input_string: str) -> str:
         replace_indices = []
 
         for potential_index in potential_indices:
+            # A trailing separator after a digit ends a number ("M3GAN.2.0." -> "M3GAN 2.0"), it is
+            # not the closing dot of an abbreviation ("S.H.I.E.L.D.").
+            if input_string[potential_index - 1].isdigit() and not input_string[potential_index + 1 :].strip(seps):
+                continue
             if potential_index - 2 in potential_indices or potential_index + 2 in potential_indices:
                 replace_indices.append(potential_index)
 
@@ -89,6 +95,15 @@ def cleanup(input_string: str) -> str:
                 dots.add(input_string[replace_index])
                 clean_list[replace_index] = input_string[replace_index]
             clean_string = "".join(clean_list)
+
+    # A dotted number that touches no other dot is a decimal in a name separated by something else
+    # ("M3GAN 2.0 (2025)" -> "M3GAN 2.0"), not a run of dot separators ("M3GAN.2.0.2025").
+    decimal_dots = [n.start() + i for n in _decimal_re.finditer(input_string) for i, c in enumerate(n[0]) if c == "."]
+    if decimal_dots:
+        clean_list = list(clean_string)
+        for i in decimal_dots:
+            clean_list[i] = "."
+        clean_string = "".join(clean_list)
 
     clean_string = strip(clean_string, "".join([c for c in seps if c not in dots]))
 
