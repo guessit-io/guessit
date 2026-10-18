@@ -2221,3 +2221,56 @@
   screen_size: 720p
   video_codec: H.264
   -season: 720
+
+# A bare 1.0/2.0 in the title zone (before the year) numbers the title, it is not a channel layout.
+? Ghost.In.The.Shell.2.0.2008.1080p.BluRay.x264-MOOVEE
+: title: Ghost In The Shell 2.0
+  year: 2008
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: MOOVEE
+  type: movie
+  -audio_channels: '2.0'
+
+? M3GAN.2.0.2025.UNRATED.1080p.BluRay.x264-ROEN
+: title: M3GAN 2.0
+  year: 2025
+  edition: Unrated
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: ROEN
+  type: movie
+  -audio_channels: '2.0'
+
+? Evangelion.1.0.You.Are.Not.Alone.2007.1080p.BluRay.x264-GRP
+: year: 2007
+  screen_size: 1080p
+  source: Blu-ray
+  video_codec: H.264
+  release_group: GRP
+  type: movie
+  -audio_channels: '1.0'
+
+# A channel layout glued to its codec stays a channel layout, even before the year.
+? Movie.AAC2.0.2008
+? Movie.AAC.2.0.2008
+: title: Movie
+  audio_codec: AAC
+  audio_channels: '2.0'
+  year: 2008
+  type: movie
+
+# The same holds in a space-separated name, where the dot can only be the decimal point.
+? M3GAN 2.0 (2025).mkv
+: title: M3GAN 2.0
+  year: 2025
+  type: movie
+  -audio_channels: '2.0'
+
+? Ghost in the Shell 2.0 (2008)/Ghost in the Shell 2.0 (2008).mkv
+: title: Ghost in the Shell 2.0
+  year: 2008
+  type: movie
+  -audio_channels: '2.0'
