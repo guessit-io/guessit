@@ -53,3 +53,27 @@
 : title: Something
   date: 2013-03-02
   type: episode
+
+# With the movie hint, a single-digit day and month joined by a dot read as a decimal number, not
+# a date (#963): "Jackass.2.5.2007" is the 2.5 sequel from 2007. Padded dates stay dates.
+? Something 2.5.2007
+: options: -t movie
+  title: Something 2.5
+  year: 2007
+  -date: 2007-05-02
+
+? Something.02.05.2007
+: options: -t movie
+  title: Something
+  date: 2007-05-02
+  type: movie
+
+# Without the hint the dotted pair stays ambiguous with an unpadded air date ("Show.2.5.2024"), so
+# it stays a date like the padded, dash- and space-separated spellings.
+? Something.2.5.2007
+? Something 02.05.2007
+? Something 2-5-2007
+? Something 2 5 2007
+: title: Something
+  date: 2007-05-02
+  type: episode

@@ -2222,6 +2222,71 @@
   video_codec: H.264
   -season: 720
 
+# A decimal sequel/version number in the title is neither an air date nor a channel layout (#963).
+# With the movie hint, a day and a month that are both single unpadded digits joined by a dot read
+# as a decimal number, so the release keeps its year. Without it they stay a date (rules/date.yml).
+? Jackass.2.5.2007.DVDRip.x264.AC3-DEEP
+: options: -t movie
+  title: Jackass 2.5
+  year: 2007
+  source: DVD
+  other: Rip
+  video_codec: H.264
+  audio_codec: Dolby Digital
+  release_group: DEEP
+  type: movie
+  -date: 2007-05-02
+
+? Jackass.3.5.2011.Unrated.720p.BluRay.DD5.1.x264-EbP
+: options: -t movie
+  title: Jackass 3.5
+  year: 2011
+  edition: Unrated
+  screen_size: 720p
+  source: Blu-ray
+  audio_codec: Dolby Digital
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: EbP
+  type: movie
+
+? Jackass.4.5.2022.1080p.NF.WEB-DL.DDP5.1.x264-KHN
+: options: -t movie
+  title: Jackass 4.5
+  year: 2022
+  screen_size: 1080p
+  streaming_service: Netflix
+  source: Web
+  audio_codec: Dolby Digital Plus
+  audio_channels: '5.1'
+  video_codec: H.264
+  release_group: KHN
+  type: movie
+
+# The same guard keeps a dotted number run ("3.0.1.11", "1.2.3") from yielding a date, so the real
+# year is no longer swallowed into an episode title.
+? Evangelion.3.0.1.11.Thrice.Upon.A.Time.2021.COMPLETE.UHD.BLURAY-NERV
+: options: -t movie
+  year: 2021
+  other: Complete
+  source: Ultra HD Blu-ray
+  release_group: NERV
+  type: movie
+  -date: 2000-11-01
+  -alternative_title: Thrice Upon A Time 2021
+
+? The.Taking.of.Pelham.1.2.3.2009.1080p.BluRay.DTS.x264-EbP
+: options: -t movie
+  title: The Taking of Pelham 1.2.3
+  year: 2009
+  screen_size: 1080p
+  source: Blu-ray
+  audio_codec: DTS
+  video_codec: H.264
+  release_group: EbP
+  type: movie
+  -date: 2009-03-02
+
 # A bare 1.0/2.0 in the title zone (before the year) numbers the title, it is not a channel layout.
 ? Ghost.In.The.Shell.2.0.2008.1080p.BluRay.x264-MOOVEE
 : title: Ghost In The Shell 2.0
