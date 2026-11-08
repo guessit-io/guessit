@@ -491,6 +491,32 @@
   other: Rip
   release_group: MiND
 
+? "[Erai-raws] Show Name - 02 [720p][Multi].strm"
+: title: Show Name
+  episode: 2
+  screen_size: 720p
+  release_group: Erai-raws
+  container: strm
+  type: episode
+
+? Show.Name.S01E02.1080p-NINJA.strm
+: title: Show Name
+  season: 1
+  episode: 2
+  screen_size: 1080p
+  release_group: NINJA
+  container: strm
+  type: episode
+
+? Show.Name.S01E02.1080p-NINJA.vtt
+: title: Show Name
+  season: 1
+  episode: 2
+  screen_size: 1080p
+  release_group: NINJA
+  container: vtt
+  type: episode
+
 ? Dexter Saison sept FRENCH.BDRip.XviD-MiND.nfo
 : title: Dexter
   season: 7
