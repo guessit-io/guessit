@@ -15,15 +15,15 @@ def test_config_locations() -> None:
     locations = get_options_file_locations(homedir, cwd, True)
     assert len(locations) == 9
 
-    assert "/root/.guessit/options.json" in locations
-    assert "/root/.guessit/options.yml" in locations
-    assert "/root/.guessit/options.yaml" in locations
-    assert "/root/.config/guessit/options.json" in locations
-    assert "/root/.config/guessit/options.yml" in locations
-    assert "/root/.config/guessit/options.yaml" in locations
-    assert "/root/cwd/guessit.options.json" in locations
-    assert "/root/cwd/guessit.options.yml" in locations
-    assert "/root/cwd/guessit.options.yaml" in locations
+    assert os.path.join(homedir, ".guessit", "options.json") in locations
+    assert os.path.join(homedir, ".guessit", "options.yml") in locations
+    assert os.path.join(homedir, ".guessit", "options.yaml") in locations
+    assert os.path.join(homedir, ".config", "guessit", "options.json") in locations
+    assert os.path.join(homedir, ".config", "guessit", "options.yml") in locations
+    assert os.path.join(homedir, ".config", "guessit", "options.yaml") in locations
+    assert os.path.join(cwd, "guessit.options.json") in locations
+    assert os.path.join(cwd, "guessit.options.yml") in locations
+    assert os.path.join(cwd, "guessit.options.yaml") in locations
 
 
 def test_merge_configurations() -> None:

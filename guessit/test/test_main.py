@@ -15,7 +15,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 # Prevent output from spamming the console
 @pytest.fixture(autouse=True)
 def no_stdout(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
-    with open(os.devnull, "w") as f:
+    with open(os.devnull, "w", encoding="utf-8") as f:
         monkeypatch.setattr(sys, "stdout", f)
         yield
 
