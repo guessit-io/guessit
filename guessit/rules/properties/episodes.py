@@ -546,11 +546,14 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     )
 
     rebulk.rules(
+        RemoveGroupIdSeasonEpisode,
         NumberFirstConflict(seps),
         WeakConflictSolver,
         RemoveInvalidSeason,
         RemoveInvalidEpisode,
         SeePatternRange([*range_separators, "_"]),
+        SeasonWordDashEpisode(range_separators),
+        ParenthesizedSeasonRangeAsEpisode,
         EpisodeNumberSeparatorRange(range_separators),
         SeasonSeparatorRange(range_separators),
         RemoveWeakIfMovie(episode_words),
@@ -568,6 +571,54 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     )
 
     return rebulk
+
+
+class RemoveGroupIdSeasonEpisode(Rule):
+    """
+    A leading ``[0x<hex>]`` bracket (e.g. ``[0x539]``) is a release-group hex id, not season 0
+    x episode (#875). Left alone, the "N x EE" marker convention matches it and wins the
+    match-conflict resolution (it carries an "x" in its raw text) over a real ``S01E01``-style
+    match later in the name, corrupting both the season/episode and the release group.
+
+    Restricted to season 0 -- the hallmark of a "0x..." hex id -- and requires another
+    real season/episode match elsewhere, so a genuine bracketed "0x05" used as the only
+    season/episode indicator is left untouched.
+    """
+
+    priority = PRE_PROCESS + 1
+    consequence = RemoveMatch
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        for filepart in matches.markers.named("path"):
+            # Closure consumed within this iteration; late binding (B023) is intentional and safe.
+            group = matches.markers.range(
+                filepart.start,
+                filepart.end,
+                lambda m: m.name == "group" and m.start == filepart.start,  # noqa: B023
+                0,
+            )
+            if not group:
+                continue
+            seasons = matches.range(
+                group.start,
+                group.end,
+                lambda m: m.name == "season" and m.value == 0 and "SxxExx" in m.tags,
+            )
+            if not seasons:
+                continue
+            other_season = matches.range(
+                group.end, filepart.end, lambda m: m.name == "season" and not m.private and "SxxExx" in m.tags, 0
+            )
+            if not other_season:
+                continue
+            for season in seasons:
+                initiator = season.initiator
+                if initiator.start != group.start + 1 or initiator.end != group.end - 1:
+                    continue
+                to_remove.append(initiator)
+                to_remove.extend(initiator.children)
+        return to_remove
 
 
 class NumberFirstConflict(Rule):
@@ -980,6 +1031,111 @@ class SeasonSeparatorRange(AbstractSeparatorRange):
         super().__init__(range_separators, "season")
 
 
+class AbstractSeasonSeparatorAsEpisode(Rule):
+    """
+    Shared machinery for reinterpreting a single-hop "season <sep> season" chain as
+    season=N, episode=M rather than a season range N..M (#875).
+
+    A subclass supplies the structural evidence (:meth:`applies`) that decides when a given
+    ``seasonSeparator`` hop is really an anime "absolute/season - episode" annotation rather
+    than a genuine season range/list; this base handles the shared single-hop guard and the
+    season -> episode rename once that evidence holds.
+    """
+
+    priority = 132
+    consequence = [RemoveMatch, RenameMatch("episode")]
+
+    def candidates(self, matches: Matches) -> Any:
+        """The ``seasonSeparator`` matches this subclass cares about."""
+        return matches.named("seasonSeparator")
+
+    def applies(self, matches: Matches, separator: Match, next_season: Match) -> bool:
+        """Whether this single-hop separator should be reinterpreted as season/episode."""
+        raise NotImplementedError
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        to_remove: list[Match] = []
+        to_rename: list[Match] = []
+        for separator in self.candidates(matches):
+            initiator = separator.initiator
+            if len(initiator.children.named("season")) != 2:
+                continue
+            next_season = matches.next(separator, lambda m: m.name == "season", 0)
+            if not next_season:
+                continue
+            if not self.applies(matches, separator, next_season):
+                continue
+            to_remove.append(separator)
+            to_rename.append(next_season)
+        return to_remove, to_rename
+
+
+class SeasonWordDashEpisode(AbstractSeasonSeparatorAsEpisode):
+    """
+    Reinterpret a season-word chain's "Season N - EE" as season=N, episode=EE rather than a
+    season range N..EE (#875).
+
+    A dash glued directly to both digits ("Season.1-3") keeps reading as a genuine season
+    range/list (a common box-set naming convention); a dash surrounded by real separators on
+    both sides ("Season 2 - 08") is the anime convention where the number after the dash is the
+    episode, not another season bound. Restricted to anime releases: this convention clashes
+    with the equally common western box-set range ("The Wire Season 1 - 5"), so it only applies
+    when other anime signals (see :meth:`WeakConflictSolver.is_anime`) are present (#920).
+    """
+
+    def __init__(self, range_separators: list[str]) -> None:
+        super().__init__()
+        self.range_separators = range_separators
+
+    def candidates(self, matches: Matches) -> Any:
+        return matches.named("seasonSeparator", lambda m: "SxxExx" not in m.tags)
+
+    def applies(self, matches: Matches, separator: Match, next_season: Match) -> bool:
+        if separator.value not in self.range_separators:
+            return False
+        # A word separator ("to", "a") always needs surrounding separators to tokenize at
+        # all ("Season 1 to 3"): it's never "tight", so it always reads as a genuine range.
+        if (separator.value or "").isalpha():
+            return False
+        previous_season = matches.previous(separator, lambda m: m.name == "season", 0)
+        if not previous_season:
+            return False
+        input_string = matches.input_string or ""
+        if not input_string[previous_season.end : separator.start]:
+            return False  # tight dash: a genuine season range/list
+        if not input_string[separator.end : next_season.start]:
+            return False
+        return WeakConflictSolver.is_anime(matches)
+
+
+class ParenthesizedSeasonRangeAsEpisode(AbstractSeasonSeparatorAsEpisode):
+    """
+    A parenthesized "(S<n>-<nn>)" directly after an absolute episode number is season n,
+    episode nn, not a season range n..nn (#875): "87 (S4-24)" -- 24 is the per-season episode
+    number annotating the absolute count 87, a convention distinct from a bracketed season-pack
+    range such as "[S01-07]" (upstream keeps that one a season list).
+
+    Restricted to round parentheses right after a bare episode-like number: a square-bracketed
+    "[S01-07]" or a parenthesized range with nothing in front of it is a genuine season range.
+    """
+
+    def candidates(self, matches: Matches) -> Any:
+        return matches.named("seasonSeparator", lambda m: "SxxExx" in m.tags)
+
+    def applies(self, matches: Matches, separator: Match, next_season: Match) -> bool:
+        initiator = separator.initiator
+        group = matches.markers.at_match(initiator, lambda m: m.name == "group", 0)
+        # EnlargeGroupMatches (processors.py) has already grown the chain match to the
+        # group's own span by this priority, so the bracket-wrapped case reads as equal
+        # spans rather than the raw off-by-one.
+        if not group or group.start != initiator.start or group.end != initiator.end:
+            return False
+        if (group.raw or "")[:1] != "(" or (group.raw or "")[-1:] != ")":
+            return False
+        absolute_number = matches.previous(group, lambda m: not m.private and "weak-episode" in m.tags, 0)
+        return bool(absolute_number and not (matches.input_string or "")[absolute_number.end : group.start].strip())
+
+
 class RemoveWeakIfMovie(Rule):
     """
     Remove weak-episode tagged matches if it seems to be a movie.
@@ -1344,9 +1500,18 @@ class EpisodeDetailValidator(Rule):
 
 class RemoveDetachedEpisodeNumber(Rule):
     """
-    If multiple episode are found, remove those that are not detached from a range and less than 10.
+    If multiple episodes are found, remove the ones that don't belong.
 
-    Fairy Tail 2 - 16-20, 2 should be removed.
+    A single digit standing before every other number and not consecutive to the next one is a
+    part/season digit glued to the title (Fairy Tail 2 - 16-20), not an episode.
+
+    Then, when exactly two isolated numbers remain and the release is anime, the larger one is
+    removed: it's either a number embedded in the title (Mob Psycho 100 - 09) or a duplicated
+    absolute episode count in parentheses (Fairy Tail 2 - 52 (227)). Outside anime, two isolated
+    non-consecutive numbers are a legitimate two-episode list (Show 12 - 24).
+
+    Both checks run in sequence so the result doesn't depend on whether the title digit was
+    matched as an episode, which only happens when the type is forced to episode.
     """
 
     priority = 64
@@ -1364,16 +1529,34 @@ class RemoveDetachedEpisodeNumber(Rule):
                 episode_values.add(match.value)
 
         episode_numbers = sorted(episode_numbers, key=lambda m: m.value)
+
+        outliers: list[Match] = []
+        if self._is_title_digit(episode_numbers):
+            outliers.append(episode_numbers.pop(0))
         if (
-            len(episode_numbers) > 1
-            and episode_numbers[0].value < 10
+            len(episode_numbers) == 2
             and episode_numbers[1].value - episode_numbers[0].value != 1
+            and WeakConflictSolver.is_anime(matches)
         ):
-            parent: Match | None = episode_numbers[0]
+            outliers.append(episode_numbers[1])
+
+        for outlier in outliers:
+            parent: Match | None = outlier
             while parent:
                 ret.append(parent)
                 parent = parent.parent
         return ret
+
+    @staticmethod
+    def _is_title_digit(episode_numbers: list[Match]) -> bool:
+        if len(episode_numbers) < 2:
+            return False
+        smallest, following = episode_numbers[0], episode_numbers[1]
+        return (
+            len(smallest.raw or "") == 1
+            and following.value - smallest.value != 1
+            and all(smallest.start < match.start for match in episode_numbers[1:])
+        )
 
 
 class VersionValidator(Rule):

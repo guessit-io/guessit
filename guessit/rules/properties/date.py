@@ -63,7 +63,9 @@ def date(config: dict[str, Any]) -> Rebulk:
         :return:
         """
 
-        ret = search_date(string, context.get("date_year_first"), context.get("date_day_first"))
+        ret = search_date(
+            string, context.get("date_year_first"), context.get("date_day_first"), context.get("type") == "movie"
+        )
         if ret:
             return ret[0], ret[1], {"value": ret[2]}
         return None
@@ -76,7 +78,11 @@ def date(config: dict[str, Any]) -> Rebulk:
         conflict_solver=lambda match, other: other if other.name in ("episode", "season", "crc32") else "__default__",
     )
 
-    rebulk.rules(KeepMarkedYearInFilepart, AbsorbWeekdayPrefix(config["weekday_words"]))
+    rebulk.rules(
+        KeepMarkedYearInFilepart,
+        AbsorbWeekdayPrefix(config["weekday_words"]),
+        PreferLeadingYearAsEpisodeTitle,
+    )
 
     return rebulk
 
@@ -163,3 +169,55 @@ class KeepMarkedYearInFilepart(Rule):
                         if len(ungroup_years) > 2:
                             ret.extend(ungroup_years[2:])
         return ret
+
+
+class PreferLeadingYearAsEpisodeTitle(Rule):
+    """Prefer a lone leading year-range number as the title of episode files.
+
+    A filename like 1923.S01E01.mkv is an episode of a show titled "1923":
+    with an episode marker present, a lone number leading the filepart is
+    more likely the title than the year. 1883 and 24 already parse that way
+    only because they fall outside the year range. Release the year match so
+    the title rules can pick the number up.
+    """
+
+    priority = 32  # After the year rules (64), before the title rules (0).
+    consequence = RemoveMatch
+
+    def enabled(self, context: dict[str, Any] | None) -> bool:
+        # with date parsing excluded, a leading number followed by 2-digit
+        # groups is more likely a date's year component than a title
+        return (
+            not is_disabled(context, "year") and not is_disabled(context, "date") and not is_disabled(context, "title")
+        )
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> list[Match]:
+        to_remove: list[Match] = []
+        for filepart in matches.markers.named("path"):
+            years = matches.range(filepart.start, filepart.end, lambda match: match.name == "year")
+            if len(years) != 1:
+                continue
+            year = years[0]
+            if year.start != filepart.start:
+                continue
+            episode_markers = matches.range(
+                filepart.start, filepart.end, lambda match: match.name in ("episode", "season")
+            )
+            if not episode_markers:
+                continue
+            first_marker = min(episode_markers, key=lambda match: match.start)
+            if first_marker.start <= year.end:
+                continue
+            # allow the leading part of the episode marker's own token
+            # (e.g. the 'S' of S01E01), which no match covers by itself
+            input_string = matches.input_string or ""
+            token_start = first_marker.start
+            while token_start > year.end and input_string[token_start - 1] not in seps:
+                token_start -= 1
+            # the year must be the only content before the episode token
+            if any(match is not year for match in matches.range(filepart.start, token_start)):
+                continue
+            if any(char not in seps for char in input_string[year.end : token_start]):
+                continue
+            to_remove.append(year)
+        return to_remove

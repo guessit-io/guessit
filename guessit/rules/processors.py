@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Any
 from rebulk import POST_PROCESS, PRE_PROCESS, AppendMatch, CustomRule, Rebulk, RemoveMatch, Rule
 
 from .common import seps_no_groups
-from .common.comparators import marker_sorted
+from .common.comparators import marker_sorted, marker_weight
 from .common.date import valid_year
 from .common.formatters import cleanup
 from .common.words import iter_words
@@ -142,27 +142,47 @@ class RemoveAmbiguous(Rule):
         return to_remove
 
 
+def _is_sxx_exx_season_episode(match: Match) -> bool:
+    return match.name in ("season", "episode") and "SxxExx" in match.tags
+
+
 class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
     """
-    If multiple season/episodes matches are found with different values,
-    keep the one tagged as 'SxxExx' or in the rightmost filepart.
+    If multiple season/episodes matches are found with different values, keep the ones of the
+    filepart carrying the most complete SxxExx season/episode.
+
+    Between equally complete SxxExx fileparts, the filename wins over its parent directories, so a
+    file is not overridden by the season-pack directory holding it (#961, #983). A companion file of
+    a release (``companion-file`` tag, e.g. a sample clip, set on the file or on a directory below
+    the closest SxxExx one) loses that tie to a single-episode directory, which names the real
+    episode, but not to a multi-episode pack. Without any SxxExx, the generic RemoveAmbiguous decides.
     """
 
     def __init__(self, name: str) -> None:
-        super().__init__(
-            # Sort fileparts most-valuable-first: a SxxExx-tagged season/episode outweighs a
-            # weaker one, and on a tie marker_sorted already prefers the rightmost filepart (the
-            # filename). Keep the markers in their natural order so the filename wins over a parent
-            # directory (#797/#772) instead of being overridden by it.
-            sort_function=(
-                lambda markers, matches: marker_sorted(
-                    list(reversed(markers)),
-                    matches,
-                    lambda match: match.name in ("season", "episode") and "SxxExx" in match.tags,
-                )
-            ),
-            predicate=lambda match: match.name == name,
+        super().__init__(sort_function=_season_episode_fileparts_sorted, predicate=lambda match: match.name == name)
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        if not matches.range(predicate=_is_sxx_exx_season_episode, index=0):
+            return []
+        return super().when(matches, context)
+
+
+def _season_episode_fileparts_sorted(markers: list[Match], matches: Matches) -> list[Match]:
+    priorities: list[tuple[int, bool, int]] = []
+    companion_scope_start = 0
+    under_episode_directory = False
+    for index, marker in enumerate(markers):
+        weight = marker_weight(matches, marker, _is_sxx_exx_season_episode)
+        companion = under_episode_directory and bool(
+            matches.range(companion_scope_start, marker.end, lambda match: "companion-file" in match.tags, 0)
         )
+        priorities.append((-weight, companion, -index))
+        if weight:
+            companion_scope_start = marker.end
+            episodes = {match.value for match in matches.range(marker.start, marker.end, lambda m: m.name == "episode")}
+            under_episode_directory = len(episodes) <= 1
+
+    return [marker for _, marker in sorted(zip(priorities, markers, strict=True), key=lambda pair: pair[0])]
 
 
 def _preferred_string(value1: str, value2: str) -> str:

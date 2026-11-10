@@ -491,6 +491,70 @@
   other: Rip
   release_group: MiND
 
+? "[Erai-raws] Show Name - 02 [720p][Multi].strm"
+: title: Show Name
+  episode: 2
+  screen_size: 720p
+  release_group: Erai-raws
+  container: strm
+  type: episode
+
+? Show.Name.S01E02.1080p-NINJA.strm
+: title: Show Name
+  season: 1
+  episode: 2
+  screen_size: 1080p
+  release_group: NINJA
+  container: strm
+  type: episode
+
+? Show.Name.S01E02.1080p-NINJA.vtt
+: title: Show Name
+  season: 1
+  episode: 2
+  screen_size: 1080p
+  release_group: NINJA
+  container: vtt
+  type: episode
+
+? 1923.S01E01.mkv
+: title: '1923'
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
+? 1923.S02E04.1080p.mkv
+: title: '1923'
+  season: 2
+  episode: 4
+  screen_size: 1080p
+  container: mkv
+  type: episode
+
+? 1969.S01E01.mkv
+: title: '1969'
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
+? Movies/1923 (2022)/Season 1/1923.S01E01.mkv
+: title: '1923'
+  year: 2022
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
+? 1923.Foo.S01E01.mkv
+: title: Foo
+  year: 1923
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
 ? Dexter Saison sept FRENCH.BDRip.XviD-MiND.nfo
 : title: Dexter
   season: 7
@@ -1665,6 +1729,141 @@
   release_group: Hatsuyuki-Kaitou
   screen_size: 720p
   title: Fairy Tail 2
+
+# A title-internal number must not be merged into the episode list (#875)
+? Mob Psycho 100 - 09 [1080p].mkv
+: title: Mob Psycho 100
+  episode: 9
+  screen_size: 1080p
+  container: mkv
+  type: episode
+
+? '[Golumpa] Star Blazers 2202 - 22 (a.k.a. Yamato 2022) whatever'
+: release_group: Golumpa
+  title: Star Blazers 2202
+  episode: 22
+  year: 2022
+  season: 2022
+  episode_title: whatever
+  type: episode
+
+? '[SubsPlease] Fairy Tail - 100 Years Quest - 05 (1080p)'
+: release_group: SubsPlease
+  title: Fairy Tail
+  alternative_title: 100 Years Quest
+  episode: 5
+  screen_size: 1080p
+  type: episode
+
+# An absolute episode number in parentheses must not double-count the episode (#875)
+? '[Hatsuyuki-Kaitou]_Fairy_Tail_2_-_52_(227)_test'
+: release_group: Hatsuyuki-Kaitou
+  title: Fairy Tail 2
+  episode: 52
+  episode_title: test
+  type: episode
+
+? '[Hatsuyuki] Dragon Ball Kai (2014) - 002 (100) test'
+: release_group: Hatsuyuki
+  title: Dragon Ball Kai
+  year: 2014
+  season: 2014
+  episode: 2
+  episode_title: test
+  type: episode
+
+? '[Deep] Tegami Bachi (REVERSE) - Letter Bee - 29 (04) test'
+: release_group: Deep
+  title: Tegami Bachi
+  episode_title: Letter Bee - 29
+  episode: 4
+  type: episode
+
+# "Season N - EE" is season N, episode EE, not a season range N..EE (#875)
+? '[SCY] Attack on Titan Season 3 - 11 (BD 1080p Hi10 FLAC) [1FA13150].mkv'
+: release_group: SCY
+  title: Attack on Titan
+  season: 3
+  episode: 11
+  source: Blu-ray
+  screen_size: 1080p
+  video_profile: High 10
+  color_depth: 10-bit
+  audio_codec: FLAC
+  crc32: 1FA13150
+  container: mkv
+  type: episode
+
+? '[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv'
+: release_group: Erai-raws
+  title: Granblue Fantasy The Animation
+  season: 2
+  episode: 8
+  screen_size: 1080p
+  subtitle_language: mul
+  container: mkv
+  type: episode
+
+? '[HR] Boku no Hero Academia 87 (S4-24) [1080p HEVC Multi-Subs] HR-GZ'
+: other: High Resolution
+  title: Boku no Hero Academia 87
+  season: 4
+  episode: 24
+  screen_size: 1080p
+  video_codec: H.265
+  video_profile: High Efficiency Video Coding
+  subtitle_language: mul
+  release_group: GZ
+  type: episode
+
+# A leading [0x539]-style group tag is a release group id, not season/episode (#875)
+? '[0x539] Somali and the Forest Spirit - S01E01 (WEB 1080p test)'
+: release_group: "0x539"
+  title: Somali and the Forest Spirit
+  season: 1
+  episode: 1
+  source: Web
+  screen_size: 1080p
+  type: episode
+
+# A "Season N - EE"-shaped range stays a genuine season list when a pack marker
+# ("Complete") follows -- it must not be reinterpreted as season N episode EE (#875)
+? Coupling Season 1 - 4 Complete DVDRip - x264 - MKV by RiddlerA
+: title: Coupling
+  season: [1, 2, 3, 4]
+  other: [Complete, Rip]
+  source: DVD
+  video_codec: H.264
+  container: mkv
+  release_group: RiddlerA
+  type: episode
+
+# A bracketed "[S01-07]" season range must not be reinterpreted as season+episode:
+# only a parenthesized range right after a bare absolute episode number is (#875)
+? Once Upon a Time [S01-07] (2011-2017) WEB-DLRip by Generalfilm
+: title: Once Upon a Time
+  season: [1, 2, 3, 4, 5, 6, 7]
+  year: [2011, 2017]
+  source: Web
+  other: Rip
+  release_group: Generalfilm
+  type: episode
+
+# A bare two-episode list stays a list outside of anime -- only anime-signalled releases
+# reinterpret a dash-separated pair as season/episode or drop the outlier number (#920)
+? Show 12 - 24
+: title: Show
+  episode: [12, 24]
+
+# A spaced western box-set range ("Season 1 - 5") must stay a season list: the "N - EE"
+# reinterpretation is restricted to anime-signalled releases, since this convention clashes
+# with the anime "Season N - EE" = season N episode EE reading (#920)
+? The Wire Season 1 - 5 1080p BluRay
+: title: The Wire
+  season: [1, 2, 3, 4, 5]
+  screen_size: 1080p
+  source: Blu-ray
+  type: episode
 
 ? "Looney Tunes 1940x01 Porky's Last Stand.mkv"
 : episode: 1
@@ -4317,7 +4516,7 @@
 : title: Marvels Agents of S.H.I.E.L.D.
   season: 1
   episode: 2
-  episode_title: 0.8.4.
+  episode_title: 0.8.4
   screen_size: 720p
   source: Web
   container: mkv
@@ -5229,8 +5428,8 @@
   episode_title: Monster Black Hole
   -season: 1
 
-# guard: with equally-complete SxxExx in both fileparts, the parent (real episode) still wins
-# over a sample clip in a subdirectory — the filename must not override it
+# guard: with equally-complete SxxExx in both fileparts, the parent (real episode) wins over a
+# sample clip in a subdirectory — the filename must not override it
 ? Westworld.S02E03.720p.WEB-DL/sample/Westworld.S01E01.sample.mkv
 : title: Westworld
   season: 2
@@ -5239,12 +5438,87 @@
   -season: 1
   -episode: 1
 
+# the sample directory alone marks the companion file when its own Sample token is not kept
+? Westworld.S02E03.720p.WEB-DL/sample/sample-westworld.s01e01.mkv
+: title: Westworld
+  season: 2
+  episode: 3
+  other: Sample
+  -season: 1
+  -episode: 1
+
+# a sample under a multi-episode pack keeps its own episode: only a single-episode directory names
+# the real episode of a sample (#983)
+? Show.S01E01-E10.Complete.720p/Show.S01E05.sample.mkv
+: title: Show
+  season: 1
+  episode: 5
+
+? Show.S01E01-E10.Complete.720p/Sample/Show.S01E05.sample.mkv
+: title: Show
+  season: 1
+  episode: 5
+
 # guard: season and episode stay a coherent pair (no S05E08 from mixing fileparts)
 ? Show S03E08/Show S05.mkv
 : title: Show
   season: 3
   episode: 8
   -season: 5
+
+# equally-complete SxxExx fileparts: the filename wins over its parent directories (#961, #983)
+? Show.S02E03/Show.S01E09.mkv
+: title: Show
+  season: 1
+  episode: 9
+  -season: 2
+  -episode: 3
+
+? Show.S02E03/Show.S01.E14.mkv
+: title: Show
+  season: 1
+  episode: 14
+  -season: 2
+  -episode: 3
+
+# guard: season and episode come from the same filepart, never S01E16 mixed from both (#961), and
+# a sample clip defers to the episode directory holding it
+? Show S01E02/Show.S03E16.sample.mkv
+: title: Show
+  season: 1
+  episode: 2
+  other: Sample
+  -season: 3
+  -episode: 16
+
+? Show.S02E03.720p/Show.S01E01.proof.jpg
+: title: Show
+  season: 2
+  episode: 3
+  other: Proof
+  -season: 1
+  -episode: 1
+
+# a season-pack directory never overrides the file it holds, even when the directory carries more
+# properties than the filename (#983)
+? Show.S01E01-E10.Complete.720p.WEB-DL/Show.S01E05.720p.WEB-DL.mkv
+: title: Show
+  season: 1
+  episode: 5
+  other: Complete
+  screen_size: 720p
+  source: Web
+
+? Show.S01E01-E10.Pack/Show.S01E05.mkv
+: title: Show
+  season: 1
+  episode: 5
+
+? Show.S01E01.Pack/Show.S01E05.mkv
+: title: Show
+  season: 1
+  episode: 5
+  -episode: 1
 
 # anchor: the common "season folder + episode-numbered file" layout still combines correctly —
 # season from the directory, episode from the filename (#797 weight change must not break this)
@@ -5491,3 +5765,21 @@
   season: 1
   episode: 1
   -country: GB
+
+# A dotted number keeps its dots when nothing else around it is a dot separator, and loses the
+# trailing one that only ends it (#963).
+? Kaiju.No.8.S01E04.Fortitude.9.8.1080p.BluRay.AAC2.0.x264-VALKYRiE.mkv
+: title: Kaiju No 8
+  season: 1
+  episode: 4
+  episode_title: Fortitude 9.8
+  audio_codec: AAC
+  audio_channels: '2.0'
+  release_group: VALKYRiE
+
+? Mr.Robot.S01E01.eps1.0_hellofriend.mov.1080p.BluRay.DD5.1.x264-SA89.mkv
+: title: Mr Robot
+  season: 1
+  episode: 1
+  episode_title: eps1.0 hellofriend
+  release_group: SA89

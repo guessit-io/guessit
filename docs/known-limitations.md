@@ -313,6 +313,16 @@ downstream lookup against a real title database.
 The show *19-2* produces `19-2.2014`, which is a valid `DD-M.YYYY` date. A title that is itself a
 date-like number is structurally indistinguishable from an actual date; date detection wins.
 
+```text
+Jackass.2.5.2007.DVDRip.x264.AC3-DEEP
+  date: 2007-05-02   type: episode   title: "Jackass"     (#963)
+  wanted -> title: "Jackass 2.5"   year: 2007   type: movie
+```
+
+A decimal sequel or version number (`2.5`, `3.0.1.11`, `1.2.3`) followed by the year reads as an
+unpadded `D.M.YYYY` date, the same shape as a daily show named `Show.2.5.2024`. With `type=movie`,
+a dotted pair of single, unpadded digits is read as a decimal number instead, which settles it.
+
 ## A yearless `COMPLETE` film typed as a series
 
 ```text
