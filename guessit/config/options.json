@@ -940,6 +940,7 @@
       "ZDF": "ZDF"
     },
     "date": {
+      "year_range_separators": ["-", "~", "to", "–"],
       "week_words": ["week"],
       "weekday_words": [
         "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",

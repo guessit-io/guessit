@@ -5783,3 +5783,48 @@
   episode: 1
   episode_title: eps1.0 hellofriend
   release_group: SA89
+
+# A YYYY-YYYY year range is a single year range, bracketed or not (#988)
+? The.Office.US.2005-2013.Complete.Series.720p
+: title: The Office
+  country: US
+  year: [2005, 2013]
+  other: Complete
+  screen_size: 720p
+  type: episode
+
+? Show 2011-2017 S01E01
+: title: Show
+  year: [2011, 2017]
+  season: 1
+  episode: 1
+  type: episode
+
+? Show.S01-S07.2011-2017.1080p
+: title: Show
+  year: [2011, 2017]
+  season: [1, 2, 3, 4, 5, 6, 7]
+  screen_size: 1080p
+  type: episode
+
+? Friends (1994-2004) Complete Series 1080p
+: title: Friends
+  year: [1994, 2004]
+  other: Complete
+  screen_size: 1080p
+  type: episode
+
+? Breaking Bad [2008-2013] S01-S05 1080p
+: title: Breaking Bad
+  year: [2008, 2013]
+  season: [1, 2, 3, 4, 5]
+  screen_size: 1080p
+  type: episode
+
+? /Show (2011-2017)/Season 1/Show S01E01.mkv
+: title: Show
+  year: [2011, 2017]
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
