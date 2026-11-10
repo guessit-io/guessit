@@ -63,7 +63,9 @@ def date(config: dict[str, Any]) -> Rebulk:
         :return:
         """
 
-        ret = search_date(string, context.get("date_year_first"), context.get("date_day_first"))
+        ret = search_date(
+            string, context.get("date_year_first"), context.get("date_day_first"), context.get("type") == "movie"
+        )
         if ret:
             return ret[0], ret[1], {"value": ret[2]}
         return None

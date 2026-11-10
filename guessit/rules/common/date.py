@@ -15,22 +15,33 @@ if TYPE_CHECKING:
 
 _dsep = r"[-/ \.]"
 _dsep_bis = r"[-/ \.x]"
+# Guards the day/month-first shapes against a leading dotted pair of single, unpadded digits, so
+# "Jackass.2.5.2007" and "Evangelion.3.0.1.11" read as decimal numbers, not dates. Only applied
+# when the caller says the file is a movie: an unpadded "Show.2.5.2024" may be a real air date.
+_not_decimal = r"(?!\d\.\d(?!\d))"
 
-date_regexps = [
-    re.compile(rf"{_dsep}((\d{{8}})){_dsep}", re.IGNORECASE),
-    re.compile(rf"{_dsep}((\d{{6}})){_dsep}", re.IGNORECASE),
-    re.compile(rf"(?:^|[^\d])((\d{{2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])", re.IGNORECASE),
-    re.compile(rf"(?:^|[^\d])((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{2}}))(?:$|[^\d])", re.IGNORECASE),
-    re.compile(rf"(?:^|[^\d])((\d{{4}}){_dsep_bis}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])", re.IGNORECASE),
-    re.compile(rf"(?:^|[^\d])((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep_bis}(\d{{4}}))(?:$|[^\d])", re.IGNORECASE),
-    re.compile(
-        rf"(?:^|[^\d])((\d{{1,2}}(?:st|nd|rd|th)?{_dsep}(?:[a-z]{{3,10}}){_dsep}\d{{4}}))(?:$|[^\d])", re.IGNORECASE
-    ),
-    # month-name first, e.g. "July 30 2021" (upstream #708)
-    re.compile(
-        rf"(?:^|[^a-z\d])(((?:[a-z]{{3,10}}){_dsep}\d{{1,2}}(?:st|nd|rd|th)?{_dsep}\d{{4}}))(?:$|[^\d])", re.IGNORECASE
-    ),
-]
+
+def _build_date_regexps(guard: str = "") -> list[re.Pattern[str]]:
+    return [
+        re.compile(rf"{_dsep}((\d{{8}})){_dsep}", re.IGNORECASE),
+        re.compile(rf"{_dsep}((\d{{6}})){_dsep}", re.IGNORECASE),
+        re.compile(rf"(?:^|[^\d])((\d{{2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])", re.IGNORECASE),
+        re.compile(rf"(?:^|[^\d]){guard}((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep}(\d{{2}}))(?:$|[^\d])", re.IGNORECASE),
+        re.compile(rf"(?:^|[^\d])((\d{{4}}){_dsep_bis}(\d{{1,2}}){_dsep}(\d{{1,2}}))(?:$|[^\d])", re.IGNORECASE),
+        re.compile(rf"(?:^|[^\d]){guard}((\d{{1,2}}){_dsep}(\d{{1,2}}){_dsep_bis}(\d{{4}}))(?:$|[^\d])", re.IGNORECASE),
+        re.compile(
+            rf"(?:^|[^\d])((\d{{1,2}}(?:st|nd|rd|th)?{_dsep}(?:[a-z]{{3,10}}){_dsep}\d{{4}}))(?:$|[^\d])", re.IGNORECASE
+        ),
+        # month-name first, e.g. "July 30 2021" (upstream #708)
+        re.compile(
+            rf"(?:^|[^a-z\d])(((?:[a-z]{{3,10}}){_dsep}\d{{1,2}}(?:st|nd|rd|th)?{_dsep}\d{{4}}))(?:$|[^\d])",
+            re.IGNORECASE,
+        ),
+    ]
+
+
+date_regexps = _build_date_regexps()
+_movie_date_regexps = _build_date_regexps(_not_decimal)
 
 
 def valid_year(year: int) -> bool:
@@ -86,7 +97,7 @@ def _guess_day_first_parameter(groups: tuple[Any, ...]) -> bool | None:
 
 
 def search_date(
-    string: str, year_first: bool | None = None, day_first: bool | None = None
+    string: str, year_first: bool | None = None, day_first: bool | None = None, movie: bool = False
 ) -> tuple[int, int, date] | None:
     """Looks for date patterns, and if found return the date and group span.
 
@@ -96,15 +107,23 @@ def search_date(
     Year can be defined on two digit only. It will return the nearest possible
     date from today.
 
+    When ``movie`` is set, a dotted pair of single, unpadded digits leading a
+    day/month-first date is a decimal number, not a day and a month.
+
     >>> search_date(' This happened on 2002-04-22. ')
     (18, 28, datetime.date(2002, 4, 22))
 
     >>> search_date(' And this on 17-06-1998. ')
     (13, 23, datetime.date(1998, 6, 17))
 
+    >>> search_date(' Jackass.2.5.2007. ')
+    (9, 17, datetime.date(2007, 5, 2))
+
+    >>> search_date(' Jackass.2.5.2007. ', movie=True)
+
     >>> search_date(' no date in here ')
     """
-    for date_re in date_regexps:
+    for date_re in _movie_date_regexps if movie else date_regexps:
         search_match = date_re.search(string)
         if not search_match:
             continue
