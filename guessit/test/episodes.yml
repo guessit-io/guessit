@@ -517,6 +517,44 @@
   container: vtt
   type: episode
 
+? 1923.S01E01.mkv
+: title: '1923'
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
+? 1923.S02E04.1080p.mkv
+: title: '1923'
+  season: 2
+  episode: 4
+  screen_size: 1080p
+  container: mkv
+  type: episode
+
+? 1969.S01E01.mkv
+: title: '1969'
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
+? Movies/1923 (2022)/Season 1/1923.S01E01.mkv
+: title: '1923'
+  year: 2022
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
+? 1923.Foo.S01E01.mkv
+: title: Foo
+  year: 1923
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
 ? Dexter Saison sept FRENCH.BDRip.XviD-MiND.nfo
 : title: Dexter
   season: 7
