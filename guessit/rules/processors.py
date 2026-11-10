@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Any
 from rebulk import POST_PROCESS, PRE_PROCESS, AppendMatch, CustomRule, Rebulk, RemoveMatch, Rule
 
 from .common import seps_no_groups
-from .common.comparators import marker_sorted
+from .common.comparators import marker_sorted, marker_weight
 from .common.date import valid_year
 from .common.formatters import cleanup
 from .common.words import iter_words
@@ -142,27 +142,36 @@ class RemoveAmbiguous(Rule):
         return to_remove
 
 
+def _is_sxx_exx_season_episode(match: Match) -> bool:
+    return match.name in ("season", "episode") and "SxxExx" in match.tags
+
+
 class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
     """
-    If multiple season/episodes matches are found with different values,
-    keep the one tagged as 'SxxExx' or in the rightmost filepart.
+    If multiple season/episodes matches are found with different values, keep the ones of the
+    filepart carrying the most complete SxxExx season/episode.
+
+    When several fileparts are equally complete, the SxxExx weight cannot tell them apart: a sample
+    clip under its episode directory and a file under its season-pack directory look the same. This
+    rule then defers to the generic RemoveAmbiguous, whose weight over every property keeps the
+    right side (#961).
     """
 
     def __init__(self, name: str) -> None:
         super().__init__(
-            # Sort fileparts most-valuable-first: a SxxExx-tagged season/episode outweighs a
-            # weaker one, and on a tie marker_sorted already prefers the rightmost filepart (the
-            # filename). Keep the markers in their natural order so the filename wins over a parent
-            # directory (#797/#772) instead of being overridden by it.
             sort_function=(
-                lambda markers, matches: marker_sorted(
-                    list(reversed(markers)),
-                    matches,
-                    lambda match: match.name in ("season", "episode") and "SxxExx" in match.tags,
-                )
+                lambda markers, matches: marker_sorted(list(reversed(markers)), matches, _is_sxx_exx_season_episode)
             ),
             predicate=lambda match: match.name == name,
         )
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
+        weights = [
+            marker_weight(matches, marker, _is_sxx_exx_season_episode) for marker in matches.markers.named("path")
+        ]
+        if weights.count(max(weights, default=0)) > 1:
+            return []
+        return super().when(matches, context)
 
 
 def _preferred_string(value1: str, value2: str) -> str:
