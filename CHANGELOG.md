@@ -2,6 +2,52 @@
 
 <!-- version list -->
 
+## v4.5.0 (2026-11-10)
+
+### Bug Fixes
+
+- Address review feedback on PR #920
+  ([`40e18a8`](https://github.com/guessit-io/guessit/commit/40e18a865e4d31d8fb92a463736aa4e180827d45))
+
+- Fixed four spurious-number patterns in episodes.py: RemoveDetachedE
+  ([`8b3d6ac`](https://github.com/guessit-io/guessit/commit/8b3d6ac65429ea75acfc5a32f20e3cedf2482b9e))
+
+- **container**: Recognize .strm and .vtt as known extensions
+  ([`2da2973`](https://github.com/guessit-io/guessit/commit/2da2973c1608a8b4ae9674d86645633a0425d28e))
+
+- **date**: Read a dotted pair of single digits as a decimal for movies
+  ([`fa02207`](https://github.com/guessit-io/guessit/commit/fa0220756c45e10c6b7dd0c12f1aefe59a27f748))
+
+- **episodes**: Make detached episode removal independent of the forced type
+  ([`3feaa12`](https://github.com/guessit-io/guessit/commit/3feaa12fb6552e7177f82cf85a0070863349556a))
+
+- **formatters**: Keep a decimal number's dots, drop the one after it
+  ([`984cbc7`](https://github.com/guessit-io/guessit/commit/984cbc73437036ac8435759212d5defb3af8eb54))
+
+- **processors**: Detect a sample through its directory, not under a pack
+  ([`68fdcd6`](https://github.com/guessit-io/guessit/commit/68fdcd65a3f7c705b2b5ad9f6b86d4901fe742e1))
+
+- **processors**: Keep the filename's season/episode over its season-pack directory
+  ([`54d790b`](https://github.com/guessit-io/guessit/commit/54d790bd8c035407b53ba44c76d59ad1d6cea8d9))
+
+- **processors**: Run the episode pass of RemoveLessSpecificSeasonEpisode
+  ([`a4e9ecb`](https://github.com/guessit-io/guessit/commit/a4e9ecb4c9a5262c12582a068a191ed994b90625))
+
+- **test**: Make main and options tests pass on Windows
+  ([`4ae2a5d`](https://github.com/guessit-io/guessit/commit/4ae2a5dc16d964197146b4a86191d527eb4c832b))
+
+- **title**: Keep a bare 1.0/2.0 before the year in the title
+  ([`74bccad`](https://github.com/guessit-io/guessit/commit/74bccad0db059361314589d0aa92591779653929))
+
+- **year**: Keep a lone leading year-range number as the title of episode files
+  ([`266d67b`](https://github.com/guessit-io/guessit/commit/266d67bd02c6285ac302bd41907787cb7ca325f8))
+
+### Features
+
+- **other**: Detect HDR10+
+  ([`ebafef7`](https://github.com/guessit-io/guessit/commit/ebafef71feb9817884e8aee8b0ae32773ffdf333))
+
+
 ## v4.4.0 (2026-07-31)
 
 ### Bug Fixes
