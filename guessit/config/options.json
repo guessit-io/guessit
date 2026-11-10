@@ -592,12 +592,12 @@
         "HDR10+": {"regex": "HDR10(?:\\+|Plus|P)", "tags": "uhdbluray-neighbor"},
         "Dolby Vision": {"regex": "(?:Dolby-?Vision|DoVi|DV)", "tags": "uhdbluray-neighbor"},
         "BT.2020": {"regex": "BT-?2020","tags": "uhdbluray-neighbor"},
-        "Sample": {"string": "Sample", "tags": ["at-end", "not-a-release-group"]},
+        "Sample": {"string": "Sample", "tags": ["at-end", "not-a-release-group", "companion-file"]},
         "Extras": [
           {"string": "Extras", "tags": "has-neighbor"},
           {"regex": "Digital-?Extras?"}
         ],
-        "Proof": {"string": "Proof", "tags": ["at-end", "not-a-release-group"]},
+        "Proof": {"string": "Proof", "tags": ["at-end", "not-a-release-group", "companion-file"]},
         "Obfuscated": {"string": ["Obfuscated", "Scrambled"], "tags": ["at-end", "not-a-release-group"]},
         "Repost": {"string": ["xpost", "postbot", "asrequested"], "tags": "not-a-release-group"},
         "_complete_words": {"callable": "import:guessit.rules.properties.other:complete_words", "complete_marker_words": ["Complete", "Int[ée]grale"], "season_words": ["seasons?", "mini-?series?", "series?"], "complete_article_words": ["The"], "complete_prefix_words": ["L['’]?", "Coffret"], "season_number_separators": ["&", "and"]}

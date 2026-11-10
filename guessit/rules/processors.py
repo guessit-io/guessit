@@ -151,27 +151,29 @@ class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
     If multiple season/episodes matches are found with different values, keep the ones of the
     filepart carrying the most complete SxxExx season/episode.
 
-    When several fileparts are equally complete, the SxxExx weight cannot tell them apart: a sample
-    clip under its episode directory and a file under its season-pack directory look the same. This
-    rule then defers to the generic RemoveAmbiguous, whose weight over every property keeps the
-    right side (#961).
+    Between equally complete SxxExx fileparts, the filename wins over its parent directories, so a
+    file is not overridden by the season-pack directory holding it (#961, #983). A companion file of
+    a release (``companion-file`` tag, e.g. a sample clip) never wins that tie: its directory names
+    the real episode. Without any SxxExx, the generic RemoveAmbiguous decides.
     """
 
     def __init__(self, name: str) -> None:
-        super().__init__(
-            sort_function=(
-                lambda markers, matches: marker_sorted(list(reversed(markers)), matches, _is_sxx_exx_season_episode)
-            ),
-            predicate=lambda match: match.name == name,
-        )
+        super().__init__(sort_function=_season_episode_fileparts_sorted, predicate=lambda match: match.name == name)
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
-        weights = [
-            marker_weight(matches, marker, _is_sxx_exx_season_episode) for marker in matches.markers.named("path")
-        ]
-        if weights.count(max(weights, default=0)) > 1:
+        if not matches.range(predicate=_is_sxx_exx_season_episode, index=0):
             return []
         return super().when(matches, context)
+
+
+def _season_episode_fileparts_sorted(markers: list[Match], matches: Matches) -> list[Match]:
+    def priority(indexed_marker: tuple[int, Match]) -> tuple[int, bool, int]:
+        index, marker = indexed_marker
+        weight = marker_weight(matches, marker, _is_sxx_exx_season_episode)
+        companion = bool(matches.range(marker.start, marker.end, lambda match: "companion-file" in match.tags, 0))
+        return -weight, companion, -index
+
+    return [marker for _, marker in sorted(enumerate(markers), key=priority)]
 
 
 def _preferred_string(value1: str, value2: str) -> str:
