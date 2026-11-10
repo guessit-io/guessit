@@ -153,8 +153,9 @@ class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
 
     Between equally complete SxxExx fileparts, the filename wins over its parent directories, so a
     file is not overridden by the season-pack directory holding it (#961, #983). A companion file of
-    a release (``companion-file`` tag, e.g. a sample clip) never wins that tie: its directory names
-    the real episode. Without any SxxExx, the generic RemoveAmbiguous decides.
+    a release (``companion-file`` tag, e.g. a sample clip, set on the file or on a directory below
+    the closest SxxExx one) loses that tie to a single-episode directory, which names the real
+    episode, but not to a multi-episode pack. Without any SxxExx, the generic RemoveAmbiguous decides.
     """
 
     def __init__(self, name: str) -> None:
@@ -167,13 +168,21 @@ class RemoveLessSpecificSeasonEpisode(RemoveAmbiguous):
 
 
 def _season_episode_fileparts_sorted(markers: list[Match], matches: Matches) -> list[Match]:
-    def priority(indexed_marker: tuple[int, Match]) -> tuple[int, bool, int]:
-        index, marker = indexed_marker
+    priorities: list[tuple[int, bool, int]] = []
+    companion_scope_start = 0
+    under_episode_directory = False
+    for index, marker in enumerate(markers):
         weight = marker_weight(matches, marker, _is_sxx_exx_season_episode)
-        companion = bool(matches.range(marker.start, marker.end, lambda match: "companion-file" in match.tags, 0))
-        return -weight, companion, -index
+        companion = under_episode_directory and bool(
+            matches.range(companion_scope_start, marker.end, lambda match: "companion-file" in match.tags, 0)
+        )
+        priorities.append((-weight, companion, -index))
+        if weight:
+            companion_scope_start = marker.end
+            episodes = {match.value for match in matches.range(marker.start, marker.end, lambda m: m.name == "episode")}
+            under_episode_directory = len(episodes) <= 1
 
-    return [marker for _, marker in sorted(enumerate(markers), key=priority)]
+    return [marker for _, marker in sorted(zip(priorities, markers, strict=True), key=lambda pair: pair[0])]
 
 
 def _preferred_string(value1: str, value2: str) -> str:
