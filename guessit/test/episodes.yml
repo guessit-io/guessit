@@ -5293,8 +5293,8 @@
   episode_title: Monster Black Hole
   -season: 1
 
-# guard: with equally-complete SxxExx in both fileparts, a parent carrying more properties (the
-# real episode) wins over a sample clip in a subdirectory — the filename must not override it
+# guard: with equally-complete SxxExx in both fileparts, the parent (real episode) wins over a
+# sample clip in a subdirectory — the filename must not override it
 ? Westworld.S02E03.720p.WEB-DL/sample/Westworld.S01E01.sample.mkv
 : title: Westworld
   season: 2
@@ -5303,6 +5303,27 @@
   -season: 1
   -episode: 1
 
+# the sample directory alone marks the companion file when its own Sample token is not kept
+? Westworld.S02E03.720p.WEB-DL/sample/sample-westworld.s01e01.mkv
+: title: Westworld
+  season: 2
+  episode: 3
+  other: Sample
+  -season: 1
+  -episode: 1
+
+# a sample under a multi-episode pack keeps its own episode: only a single-episode directory names
+# the real episode of a sample (#983)
+? Show.S01E01-E10.Complete.720p/Show.S01E05.sample.mkv
+: title: Show
+  season: 1
+  episode: 5
+
+? Show.S01E01-E10.Complete.720p/Sample/Show.S01E05.sample.mkv
+: title: Show
+  season: 1
+  episode: 5
+
 # guard: season and episode stay a coherent pair (no S05E08 from mixing fileparts)
 ? Show S03E08/Show S05.mkv
 : title: Show
@@ -5310,8 +5331,7 @@
   episode: 8
   -season: 5
 
-# equally-complete SxxExx fileparts: the filename wins unless the parent carries more properties
-# (#961)
+# equally-complete SxxExx fileparts: the filename wins over its parent directories (#961, #983)
 ? Show.S02E03/Show.S01E09.mkv
 : title: Show
   season: 1
@@ -5326,14 +5346,44 @@
   -season: 2
   -episode: 3
 
-# guard: season and episode come from the same filepart, never S01E16 mixed from both (#961)
+# guard: season and episode come from the same filepart, never S01E16 mixed from both (#961), and
+# a sample clip defers to the episode directory holding it
 ? Show S01E02/Show.S03E16.sample.mkv
 : title: Show
-  season: 3
-  episode: 16
+  season: 1
+  episode: 2
   other: Sample
+  -season: 3
+  -episode: 16
+
+? Show.S02E03.720p/Show.S01E01.proof.jpg
+: title: Show
+  season: 2
+  episode: 3
+  other: Proof
   -season: 1
-  -episode: 2
+  -episode: 1
+
+# a season-pack directory never overrides the file it holds, even when the directory carries more
+# properties than the filename (#983)
+? Show.S01E01-E10.Complete.720p.WEB-DL/Show.S01E05.720p.WEB-DL.mkv
+: title: Show
+  season: 1
+  episode: 5
+  other: Complete
+  screen_size: 720p
+  source: Web
+
+? Show.S01E01-E10.Pack/Show.S01E05.mkv
+: title: Show
+  season: 1
+  episode: 5
+
+? Show.S01E01.Pack/Show.S01E05.mkv
+: title: Show
+  season: 1
+  episode: 5
+  -episode: 1
 
 # anchor: the common "season folder + episode-numbered file" layout still combines correctly —
 # season from the directory, episode from the filename (#797 weight change must not break this)
