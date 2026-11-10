@@ -109,7 +109,11 @@ class RemoveConflictsWithEpisodeTitle(Rule):
     def when(self, matches: Matches, context: dict[str, Any] | None) -> Any:
         to_remove: list[Match] = []
         for filepart in matches.markers.named("path"):
-            for match in matches.range(filepart.start, filepart.end, predicate=lambda m: m.name in self.affected_names):
+            for match in matches.range(
+                filepart.start,
+                filepart.end,
+                predicate=lambda m: m.name in self.affected_names and "year-range" not in m.tags,
+            ):
                 before = matches.range(filepart.start, match.start, predicate=lambda m: not m.private, index=-1)
                 if not before or before.name not in self.previous_names:
                     continue
