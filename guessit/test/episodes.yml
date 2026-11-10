@@ -5293,8 +5293,8 @@
   episode_title: Monster Black Hole
   -season: 1
 
-# guard: with equally-complete SxxExx in both fileparts, the parent (real episode) still wins
-# over a sample clip in a subdirectory — the filename must not override it
+# guard: with equally-complete SxxExx in both fileparts, a parent carrying more properties (the
+# real episode) wins over a sample clip in a subdirectory — the filename must not override it
 ? Westworld.S02E03.720p.WEB-DL/sample/Westworld.S01E01.sample.mkv
 : title: Westworld
   season: 2
@@ -5309,6 +5309,31 @@
   season: 3
   episode: 8
   -season: 5
+
+# equally-complete SxxExx fileparts: the filename wins unless the parent carries more properties
+# (#961)
+? Show.S02E03/Show.S01E09.mkv
+: title: Show
+  season: 1
+  episode: 9
+  -season: 2
+  -episode: 3
+
+? Show.S02E03/Show.S01.E14.mkv
+: title: Show
+  season: 1
+  episode: 14
+  -season: 2
+  -episode: 3
+
+# guard: season and episode come from the same filepart, never S01E16 mixed from both (#961)
+? Show S01E02/Show.S03E16.sample.mkv
+: title: Show
+  season: 3
+  episode: 16
+  other: Sample
+  -season: 1
+  -episode: 2
 
 # anchor: the common "season folder + episode-numbered file" layout still combines correctly —
 # season from the directory, episode from the filename (#797 weight change must not break this)
