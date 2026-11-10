@@ -154,10 +154,12 @@
         "idx",
         "sub",
         "ssa",
-        "ass"
+        "ass",
+        "vtt"
       ],
       "info": [
-        "nfo"
+        "nfo",
+        "strm"
       ],
       "videos": [
         "3g2",
