@@ -14,7 +14,7 @@ from ...reutils import build_or_pattern
 from ..common import dash, seps
 from ..common.date import search_date, valid_week, valid_year
 from ..common.pattern import is_disabled
-from ..common.validators import seps_surround
+from ..common.validators import and_, seps_surround
 
 if TYPE_CHECKING:
     from rebulk.match import Match, Matches
@@ -40,6 +40,22 @@ def date(config: dict[str, Any]) -> Rebulk:
             other if other.name in ("episode", "season") and len(other.raw) < len(match.raw) else "__default__"
         ),
         validator=lambda match: seps_surround(match) and valid_year(match.value),
+    )
+
+    rebulk.chain(
+        tags=["year-range"],
+        flags=re.IGNORECASE,
+        children=True,
+        private_parent=True,
+        validate_all=True,
+        validator={"__parent__": and_(seps_surround, _is_ascending_year_range), "year": _is_valid_year_match},
+        formatter={"year": int},
+        conflict_solver=lambda match, other: (
+            other if other.name in ("episode", "season") and len(other.raw) <= len(match.raw) else "__default__"
+        ),
+        disabled=lambda context: is_disabled(context, "year"),
+    ).defaults(tags=["year-range"], validator=None, private_parent=True).regex(r"(?P<year>\d{4})").regex(
+        _year_range_separator_pattern(config["year_range_separators"]) + r"(?P<year>\d{4})"
     )
 
     rebulk.regex(
@@ -85,6 +101,27 @@ def date(config: dict[str, Any]) -> Rebulk:
     )
 
     return rebulk
+
+
+def _year_range_separator_pattern(separators: list[str]) -> str:
+    word_separators = [separator for separator in separators if separator.isalpha()]
+    symbol_separators = [separator for separator in separators if not separator.isalpha()]
+    padding = "[ ._]"
+    alternatives = []
+    if symbol_separators:
+        alternatives.append(padding + "*" + build_or_pattern(symbol_separators, escape=True) + padding + "*")
+    if word_separators:
+        alternatives.append(padding + "+" + build_or_pattern(word_separators, escape=True) + padding + "+")
+    return "(?:" + "|".join(alternatives) + ")"
+
+
+def _is_valid_year_match(match: Match) -> bool:
+    return valid_year(int(match.value))
+
+
+def _is_ascending_year_range(match: Match) -> bool:
+    years = [int(year.value) for year in match.children.named("year")]
+    return len(years) == 2 and years[0] < years[1]
 
 
 class AbsorbWeekdayPrefix(Rule):
@@ -140,6 +177,9 @@ class AbsorbWeekdayPrefix(Rule):
 class KeepMarkedYearInFilepart(Rule):
     """
     Keep first years marked with [](){} in filepart, or if no year is marked, ensure it won't override titles.
+
+    The two years of a ``YYYY-YYYY`` range count as a single year: they are kept or removed together,
+    and a range is never released to the title.
     """
 
     priority = 64
@@ -153,22 +193,49 @@ class KeepMarkedYearInFilepart(Rule):
         if len(matches.named("year")) > 1:
             for filepart in matches.markers.named("path"):
                 years = matches.range(filepart.start, filepart.end, lambda match: match.name == "year")
-                if len(years) > 1:
-                    group_years: list[Match] = []
-                    ungroup_years: list[Match] = []
-                    for year in years:
-                        if matches.markers.at_match(year, lambda marker: marker.name == "group"):
-                            group_years.append(year)
+                range_spans = {year.span for year in years if "year-range" in year.tags}
+                duplicates = [year for year in years if "year-range" not in year.tags and year.span in range_spans]
+                ret.extend(duplicates)
+                units = _year_units([year for year in years if year not in duplicates])
+                if len(units) > 1:
+                    group_units: list[list[Match]] = []
+                    ungroup_units: list[list[Match]] = []
+                    for unit in units:
+                        if any(matches.markers.at_match(year, lambda marker: marker.name == "group") for year in unit):
+                            group_units.append(unit)
                         else:
-                            ungroup_years.append(year)
-                    if group_years and ungroup_years:
-                        ret.extend(ungroup_years)
-                        ret.extend(group_years[1:])  # Keep the first year in marker.
-                    elif not group_years:
-                        ret.append(ungroup_years[0])  # Keep first year for title.
-                        if len(ungroup_years) > 2:
-                            ret.extend(ungroup_years[2:])
+                            ungroup_units.append(unit)
+                    if group_units and ungroup_units:
+                        ret.extend(year for unit in ungroup_units + group_units[1:] for year in unit)
+                    elif not group_units:
+                        first_unit_is_range = len(ungroup_units[0]) > 1
+                        kept = 1 if first_unit_is_range else 2
+                        if not first_unit_is_range:
+                            ret.extend(ungroup_units[0])  # Keep first year for title.
+                        ret.extend(year for unit in ungroup_units[kept:] for year in unit)
         return ret
+
+
+def _year_units(years: list[Match]) -> list[list[Match]]:
+    units: list[list[Match]] = []
+    ranges: dict[int, list[Match]] = {}
+    for year in years:
+        chain = _root_parent(year) if "year-range" in year.tags else None
+        if chain is None:
+            units.append([year])
+        elif id(chain) in ranges:
+            ranges[id(chain)].append(year)
+        else:
+            ranges[id(chain)] = [year]
+            units.append(ranges[id(chain)])
+    return units
+
+
+def _root_parent(match: Match) -> Match | None:
+    root = match.parent
+    while root is not None and root.parent is not None:
+        root = root.parent
+    return root
 
 
 class PreferLeadingYearAsEpisodeTitle(Rule):

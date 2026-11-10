@@ -2339,3 +2339,46 @@
   year: 2008
   type: movie
   -audio_channels: '2.0'
+
+# A YYYY-YYYY year range is a single year range, bracketed or not (#988)
+? Movie 1994-2004 1080p
+: title: Movie
+  year: [1994, 2004]
+  screen_size: 1080p
+  type: movie
+
+? Show 2005 - 2013 Complete
+: title: Show
+  year: [2005, 2013]
+  other: Complete
+
+? Show (2011 to 2017) Complete
+: title: Show
+  year: [2011, 2017]
+  other: Complete
+
+? Show 2005–2013 Complete
+: title: Show
+  year: [2005, 2013]
+  other: Complete
+
+? Trilogy (1999-2003) 1080p
+: title: Trilogy
+  year: [1999, 2003]
+  screen_size: 1080p
+  type: movie
+
+# Not a range: reversed pair, or two unrelated years
+? Show (2013-2005) Complete
+: title: Show
+  year: [2013, 2005]
+
+? Film (2010) (2015 Remaster) 1080p
+: title: Film
+  year: [2010, 2015]
+  type: movie
+
+? Movie.1999.2005.Remastered.1080p
+: title: Movie 1999
+  year: 2005
+  type: movie
