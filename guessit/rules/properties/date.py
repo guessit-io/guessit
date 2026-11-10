@@ -193,10 +193,7 @@ class KeepMarkedYearInFilepart(Rule):
         if len(matches.named("year")) > 1:
             for filepart in matches.markers.named("path"):
                 years = matches.range(filepart.start, filepart.end, lambda match: match.name == "year")
-                range_spans = {year.span for year in years if "year-range" in year.tags}
-                duplicates = [year for year in years if "year-range" not in year.tags and year.span in range_spans]
-                ret.extend(duplicates)
-                units = _year_units([year for year in years if year not in duplicates])
+                units = _year_units(years)
                 if len(units) > 1:
                     group_units: list[list[Match]] = []
                     ungroup_units: list[list[Match]] = []
@@ -206,13 +203,14 @@ class KeepMarkedYearInFilepart(Rule):
                         else:
                             ungroup_units.append(unit)
                     if group_units and ungroup_units:
-                        ret.extend(year for unit in ungroup_units + group_units[1:] for year in unit)
+                        removed_units = ungroup_units + group_units[1:]  # Keep the first year in marker.
+                    elif not group_units and len(ungroup_units[0]) > 1:
+                        removed_units = ungroup_units[1:]  # A leading range is never released to the title.
                     elif not group_units:
-                        first_unit_is_range = len(ungroup_units[0]) > 1
-                        kept = 1 if first_unit_is_range else 2
-                        if not first_unit_is_range:
-                            ret.extend(ungroup_units[0])  # Keep first year for title.
-                        ret.extend(year for unit in ungroup_units[kept:] for year in unit)
+                        removed_units = [ungroup_units[0], *ungroup_units[2:]]  # Keep first year for title.
+                    else:
+                        removed_units = []
+                    ret.extend(year for unit in removed_units for year in unit)
         return ret
 
 

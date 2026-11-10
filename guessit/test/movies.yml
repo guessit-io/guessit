@@ -2368,6 +2368,11 @@
   screen_size: 1080p
   type: movie
 
+? Show 2005-2013 2020 1080p
+: title: Show
+  year: [2005, 2013]
+  screen_size: 1080p
+
 # Not a range: reversed pair, or two unrelated years
 ? Show (2013-2005) Complete
 : title: Show
