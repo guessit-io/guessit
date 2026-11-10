@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v4.5.1 (2026-11-10)
+
+### Bug Fixes
+
+- **date**: Keep a year range whole next to an episode title
+  ([`61142a2`](https://github.com/guessit-io/guessit/commit/61142a2ea81b9b5570fa706e20b7fbbe81858326))
+
+- **date**: Recognize a YYYY-YYYY year range with or without brackets
+  ([`f830889`](https://github.com/guessit-io/guessit/commit/f830889e3df882cb8e5e6408e03d88037bc881b3))
+
+
 ## v4.5.0 (2026-11-10)
 
 ### Bug Fixes
