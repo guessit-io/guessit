@@ -215,6 +215,7 @@ GUESSIT_SCHEMA: dict[str, PropertySchema] = {
             "Full HD",
             "HD",
             "HDR10",
+            "HDR10+",
             "Half Over Under",
             "Half Side By Side",
             "Hardcoded Subtitles",
