@@ -1433,14 +1433,21 @@ downstream lookup against a real title database.</p>
 </span></code></pre></div>
 <p>The show <em>19-2</em> produces <code>19-2.2014</code>, which is a valid <code>DD-M.YYYY</code> date. A title that is itself a
 date-like number is structurally indistinguishable from an actual date; date detection wins.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Jackass.2.5.2007.DVDRip.x264.AC3-DEEP
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>  date: 2007-05-02   type: episode   title: &quot;Jackass&quot;     (#963)
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>  wanted -&gt; title: &quot;Jackass 2.5&quot;   year: 2007   type: movie
+</span></code></pre></div>
+<p>A decimal sequel or version number (<code>2.5</code>, <code>3.0.1.11</code>, <code>1.2.3</code>) followed by the year reads as an
+unpadded <code>D.M.YYYY</code> date, the same shape as a daily show named <code>Show.2.5.2024</code>. With <code>type=movie</code>,
+a dotted pair of single, unpadded digits is read as a decimal number instead, which settles it.</p>
 <h2 id="a-yearless-complete-film-typed-as-a-series">A yearless <code>COMPLETE</code> film typed as a series<a class="headerlink" href="#a-yearless-complete-film-typed-as-a-series" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>The.Matrix.COMPLETE.BLURAY-GRP
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>  type: episode                                           (#953)
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>  wanted -&gt; type: movie
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>Lord.of.the.Rings.Trilogy.COMPLETE.BLURAY-GRP
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>  type: episode                                           (#953)
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>  wanted -&gt; type: movie
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>The.Matrix.COMPLETE.BLURAY-GRP
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>  type: episode                                           (#953)
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>  wanted -&gt; type: movie
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>Lord.of.the.Rings.Trilogy.COMPLETE.BLURAY-GRP
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>  type: episode                                           (#953)
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>  wanted -&gt; type: movie
 </span></code></pre></div>
 <p><code>other: Complete</code> marks two unrelated things: a complete <strong>run</strong> of a series, and a complete
 <strong>disc</strong> of a film. The only local signal separating them is the year — a run spanning several
