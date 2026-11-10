@@ -1500,17 +1500,18 @@ class EpisodeDetailValidator(Rule):
 
 class RemoveDetachedEpisodeNumber(Rule):
     """
-    If multiple episodes are found, remove the one that doesn't belong.
+    If multiple episodes are found, remove the ones that don't belong.
 
-    Fairy Tail 2 - 16-20: "2" is detached from the 16-20 range and less than 10, so it's
-    removed -- it's a part/season digit glued to the title, not an episode.
+    A single digit standing before every other number and not consecutive to the next one is a
+    part/season digit glued to the title (Fairy Tail 2 - 16-20), not an episode.
 
-    When there is no range (exactly two isolated numbers) and the release is anime, the larger
-    one is removed instead: it's either a number embedded in the title (Mob Psycho 100 - 09,
-    #875) or a duplicated absolute episode count in parentheses (Fairy Tail 2 - 52 (227), #875),
-    never the real episode, whichever position it occupies in the release name. This is gated on
-    anime specifically: two isolated non-consecutive numbers are a legitimate two-episode list
-    outside of that convention (a bare "Show 12 - 24" keeps both, #920).
+    Then, when exactly two isolated numbers remain and the release is anime, the larger one is
+    removed: it's either a number embedded in the title (Mob Psycho 100 - 09) or a duplicated
+    absolute episode count in parentheses (Fairy Tail 2 - 52 (227)). Outside anime, two isolated
+    non-consecutive numbers are a legitimate two-episode list (Show 12 - 24).
+
+    Both checks run in sequence so the result doesn't depend on whether the title digit was
+    matched as an episode, which only happens when the type is forced to episode.
     """
 
     priority = 64
@@ -1529,22 +1530,33 @@ class RemoveDetachedEpisodeNumber(Rule):
 
         episode_numbers = sorted(episode_numbers, key=lambda m: m.value)
 
-        outlier: Match | None = None
-        if len(episode_numbers) == 2:
-            if episode_numbers[1].value - episode_numbers[0].value != 1 and WeakConflictSolver.is_anime(matches):
-                outlier = episode_numbers[1]
-        elif (
-            len(episode_numbers) > 2
-            and episode_numbers[0].value < 10
+        outliers: list[Match] = []
+        if self._is_title_digit(episode_numbers):
+            outliers.append(episode_numbers.pop(0))
+        if (
+            len(episode_numbers) == 2
             and episode_numbers[1].value - episode_numbers[0].value != 1
+            and WeakConflictSolver.is_anime(matches)
         ):
-            outlier = episode_numbers[0]
+            outliers.append(episode_numbers[1])
 
-        parent: Match | None = outlier
-        while parent:
-            ret.append(parent)
-            parent = parent.parent
+        for outlier in outliers:
+            parent: Match | None = outlier
+            while parent:
+                ret.append(parent)
+                parent = parent.parent
         return ret
+
+    @staticmethod
+    def _is_title_digit(episode_numbers: list[Match]) -> bool:
+        if len(episode_numbers) < 2:
+            return False
+        smallest, following = episode_numbers[0], episode_numbers[1]
+        return (
+            len(smallest.raw or "") == 1
+            and following.value - smallest.value != 1
+            and all(smallest.start < match.start for match in episode_numbers[1:])
+        )
 
 
 class VersionValidator(Rule):
