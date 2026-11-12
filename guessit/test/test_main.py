@@ -118,3 +118,15 @@ def test_json_no_output_input_string(capsys: CaptureFixture[str]) -> None:
     data = json.loads(outerr.out)
 
     assert "input_string" not in data
+
+
+def test_jsonutils_does_not_need_six(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The CLI imports guessit.jsonutils, so it must work without six (#991)."""
+    import importlib
+
+    monkeypatch.setitem(sys.modules, "six", None)
+    monkeypatch.delitem(sys.modules, "guessit.jsonutils", raising=False)
+
+    jsonutils = importlib.import_module("guessit.jsonutils")
+
+    assert json.dumps({"x": 1}, cls=jsonutils.GuessitEncoder) == '{"x": 1}'
