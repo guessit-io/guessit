@@ -32,7 +32,12 @@ def _potential_before(i: int, input_string: str) -> bool:
     :return:
     :rtype: bool
     """
-    return i - 1 >= 0 and input_string[i] in seps and input_string[i - 2] in seps and input_string[i - 1] not in seps
+    return (
+        i - 1 >= 0
+        and input_string[i] in seps
+        and (i - 2 < 0 or input_string[i - 2] in seps)
+        and input_string[i - 1] not in seps
+    )
 
 
 def _potential_after(i: int, input_string: str) -> bool:
@@ -46,7 +51,7 @@ def _potential_after(i: int, input_string: str) -> bool:
     :return:
     :rtype: bool
     """
-    return i + 2 >= len(input_string) or (input_string[i + 2] == input_string[i] and input_string[i + 1] not in seps)
+    return i + 2 >= len(input_string) or (input_string[i + 2] in seps and input_string[i + 1] not in seps)
 
 
 def cleanup(input_string: str) -> str:
@@ -87,7 +92,11 @@ def cleanup(input_string: str) -> str:
             # not the closing dot of an abbreviation ("S.H.I.E.L.D.").
             if input_string[potential_index - 1].isdigit() and not input_string[potential_index + 1 :].strip(seps):
                 continue
-            if potential_index - 2 in potential_indices or potential_index + 2 in potential_indices:
+            char = input_string[potential_index]
+            if any(
+                neighbor in potential_indices and input_string[neighbor] == char
+                for neighbor in (potential_index - 2, potential_index + 2)
+            ):
                 replace_indices.append(potential_index)
 
         if replace_indices:
