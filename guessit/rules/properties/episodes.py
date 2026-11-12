@@ -1303,7 +1303,8 @@ class RemoveMisleadingLoneDigitEpisode(Rule):
                 for episode in episodes_
                 if self._is_lone_digit(episode)
                 and (
-                    self._numbers_something_else(matches, episode, in_final_part) or self._fraction_of_a_number(episode)
+                    self._numbers_something_else(matches, episode, in_final_part)
+                    or self._fraction_of_a_number(matches, episode)
                 )
             ]
             kept = [episode for episode in episodes_ if episode not in misplaced]
@@ -1325,10 +1326,17 @@ class RemoveMisleadingLoneDigitEpisode(Rule):
         return not in_final_part or bool(quoted)
 
     @staticmethod
-    def _fraction_of_a_number(episode: Match) -> bool:
-        """A digit behind the dot of a decimal number ("02.5"): a half episode, not a second one."""
+    def _fraction_of_a_number(matches: Matches, episode: Match) -> bool:
+        """A digit behind the dot of a decimal number ("02.5"): a half episode, not a second one.
+        Not when the number in front of the dot belongs to a title (#966): an expected_title can
+        match up to that number ("Foo.2" titled "Foo 2"), and the digit behind the dot then
+        numbers the episode, not the fraction of the title's own number."""
         before = (episode.input_string or "")[: episode.start]
-        return len(before) > 1 and before[-1] == "." and before[-2].isdigit()
+        if not (len(before) > 1 and before[-1] == "." and before[-2].isdigit()):
+            return False
+        return not any(
+            m.name == "title" and m.start <= episode.start - 2 < m.end for m in matches
+        )
 
     @classmethod
     def _detached_from_list(cls, episodes_: list[Match]) -> list[Match]:
