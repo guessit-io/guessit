@@ -462,6 +462,15 @@
 : title: Marvels Agents of S.H.I.E.L.D.
   season: 1
   episode: 6
+
+# An asterisk is always a separator in a title, never an abbreviation dot to restore:
+# it must not matter where the title sits (#977).
+? M*A*S*H.S01E01.mkv
+: title: M A S H
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
   screen_size: 720p
   source: HDTV
   video_codec: H.264

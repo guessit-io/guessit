@@ -68,7 +68,14 @@ def cleanup(input_string: str) -> str:
     # Useful for Mavels Agents of S.H.I.E.L.D.
     # https://github.com/guessit-io/guessit/issues/278
 
-    indices = [i for i, letter in enumerate(clean_string) if letter in seps]
+    # An asterisk is never restored by the single-character logic below: that restore exists for
+    # abbreviation separators (S.H.I.E.L.D., #278), and an asterisk between single characters is
+    # not one. Restoring it only where it happened to pair up made the result depend on where the
+    # title sat (M*A*S*H.S01E01.mkv -> 'M*A*S H', M*A*S*H.mkv -> 'M A*S*H') (#977); it stays the
+    # separator it already is everywhere else.
+    indices = [
+        i for i, letter in enumerate(clean_string) if letter in seps and input_string[i] != "*"
+    ]
 
     dots: set[str] = set()
     if indices:
