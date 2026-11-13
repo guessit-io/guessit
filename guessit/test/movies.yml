@@ -246,6 +246,22 @@
   source: DVD
   other: [Dual Audio, Rip]
 
+# Asterisks split consistently in a title, whatever follows it and however many there are (#977).
+? M*A*S*H.mkv
+: title: M A S H
+  container: mkv
+  type: movie
+
+? a*b*c.mkv
+: title: a b c
+  container: mkv
+  type: movie
+
+? a*b*c*d.mkv
+: title: a b c d
+  container: mkv
+  type: movie
+
 ? Movies/The Doors (1991)/09.03.08.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv
 : title: The Doors
   year: 1991
