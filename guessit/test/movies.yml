@@ -242,6 +242,9 @@
 ? Movies/M.A.S.H. (1970)/MASH.(1970).[Divx.5.02][Dual-Subtitulos][DVDRip].ogm
 : title: MASH
   year: 1970
+  video_codec: DivX
+  source: DVD
+  other: [Dual Audio, Rip]
 
 # Asterisks split consistently in a title, whatever follows it and however many there are (#977).
 ? M*A*S*H.mkv
@@ -258,9 +261,6 @@
 : title: a b c d
   container: mkv
   type: movie
-  video_codec: DivX
-  source: DVD
-  other: [Dual Audio, Rip]
 
 ? Movies/The Doors (1991)/09.03.08.The.Doors.(1991).BDRip.720p.AC3.X264-HiS@SiLUHD-English.[sharethefiles.com].mkv
 : title: The Doors

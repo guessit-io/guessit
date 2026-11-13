@@ -73,9 +73,7 @@ def cleanup(input_string: str) -> str:
     # not one. Restoring it only where it happened to pair up made the result depend on where the
     # title sat (M*A*S*H.S01E01.mkv -> 'M*A*S H', M*A*S*H.mkv -> 'M A*S*H') (#977); it stays the
     # separator it already is everywhere else.
-    indices = [
-        i for i, letter in enumerate(clean_string) if letter in seps and input_string[i] != "*"
-    ]
+    indices = [i for i, letter in enumerate(clean_string) if letter in seps and input_string[i] != "*"]
 
     dots: set[str] = set()
     if indices:
