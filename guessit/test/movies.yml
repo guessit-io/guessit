@@ -2392,3 +2392,18 @@
 : title: S.W.A.T
   year: 2017
   type: movie
+
+? M*A*S*H.mkv
+: title: M*A*S*H
+  container: mkv
+  type: movie
+
+? a*b*c.mkv
+: title: a*b*c
+  container: mkv
+  type: movie
+
+? a*b*c*d.mkv
+: title: a*b*c*d
+  container: mkv
+  type: movie
