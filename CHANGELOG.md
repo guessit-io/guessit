@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v4.5.2 (2026-11-17)
+
+### Bug Fixes
+
+- **episodes**: Number the episode behind a numbered expected_title
+  ([`b1da441`](https://github.com/guessit-io/guessit/commit/b1da44186863ee2cddb7e2492f81b59067b234c0))
+
+
 ## v4.5.1 (2026-11-10)
 
 ### Bug Fixes
