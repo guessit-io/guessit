@@ -170,3 +170,23 @@ def test_forced_episode_keeps_a_lone_digit_out_of_other_properties(name: str, ex
     result = guessit(name, {"type": "episode"})
     for prop, value in expected.items():
         assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
+
+
+@pytest.mark.parametrize(
+    ("name", "expected_title", "expected"),
+    [
+        # An expected_title matching up to a number ("Foo.2" titled "Foo 2") owns the digit in
+        # front of the dot: the lone digit behind it then numbers the episode, and must not be
+        # discarded as the fraction of the title's own number (#966).
+        ("Foo.2.2", ["re:Foo 2"], {"title": "Foo 2", "episode": 2}),
+        ("Foo.2.2", ["Foo 2"], {"title": "Foo 2", "episode": 2}),
+        ("Foo.2.2.bar", ["re:Foo 2"], {"title": "Foo 2", "episode": 2, "episode_title": "bar"}),
+        ("Bar.3.3.x265", ["re:Bar 3"], {"title": "Bar 3", "episode": 3}),
+    ],
+)
+def test_forced_episode_with_numbered_expected_title(
+    name: str, expected_title: list[str], expected: dict[str, object]
+) -> None:
+    result = guessit(name, {"expected_title": expected_title, "type": "episode"})
+    for prop, value in expected.items():
+        assert result.get(prop) == value, f"{prop}: {result.get(prop)!r} != {value!r} in {dict(result)}"
