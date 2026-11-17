@@ -1334,7 +1334,7 @@ class RemoveMisleadingLoneDigitEpisode(Rule):
         before = (episode.input_string or "")[: episode.start]
         if not (len(before) > 1 and before[-1] == "." and before[-2].isdigit()):
             return False
-        return not any(m.name == "title" and m.start <= episode.start - 2 < m.end for m in matches)
+        return not matches.at_index(episode.start - 2, predicate=lambda m: m.name == "title")
 
     @classmethod
     def _detached_from_list(cls, episodes_: list[Match]) -> list[Match]:
