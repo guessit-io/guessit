@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v4.5.3 (2026-11-18)
+
+### Bug Fixes
+
+- **title**: Keep every dot of an abbreviation that starts the title
+  ([`9d5a412`](https://github.com/guessit-io/guessit/commit/9d5a412d79e80f9ade5681434f0c8f95b3a996f9))
+
+
 ## v4.5.2 (2026-11-17)
 
 ### Bug Fixes
