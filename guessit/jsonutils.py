@@ -7,7 +7,6 @@ import json
 from typing import Any
 
 from rebulk.match import Match
-from six import text_type
 
 
 class GuessitEncoder(json.JSONEncoder):
@@ -19,6 +18,6 @@ class GuessitEncoder(json.JSONEncoder):
         if isinstance(o, Match):
             return o.advanced  # type: ignore[attr-defined]
         if hasattr(o, "name"):  # Babelfish languages/countries long name
-            return text_type(o.name)
+            return str(o.name)
         # pragma: no cover
-        return text_type(o)
+        return str(o)
