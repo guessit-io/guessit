@@ -1489,6 +1489,37 @@
   episode: 12
   release_group: VCB-Studio
 
+# A number ending the title before a creditless opening/ending stays in the title (#996)
+? '[DB]86_-_NCED01_(10bit_BD1080p_x265).mkv'
+: title: '86'
+  other: [Ending Credits, Creditless]
+  credits_number: '1'
+  -episode: 86
+
+? '[DB]86_-_NCOP01_(10bit_BD1080p_x265).mkv'
+: title: '86'
+  other: [Opening Credits, Creditless]
+  credits_number: '1'
+  -episode: 86
+
+? '[DB]Mob Psycho 100_-_NCED01_(10bit_BD1080p_x265).mkv'
+: title: Mob Psycho 100
+  other: [Ending Credits, Creditless]
+  credits_number: '1'
+  -episode: 100
+
+? '[SubsPlease] 86 - NCOP (1080p).mkv'
+: title: '86'
+  other: [Opening Credits, Creditless]
+  screen_size: 1080p
+  release_group: SubsPlease
+  -episode: 86
+
+? '[Group] Show - 12 - NCED (1080p).mkv'
+: title: Show
+  episode: 12
+  other: [Ending Credits, Creditless]
+
 # The name "Ed" must not be captured as an Ending Credits token (case-sensitive).
 ? Ed.S01E01.1080p.WEB-DL-GRP.mkv
 : title: Ed
