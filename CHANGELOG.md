@@ -2,6 +2,20 @@
 
 <!-- version list -->
 
+## v4.5.4 (2026-11-19)
+
+### Bug Fixes
+
+- **cli**: Drop the undeclared six import in jsonutils
+  ([`20aea27`](https://github.com/guessit-io/guessit/commit/20aea273f84bee8c921912359e1e3c30cbeaf629))
+
+- **episodes**: Keep a number ending the title before a creditless opening/ending
+  ([`1244783`](https://github.com/guessit-io/guessit/commit/12447837c1bf21599ca89110194a0452db85af02))
+
+- **language**: Recognize the VOF and VF2 French language tags
+  ([`4cb3ffc`](https://github.com/guessit-io/guessit/commit/4cb3ffcda850d685a4d85662a464e815598c1f3f))
+
+
 ## v4.5.3 (2026-11-18)
 
 ### Bug Fixes
