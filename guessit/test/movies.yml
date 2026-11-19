@@ -784,6 +784,28 @@
   title: Underworld Quadrilogie
   video_codec: H.264
 
+# VOF (original French version) and VF2 (both French dubs) are French language tags (#1001)
+? Movie.2020.VOF.1080p.WEB.H264-GRP
+: title: Movie
+  year: 2020
+  language: fr
+  release_group: GRP
+  -alternative_title: VOF
+
+? Movie.2020.MULTi.VF2.1080p.WEB.H264-GRP
+: title: Movie
+  year: 2020
+  language: [mul, fr]
+  release_group: GRP
+  -alternative_title: MULTi VF2
+
+? Movie.2020.VF2.1080p.WEB.H264-GRP
+: title: Movie
+  year: 2020
+  language: fr
+  release_group: GRP
+  -alternative_title: VF2
+
 ? A Bout Portant (The Killers).PAL.Multi.DVD-R-KZ
 : source: DVD
   language: mul

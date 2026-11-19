@@ -626,6 +626,27 @@
   video_codec: H.264
   other: Micro HD
 
+# VOF (original French version) and VF2 (both French dubs) are French language tags (#1001)
+? Lupin.S04E07.VOF.1080p.WEB.EAC3.Atmos.5.1.H265-SUPPLY
+: title: Lupin
+  season: 4
+  episode: 7
+  language: fr
+  screen_size: 1080p
+  source: Web
+  release_group: SUPPLY
+  -episode_title: VOF
+
+? Le.Seigneur.des.anneaux.Les.Anneaux.de.pouvoir.2022.S03E01.REPACK.MULTi.VF2.2160p.DV.HDR10P.WEB.EAC3.5.1.Atmos.H265-FRQC
+: title: Le Seigneur des anneaux Les Anneaux de pouvoir
+  year: 2022
+  season: 3
+  episode: 1
+  language: [mul, fr]
+  screen_size: 2160p
+  release_group: FRQC
+  -episode_title: MULTi VF2
+
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BP.mkv
 : episode: 9
   video_codec: H.264
