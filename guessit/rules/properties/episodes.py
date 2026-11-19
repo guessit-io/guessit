@@ -44,6 +44,7 @@ _CJK_DIGITS = {
     "九": 9,
 }
 
+_CREDITS_VALUES = ("Opening Credits", "Ending Credits")
 _SEPS_RE = re.compile(rf"[{re.escape(seps)}]+")
 
 # ASCII digits or Han numerals up to 99 (十一 -> 11, 二十三 -> 23, single digit otherwise).
@@ -743,7 +744,7 @@ class WeakConflictSolver(Rule):
         if matches.named("version") or matches.named("crc32"):
             return True
 
-        if matches.named("other", predicate=lambda m: m.value in ("Opening Credits", "Ending Credits")):
+        if matches.named("other", predicate=lambda m: m.value in _CREDITS_VALUES):
             return True
 
         for group in matches.markers.named("group"):
@@ -1518,6 +1519,11 @@ class RemoveDetachedEpisodeNumber(Rule):
 
     Both checks run in sequence so the result doesn't depend on whether the title digit was
     matched as an episode, which only happens when the type is forced to episode.
+
+    A number glued to the title and followed by a dash then a creditless opening/ending marker
+    ends the title (86 - NCOP01, Mob Psycho 100 - NCED01): the marker holds the episode slot, so
+    the number has no episode to number. A number behind its own dash (Show - 12 - NCED) keeps
+    the episode slot.
     """
 
     priority = 64
@@ -1536,7 +1542,8 @@ class RemoveDetachedEpisodeNumber(Rule):
 
         episode_numbers = sorted(episode_numbers, key=lambda m: m.value)
 
-        outliers: list[Match] = []
+        outliers: list[Match] = [match for match in episode_numbers if self._ends_title_before_credits(matches, match)]
+        episode_numbers = [match for match in episode_numbers if match not in outliers]
         if self._is_title_digit(episode_numbers):
             outliers.append(episode_numbers.pop(0))
         if (
@@ -1552,6 +1559,19 @@ class RemoveDetachedEpisodeNumber(Rule):
                 ret.append(parent)
                 parent = parent.parent
         return ret
+
+    @staticmethod
+    def _ends_title_before_credits(matches: Matches, episode: Match) -> bool:
+        input_string = episode.input_string or ""
+        credits = matches.next(episode, predicate=lambda m: m.name == "other" and m.value in _CREDITS_VALUES, index=0)
+        if not credits:
+            return False
+        gap = input_string[episode.end : credits.start]
+        if gap.strip(seps) or "-" not in gap:
+            return False
+        filepart = matches.markers.at_match(episode, lambda marker: marker.name == "path", 0)
+        before = input_string[filepart.start if filepart else 0 : episode.start]
+        return not before.rstrip(seps.replace("-", "")).endswith("-")
 
     @staticmethod
     def _is_title_digit(episode_numbers: list[Match]) -> bool:

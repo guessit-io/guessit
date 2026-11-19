@@ -397,7 +397,9 @@
           "vf",
           "vff",
           "vfi",
-          "vfq"
+          "vfq",
+          "vof",
+          "vf2"
         ],
         "swe": [
           "se"
