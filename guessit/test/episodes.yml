@@ -2915,7 +2915,7 @@
   season: 4
   episode: 8
   source: HDTV
-  language: ca
+  language: es
   type: episode
 
 # newpct
@@ -2929,7 +2929,7 @@
   source: HDTV
   season: 1
   episode: 5
-  language: ca
+  language: es
   type: episode
 
 # newpct
@@ -4941,7 +4941,7 @@
   episode: 1
   audio_codec: Dolby Digital
   audio_channels: '5.1'
-  language: Catalan
+  language: Spanish
   release_group: des202
   container: mkv
   type: episode
@@ -4954,9 +4954,7 @@
   episode: 13
   audio_codec: Dolby Digital
   audio_channels: '5.1'
-  language:
-  - Spanish
-  - Catalan
+  language: Spanish
   container: mkv
   type: episode
 

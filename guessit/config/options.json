@@ -390,7 +390,10 @@
         "spa": [
           "esp",
           "español",
-          "espanol"
+          "espanol",
+          "castellano",
+          "espanol castellano",
+          "español castellano"
         ],
         "fra": [
           "français",
@@ -420,10 +423,7 @@
           "flemish"
         ],
         "cat": [
-          "català",
-          "castellano",
-          "espanol castellano",
-          "español castellano"
+          "català"
         ],
         "ces": [
           "cz"
