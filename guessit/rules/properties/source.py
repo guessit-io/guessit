@@ -49,7 +49,9 @@ def source(config: dict[str, Any]) -> Rebulk:
         """Default conflict solver with 'other' property."""
         return other if other.name in ["other", "release_group"] else "__default__"
 
-    rebulk.regex(*build_source_pattern("VHS", suffix=optional(rip_suffix)), value={"source": "VHS", "other": "Rip"})
+    rebulk.regex(*build_source_pattern("VHS", suffix=rip_suffix), value={"source": "VHS", "other": "Rip"})
+    # A bare VHS can be a word of the title ("Vhs Mix Tape"), so it is weak.
+    rebulk.regex(*build_source_pattern("VHS"), value="VHS", tags="weak.source")
     rebulk.regex(*build_source_pattern("CAM", suffix=optional(rip_suffix)), value={"source": "Camera", "other": "Rip"})
     rebulk.regex(
         *build_source_pattern("HD-?CAM", suffix=optional(rip_suffix)), value={"source": "HD Camera", "other": "Rip"}
