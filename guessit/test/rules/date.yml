@@ -16,6 +16,15 @@
 ? +15.01.31
 : date: 2031-01-15
 
+# With custom advanced_config.year.max: 2030, 31 is no longer a plausible year,
+# so 15.01.31 resolves as 2015-01-31 instead of 2031-01-15.
+? +15.01.31
+: options:
+    advanced_config:
+      year:
+        max: 2030
+  date: 2015-01-31
+
 ? +01.02.03
 : date: 2003-02-01
 
@@ -27,12 +36,30 @@
 : options: --date-day-first
   date: 2003-02-01
 
-? 1919
-? 2030
+? 1899
+? 2036
 : !!map {}
 
 ? 2029
 : year: 2029
+
+# Near-future year configurable via advanced_config.year
+? 2033.Future.Apocalypse.1080p.BluRay.x264.DTS-HD.MA.7.1
+: options:
+    type: movie
+    advanced_config:
+      year:
+        max: 2027
+  title: 2033 Future Apocalypse
+
+# Historical year configurable via advanced_config.year
+? Roundhay Garden Scene 1888
+: options:
+    advanced_config:
+      year:
+        min: 1880
+  title: Roundhay Garden Scene
+  year: 1888
 
 ? (1920)
 : year: 1920
