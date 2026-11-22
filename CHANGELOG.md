@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v4.5.5 (2026-11-22)
+
+### Bug Fixes
+
+- **language**: Map castellano to Spanish instead of Catalan
+  ([`b9bfab4`](https://github.com/guessit-io/guessit/commit/b9bfab496220d1e62b2eacd5113e0be0b5fc2304))
+
+### Performance Improvements
+
+- **api**: Bound the rule sets kept by the effective options cache
+  ([`a0630ef`](https://github.com/guessit-io/guessit/commit/a0630efeb2ca956a2ecbaba5c803e0a326924ac9))
+
+- **api**: Keep effective options per option set and make them call-local
+  ([`09311dc`](https://github.com/guessit-io/guessit/commit/09311dc58234f468d42c1c8099e5f42a66f97ff8))
+
+
 ## v4.5.4 (2026-11-19)
 
 ### Bug Fixes
