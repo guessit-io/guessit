@@ -58,9 +58,16 @@ override.
 ### `GuessItApi`
 
 `guessit()` delegates to a shared default instance. Building your own instance
-lets you parse many names while reusing the compiled configuration: pass the
-same options on each call and the instance skips rebuilding the rules when the
-options are unchanged.
+lets you parse many names while reusing the compiled configuration. An instance
+keeps the merged options of the last 16 option sets it was called with, so
+alternating between a few option sets (for example a `type` hint per name) costs
+nothing after the first call of each. Option sets with a different
+`advanced_config` each need their own rules, and only the last 2 are kept.
+Calls from several threads each use their own options.
+
+The two limits are the `configured_cache_size` and `rule_set_cache_size`
+attributes; setting either to 0 disables the cache. `reset()` empties it, along
+with the loaded configuration.
 
 ```python
 from guessit import GuessItApi

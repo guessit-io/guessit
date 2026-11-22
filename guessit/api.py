@@ -183,9 +183,14 @@ def _freeze(value: Any) -> Hashable:
 class GuessItApi:
     """
     An api class that can be configured with custom Rebulk configuration.
+
+    The effective options of the last ``configured_cache_size`` option sets are kept, along with their rule
+    set; option sets whose ``advanced_config`` differs each need their own rule set, and only the last
+    ``rule_set_cache_size`` rule sets are kept. Setting either size to 0 disables the cache.
     """
 
     configured_cache_size = 16
+    rule_set_cache_size = 2
 
     def __init__(self) -> None:
         """Default constructor."""
@@ -200,6 +205,17 @@ class GuessItApi:
         self.effective_options: dict[str, Any] | None = None
         self.effective_options_input: Any = None
         self._configured: dict[Hashable, _Configured] = {}
+
+    def _evict(self) -> None:
+        while len(self._configured) > max(self.configured_cache_size, 0):
+            del self._configured[next(iter(self._configured))]
+        last_use = {id(configured.rebulk): index for index, configured in enumerate(self._configured.values())}
+        while len(last_use) > max(self.rule_set_cache_size, 0):
+            oldest = min(last_use, key=last_use.__getitem__)
+            del last_use[oldest]
+            self._configured = {
+                key: configured for key, configured in self._configured.items() if id(configured.rebulk) != oldest
+            }
 
     def reset(self) -> None:
         """
@@ -297,9 +313,8 @@ class GuessItApi:
                 assert self.rebulk is not None
                 configured = _Configured(config, self.advanced_config, self.rebulk, merge_options(config, options))
             if key is not None:
-                if len(self._configured) >= self.configured_cache_size:
-                    del self._configured[next(iter(self._configured))]
                 self._configured[key] = configured
+                self._evict()
 
             self.config = config
             self.advanced_config = configured.advanced_config

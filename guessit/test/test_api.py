@@ -298,3 +298,28 @@ def test_concurrent_calls_keep_their_own_options() -> None:
     for option_set_index, result in results:
         assert result == expected[option_set_index]
     api.reset()
+
+
+def test_rule_sets_cache_bounded() -> None:
+    """Option sets with a different advanced_config each hold a rule set; only the most recent ones are kept."""
+    custom_api = api.GuessItApi()
+    custom_api.rule_set_cache_size = 2
+    for article in ("w1", "w2"):
+        custom_api.guessit("Show.12.mkv", {"advanced_config": {"title": {"articles": [article]}}})
+        custom_api.guessit("Show.12.mkv", {"type": "movie", "advanced_config": {"title": {"articles": [article]}}})
+    assert len(custom_api._configured) == 4
+
+    custom_api.guessit("Show.12.mkv", {"advanced_config": {"title": {"articles": ["w3"]}}})
+    assert len({id(configured.rebulk) for configured in custom_api._configured.values()}) == 2
+    assert len(custom_api._configured) == 3
+
+
+def test_effective_options_cache_disabled(mocker: MockerFixture) -> None:
+    custom_api = api.GuessItApi()
+    custom_api.configured_cache_size = 0
+    custom_api.guessit("Show.12.mkv", {"type": "movie"})
+
+    merge_options = mocker.spy(api, "merge_options")
+    assert custom_api.guessit("Show.12.mkv", {"type": "movie"})["type"] == "movie"
+    assert len(custom_api._configured) == 0
+    assert merge_options.call_count == 2
