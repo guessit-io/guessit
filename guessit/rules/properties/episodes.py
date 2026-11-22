@@ -227,6 +227,7 @@ def episodes(config: dict[str, Any]) -> Rebulk:
     season_ep_markers = config["season_ep_markers"]
     disc_markers = config["disc_markers"]
     episode_markers = config["episode_markers"]
+    special_markers = config.get("special_markers") or ["sp"]
     range_separators = config["range_separators"]
     weak_discrete_separators = [sep for sep in seps_no_fs if sep not in range_separators]
     strong_discrete_separators = config["discrete_separators"]
@@ -495,6 +496,38 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         r"ep-?(?P<episode>\d{1,4})"
     ).regex(r"v(?P<version>\d+)").repeater("?").regex(
         r"(?P<episodeSeparator>ep|e|x|-)(?P<episode>\d{1,4})", abbreviations=None
+    ).repeater("*")
+
+    # SP01, SP 01, SP-01 (special markers, #1000)
+    def validate_special_marker(match: Match) -> bool:
+        parent = match.initiator if match.initiator else match
+        if not seps_surround(parent):
+            return False
+        raw = parent.raw or ""
+        for marker in special_markers:
+            if re.match(rf"^{re.escape(marker)}\d", raw, re.IGNORECASE):
+                return True
+        input_string = parent.input_string or ""
+        last_slash = max(input_string.rfind("/", 0, parent.start), input_string.rfind("\\", 0, parent.start))
+        filepart_start = 0 if last_slash == -1 else last_slash + 1
+        before = input_string[filepart_start : parent.start]
+        return bool(before.rstrip(seps.replace("-", "")).endswith("-"))
+
+    special_markers_pattern = build_or_pattern(special_markers, name="episodeMarker")
+    rebulk.chain(
+        tags=["weak-episode"],
+        formatter={"episode_details": lambda _: "Special"},
+        validator={"__parent__": validate_special_marker},
+        disabled=lambda context: is_disabled(context, "episode"),
+    ).defaults(
+        tags=["weak-episode"],
+        formatter={"episode_details": lambda _: "Special"},
+        validator=None,
+    ).regex(
+        r"(?P<episode_details>" + special_markers_pattern + r")-?(?P<episode>\d{1,4})",
+    ).regex(r"v(?P<version>\d+)").repeater("?").regex(
+        r"(?P<episodeSeparator>" + special_markers_pattern + r"|ep|e|x|-)(?P<episode>\d{1,4})",
+        abbreviations=None,
     ).repeater("*")
 
     # cap 112, cap 112_114
