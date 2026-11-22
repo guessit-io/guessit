@@ -294,6 +294,9 @@
       "disc_markers": [
         "d"
       ],
+      "special_markers": [
+        "sp"
+      ],
       "episode_markers": [
         "xe",
         "ex",
