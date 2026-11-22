@@ -1925,3 +1925,31 @@
 : title: Hellboy
   year: 2019
   release_group: NOXXUS
+
+# --- #1000: SP followed by a number in the episode slot is a numbered special ---
+? '[DB]86_-_SP01_(10bit_BD1080p_x265).mkv'
+: title: '86'
+  episode: 1
+  episode_details: Special
+  type: episode
+  -episode: 86
+
+? '[DB]Haikyuu_-_SP01_(10bit_BD1080p_x265).mkv'
+: title: Haikyuu
+  episode: 1
+  episode_details: Special
+  type: episode
+
+? '[FFF] Seirei Tsukai no Blade Dance - SP01 [BD][720p-AAC][F2F4B7A3].mkv'
+: title: Seirei Tsukai no Blade Dance
+  episode: 1
+  episode_details: Special
+  type: episode
+  -episode_title: SP01
+
+# SP is short: it only counts glued to a number, never inside a word.
+? Wasp01.mkv
+: -episode_details: Special
+
+? Show.SP.2020.1080p.mkv
+: -episode_details: Special

@@ -359,6 +359,14 @@ def episodes(config: dict[str, Any]) -> Rebulk:
         conflict_solver=season_episode_conflict_solver,
     )
 
+    # SP01: a special numbered 1. The marker is short, so it only counts glued to the number.
+    rebulk.regex(
+        build_or_pattern(config["special_markers"], name="episode_details") + r"(?P<episode>\d{1,3})(?!\d)",
+        formatter={"episode_details": lambda value: "Special", "episode": int},
+        tags=["SxxExx"],
+        disabled=lambda context: context.get("type") == "movie" or is_disabled(context, "episode"),
+    )
+
     rebulk.chain(
         validate_all=True,
         conflict_solver=season_episode_conflict_solver,
