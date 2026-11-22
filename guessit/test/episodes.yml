@@ -2049,7 +2049,7 @@
   year: 2008
   source: Blu-ray
   screen_size: 1080p
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   container: WMV
   release_group: NOVO
   type: episode
@@ -2374,7 +2374,7 @@
 
 ? Fear.the.Walking.Dead.-.Season.2.epi.02.XviD.Eng.Ac3-5.1.sub.ita.eng.iCV-MIRCrew
 : options: -t episode
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   audio_codec: Dolby Digital
   episode: 2
   episode_title: epi
@@ -2551,7 +2551,7 @@
   screen_size: 720p
   source: HDTV
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: Group
   episode: 6
@@ -2649,7 +2649,7 @@
   source: Web
   other: Rip
   audio_codec: Dolby Digital Plus
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: Group
   type: episode
@@ -2758,7 +2758,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: KINGS
   container: mkv
@@ -2785,7 +2785,7 @@
   source: Web
   other: Rip
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: ViSUM
   container: mkv
@@ -2806,7 +2806,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: HKD
   container: mkv
@@ -2849,7 +2849,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: R2D2
   container: mkv
@@ -2863,7 +2863,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   subtitle_language: nl
   release_group: Q
@@ -2891,7 +2891,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   release_group: Het.Robot.Team.OYM
   type: episode
 
@@ -3165,7 +3165,7 @@
   video_codec: H.264
   container: mkv
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   release_group: Ehhhh
   type: episode
 
@@ -3353,7 +3353,7 @@
   source: Web
   other: Rip
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: GROUP
   type: episode
@@ -3454,7 +3454,7 @@
   episode_details: Final
   language: mul
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   screen_size: 2160p
   streaming_service: Netflix
   source: Ultra HDTV
@@ -3695,7 +3695,7 @@
   screen_size: 720p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: NTb
   type: episode
@@ -3735,7 +3735,7 @@
   source: Web
   other: Rip
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: casstudio
   container: mkv
@@ -3771,7 +3771,7 @@
   screen_size: 720p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: ABC
   container: nzb
@@ -3846,7 +3846,7 @@
   other: HDR10
   audio_codec: DTS-HD
   audio_profile: Master Audio
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.265
   release_group: ULTRAHDCLUB
   type: episode
@@ -3923,7 +3923,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: NA
   type: episode
@@ -3935,7 +3935,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital Plus
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: VLAD
   container: mkv
@@ -3948,7 +3948,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: NL
   type: episode
@@ -3995,7 +3995,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: AG
   container: mkv
@@ -4104,7 +4104,7 @@
   screen_size: 1080p
   source: Web
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: rartv
   type: episode
@@ -4136,7 +4136,7 @@
   episode: 1
   screen_size: 720p
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   audio_bit_rate: 448Kbps
   release_group: ALANiS
   type: episode
@@ -4583,7 +4583,7 @@
   video_codec: H.264
   audio_bit_rate: 384Kbps
   audio_codec: AAC
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   container: mp4
   type: episode
 
@@ -4599,7 +4599,7 @@
   subtitle_language: und
   audio_bit_rate: 384Kbps
   audio_codec: AAC
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   container: mp4
   type: episode
 
@@ -4752,7 +4752,7 @@
   source: Web
   other: [Rip, Obfuscated]
   audio_codec: Dolby Digital Plus
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: NTb
   uuid: c329b27187d44a94b4a25b21502db552
@@ -4890,7 +4890,7 @@
   source: Web
   other: [Rip, Repost, Obfuscated]
   audio_codec: Dolby Digital
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: PSYPHER
   type: episode
@@ -5133,7 +5133,7 @@
   streaming_service: Amazon Prime
   source: Web
   audio_codec: Dolby Digital Plus
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: NTb
   container: mkv
@@ -5149,7 +5149,7 @@
   streaming_service: Hulu
   source: Web
   audio_codec: Dolby Digital Plus
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.264
   release_group: NOGRP
   type: episode
@@ -5877,7 +5877,7 @@
   other: Rip
   color_depth: 10-bit
   audio_codec: Dolby Digital Plus
-  audio_channels: "5.1"
+  audio_channels: '5.1'
   video_codec: H.265
   release_group: iVy
   container: mkv
