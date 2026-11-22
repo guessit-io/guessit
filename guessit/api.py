@@ -6,11 +6,12 @@ API functions that can be used by external software
 from __future__ import annotations
 
 import os
+import threading
 import traceback
 from collections import OrderedDict
 from copy import deepcopy
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, NamedTuple, cast
 
 from rebulk.introspector import introspect
 
@@ -21,7 +22,7 @@ from .schema_builder import build_json_schema, overlay_config_enums
 from .schema_generated import GUESSIT_SCHEMA
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Hashable
 
     from rebulk import Rebulk
 
@@ -158,25 +159,70 @@ def _complete_properties(ordered: dict[str, Any]) -> dict[str, Any]:
     return dict(sorted(ordered.items(), key=lambda item: str(item[0])))
 
 
+class _Configured(NamedTuple):
+    """What a call runs with: the rule set and the effective options built for its options."""
+
+    config: dict[str, Any]
+    advanced_config: Any
+    rebulk: Rebulk
+    options: dict[str, Any]
+
+
+def _freeze(value: Any) -> Hashable:
+    """Hashable form of sanitized options, equal for equal options. Raises TypeError if a value can't be hashed."""
+    if isinstance(value, dict):
+        return dict, frozenset((key, _freeze(item)) for key, item in value.items())
+    if isinstance(value, (set, frozenset)):
+        return frozenset, frozenset(_freeze(item) for item in value)
+    if isinstance(value, (list, tuple)):
+        return type(value), tuple(_freeze(item) for item in value)
+    hash(value)
+    return cast("Hashable", value)
+
+
 class GuessItApi:
     """
     An api class that can be configured with custom Rebulk configuration.
+
+    The effective options of the last ``configured_cache_size`` option sets are kept, along with their rule
+    set; option sets whose ``advanced_config`` differs each need their own rule set, and only the last
+    ``rule_set_cache_size`` rule sets are kept. Setting either size to 0 disables the cache.
     """
+
+    configured_cache_size = 16
+    rule_set_cache_size = 2
 
     def __init__(self) -> None:
         """Default constructor."""
+        self._lock = threading.Lock()
+        self._clear_state()
+
+    def _clear_state(self) -> None:
         self.rebulk: Rebulk | None = None
         self.config: dict[str, Any] | None = None
         self.load_config_options: Any = None
         self.advanced_config: Any = None
         self.effective_options: dict[str, Any] | None = None
         self.effective_options_input: Any = None
+        self._configured: dict[Hashable, _Configured] = {}
+
+    def _evict(self) -> None:
+        while len(self._configured) > max(self.configured_cache_size, 0):
+            del self._configured[next(iter(self._configured))]
+        last_use = {id(configured.rebulk): index for index, configured in enumerate(self._configured.values())}
+        while len(last_use) > max(self.rule_set_cache_size, 0):
+            oldest = min(last_use, key=last_use.__getitem__)
+            del last_use[oldest]
+            self._configured = {
+                key: configured for key, configured in self._configured.items() if id(configured.rebulk) != oldest
+            }
 
     def reset(self) -> None:
         """
         Reset api internal state.
         """
-        self.__init__()  # type: ignore[misc]
+        with self._lock:
+            self._clear_state()
 
     @classmethod
     def _fix_encoding(cls, value: Any) -> Any:
@@ -213,6 +259,17 @@ class GuessItApi:
         :return:
         :rtype: dict
         """
+        return self._configure(options, rules_builder, force, sanitize_options).config
+
+    def _configure(
+        self,
+        options: Any = None,
+        rules_builder: Callable[..., Rebulk] | None = None,
+        force: bool = False,
+        sanitize_options: bool = True,
+    ) -> _Configured:
+        # A cached rule set was built by whichever builder was in use then, so an explicit builder bypasses the cache.
+        use_cache = rules_builder is None
         if not rules_builder:
             rules_builder = rebulk_builder
 
@@ -220,47 +277,51 @@ class GuessItApi:
             options = parse_options(options, True)
             options = self._fix_encoding(options)
 
-        config_reloaded = (
-            self.config is None
-            or self.load_config_options is None
-            or force
-            or not self._has_same_properties(
-                self.load_config_options, options, ["config", "no_user_config", "no_default_config"]
+        key: Hashable | None
+        try:
+            key = _freeze(options)
+        except TypeError:
+            key = None
+
+        with self._lock:
+            config_reloaded = (
+                self.config is None
+                or self.load_config_options is None
+                or force
+                or not self._has_same_properties(
+                    self.load_config_options, options, ["config", "no_user_config", "no_default_config"]
+                )
             )
-        )
-        if config_reloaded:
-            config = load_config(options)
-            config = self._fix_encoding(config)
-            self.load_config_options = options
-        else:
-            assert self.config is not None
-            config = self.config
+            if config_reloaded:
+                config = load_config(options)
+                config = self._fix_encoding(config)
+                self.load_config_options = options
+                self._configured.clear()
+            else:
+                assert self.config is not None
+                config = self.config
 
-        # merge_options deep-copies advanced_config, and the effective options embed it again; both are
-        # unchanged while nothing that feeds them changes, so reuse them across repeated calls.
-        if (
-            not force
-            and not config_reloaded
-            and self.rebulk is not None
-            and self.effective_options is not None
-            and self.effective_options_input == options
-        ):
-            return config
+            # merge_options deep-copies its first argument, so building the effective options is costly:
+            # keep them per option set, along with the rule set they were built for.
+            cached = self._configured.pop(key, None) if key is not None else None
+            configured = cached if use_cache else None
+            if configured is None:
+                advanced_config = merge_options(config.get("advanced_config"), options.get("advanced_config"))
+                if force or not self.rebulk or not self.advanced_config or self.advanced_config != advanced_config:
+                    self.advanced_config = deepcopy(advanced_config)
+                    self.rebulk = rules_builder(advanced_config)
+                assert self.rebulk is not None
+                configured = _Configured(config, self.advanced_config, self.rebulk, merge_options(config, options))
+            if key is not None:
+                self._configured[key] = configured
+                self._evict()
 
-        advanced_config = merge_options(config.get("advanced_config"), options.get("advanced_config"))
-
-        should_build_rebulk = (
-            force or not self.rebulk or not self.advanced_config or self.advanced_config != advanced_config
-        )
-
-        if should_build_rebulk:
-            self.advanced_config = deepcopy(advanced_config)
-            self.rebulk = rules_builder(advanced_config)
-
-        self.config = config
-        self.effective_options = merge_options(config, options)
-        self.effective_options_input = options
-        return self.config
+            self.config = config
+            self.advanced_config = configured.advanced_config
+            self.rebulk = configured.rebulk
+            self.effective_options = configured.options
+            self.effective_options_input = options
+            return configured
 
     def guessit(self, string: str | Path | bytes, options: Any = None) -> dict[str, Any]:
         """
@@ -286,9 +347,8 @@ class GuessItApi:
         try:
             options = parse_options(options, True)
             options = self._fix_encoding(options)
-            self.configure(options, sanitize_options=False)
-            assert self.effective_options is not None
-            options = self.effective_options
+            configured = self._configure(options, sanitize_options=False)
+            options = configured.options
             result_decode = False
             result_encode = False
 
@@ -296,8 +356,7 @@ class GuessItApi:
                 string = string.decode("ascii")
                 result_encode = True
 
-            assert self.rebulk is not None
-            matches = self.rebulk.matches(string, options)
+            matches = configured.rebulk.matches(string, options)
             if result_decode:
                 for match in matches:
                     if isinstance(match.value, bytes):
@@ -328,16 +387,14 @@ class GuessItApi:
         """
         options = parse_options(options, True)
         options = self._fix_encoding(options)
-        self.configure(options, sanitize_options=False)
-        assert self.effective_options is not None
-        options = self.effective_options
-        assert self.rebulk is not None
-        unordered = introspect(self.rebulk, options).properties
+        configured = self._configure(options, sanitize_options=False)
+        rebulk = configured.rebulk
+        unordered = introspect(rebulk, configured.options).properties
         ordered = OrderedDict()
         for k in sorted(unordered.keys(), key=str):
             ordered[k] = sorted(unordered[k], key=str)
-        if hasattr(self.rebulk, "customize_properties"):
-            ordered = self.rebulk.customize_properties(ordered)
+        if hasattr(rebulk, "customize_properties"):
+            ordered = rebulk.customize_properties(ordered)
         return _complete_properties(ordered)
 
     def schema(self, options: Any = None) -> dict[str, Any]:
