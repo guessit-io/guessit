@@ -900,9 +900,15 @@ see <a href="../configuration/">Configuration</a> for the merge rules and the <c
 override.</p>
 <h3 id="guessitapi"><code>GuessItApi</code><a class="headerlink" href="#guessitapi" title="Permanent link">&para;</a></h3>
 <p><code>guessit()</code> delegates to a shared default instance. Building your own instance
-lets you parse many names while reusing the compiled configuration: pass the
-same options on each call and the instance skips rebuilding the rules when the
-options are unchanged.</p>
+lets you parse many names while reusing the compiled configuration. An instance
+keeps the merged options of the last 16 option sets it was called with, so
+alternating between a few option sets (for example a <code>type</code> hint per name) costs
+nothing after the first call of each. Option sets with a different
+<code>advanced_config</code> each need their own rules, and only the last 2 are kept.
+Calls from several threads each use their own options.</p>
+<p>The two limits are the <code>configured_cache_size</code> and <code>rule_set_cache_size</code>
+attributes; setting either to 0 disables the cache. <code>reset()</code> empties it, along
+with the loaded configuration.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">guessit</span><span class="w"> </span><span class="kn">import</span> <span class="n">GuessItApi</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">api</span> <span class="o">=</span> <span class="n">GuessItApi</span><span class="p">()</span>
