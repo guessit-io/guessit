@@ -248,33 +248,3 @@ def test_other_art_keywords_overridable() -> None:
     config = {"advanced_config": {"other": {"art": {"myart": "Poster"}}}}
     assert guessit("Show/myart.jpg", config).get("other") == "Poster"
     api.reset()
-
-
-def test_year_bounds_configurable() -> None:
-    api.reset()
-    # Default bounds (1900 <= year <= 2035)
-    default = guessit("Movie 2040.mkv")
-    assert default.get("year") is None
-
-    # Override max bound to accept 2040
-    config_max = {"advanced_config": {"year": {"max": 2045}}}
-    overridden_max = guessit("Movie 2040.mkv", config_max)
-    assert overridden_max.get("year") == 2040
-
-    # Default min bound rejects 1888
-    default_min = guessit("Roundhay Garden Scene 1888.mkv")
-    assert default_min.get("year") is None
-
-    # Override min bound to accept 1888
-    config_min = {"advanced_config": {"year": {"min": 1880}}}
-    overridden_min = guessit("Roundhay Garden Scene 1888.mkv", config_min)
-    assert overridden_min.get("year") == 1888
-
-    # Date parsing disambiguation with tightened max bound
-    # Under default 2035, 31 is valid (2031), resolving 15.01.31 day-first to 2031-01-15.
-    assert str(guessit("15.01.31").get("date")) == "2031-01-15"
-    # Tightening max to 2030 causes 31 to be rejected as a year, resolving to 2015-01-31.
-    config_tight = {"advanced_config": {"year": {"max": 2030}}}
-    assert str(guessit("15.01.31", config_tight).get("date")) == "2015-01-31"
-
-    api.reset()

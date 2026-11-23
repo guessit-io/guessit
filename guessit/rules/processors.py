@@ -231,7 +231,7 @@ class SeasonYear(Rule):
     priority = POST_PROCESS
     consequence = AppendMatch
 
-    def __init__(self, min_year: int = 1900, max_year: int = 2035) -> None:
+    def __init__(self, min_year: int, max_year: int) -> None:
         super().__init__()
         self.min_year = min_year
         self.max_year = max_year
@@ -301,21 +301,19 @@ class StripSeparators(CustomRule):
                     match.raw_end -= 1
 
 
-def processors(config: dict[str, Any], year_config: dict[str, Any] | None = None) -> Rebulk:
+def processors(config: dict[str, Any], year_config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
     :param config: rule configuration
     :type config: dict
     :param year_config: year rule configuration
-    :type year_config: dict or None
+    :type year_config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    if year_config is None:
-        year_config = config.get("year", {})
-    min_year: int = year_config.get("min", 1900)
-    max_year: int = year_config.get("max", 2035)
+    min_year: int = year_config["min"]
+    max_year: int = year_config["max"]
 
     return Rebulk().rules(
         EnlargeGroupMatches,

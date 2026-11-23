@@ -20,21 +20,19 @@ if TYPE_CHECKING:
     from rebulk.match import Match, Matches
 
 
-def date(config: dict[str, Any], year_config: dict[str, Any] | None = None) -> Rebulk:
+def date(config: dict[str, Any], year_config: dict[str, Any]) -> Rebulk:
     """
     Builder for rebulk object.
 
     :param config: rule configuration
     :type config: dict
     :param year_config: year rule configuration
-    :type year_config: dict or None
+    :type year_config: dict
     :return: Created Rebulk object
     :rtype: Rebulk
     """
-    if year_config is None:
-        year_config = config.get("year", config)
-    min_year: int = year_config.get("min", 1900)
-    max_year: int = year_config.get("max", 2035)
+    min_year: int = year_config["min"]
+    max_year: int = year_config["max"]
 
     rebulk = Rebulk().defaults(validator=seps_surround)
 
@@ -128,10 +126,6 @@ def _year_range_separator_pattern(separators: list[str]) -> str:
     if word_separators:
         alternatives.append(padding + "+" + build_or_pattern(word_separators, escape=True) + padding + "+")
     return "(?:" + "|".join(alternatives) + ")"
-
-
-def _is_valid_year_match(match: Match) -> bool:
-    return valid_year(int(match.value))
 
 
 def _is_ascending_year_range(match: Match) -> bool:

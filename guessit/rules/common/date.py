@@ -43,11 +43,8 @@ def _build_date_regexps(guard: str = "") -> list[re.Pattern[str]]:
 date_regexps = _build_date_regexps()
 _movie_date_regexps = _build_date_regexps(_not_decimal)
 
-_DEFAULT_MIN_YEAR = 1900
-_DEFAULT_MAX_YEAR = 2035
 
-
-def valid_year(year: int, min_year: int = _DEFAULT_MIN_YEAR, max_year: int = _DEFAULT_MAX_YEAR) -> bool:
+def valid_year(year: int, min_year: int, max_year: int) -> bool:
     """Check if number is a valid year"""
     return min_year <= year <= max_year
 
@@ -73,9 +70,7 @@ def _is_int(string: str) -> bool:
         return False
 
 
-def _guess_day_first_parameter(
-    groups: tuple[Any, ...], min_year: int = _DEFAULT_MIN_YEAR, max_year: int = _DEFAULT_MAX_YEAR
-) -> bool | None:
+def _guess_day_first_parameter(groups: tuple[Any, ...], min_year: int, max_year: int) -> bool | None:
     """
     If day_first is not defined, use some heuristic to fix it.
     It helps to solve issues with python dateutils 2.5.3 parser changes.
@@ -106,8 +101,9 @@ def search_date(
     year_first: bool | None = None,
     day_first: bool | None = None,
     movie: bool = False,
-    min_year: int = _DEFAULT_MIN_YEAR,
-    max_year: int = _DEFAULT_MAX_YEAR,
+    *,
+    min_year: int,
+    max_year: int,
 ) -> tuple[int, int, date] | None:
     """Looks for date patterns, and if found return the date and group span.
 
@@ -120,18 +116,18 @@ def search_date(
     When ``movie`` is set, a dotted pair of single, unpadded digits leading a
     day/month-first date is a decimal number, not a day and a month.
 
-    >>> search_date(' This happened on 2002-04-22. ')
+    >>> search_date(' This happened on 2002-04-22. ', min_year=1900, max_year=2035)
     (18, 28, datetime.date(2002, 4, 22))
 
-    >>> search_date(' And this on 17-06-1998. ')
+    >>> search_date(' And this on 17-06-1998. ', min_year=1900, max_year=2035)
     (13, 23, datetime.date(1998, 6, 17))
 
-    >>> search_date(' Jackass.2.5.2007. ')
+    >>> search_date(' Jackass.2.5.2007. ', min_year=1900, max_year=2035)
     (9, 17, datetime.date(2007, 5, 2))
 
-    >>> search_date(' Jackass.2.5.2007. ', movie=True)
+    >>> search_date(' Jackass.2.5.2007. ', movie=True, min_year=1900, max_year=2035)
 
-    >>> search_date(' no date in here ')
+    >>> search_date(' no date in here ', min_year=1900, max_year=2035)
     """
     for date_re in _movie_date_regexps if movie else date_regexps:
         search_match = date_re.search(string)

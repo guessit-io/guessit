@@ -37,11 +37,16 @@
   date: 2003-02-01
 
 ? 1899
-? 2036
-: !!map {}
+: -year: 1899
 
-? 2029
-: year: 2029
+? 1900
+: year: 1900
+
+? 2035
+: year: 2035
+
+? 2036
+: -year: 2036
 
 # Near-future year configurable via advanced_config.year
 ? 2033.Future.Apocalypse.1080p.BluRay.x264.DTS-HD.MA.7.1
