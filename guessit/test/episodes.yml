@@ -5866,3 +5866,19 @@
   episode: 1
   container: mkv
   type: episode
+
+? Solar.Opposites.S06E05.The.Family.Memories.Vhs.Mix.Tape.1080p.WEBRip.10bit.EAC3.5.1.x265-iVy.mkv
+: title: Solar Opposites
+  season: 6
+  episode: 5
+  episode_title: The Family Memories Vhs Mix Tape
+  screen_size: 1080p
+  source: Web
+  other: Rip
+  color_depth: 10-bit
+  audio_codec: Dolby Digital Plus
+  audio_channels: '5.1'
+  video_codec: H.265
+  release_group: iVy
+  container: mkv
+  type: episode

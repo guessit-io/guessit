@@ -2442,3 +2442,19 @@
   year: 2020
   language: es
   -language: ca
+
+? Movie.1990.VHS.x264-GRP
+: title: Movie
+  year: 1990
+  source: VHS
+  video_codec: H.264
+  release_group: GRP
+  type: movie
+
+? Movie.1990.VHSx264-GRP
+: title: Movie
+  year: 1990
+  source: VHS
+  video_codec: H.264
+  release_group: GRP
+  type: movie
