@@ -948,6 +948,10 @@
         "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
         "mon", "tue", "tues", "wed", "weds", "thu", "thur", "thurs", "fri", "sat", "sun"
       ]
+    },
+    "year": {
+      "min": 1900,
+      "max": 2035
     }
   }
 }
