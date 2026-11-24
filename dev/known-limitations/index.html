@@ -1312,7 +1312,7 @@ in a subdirectory (<code>Westworld.S02E03…/sample/Westworld.S01E01.sample.mkv<
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  season: 20   episode: 49   title: &quot;Blade Runner&quot;         (wrong)
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  wanted -&gt; title: &quot;Blade Runner 2049&quot;   (year 2017, from the real release)
 </span></code></pre></div>
-<p><code>2049</code> is part of the <strong>title</strong>. It is not a valid year (<code>valid_year</code> accepts <code>1900 ≤ y &lt; 2035</code>) and
+<p><code>2049</code> is part of the <strong>title</strong>. It is not a valid year (<code>valid_year</code> accepts <code>1900 ≤ y ≤ 2035</code>) and
 structurally matches a <code>season+episode</code> split (<code>20</code>/<code>49</code>). When the real release year is present the
 result is correct (<code>Blade.Runner.2049.2017…</code> → title <code>Blade Runner 2049</code>); without it there is no
 local signal that <code>2049</code> is title text. As the reporter notes, disambiguating this reliably needs an
