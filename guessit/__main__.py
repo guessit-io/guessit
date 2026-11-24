@@ -50,8 +50,13 @@ def guess_filename(filename: str, options: dict[str, Any]) -> None:
         ystr = yaml.dump(
             {filename: OrderedDict(guess)}, Dumper=yamlutils.CustomDumper, default_flow_style=False, allow_unicode=True
         )
+        # PyYAML writes a long name as an explicit "? name" key instead of "name:", and its next
+        # lines are not the simple key's value block: print that output as is instead of reshaping it.
+        explicit_key = ystr.startswith("? ")
         for i, yline in enumerate(ystr.splitlines()):
-            if i == 0:
+            if explicit_key:
+                print(yline)
+            elif i == 0:
                 print("? " + yline[:-1])
             elif i == 1:
                 print(":" + yline[1:])

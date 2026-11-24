@@ -1,13 +1,17 @@
 #!/usr/bin/env python
+import io
 import json
 import os
 import sys
 from collections.abc import Iterator
+from contextlib import redirect_stdout
 
 import pytest
+import yaml
 from _pytest.capture import CaptureFixture
 
 from ..__main__ import main
+from ..api import guessit
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -42,6 +46,20 @@ def test_main_verbose() -> None:
 
 def test_main_yaml() -> None:
     main(["Fear.and.Loathing.in.Las.Vegas.FRENCH.ENGLISH.720p.HDDVD.DTS.x264-ESiR.mkv", "--yaml"])
+
+
+def test_main_yaml_long_name() -> None:
+    # PyYAML writes the name in the explicit "? name" form instead of "name:" when it is too long
+    # to be a simple key (127 characters here, the switch happens from 123 with PyYAML 6).
+    filename = (
+        r"D:\Media\Series\The Great Show\Season 01"
+        r"\The Great Show - S01E01 - The Long Episode Title 1080p WEB-DL H.264-NTb [ABCD1234].mkv"
+    )
+    output = io.StringIO()
+    with redirect_stdout(output):
+        main([filename, "--yaml"])
+    parsed = yaml.safe_load(output.getvalue())
+    assert parsed == {filename: guessit(filename)}
 
 
 def test_main_json() -> None:
