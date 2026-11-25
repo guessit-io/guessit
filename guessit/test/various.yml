@@ -1520,6 +1520,51 @@
   episode: 12
   other: [Ending Credits, Creditless]
 
+# Special marker (SP) in the episode slot (#1000)
+? '[DB]86_-_SP01_(10bit_BD1080p_x265).mkv'
+: title: '86'
+  episode: 1
+  episode_details: Special
+  release_group: DB
+  color_depth: 10-bit
+  video_codec: H.265
+  container: mkv
+  type: episode
+
+? '[DB]Haikyuu_-_SP01_(10bit_BD1080p).mkv'
+: title: Haikyuu
+  episode: 1
+  episode_details: Special
+  release_group: DB
+  color_depth: 10-bit
+  container: mkv
+  type: episode
+
+? '[FFF] Seirei Tsukai no Blade Dance - SP01 [BD][1080p-AAC].mp4'
+: title: Seirei Tsukai no Blade Dance
+  episode: 1
+  episode_details: Special
+  release_group: FFF
+  source: Blu-ray
+  screen_size: 1080p
+  audio_codec: AAC
+  container: mp4
+  type: episode
+
+? Show - SP 01.mkv
+: title: Show
+  episode: 1
+  episode_details: Special
+  container: mkv
+  type: episode
+
+? Show SP 01.mkv
+: title: Show SP
+  episode: 1
+  container: mkv
+  type: episode
+  -episode_details: Special
+
 # The name "Ed" must not be captured as an Ending Credits token (case-sensitive).
 ? Ed.S01E01.1080p.WEB-DL-GRP.mkv
 : title: Ed
