@@ -2458,3 +2458,25 @@
   video_codec: H.264
   release_group: GRP
   type: movie
+
+# A three-letter language code starting the title is the first title word, not a
+# language tag, whatever its case (#968).
+? Spa Weekend 2026 1080p WEB-DL HEVC x265 5.1 BONE.mkv
+: title: Spa Weekend
+  year: 2026
+  screen_size: 1080p
+  source: Web
+  -language: es
+  type: movie
+
+? SPA Weekend 2026 1080p WEB-DL.mkv
+: title: SPA Weekend
+  year: 2026
+  -language: es
+  type: movie
+
+? spa.weekend.2026.1080p.web-dl.mkv
+: title: spa weekend
+  year: 2026
+  -language: es
+  type: movie

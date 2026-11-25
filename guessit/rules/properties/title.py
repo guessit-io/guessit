@@ -214,7 +214,9 @@ class TitleBaseRule(Rule):
                 )
 
             if not other_languages and (not starting or len(match.raw or "") <= 3):
-                return True
+                # A three-letter language code starting the hole ("Spa Weekend") reads as the
+                # first title word, not a language tag (#968).
+                return not (starting and match.name == "language" and len(match.raw or "") == 3)
 
         return False
 
