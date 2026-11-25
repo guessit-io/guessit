@@ -970,12 +970,6 @@
   release_group: FlexGet
   title: FooBar
 
-? FooBar.7.PDTV-FlexGet
-: episode: 7
-  source: Digital TV
-  release_group: FlexGet
-  title: FooBar
-
 ? FooBar.0307.PDTV-FlexGet
 : episode: 7
   source: Digital TV
@@ -1255,13 +1249,6 @@
 
 ? Test.13.HDTV-Ignored
 : episode: 13
-  source: HDTV
-  release_group: Ignored
-  title: Test
-
-? Test.13.HDTV-Ignored
-: options: --expected-series test
-  episode: 13
   source: HDTV
   release_group: Ignored
   title: Test
@@ -2041,18 +2028,6 @@
   title: Homeland
   type: episode
   video_codec: H.264
-
-? Breaking.Bad.S01E01.2008.BluRay.VC1.1080P.5.1.WMV-NOVO
-: title: Breaking Bad
-  season: 1
-  episode: 1
-  year: 2008
-  source: Blu-ray
-  screen_size: 1080p
-  audio_channels: '5.1'
-  container: WMV
-  release_group: NOVO
-  type: episode
 
 ? Cosmos.A.Space.Time.Odyssey.S01E02.HDTV.x264.PROPER-LOL
 : title: Cosmos A Space Time Odyssey

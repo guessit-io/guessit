@@ -6,7 +6,6 @@ import os
 from typing import TYPE_CHECKING, Any
 
 import babelfish
-import yaml
 from rebulk.remodule import re
 from rebulk.utils import is_iterable
 
@@ -112,6 +111,26 @@ def files_and_ids(predicate: Callable[[str], bool] | None = None) -> tuple[list[
     return files, ids
 
 
+def _load_entries(stream: Any) -> list[tuple[Any, Any]]:
+    """
+    Load the top-level entries of a yaml test file as a list of pairs.
+
+    Loading them into a mapping would keep only the last of the entries that share an input
+    string, so the others would silently never run.
+    """
+    loader = OrderedDictYAMLLoader(stream)
+    try:
+        node = loader.get_single_node()
+        if node is None:
+            return []
+        return [
+            (loader.construct_object(key, deep=True), loader.construct_object(value, deep=True))
+            for key, value in node.value
+        ]
+    finally:
+        loader.dispose()
+
+
 class TestYml:
     """
     Run tests from yaml files.
@@ -138,23 +157,23 @@ class TestYml:
 
             for filename, _ in zip(*files_and_ids(), strict=False):
                 with open(os.path.join(__location__, filename), encoding="utf-8") as infile:
-                    data = yaml.load(infile, OrderedDictYAMLLoader)
+                    data = _load_entries(infile)
 
                 last_expected = None
-                for string, expected in reversed(list(data.items())):
+                for index in reversed(range(len(data))):
+                    string, expected = data[index]
                     if expected is None:
-                        data[string] = last_expected
+                        data[index] = (string, last_expected)
                     else:
                         last_expected = expected
 
                 default = None
-                try:
-                    default = data["__default__"]
-                    del data["__default__"]
-                except KeyError:
-                    pass
+                for string, expected in data:
+                    if string == "__default__":
+                        default = expected
+                data = [(string, expected) for string, expected in data if string != "__default__"]
 
-                for string, expected in data.items():
+                for string, expected in data:
                     TestYml.set_default(expected, default)
                     string = TestYml.fix_encoding(string)
 
