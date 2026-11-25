@@ -574,6 +574,38 @@
   container: mkv
   type: episode
 
+# Leading date-like token followed by episode marker (#968)
+? 12.12.12.S01E01.720p.10bit.WEBRip.2CH.x265.HEVC-PSA.mkv
+: title: 12.12.12
+  season: 1
+  episode: 1
+  screen_size: 720p
+  color_depth: 10-bit
+  source: Web
+  other: Rip
+  audio_channels: '2.0'
+  video_codec: H.265
+  video_profile: High Efficiency Video Coding
+  release_group: PSA
+  container: mkv
+  type: episode
+  -date: 2012-12-12
+
+? 12.12.12.S01E01.mkv
+: title: 12.12.12
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
+? Show.2012.12.12.S01E01.mkv
+: title: Show
+  date: 2012-12-12
+  season: 1
+  episode: 1
+  container: mkv
+  type: episode
+
 ? Dexter Saison sept FRENCH.BDRip.XviD-MiND.nfo
 : title: Dexter
   season: 7

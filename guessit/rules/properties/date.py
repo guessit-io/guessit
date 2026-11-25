@@ -111,6 +111,7 @@ def date(config: dict[str, Any], year_config: dict[str, Any]) -> Rebulk:
         KeepMarkedYearInFilepart,
         AbsorbWeekdayPrefix(config["weekday_words"]),
         PreferLeadingYearAsEpisodeTitle,
+        PreferLeadingDateAsEpisodeTitle,
     )
 
     return rebulk
@@ -245,6 +246,37 @@ def _root_parent(match: Match) -> Match | None:
     return root
 
 
+def _lone_leading_before_episode(matches: Matches, prop_name: str) -> list[Match]:
+    """Return lone leading ``prop_name`` matches that sit immediately before an episode marker."""
+    to_remove: list[Match] = []
+    for filepart in matches.markers.named("path"):
+        candidates = matches.range(filepart.start, filepart.end, lambda match: match.name == prop_name)
+        if len(candidates) != 1:
+            continue
+        candidate = candidates[0]
+        if candidate.start != filepart.start:
+            continue
+        episode_markers = matches.range(filepart.start, filepart.end, lambda match: match.name in ("episode", "season"))
+        if not episode_markers:
+            continue
+        first_marker = min(episode_markers, key=lambda match: match.start)
+        if first_marker.start <= candidate.end:
+            continue
+        # allow the leading part of the episode marker's own token
+        # (e.g. the 'S' of S01E01), which no match covers by itself
+        input_string = matches.input_string or ""
+        token_start = first_marker.start
+        while token_start > candidate.end and input_string[token_start - 1] not in seps:
+            token_start -= 1
+        # the candidate must be the only content before the episode token
+        if any(match is not candidate for match in matches.range(filepart.start, token_start)):
+            continue
+        if any(char not in seps for char in input_string[candidate.end : token_start]):
+            continue
+        to_remove.append(candidate)
+    return to_remove
+
+
 class PreferLeadingYearAsEpisodeTitle(Rule):
     """Prefer a lone leading year-range number as the title of episode files.
 
@@ -266,32 +298,23 @@ class PreferLeadingYearAsEpisodeTitle(Rule):
         )
 
     def when(self, matches: Matches, context: dict[str, Any] | None) -> list[Match]:
-        to_remove: list[Match] = []
-        for filepart in matches.markers.named("path"):
-            years = matches.range(filepart.start, filepart.end, lambda match: match.name == "year")
-            if len(years) != 1:
-                continue
-            year = years[0]
-            if year.start != filepart.start:
-                continue
-            episode_markers = matches.range(
-                filepart.start, filepart.end, lambda match: match.name in ("episode", "season")
-            )
-            if not episode_markers:
-                continue
-            first_marker = min(episode_markers, key=lambda match: match.start)
-            if first_marker.start <= year.end:
-                continue
-            # allow the leading part of the episode marker's own token
-            # (e.g. the 'S' of S01E01), which no match covers by itself
-            input_string = matches.input_string or ""
-            token_start = first_marker.start
-            while token_start > year.end and input_string[token_start - 1] not in seps:
-                token_start -= 1
-            # the year must be the only content before the episode token
-            if any(match is not year for match in matches.range(filepart.start, token_start)):
-                continue
-            if any(char not in seps for char in input_string[year.end : token_start]):
-                continue
-            to_remove.append(year)
-        return to_remove
+        return _lone_leading_before_episode(matches, "year")
+
+
+class PreferLeadingDateAsEpisodeTitle(Rule):
+    """Prefer a lone leading date-like token as the title of episode files.
+
+    A filename like 12.12.12.S01E01.mkv is an episode of a show titled "12.12.12":
+    with an episode marker present and no other title before it, a leading
+    date match is more likely the title than a broadcast date. Release the date
+    match so the title rules can pick it up.
+    """
+
+    priority = 32  # After the date rules (64), before the title rules (0).
+    consequence = RemoveMatch
+
+    def enabled(self, context: dict[str, Any] | None) -> bool:
+        return not is_disabled(context, "date") and not is_disabled(context, "title")
+
+    def when(self, matches: Matches, context: dict[str, Any] | None) -> list[Match]:
+        return _lone_leading_before_episode(matches, "date")
