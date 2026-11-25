@@ -160,11 +160,6 @@ class TitleBaseRule(Rule):
         return any(index not in covered and input_string[index] not in seps for index in range(hole.start, hole.end))
 
     @staticmethod
-    def _is_tag_cased(raw: str | None) -> bool:
-        """Whether a short language/country token is cased like a tag ("ENG", "eng") rather than a word ("Eng")."""
-        return raw is None or raw.isupper() or raw.islower()
-
-    @staticmethod
     def is_ignored(match: Match) -> bool:
         """
         Ignore matches when scanning for title (hole).
@@ -219,14 +214,9 @@ class TitleBaseRule(Rule):
                 )
 
             if not other_languages and (not starting or len(match.raw or "") <= 3):
-                # A Title-Case three-letter language code starting the hole ("Spa Weekend") reads
-                # as the first title word, not a language tag; tags are written "SPA"/"spa" (#968).
-                return not (
-                    starting
-                    and match.name == "language"
-                    and len(match.raw or "") == 3
-                    and not self._is_tag_cased(match.raw)
-                )
+                # A three-letter language code starting the hole ("Spa Weekend") reads as the
+                # first title word, not a language tag (#968).
+                return not (starting and match.name == "language" and len(match.raw or "") == 3)
 
         return False
 

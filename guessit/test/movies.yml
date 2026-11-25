@@ -2459,8 +2459,8 @@
   release_group: GRP
   type: movie
 
-# A Title-Case three-letter language code starting the title is the first title word,
-# not a language tag; an upper/lowercase code is still read as a language (#968).
+# A three-letter language code starting the title is the first title word, not a
+# language tag, whatever its case (#968).
 ? Spa Weekend 2026 1080p WEB-DL HEVC x265 5.1 BONE.mkv
 : title: Spa Weekend
   year: 2026
@@ -2470,13 +2470,13 @@
   type: movie
 
 ? SPA Weekend 2026 1080p WEB-DL.mkv
-: title: Weekend
-  language: es
+: title: SPA Weekend
   year: 2026
+  -language: es
   type: movie
 
 ? spa.weekend.2026.1080p.web-dl.mkv
-: title: weekend
-  language: es
+: title: spa weekend
   year: 2026
+  -language: es
   type: movie
