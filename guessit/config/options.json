@@ -397,12 +397,7 @@
         ],
         "fra": [
           "français",
-          "vf",
-          "vff",
-          "vfi",
-          "vfq",
-          "vof",
-          "vf2"
+          "vf"
         ],
         "swe": [
           "se"
@@ -466,6 +461,7 @@
       "subtitle_prefixes": [
         "st",
         "vost",
+        "vfst",
         "subforced",
         "fansub",
         "hardsub",
@@ -496,6 +492,75 @@
         "audio",
         "true"
       ]
+    },
+    "language_variant": {
+      "VFF": {
+        "tokens": [
+          "VFF",
+          "TRUEFRENCH"
+        ],
+        "language": "fr",
+        "language_region": "FR",
+        "language_origin": "dub"
+      },
+      "VFQ": {
+        "tokens": [
+          "VFQ"
+        ],
+        "language": "fr",
+        "language_region": "CA",
+        "language_origin": "dub"
+      },
+      "VFB": {
+        "tokens": [
+          "VFB"
+        ],
+        "language": "fr",
+        "language_region": "BE",
+        "language_origin": "dub"
+      },
+      "VFI": {
+        "tokens": [
+          "VFI"
+        ],
+        "language": "fr",
+        "language_origin": "dub"
+      },
+      "VOF": {
+        "tokens": [
+          "VOF"
+        ],
+        "language": "fr",
+        "language_origin": "original"
+      },
+      "VOQ": {
+        "tokens": [
+          "VOQ"
+        ],
+        "language": "fr",
+        "language_region": "CA",
+        "language_origin": "original"
+      },
+      "VQ": {
+        "tokens": [
+          "VQ"
+        ],
+        "language": "fr",
+        "language_region": "CA",
+        "language_origin": "dub",
+        "language_style": "accent"
+      },
+      "VF2": {
+        "tokens": [
+          "VF2"
+        ],
+        "language": "fr",
+        "language_origin": "dub",
+        "includes": [
+          "VFF",
+          "VFQ"
+        ]
+      }
     },
     "title": {
       "articles": [

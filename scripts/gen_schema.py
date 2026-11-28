@@ -46,7 +46,7 @@ VALUE_CONSTRAINED = {
     "source", "screen_size", "video_codec", "audio_codec", "audio_channels",
     "audio_profile", "video_profile", "video_api", "color_depth", "container",
     "other", "edition", "type", "scan_type", "streaming_service",
-    "episode_format",
+    "episode_format", "language_variant",
 }  # fmt: skip
 
 # Properties rendered as a language/country object (or its string code).

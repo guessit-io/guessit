@@ -484,6 +484,39 @@
         }
       ]
     },
+    "language_variant": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "VF2",
+            "VFB",
+            "VFF",
+            "VFI",
+            "VFQ",
+            "VOF",
+            "VOQ",
+            "VQ"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "VF2",
+              "VFB",
+              "VFF",
+              "VFI",
+              "VFQ",
+              "VOF",
+              "VOQ",
+              "VQ"
+            ]
+          }
+        }
+      ]
+    },
     "mimetype": {
       "type": "string"
     },

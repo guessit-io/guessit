@@ -620,6 +620,7 @@
 
 ? Falling Skies Saison 1.HDLight.720p.x264.VFF.mkv
 : language: French
+  language_variant: VFF
   screen_size: 720p
   season: 1
   title: Falling Skies
@@ -632,10 +633,10 @@
   season: 4
   episode: 7
   language: fr
+  language_variant: VOF
   screen_size: 1080p
   source: Web
   release_group: SUPPLY
-  -episode_title: VOF
 
 ? Le.Seigneur.des.anneaux.Les.Anneaux.de.pouvoir.2022.S03E01.REPACK.MULTi.VF2.2160p.DV.HDR10P.WEB.EAC3.5.1.Atmos.H265-FRQC
 : title: Le Seigneur des anneaux Les Anneaux de pouvoir
@@ -643,9 +644,9 @@
   season: 3
   episode: 1
   language: [mul, fr]
+  language_variant: VF2
   screen_size: 2160p
   release_group: FRQC
-  -episode_title: MULTi VF2
 
 ? Sleepy.Hollow.S01E09.720p.WEB-DL.DD5.1.H.264-BP.mkv
 : episode: 9
