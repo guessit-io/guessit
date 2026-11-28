@@ -181,6 +181,12 @@ GUESSIT_SCHEMA: dict[str, PropertySchema] = {
     "height": {"type": ["string"], "array": False, "scalar": True},
     "imdb_id": {"type": ["string"], "array": False, "scalar": True},
     "language": {"type": ["Language"], "array": True, "scalar": True},
+    "language_variant": {
+        "type": ["string"],
+        "array": True,
+        "scalar": True,
+        "enum": ["VF2", "VFB", "VFF", "VFI", "VFQ", "VOF", "VOQ", "VQ"],
+    },
     "mimetype": {"type": ["string"], "array": False, "scalar": True},
     "other": {
         "type": ["string"],

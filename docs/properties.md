@@ -232,6 +232,13 @@ Localization properties
     Language(s) of the audio soundtrack.
 
     -   `[<babelfish.Language>]` (This class equals name and iso code)
+-   **language\_variant**
+
+    Variant(s) of the audio language, from release tags that tell regional or
+    original-version variants apart. Currently defined for French: `VFF`, `VFQ`,
+    `VFB`, `VFI`, `VOF`, `VOQ`, `VQ`, `VF2`.
+
+    -   `[<str>]`
 -   **subtitle\_language**
 
     Language(s) of the subtitles.

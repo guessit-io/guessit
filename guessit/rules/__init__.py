@@ -26,6 +26,7 @@ from .properties.episodes import episodes
 from .properties.film import film
 from .properties.imdb import imdb
 from .properties.language import language
+from .properties.language_variant import language_variant
 from .properties.mimetype import mimetype
 from .properties.other import other
 from .properties.part import part
@@ -70,6 +71,7 @@ def rebulk_builder(config: dict[str, Any]) -> Rebulk:
     rebulk.rebulk(title(_config("title")))
     rebulk.rebulk(episode_title(_config("episode_title")))
     rebulk.rebulk(language(_config("language"), common_words))
+    rebulk.rebulk(language_variant(_config("language_variant")))
     rebulk.rebulk(country(_config("country"), common_words))
     rebulk.rebulk(release_group(_config("release_group")))
     rebulk.rebulk(streaming_service(_config("streaming_service")))
