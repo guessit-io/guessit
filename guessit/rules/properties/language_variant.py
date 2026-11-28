@@ -93,12 +93,8 @@ class LanguageVariantLanguageRule(Rule):
                 or (language.name and language.name.lower() in allowed_languages)
             ):
                 continue
-            span = (match.start, match.end)
-            already_found = matches.range(
-                match.start,
-                match.end,
-                predicate=lambda other, span=span: other.name == "language" and other.span == span,
-                index=0,
+            already_found = any(
+                other.start == match.start and other.end == match.end for other in matches.named("language")
             )
             if already_found:
                 continue
